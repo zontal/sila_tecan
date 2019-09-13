@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Feature xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" SiLA2Version="0.2" FeatureVersion="1.0" Originator="tecan.sila2.generator" Category="test" xmlns="http://www.sila-standard.org">
+  <Identifier>TemperatureController</Identifier>
+  <DisplayName>Temperature Controller</DisplayName>
+  <Description>Controlling and retrieving the temperature.</Description>
+  <Command>
+    <Identifier>ControlTemperature</Identifier>
+    <DisplayName>Control Temperature</DisplayName>
+    <Description>Control the Temperature gradually to a set target,</Description>
+    <Observable>Yes</Observable>
+    <Parameter>
+      <Identifier>TargetTemperature</Identifier>
+      <DisplayName>Target Temperature</DisplayName>
+      <Description>The target temperature that the device will try to reach. Note that the command might
+be completed at a temperature that is close enough.</Description>
+      <DataType>
+        <Basic>Real</Basic>
+      </DataType>
+    </Parameter>
+    <DefinedExecutionErrors>
+      <Identifier>TemperatureNotReachable</Identifier>
+      <Identifier>ControlInterrupted</Identifier>
+    </DefinedExecutionErrors>
+  </Command>
+  <Property>
+    <Identifier>CurrentTemperature</Identifier>
+    <DisplayName>Current Temperature</DisplayName>
+    <Description>Current Temperature as measured by the controller.</Description>
+    <Observable>Yes</Observable>
+    <DataType>
+      <Constrained>
+        <DataType>
+          <Basic>Real</Basic>
+        </DataType>
+        <Constraints>
+          <MaximalInclusive>373</MaximalInclusive>
+          <MinimalExclusive>273</MinimalExclusive>
+          <Unit>
+            <Label>K</Label>
+            <UnitComponent>
+              <SIUnit>Kelvin</SIUnit>
+              <Exponent>1</Exponent>
+              <Factor>1</Factor>
+              <Offset>0</Offset>
+            </UnitComponent>
+          </Unit>
+        </Constraints>
+      </Constrained>
+    </DataType>
+  </Property>
+  <DefinedExecutionError>
+    <Identifier>TemperatureNotReachable</Identifier>
+    <DisplayName>Temperature Not Reachable</DisplayName>
+    <Description>The ambient conditions prohibit the device from reaching the target temperature.</Description>
+  </DefinedExecutionError>
+  <DefinedExecutionError>
+    <Identifier>ControlInterrupted</Identifier>
+    <DisplayName>Control Interrupted</DisplayName>
+    <Description>The control of temperature couldn't be finished as it was interrupted by another target temperature.</Description>
+  </DefinedExecutionError>
+</Feature>

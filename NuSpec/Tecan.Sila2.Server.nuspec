@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<package>
+    <metadata>
+        <id>Tecan.Sila2.Server</id>
+        <description>The server part of the Tecan SiLA2 SDK</description>
+        <version>0.1.0-local</version>
+        <authors>Tecan Trading AG</authors>
+        <copyright>Tecan Trading AG 2018</copyright>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <licenseUrl>https://gitlab.com/SiLA2/vendors/sila_tecan/blob/master/LICENSE</licenseUrl>
+        <projectUrl>https://gitlab.com/SiLA2/vendors/sila_tecan</projectUrl>
+        <repository type="git" url="https://gitlab.com/SiLA2/vendors/sila_tecan.git" />
+        <dependencies>
+            <dependency id="Tecan.Sila2" version="[0.1,1.0)" />
+            <dependency id="Grpc.Core" version="2.23" />
+            <dependency id="CommandLineParser" version="2.4.3" />
+        </dependencies>
+    </metadata>
+    <files>
+        <file src="..\Build\netstandard2.0\Tecan.Sila2.Server.dll" target="lib\netstandard2.0\" />
+        <file src="..\Build\Tecan.Sila2.Server.xml" target="lib\netstandard2.0\" />
+    </files>
+</package>

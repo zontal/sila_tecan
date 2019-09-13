@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<package>
+    <metadata>
+        <id>Tecan.Sila2.Contracts</id>
+        <description>Contracts to expose an interface to SiLA2</description>
+        <version>0.1.0-local</version>
+        <authors>Tecan Trading AG</authors>
+        <copyright>Tecan Trading AG 2019</copyright>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <licenseUrl>https://gitlab.com/SiLA2/vendors/sila_tecan/blob/master/LICENSE</licenseUrl>
+        <projectUrl>https://gitlab.com/SiLA2/vendors/sila_tecan</projectUrl>
+        <repository type="git" url="https://gitlab.com/SiLA2/vendors/sila_tecan.git" />
+    </metadata>
+    <files>
+        <file src="..\Build\netstandard2.0\Tecan.Sila2.Contracts.dll" target="lib\netstandard2.0\" />
+        <file src="..\Build\Tecan.Sila2.Contracts.xml" target="lib\netstandard2.0\" />
+    </files>
+</package>

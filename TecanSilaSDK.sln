@@ -1,0 +1,104 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29009.5
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Contracts", "Contracts\Contracts.csproj", "{A998329A-5157-4B80-992A-AF904E65CC2F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Framework", "Framework\Framework.csproj", "{C5345B2C-14E8-4CFA-96C3-CDB423B40740}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Generator", "Generator\Generator.csproj", "{06140875-6695-45B8-911C-CFA3EBB6B997}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DriverDevelopment", "DriverDevelopment", "{98D6F41E-A727-4CF4-99C6-8D95BAEB3BB4}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Server", "Server\Server.csproj", "{C3FFB5F7-26A6-44BC-8EBC-88682D0FE3A9}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Features", "Features", "{0E82C9E0-FD04-401F-9BB9-4C9E6419FA47}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{D20F3DDF-CC13-45C3-95F5-F48B1EFFBB82}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeneratorTest", "Tests\Generator.Tests\GeneratorTest.csproj", "{B4E54C24-A011-4375-A1FF-0918F21CBE02}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Integration", "Integration", "{E27A5F4F-AFCB-4BAD-B2EE-5A88300C1169}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DynamicClient", "DynamicClient\DynamicClient.csproj", "{CA6D8124-9BC8-4BE2-8D44-CB32175A149C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NuSpec", "NuSpec", "{B34C24C7-1092-4634-BB86-EA4FABB6F5B2}"
+	ProjectSection(SolutionItems) = preProject
+		NuSpec\Tecan.Sila2.Contracts.nuspec = NuSpec\Tecan.Sila2.Contracts.nuspec
+		NuSpec\Tecan.Sila2.DynamicClient.nuspec = NuSpec\Tecan.Sila2.DynamicClient.nuspec
+		NuSpec\Tecan.Sila2.Features.Auth.nuspec = NuSpec\Tecan.Sila2.Features.Auth.nuspec
+		NuSpec\Tecan.Sila2.Features.Locking.nuspec = NuSpec\Tecan.Sila2.Features.Locking.nuspec
+		NuSpec\Tecan.Sila2.Features.WorktableIntegration.nuspec = NuSpec\Tecan.Sila2.Features.WorktableIntegration.nuspec
+		NuSpec\Tecan.Sila2.nuspec = NuSpec\Tecan.Sila2.nuspec
+		NuSpec\Tecan.Sila2.Server.nuspec = NuSpec\Tecan.Sila2.Server.nuspec
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Locking", "Features\Locking\Locking.csproj", "{191090FF-ECE4-4949-B053-420FF60C067D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Authentication", "Features\Authentication\Authentication.csproj", "{FB7E967B-2CBB-467F-9425-9AC5F3B74124}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WorktableIntegration", "Features\WorktableIntegration\WorktableIntegration.csproj", "{CD86A99A-94E4-435A-9E9C-61FCA888983A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A998329A-5157-4B80-992A-AF904E65CC2F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A998329A-5157-4B80-992A-AF904E65CC2F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A998329A-5157-4B80-992A-AF904E65CC2F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A998329A-5157-4B80-992A-AF904E65CC2F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C5345B2C-14E8-4CFA-96C3-CDB423B40740}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C5345B2C-14E8-4CFA-96C3-CDB423B40740}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C5345B2C-14E8-4CFA-96C3-CDB423B40740}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C5345B2C-14E8-4CFA-96C3-CDB423B40740}.Release|Any CPU.Build.0 = Release|Any CPU
+		{06140875-6695-45B8-911C-CFA3EBB6B997}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{06140875-6695-45B8-911C-CFA3EBB6B997}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{06140875-6695-45B8-911C-CFA3EBB6B997}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{06140875-6695-45B8-911C-CFA3EBB6B997}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C3FFB5F7-26A6-44BC-8EBC-88682D0FE3A9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C3FFB5F7-26A6-44BC-8EBC-88682D0FE3A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C3FFB5F7-26A6-44BC-8EBC-88682D0FE3A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C3FFB5F7-26A6-44BC-8EBC-88682D0FE3A9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B4E54C24-A011-4375-A1FF-0918F21CBE02}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B4E54C24-A011-4375-A1FF-0918F21CBE02}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B4E54C24-A011-4375-A1FF-0918F21CBE02}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B4E54C24-A011-4375-A1FF-0918F21CBE02}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CA6D8124-9BC8-4BE2-8D44-CB32175A149C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CA6D8124-9BC8-4BE2-8D44-CB32175A149C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CA6D8124-9BC8-4BE2-8D44-CB32175A149C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CA6D8124-9BC8-4BE2-8D44-CB32175A149C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{191090FF-ECE4-4949-B053-420FF60C067D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{191090FF-ECE4-4949-B053-420FF60C067D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{191090FF-ECE4-4949-B053-420FF60C067D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{191090FF-ECE4-4949-B053-420FF60C067D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FB7E967B-2CBB-467F-9425-9AC5F3B74124}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FB7E967B-2CBB-467F-9425-9AC5F3B74124}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FB7E967B-2CBB-467F-9425-9AC5F3B74124}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FB7E967B-2CBB-467F-9425-9AC5F3B74124}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CD86A99A-94E4-435A-9E9C-61FCA888983A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CD86A99A-94E4-435A-9E9C-61FCA888983A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CD86A99A-94E4-435A-9E9C-61FCA888983A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CD86A99A-94E4-435A-9E9C-61FCA888983A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{06140875-6695-45B8-911C-CFA3EBB6B997} = {98D6F41E-A727-4CF4-99C6-8D95BAEB3BB4}
+		{C3FFB5F7-26A6-44BC-8EBC-88682D0FE3A9} = {98D6F41E-A727-4CF4-99C6-8D95BAEB3BB4}
+		{0E82C9E0-FD04-401F-9BB9-4C9E6419FA47} = {98D6F41E-A727-4CF4-99C6-8D95BAEB3BB4}
+		{D20F3DDF-CC13-45C3-95F5-F48B1EFFBB82} = {98D6F41E-A727-4CF4-99C6-8D95BAEB3BB4}
+		{B4E54C24-A011-4375-A1FF-0918F21CBE02} = {D20F3DDF-CC13-45C3-95F5-F48B1EFFBB82}
+		{CA6D8124-9BC8-4BE2-8D44-CB32175A149C} = {E27A5F4F-AFCB-4BAD-B2EE-5A88300C1169}
+		{B34C24C7-1092-4634-BB86-EA4FABB6F5B2} = {98D6F41E-A727-4CF4-99C6-8D95BAEB3BB4}
+		{191090FF-ECE4-4949-B053-420FF60C067D} = {0E82C9E0-FD04-401F-9BB9-4C9E6419FA47}
+		{FB7E967B-2CBB-467F-9425-9AC5F3B74124} = {0E82C9E0-FD04-401F-9BB9-4C9E6419FA47}
+		{CD86A99A-94E4-435A-9E9C-61FCA888983A} = {0E82C9E0-FD04-401F-9BB9-4C9E6419FA47}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F2AE9C9D-34E5-4A2A-8AAA-5EEA105AF08F}
+	EndGlobalSection
+EndGlobal
