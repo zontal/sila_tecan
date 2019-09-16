@@ -11,6 +11,7 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <RootNamespace>Tecan.Sila2</RootNamespace>
     <AssemblyName>Tecan.Sila2.Auth</AssemblyName>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
@@ -29,6 +30,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Include="..\..\CommonAssemblyInfo.cs" Link="Properties\CommonAssemblyInfo.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <EmbeddedResource Include="AuthenticationService.sila.xml" />
     <EmbeddedResource Include="AuthorizationService.sila.xml" />
   </ItemGroup>
@@ -36,9 +41,6 @@
   <ItemGroup>
     <PackageReference Include="Grpc.Core" Version="2.23.0" />
     <PackageReference Include="protobuf-net" Version="2.4.0" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Contracts\Contracts.csproj" />

@@ -4,3 +4,4 @@
 **/*.csproj.user
 Build/
 **/launchSettings.json
+**/*.nupkg

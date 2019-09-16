@@ -8,7 +8,6 @@
         <owners>Tecan Trading Ltd., Switzerland</owners>
         <copyright>Copyright 2019 by Tecan Trading Ltd., Switzerland</copyright>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
-        <icon>icon.png</icon>
         <license type="expression">BSD-3-Clause</license>
         <projectUrl>https://gitlab.com/SiLA2/vendors/sila_tecan</projectUrl>
         <repository type="git" url="https://gitlab.com/SiLA2/vendors/sila_tecan.git" />

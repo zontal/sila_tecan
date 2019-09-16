@@ -1,40 +1,45 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup Label="Globals">
-    <SccProjectName>SAK</SccProjectName>
-    <SccProvider>SAK</SccProvider>
-    <SccAuxPath>SAK</SccAuxPath>
-    <SccLocalPath>SAK</SccLocalPath>
-  </PropertyGroup>
+    <PropertyGroup Label="Globals">
+        <SccProjectName>SAK</SccProjectName>
+        <SccProvider>SAK</SccProvider>
+        <SccAuxPath>SAK</SccAuxPath>
+        <SccLocalPath>SAK</SccLocalPath>
+    </PropertyGroup>
 
-  <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
-    <AssemblyName>Tecan.Sila2.Locking</AssemblyName>
-    <RootNamespace>Tecan.Sila2.Locking</RootNamespace>
-  </PropertyGroup>
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <AssemblyName>Tecan.Sila2.Locking</AssemblyName>
+        <RootNamespace>Tecan.Sila2.Locking</RootNamespace>
+        <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <OutputPath>..\..\Build\Features\</OutputPath>
-    <DocumentationFile>..\..\Build\Features\Tecan.Sila2.Locking.xml</DocumentationFile>
-  </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+        <OutputPath>..\..\Build\Features\</OutputPath>
+        <DocumentationFile>..\..\Build\Features\Tecan.Sila2.Locking.xml</DocumentationFile>
+    </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <OutputPath>..\..\Build\Features\</OutputPath>
-    <DocumentationFile>..\..\Build\Features\Tecan.Sila2.Locking.xml</DocumentationFile>
-  </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+        <OutputPath>..\..\Build\Features\</OutputPath>
+        <DocumentationFile>..\..\Build\Features\Tecan.Sila2.Locking.xml</DocumentationFile>
+    </PropertyGroup>
 
-  <ItemGroup>
-    <None Remove="LockController.sila.xml" />
-  </ItemGroup>
+    <ItemGroup>
+        <None Remove="LockController.sila.xml" />
+    </ItemGroup>
 
-  <ItemGroup>
-    <EmbeddedResource Include="LockController.sila.xml" />
-  </ItemGroup>
+    <ItemGroup>
+        <Compile Include="..\..\CommonAssemblyInfo.cs" Link="Properties\CommonAssemblyInfo.cs" />
+    </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\Contracts\Contracts.csproj" />
-    <ProjectReference Include="..\..\Server\Server.csproj" />
-    <ProjectReference Include="..\..\Framework\Framework.csproj" />
-  </ItemGroup>
+    <ItemGroup>
+        <EmbeddedResource Include="LockController.sila.xml" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\..\Contracts\Contracts.csproj" />
+        <ProjectReference Include="..\..\Server\Server.csproj" />
+        <ProjectReference Include="..\..\Framework\Framework.csproj" />
+    </ItemGroup>
 
 </Project>

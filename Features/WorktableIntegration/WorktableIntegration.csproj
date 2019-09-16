@@ -1,45 +1,47 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup Label="Globals">
-    <SccProjectName>SAK</SccProjectName>
-    <SccProvider>SAK</SccProvider>
-    <SccAuxPath>SAK</SccAuxPath>
-    <SccLocalPath>SAK</SccLocalPath>
-  </PropertyGroup>
+    <PropertyGroup Label="Globals">
+        <SccProjectName>SAK</SccProjectName>
+        <SccProvider>SAK</SccProvider>
+        <SccAuxPath>SAK</SccAuxPath>
+        <SccLocalPath>SAK</SccLocalPath>
+    </PropertyGroup>
 
-  <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
-    <RootNamespace>Tecan.Sila2.WorktableIntegration</RootNamespace>
-    <AssemblyName>Tecan.Sila2.WorktableIntegration</AssemblyName>
-  </PropertyGroup>
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <RootNamespace>Tecan.Sila2.WorktableIntegration</RootNamespace>
+        <AssemblyName>Tecan.Sila2.WorktableIntegration</AssemblyName>
+        <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <OutputPath>..\..\Build\Features</OutputPath>
-    <DocumentationFile>..\..\Build\Features\Tecan.Sila2.WorktableIntegration.xml</DocumentationFile>
-  </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+        <OutputPath>..\..\Build\Features</OutputPath>
+        <DocumentationFile>..\..\Build\Features\Tecan.Sila2.WorktableIntegration.xml</DocumentationFile>
+    </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <OutputPath>..\..\Build\Features</OutputPath>
-    <DocumentationFile>..\..\Build\Features\Tecan.Sila2.WorktableIntegration.xml</DocumentationFile>
-  </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+        <OutputPath>..\..\Build\Features</OutputPath>
+        <DocumentationFile>..\..\Build\Features\Tecan.Sila2.WorktableIntegration.xml</DocumentationFile>
+    </PropertyGroup>
 
-  <ItemGroup>
-    <None Remove="WorktableService.sila.xml" />
-  </ItemGroup>
+    <ItemGroup>
+        <None Remove="WorktableService.sila.xml" />
+    </ItemGroup>
 
-  <ItemGroup>
-    <EmbeddedResource Include="WorktableService.sila.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Properties\" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="Grpc.Core" Version="2.23.0" />
-    <PackageReference Include="protobuf-net" Version="2.4.0" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\Contracts\Contracts.csproj" />
-    <ProjectReference Include="..\..\Server\Server.csproj" />
-    <ProjectReference Include="..\..\Framework\Framework.csproj" />
-  </ItemGroup>
+    <ItemGroup>
+        <Compile Include="..\..\CommonAssemblyInfo.cs" Link="Properties\CommonAssemblyInfo.cs" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <EmbeddedResource Include="WorktableService.sila.xml" />
+    </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="Grpc.Core" Version="2.23.0" />
+        <PackageReference Include="protobuf-net" Version="2.4.0" />
+    </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\..\Contracts\Contracts.csproj" />
+        <ProjectReference Include="..\..\Server\Server.csproj" />
+        <ProjectReference Include="..\..\Framework\Framework.csproj" />
+    </ItemGroup>
 </Project>
