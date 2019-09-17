@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package>
     <metadata>
-        <id>Tecan.MAP.Sila2.Features.WorktableIntegration</id>
+        <id>Tecan.Sila2.Features.WorktableIntegration</id>
         <description>Generic worktable integration support for the Tecan Sila SDK</description>
         <version>0.1.0-local</version>
         <authors>Tecan Trading Ltd., Switzerland</authors>

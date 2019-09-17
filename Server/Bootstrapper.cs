@@ -4,6 +4,7 @@ using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
 using System.ComponentModel.Composition.Primitives;
 using System.IO;
+using System.Linq;
 using System.Net.NetworkInformation;
 using System.Reflection;
 using CommandLine;
@@ -76,14 +77,21 @@ namespace Tecan.Sila2.Server
         private static NetworkInterface FindNetworkInterface(string interfaceNameOrCIDR, ILoggingChannelFactory logging)
         {
             NetworkInterface networkInterface;
-            try
+            if( interfaceNameOrCIDR != null )
             {
-                var networking = new Networking(logging);
-                networkInterface = networking.GetNetworkInterface(interfaceNameOrCIDR);
+                try
+                {
+                    var networking = new Networking( logging );
+                    networkInterface = networking.GetNetworkInterface( interfaceNameOrCIDR );
+                }
+                catch( ArgumentNullException )
+                {
+                    networkInterface = null;
+                }
             }
-            catch (ArgumentNullException)
+            else
             {
-                networkInterface = null;
+                networkInterface = NetworkInterface.GetAllNetworkInterfaces().FirstOrDefault( ni => ni.SupportsMulticast && ni.OperationalStatus == OperationalStatus.Up );
             }
 
             return networkInterface;
