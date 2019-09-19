@@ -18,12 +18,12 @@ namespace Tecan.Sila2
     {
         private string _userIdentification = "ExampleUser";
         private string _password = "ExamplePassword";
-        private readonly string _serverName;
+        private readonly Lazy<ISiLAService> _silaService;
 
         [ImportingConstructor]
-        public AuthenticationAuthorizationService(ISiLAService silaService)
+        public AuthenticationAuthorizationService(Lazy<ISiLAService> silaService)
         {
-            _serverName = silaService.ServerUUID;
+            _silaService = silaService;
         }
 
 
@@ -54,9 +54,9 @@ namespace Tecan.Sila2
         public LoginResponse Login(string userIdentification, string password, string server, ICollection<string> requestedFeatures)
         {
             LoginResponse loginResponse;
-            if (server != _serverName)
+            if (server != _silaService.Value.ServerUUID)
             {
-                throw new AuthenticationFailedException($"Cannot provider access token for server {server}. This server can only serve authentication requests for server {_serverName}.");
+                throw new AuthenticationFailedException($"Cannot provider access token for server {server}. This server can only serve authentication requests for server {_silaService.Value.ServerName} ({_silaService.Value.ServerUUID}).");
             }
             
             if (!_userIdentification.Equals(userIdentification) && _password.Equals(password))

@@ -97,6 +97,9 @@ namespace Tecan.Sila2.Generator.Generators
 
             GenerateServerFeatureProperty( server, feature );
 
+            GenerateServerGetCommand( server, feature );
+            GenerateServerGetProperty( server, feature );
+
             if( Hooks != null )
             {
                 foreach( var hook in Hooks )
@@ -106,6 +109,68 @@ namespace Tecan.Sila2.Generator.Generators
             }
 
             return server;
+        }
+
+        private void GenerateServerGetCommand( CodeTypeDeclaration server, Feature feature )
+        {
+            var getCommandMethod = new CodeMemberMethod()
+            {
+                Name = nameof(IFeatureProvider.GetCommand),
+                ReturnType = new CodeTypeReference( typeof(MethodInfo) ),
+                Attributes = MemberAttributes.Final | MemberAttributes.Public
+            };
+            var commandIdentifier = new CodeArgumentReferenceExpression("commandIdentifier");
+            getCommandMethod.Parameters.Add( new CodeParameterDeclarationExpression( typeof(string), commandIdentifier.ParameterName ) );
+            var typeExpression = new CodeTypeOfExpression( NameProvider.CreateFeatureInterfaceReference( feature ) );
+
+            foreach( var command in feature.Items.OfType<FeatureCommand>() )
+            {
+                var ifStmt = new CodeConditionStatement();
+                ifStmt.Condition = new CodeBinaryOperatorExpression(commandIdentifier, CodeBinaryOperatorType.ValueEquality, new CodePrimitiveExpression(feature.GetFullyQualifiedIdentifier(command)));
+                ifStmt.TrueStatements.Add( new CodeMethodReturnStatement( new CodeMethodInvokeExpression( typeExpression, nameof(Type.GetMethod),
+                    new CodePrimitiveExpression( NameProvider.GetCommandName( command ) ) ) ) );
+                getCommandMethod.Statements.Add( ifStmt );
+            }
+
+            getCommandMethod.WriteDocumentation( "Gets the command with the given identifier", "A method object or null, if the command is not supported",
+                new Dictionary<string, string>()
+                {
+                    { commandIdentifier.ParameterName, "A fully qualified command identifier" }
+                } );
+
+            getCommandMethod.Statements.Add( new CodeMethodReturnStatement( new CodePrimitiveExpression() ) );
+            server.Members.Add( getCommandMethod );
+        }
+
+        private void GenerateServerGetProperty( CodeTypeDeclaration server, Feature feature )
+        {
+            var getPropertyMethod = new CodeMemberMethod()
+            {
+                Name = nameof( IFeatureProvider.GetProperty ),
+                ReturnType = new CodeTypeReference( typeof( PropertyInfo ) ),
+                Attributes = MemberAttributes.Final | MemberAttributes.Public
+            };
+            var commandIdentifier = new CodeArgumentReferenceExpression( "propertyIdentifier" );
+            getPropertyMethod.Parameters.Add( new CodeParameterDeclarationExpression( typeof( string ), commandIdentifier.ParameterName ) );
+            var typeExpression = new CodeTypeOfExpression( NameProvider.CreateFeatureInterfaceReference( feature ) );
+
+            foreach(var property in feature.Items.OfType<FeatureProperty>())
+            {
+                var ifStmt = new CodeConditionStatement();
+                ifStmt.Condition = new CodeBinaryOperatorExpression( commandIdentifier, CodeBinaryOperatorType.ValueEquality, new CodePrimitiveExpression( feature.GetFullyQualifiedIdentifier( property ) ) );
+                ifStmt.TrueStatements.Add( new CodeMethodReturnStatement( new CodeMethodInvokeExpression( typeExpression, nameof( Type.GetProperty ),
+                    new CodePrimitiveExpression( NameProvider.GetPropertyName( property ) ) ) ) );
+                getPropertyMethod.Statements.Add( ifStmt );
+            }
+
+            getPropertyMethod.WriteDocumentation( "Gets the property with the given identifier", "A property object or null, if the property is not supported",
+                new Dictionary<string, string>()
+                {
+                    { commandIdentifier.ParameterName, "A fully qualified property identifier" }
+                } );
+
+            getPropertyMethod.Statements.Add( new CodeMethodReturnStatement( new CodePrimitiveExpression() ) );
+            server.Members.Add( getPropertyMethod );
         }
 
         private FeatureDefinedExecutionError FindError( Feature feature, string id )

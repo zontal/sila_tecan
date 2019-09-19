@@ -146,6 +146,31 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             {
                 return Tecan.Sila2.Server.Metadata.GetAffectedIdentifiers(_server, _implementation.LoggingActivity);
             }
+            
+            ///  <summary>
+            /// Gets the command with the given identifier
+            /// </summary>
+            /// <param name="commandIdentifier">A fully qualified command identifier</param>
+            /// <returns>A method object or null, if the command is not supported</returns>
+            public System.Reflection.MethodInfo GetCommand(string commandIdentifier)
+            {
+                if ((commandIdentifier == "tecan.sila2.generator.test.logging/infrastructure/LoggingService/v1/Command/Liste" +
+                    "nForLogEntries"))
+                {
+                    return typeof(ILoggingService).GetMethod("ListenForLogEntries");
+                }
+                return null;
+            }
+            
+            ///  <summary>
+            /// Gets the property with the given identifier
+            /// </summary>
+            /// <param name="propertyIdentifier">A fully qualified property identifier</param>
+            /// <returns>A property object or null, if the property is not supported</returns>
+            public System.Reflection.PropertyInfo GetProperty(string propertyIdentifier)
+            {
+                return null;
+            }
         }
         
         ///  <summary>

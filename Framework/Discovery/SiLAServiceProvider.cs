@@ -211,6 +211,62 @@ namespace Tecan.Sila2.Discovery
             {
                 return _server.CreatePropertyTask("org.silastandard/core/SiLAService/v1/Property/ImplementedFeatures", new PropertyResponse<System.Collections.Generic.List<FeatureIdentifierDto>>(Tecan.Sila2.DtoExtensions.Encapsulate(_implementation.ImplementedFeatures, FeatureIdentifierDto.Create, _server)), context);
             }
+            
+            ///  <summary>
+            /// Gets the command with the given identifier
+            /// </summary>
+            /// <param name="commandIdentifier">A fully qualified command identifier</param>
+            /// <returns>A method object or null, if the command is not supported</returns>
+            public System.Reflection.MethodInfo GetCommand(string commandIdentifier)
+            {
+                if ((commandIdentifier == "org.silastandard/core/SiLAService/v1/Command/GetFeatureDefinition"))
+                {
+                    return typeof(ISiLAService).GetMethod("GetFeatureDefinition");
+                }
+                if ((commandIdentifier == "org.silastandard/core/SiLAService/v1/Command/SetServerName"))
+                {
+                    return typeof(ISiLAService).GetMethod("SetServerName");
+                }
+                return null;
+            }
+            
+            ///  <summary>
+            /// Gets the property with the given identifier
+            /// </summary>
+            /// <param name="propertyIdentifier">A fully qualified property identifier</param>
+            /// <returns>A property object or null, if the property is not supported</returns>
+            public System.Reflection.PropertyInfo GetProperty(string propertyIdentifier)
+            {
+                if ((propertyIdentifier == "org.silastandard/core/SiLAService/v1/Property/ServerName"))
+                {
+                    return typeof(ISiLAService).GetProperty("ServerName");
+                }
+                if ((propertyIdentifier == "org.silastandard/core/SiLAService/v1/Property/ServerType"))
+                {
+                    return typeof(ISiLAService).GetProperty("ServerType");
+                }
+                if ((propertyIdentifier == "org.silastandard/core/SiLAService/v1/Property/ServerUUID"))
+                {
+                    return typeof(ISiLAService).GetProperty("ServerUUID");
+                }
+                if ((propertyIdentifier == "org.silastandard/core/SiLAService/v1/Property/ServerDescription"))
+                {
+                    return typeof(ISiLAService).GetProperty("ServerDescription");
+                }
+                if ((propertyIdentifier == "org.silastandard/core/SiLAService/v1/Property/ServerVersion"))
+                {
+                    return typeof(ISiLAService).GetProperty("ServerVersion");
+                }
+                if ((propertyIdentifier == "org.silastandard/core/SiLAService/v1/Property/ServerVendorURL"))
+                {
+                    return typeof(ISiLAService).GetProperty("ServerVendorURL");
+                }
+                if ((propertyIdentifier == "org.silastandard/core/SiLAService/v1/Property/ImplementedFeatures"))
+                {
+                    return typeof(ISiLAService).GetProperty("ImplementedFeatures");
+                }
+                return null;
+            }
         }
         
         ///  <summary>

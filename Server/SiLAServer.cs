@@ -64,7 +64,7 @@ namespace Tecan.Sila2.Server
             if (!_cachedInterceptorList.TryGetValue(commandIdentifier, out var interceptors))
             {
                 var feature = _implementedFeatures.FirstOrDefault(f => commandIdentifier.StartsWith(f.FullyQualifiedIdentifier));
-                interceptors = _interceptors.Where(i => i.IsInterceptRequired(feature, commandIdentifier)).ToList();
+                interceptors = _interceptors.Where(i => i.IsInterceptRequired(feature, commandIdentifier)).OrderByDescending(r => r.Priority).ToList();
 
                 _cachedInterceptorList.Add(commandIdentifier, interceptors);
             }
@@ -298,16 +298,16 @@ namespace Tecan.Sila2.Server
             }
         }
 
-        private List<IRequestInterception> RequestInterceptions(string commandIdentifier, ServerCallContext context)
+        private Stack<IRequestInterception> RequestInterceptions(string commandIdentifier, ServerCallContext context)
         {
-            List<IRequestInterception> interceptions = null;
+            Stack<IRequestInterception> interceptions = null;
             foreach (var interceptor in GetInterceptors(commandIdentifier))
             {
                 var interception = interceptor.Intercept(commandIdentifier, this, context);
                 if (interception != null)
                 {
-                    if (interceptions == null) interceptions = new List<IRequestInterception>();
-                    interceptions.Add(interception);
+                    if (interceptions == null) interceptions = new Stack<IRequestInterception>();
+                    interceptions.Push(interception);
                 }
             }
 

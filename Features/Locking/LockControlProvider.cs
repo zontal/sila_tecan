@@ -147,6 +147,38 @@ namespace Tecan.Sila2.Locking
             {
                 return Tecan.Sila2.Server.Metadata.GetAffectedIdentifiers(_server, _implementation.LockIdentifier);
             }
+            
+            ///  <summary>
+            /// Gets the command with the given identifier
+            /// </summary>
+            /// <param name="commandIdentifier">A fully qualified command identifier</param>
+            /// <returns>A method object or null, if the command is not supported</returns>
+            public System.Reflection.MethodInfo GetCommand(string commandIdentifier)
+            {
+                if ((commandIdentifier == "org.silastandard/core/LockController/v1/Command/LockServer"))
+                {
+                    return typeof(ILockController).GetMethod("LockServer");
+                }
+                if ((commandIdentifier == "org.silastandard/core/LockController/v1/Command/UnlockServer"))
+                {
+                    return typeof(ILockController).GetMethod("UnlockServer");
+                }
+                return null;
+            }
+            
+            ///  <summary>
+            /// Gets the property with the given identifier
+            /// </summary>
+            /// <param name="propertyIdentifier">A fully qualified property identifier</param>
+            /// <returns>A property object or null, if the property is not supported</returns>
+            public System.Reflection.PropertyInfo GetProperty(string propertyIdentifier)
+            {
+                if ((propertyIdentifier == "org.silastandard/core/LockController/v1/Property/IsLocked"))
+                {
+                    return typeof(ILockController).GetProperty("IsLocked");
+                }
+                return null;
+            }
         }
     }
     

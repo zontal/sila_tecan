@@ -118,6 +118,34 @@ namespace Tecan.Sila2.Authentication
             {
                 return _server.InvokeCommand(LogoutInternal, request, context);
             }
+            
+            ///  <summary>
+            /// Gets the command with the given identifier
+            /// </summary>
+            /// <param name="commandIdentifier">A fully qualified command identifier</param>
+            /// <returns>A method object or null, if the command is not supported</returns>
+            public System.Reflection.MethodInfo GetCommand(string commandIdentifier)
+            {
+                if ((commandIdentifier == "org.silastandard/core/AuthenticationService/v1/Command/Login"))
+                {
+                    return typeof(IAuthenticationService).GetMethod("Login");
+                }
+                if ((commandIdentifier == "org.silastandard/core/AuthenticationService/v1/Command/Logout"))
+                {
+                    return typeof(IAuthenticationService).GetMethod("Logout");
+                }
+                return null;
+            }
+            
+            ///  <summary>
+            /// Gets the property with the given identifier
+            /// </summary>
+            /// <param name="propertyIdentifier">A fully qualified property identifier</param>
+            /// <returns>A property object or null, if the property is not supported</returns>
+            public System.Reflection.PropertyInfo GetProperty(string propertyIdentifier)
+            {
+                return null;
+            }
         }
     }
 }
