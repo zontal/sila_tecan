@@ -8,17 +8,36 @@ using ProtoBuf;
 
 namespace Tecan.Sila2.DynamicClient
 {
+    /// <summary>
+    /// A class that serializes/deserializes dynamic objects to byte arrays
+    /// </summary>
     public class DynamicObjectSerializer
     {
+        /// <summary>
+        /// Gets a function used to resolve data types identified by name
+        /// </summary>
         public Func<string, DataTypeType> DataTypeResolver { get; }
 
+        /// <summary>
+        /// Creates a new dynamic object serializer
+        /// </summary>
+        /// <param name="dataTypeResolver">a function used to resolve data types identified by name</param>
         public DynamicObjectSerializer(Func<string, DataTypeType> dataTypeResolver)
         {
             DataTypeResolver = dataTypeResolver;
         }
 
+        /// <summary>
+        /// Deserializes the given byte array into the provided dynamic property
+        /// </summary>
+        /// <param name="property">The property the content should be deserialized into</param>
+        /// <param name="data">The actual payload data</param>
+        /// <param name="readFieldHeader">True, if field headers should be read, otherwise False</param>
+        /// <exception cref="ArgumentNullException">Thrown, if <paramref name="property"/> is null.</exception>
         public void Deserialize(DynamicObjectProperty property, byte[] data, bool readFieldHeader)
         {
+            if (property == null) throw new ArgumentNullException(nameof(property));
+
             using (var ms = new MemoryStream(data))
             {
                 using (var reader = ProtoReader.Create(ms, null))
@@ -199,8 +218,16 @@ namespace Tecan.Sila2.DynamicClient
             Read(reader, setProperty, (dynamic)(type));
         }
 
+        /// <summary>
+        /// Serializes the given dynamic property into a byte array
+        /// </summary>
+        /// <param name="property">The dynamic property</param>
+        /// <returns>A byte array</returns>
+        /// <exception cref="ArgumentNullException">Thrown, if <paramref name="property"/> is null.</exception>
         public byte[] Serialize(DynamicObjectProperty property)
         {
+            if (property == null) throw new ArgumentNullException(nameof(property));
+
             using (var ms = new MemoryStream())
             {
                 using (var writer = ProtoWriter.Create(ms, null))

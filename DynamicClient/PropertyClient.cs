@@ -5,17 +5,33 @@ using Tecan.Sila2.Client;
 
 namespace Tecan.Sila2.DynamicClient
 {
+    /// <summary>
+    /// Denotes a client for a SiLA2 property
+    /// </summary>
     public class PropertyClient
     {
+        /// <summary>
+        /// Gets the property that is targeted
+        /// </summary>
         public FeatureProperty Property { get; }
 
+        /// <summary>
+        /// Gets the context in which the property is called
+        /// </summary>
         public FeatureContext Context { get; }
 
+        /// <summary>
+        /// Gets the fully qualified identifier of the property
+        /// </summary>
         public string PropertyIdentifier => Context.Feature.GetFullyQualifiedIdentifier(Property);
 
         private readonly Method<EmptyRequest, DynamicObjectProperty> _method;
 
-
+        /// <summary>
+        /// Creates a new client for the given property
+        /// </summary>
+        /// <param name="property">The property</param>
+        /// <param name="context">The context in which the property is called</param>
         public PropertyClient(FeatureProperty property, FeatureContext context)
         {
             Property = property;
@@ -49,6 +65,11 @@ namespace Tecan.Sila2.DynamicClient
             throw new InvalidOperationException("Property could not be read.");
         }
 
+        /// <summary>
+        /// Requests the value for the property one time
+        /// </summary>
+        /// <param name="host">The host at which the property value should be queries or null to use the default host</param>
+        /// <returns>A dynamic property with the property value</returns>
         public DynamicObjectProperty RequestValue(string host = null)
         {
             var callInfo = Context.ExecutionManager.CreateCallOptions(PropertyIdentifier);
