@@ -12,6 +12,7 @@
         <RootNamespace>Tecan.Sila2.DynamicClient</RootNamespace>
         <AssemblyName>Tecan.Sila2.DynamicClient</AssemblyName>
         <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+        <LangVersion>latest</LangVersion>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">

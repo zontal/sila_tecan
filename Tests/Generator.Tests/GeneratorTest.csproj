@@ -12,6 +12,7 @@
         <RootNamespace>Tecan.Sila2.Generator.Test</RootNamespace>
         <AssemblyName>Tecan.Sila2Generator.Test</AssemblyName>
         <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+        <LangVersion>latest</LangVersion>
     </PropertyGroup>
 
 

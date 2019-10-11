@@ -12,6 +12,7 @@
         <AssemblyName>Tecan.Sila2.Locking</AssemblyName>
         <RootNamespace>Tecan.Sila2.Locking</RootNamespace>
         <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+        <LangVersion>latest</LangVersion>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

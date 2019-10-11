@@ -12,6 +12,7 @@
         <RootNamespace>Tecan.Sila2.Server</RootNamespace>
         <AssemblyName>Tecan.Sila2.Server</AssemblyName>
         <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+        <LangVersion>latest</LangVersion>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">

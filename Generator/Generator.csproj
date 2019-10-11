@@ -12,6 +12,7 @@
         <RootNamespace>Tecan.Sila2.Generator</RootNamespace>
         <AssemblyName>SilaGen</AssemblyName>
         <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+        <LangVersion>latest</LangVersion>
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">

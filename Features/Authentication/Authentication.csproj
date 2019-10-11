@@ -12,6 +12,7 @@
     <RootNamespace>Tecan.Sila2</RootNamespace>
     <AssemblyName>Tecan.Sila2.Auth</AssemblyName>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+      <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
