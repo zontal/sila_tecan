@@ -102,6 +102,7 @@ namespace Tecan.Sila2.Server
         public static Task<CommandConfirmation> StartCommand<TIntermediate, TIntermediateResponse>(ISiLAServer server, string commandIdentifier, IIntermediateObservableCommand<TIntermediate> command, Func<TIntermediate, TIntermediateResponse> intermediateConverter, ServerCallContext context)
         {
             var intermediateGenerator = new IntermediateValueGenerator<TIntermediate, TIntermediateResponse>(command, intermediateConverter);
+            intermediateGenerator.Start();
             var executionInfo = server.AddObservableCommandExecution(commandIdentifier, intermediateGenerator, context);
             command.StateUpdateReceived += CreateCommandUpdateEventHandler(executionInfo.State);
             return Task.FromResult(new CommandConfirmation(executionInfo.ExecutionUuid));
@@ -124,6 +125,7 @@ namespace Tecan.Sila2.Server
         public static Task<CommandConfirmation> StartCommand<TIntermediate, TIntermediateResponse, TResult, TResultResponse>(ISiLAServer server, string commandIdentifier, IIntermediateObservableCommand<TIntermediate, TResult> command, Func<TIntermediate, TIntermediateResponse> intermediateConverter, Func<TResult, TResultResponse> resultConverter, ServerCallContext context)
         {
             var intermediateGenerator = new IntermediateValueGenerator<TIntermediate, TIntermediateResponse>(command, intermediateConverter);
+            intermediateGenerator.Start();
             var executionInfo = server.AddObservableCommandExecution(commandIdentifier, intermediateGenerator, () => resultConverter(command.Response.Result), context);
             command.StateUpdateReceived += CreateCommandUpdateEventHandler(executionInfo.State);
             return Task.FromResult(new CommandConfirmation(executionInfo.ExecutionUuid));

@@ -36,7 +36,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         {
             get
             {
-                return "tecan.sila2.generator.test.logging/infrastructure/LoggingService/v1/Command/Liste" +
+                return "tecan.sila2.generator.test.logging/infrastructure/LoggingService/v0/Command/Liste" +
                     "nForLogEntries";
             }
         }

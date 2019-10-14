@@ -6,8 +6,11 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using CommandLine;
-using Microsoft.Build.Evaluation;
 using Tecan.Sila2.Generator.Contracts;
+
+#if NET472
+using Microsoft.Build.Evaluation;
+#endif
 
 namespace Tecan.Sila2.Generator.CommandLine
 {
@@ -16,7 +19,7 @@ namespace Tecan.Sila2.Generator.CommandLine
     /// </summary>
     [Export(typeof(ICommandLineVerb))]
     [PartCreationPolicy(CreationPolicy.NonShared)]
-    [Verb("generate-server", HelpText ="Generates the complete server that exposes a given interface as a SiLA feature")]
+    [Verb("generate-server", HelpText = "Generates the complete server that exposes a given interface as a SiLA feature")]
     internal class GenerateServerVerb : ICommandLineVerb
     {
         /// <summary>
@@ -30,6 +33,14 @@ namespace Tecan.Sila2.Generator.CommandLine
         /// </summary>
         [Value(1, Required = true, HelpText = "The path to the C# project to which the generated provider should be added")]
         public string ProviderProject { get; set; }
+
+#if NETCOREAPP2_1
+        /// <summary>
+        /// The root namespace in the C# project to which the generated provider should be added
+        /// </summary>
+        [Option('r', "root-namespace", Required = true, HelpText = "The root namespace in the C# project to which the generated provider should be added.")]
+        public string RootNamespace { get; set; }
+#endif
 
         /// <summary>
         /// The name of the interface. If this option is omitted, then a single SiLA interface is assumed.
@@ -94,8 +105,14 @@ namespace Tecan.Sila2.Generator.CommandLine
 
         public void Execute(CompositionContainer container)
         {
+            
+#if NET472
             var project = new Project(ProviderProject);
             var rootNamespace = project.Properties.FirstOrDefault(p => p.Name == "RootNamespace")?.EvaluatedValue;
+#elif NETCOREAPP2_1
+            var rootNamespace = RootNamespace;
+#endif
+
             var directory = Path.GetDirectoryName(Path.GetFullPath(ProviderProject));
             var assembly = Assembly.LoadFrom(Path.GetFullPath(AssemblyPath));
             var featureTypes = assembly.ExportedTypes.Where(t =>

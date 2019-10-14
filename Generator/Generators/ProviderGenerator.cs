@@ -173,7 +173,7 @@ namespace Tecan.Sila2.Generator.Generators
                 {
                     provider.Members.Add(GenerateMethod(
                         MethodType.Unary,
-                        featureCommand.Identifier + "_Intermediate", featureCommand.Identifier + "IntermediateMethod",
+                        featureCommand.Identifier + "_IntermediateResponses", featureCommand.Identifier + "IntermediateMethod",
                         new CodeTypeReference(nameof(CommandExecutionUuid)),
                         NameProvider.GenerateCommandIntermediateType(featureCommand), serviceName));
 

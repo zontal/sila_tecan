@@ -23,14 +23,14 @@ namespace Tecan.Sila2.Generator.Test.TestReference
     public sealed partial class LoggingServiceProvider
     {
         
-        private static string @__ServiceName = "sila2.tecan.sila2.generator.test.logging.infrastructure.loggingservice.v1.Logging" +
+        private static string @__ServiceName = "sila2.tecan.sila2.generator.test.logging.infrastructure.loggingservice.v0.Logging" +
             "Service";
         
         private static Grpc.Core.Method<ListenForLogEntriesRequestDto, CommandConfirmation> ListenForLogEntriesMethod = new Grpc.Core.Method<ListenForLogEntriesRequestDto, CommandConfirmation>(Grpc.Core.MethodType.Unary, @__ServiceName, "ListenForLogEntries", ProtobufMarshaller<ListenForLogEntriesRequestDto>.Default, ProtobufMarshaller<CommandConfirmation>.Default);
         
         private static Grpc.Core.Method<CommandExecutionUuid, ExecutionState> ListenForLogEntriesStateMethod = new Grpc.Core.Method<CommandExecutionUuid, ExecutionState>(Grpc.Core.MethodType.ServerStreaming, @__ServiceName, "ListenForLogEntries_Info", ProtobufMarshaller<CommandExecutionUuid>.Default, ProtobufMarshaller<ExecutionState>.Default);
         
-        private static Grpc.Core.Method<CommandExecutionUuid, ListenForLogEntriesIntermediateDto> ListenForLogEntriesIntermediateMethod = new Grpc.Core.Method<CommandExecutionUuid, ListenForLogEntriesIntermediateDto>(Grpc.Core.MethodType.Unary, @__ServiceName, "ListenForLogEntries_Intermediate", ProtobufMarshaller<CommandExecutionUuid>.Default, ProtobufMarshaller<ListenForLogEntriesIntermediateDto>.Default);
+        private static Grpc.Core.Method<CommandExecutionUuid, ListenForLogEntriesIntermediateDto> ListenForLogEntriesIntermediateMethod = new Grpc.Core.Method<CommandExecutionUuid, ListenForLogEntriesIntermediateDto>(Grpc.Core.MethodType.Unary, @__ServiceName, "ListenForLogEntries_IntermediateResponses", ProtobufMarshaller<CommandExecutionUuid>.Default, ProtobufMarshaller<ListenForLogEntriesIntermediateDto>.Default);
         
         private static Grpc.Core.Method<CommandExecutionUuid, EmptyRequest> ListenForLogEntriesResponseMethod = new Grpc.Core.Method<CommandExecutionUuid, EmptyRequest>(Grpc.Core.MethodType.Unary, @__ServiceName, "ListenForLogEntries_Result", ProtobufMarshaller<CommandExecutionUuid>.Default, EmptyRequest.Marshaller);
         
@@ -132,7 +132,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             /// <returns>The command response wrapped in a data transfer object</returns>
             protected virtual System.Threading.Tasks.Task<Tecan.Sila2.CommandConfirmation> ListenForLogEntries(ListenForLogEntriesRequestDto request, Grpc.Core.ServerCallContext context)
             {
-                return ObservableCommands.StartCommand(_server, "tecan.sila2.generator.test.logging/infrastructure/LoggingService/v1/Command/Liste" +
+                return ObservableCommands.StartCommand(_server, "tecan.sila2.generator.test.logging/infrastructure/LoggingService/v0/Command/Liste" +
                         "nForLogEntries", _implementation.ListenForLogEntries(), ConvertListenForLogEntriesIntermediate, context);
             }
             
@@ -154,7 +154,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             /// <returns>A method object or null, if the command is not supported</returns>
             public System.Reflection.MethodInfo GetCommand(string commandIdentifier)
             {
-                if ((commandIdentifier == "tecan.sila2.generator.test.logging/infrastructure/LoggingService/v1/Command/Liste" +
+                if ((commandIdentifier == "tecan.sila2.generator.test.logging/infrastructure/LoggingService/v0/Command/Liste" +
                     "nForLogEntries"))
                 {
                     return typeof(ILoggingService).GetMethod("ListenForLogEntries");
@@ -302,7 +302,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// <returns>A request interception or null, if this is not necessary</returns>
         public Tecan.Sila2.Server.IRequestInterception Intercept(string commandIdentifier, Tecan.Sila2.Server.ISiLAServer server, Grpc.Core.ServerCallContext context)
         {
-            return Intercept(commandIdentifier, Tecan.Sila2.Server.Metadata.Extract<Tecan.Sila2.StringDto>(context, "tecan.sila2.generator.test.logging/infrastructure/LoggingService/v1/Metadata/Logg" +
+            return Intercept(commandIdentifier, Tecan.Sila2.Server.Metadata.Extract<Tecan.Sila2.StringDto>(context, "tecan.sila2.generator.test.logging/infrastructure/LoggingService/v0/Metadata/Logg" +
                         "ingActivity").Extract(server));
         }
     }

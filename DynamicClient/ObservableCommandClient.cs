@@ -9,9 +9,20 @@ namespace Tecan.Sila2.DynamicClient
     /// </summary>
     public class ObservableCommandClient : CommandClient
     {
-        private readonly Method<DynamicRequest, CommandConfirmation> _method;
-        private readonly Method<CommandExecutionUuid, ExecutionState> _stateMethod;
-        private readonly Method<CommandExecutionUuid, DynamicObjectProperty> _resultMethod;
+        /// <summary>
+        /// Remote method for the SiLA-Command
+        /// </summary>
+        protected readonly Method<DynamicRequest, CommandConfirmation> _method;
+
+        /// <summary>
+        /// Remote method for the SiLA-Command's State/Info stream
+        /// </summary>
+        protected readonly Method<CommandExecutionUuid, ExecutionState> _stateMethod;
+
+        /// <summary>
+        /// Remote method for the SiLA-Command's Results
+        /// </summary>
+        protected readonly Method<CommandExecutionUuid, DynamicObjectProperty> _resultMethod;
 
         /// <summary>
         /// Creates a new client for an observable command
@@ -58,6 +69,81 @@ namespace Tecan.Sila2.DynamicClient
         public IObservableCommand<DynamicObjectProperty> Invoke(DynamicRequest args, string host = null)
         {
             return ObservableCommand.Create(Context.ExecutionManager.CreateCallOptions(args.CommandIdentifier), Context.CallInvoker, args, _method, _stateMethod, _resultMethod, dn => dn, Context.ConvertException);
+        }
+    }
+
+    /// <summary>
+    /// Denotes a client for an observable command that creates IntermediateResponses
+    /// </summary>
+    public class IntermediateObservableCommandClient : ObservableCommandClient {
+
+        /// <summary>
+        /// The type for intermediate responses of the command
+        /// </summary>
+        protected readonly DataTypeType IntermediateType;
+
+        /// <summary>
+        /// Remote method for the SiLA-Command's IntermediateResults stream
+        /// </summary>
+        protected readonly Method<CommandExecutionUuid, DynamicObjectProperty> _intermediateMethod;
+
+        /// <summary>
+        /// Creates a new client for an observable command that creates IntermediateResponses
+        /// </summary>
+        /// <param name="command">The command for which the client can be used</param>
+        /// <param name="context">The context in which the command is called</param>
+        public IntermediateObservableCommandClient(FeatureCommand command, FeatureContext context) : base(command, context)
+        {
+            IntermediateType = new DataTypeType()
+            {
+                Item = new StructureType()
+                {
+                    Element = command.IntermediateResponse
+                }
+            };
+
+            var intermediateMarshaller =
+                new Marshaller<DynamicObjectProperty>(context.Serializer.Serialize, DeserializeIntermediate);
+
+            _intermediateMethod = new Method<CommandExecutionUuid, DynamicObjectProperty>(
+                MethodType.ServerStreaming,
+                context.ServiceName,
+                command.Identifier + "_IntermediateResponses",
+                ProtobufMarshaller<CommandExecutionUuid>.Default,
+                intermediateMarshaller);
+
+        }
+
+        /// <summary>
+        /// Creates an empty intermediate response object
+        /// </summary>
+        /// <returns></returns>
+        protected DynamicObjectProperty CreateIntermediate()
+        {
+            return new DynamicObjectProperty(Command.Identifier, Command.DisplayName, Command.Description, IntermediateType);
+        }
+
+        /// <summary>
+        /// Deserializes the given byte array as command intermediate response
+        /// </summary>
+        /// <param name="arg">The data array</param>
+        /// <returns>A dynamic data that represents the command request</returns>
+        protected DynamicObjectProperty DeserializeIntermediate(byte[] arg)
+        {
+            var intermediate = CreateIntermediate();
+            Context.Serializer.Deserialize(intermediate, arg, false);
+            return intermediate;
+        }
+
+        /// <summary>
+        /// Invokes the command
+        /// </summary>
+        /// <param name="args">The command request parameters</param>
+        /// <param name="host">The host to which the request should be sent or null to send it to the default host</param>
+        /// <returns>An observable command object</returns>
+        public new IIntermediateObservableCommand<DynamicObjectProperty, DynamicObjectProperty> Invoke(DynamicRequest args, string host = null)
+        {
+            return ObservableCommand.CreateIntermediate(Context.ExecutionManager.CreateCallOptions(args.CommandIdentifier), Context.CallInvoker, args, _method, _stateMethod, _intermediateMethod, _resultMethod, dn => dn, dn => dn, Context.ConvertException);
         }
     }
 }

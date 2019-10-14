@@ -54,6 +54,7 @@ namespace Tecan.Sila2.Server
                     break;
             }
             Console.Error.WriteLine(messageProvider());
+            Console.ResetColor();
         }
 
         public void LogException(Func<string> messageProvider, Exception exception)
@@ -61,6 +62,7 @@ namespace Tecan.Sila2.Server
             Console.ForegroundColor = ConsoleColor.Red;
             Console.Error.WriteLine(messageProvider());
             Console.Error.WriteLine(exception.StackTrace);
+            Console.ResetColor();
         }
     }
 }

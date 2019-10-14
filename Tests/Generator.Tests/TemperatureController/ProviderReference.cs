@@ -23,7 +23,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
     public sealed partial class TemperatureControllerProvider
     {
         
-        private static string @__ServiceName = "sila2.tecan.sila2.generator.test.temperaturecontroller.v1.TemperatureController";
+        private static string @__ServiceName = "sila2.tecan.sila2.generator.test.temperaturecontroller.v0.TemperatureController";
         
         private static Grpc.Core.Method<ControlTemperatureRequestDto, CommandConfirmation> ControlTemperatureMethod = new Grpc.Core.Method<ControlTemperatureRequestDto, CommandConfirmation>(Grpc.Core.MethodType.Unary, @__ServiceName, "ControlTemperature", ProtobufMarshaller<ControlTemperatureRequestDto>.Default, ProtobufMarshaller<CommandConfirmation>.Default);
         
@@ -111,7 +111,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             /// <returns>The command response wrapped in a data transfer object</returns>
             protected virtual System.Threading.Tasks.Task<Tecan.Sila2.CommandConfirmation> ControlTemperature(ControlTemperatureRequestDto request, Grpc.Core.ServerCallContext context)
             {
-                return ObservableCommands.StartCommand(_server, "tecan.sila2.generator/test/TemperatureController/v1/Command/ControlTemperature", _implementation.ControlTemperature(request.TargetTemperature.Extract(_server)), context);
+                return ObservableCommands.StartCommand(_server, "tecan.sila2.generator/test/TemperatureController/v0/Command/ControlTemperature", _implementation.ControlTemperature(request.TargetTemperature.Extract(_server)), context);
             }
             
             ///  <summary>
@@ -123,7 +123,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             /// <returns>A task that ends when the subscription ends</returns>
             protected virtual System.Threading.Tasks.Task SubscribeCurrentTemperature(EmptyRequest request, Grpc.Core.IServerStreamWriter<CurrentTemperatureResponseDto> responseStream, Grpc.Core.ServerCallContext context)
             {
-                return ObservableCommands.ContinuouslySendValue(_server, "tecan.sila2.generator/test/TemperatureController/v1/Property/CurrentTemperature", responseStream, CreateCurrentTemperatureResponse, 1000, context);
+                return ObservableCommands.ContinuouslySendValue(_server, "tecan.sila2.generator/test/TemperatureController/v0/Property/CurrentTemperature", responseStream, CreateCurrentTemperatureResponse, 1000, context);
             }
             
             ///  <summary>
@@ -142,7 +142,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             /// <returns>A method object or null, if the command is not supported</returns>
             public System.Reflection.MethodInfo GetCommand(string commandIdentifier)
             {
-                if ((commandIdentifier == "tecan.sila2.generator/test/TemperatureController/v1/Command/ControlTemperature"))
+                if ((commandIdentifier == "tecan.sila2.generator/test/TemperatureController/v0/Command/ControlTemperature"))
                 {
                     return typeof(ITemperatureController).GetMethod("ControlTemperature");
                 }
@@ -156,7 +156,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             /// <returns>A property object or null, if the property is not supported</returns>
             public System.Reflection.PropertyInfo GetProperty(string propertyIdentifier)
             {
-                if ((propertyIdentifier == "tecan.sila2.generator/test/TemperatureController/v1/Property/CurrentTemperature"))
+                if ((propertyIdentifier == "tecan.sila2.generator/test/TemperatureController/v0/Property/CurrentTemperature"))
                 {
                     return typeof(ITemperatureController).GetProperty("CurrentTemperature");
                 }
@@ -242,12 +242,12 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             /// <returns>The converted exception or null, if the error is not understood</returns>
             private static System.Exception ConvertControlTemperatureException(Tecan.Sila2.DefinedExecutionErrorDto error)
             {
-                if ((error.ErrorIdentifier == "tecan.sila2.generator/test/TemperatureController/v1/DefinedError/TemperatureNotRe" +
+                if ((error.ErrorIdentifier == "tecan.sila2.generator/test/TemperatureController/v0/DefinedError/TemperatureNotRe" +
                     "achable"))
                 {
                     return new TemperatureNotReachableException(error.Message);
                 }
-                if ((error.ErrorIdentifier == "tecan.sila2.generator/test/TemperatureController/v1/DefinedError/ControlInterrupt" +
+                if ((error.ErrorIdentifier == "tecan.sila2.generator/test/TemperatureController/v0/DefinedError/ControlInterrupt" +
                     "ed"))
                 {
                     return new ControlInterruptedException(error.Message);

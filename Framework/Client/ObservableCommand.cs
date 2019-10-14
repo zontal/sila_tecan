@@ -165,7 +165,7 @@ namespace Tecan.Sila2.Client
             Func<TResponse, TResult> resultConverter,
             Func<DefinedExecutionErrorDto, Exception> errorConverter)
             where TRequest : class, ISilaRequestObject
-            where TResponse : class 
+            where TResponse : class
         {
             var confirmation = callInvoker.BlockingUnaryCall(method, null,
                 new CallOptions(), request);
@@ -244,14 +244,14 @@ namespace Tecan.Sila2.Client
         {
             var confirmation = callInvoker.BlockingUnaryCall(method, null,
                 new CallOptions(), request);
-            var command = new  IntermediateObservableCommand<TIntermediateResponse, TIntermediate, TResponse, TResult>(callInfo, callInvoker, confirmation.CommandId, stateMethod, intermediateMethod, resultMethod, intermediateConverter, resultConverter, errorConverter);
+            var command = new IntermediateObservableCommand<TIntermediateResponse, TIntermediate, TResponse, TResult>(callInfo, callInvoker, confirmation.CommandId, stateMethod, intermediateMethod, resultMethod, intermediateConverter, resultConverter, errorConverter);
             command.Start();
             return command;
         }
     }
 
     internal class ObservableCommand<TResponse, TResult> : ObservableCommand, IObservableCommand<TResult>
-        where TResponse : class 
+        where TResponse : class
     {
         internal Method<CommandExecutionUuid, TResponse> ResultMethod { get; }
         internal Func<TResponse, TResult> ResultConverter { get; }
@@ -269,11 +269,11 @@ namespace Tecan.Sila2.Client
         public ObservableCommand(
             IClientCallInfo executionManager,
             CallInvoker callInvoker,
-            CommandExecutionUuid commandId, 
-            Method<CommandExecutionUuid, ExecutionState> stateMethod, 
+            CommandExecutionUuid commandId,
+            Method<CommandExecutionUuid, ExecutionState> stateMethod,
             Method<CommandExecutionUuid, TResponse> resultMethod,
             Func<TResponse, TResult> resultConverter,
-            Func<DefinedExecutionErrorDto, Exception> errorConverter) 
+            Func<DefinedExecutionErrorDto, Exception> errorConverter)
             : base(executionManager, callInvoker, commandId, stateMethod, errorConverter)
         {
             ResultMethod = resultMethod;
@@ -312,10 +312,10 @@ namespace Tecan.Sila2.Client
         public Func<TIntermediateResponse, TIntermediate> IntermediateConverter { get; }
 
         public Method<CommandExecutionUuid, TIntermediateResponse> IntermediateMethod { get; }
-        
+
 
         public IntermediateObservableCommand(
-            IClientCallInfo executionManager, 
+            IClientCallInfo executionManager,
             CallInvoker callInvoker,
             CommandExecutionUuid commandId,
             Method<CommandExecutionUuid, ExecutionState> stateMethod,
