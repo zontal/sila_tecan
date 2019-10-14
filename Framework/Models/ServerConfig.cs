@@ -17,6 +17,7 @@ namespace Tecan.Sila2
         public string Name
         {
             get;
+            set;
         }
 
         /// <summary>
