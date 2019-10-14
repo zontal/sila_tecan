@@ -25,12 +25,12 @@ namespace Tecan.Sila2.Generator.Test
 
         protected abstract string Name { get; }
 
-        protected string FeatureDefinitionFile => $@"{Name}\Feature.xml";
+        protected string FeatureDefinitionFile => Path.Combine(Name , "Feature.xml");
 
         protected abstract Type Interface { get; }
-        protected string InterfaceReference => $@"{Name}\ServiceReference.cs";
-        protected string DtoReference => $@"{Name}\DtoReference.cs";
-        protected string ProviderReference => $@"{Name}\ProviderReference.cs";
+        protected string InterfaceReference => Path.Combine(Name , "ServiceReference.cs");
+        protected string DtoReference => Path.Combine(Name, "DtoReference.cs");
+        protected string ProviderReference => Path.Combine(Name, "ProviderReference.cs");
 
         [Test]
         public void Test_GenerateFeature_SilaFeature()
