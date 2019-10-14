@@ -30,6 +30,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NuSpec", "NuSpec", "{B34C24
 		NuSpec\Tecan.Sila2.Features.Auth.nuspec = NuSpec\Tecan.Sila2.Features.Auth.nuspec
 		NuSpec\Tecan.Sila2.Features.Locking.nuspec = NuSpec\Tecan.Sila2.Features.Locking.nuspec
 		NuSpec\Tecan.Sila2.Features.WorktableIntegration.nuspec = NuSpec\Tecan.Sila2.Features.WorktableIntegration.nuspec
+		NuSpec\Tecan.Sila2.Generator.nuspec = NuSpec\Tecan.Sila2.Generator.nuspec
 		NuSpec\Tecan.Sila2.nuspec = NuSpec\Tecan.Sila2.nuspec
 		NuSpec\Tecan.Sila2.Server.nuspec = NuSpec\Tecan.Sila2.Server.nuspec
 	EndProjectSection

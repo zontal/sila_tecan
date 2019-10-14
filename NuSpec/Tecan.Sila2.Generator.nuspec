@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<package>
+    <metadata>
+        <id>Tecan.Sila2.Generator</id>
+        <description>The code generator of the Tecan SiLA2 SDK for customization purposes</description>
+        <version>0.1.0-local</version>
+        <authors>Tecan Trading AG, Switzerland</authors>
+        <owners>Tecan Trading AG, Switzerland</owners>
+        <copyright>Copyright 2019 by Tecan Trading AG, Switzerland</copyright>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <license type="expression">BSD-3-Clause</license>
+        <projectUrl>https://gitlab.com/SiLA2/vendors/sila_tecan</projectUrl>
+        <repository type="git" url="https://gitlab.com/SiLA2/vendors/sila_tecan.git" />
+        <dependencies>
+            <dependency id="Tecan.Sila2" version="[0.1,1.0)" />
+            <dependency id="Tecan.Sila2.Contracts" version="[0.1,1.0)" />
+            <dependency id="Tecan.Sila2.Server" version="[0.1,1.0)" />
+            <dependency id="CommandLineParser" version="2.6.0" />
+            <dependency id="Microsoft.Build" version="16.0.461" />
+            <dependency id="Microsoft.Build.Framework" version="16.0.461" />
+            <dependency id="Microsoft.Build.Utilities.Core" version="16.0.461" />
+            <dependency id="System.CodeDOM" version="4.5.0" />
+        </dependencies>
+    </metadata>
+    <files>
+        <file src="..\Build\Generator\net472\SilaGen.exe" target="lib\net472\" />
+        <file src="..\Build\Generator\net472\SilaGen.exe.config" target="lib\net472\" />
+        <file src="..\Build\Generator\SilaGen.xml" target="lib\net472\" />
+        <file src="..\Build\Generator\netcoreapp2.1\SilaGen.dll" target="lib\netcoreapp2.1\" />
+        <file src="..\Build\Generator\netcoreapp2.1\SilaGen.dll.config" target="lib\netcoreapp2.1\" />
+        <file src="..\Build\Generator\SilaGen.xml" target="lib\netcoreapp2.1\" />
+    </files>
+</package>
