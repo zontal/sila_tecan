@@ -5,6 +5,7 @@ using System.IO;
 using System.Reflection;
 using System.Security.Cryptography;
 using System.Security.Cryptography.Xml;
+using System.Text;
 using System.Text.RegularExpressions;
 using Microsoft.CSharp;
 using NUnit.Framework;
@@ -59,7 +60,7 @@ namespace Tecan.Sila2.Generator.Test
                 transformedReference.LoadInput( reference );
             }
 
-            return Convert.ToBase64String( transformedReference.GetDigestedOutput( Sha ) );
+            return Encoding.UTF8.GetString( ((MemoryStream)transformedReference.GetOutput()).ToArray() );
         }
 
         [Test]

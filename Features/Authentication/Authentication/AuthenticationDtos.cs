@@ -43,7 +43,7 @@ namespace Tecan.Sila2.Authentication
         }
         
         ///  <summary>
-        /// The user identification string
+        /// The user identification string (e.g. a user name)
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute(1)]
         public Tecan.Sila2.StringDto UserIdentification
@@ -75,7 +75,7 @@ namespace Tecan.Sila2.Authentication
         }
         
         ///  <summary>
-        /// The server for which an authorization is requested.
+        /// The ServerUUID of the server for which an authorization is requested.
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute(3)]
         public Tecan.Sila2.StringDto RequestedServer
@@ -91,7 +91,7 @@ namespace Tecan.Sila2.Authentication
         }
         
         ///  <summary>
-        /// The features that are requested to access. If no feature is provided, this means that all features are requested.
+        /// The fully qualified identifiers of features that are requested to access. If no feature is provided, this means that all features are requested.
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute(4)]
         public System.Collections.Generic.List<Tecan.Sila2.StringDto> RequestedFeatures
@@ -172,7 +172,8 @@ namespace Tecan.Sila2.Authentication
         }
         
         ///  <summary>
-        /// The lifetime of the provided access token as the maximum validity period after the last SiLA Server request.
+        /// The lifetime (in seconds) of the provided access token as the maximum validity period after the last SiLA Server
+        /// request.
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute(2)]
         public Tecan.Sila2.IntegerDto TokenLifetime

@@ -526,7 +526,7 @@ namespace Tecan.Sila2.Generator.Generators
                 case BasicType.Binary:
                     return new CodeTypeReference(typeof(BinaryDto));
                 default:
-                    throw new NotSupportedException();
+                    throw new NotSupportedException($"Basic type {basic} is not supported.");
             }
         }
 

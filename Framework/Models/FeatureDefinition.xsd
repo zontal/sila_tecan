@@ -109,7 +109,7 @@
           </xs:restriction>
         </xs:simpleType>
       </xs:attribute>
-      <xs:attribute name="Category" use="optional">
+      <xs:attribute name="Category" use="optional" default="none">
         <xs:simpleType>
           <xs:restriction base ="xs:string">
             <xs:pattern value="[a-z][a-z\.]*" />

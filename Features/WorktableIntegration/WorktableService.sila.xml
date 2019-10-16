@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Feature xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" SiLA2Version="0.2" FeatureVersion="0.1" Originator="tecan.sila2.worktableintegration" Category="infrastructure" xmlns="http://www.sila-standard.org">
+<Feature xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" SiLA2Version="0.2" FeatureVersion="0.1" Originator="tecan.sila2.worktableintegration" Category="infrastructure" xmlns="http://www.sila-standard.org">
   <Identifier>WorktableService</Identifier>
   <DisplayName>WorktableService</DisplayName>
   <Description />
@@ -64,17 +64,11 @@
               <Constraints>
                 <Unit>
                   <Label>mm</Label>
-                  <UnitComponent>
-                    <SIUnit>Dimensionless</SIUnit>
-                    <Exponent>0</Exponent>
-                    <Factor>0.001</Factor>
-                    <Offset>0</Offset>
-                  </UnitComponent>
+                  <Factor>0.001</Factor>
+                  <Offset>0</Offset>
                   <UnitComponent>
                     <SIUnit>Meter</SIUnit>
                     <Exponent>1</Exponent>
-                    <Factor>1</Factor>
-                    <Offset>0</Offset>
                   </UnitComponent>
                 </Unit>
               </Constraints>
@@ -163,12 +157,8 @@
               <Constraints>
                 <Unit>
                   <Label>Degree</Label>
-                  <UnitComponent>
-                    <SIUnit>Dimensionless</SIUnit>
-                    <Exponent>0</Exponent>
-                    <Factor>57.2957795130823</Factor>
-                    <Offset>0</Offset>
-                  </UnitComponent>
+                  <Factor>57.2957795130823</Factor>
+                  <Offset>0</Offset>
                 </Unit>
               </Constraints>
             </Constrained>
@@ -195,17 +185,11 @@
               <Constraints>
                 <Unit>
                   <Label>mm</Label>
-                  <UnitComponent>
-                    <SIUnit>Dimensionless</SIUnit>
-                    <Exponent>0</Exponent>
-                    <Factor>0.001</Factor>
-                    <Offset>0</Offset>
-                  </UnitComponent>
+                  <Factor>0.001</Factor>
+                  <Offset>0</Offset>
                   <UnitComponent>
                     <SIUnit>Meter</SIUnit>
                     <Exponent>1</Exponent>
-                    <Factor>1</Factor>
-                    <Offset>0</Offset>
                   </UnitComponent>
                 </Unit>
               </Constraints>
@@ -224,17 +208,11 @@
               <Constraints>
                 <Unit>
                   <Label>mm</Label>
-                  <UnitComponent>
-                    <SIUnit>Dimensionless</SIUnit>
-                    <Exponent>0</Exponent>
-                    <Factor>0.001</Factor>
-                    <Offset>0</Offset>
-                  </UnitComponent>
+                  <Factor>0.001</Factor>
+                  <Offset>0</Offset>
                   <UnitComponent>
                     <SIUnit>Meter</SIUnit>
                     <Exponent>1</Exponent>
-                    <Factor>1</Factor>
-                    <Offset>0</Offset>
                   </UnitComponent>
                 </Unit>
               </Constraints>
@@ -262,17 +240,11 @@
               <Constraints>
                 <Unit>
                   <Label>mm</Label>
-                  <UnitComponent>
-                    <SIUnit>Dimensionless</SIUnit>
-                    <Exponent>0</Exponent>
-                    <Factor>0.001</Factor>
-                    <Offset>0</Offset>
-                  </UnitComponent>
+                  <Factor>0.001</Factor>
+                  <Offset>0</Offset>
                   <UnitComponent>
                     <SIUnit>Meter</SIUnit>
                     <Exponent>1</Exponent>
-                    <Factor>1</Factor>
-                    <Offset>0</Offset>
                   </UnitComponent>
                 </Unit>
               </Constraints>
@@ -291,17 +263,11 @@
               <Constraints>
                 <Unit>
                   <Label>mm</Label>
-                  <UnitComponent>
-                    <SIUnit>Dimensionless</SIUnit>
-                    <Exponent>0</Exponent>
-                    <Factor>0.001</Factor>
-                    <Offset>0</Offset>
-                  </UnitComponent>
+                  <Factor>0.001</Factor>
+                  <Offset>0</Offset>
                   <UnitComponent>
                     <SIUnit>Meter</SIUnit>
                     <Exponent>1</Exponent>
-                    <Factor>1</Factor>
-                    <Offset>0</Offset>
                   </UnitComponent>
                 </Unit>
               </Constraints>
@@ -320,17 +286,11 @@
               <Constraints>
                 <Unit>
                   <Label>mm</Label>
-                  <UnitComponent>
-                    <SIUnit>Dimensionless</SIUnit>
-                    <Exponent>0</Exponent>
-                    <Factor>0.001</Factor>
-                    <Offset>0</Offset>
-                  </UnitComponent>
+                  <Factor>0.001</Factor>
+                  <Offset>0</Offset>
                   <UnitComponent>
                     <SIUnit>Meter</SIUnit>
                     <Exponent>1</Exponent>
-                    <Factor>1</Factor>
-                    <Offset>0</Offset>
                   </UnitComponent>
                 </Unit>
               </Constraints>

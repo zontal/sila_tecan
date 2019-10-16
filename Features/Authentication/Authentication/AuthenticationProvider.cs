@@ -81,7 +81,7 @@ namespace Tecan.Sila2.Authentication
                     return new LoginResponseDto(_implementation.Login(request.UserIdentification.Extract(_server), request.Password.Extract(_server), request.RequestedServer.Extract(_server), request.RequestedFeatures.Extract(_server)), _server);
                 } catch (AuthenticationFailedException ex)
                 {
-                    throw ErrorHandling.CreateExecutionError("org.silastandard/core/AuthenticationService/v1/DefinedError/AuthenticationFailed", "The provided credentials are not valid", ex.Message);
+                    throw ErrorHandling.CreateExecutionError("org.silastandard/core/AuthenticationService/v1/DefinedError/AuthenticationFailed", "The provided credentials are not valid.", ex.Message);
                 }
             }
             

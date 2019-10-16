@@ -407,19 +407,13 @@ namespace Tecan.Sila2.Generator.Generators
             var requiresConstraints = false;
             if (member.GetCustomAttribute<UnitAttribute>() is var unit && unit != null)
             {
-                var u = new ConstraintsUnit();
-                var components = new List<ConstraintsUnitUnitComponent>();
-                // ReSharper disable CompareOfFloatsByEqualityOperator
-                if (unit.Factor != 1.0 || unit.Offset != 0.0)
+                var u = new ConstraintsUnit
                 {
-                    components.Add(new ConstraintsUnitUnitComponent()
-                    {
-                        Offset = (decimal) unit.Offset,
-                        Factor = (decimal) unit.Factor,
-                        Exponent = "0",
-                        SIUnit = ConstraintsUnitUnitComponentSIUnit.Dimensionless
-                    });
-                }
+                    Label = unit.Label,
+                    Offset = (decimal)unit.Offset,
+                    Factor = (decimal)unit.Factor
+                };
+                var components = new List<ConstraintsUnitUnitComponent>();
 
                 AddComponent(ConstraintsUnitUnitComponentSIUnit.Meter, unit.Meter, components);
                 AddComponent(ConstraintsUnitUnitComponentSIUnit.Second, unit.Second, components);
@@ -428,9 +422,7 @@ namespace Tecan.Sila2.Generator.Generators
                 AddComponent(ConstraintsUnitUnitComponentSIUnit.Kelvin, unit.Kelvin, components);
                 AddComponent(ConstraintsUnitUnitComponentSIUnit.Mole, unit.Mole, components);
                 AddComponent(ConstraintsUnitUnitComponentSIUnit.Candela, unit.Candela, components);
-
                 u.UnitComponent = components.ToArray();
-                u.Label = unit.Label;
                 constraints.Unit = u;
                 requiresConstraints = true;
             }
@@ -557,7 +549,7 @@ namespace Tecan.Sila2.Generator.Generators
                         break;
                     case IdentifierType.DefinedExecutionErrorIdentifier:
                         constraints.FullyQualifiedIdentifier =
-                            ConstraintsFullyQualifiedIdentifier.StandardExecutionErrorIdentifier;
+                            ConstraintsFullyQualifiedIdentifier.DefinedExecutionErrorIdentifier;
                         break;
                     case IdentifierType.FeatureIdentifier:
                         constraints.FullyQualifiedIdentifier = ConstraintsFullyQualifiedIdentifier.FeatureIdentifier;
@@ -584,8 +576,6 @@ namespace Tecan.Sila2.Generator.Generators
             {
                 components.Add(new ConstraintsUnitUnitComponent()
                 {
-                    Offset = 0,
-                    Factor = 1,
                     Exponent = exponent.ToString(),
                     SIUnit = unit
                 });

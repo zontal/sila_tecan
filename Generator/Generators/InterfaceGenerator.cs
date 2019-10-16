@@ -164,8 +164,8 @@ namespace Tecan.Sila2.Generator.Generators
                 argList.Add(constraints.Unit.Label);
                 if (constraints.Unit.UnitComponent != null)
                 {
-                    var factor = 1.0m;
-                    var offset = 0.0m;
+                    var factor = constraints.Unit.Factor;
+                    var offset = constraints.Unit.Offset;
                     foreach (var unitComponent in constraints.Unit.UnitComponent)
                     {
                         if (unitComponent.SIUnit != ConstraintsUnitUnitComponentSIUnit.Dimensionless)
@@ -174,9 +174,6 @@ namespace Tecan.Sila2.Generator.Generators
                                 unitComponent.SIUnit.ToString(),
                                 new CodePrimitiveExpression(int.Parse(unitComponent.Exponent))));
                         }
-
-                        factor *= unitComponent.Factor;
-                        offset += unitComponent.Offset;
                     }
 
                     if (factor != 1.0m)
@@ -247,8 +244,7 @@ namespace Tecan.Sila2.Generator.Generators
                     case ConstraintsFullyQualifiedIdentifier.PropertyIdentifier:
                         fieldReference.FieldName = nameof(IdentifierType.PropertyIdentifier);
                         break;
-                    case ConstraintsFullyQualifiedIdentifier.StandardExecutionErrorIdentifier:
-                    case ConstraintsFullyQualifiedIdentifier.StandardReadErrorIdentifier:
+                    case ConstraintsFullyQualifiedIdentifier.DefinedExecutionErrorIdentifier:
                         fieldReference.FieldName = nameof(IdentifierType.DefinedExecutionErrorIdentifier);
                         break;
                     case ConstraintsFullyQualifiedIdentifier.TypeIdentifier:

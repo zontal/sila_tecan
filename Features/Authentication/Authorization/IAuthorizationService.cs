@@ -14,15 +14,15 @@ namespace Tecan.Sila2.Authorization
     
     ///  <summary>
     /// This Feature provides access control for the implementing server.
-    /// Therefore it specifies the SiLA Client Meta Data for the access token, that has been provided by the
+    /// It specifies the SiLA Client Metadata for the access token, that has been provided by the
     /// AuthenticationService core Feature.
     /// </summary>
     [Tecan.Sila2.SilaFeatureAttribute(true, "core")]
     [Tecan.Sila2.SilaIdentifierAttribute("AuthorizationService")]
     [Tecan.Sila2.SilaDisplayNameAttribute("Authorization Service")]
-    [Tecan.Sila2.SilaDescriptionAttribute("This Feature provides access control for the implementing server.\n\n        Theref" +
-        "ore it specifies the SiLA Client Meta Data for the access token, that has been p" +
-        "rovided by the\n        AuthenticationService core Feature.")]
+    [Tecan.Sila2.SilaDescriptionAttribute("This Feature provides access control for the implementing server.\n\n    It specifi" +
+        "es the SiLA Client Metadata for the access token, that has been provided by the\n" +
+        "    AuthenticationService core Feature.")]
     public partial interface IAuthorizationService
     {
     }

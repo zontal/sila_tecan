@@ -40,7 +40,8 @@ namespace Tecan.Sila2.Authentication
         }
         
         ///  <summary>
-        /// The lifetime of the provided access token as the maximum validity period after the last SiLA Server request.
+        /// The lifetime (in seconds) of the provided access token as the maximum validity period after the last SiLA Server
+        /// request.
         /// </summary>
         public long TokenLifetime
         {
@@ -53,28 +54,36 @@ namespace Tecan.Sila2.Authentication
     
     ///  <summary>
     /// This Feature provides SiLA Clients with access tokens based on a user identification and password.
+    /// 1. the user needs to login with the Login command into the server with a user identification (=user name) and a password
+    /// 2. after verification, an Access Token with the Token Lifetime information will be generated and provided by the server.
+    /// 3. the user can log-out from the server with the Logout command - a valid Access Token is required to run this command.
     /// </summary>
     [Tecan.Sila2.SilaFeatureAttribute(true, "core")]
     [Tecan.Sila2.SilaIdentifierAttribute("AuthenticationService")]
     [Tecan.Sila2.SilaDisplayNameAttribute("Authentication Service")]
-    [Tecan.Sila2.SilaDescriptionAttribute("This Feature provides SiLA Clients with access tokens based on a user identificat" +
-        "ion and password.")]
+    [Tecan.Sila2.SilaDescriptionAttribute(@"This Feature provides SiLA Clients with access tokens based on a user identification and password.
+    1. the user needs to login with the Login command into the server with a user identification (=user name) and a password
+    2. after verification, an Access Token with the Token Lifetime information will be generated and provided by the server.
+    3. the user can log-out from the server with the Logout command - a valid Access Token is required to run this command.")]
     public partial interface IAuthenticationService
     {
         
         ///  <summary>
         /// Provides an access token based on user information.
         /// </summary>
-        /// <param name="userIdentification">The user identification string</param>
-        /// <param name="password">The (unencrypted) password</param>
-        /// <param name="requestedServer">The server for which an authorization is requested.</param>
-        /// <param name="requestedFeatures">The features that are requested to access. If no feature is provided, this means that all features are requested.</param>
-        /// <returns>The token to be used along with accessing a Command or Property on a SiLA Server., The lifetime of the provided access token as the maximum validity period after the last SiLA Server request.</returns>
+        /// <param name="userIdentification">The user identification string (e.g. a user name)</param>
+        /// <param name="password">The (encrypted) password</param>
+        /// <param name="requestedServer">The ServerUUID of the server for which an authorization is requested.</param>
+        /// <param name="requestedFeatures">The fully qualified identifiers of features that are requested to access. If no feature is provided, this means that all features are requested.</param>
+        /// <returns>The token to be used along with accessing a Command or Property on a SiLA Server., 
+        ///        The lifetime (in seconds) of the provided access token as the maximum validity period after the last SiLA Server
+        ///        request.
+        ///      </returns>
         [Tecan.Sila2.SilaDescriptionAttribute("Provides an access token based on user information.")]
         [Tecan.Sila2.ThrowsAttribute(typeof(AuthenticationFailedException))]
         [return: Tecan.Sila2.InlineStructAttribute()]
-        LoginResponse Login([Tecan.Sila2.SilaDisplayNameAttribute("User Identification")] [Tecan.Sila2.SilaDescriptionAttribute("The user identification string")] string userIdentification, [Tecan.Sila2.SilaDisplayNameAttribute("Password")] [Tecan.Sila2.SilaDescriptionAttribute("The (unencrypted) password")] string password, [Tecan.Sila2.PatternConstraintAttribute("[0-9a-f]{8}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{12}")] [Tecan.Sila2.SilaDisplayNameAttribute("Requested Server")] [Tecan.Sila2.SilaDescriptionAttribute("The server for which an authorization is requested.")] string requestedServer, [Tecan.Sila2.SilaIdentifierTypeAttribute(Tecan.Sila2.IdentifierType.FeatureIdentifier)] [Tecan.Sila2.SilaDisplayNameAttribute("Requested Features")] [Tecan.Sila2.SilaDescriptionAttribute("The features that are requested to access. If no feature is provided, this means " +
-            "that all features are requested.")] System.Collections.Generic.ICollection<string> requestedFeatures);
+        LoginResponse Login([Tecan.Sila2.SilaDisplayNameAttribute("User Identification")] [Tecan.Sila2.SilaDescriptionAttribute("The user identification string (e.g. a user name)")] string userIdentification, [Tecan.Sila2.SilaDisplayNameAttribute("Password")] [Tecan.Sila2.SilaDescriptionAttribute("The (encrypted) password")] string password, [Tecan.Sila2.PatternConstraintAttribute("[0-9a-f]{8}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{12}")] [Tecan.Sila2.SilaDisplayNameAttribute("Requested Server")] [Tecan.Sila2.SilaDescriptionAttribute("The ServerUUID of the server for which an authorization is requested.")] string requestedServer, [Tecan.Sila2.SilaIdentifierTypeAttribute(Tecan.Sila2.IdentifierType.FeatureIdentifier)] [Tecan.Sila2.SilaDisplayNameAttribute("Requested Features")] [Tecan.Sila2.SilaDescriptionAttribute("The fully qualified identifiers of features that are requested to access. If no f" +
+            "eature is provided, this means that all features are requested.")] System.Collections.Generic.ICollection<string> requestedFeatures);
         
         ///  <summary>
         /// Invalidates the given access token immediately.
@@ -86,10 +95,10 @@ namespace Tecan.Sila2.Authentication
     }
     
     ///  <summary>
-    /// The provided credentials are not valid
+    /// The provided credentials are not valid.
     /// </summary>
     [Tecan.Sila2.SilaDisplayNameAttribute("Authentication Failed")]
-    [Tecan.Sila2.SilaDescriptionAttribute("The provided credentials are not valid")]
+    [Tecan.Sila2.SilaDescriptionAttribute("The provided credentials are not valid.")]
     public class AuthenticationFailedException : System.Exception
     {
         
