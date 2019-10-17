@@ -15,9 +15,16 @@ namespace Tecan.Sila2
             return Encoding.UTF8.GetString(bytes);
         }
 
-        public static void RaiseValidationError(string parameter, string value, string details = null)
+        /// <summary>
+        /// Creates a server-side validation error
+        /// </summary>
+        /// <param name="parameter">The erroneous parameter</param>
+        /// <param name="value">The actually provided value</param>
+        /// <param name="details">Details of the error</param>
+        /// <returns>An exception</returns>
+        public static Exception RaiseValidationError(string parameter, string value, string details = null)
         {
-            throw new RpcException(new Status(StatusCode.Aborted, ToUtf8String(new SiLAErrorDto
+            return new RpcException(new Status(StatusCode.Aborted, ToUtf8String(new SiLAErrorDto
             {
                 ValidationError = new ValidationErrorDto()
                 {
@@ -27,26 +34,32 @@ namespace Tecan.Sila2
             })));
         }
 
-        public static Exception CreateExecutionError(string identifier, string description, string details = null)
+        /// <summary>
+        /// Creates a server-side execution error
+        /// </summary>
+        /// <param name="identifier">The fully qualified identifier of the error</param>
+        /// <param name="description">A description of the error</param>
+        /// <param name="details">Error details</param>
+        /// <returns>An exception</returns>
+        public static Exception CreateExecutionError( string identifier, string description, string details = null )
         {
-            return new RpcException(new Status(StatusCode.Aborted, ToUtf8String(GetExecutionError(identifier, description, details))));
-        }
-
-        public static SiLAErrorDto GetExecutionError(string identifier, string description, string details = null)
-        {
-            return new SiLAErrorDto
+            return new RpcException( new Status( StatusCode.Aborted, ToUtf8String( new SiLAErrorDto
             {
                 DefinedExecutionError = new DefinedExecutionErrorDto()
                 {
                     Message = details ?? description,
                     ErrorIdentifier = identifier
                 }
-            };
+            } ) ) );
         }
 
-        public static void RaiseFrameworkError(FrameworkErrorType identifier)
+        /// <summary>
+        /// Creates a server-side framework error
+        /// </summary>
+        /// <param name="identifier">The type of the error</param>
+        public static Exception CreateFrameworkError(FrameworkErrorType identifier)
         {
-            throw new RpcException(new Status(StatusCode.Aborted, ToUtf8String(new SiLAErrorDto
+            return new RpcException(new Status(StatusCode.Aborted, ToUtf8String(new SiLAErrorDto
             {
                 FrameworkError = new FrameworkErrorDto()
                 {
@@ -55,6 +68,12 @@ namespace Tecan.Sila2
             })));
         }
 
+        /// <summary>
+        /// Converts the given server exception
+        /// </summary>
+        /// <param name="ex">The exception from gRPC</param>
+        /// <param name="executionErrorConversion">A function to convert defined errors</param>
+        /// <returns>The converted exception</returns>
         public static Exception ConvertException(Exception ex,
             Func<DefinedExecutionErrorDto, Exception> executionErrorConversion = null)
         {
@@ -76,29 +95,33 @@ namespace Tecan.Sila2
                             }
                             else
                             {
-                                throw new Exception($"Unknown Sila error {error.DefinedExecutionError.ErrorIdentifier} happened: {error.DefinedExecutionError.Message}");
+                                throw new SilaException($"Unknown Sila error {error.DefinedExecutionError.ErrorIdentifier} happened: {error.DefinedExecutionError.Message}");
                             }
                         }
 
+                        if( error.UndefinedExecutionError != null )
+                        {
+                            return new SilaException(error.UndefinedExecutionError.Message);
+                        }
                         if (error.FrameworkError != null)
                         {
-                            return new Exception($"Error in Sila Framework: {GetErrorMessage(error.FrameworkError.Type)} ({error.FrameworkError.Type})");
+                            return new SilaFrameworkException(error.FrameworkError.Type);
                         }
                         if (error.ValidationError != null)
                         {
-                            return new Exception($"The provided input for {error.ValidationError.Parameter} failed to validate: {error.ValidationError.Message}");
+                            return new ValidationException(error.ValidationError.Message, error.ValidationError.Parameter);
                         }
-                        return new Exception("An unknown error occured.");
+                        return new SilaException("An unknown error occured.");
                     }
                     catch (Exception)
                     {
                         // any other gRPC error => SiLA Connection Error
-                        return new Exception("SiLA Connection Error occured: " + rpcEx.Message);
+                        return new SilaException("SiLA Connection Error occured: " + rpcEx.Message);
                     }
                 }
                 else
                 {
-                    return new InvalidOperationException("Non-SiLA gRPC exception occured", ex);
+                    return new SilaException( "Non-SiLA gRPC exception occured", ex);
                 }
             }
 
@@ -106,19 +129,5 @@ namespace Tecan.Sila2
         }
 
 
-        private static string GetErrorMessage(FrameworkErrorType errorType)
-        {
-            switch (errorType)
-            {
-                case FrameworkErrorType.CommandExecutionNotAccepted:
-                    return "The server refused to execute the command.";
-                case FrameworkErrorType.CommandExecutionNotFinished:
-                    return "The command is not finished, yet.";
-                case FrameworkErrorType.InvalidCommandExecutionUuid:
-                    return "The provided command identifier does not correspond to a command.";
-                default:
-                    return "An unknown error occurred.";
-            }
-        }
     }
 }
