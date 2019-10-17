@@ -9,45 +9,71 @@ using Tecan.Sila2.Binary;
 
 namespace Tecan.Sila2.Server.Binary
 {
-
+    /// <summary>
+    /// Helper class to implement upload of binary data
+    /// </summary>
     public class BinaryUpload
     {
-        private IFileManagement _server;
-        private ConcurrentDictionary<string, FileUploadData> _openStreams = new ConcurrentDictionary<string, FileUploadData>();
+        private readonly IFileManagement _fileManagement;
+        private readonly ISiLAServer _server;
+        private readonly ConcurrentDictionary<string, FileUploadData> _openStreams = new ConcurrentDictionary<string, FileUploadData>();
 
-        public BinaryUpload(IFileManagement server)
+        /// <summary>
+        /// Create a binary upload for the given file management
+        /// </summary>
+        /// <param name="fileManagement">An object that handles the files locally</param>
+        /// <param name="server">The parent server to validate requests</param>
+        public BinaryUpload(IFileManagement fileManagement, ISiLAServer server)
         {
+            _fileManagement = fileManagement;
             _server = server;
         }
 
-        private string ResolveTempFileName(string arg)
+        private Task<CreateBinaryResponseDto> CreateBinary(CreateBinaryRequestDto request, ServerCallContext context)
         {
-            return Path.Combine(Path.GetTempPath(), arg);
+            var commandIdentifier = GetCommandIdentifier( request.CommandIdentifier );
+            var internalRequest = new InternalCreateBinaryRequest(commandIdentifier, request);
+            return _server.InvokeCommand( CreateBinaryCore, internalRequest, context );
         }
 
-        public Task<CreateBinaryResponseDto> CreateBinary(CreateBinaryRequestDto request, ServerCallContext context)
+        private CreateBinaryResponseDto CreateBinaryCore( InternalCreateBinaryRequest request)
         {
-            var identifier = _server.CreateNew((long) request.BinarySize);
-            var stream = _server.OpenWrite(identifier);
-            var expiration = DateTimeOffset.Now.AddMinutes(5);
-            _openStreams.TryAdd(identifier, new FileUploadData(stream, request.ChunkCount)
+            var identifier = _fileManagement.CreateNew( (long)request.ActualRequest.BinarySize );
+            var stream = _fileManagement.OpenWrite( identifier );
+            var expiration = DateTimeOffset.Now.AddMinutes( 5 );
+            _openStreams.TryAdd( identifier, new FileUploadData( stream, request.ActualRequest.ChunkCount )
             {
                 ExpirationTime = expiration
-            });
-            return Task.FromResult(new CreateBinaryResponseDto()
+            } );
+            return new CreateBinaryResponseDto()
             {
                 BinaryTransferUUID = identifier,
-                LifetimeOfBinary = new TimestampDto(expiration)
-            });
+                LifetimeOfBinary = new TimestampDto( expiration )
+            };
         }
 
-        public Task<EmptyRequest> DeleteBinary(DeleteBinaryRequestDto request, ServerCallContext context)
+        private string GetCommandIdentifier( string commandIdentifier )
         {
-            _server.Delete(request.BinaryTransferUUID, true);
+            if( commandIdentifier == null )
+            {
+                throw new ArgumentNullException(nameof(commandIdentifier));
+            }
+            var parameterSeparator = commandIdentifier.LastIndexOf( "/Parameter/", StringComparison.OrdinalIgnoreCase );
+            if( parameterSeparator == -1 )
+            {
+                throw new ArgumentException($"The provided command identifier {commandIdentifier} is not a valid fully qualified command parameter.");
+            }
+
+            return commandIdentifier.Substring( 0, parameterSeparator );
+        }
+
+        private Task<EmptyRequest> DeleteBinary(DeleteBinaryRequestDto request, ServerCallContext context)
+        {
+            _fileManagement.Delete(request.BinaryTransferUUID, true);
             return Task.FromResult(EmptyRequest.Instance);
         }
 
-        public async Task UploadChunk(IAsyncStreamReader<UploadChunkRequestDto> requestStream,IServerStreamWriter<UploadChunkResponseDto> responseStream, ServerCallContext context)
+        private async Task UploadChunk(IAsyncStreamReader<UploadChunkRequestDto> requestStream,IServerStreamWriter<UploadChunkResponseDto> responseStream, ServerCallContext context)
         {
             while (await requestStream.MoveNext())
             {
@@ -110,11 +136,20 @@ namespace Tecan.Sila2.Server.Binary
             }
         }
 
+        /// <summary>
+        /// Checks whether the upload of the given identifier is complete
+        /// </summary>
+        /// <param name="binaryIdentifier">The binary storage identifier</param>
+        /// <returns>True, if the upload of the file with the given identifier has been completed, otherwise false.</returns>
         public bool CheckUploadComplete(string binaryIdentifier)
         {
-            return !_openStreams.ContainsKey(binaryIdentifier) && _server.Exists(binaryIdentifier);
+            return !_openStreams.ContainsKey(binaryIdentifier) && _fileManagement.Exists(binaryIdentifier);
         }
 
+        /// <summary>
+        /// Creates the service definition to handle binary uploads
+        /// </summary>
+        /// <returns>A gRPC server service definition</returns>
         public ServerServiceDefinition CreateServiceDefinition()
         {
             ServerServiceDefinition.Builder builder = ServerServiceDefinition.CreateBuilder();
@@ -122,6 +157,30 @@ namespace Tecan.Sila2.Server.Binary
             builder.AddMethod(BinaryStorageConstants.CreateBinary, CreateBinary);
             builder.AddMethod(BinaryStorageConstants.UploadChunk, UploadChunk);
             return builder.Build();
+        }
+
+        private class InternalCreateBinaryRequest : ISilaRequestObject
+        {
+            public InternalCreateBinaryRequest( string commandIdentifier, CreateBinaryRequestDto actualRequest )
+            {
+                CommandIdentifier = commandIdentifier;
+                ActualRequest = actualRequest;
+            }
+
+            public string GetValidationErrors()
+            {
+                return null;
+            }
+
+            public string CommandIdentifier
+            {
+                get;
+            }
+
+            public CreateBinaryRequestDto ActualRequest
+            {
+                get;
+            }
         }
     }
 

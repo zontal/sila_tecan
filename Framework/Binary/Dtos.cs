@@ -22,6 +22,16 @@ namespace Tecan.Sila2.Binary
         [ProtoMember(2)]
         public uint ChunkCount { get; set; }
 
+        /// <summary>
+        /// The command parameter identifier
+        /// </summary>
+        [ProtoMember(3)]
+        public string CommandIdentifier
+        {
+            get;
+            set;
+        }
+
     }
 
     /// <summary>

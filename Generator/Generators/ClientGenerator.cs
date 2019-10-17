@@ -132,22 +132,24 @@ namespace Tecan.Sila2.Generator.Generators
             client.Members.Add(newInstance);
         }
 
-        private void GenerateClientExtractMethod(CodeTypeDeclaration client)
+        private void GenerateClientExtractMethod( CodeTypeDeclaration client )
         {
-            var T = new CodeTypeReference("T");
+            var T = new CodeTypeReference( "T" );
             var extract = new CodeMemberMethod()
             {
                 Name = nameof(ISilaTransferObject<object>.Extract),
                 Attributes = MemberAttributes.Private,
                 ReturnType = T
             };
-            extract.TypeParameters.Add(new CodeTypeParameter("T"));
+            extract.TypeParameters.Add( new CodeTypeParameter( "T" ) );
             extract.Parameters.Add(
-                new CodeParameterDeclarationExpression(new CodeTypeReference(typeof(ISilaTransferObject<>).FullName, T),
-                    "dto"));
-            extract.Statements.Add(new CodeMethodReturnStatement(
-                new CodeMethodInvokeExpression(new CodeArgumentReferenceExpression("dto"), extract.Name, new CodeFieldReferenceExpression(null, ExecutionManagerFieldName))));
-            client.Members.Add(extract);
+                new CodeParameterDeclarationExpression( new CodeTypeReference( typeof(ISilaTransferObject<>).FullName, T ),
+                    "dto" ) );
+            extract.Statements.Add( new CodeMethodReturnStatement(
+                new CodeMethodInvokeExpression( new CodeArgumentReferenceExpression( "dto" ), extract.Name, new CodePropertyReferenceExpression(
+                    new CodeFieldReferenceExpression( null, ExecutionManagerFieldName ),
+                    nameof(IClientExecutionManager.DownloadBinaryStore) ) ) ) );
+            client.Members.Add( extract );
         }
 
         private void GenerateClientCommand(Feature feature, FeatureCommand featureCommand, CodeTypeDeclaration client)
@@ -162,20 +164,29 @@ namespace Tecan.Sila2.Generator.Generators
             var requestType = NameProvider.GenerateCommandRequestType(featureCommand);
             var request = new CodeObjectCreateExpression(requestType);
             var requestRef = new CodeVariableReferenceExpression(nameof(request));
-            if (featureCommand.Parameter != null)
+            string binaryParameterIdentifier = null;
+            if( featureCommand.Parameter != null )
             {
-                foreach (var parameterType in featureCommand.Parameter)
+                foreach( var parameterType in featureCommand.Parameter )
                 {
-                    var parameterName = CodeGenerationHelper.ToCamelCase(parameterType.Identifier);
-                    requestMethod.Parameters.Add(new CodeParameterDeclarationExpression(
-                        NameProvider?.GetMemberType(featureCommand.Identifier + "." + parameterType.Identifier)
-                        ?? CodeGenerationHelper.ExtractType(parameterType.DataType, null), parameterName));
-                    request.Parameters.Add(new CodeArgumentReferenceExpression(parameterName));
-                    parameterDictionary.Add(parameterName, parameterType.Description);
+                    var parameterName = CodeGenerationHelper.ToCamelCase( parameterType.Identifier );
+                    requestMethod.Parameters.Add( new CodeParameterDeclarationExpression(
+                        NameProvider?.GetMemberType( featureCommand.Identifier + "." + parameterType.Identifier )
+                        ?? CodeGenerationHelper.ExtractType( parameterType.DataType, null ), parameterName ) );
+                    request.Parameters.Add( new CodeArgumentReferenceExpression( parameterName ) );
+                    parameterDictionary.Add( parameterName, parameterType.Description );
+                }
+
+                var binaryParameter = featureCommand.Parameter.SingleOrDefault( p => ContainsBinaries( p.DataType, id => feature.Items.OfType<SiLAElement>().Single(e => e.Identifier == id).DataType ) );
+                if( binaryParameter != null )
+                {
+                    binaryParameterIdentifier = feature.GetFullyQualifiedParameterIdentifier( featureCommand, binaryParameter.Identifier );
                 }
             }
+
             requestMethod.WriteDocumentation(featureCommand.Description, parameters: parameterDictionary);
-            request.Parameters.Add(new CodeFieldReferenceExpression(null, ExecutionManagerFieldName));
+            
+            request.Parameters.Add(GenerateCreateBinaryStore(binaryParameterIdentifier));
             requestMethod.Statements.Add(new CodeVariableDeclarationStatement(requestType, nameof(request), request));
 
 
@@ -187,6 +198,32 @@ namespace Tecan.Sila2.Generator.Generators
             {
                 GenerateClientObservableCommandImplementation(feature, featureCommand, client, requestMethod, requestRef);
             }
+        }
+
+        private bool ContainsBinaries( DataTypeType dataType, Func<string, DataTypeType> typeResolver )
+        {
+            switch( dataType.Item )
+            {
+                case BasicType basic:
+                    return basic == BasicType.Binary;
+                case StructureType structured:
+                    return structured.Element == null || structured.Element.Any( e => ContainsBinaries( e.DataType, typeResolver ) );
+                case ListType list:
+                    return ContainsBinaries( list.DataType, typeResolver );
+                case string identifiedType:
+                    return ContainsBinaries( typeResolver( identifiedType ), typeResolver );
+                default:
+                    return false;
+            }
+        }
+
+        private static CodeExpression GenerateCreateBinaryStore(string commandParameterIdentifier)
+        {
+            if( commandParameterIdentifier == null )
+            {
+                return new CodePrimitiveExpression();
+            }
+            return new CodeMethodInvokeExpression(new CodeFieldReferenceExpression(null, ExecutionManagerFieldName), nameof(IClientExecutionManager.CreateBinaryStore), new CodePrimitiveExpression(commandParameterIdentifier));
         }
 
         private void GenerateClientObservableCommandImplementation(Feature feature, FeatureCommand featureCommand,
@@ -326,7 +363,11 @@ namespace Tecan.Sila2.Generator.Generators
                     requestMethod.ReturnType = new CodeTypeReference(featureCommand.Identifier + "Response");
                     var response = GenerateClientGrpcInvoke(featureCommand.Identifier + "Method",
                         requestRef, null, null, callInfoRef);
-                    ret = new CodeMethodInvokeExpression(response, nameof(ISilaTransferObject<object>.Extract), new CodeFieldReferenceExpression(null, ExecutionManagerFieldName));
+                    ret = new CodeMethodInvokeExpression(response,
+                        nameof(ISilaTransferObject<object>.Extract),
+                        new CodePropertyReferenceExpression(
+                            new CodeFieldReferenceExpression(null, ExecutionManagerFieldName),
+                            nameof(IClientExecutionManager.DownloadBinaryStore)));
                 }
             }
             else
@@ -445,7 +486,11 @@ namespace Tecan.Sila2.Generator.Generators
                 }
                 else
                 {
-                    response = new CodeMethodInvokeExpression(response, nameof(ISilaTransferObject<object>.Extract), new CodeFieldReferenceExpression(null, ExecutionManagerFieldName));
+                    response = new CodeMethodInvokeExpression(response,
+                        nameof(ISilaTransferObject<object>.Extract),
+                        new CodePropertyReferenceExpression(
+                            new CodeFieldReferenceExpression( null, ExecutionManagerFieldName ),
+                            nameof( IClientExecutionManager.DownloadBinaryStore ) ) );
                 }
             }
 
@@ -554,7 +599,10 @@ namespace Tecan.Sila2.Generator.Generators
                 "inner",
                 new CodeMethodInvokeExpression(
                     new CodePropertyReferenceExpression(new CodeArgumentReferenceExpression(parameter.Name), "Value"),
-                    nameof(ISilaTransferObject<object>.Extract), new CodeFieldReferenceExpression(null, ExecutionManagerFieldName)));
+                    nameof(ISilaTransferObject<object>.Extract),
+                    new CodePropertyReferenceExpression(
+                        new CodeFieldReferenceExpression( null, ExecutionManagerFieldName ),
+                        nameof( IClientExecutionManager.DownloadBinaryStore ) ) ) );
             receiveValueMethod.Statements.Add(inner);
             var innerRef = new CodeVariableReferenceExpression(inner.Name);
             var ifChanged = new CodeConditionStatement(
