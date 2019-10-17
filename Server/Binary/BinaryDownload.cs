@@ -8,12 +8,19 @@ using Tecan.Sila2.Binary;
 
 namespace Tecan.Sila2.Server.Binary
 {
+    /// <summary>
+    /// A helper class to implement binary download functionality based on a given file management implementation
+    /// </summary>
     public class BinaryDownload
     {
         private readonly Timer _disposeTimer;
         private readonly IFileManagement _server;
         private readonly ConcurrentDictionary<string, (Stream stream, DateTimeOffset expiration)> _openStreams = new ConcurrentDictionary<string, (Stream, DateTimeOffset)>();
 
+        /// <summary>
+        /// Create a new binary download utility for the given local file management
+        /// </summary>
+        /// <param name="server"></param>
         public BinaryDownload(IFileManagement server)
         {
             _server = server;
@@ -44,7 +51,7 @@ namespace Tecan.Sila2.Server.Binary
             return Task.FromResult(EmptyRequest.Instance);
         }
 
-        public Task<GetBinaryInfoResponseDto> GetBinaryInfo(GetBinaryInfoRequestDto request, ServerCallContext context)
+        private Task<GetBinaryInfoResponseDto> GetBinaryInfo(GetBinaryInfoRequestDto request, ServerCallContext context)
         {
             (Stream stream, DateTimeOffset expiration) fileData;
             if (!_openStreams.TryGetValue(request.BinaryTransferUUID, out fileData) || fileData.stream == null)
@@ -76,7 +83,7 @@ namespace Tecan.Sila2.Server.Binary
             }
         }
 
-        public async Task GetChunk(IAsyncStreamReader<GetChunkRequestDto> requestStream, IServerStreamWriter<GetChunkResponseDto> responseStream, ServerCallContext context)
+        private async Task GetChunk(IAsyncStreamReader<GetChunkRequestDto> requestStream, IServerStreamWriter<GetChunkResponseDto> responseStream, ServerCallContext context)
         {
             while (await requestStream.MoveNext())
             {
@@ -109,6 +116,10 @@ namespace Tecan.Sila2.Server.Binary
             };
         }
 
+        /// <summary>
+        /// Creates the service definition to handle binary downloads
+        /// </summary>
+        /// <returns>A gRPC server service definition</returns>
         public ServerServiceDefinition CreateServiceDefinition()
         {
             ServerServiceDefinition.Builder builder = ServerServiceDefinition.CreateBuilder();

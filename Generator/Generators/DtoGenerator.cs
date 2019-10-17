@@ -354,8 +354,14 @@ namespace Tecan.Sila2.Generator.Generators
         private (CodeConstructor, CodeExpression) GenerateMethodDtoConstructors(CodeTypeDeclaration dto)
         {
             // add default constructor
-            dto.Members.Add(new CodeConstructor() {Attributes = MemberAttributes.Public});
+            var defaultConstructor = new CodeConstructor() { Attributes = MemberAttributes.Public };
+            dto.Members.Add(defaultConstructor);
+            defaultConstructor.WriteDocumentation( "Create a new instance" );
             var copyConstructor = new CodeConstructor() {Attributes = MemberAttributes.Public};
+            copyConstructor.WriteDocumentation( "Create a new instance", parameters: new Dictionary<string, string>()
+            {
+                { BinaryStoreParameterName, "An object to organize binaries." }
+            } );
             copyConstructor.Parameters.Add(new CodeParameterDeclarationExpression(typeof(IBinaryStore), BinaryStoreParameterName));
             var storeRef = new CodeArgumentReferenceExpression(BinaryStoreParameterName);
             dto.Members.Add(copyConstructor);

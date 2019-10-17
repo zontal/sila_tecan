@@ -22,10 +22,17 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         
         private Tecan.Sila2.RealDto _targetTemperature;
         
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
         public ControlTemperatureRequestDto()
         {
         }
         
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        /// <param name="store">An object to organize binaries.</param>
         public ControlTemperatureRequestDto(double targetTemperature, Tecan.Sila2.Binary.IBinaryStore store)
         {
             TargetTemperature = new Tecan.Sila2.RealDto(targetTemperature, store);
@@ -79,10 +86,17 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         
         private Tecan.Sila2.RealDto _value;
         
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
         public CurrentTemperatureResponseDto()
         {
         }
         
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        /// <param name="store">An object to organize binaries.</param>
         public CurrentTemperatureResponseDto(double value, Tecan.Sila2.Binary.IBinaryStore store)
         {
             Value = new Tecan.Sila2.RealDto(value, store);

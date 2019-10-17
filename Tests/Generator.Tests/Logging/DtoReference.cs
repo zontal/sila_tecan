@@ -20,10 +20,17 @@ namespace Tecan.Sila2.Generator.Test.TestReference
     public class ListenForLogEntriesRequestDto : Tecan.Sila2.ISilaTransferObject, Tecan.Sila2.ISilaRequestObject
     {
         
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
         public ListenForLogEntriesRequestDto()
         {
         }
         
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        /// <param name="store">An object to organize binaries.</param>
         public ListenForLogEntriesRequestDto(Tecan.Sila2.Binary.IBinaryStore store)
         {
         }
@@ -60,10 +67,17 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         
         private LogEntryDto _intermediate;
         
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
         public ListenForLogEntriesIntermediateDto()
         {
         }
         
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        /// <param name="store">An object to organize binaries.</param>
         public ListenForLogEntriesIntermediateDto(LogEntry intermediate, Tecan.Sila2.Binary.IBinaryStore store)
         {
             Intermediate = new LogEntryDto(intermediate, store);

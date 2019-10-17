@@ -24,10 +24,17 @@ namespace Tecan.Sila2.Locking
         
         private Tecan.Sila2.IntegerDto _timeout;
         
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
         public LockServerRequestDto()
         {
         }
         
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        /// <param name="store">An object to organize binaries.</param>
         public LockServerRequestDto(string lockIdentifier, long timeout, Tecan.Sila2.Binary.IBinaryStore store)
         {
             LockIdentifier = new Tecan.Sila2.StringDto(lockIdentifier, store);
@@ -99,10 +106,17 @@ namespace Tecan.Sila2.Locking
         
         private Tecan.Sila2.StringDto _lockIdentifier;
         
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
         public UnlockServerRequestDto()
         {
         }
         
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        /// <param name="store">An object to organize binaries.</param>
         public UnlockServerRequestDto(string lockIdentifier, Tecan.Sila2.Binary.IBinaryStore store)
         {
             LockIdentifier = new Tecan.Sila2.StringDto(lockIdentifier, store);

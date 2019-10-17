@@ -22,10 +22,17 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         
         private FeatureIdentifierDto _qualifiedFeatureIdentifier;
         
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
         public GetFeatureDefinitionRequestDto()
         {
         }
         
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        /// <param name="store">An object to organize binaries.</param>
         public GetFeatureDefinitionRequestDto(FeatureIdentifier qualifiedFeatureIdentifier, Tecan.Sila2.Binary.IBinaryStore store)
         {
             QualifiedFeatureIdentifier = new FeatureIdentifierDto(qualifiedFeatureIdentifier, store);
@@ -79,10 +86,17 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         
         private FeatureDefinitionDto _featureDefinition;
         
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
         public GetFeatureDefinitionResponseDto()
         {
         }
         
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        /// <param name="store">An object to organize binaries.</param>
         public GetFeatureDefinitionResponseDto(FeatureDefinition featureDefinition, Tecan.Sila2.Binary.IBinaryStore store)
         {
             FeatureDefinition = new FeatureDefinitionDto(featureDefinition, store);
@@ -123,10 +137,17 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         
         private Tecan.Sila2.StringDto _serverName;
         
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
         public SetServerNameRequestDto()
         {
         }
         
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        /// <param name="store">An object to organize binaries.</param>
         public SetServerNameRequestDto(string serverName, Tecan.Sila2.Binary.IBinaryStore store)
         {
             ServerName = new Tecan.Sila2.StringDto(serverName, store);
@@ -181,10 +202,17 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         
         public static System.Text.RegularExpressions.Regex ValuePattern = new System.Text.RegularExpressions.Regex("[0-9a-f]{8}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{12}");
         
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
         public ServerUUIDResponseDto()
         {
         }
         
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        /// <param name="store">An object to organize binaries.</param>
         public ServerUUIDResponseDto(string value, Tecan.Sila2.Binary.IBinaryStore store)
         {
             Value = new Tecan.Sila2.StringDto(value, store);
@@ -233,10 +261,17 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         
         public static System.Text.RegularExpressions.Regex ValuePattern = new System.Text.RegularExpressions.Regex("(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(\\.(0|[1-9][0-9]*))?(_[_a-zA-Z0-9]+)?");
         
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
         public ServerVersionResponseDto()
         {
         }
         
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        /// <param name="store">An object to organize binaries.</param>
         public ServerVersionResponseDto(string value, Tecan.Sila2.Binary.IBinaryStore store)
         {
             Value = new Tecan.Sila2.StringDto(value, store);

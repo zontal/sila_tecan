@@ -30,10 +30,17 @@ namespace Tecan.Sila2.Authentication
         
         private System.Collections.Generic.List<Tecan.Sila2.StringDto> _requestedFeatures;
         
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
         public LoginRequestDto()
         {
         }
         
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        /// <param name="store">An object to organize binaries.</param>
         public LoginRequestDto(string userIdentification, string password, string requestedServer, System.Collections.Generic.ICollection<string> requestedFeatures, Tecan.Sila2.Binary.IBinaryStore store)
         {
             UserIdentification = new Tecan.Sila2.StringDto(userIdentification, store);
@@ -59,7 +66,7 @@ namespace Tecan.Sila2.Authentication
         }
         
         ///  <summary>
-        /// The (unencrypted) password
+        /// The (encrypted) password
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute(2)]
         public Tecan.Sila2.StringDto Password
@@ -227,10 +234,17 @@ namespace Tecan.Sila2.Authentication
         
         private Tecan.Sila2.StringDto _accessToken;
         
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
         public LogoutRequestDto()
         {
         }
         
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        /// <param name="store">An object to organize binaries.</param>
         public LogoutRequestDto(string accessToken, Tecan.Sila2.Binary.IBinaryStore store)
         {
             AccessToken = new Tecan.Sila2.StringDto(accessToken, store);

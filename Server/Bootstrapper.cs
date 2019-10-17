@@ -9,16 +9,22 @@ using System.Net.NetworkInformation;
 using System.Reflection;
 using CommandLine;
 using Tecan.MAP.Contracts.Services.Logging;
-using Tecan.MAP.Contracts.Services.Logging.Configuration;
 using Tecan.Sila2.Server.Binary;
 
 namespace Tecan.Sila2.Server
 {
+    /// <summary>
+    /// A helper class to bootstrap a complete server
+    /// </summary>
     public class Bootstrapper
     {
         private CompositionContainer _container;
         private ISiLAServer _server;
 
+        /// <summary>
+        /// Starts the server with the given command line parameters
+        /// </summary>
+        /// <param name="args">The command line parameters</param>
         public static void Start(string[] args)
         {
             var bootstrapper = new Bootstrapper();
@@ -31,6 +37,10 @@ namespace Tecan.Sila2.Server
                 });
         }
 
+        /// <summary>
+        /// Starts the server with the given parsed command line parameters
+        /// </summary>
+        /// <param name="args">The parsed command line parameters</param>
         public void StartServer(ServerCommandLineArguments args)
         {
             AppDomain.CurrentDomain.ProcessExit += (o,e) => ShutdownServer();
@@ -42,8 +52,8 @@ namespace Tecan.Sila2.Server
                 var logging = _container.GetExportedValue<ILoggingChannelFactory>();
                 channel = logging.CreateChannel( typeof(Bootstrapper) );
                 var networkInterface = FindNetworkInterface( args.InterfaceNameOrCIDR, logging );
-                var startup = new ServerStartupInfo( selfInfo, args.Port, networkInterface, args.ServerUuid );
-                _container.ComposeExportedValue<IServerStartInformation>( startup );
+                var startup = new ServerStartInformation( selfInfo, args.Port, networkInterface, args.ServerUuid );
+                _container.ComposeExportedValue( startup );
                 _server = _container.GetExportedValue<ISiLAServer>();
 
                 var features = _container.GetExportedValues<IFeatureProvider>();
@@ -68,21 +78,24 @@ namespace Tecan.Sila2.Server
             }
         }
 
-        public void ShutdownServer()
+        /// <summary>
+        /// Shuts down the SiLA2 Server
+        /// </summary>
+        public virtual void ShutdownServer()
         {
             _server.ShutdownServer();
             _container.Dispose();
         }
 
-        private static NetworkInterface FindNetworkInterface(string interfaceNameOrCIDR, ILoggingChannelFactory logging)
+        private static NetworkInterface FindNetworkInterface(string interfaceNameOrCidr, ILoggingChannelFactory logging)
         {
             NetworkInterface networkInterface;
-            if( interfaceNameOrCIDR != null )
+            if( interfaceNameOrCidr != null )
             {
                 try
                 {
                     var networking = new Networking( logging );
-                    networkInterface = networking.GetNetworkInterface( interfaceNameOrCIDR );
+                    networkInterface = networking.GetNetworkInterface( interfaceNameOrCidr );
                 }
                 catch( ArgumentNullException )
                 {
@@ -97,6 +110,10 @@ namespace Tecan.Sila2.Server
             return networkInterface;
         }
 
+        /// <summary>
+        /// Creates the container for the created server
+        /// </summary>
+        /// <returns>A MEF composition container</returns>
         protected virtual CompositionContainer CreateContainer()
         {
             var assemblyLocation = Assembly.GetEntryAssembly().Location;
@@ -121,6 +138,10 @@ namespace Tecan.Sila2.Server
             return container;
         }
 
+        /// <summary>
+        /// Gets the server information for the current server
+        /// </summary>
+        /// <returns>An object that contains the server information for this server</returns>
         protected virtual ServerInformation GetServerInformation()
         {
             var entryAssembly = Assembly.GetEntryAssembly();
@@ -133,6 +154,10 @@ namespace Tecan.Sila2.Server
                 entryAssemblyName.Version.ToString());
         }
 
+        /// <summary>
+        /// Handles errors at server startup
+        /// </summary>
+        /// <param name="obj"></param>
         protected virtual void HandleError(IEnumerable<Error> obj)
         {
             Environment.Exit(1);

@@ -40,7 +40,7 @@ namespace Tecan.Sila2
             {
                 Log.Log(() => $"Could not get network interface by IP address or CIDR: {e.Message}", Severity.Warning);
             }
-            catch(FormatException e)
+            catch(FormatException)
             {
                 Log.Log(() => $"{interfaceNameOrCidr} is not an IP address or CIDR mask", Severity.Warning);
             }

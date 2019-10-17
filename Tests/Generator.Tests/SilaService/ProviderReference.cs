@@ -401,7 +401,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
                 Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("tecan.sila2.generator.test/silaservice/SiLAService/v0/Property/ServerName");
                 try
                 {
-                    string response = CallInvoker.BlockingUnaryCall(GetServerNameMethod, null, callInfo.Options, EmptyRequest.Instance).Value.Extract(_executionManager);
+                    string response = CallInvoker.BlockingUnaryCall(GetServerNameMethod, null, callInfo.Options, EmptyRequest.Instance).Value.Extract(_executionManager.DownloadBinaryStore);
                     callInfo.FinishSuccessful();
                     return response;
                 } catch (System.Exception ex)
@@ -417,7 +417,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
                 Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("tecan.sila2.generator.test/silaservice/SiLAService/v0/Property/ServerType");
                 try
                 {
-                    string response = CallInvoker.BlockingUnaryCall(GetServerTypeMethod, null, callInfo.Options, EmptyRequest.Instance).Value.Extract(_executionManager);
+                    string response = CallInvoker.BlockingUnaryCall(GetServerTypeMethod, null, callInfo.Options, EmptyRequest.Instance).Value.Extract(_executionManager.DownloadBinaryStore);
                     callInfo.FinishSuccessful();
                     return response;
                 } catch (System.Exception ex)
@@ -433,7 +433,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
                 Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("tecan.sila2.generator.test/silaservice/SiLAService/v0/Property/ServerUUID");
                 try
                 {
-                    string response = CallInvoker.BlockingUnaryCall(GetServerUUIDMethod, null, callInfo.Options, EmptyRequest.Instance).Value.Extract(_executionManager);
+                    string response = CallInvoker.BlockingUnaryCall(GetServerUUIDMethod, null, callInfo.Options, EmptyRequest.Instance).Value.Extract(_executionManager.DownloadBinaryStore);
                     callInfo.FinishSuccessful();
                     return response;
                 } catch (System.Exception ex)
@@ -449,7 +449,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
                 Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("tecan.sila2.generator.test/silaservice/SiLAService/v0/Property/ServerDescription");
                 try
                 {
-                    string response = CallInvoker.BlockingUnaryCall(GetServerDescriptionMethod, null, callInfo.Options, EmptyRequest.Instance).Value.Extract(_executionManager);
+                    string response = CallInvoker.BlockingUnaryCall(GetServerDescriptionMethod, null, callInfo.Options, EmptyRequest.Instance).Value.Extract(_executionManager.DownloadBinaryStore);
                     callInfo.FinishSuccessful();
                     return response;
                 } catch (System.Exception ex)
@@ -465,7 +465,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
                 Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("tecan.sila2.generator.test/silaservice/SiLAService/v0/Property/ServerVersion");
                 try
                 {
-                    string response = CallInvoker.BlockingUnaryCall(GetServerVersionMethod, null, callInfo.Options, EmptyRequest.Instance).Value.Extract(_executionManager);
+                    string response = CallInvoker.BlockingUnaryCall(GetServerVersionMethod, null, callInfo.Options, EmptyRequest.Instance).Value.Extract(_executionManager.DownloadBinaryStore);
                     callInfo.FinishSuccessful();
                     return response;
                 } catch (System.Exception ex)
@@ -481,7 +481,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
                 Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("tecan.sila2.generator.test/silaservice/SiLAService/v0/Property/ServerVendorURL");
                 try
                 {
-                    Url response = CallInvoker.BlockingUnaryCall(GetServerVendorURLMethod, null, callInfo.Options, EmptyRequest.Instance).Value.Extract(_executionManager);
+                    Url response = CallInvoker.BlockingUnaryCall(GetServerVendorURLMethod, null, callInfo.Options, EmptyRequest.Instance).Value.Extract(_executionManager.DownloadBinaryStore);
                     callInfo.FinishSuccessful();
                     return response;
                 } catch (System.Exception ex)
@@ -529,12 +529,12 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             /// <param name="qualifiedFeatureIdentifier">The qualified Feature identifier for which the Feature description should be retrieved.</param>
             public virtual FeatureDefinition GetFeatureDefinition(FeatureIdentifier qualifiedFeatureIdentifier)
             {
-                GetFeatureDefinitionRequestDto request = new GetFeatureDefinitionRequestDto(qualifiedFeatureIdentifier, _executionManager);
+                GetFeatureDefinitionRequestDto request = new GetFeatureDefinitionRequestDto(qualifiedFeatureIdentifier, null);
                 Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("tecan.sila2.generator.test/silaservice/SiLAService/v0/Command/GetFeatureDefinitio" +
                         "n");
                 try
                 {
-                    FeatureDefinition response = CallInvoker.BlockingUnaryCall(GetFeatureDefinitionMethod, null, callInfo.Options, request).FeatureDefinition.Extract(_executionManager);
+                    FeatureDefinition response = CallInvoker.BlockingUnaryCall(GetFeatureDefinitionMethod, null, callInfo.Options, request).FeatureDefinition.Extract(_executionManager.DownloadBinaryStore);
                     callInfo.FinishSuccessful();
                     return response;
                 } catch (System.Exception ex)
@@ -566,7 +566,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             /// <param name="serverName">The human readable name of to assign to the SiLA Server</param>
             public virtual void SetServerName(string serverName)
             {
-                SetServerNameRequestDto request = new SetServerNameRequestDto(serverName, _executionManager);
+                SetServerNameRequestDto request = new SetServerNameRequestDto(serverName, null);
                 Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("tecan.sila2.generator.test/silaservice/SiLAService/v0/Command/SetServerName");
                 try
                 {
@@ -593,7 +593,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             private T Extract<T>(Tecan.Sila2.ISilaTransferObject<T> dto)
             
             {
-                return dto.Extract(_executionManager);
+                return dto.Extract(_executionManager.DownloadBinaryStore);
             }
         }
     }

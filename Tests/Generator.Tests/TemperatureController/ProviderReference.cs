@@ -212,7 +212,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             
             private void ReceiveNewCurrentTemperature(CurrentTemperatureResponseDto currentTemperature)
             {
-                double inner = currentTemperature.Value.Extract(_executionManager);
+                double inner = currentTemperature.Value.Extract(_executionManager.DownloadBinaryStore);
                 if ((_currentTemperature != inner))
                 {
                     _currentTemperature = inner;
@@ -231,7 +231,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             ///be completed at a temperature that is close enough.</param>
             public virtual Tecan.Sila2.IObservableCommand ControlTemperature(double targetTemperature)
             {
-                ControlTemperatureRequestDto request = new ControlTemperatureRequestDto(targetTemperature, _executionManager);
+                ControlTemperatureRequestDto request = new ControlTemperatureRequestDto(targetTemperature, null);
                 return ObservableCommand.Create(_executionManager.CreateCallOptions(request.CommandIdentifier), CallInvoker, request, ControlTemperatureMethod, ControlTemperatureStateMethod, ConvertControlTemperatureException);
             }
             
@@ -267,7 +267,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             private T Extract<T>(Tecan.Sila2.ISilaTransferObject<T> dto)
             
             {
-                return dto.Extract(_executionManager);
+                return dto.Extract(_executionManager.DownloadBinaryStore);
             }
         }
     }

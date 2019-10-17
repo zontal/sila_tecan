@@ -3,6 +3,9 @@ using System.CodeDom;
 
 namespace Tecan.Sila2.Generator.Contracts
 {
+    /// <summary>
+    /// Denotes an interface for a hook into the code generator
+    /// </summary>
     public interface IGeneratorHook
     {
         /// <summary>

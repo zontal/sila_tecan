@@ -112,11 +112,11 @@ namespace Tecan.Sila2.Server
         /// <param name="interceptors">Interceptors to intercept any commands issued to the server</param>
         /// <param name="fileManagement">The file management used by this server</param>
         [ImportingConstructor]
-        public SiLAServer(IServerStartInformation startupInfo, ILoggingChannelFactory loggingChannelFactory, [ImportMany] IEnumerable<IRequestInterceptor> interceptors, IFileManagement fileManagement)
+        public SiLAServer(ServerStartInformation startupInfo, ILoggingChannelFactory loggingChannelFactory, [ImportMany] IEnumerable<IRequestInterceptor> interceptors, IFileManagement fileManagement)
         {
             _logger = loggingChannelFactory.CreateChannel(typeof(SiLAServer));
             _interceptors = interceptors;
-            _upload = new BinaryUpload(fileManagement);
+            _upload = new BinaryUpload(fileManagement, this);
             _download = new BinaryDownload(fileManagement);
             _fileManagement = fileManagement;
             EnsurePortIsAvailable(startupInfo.Port);
@@ -155,7 +155,7 @@ namespace Tecan.Sila2.Server
                     _logger.Log(v4addr.ToString, Severity.Info);
                     GrpcServer.Ports.Add(new ServerPort(v4addr.ToString(), startupInfo.Port, credentials));
                 }
-                _announcer = new ServiceAnnouncer(ServerUUID, (ushort)startupInfo.Port, startupInfo.NetworkInterface, loggingChannelFactory, new Networking(loggingChannelFactory));
+                _announcer = new ServiceAnnouncer(ServerUUID, (ushort)startupInfo.Port, startupInfo.NetworkInterface, loggingChannelFactory);
             }
             else
             {
@@ -349,7 +349,7 @@ namespace Tecan.Sila2.Server
             if (command == null)
             {
                 // if command execution ID hasn't been found -> raise SiLA Framework Error
-                ErrorHandling.RaiseFrameworkError(FrameworkErrorType.InvalidCommandExecutionUuid);
+                throw ErrorHandling.CreateFrameworkError(FrameworkErrorType.InvalidCommandExecutionUuid);
             }
         }
 
@@ -360,7 +360,7 @@ namespace Tecan.Sila2.Server
             if (command == null)
             {
                 // if command execution ID hasn't been found -> raise SiLA Framework Error
-                ErrorHandling.RaiseFrameworkError(FrameworkErrorType.InvalidCommandExecutionUuid);
+                throw ErrorHandling.CreateFrameworkError(FrameworkErrorType.InvalidCommandExecutionUuid);
             }
 
             return command.CurrentState;
@@ -375,7 +375,7 @@ namespace Tecan.Sila2.Server
             if (command == null)
             {
                 // if command execution ID hasn't been found -> raise SiLA Framework Error
-                ErrorHandling.RaiseFrameworkError(FrameworkErrorType.InvalidCommandExecutionUuid);
+                throw ErrorHandling.CreateFrameworkError(FrameworkErrorType.InvalidCommandExecutionUuid);
             }
 
             return (command.CurrentState, command.ResultFactory);
@@ -423,7 +423,7 @@ namespace Tecan.Sila2.Server
             if (command == null)
             {
                 // if command execution ID hasn't been found -> raise SiLA Framework Error
-                ErrorHandling.RaiseFrameworkError(FrameworkErrorType.InvalidCommandExecutionUuid);
+                throw ErrorHandling.CreateFrameworkError(FrameworkErrorType.InvalidCommandExecutionUuid);
             }
             return command.IntermediateGenerator as IValueGenerator<TIntermediate>;
         }

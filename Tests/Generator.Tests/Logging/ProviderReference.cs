@@ -203,7 +203,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             /// </summary>
             public virtual Tecan.Sila2.IIntermediateObservableCommand<LogEntry> ListenForLogEntries()
             {
-                ListenForLogEntriesRequestDto request = new ListenForLogEntriesRequestDto(_executionManager);
+                ListenForLogEntriesRequestDto request = new ListenForLogEntriesRequestDto(null);
                 return ObservableCommand.CreateIntermediate(_executionManager.CreateCallOptions(request.CommandIdentifier), CallInvoker, request, ListenForLogEntriesMethod, ListenForLogEntriesStateMethod, ListenForLogEntriesIntermediateMethod, ConvertListenForLogEntriesIntermediate, ConvertListenForLogEntriesException);
             }
             
@@ -224,7 +224,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             /// <returns>The actual response</returns>
             private LogEntry ConvertListenForLogEntriesIntermediate(ListenForLogEntriesIntermediateDto value)
             {
-                return value.Intermediate.Extract(_executionManager);
+                return value.Intermediate.Extract(_executionManager.DownloadBinaryStore);
             }
             
             ///  <summary>
@@ -239,7 +239,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             private T Extract<T>(Tecan.Sila2.ISilaTransferObject<T> dto)
             
             {
-                return dto.Extract(_executionManager);
+                return dto.Extract(_executionManager.DownloadBinaryStore);
             }
         }
     }

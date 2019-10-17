@@ -23,7 +23,7 @@ namespace Tecan.Sila2.Server
         {
             if (context.RequestHeaders.Any(m => m.Key.StartsWith("sila")))
             {
-                ErrorHandling.RaiseFrameworkError(FrameworkErrorType.NoMetadataAllowed);
+                throw ErrorHandling.CreateFrameworkError(FrameworkErrorType.NoMetadataAllowed);
             }
             return null;
         }

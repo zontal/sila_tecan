@@ -56,6 +56,7 @@ namespace Tecan.Sila2.DynamicClient
         /// </summary>
         /// <param name="feature">The feature</param>
         /// <param name="configuration">The client configuration</param>
+        /// <param name="serializer">The serializer that should be used</param>
         /// <param name="executionManager">The execution manager that handles requests in the context of this feature</param>
         protected FeatureContext(Feature feature, DynamicObjectSerializer serializer, IClientExecutionManager executionManager,
             ClientBaseConfiguration configuration) : base(configuration)

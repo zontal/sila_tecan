@@ -186,10 +186,36 @@ namespace Tecan.Sila2.Server
             }
         }
 
-        public static Task ContinuouslySendValue<T>(ISiLAServer server, string commandIdentifier, IServerStreamWriter<T> responseStream, Func<T> factory,
+        /// <summary>
+        /// Sends the value from the provided value factory periodically to the client
+        /// </summary>
+        /// <typeparam name="T">The type of the data to be sent</typeparam>
+        /// <param name="server">The server that should send the data</param>
+        /// <param name="propertyIdentifier">The property identifier of the data</param>
+        /// <param name="responseStream">The response stream to which the data should be written to</param>
+        /// <param name="factory">A factory of the data</param>
+        /// <param name="delay">A delay in which the data should be polled</param>
+        /// <param name="context">The server context in which the request is made</param>
+        /// <returns>A task that ends when the subscription by the client ends</returns>
+        public static Task ContinuouslySendValue<T>(ISiLAServer server, string propertyIdentifier, IServerStreamWriter<T> responseStream, Func<T> factory,
             int delay, ServerCallContext context)
         {
-            return server.InvokeCommand(() => SendValueAsync(responseStream, factory, delay, context), commandIdentifier, context);
+            return server.InvokeCommand(() => SendValueAsync(responseStream, factory, delay, context), propertyIdentifier, context);
+        }
+
+        /// <summary>
+        /// Sends the value from the provided value factory periodically to the client
+        /// </summary>
+        /// <typeparam name="T">The type of the data to be sent</typeparam>
+        /// <param name="server">The server that should send the data</param>
+        /// <param name="propertyIdentifier">The property identifier of the data</param>
+        /// <param name="responseStream">The response stream to which the data should be written to</param>
+        /// <param name="values">The values that should be sent</param>
+        /// <param name="context">The server context in which the request is made</param>
+        /// <returns>A task that ends when the subscription by the client ends</returns>
+        public static Task ContinuouslySendValue<T>( ISiLAServer server, string propertyIdentifier, IServerStreamWriter<T> responseStream, IAsyncStreamReader<T> values, ServerCallContext context )
+        {
+            return server.InvokeCommand( () => SendValueAsync( responseStream, values, context ), propertyIdentifier, context );
         }
 
         private static async Task<int> SendValueAsync<T>(IServerStreamWriter<T> responseStream, Func<T> factory, int delay, ServerCallContext context)
@@ -202,6 +228,24 @@ namespace Tecan.Sila2.Server
             return 0;
         }
 
+        private static async Task<int> SendValueAsync<T>( IServerStreamWriter<T> responseStream, IAsyncStreamReader<T> values, ServerCallContext context )
+        {
+            while( await values.MoveNext( context.CancellationToken ) )
+            {
+                await responseStream.WriteAsync( values.Current );
+            }
+
+            return 0;
+        }
+
+        /// <summary>
+        /// Subscribe to an observable property
+        /// </summary>
+        /// <typeparam name="T">The type of the data</typeparam>
+        /// <param name="callInvoker">An object that performs the calls</param>
+        /// <param name="subscribeMethod">The method to subscribe to values</param>
+        /// <param name="newValueReceived">A method that is called when new data arrives</param>
+        /// <returns>A task that ends when the subscription ends.</returns>
         public static async Task SubscribeTo<T>( CallInvoker callInvoker, Method<EmptyRequest, T> subscribeMethod, Action<T> newValueReceived )
             where T : class
         {

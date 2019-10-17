@@ -49,16 +49,30 @@ namespace Tecan.Sila2
         /// <param name="instanceName">Unique name of the SiLA device service</param>
         /// <param name="portNumber">Listening port of the gRPC server</param>
         /// <param name="networkInterface">The network interface to advertise on</param>
-        public ServiceAnnouncer(string instanceName, ushort portNumber, NetworkInterface networkInterface, ILoggingChannelFactory loggingChannelFactory, Networking networking)
+        /// <param name="loggingChannelFactory">A factory to create logging channels</param>
+        public ServiceAnnouncer( string instanceName, ushort portNumber, NetworkInterface networkInterface, ILoggingChannelFactory loggingChannelFactory )
+            : this(instanceName, portNumber, networkInterface, loggingChannelFactory, new Networking(loggingChannelFactory))
         {
-            _logger = loggingChannelFactory.CreateChannel(typeof(ServiceAnnouncer));
+        }
+
+        /// <summary>
+        /// Creates a helper object that can announce as a SiLA service on mDNS as long as it exists.
+        /// </summary>
+        /// <param name="instanceName">Unique name of the SiLA device service</param>
+        /// <param name="portNumber">Listening port of the gRPC server</param>
+        /// <param name="networkInterface">The network interface to advertise on</param>
+        /// <param name="loggingChannelFactory">A factory to create logging channels</param>
+        /// <param name="networking">A networking library</param>
+        public ServiceAnnouncer( string instanceName, ushort portNumber, NetworkInterface networkInterface, ILoggingChannelFactory loggingChannelFactory, Networking networking )
+        {
+            _logger = loggingChannelFactory.CreateChannel( typeof(ServiceAnnouncer) );
             _networking = networking;
 
-            var selectedAddresses = _networking.ListInterNetworkAddresses(networkInterface);
-            var filterFunc = _networking.CreateFilterFunc(networkInterface);
+            var selectedAddresses = _networking.ListInterNetworkAddresses( networkInterface );
+            var filterFunc = _networking.CreateFilterFunc( networkInterface );
 
-            Profile = new ServiceProfile(instanceName, DiscoveryConstants.ServiceName, portNumber, selectedAddresses);
-            _multicastService = new MulticastService(filterFunc);
+            Profile = new ServiceProfile( instanceName, DiscoveryConstants.ServiceName, portNumber, selectedAddresses );
+            _multicastService = new MulticastService( filterFunc );
         }
 
         /// <summary>

@@ -50,11 +50,11 @@
                     <Constraints>
                         <Unit>
                             <Label>s</Label>
+                            <Factor>1</Factor>
+                            <Offset>0</Offset>
                             <UnitComponent>
                                 <SIUnit>Second</SIUnit>
                                 <Exponent>1</Exponent>
-                                <Factor>1</Factor>
-                                <Offset>0</Offset>
                             </UnitComponent>
                         </Unit>
                     </Constraints>

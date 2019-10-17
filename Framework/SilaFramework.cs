@@ -67,7 +67,8 @@ namespace Tecan.Sila2
         /// Creates a dto for the given string
         /// </summary>
         /// <param name="value">The string value</param>
-        /// <returns></returns>
+        /// <param name="store">A binary store</param>
+        /// <returns>The encapsulated value</returns>
         public static StringDto Create(string value, IBinaryStore store = null)
         {
             return value;
@@ -133,7 +134,8 @@ namespace Tecan.Sila2
         /// Creates a new dto for the given value
         /// </summary>
         /// <param name="value">The actual value</param>
-        /// <returns>A new dto</returns>
+        /// <param name="store">A binary store</param>
+        /// <returns>The encapsulated value</returns>
         public static IntegerDto Create(long value, IBinaryStore store = null)
         {
             return value;
@@ -199,8 +201,8 @@ namespace Tecan.Sila2
         /// Encapsulates the given floating point into a dto
         /// </summary>
         /// <param name="value">The inner value</param>
-        /// <param name="store">(ignored)</param>
-        /// <returns></returns>
+        /// <param name="store">A binary store</param>
+        /// <returns>The encapsulated value</returns>
         public static RealDto Create(double value, IBinaryStore store = null)
         {
             return value;
@@ -266,8 +268,8 @@ namespace Tecan.Sila2
         /// Creates a new dto for the given value
         /// </summary>
         /// <param name="value"></param>
-        /// <param name="store"></param>
-        /// <returns></returns>
+        /// <param name="store">A binary store</param>
+        /// <returns>The encapsulated value</returns>
         public static BooleanDto Create(bool value, IBinaryStore store = null)
         {
             return value;
