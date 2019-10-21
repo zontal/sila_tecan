@@ -24,8 +24,9 @@ namespace Tecan.Sila2.Server
         {
             var affected = new List<StringDto>();
 
-            foreach (var feature in server.Features)
+            foreach (var provider in server.Features)
             {
+                var feature = provider.FeatureDefinition;
                 if (interceptor.AppliesToCommands)
                 {
                     foreach (var command in feature.Items.OfType<FeatureCommand>())

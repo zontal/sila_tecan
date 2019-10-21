@@ -41,6 +41,21 @@ namespace Tecan.Sila2
             }
         }
 
+
+        /// <summary>
+        /// Saves the given data type to a string
+        /// </summary>
+        /// <param name="dataType">The data type</param>
+        /// <returns>The XML representation of the data type</returns>
+        public static string SaveToString( DataTypeType dataType )
+        {
+            using(var writer = new Utf8StringWriter())
+            {
+                Serializer.Serialize( writer, dataType );
+                return writer.ToString();
+            }
+        }
+
         private sealed class Utf8StringWriter : StringWriter
         {
             private static readonly Encoding Utf8Encoding = new UTF8Encoding(false);

@@ -27,3 +27,6 @@ $SILAGEN generate-feature Build/Test/netcoreapp2.1/Tecan.Sila2Generator.Test.dll
 $SILAGEN generate-interface Tests/Generator.Tests/TemperatureController/Feature.xml Tests/Generator.Tests/TemperatureController/ServiceReference.cs -n Tecan.Sila2.Generator.Test.TestReference
 $SILAGEN generate-provider Tests/Generator.Tests/TemperatureController/Feature.xml Tests/Generator.Tests/TemperatureController/DtoReference.cs Tests/Generator.Tests/TemperatureController/ProviderReference.cs -n Tecan.Sila2.Generator.Test.TestReference
 $SILAGEN generate-feature Build/Test/netcoreapp2.1/Tecan.Sila2Generator.Test.dll -i Tecan.Sila2.Generator.Test.TemperatureController.ITemperatureController Tests/Generator.Tests/TemperatureController/Feature.xml
+
+$SILAGEN generate-feature Build/Features/netstandard2.0/Tecan.Sila2.ParameterConstraintsProvider.dll -i Tecan.Sila2.ParameterConstraintsProvider.IParameterConstraintsProvider Features/ParameterConstraintsProvider/ParameterConstraintsProviderMock.sila.xml -o org.silastandard
+$SILAGEN generate-provider Features/ParameterConstraintsProvider/ParameterConstraintsProviderMock.sila.xml Features/ParameterConstraintsProvider/ParameterConstraintDtos.cs Features/ParameterConstraintsProvider/ParameterConstraintsServiceProvider.cs -n Tecan.Sila2.ParameterConstraintsProvider

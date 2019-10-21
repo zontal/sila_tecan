@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Feature xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" SiLA2Version="0.2" FeatureVersion="1.0" MaturityLevel="Verified" Originator="org.silastandard" Category="core" xmlns="http://www.sila-standard.org">
+  <Identifier>ParameterConstraintsProvider</Identifier>
+  <DisplayName>ParameterConstraintsProvider</DisplayName>
+  <Description />
+  <Property>
+    <Identifier>ParametersConstraints</Identifier>
+    <DisplayName>ParametersConstraints</DisplayName>
+    <Description />
+    <Observable>No</Observable>
+    <DataType>
+      <List>
+        <DataType>
+          <DataTypeIdentifier>ParameterConstraint</DataTypeIdentifier>
+        </DataType>
+      </List>
+    </DataType>
+  </Property>
+  <DataTypeDefinition>
+    <Identifier>ParameterConstraint</Identifier>
+    <DisplayName>ParameterConstraint</DisplayName>
+    <Description />
+    <DataType>
+      <Structure>
+        <Element>
+          <Identifier>CommandParameterIdentifier</Identifier>
+          <DisplayName>CommandParameterIdentifier</DisplayName>
+          <Description />
+          <DataType>
+            <Constrained>
+              <DataType>
+                <Basic>String</Basic>
+              </DataType>
+              <Constraints>
+                <FullyQualifiedIdentifier>CommandParameterIdentifier</FullyQualifiedIdentifier>
+              </Constraints>
+            </Constrained>
+          </DataType>
+        </Element>
+        <Element>
+          <Identifier>Constraints</Identifier>
+          <DisplayName>Constraints</DisplayName>
+          <Description />
+          <DataType>
+            <Constrained>
+              <DataType>
+                <Basic>String</Basic>
+              </DataType>
+              <Constraints>
+                <Schema>
+                  <Type>Xml</Type>
+                  <Url>https://gitlab.com/SiLA2/sila_base/raw/master/schema/Constraints.xsd</Url>
+                </Schema>
+              </Constraints>
+            </Constrained>
+          </DataType>
+        </Element>
+      </Structure>
+    </DataType>
+  </DataTypeDefinition>
+</Feature>

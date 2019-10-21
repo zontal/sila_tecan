@@ -29,7 +29,7 @@ namespace Tecan.Sila2.Server
         public Grpc.Core.Server GrpcServer { get; }
 
         /// <summary>The list of implmented features.</summary>
-        private readonly List<Feature> _implementedFeatures;
+        private readonly List<IFeatureProvider> _implementedFeatures;
 
         /// <summary>Discovery listener</summary>
         private readonly ServiceAnnouncer _announcer;
@@ -63,7 +63,7 @@ namespace Tecan.Sila2.Server
         {
             if (!_cachedInterceptorList.TryGetValue(commandIdentifier, out var interceptors))
             {
-                var feature = _implementedFeatures.FirstOrDefault(f => commandIdentifier.StartsWith(f.FullyQualifiedIdentifier));
+                var feature = _implementedFeatures.FirstOrDefault(f => commandIdentifier.StartsWith(f.FeatureDefinition.FullyQualifiedIdentifier))?.FeatureDefinition;
                 interceptors = _interceptors.Where(i => i.IsInterceptRequired(feature, commandIdentifier)).OrderByDescending(r => r.Priority).ToList();
 
                 _cachedInterceptorList.Add(commandIdentifier, interceptors);
@@ -127,7 +127,7 @@ namespace Tecan.Sila2.Server
             ServerVersion = startupInfo.Info.Version;
             ServerUUID = startupInfo.ServerUuid.ToString();
             ServerName = ServerType;
-            _implementedFeatures = new List<Feature>();
+            _implementedFeatures = new List<IFeatureProvider>();
 
             GrpcServer = new Grpc.Core.Server();
 
@@ -207,7 +207,7 @@ namespace Tecan.Sila2.Server
         /// <param name="feature">The feature to expose</param>
         public void AddFeature(IFeatureProvider feature)
         {
-            _implementedFeatures.Add(feature.FeatureDefinition);
+            _implementedFeatures.Add(feature);
             GrpcServer.Services.Add(feature.CreateServiceDefinition());
         }
 
@@ -223,7 +223,7 @@ namespace Tecan.Sila2.Server
                 throw new UnimplementedFeatureException($"Given Feature identifier: \"{qualifiedFeatureIdentifier.Value}\"");
             }
 
-            var feature = _implementedFeatures.First(f => f.FullyQualifiedIdentifier == qualifiedFeatureIdentifier.Value);
+            var feature = _implementedFeatures.First(f => f.FeatureDefinition.FullyQualifiedIdentifier == qualifiedFeatureIdentifier.Value).FeatureDefinition;
             return new FeatureDefinition(FeatureSerializer.SaveToString(feature).Replace(Environment.NewLine, string.Empty));
         }
 
@@ -232,13 +232,13 @@ namespace Tecan.Sila2.Server
         /// </summary>
         public ICollection<FeatureIdentifier> ImplementedFeatures
         {
-            get { return _implementedFeatures.Select(feature => new FeatureIdentifier(feature.FullyQualifiedIdentifier)).ToList(); }
+            get { return _implementedFeatures.Select(feature => new FeatureIdentifier(feature.FeatureDefinition.FullyQualifiedIdentifier)).ToList(); }
         }
 
         /// <summary>
         /// Gets the features implemented by the current server
         /// </summary>
-        public IEnumerable<Feature> Features => _implementedFeatures.AsReadOnly();
+        public IEnumerable<IFeatureProvider> Features => _implementedFeatures.AsReadOnly();
 
         #endregion
 

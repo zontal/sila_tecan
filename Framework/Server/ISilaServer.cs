@@ -14,7 +14,7 @@ namespace Tecan.Sila2.Server
         /// <summary>
         /// Gets the features implemented by this server
         /// </summary>
-        IEnumerable<Feature> Features { get; }
+        IEnumerable<IFeatureProvider> Features { get; }
 
         /// <summary>
         /// Starts the server
