@@ -92,7 +92,7 @@ namespace Tecan.Sila2.Generator.Generators
                 DisplayName = displayName,
                 Identifier = identifier,
                 Items = items.ToArray(),
-                SiLA2Version = "0.2",
+                SiLA2Version = "1.0",
                 FeatureVersion = versionV.ToString(2),
                 MaturityLevel = draft ? FeatureMaturityLevel.Draft : FeatureMaturityLevel.Verified,
                 Originator = originator.ToLowerInvariant(),
