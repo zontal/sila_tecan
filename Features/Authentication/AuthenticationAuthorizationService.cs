@@ -2,11 +2,15 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
+using System.IO;
+using System.Linq;
+using Tecan.MAP.Contracts.Services.Logging;
 using Tecan.Sila2.Authentication;
 using Tecan.Sila2.Authorization;
 using Tecan.Sila2.Discovery;
 using Tecan.Sila2.Server;
 using InvalidAccessTokenException = Tecan.Sila2.Authorization.InvalidAccessTokenException;
+using InvalidProviderAccessTokenException = Tecan.Sila2.AuthorizationProvider.InvalidAccessTokenException;
 
 namespace Tecan.Sila2
 {
@@ -14,20 +18,19 @@ namespace Tecan.Sila2
     [Export(typeof(IAuthenticationService))]
     [Export(typeof(IRequestInterceptor))]
     [PartCreationPolicy(CreationPolicy.Shared)]
-    internal class AuthenticationAuthorizationService : AccessTokenInterceptorBase, IAuthorizationService, IAuthenticationService, IRequestInterceptor
+    internal class AuthenticationAuthorizationService : AccessTokenInterceptorBase, IAuthorizationService, IAuthenticationService, IAuthorizationConfigurationService, IRequestInterceptor
     {
-        private string _userIdentification = "ExampleUser";
-        private string _password = "ExamplePassword";
+        private readonly IAuthConfigurationProvider _configurationProvider;
         private readonly Lazy<ISiLAService> _silaService;
 
         [ImportingConstructor]
-        public AuthenticationAuthorizationService(Lazy<ISiLAService> silaService)
+        public AuthenticationAuthorizationService( ILoggingChannelFactory loggingChannelFactory, Lazy<ISiLAService> silaService, [Import(AllowDefault = true)] IAuthConfigurationProvider configurationProvider)
         {
             _silaService = silaService;
+            _configurationProvider = configurationProvider ?? new DefaultConfigurationProvider( loggingChannelFactory );
         }
 
-
-        private readonly ConcurrentDictionary<string, DateTime> _currentAuthorizations = new ConcurrentDictionary<string, DateTime>();
+        private readonly ConcurrentDictionary<string, AuthToken> _currentAuthorizations = new ConcurrentDictionary<string, AuthToken>();
 
         public IRequestInterceptor AccessToken => this;
 
@@ -44,9 +47,33 @@ namespace Tecan.Sila2
 
         public override IRequestInterception Intercept(string commandIdentifier, string accessToken)
         {
-            if (accessToken == null || !_currentAuthorizations.TryGetValue(accessToken, out var expiry) || expiry < DateTime.Now)
+            if (accessToken == null)
             {
-                throw new InvalidAccessTokenException($"The sent AccessToken is not valid anymore.");
+                throw new InvalidAccessTokenException( "The access token is missing" );
+            }
+            if (!_currentAuthorizations.TryGetValue(accessToken, out var token))
+            {
+                if( _configurationProvider.AuthorizationProvider != null )
+                {
+                    try
+                    {
+                        _configurationProvider.AuthorizationProvider.Verify( accessToken, _silaService.Value.ServerUUID, commandIdentifier );
+                    }
+                    catch( InvalidProviderAccessTokenException e )
+                    {
+                        throw new InvalidAccessTokenException( e.Message );
+                    }
+                }
+
+                throw new InvalidAccessTokenException($"The access token is not valid anymore." );
+            }
+            else if( token.Expiry < DateTime.Now )
+            {
+                throw new InvalidAccessTokenException( "The access token is not valid anymore." );
+            }
+            else if (!token.Allows(commandIdentifier))
+            {
+                throw new InvalidAccessTokenException( "The access token does not authorize the command." );
             }
             return null;
         }
@@ -58,24 +85,48 @@ namespace Tecan.Sila2
             {
                 throw new AuthenticationFailedException($"Cannot provider access token for server {server}. This server can only serve authentication requests for server {_silaService.Value.ServerName} ({_silaService.Value.ServerUUID}).");
             }
-            
-            if (!_userIdentification.Equals(userIdentification) && _password.Equals(password))
+
+            var user = _configurationProvider.LocalUsers.FirstOrDefault( u => u.Name == userIdentification && u.Password == password );
+            if (user == null)
             {
-                throw new AuthenticationFailedException("Given credentials are not authorized or incorrect.");
+                throw new AuthenticationFailedException("Given credentials are incorrect.");
             }
             else
             {
+                string[] featureArray;
+                if( requestedFeatures == null || requestedFeatures.Count == 0 )
+                {
+                    if( !user.AllowWildcard )
+                    {
+                        throw new AuthenticationFailedException("User does not have wildcard permission.");
+                    }
+
+                    featureArray = new string[] { "" };
+                }
+                else
+                {
+                    if( !user.AllowWildcard )
+                    {
+                        var failedPermissions = requestedFeatures.Except( user.Permission ).ToList();
+                        if( failedPermissions.Count > 0 )
+                        {
+                            throw new AuthenticationFailedException($"User {userIdentification} does not have permissions for feature(s) {string.Join(", ", failedPermissions)}.");
+                        }
+                    }
+
+                    featureArray = requestedFeatures.ToArray();
+                }
                 var expiry = (DateTime.Now.AddHours(24));
                 var tempGuid = Guid.NewGuid().ToString();
-                _currentAuthorizations[tempGuid] = expiry;
-                loginResponse = new LoginResponse(tempGuid, expiry.Ticks);
+                _currentAuthorizations[tempGuid] = new AuthToken(expiry, featureArray);
+                loginResponse = new LoginResponse(tempGuid, 24 * 3600);
             }
             return loginResponse;
         }
 
         public void Logout(string accessToken)
         {
-            if (accessToken == null || !_currentAuthorizations.TryGetValue(accessToken, out var expiry) || expiry < DateTime.Now)
+            if (accessToken == null || !_currentAuthorizations.TryGetValue(accessToken, out var token) || token.Expiry < DateTime.Now)
             {
                 throw new InvalidAccessTokenException($"The sent AccessToken is not valid anymore.");
             }
@@ -83,6 +134,38 @@ namespace Tecan.Sila2
         }
 
 
+        public string AuthorizationProvider
+        {
+            get => _configurationProvider.AuthorizationProviderUuid;
+        }
 
+        public void SetAuthorizationProvider( string authorizationProvider )
+        {
+            _configurationProvider.SetAuthorizationProvider( authorizationProvider );
+        }
+
+        private class AuthToken
+        {
+            public AuthToken( DateTime expiry, string[] features )
+            {
+                Expiry = expiry;
+                Features = features;
+            }
+
+            public bool Allows( string commandIdentifier )
+            {
+                return Features.Any( f => commandIdentifier.StartsWith( f ) );
+            }
+
+            public DateTime Expiry
+            {
+                get;
+            }
+
+            public string[] Features
+            {
+                get;
+            }
+        }
     }
 }

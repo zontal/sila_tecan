@@ -13,6 +13,10 @@ $SILAGEN generate-interface Features/Authentication/AuthenticationService.sila.x
 $SILAGEN generate-provider Features/Authentication/AuthenticationService.sila.xml Features/Authentication/Authentication/AuthenticationDtos.cs Features/Authentication/Authentication/AuthenticationProvider.cs -n Tecan.Sila2.Authentication -s
 $SILAGEN generate-interface Features/Authentication/AuthorizationService.sila.xml Features/Authentication/Authorization/IAuthorizationService.cs -n Tecan.Sila2.Authorization
 $SILAGEN generate-provider Features/Authentication/AuthorizationService.sila.xml Features/Authentication/Authorization/AuthorizationDtos.cs Features/Authentication/Authorization/AuthorizationProvider.cs -n Tecan.Sila2.Authorization -s
+$SILAGEN generate-interface Features/Authentication/AuthorizationProviderService.sila.xml Features/Authentication/AuthorizationProvider/IAuthorizationProviderService.cs -n Tecan.Sila2.AuthorizationProvider
+$SILAGEN generate-provider Features/Authentication/AuthorizationProviderService.sila.xml Features/Authentication/AuthorizationProvider/AuthorizationProviderServiceDtos.cs Features/Authentication/AuthorizationProvider/AuthorizationProviderClient.cs -n Tecan.Sila2.AuthorizationProvider -c
+$SILAGEN generate-interface Features/Authentication/AuthorizationConfigurationService.sila.xml Features/Authentication/AuthorizationConfiguration/IAuthorizationConfigurationService.cs -n Tecan.Sila2.Authorization
+$SILAGEN generate-provider Features/Authentication/AuthorizationConfigurationService.sila.xml Features/Authentication/AuthorizationConfiguration/AuthorizationConfigurationServiceDtos.cs Features/Authentication/AuthorizationConfiguration/AuthorizationConfigurationServiceProvider.cs -n Tecan.Sila2.Authorization -s
 
 $SILAGEN generate-server Build/Features/netstandard2.0/Tecan.Sila2.WorktableIntegration.dll Features/WorktableIntegration/WorktableIntegration.csproj -n Tecan.Sila2.WorktableIntegration -r Tecan.Sila2.WorktableIntegration
 

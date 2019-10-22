@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Composition;
 using System.Linq;
 using Grpc.Core;
 using Tecan.MAP.Contracts.Services.Logging;
@@ -8,25 +9,10 @@ using Tecan.Sila2.Client;
 namespace Tecan.Sila2.Discovery
 {
     /// <summary>
-    /// Exception to be used if Server is not found during discovery
-    /// </summary>
-    public class ServerNotFoundException : Exception
-    {
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="message">reason why server was not found</param>
-        /// <returns></returns>
-        public ServerNotFoundException(string message) : base(message)
-        {
-        }
-    }
-
-    /// <summary>
     /// Utility class to be used to discover and find SiLA Servers using the 
     /// ServiceFinder class.
     /// </summary>
-    public class SiLADiscovery
+    public class ServerDiscovery : IServerDiscovery
     {
         private readonly ILoggingChannel _loggingChannel;
         private readonly ServiceFinder _serviceFinder;
@@ -36,12 +22,11 @@ namespace Tecan.Sila2.Discovery
         /// Create a new sila discovery object
         /// </summary>
         /// <param name="factory">A logging factory</param>
-        /// <param name="serviceFinder">A service finder</param>
         /// <param name="executionManager">The client execution manager</param>
-        public SiLADiscovery(ILoggingChannelFactory factory, ServiceFinder serviceFinder, IClientExecutionManager executionManager)
+        public ServerDiscovery(ILoggingChannelFactory factory, IClientExecutionManager executionManager)
         {
-            _loggingChannel = factory.CreateChannel(typeof(SiLADiscovery));
-            _serviceFinder = serviceFinder;
+            _loggingChannel = factory.CreateChannel(typeof(ServerDiscovery));
+            _serviceFinder = new ServiceFinder(factory, new Networking(factory));
             _executionManager = executionManager;
         }
         
@@ -50,7 +35,7 @@ namespace Tecan.Sila2.Discovery
         /// </summary>
         /// <param name="timeout">duration of Query period</param>
         /// <returns>"List of valid SiLA2 servers</returns>
-        public List<ServerData> GetServers(TimeSpan timeout)
+        public IEnumerable<ServerData> GetServers(TimeSpan timeout)
         {
             return _serviceFinder.QueryAllServices(timeout)
                 .Select(channel =>

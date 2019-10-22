@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="AuthConfiguration"
+    targetNamespace="https://gitlab.com/SiLA2/vendors/sila_tecan/tree/master/Features/Authentication/AuthConfiguration.xsd"
+    elementFormDefault="qualified"
+    xmlns="https://gitlab.com/SiLA2/vendors/sila_tecan/tree/master/Features/Authentication/AuthConfiguration.xsd"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:element name="AuthConfiguration">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="LocalUser" type="User" minOccurs="1" maxOccurs="unbounded" />
+                <xs:element name="AuthProvider" type="ServerIdentifier" />
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:complexType name="User">
+        <xs:sequence>
+            <xs:element name="Permission" type="xs:string" minOccurs="0" maxOccurs="unbounded" />
+        </xs:sequence>
+        <xs:attribute name="Name" type="xs:string" use="required" />
+        <xs:attribute name="Password" type="xs:string" use="required" />
+        <xs:attribute name="AllowWildcard" type="xs:boolean" use="required" />
+    </xs:complexType>
+
+    <xs:complexType name="ServerIdentifier" abstract="true" />
+    <xs:complexType name="DiscoveredServer">
+        <xs:complexContent>
+            <xs:extension base="ServerIdentifier">
+                <xs:attribute name="ServerUUID" type="xs:string" />
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="ExplicitServer">
+        <xs:complexContent>
+            <xs:extension base="ServerIdentifier">
+                <xs:attribute name="Host" type="xs:string" />
+                <xs:attribute name="Port" type="xs:positiveInteger" />
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+</xs:schema>

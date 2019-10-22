@@ -18,7 +18,7 @@ namespace Tecan.Sila2
     /// Denotes a data transfer object for a given carried type
     /// </summary>
     /// <typeparam name="T">The inner value type</typeparam>
-    public interface ISilaTransferObject<T> : ISilaTransferObject
+    public interface ISilaTransferObject<out T> : ISilaTransferObject
     {
         /// <summary>
         /// Extracts the transferred inner value

@@ -9,6 +9,10 @@ Build\Generator\net472\SilaGen.exe generate-interface Features\Authentication\Au
 Build\Generator\net472\SilaGen.exe generate-provider Features\Authentication\AuthenticationService.sila.xml Features\Authentication\Authentication\AuthenticationDtos.cs Features\Authentication\Authentication\AuthenticationProvider.cs -n Tecan.Sila2.Authentication -s
 Build\Generator\net472\SilaGen.exe generate-interface Features\Authentication\AuthorizationService.sila.xml Features\Authentication\Authorization\IAuthorizationService.cs -n Tecan.Sila2.Authorization
 Build\Generator\net472\SilaGen.exe generate-provider Features\Authentication\AuthorizationService.sila.xml Features\Authentication\Authorization\AuthorizationDtos.cs Features\Authentication\Authorization\AuthorizationProvider.cs -n Tecan.Sila2.Authorization -s
+Build\Generator\net472\SilaGen.exe generate-interface Features\Authentication\AuthorizationProviderService.sila.xml Features\Authentication\AuthorizationProvider\IAuthorizationProviderService.cs -n Tecan.Sila2.AuthorizationProvider
+Build\Generator\net472\SilaGen.exe generate-provider Features\Authentication\AuthorizationProviderService.sila.xml Features\Authentication\AuthorizationProvider\AuthorizationProviderServiceDtos.cs Features\Authentication\AuthorizationProvider\AuthorizationProviderClient.cs -n Tecan.Sila2.AuthorizationProvider -c
+Build\Generator\net472\SilaGen.exe generate-interface Features\Authentication\AuthorizationConfigurationService.sila.xml Features\Authentication\AuthorizationConfiguration\IAuthorizationConfigurationService.cs -n Tecan.Sila2.Authorization
+Build\Generator\net472\SilaGen.exe generate-provider Features\Authentication\AuthorizationConfigurationService.sila.xml Features\Authentication\AuthorizationConfiguration\AuthorizationConfigurationServiceDtos.cs Features\Authentication\AuthorizationConfiguration\AuthorizationConfigurationServiceProvider.cs -n Tecan.Sila2.Authorization -s
 
 Build\Generator\net472\SilaGen.exe generate-server Build\Features\netstandard2.0\Tecan.Sila2.WorktableIntegration.dll Features\WorktableIntegration\WorktableIntegration.csproj -n Tecan.Sila2.WorktableIntegration
 

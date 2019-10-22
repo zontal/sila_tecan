@@ -12,7 +12,7 @@ namespace Tecan.Sila2.Discovery
     /// <summary>
     /// Class to query for sila services via mDNS queries.
     /// </summary>
-    public class ServiceFinder
+    internal class ServiceFinder
     {
         private readonly ILoggingChannel _log;
         private readonly Networking _networking;

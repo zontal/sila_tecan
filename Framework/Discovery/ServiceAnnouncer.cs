@@ -63,7 +63,7 @@ namespace Tecan.Sila2
         /// <param name="networkInterface">The network interface to advertise on</param>
         /// <param name="loggingChannelFactory">A factory to create logging channels</param>
         /// <param name="networking">A networking library</param>
-        public ServiceAnnouncer( string instanceName, ushort portNumber, NetworkInterface networkInterface, ILoggingChannelFactory loggingChannelFactory, Networking networking )
+        internal ServiceAnnouncer( string instanceName, ushort portNumber, NetworkInterface networkInterface, ILoggingChannelFactory loggingChannelFactory, Networking networking )
         {
             _logger = loggingChannelFactory.CreateChannel( typeof(ServiceAnnouncer) );
             _networking = networking;

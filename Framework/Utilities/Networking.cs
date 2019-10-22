@@ -12,7 +12,7 @@ namespace Tecan.Sila2
     /// Networking utility library listing network interfaces and finding 
     /// interfaces based on name or CIDR
     /// </summary>
-    public class Networking
+    internal class Networking
     {
         private readonly ILoggingChannel Log;
 
