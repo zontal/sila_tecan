@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Feature xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" SiLA2Version="1.0" FeatureVersion="1.0" Originator="tecan.sila2.parameterdefaultsprovider" Category="tests" xmlns="http://www.sila-standard.org">
+  <Identifier>ExampleSetProviderService</Identifier>
+  <DisplayName>ExampleSetProviderService</DisplayName>
+  <Description />
+  <Command>
+    <Identifier>ExampleMethod</Identifier>
+    <DisplayName>ExampleMethod</DisplayName>
+    <Description />
+    <Observable>No</Observable>
+    <Parameter>
+      <Identifier>Parameter</Identifier>
+      <DisplayName>Parameter</DisplayName>
+      <Description />
+      <DataType>
+        <Basic>String</Basic>
+      </DataType>
+    </Parameter>
+  </Command>
+</Feature>

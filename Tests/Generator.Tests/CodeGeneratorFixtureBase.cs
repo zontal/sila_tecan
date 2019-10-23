@@ -114,7 +114,6 @@ namespace Tecan.Sila2.Generator.Test
                 cSharp.GenerateCodeFromCompileUnit(unit, writer, options);
 
                 var generatedCode = writer.ToString();
-                generatedCode = Regex.Replace(generatedCode, @"\s+", string.Empty);
                 AssertEqualIgnoreWhitespace(File.ReadAllText(referenceFile), generatedCode);
             }
         }
@@ -126,7 +125,7 @@ namespace Tecan.Sila2.Generator.Test
 
         private static string EliminateWhitespaces(string input)
         {
-            return Regex.Replace(input, @"\s+", string.Empty);
+            return Regex.Replace( Regex.Replace( input, "//[^/].*", string.Empty ), @"\s+", string.Empty );
         }
     }
 }

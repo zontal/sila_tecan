@@ -1,0 +1,55 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>netcoreapp2.1;net461;net472</TargetFrameworks>
+    <AssemblyName>Tecan.Sila2.ParameterDefaultsProvider.Tests</AssemblyName>
+    <RootNamespace>Tecan.Sila2.ParameterDefaultsProvider.Tests</RootNamespace>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <OutputPath>..\..\..\Build\Test\Features\ParameterDefaultsProvider</OutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="ExampleFileConstraintProviderService.sila.xml" />
+    <None Remove="ExampleSetProviderService.sila.xml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="..\..\TestLoggingFactory.cs" Link="TestLoggingFactory.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="ExampleFileConstraintProviderService.sila.xml" />
+    <EmbeddedResource Include="ExampleSetProviderService.sila.xml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.3.0" />
+    <PackageReference Include="Moq" Version="4.13.1" />
+    <PackageReference Include="NUnit" Version="3.12.0" />
+    <PackageReference Include="NUnit3TestAdapter" Version="3.15.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Features\ParameterConstraintsProvider\ParameterConstraintsProvider.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="ExampleFileConstraintProviderService\" />
+    <Folder Include="ExampleSetProviderService\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="TestData\Bar.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="TestData\Foo.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="TestData\Icon.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>

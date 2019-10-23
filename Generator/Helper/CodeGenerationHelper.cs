@@ -58,7 +58,7 @@ namespace Tecan.Sila2.Generator.Helper
                         case BasicType.Integer:
                             return new CodeTypeReference(typeof(long));
                         case BasicType.Binary:
-                            return new CodeTypeReference(typeof(byte[]));
+                            return new CodeTypeReference(typeof(Stream));
                         case BasicType.String:
                             return new CodeTypeReference(typeof(string));
                         case BasicType.Real:
@@ -79,6 +79,31 @@ namespace Tecan.Sila2.Generator.Helper
                     return new CodeTypeReference(identityReference);
             }
             throw new NotSupportedException($"The data type {dataType.Item} is not supported");
+        }
+
+
+        public static CodeExpression GenerateConversion( CodeMethodInvokeExpression extractionCall, CodeTypeReference customType, DataTypeType dataType )
+        {
+            if(customType == null)
+            {
+                return extractionCall;
+            }
+
+            if(dataType.Item is BasicType.Binary)
+            {
+                if(customType.ArrayRank == 1)
+                {
+                    extractionCall.Method.MethodName = nameof( BinaryDto.ExtractToBytes );
+                }
+                else if(customType.BaseType == typeof( FileInfo ).FullName)
+                {
+                    extractionCall.Method.MethodName = nameof( BinaryDto.ExtractToFileInfo );
+                }
+
+                return extractionCall;
+            }
+
+            return new CodeCastExpression( customType, extractionCall );
         }
 
         public static void AddAttribute(this CodeAttributeDeclarationCollection attributes, Type attributeType, params object[] values)

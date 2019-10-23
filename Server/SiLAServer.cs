@@ -470,6 +470,12 @@ namespace Tecan.Sila2.Server
             return _upload.CheckUploadComplete(identifier);
         }
 
+        /// <inheritdoc />
+        public FileInfo ResolveStoredBinaryFile( string identifier )
+        {
+            return _fileManagement.Locate( identifier );
+        }
+
         #endregion
 
     }

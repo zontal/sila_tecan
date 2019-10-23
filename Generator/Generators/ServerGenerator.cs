@@ -675,15 +675,11 @@ namespace Tecan.Sila2.Generator.Generators
                 var serverRef = new CodeFieldReferenceExpression( null, ServerFieldName );
                 foreach( var parameter in featureCommand.Parameter )
                 {
-                    CodeExpression parameterValue = new CodeMethodInvokeExpression(
+                    var parameterValue = new CodeMethodInvokeExpression(
                         new CodePropertyReferenceExpression( requestRef, parameter.Identifier ), "Extract", serverRef );
-                    if( NameProvider?.GetMemberType( featureCommand.Identifier + "." + parameter.Identifier ) is
-                        CodeTypeReference typeRef )
-                    {
-                        parameterValue = new CodeCastExpression( typeRef, parameterValue );
-                    }
+                    var typeRef = NameProvider?.GetMemberType( featureCommand.Identifier + "." + parameter.Identifier );
 
-                    actualImplementation.Parameters.Add( parameterValue );
+                    actualImplementation.Parameters.Add( CodeGenerationHelper.GenerateConversion(parameterValue, typeRef, parameter.DataType) );
                 }
             }
 

@@ -78,6 +78,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
+        ///  <param name="intermediate"></param>
         public ListenForLogEntriesIntermediateDto(LogEntry intermediate, Tecan.Sila2.Binary.IBinaryStore store)
         {
             Intermediate = new LogEntryDto(intermediate, store);

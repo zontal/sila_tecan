@@ -1,0 +1,305 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Feature xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" SiLA2Version="1.0" FeatureVersion="1.0" Originator="tecan.sila2" Category="integrationtests" xmlns="http://www.sila-standard.org">
+  <Identifier>TestServer</Identifier>
+  <DisplayName>TestServer</DisplayName>
+  <Description />
+  <Command>
+    <Identifier>PassBool</Identifier>
+    <DisplayName>PassBool</DisplayName>
+    <Description />
+    <Observable>No</Observable>
+    <Parameter>
+      <Identifier>Data</Identifier>
+      <DisplayName>Data</DisplayName>
+      <Description />
+      <DataType>
+        <Basic>Boolean</Basic>
+      </DataType>
+    </Parameter>
+    <Response>
+      <Identifier>ReturnValue</Identifier>
+      <DisplayName>ReturnValue</DisplayName>
+      <Description />
+      <DataType>
+        <Basic>Boolean</Basic>
+      </DataType>
+    </Response>
+  </Command>
+  <Command>
+    <Identifier>PassDouble</Identifier>
+    <DisplayName>PassDouble</DisplayName>
+    <Description />
+    <Observable>No</Observable>
+    <Parameter>
+      <Identifier>Data</Identifier>
+      <DisplayName>Data</DisplayName>
+      <Description />
+      <DataType>
+        <Basic>Real</Basic>
+      </DataType>
+    </Parameter>
+    <Response>
+      <Identifier>ReturnValue</Identifier>
+      <DisplayName>ReturnValue</DisplayName>
+      <Description />
+      <DataType>
+        <Basic>Real</Basic>
+      </DataType>
+    </Response>
+  </Command>
+  <Command>
+    <Identifier>PassLong</Identifier>
+    <DisplayName>PassLong</DisplayName>
+    <Description />
+    <Observable>No</Observable>
+    <Parameter>
+      <Identifier>Data</Identifier>
+      <DisplayName>Data</DisplayName>
+      <Description />
+      <DataType>
+        <Basic>Integer</Basic>
+      </DataType>
+    </Parameter>
+    <Response>
+      <Identifier>ReturnValue</Identifier>
+      <DisplayName>ReturnValue</DisplayName>
+      <Description />
+      <DataType>
+        <Basic>Integer</Basic>
+      </DataType>
+    </Response>
+  </Command>
+  <Command>
+    <Identifier>PassInt</Identifier>
+    <DisplayName>PassInt</DisplayName>
+    <Description />
+    <Observable>No</Observable>
+    <Parameter>
+      <Identifier>Data</Identifier>
+      <DisplayName>Data</DisplayName>
+      <Description />
+      <DataType>
+        <Basic>Integer</Basic>
+      </DataType>
+    </Parameter>
+    <Response>
+      <Identifier>ReturnValue</Identifier>
+      <DisplayName>ReturnValue</DisplayName>
+      <Description />
+      <DataType>
+        <Basic>Integer</Basic>
+      </DataType>
+    </Response>
+  </Command>
+  <Command>
+    <Identifier>PassTimestamp</Identifier>
+    <DisplayName>PassTimestamp</DisplayName>
+    <Description />
+    <Observable>No</Observable>
+    <Parameter>
+      <Identifier>Timestamp</Identifier>
+      <DisplayName>Timestamp</DisplayName>
+      <Description />
+      <DataType>
+        <Basic>Timestamp</Basic>
+      </DataType>
+    </Parameter>
+    <Response>
+      <Identifier>ReturnValue</Identifier>
+      <DisplayName>ReturnValue</DisplayName>
+      <Description />
+      <DataType>
+        <Basic>Timestamp</Basic>
+      </DataType>
+    </Response>
+  </Command>
+  <Command>
+    <Identifier>PassTime</Identifier>
+    <DisplayName>PassTime</DisplayName>
+    <Description />
+    <Observable>No</Observable>
+    <Parameter>
+      <Identifier>Time</Identifier>
+      <DisplayName>Time</DisplayName>
+      <Description />
+      <DataType>
+        <Basic>Time</Basic>
+      </DataType>
+    </Parameter>
+    <Response>
+      <Identifier>ReturnValue</Identifier>
+      <DisplayName>ReturnValue</DisplayName>
+      <Description />
+      <DataType>
+        <Basic>Time</Basic>
+      </DataType>
+    </Response>
+  </Command>
+  <Command>
+    <Identifier>PassString</Identifier>
+    <DisplayName>PassString</DisplayName>
+    <Description />
+    <Observable>No</Observable>
+    <Parameter>
+      <Identifier>Value</Identifier>
+      <DisplayName>Value</DisplayName>
+      <Description />
+      <DataType>
+        <Basic>String</Basic>
+      </DataType>
+    </Parameter>
+    <Response>
+      <Identifier>ReturnValue</Identifier>
+      <DisplayName>ReturnValue</DisplayName>
+      <Description />
+      <DataType>
+        <Basic>String</Basic>
+      </DataType>
+    </Response>
+  </Command>
+  <Command>
+    <Identifier>PassStream</Identifier>
+    <DisplayName>PassStream</DisplayName>
+    <Description />
+    <Observable>No</Observable>
+    <Parameter>
+      <Identifier>Value</Identifier>
+      <DisplayName>Value</DisplayName>
+      <Description />
+      <DataType>
+        <Basic>Binary</Basic>
+      </DataType>
+    </Parameter>
+    <Response>
+      <Identifier>ReturnValue</Identifier>
+      <DisplayName>ReturnValue</DisplayName>
+      <Description />
+      <DataType>
+        <Basic>Binary</Basic>
+      </DataType>
+    </Response>
+  </Command>
+  <Command>
+    <Identifier>PassFile</Identifier>
+    <DisplayName>PassFile</DisplayName>
+    <Description />
+    <Observable>No</Observable>
+    <Parameter>
+      <Identifier>File</Identifier>
+      <DisplayName>File</DisplayName>
+      <Description />
+      <DataType>
+        <Basic>Binary</Basic>
+      </DataType>
+    </Parameter>
+    <Response>
+      <Identifier>ReturnValue</Identifier>
+      <DisplayName>ReturnValue</DisplayName>
+      <Description />
+      <DataType>
+        <Basic>Binary</Basic>
+      </DataType>
+    </Response>
+  </Command>
+  <Command>
+    <Identifier>PassBytes</Identifier>
+    <DisplayName>PassBytes</DisplayName>
+    <Description />
+    <Observable>No</Observable>
+    <Parameter>
+      <Identifier>Bytes</Identifier>
+      <DisplayName>Bytes</DisplayName>
+      <Description />
+      <DataType>
+        <Basic>Binary</Basic>
+      </DataType>
+    </Parameter>
+    <Response>
+      <Identifier>ReturnValue</Identifier>
+      <DisplayName>ReturnValue</DisplayName>
+      <Description />
+      <DataType>
+        <Basic>Binary</Basic>
+      </DataType>
+    </Response>
+  </Command>
+  <Command>
+    <Identifier>PassStructure</Identifier>
+    <DisplayName>PassStructure</DisplayName>
+    <Description />
+    <Observable>No</Observable>
+    <Parameter>
+      <Identifier>Structure</Identifier>
+      <DisplayName>Structure</DisplayName>
+      <Description />
+      <DataType>
+        <DataTypeIdentifier>SomeStructure</DataTypeIdentifier>
+      </DataType>
+    </Parameter>
+    <Response>
+      <Identifier>ReturnValue</Identifier>
+      <DisplayName>ReturnValue</DisplayName>
+      <Description />
+      <DataType>
+        <DataTypeIdentifier>SomeStructure</DataTypeIdentifier>
+      </DataType>
+    </Response>
+  </Command>
+  <DataTypeDefinition>
+    <Identifier>SomeStructure</Identifier>
+    <DisplayName>SomeStructure</DisplayName>
+    <Description />
+    <DataType>
+      <Structure>
+        <Element>
+          <Identifier>Boolean</Identifier>
+          <DisplayName>Boolean</DisplayName>
+          <Description />
+          <DataType>
+            <Basic>Boolean</Basic>
+          </DataType>
+        </Element>
+        <Element>
+          <Identifier>Real</Identifier>
+          <DisplayName>Real</DisplayName>
+          <Description />
+          <DataType>
+            <Basic>Real</Basic>
+          </DataType>
+        </Element>
+        <Element>
+          <Identifier>Long</Identifier>
+          <DisplayName>Long</DisplayName>
+          <Description />
+          <DataType>
+            <Basic>Integer</Basic>
+          </DataType>
+        </Element>
+        <Element>
+          <Identifier>Int</Identifier>
+          <DisplayName>Int</DisplayName>
+          <Description />
+          <DataType>
+            <Basic>Integer</Basic>
+          </DataType>
+        </Element>
+        <Element>
+          <Identifier>Timestamp</Identifier>
+          <DisplayName>Timestamp</DisplayName>
+          <Description />
+          <DataType>
+            <Basic>Timestamp</Basic>
+          </DataType>
+        </Element>
+        <Element>
+          <Identifier>Time</Identifier>
+          <DisplayName>Time</DisplayName>
+          <Description />
+          <DataType>
+            <Basic>Time</Basic>
+          </DataType>
+        </Element>
+      </Structure>
+    </DataType>
+  </DataTypeDefinition>
+</Feature>

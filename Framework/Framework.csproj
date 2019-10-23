@@ -38,7 +38,7 @@
         <PackageReference Include="IPNetwork2" Version="2.1.2" />
         <PackageReference Include="protobuf-net" Version="2.4.0" />
         <PackageReference Include="Makaretu.Dns.Multicast" Version="0.25.0" />
-        <PackageReference Include="System.ComponentModel.Composition" Version="4.5.0" />
+        <PackageReference Include="System.ComponentModel.Composition" Version="4.6.0" />
         <PackageReference Include="Tecan.MAP.Contracts.Services.Logging" Version="2.1.0.14695" />
     </ItemGroup>
 

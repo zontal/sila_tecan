@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFrameworks>netcoreapp2.1;net461;net472</TargetFrameworks>
+    <RootNamespace>Tecan.Sila2.IntegrationTests</RootNamespace>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <OutputPath>..\..\Build\Test\TestServer</OutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="TestServer\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Contracts\Contracts.csproj" />
+    <ProjectReference Include="..\..\Features\Authentication\Authentication.csproj" />
+    <ProjectReference Include="..\..\Features\Locking\Locking.csproj" />
+    <ProjectReference Include="..\..\Framework\Framework.csproj" />
+    <ProjectReference Include="..\..\Server\Server.csproj" />
+  </ItemGroup>
+
+</Project>

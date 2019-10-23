@@ -1,0 +1,29 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>netcoreapp2.1;net461;net472</TargetFrameworks>
+    <RootNamespace>Tecan.Sila2.Authentication.Tests</RootNamespace>
+    <AssemblyName>Tecan.Sila2.Authentication.Tests</AssemblyName>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <OutputPath>..\..\..\Build\Test\Features\Authentication\</OutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\..\TestLoggingFactory.cs" Link="TestLoggingFactory.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.3.0" />
+    <PackageReference Include="Moq" Version="4.13.1" />
+    <PackageReference Include="NUnit" Version="3.12.0" />
+    <PackageReference Include="NUnit3TestAdapter" Version="3.15.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Features\Authentication\Authentication.csproj" />
+    <ProjectReference Include="..\..\..\Framework\Framework.csproj" />
+  </ItemGroup>
+
+</Project>

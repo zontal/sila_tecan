@@ -1,10 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
-    <AssemblyName>Tecan.Sila2.ParameterConstraintsProvider</AssemblyName>
-    <RootNamespace>Tecan.Sila2.ParameterConstraintsProvider</RootNamespace>
-  </PropertyGroup>
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <AssemblyName>Tecan.Sila2.ParameterConstraintsProvider</AssemblyName>
+        <RootNamespace>Tecan.Sila2.ParameterConstraintsProvider</RootNamespace>
+        <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+        <LangVersion>latest</LangVersion>
+    </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <OutputPath>..\..\Build\Features\</OutputPath>

@@ -23,7 +23,7 @@ namespace Tecan.Sila2.ParameterConstraintsProvider
     public sealed partial class ParameterConstraintsProviderProvider
     {
         
-        private static string @__ServiceName = "sila2.org.silastandard.core.parameterconstraintsprovider.v1.ParameterConstraintsP" +
+        private static string @__ServiceName = "sila2.org.silastandard.core.parameterconstraintsprovider.v0.ParameterConstraintsP" +
             "rovider";
         
         private static Grpc.Core.Method<EmptyRequest, PropertyResponse<System.Collections.Generic.List<ParameterConstraintDto>>> GetParametersConstraintsMethod = new Grpc.Core.Method<EmptyRequest, PropertyResponse<System.Collections.Generic.List<ParameterConstraintDto>>>(Grpc.Core.MethodType.Unary, @__ServiceName, "Get_ParametersConstraints", EmptyRequest.Marshaller, ProtobufMarshaller<PropertyResponse<System.Collections.Generic.List<ParameterConstraintDto>>>.Default);
@@ -80,7 +80,7 @@ namespace Tecan.Sila2.ParameterConstraintsProvider
             /// <returns>The current value wrapped in a data transfer object</returns>
             protected virtual System.Threading.Tasks.Task<PropertyResponse<System.Collections.Generic.List<ParameterConstraintDto>>> GetParametersConstraints(EmptyRequest request, Grpc.Core.ServerCallContext context)
             {
-                return _server.CreatePropertyTask("org.silastandard/core/ParameterConstraintsProvider/v1/Property/ParametersConstrai" +
+                return _server.CreatePropertyTask("org.silastandard/core/ParameterConstraintsProvider/v0/Property/ParametersConstrai" +
                         "nts", new PropertyResponse<System.Collections.Generic.List<ParameterConstraintDto>>(Tecan.Sila2.DtoExtensions.Encapsulate(_implementation.ParametersConstraints, ParameterConstraintDto.Create, _server)), context);
             }
             
@@ -101,7 +101,7 @@ namespace Tecan.Sila2.ParameterConstraintsProvider
             /// <returns>A property object or null, if the property is not supported</returns>
             public System.Reflection.PropertyInfo GetProperty(string propertyIdentifier)
             {
-                if ((propertyIdentifier == "org.silastandard/core/ParameterConstraintsProvider/v1/Property/ParametersConstrai" +
+                if ((propertyIdentifier == "org.silastandard/core/ParameterConstraintsProvider/v0/Property/ParametersConstrai" +
                     "nts"))
                 {
                     return typeof(IParameterConstraintsProvider).GetProperty("ParametersConstraints");
@@ -152,7 +152,7 @@ namespace Tecan.Sila2.ParameterConstraintsProvider
             
             private System.Collections.Generic.ICollection<ParameterConstraint> RequestParametersConstraints()
             {
-                Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/core/ParameterConstraintsProvider/v1/Property/ParametersConstrai" +
+                Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/core/ParameterConstraintsProvider/v0/Property/ParametersConstrai" +
                         "nts");
                 try
                 {

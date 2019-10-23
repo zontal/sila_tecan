@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+      <AssemblyName>Tecan.Sila2.ParameterConstraintsProvider.Client</AssemblyName>
+      <RootNamespace>Tecan.Sila2.ParameterConstraintsProvider</RootNamespace>
+  </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+        <OutputPath>..\..\..\Build\Features\Client</OutputPath>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+        <OutputPath>..\..\..\Build\Features\Client</OutputPath>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\Contracts\Contracts.csproj" />
+      <ProjectReference Include="..\..\Framework\Framework.csproj" />
+    </ItemGroup>
+
+</Project>

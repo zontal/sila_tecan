@@ -41,6 +41,10 @@ namespace Tecan.Sila2.Authentication
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
+        ///  <param name="userIdentification">The user identification string (e.g. a user name)</param>
+        ///  <param name="password">The (encrypted) password</param>
+        ///  <param name="requestedServer">The ServerUUID of the server for which an authorization is requested.</param>
+        ///  <param name="requestedFeatures">The fully qualified identifiers of features that are requested to access. If no feature is provided, this means that all features are requested.</param>
         public LoginRequestDto(string userIdentification, string password, string requestedServer, System.Collections.Generic.ICollection<string> requestedFeatures, Tecan.Sila2.Binary.IBinaryStore store)
         {
             UserIdentification = new Tecan.Sila2.StringDto(userIdentification, store);
@@ -245,6 +249,7 @@ namespace Tecan.Sila2.Authentication
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
+        ///  <param name="accessToken">The access token to be invalidated.</param>
         public LogoutRequestDto(string accessToken, Tecan.Sila2.Binary.IBinaryStore store)
         {
             AccessToken = new Tecan.Sila2.StringDto(accessToken, store);

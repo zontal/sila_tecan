@@ -1,0 +1,43 @@
+﻿using System;
+using System.ComponentModel.Composition;
+using Tecan.MAP.Contracts.Services.Logging;
+using Tecan.MAP.Contracts.Services.Logging.Configuration;
+
+namespace Tecan.Sila2.Tests
+{
+    [Export(typeof(ILoggingChannelFactory))]
+    [PartCreationPolicy(CreationPolicy.Shared)]
+    public class TestLoggingFactory : ILoggingChannelFactory, ILoggingChannel
+    {
+        public void Dispose()
+        {
+        }
+
+        public ILoggingChannel CreateChannel( Type type )
+        {
+            return this;
+        }
+
+        public LoggingConfiguration Configuration => null;
+
+        public void Log( Func<string> messageProvider, Severity severity = Severity.Debug )
+        {
+        }
+
+        public void Log( Func<string> messageProvider, Action<IDataBuilder> dataProvider, Severity severity = Severity.Debug )
+        {
+        }
+
+        public void Log( Func<string> messageProvider, ActivityId activityId, Severity severity = Severity.Debug )
+        {
+        }
+
+        public void Log( Func<string> messageProvider, ActivityId activityId, Action<IDataBuilder> dataProvider, Severity severity = Severity.Debug )
+        {
+        }
+
+        public void LogException( Func<string> messageProvider, Exception exception )
+        {
+        }
+    }
+}

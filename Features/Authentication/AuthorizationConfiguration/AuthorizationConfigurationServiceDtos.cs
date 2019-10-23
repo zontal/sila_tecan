@@ -35,6 +35,7 @@ namespace Tecan.Sila2.Authorization
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
+        ///  <param name="authorizationProvider">The UUID of the SiLA server that this server uses to verify access tokens.</param>
         public SetAuthorizationProviderRequestDto(string authorizationProvider, Tecan.Sila2.Binary.IBinaryStore store)
         {
             AuthorizationProvider = new Tecan.Sila2.StringDto(authorizationProvider, store);
@@ -107,6 +108,7 @@ namespace Tecan.Sila2.Authorization
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
+        ///  <param name="value"></param>
         public AuthorizationProviderResponseDto(string value, Tecan.Sila2.Binary.IBinaryStore store)
         {
             Value = new Tecan.Sila2.StringDto(value, store);

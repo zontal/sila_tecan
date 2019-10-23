@@ -188,5 +188,16 @@ namespace Tecan.Sila2.Binary
         {
             return true;
         }
+
+        /// <inheritdoc />
+        public FileInfo ResolveStoredBinaryFile( string identifier )
+        {
+            var tempPath = Path.GetTempFileName();
+            using( var stream = File.OpenWrite(tempPath) )
+            {
+                Download( identifier, stream ).Wait();
+            }
+            return new FileInfo(tempPath);
+        }
     }
 }

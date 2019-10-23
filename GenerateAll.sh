@@ -34,3 +34,5 @@ $SILAGEN generate-feature Build/Test/netcoreapp2.1/Tecan.Sila2Generator.Test.dll
 
 $SILAGEN generate-feature Build/Features/netstandard2.0/Tecan.Sila2.ParameterConstraintsProvider.dll -i Tecan.Sila2.ParameterConstraintsProvider.IParameterConstraintsProvider Features/ParameterConstraintsProvider/ParameterConstraintsProviderMock.sila.xml -o org.silastandard
 $SILAGEN generate-provider Features/ParameterConstraintsProvider/ParameterConstraintsProviderMock.sila.xml Features/ParameterConstraintsProvider/ParameterConstraintDtos.cs Features/ParameterConstraintsProvider/ParameterConstraintsServiceProvider.cs -n Tecan.Sila2.ParameterConstraintsProvider
+
+$SILAGEN generate-server Build/Test/Features/ParameterDefaultsProvider/netcoreapp2.1/Tecan.Sila2.ParameterDefaultsProvider.Tests.dll Tests/Features/ParameterDefaultsProvider.Tests/ParameterDefaultsProvider.Tests.csproj -n Tecan.Sila2.ParameterDefaultsProvider.Tests

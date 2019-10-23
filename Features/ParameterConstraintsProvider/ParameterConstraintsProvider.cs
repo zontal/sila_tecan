@@ -69,7 +69,7 @@ namespace Tecan.Sila2.ParameterConstraintsProvider
                 var constraint = resolver.ResolveConstraint( attribute );
                 if( constraint != null )
                 {
-                    return FeatureSerializer.SaveToString( new DataTypeType()
+                    return DataTypeSerializer.SaveToString( new DataTypeType()
                     {
                         Item = constraint
                     } );

@@ -57,7 +57,10 @@ namespace Tecan.Sila2
                 {
                     try
                     {
-                        _configurationProvider.AuthorizationProvider.Verify( accessToken, _silaService.Value.ServerUUID, commandIdentifier );
+                        if( _configurationProvider.AuthorizationProvider.Verify( accessToken, _silaService.Value.ServerUUID, GetFeatureIdentifier(commandIdentifier) ) > 0 )
+                        {
+                            return null;
+                        }
                     }
                     catch( InvalidProviderAccessTokenException e )
                     {
@@ -78,12 +81,28 @@ namespace Tecan.Sila2
             return null;
         }
 
+        private string GetFeatureIdentifier( string commandIdentifier )
+        {
+            // both commands and properties end with /Command/ or /Property/, so take second last /
+            var lastSlash = commandIdentifier.LastIndexOf( '/' );
+            if( lastSlash != -1 )
+            {
+                var secondLastSlash = commandIdentifier.LastIndexOf( '/', lastSlash - 1 );
+                if( secondLastSlash > 0 )
+                {
+                    return commandIdentifier.Substring( 0, secondLastSlash );
+                }
+            }
+
+            return null;
+        }
+
         public LoginResponse Login(string userIdentification, string password, string server, ICollection<string> requestedFeatures)
         {
             LoginResponse loginResponse;
             if (server != _silaService.Value.ServerUUID)
             {
-                throw new AuthenticationFailedException($"Cannot provider access token for server {server}. This server can only serve authentication requests for server {_silaService.Value.ServerName} ({_silaService.Value.ServerUUID}).");
+                throw new AuthenticationFailedException($"Cannot provide access token for server {server}. This server can only serve authentication requests for server {_silaService.Value.ServerName} ({_silaService.Value.ServerUUID}).");
             }
 
             var user = _configurationProvider.LocalUsers.FirstOrDefault( u => u.Name == userIdentification && u.Password == password );

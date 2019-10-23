@@ -30,3 +30,12 @@ Build\Generator\net472\SilaGen.exe generate-feature Build\Test\net472\Tecan.Sila
 
 Build\Generator\net472\SilaGen.exe generate-feature Build\Features\netstandard2.0\Tecan.Sila2.ParameterConstraintsProvider.dll -i Tecan.Sila2.ParameterConstraintsProvider.IParameterConstraintsProvider Features\ParameterConstraintsProvider\ParameterConstraintsProviderMock.sila.xml -o org.silastandard
 Build\Generator\net472\SilaGen.exe generate-provider Features\ParameterConstraintsProvider\ParameterConstraintsProviderMock.sila.xml Features\ParameterConstraintsProvider\ParameterConstraintDtos.cs Features\ParameterConstraintsProvider\ParameterConstraintsServiceProvider.cs -n Tecan.Sila2.ParameterConstraintsProvider
+
+Build\Generator\net472\SilaGen.exe generate-server Build\Test\Features\ParameterDefaultsProvider\net472\Tecan.Sila2.ParameterDefaultsProvider.Tests.dll Tests\Features\ParameterDefaultsProvider.Tests\ParameterDefaultsProvider.Tests.csproj -n Tecan.Sila2.ParameterDefaultsProvider.Tests
+
+Build\Generator\net472\SilaGen.exe generate-server Build\Test\TestServer\net472\TestServer.exe Tests\TestServer\TestServer.csproj -n Tecan.Sila2.IntegrationTests
+Build\Generator\net472\SilaGen.exe generate-client Tests\TestServer\TestServer.sila.xml Tests\IntegrationTests\IntegrationTests.csproj -n Tecan.Sila2.IntegrationTests
+
+Build\Generator\net472\SilaGen.exe generate-client Features\Authentication\AuthenticationService.sila.xml Features\Authentication.Client\Authentication.Client.csproj -n Tecan.Sila2.Authentication
+Build\Generator\net472\SilaGen.exe generate-client Features\Locking\LockController.sila.xml Features\Locking.Client\Locking.Client.csproj -n Tecan.Sila2.Locking
+Build\Generator\net472\SilaGen.exe generate-client Features\ParameterConstraintsProvider\ParameterConstraintsProviderMock.sila.xml Features\ParameterConstraintsProvider.Client\ParameterConstraintsProvider.Client.csproj -n Tecan.Sila2.ParameterConstraintsProvider

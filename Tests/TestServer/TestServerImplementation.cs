@@ -1,0 +1,68 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.Composition;
+using System.IO;
+using System.Text;
+
+namespace Tecan.Sila2.IntegrationTests
+{
+    [Export(typeof(ITestServer))]
+    [PartCreationPolicy(CreationPolicy.Shared)]
+    internal class TestServerImplementation : ITestServer
+    {
+        public bool PassBool( bool data )
+        {
+            return data;
+        }
+
+        public double PassDouble( double data )
+        {
+            return data;
+        }
+
+        public long PassLong( long data )
+        {
+            return data;
+        }
+
+        public int PassInt( int data )
+        {
+            return data;
+        }
+
+        public DateTimeOffset PassTimestamp( DateTimeOffset timestamp )
+        {
+            return timestamp;
+        }
+
+        public TimeSpan PassTime( TimeSpan time )
+        {
+            return time;
+        }
+
+        public string PassString( string value )
+        {
+            return value;
+        }
+
+        public Stream PassStream( Stream value )
+        {
+            return value;
+        }
+
+        public FileInfo PassFile( FileInfo file )
+        {
+            return file;
+        }
+
+        public byte[] PassBytes( byte[] bytes )
+        {
+            return bytes;
+        }
+
+        public SomeStructure PassStructure( SomeStructure structure )
+        {
+            return structure;
+        }
+    }
+}

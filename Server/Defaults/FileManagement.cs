@@ -26,6 +26,11 @@ namespace Tecan.Sila2.Server
             LocateFile(binaryTransferUUID).Delete();
         }
 
+        public FileInfo Locate( string binaryTransferUUID )
+        {
+            return LocateFile( binaryTransferUUID );
+        }
+
         public bool Exists(string binaryTransferUUID)
         {
             return LocateFile(binaryTransferUUID).Exists;

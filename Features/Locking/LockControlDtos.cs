@@ -35,6 +35,14 @@ namespace Tecan.Sila2.Locking
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
+        ///  <param name="lockIdentifier">
+        ///                The lock identifier that has to be sent along with every (lock protected) request to use the server's
+        ///                functionality.
+        ///            </param>
+        ///  <param name="timeout">
+        ///                The time after a SiLA Server is automatically unlocked when no request with a valid lock identifier
+        ///                has been received meanwhile. A timeout of 0 specifies an infinite time (no timeout).
+        ///            </param>
         public LockServerRequestDto(string lockIdentifier, long timeout, Tecan.Sila2.Binary.IBinaryStore store)
         {
             LockIdentifier = new Tecan.Sila2.StringDto(lockIdentifier, store);
@@ -117,6 +125,7 @@ namespace Tecan.Sila2.Locking
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
+        ///  <param name="lockIdentifier">The lock identifier that has been used to lock the SiLA Server.</param>
         public UnlockServerRequestDto(string lockIdentifier, Tecan.Sila2.Binary.IBinaryStore store)
         {
             LockIdentifier = new Tecan.Sila2.StringDto(lockIdentifier, store);

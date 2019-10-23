@@ -30,6 +30,13 @@ namespace Tecan.Sila2.Server.Binary
         Stream OpenWrite(string binaryTransferUUID);
 
         /// <summary>
+        /// Locates the file with the given binary storage identifier on the file system
+        /// </summary>
+        /// <param name="binaryTransferUUID">The unique binary storage identifier</param>
+        /// <returns>The file info object or null, if it is not required.</returns>
+        FileInfo Locate( string binaryTransferUUID );
+
+        /// <summary>
         /// Queries whether the file with the binary storage identifier exists in the file system
         /// </summary>
         /// <param name="binaryTransferUUID">The unique binary storage identifier</param>

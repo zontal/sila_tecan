@@ -402,6 +402,46 @@ namespace Tecan.Sila2
         }
 
         /// <summary>
+        /// Extracts the value from the dto into a byte array
+        /// </summary>
+        /// <param name="resolver">A resolver component to resolve binary data</param>
+        /// <returns>The actual value</returns>
+        public byte[] ExtractToBytes(IBinaryStore resolver)
+        {
+            if( ShouldSerializeValue() )
+            {
+                return Value;
+            }
+            else
+            {
+                using( var ms = new MemoryStream() )
+                {
+                    resolver.ResolveStoredBinary(BinaryTransferUUID).CopyTo(ms);
+                    return ms.ToArray();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Extracts the value from the dto into a file info
+        /// </summary>
+        /// <param name="resolver">A resolver component to resolve binary data</param>
+        /// <returns>The actual value</returns>
+        public FileInfo ExtractToFileInfo( IBinaryStore resolver )
+        {
+            if( ShouldSerializeValue() )
+            {
+                var path = Path.GetTempFileName();
+                File.WriteAllBytes(path, Value);
+                return new FileInfo(path);
+            }
+            else
+            {
+                return resolver.ResolveStoredBinaryFile( BinaryTransferUUID );
+            }
+        }
+
+        /// <summary>
         /// Validates the contents of the current dto
         /// </summary>
         /// <returns>Null as no errors have been found</returns>

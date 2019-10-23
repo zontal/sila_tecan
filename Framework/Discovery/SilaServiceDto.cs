@@ -33,6 +33,7 @@ namespace Tecan.Sila2.Discovery
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
+        ///  <param name="qualifiedFeatureIdentifier">The qualified Feature identifier for which the Feature description should be retrieved.</param>
         public GetFeatureDefinitionRequestDto(FeatureIdentifier qualifiedFeatureIdentifier, Tecan.Sila2.Binary.IBinaryStore store)
         {
             QualifiedFeatureIdentifier = new FeatureIdentifierDto(qualifiedFeatureIdentifier, store);
@@ -96,6 +97,7 @@ namespace Tecan.Sila2.Discovery
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
+        ///  <param name="featureDefinition">The Feature Definition in XML format.</param>
         public GetFeatureDefinitionResponseDto(FeatureDefinition featureDefinition, Tecan.Sila2.Binary.IBinaryStore store)
         {
             FeatureDefinition = new FeatureDefinitionDto(featureDefinition, store);
@@ -147,6 +149,7 @@ namespace Tecan.Sila2.Discovery
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
+        ///  <param name="serverName">The human readable name of to assign to the SiLA Server</param>
         public SetServerNameRequestDto(string serverName, Tecan.Sila2.Binary.IBinaryStore store)
         {
             ServerName = new Tecan.Sila2.StringDto(serverName, store);
@@ -212,6 +215,7 @@ namespace Tecan.Sila2.Discovery
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
+        ///  <param name="value"></param>
         public ServerUUIDResponseDto(string value, Tecan.Sila2.Binary.IBinaryStore store)
         {
             Value = new Tecan.Sila2.StringDto(value, store);
@@ -271,6 +275,7 @@ namespace Tecan.Sila2.Discovery
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
+        ///  <param name="value"></param>
         public ServerVersionResponseDto(string value, Tecan.Sila2.Binary.IBinaryStore store)
         {
             Value = new Tecan.Sila2.StringDto(value, store);

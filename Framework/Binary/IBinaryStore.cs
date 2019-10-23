@@ -13,6 +13,13 @@ namespace Tecan.Sila2.Binary
         /// <param name="identifier">The binary storage identifier</param>
         /// <returns>A stream that contains the binary</returns>
         Stream ResolveStoredBinary(string identifier);
+        
+        /// <summary>
+        /// Resolves the given identifier into a stream
+        /// </summary>
+        /// <param name="identifier">The binary storage identifier</param>
+        /// <returns>A stream that contains the binary</returns>
+        FileInfo ResolveStoredBinaryFile( string identifier );
 
         /// <summary>
         /// Decides whether the given binary should be stored
