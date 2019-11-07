@@ -37,7 +37,7 @@ namespace Tecan.Sila2.DynamicClient
             Property = property;
             Context = context;
             var responseMarshaller =
-                new Marshaller<DynamicObjectProperty>(Context.Serializer.Serialize, DeserializeResponse);
+                new Marshaller<DynamicObjectProperty>(SerializeRequest, DeserializeResponse);
             if (property.Observable == FeaturePropertyObservable.Yes)
             {
                 _method = new Method<EmptyRequest, DynamicObjectProperty>(MethodType.ServerStreaming,
@@ -50,6 +50,11 @@ namespace Tecan.Sila2.DynamicClient
                     "Get_" + property.Identifier, EmptyRequest.Marshaller, responseMarshaller);
 
             }
+        }
+
+        private byte[] SerializeRequest( DynamicObjectProperty value )
+        {
+            return Context.Serializer.Serialize( value, null );
         }
 
         private async Task<DynamicObjectProperty> RequestDynamic( IClientCallInfo callInfo )
@@ -106,7 +111,7 @@ namespace Tecan.Sila2.DynamicClient
             try
             {
                 var property = new DynamicObjectProperty(Property.Identifier, Property.DisplayName, Property.Description, Property.DataType);
-                Context.Serializer.Deserialize(property, data, true);
+                Context.Serializer.Deserialize(property, data, true, Context.ExecutionManager.DownloadBinaryStore);
                 return property;
             }
             catch (Exception e)

@@ -95,7 +95,7 @@ namespace Tecan.Sila2
                             }
                             else
                             {
-                                throw new SilaException($"Unknown Sila error {error.DefinedExecutionError.ErrorIdentifier} happened: {error.DefinedExecutionError.Message}");
+                                return new SilaException($"Unknown Sila error {error.DefinedExecutionError.ErrorIdentifier} happened: {error.DefinedExecutionError.Message}");
                             }
                         }
 

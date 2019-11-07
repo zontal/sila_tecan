@@ -27,6 +27,7 @@ namespace Tecan.Sila2.Binary
         {
             var ms = new MemoryStream();
             Download(identifier, ms).Wait();
+            ms.Position = 0;
             return ms;
         }
 

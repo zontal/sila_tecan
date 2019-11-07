@@ -1244,7 +1244,7 @@ namespace Tecan.Sila2
         /// <returns>A collection with the underlying data</returns>
         public static ICollection<T> Extract<T>(this IEnumerable<ISilaTransferObject<T>> source, IBinaryStore resolver)
         {
-            return source.Select(it => it.Extract(resolver)).ToList();
+            return source?.Select(it => it.Extract(resolver)).ToList();
         }
 
         /// <summary>

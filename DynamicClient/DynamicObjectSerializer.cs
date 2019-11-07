@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using ProtoBuf;
+using Tecan.Sila2.Binary;
 
 namespace Tecan.Sila2.DynamicClient
 {
@@ -33,8 +34,9 @@ namespace Tecan.Sila2.DynamicClient
         /// <param name="property">The property the content should be deserialized into</param>
         /// <param name="data">The actual payload data</param>
         /// <param name="readFieldHeader">True, if field headers should be read, otherwise False</param>
+        /// <param name="binaryStore">The binary store to resolve binary storage identifiers</param>
         /// <exception cref="ArgumentNullException">Thrown, if <paramref name="property"/> is null.</exception>
-        public void Deserialize(DynamicObjectProperty property, byte[] data, bool readFieldHeader)
+        public void Deserialize(DynamicObjectProperty property, byte[] data, bool readFieldHeader, IBinaryStore binaryStore )
         {
             if (property == null) throw new ArgumentNullException(nameof(property));
 
@@ -43,38 +45,64 @@ namespace Tecan.Sila2.DynamicClient
                 using (var reader = ProtoReader.Create(ms, null))
                 {
                     if (readFieldHeader) reader.ReadFieldHeader();
-                    Read(reader, new Action<object>(property.SetValue), (dynamic)property.Type.Item);
+                    Read(reader, new Action<object>(property.SetValue), binaryStore, (dynamic)property.Type.Item);
                 }
             }
         }
 
-        private void Read(ProtoReader reader, Action<object> setProperty, BasicType type)
+        private void Read(ProtoReader reader, Action<object> setProperty, IBinaryStore binaryStore, BasicType type)
         {
             var token = ProtoReader.StartSubItem(reader);
             switch (type)
             {
                 case BasicType.String:
-                    SkipIfNotField1(reader);
-                    setProperty(reader.ReadString());
+                    if( IsInField( reader, 1 ) )
+                    {
+                        setProperty( reader.ReadString() );
+                    }
                     break;
                 case BasicType.Integer:
-                    SkipIfNotField1(reader);
-                    setProperty(reader.ReadInt64());
+                    if( IsInField( reader, 1 ) )
+                    {
+                        setProperty( reader.ReadInt64() );
+                    }
+                    else
+                    {
+                        setProperty( 0L );
+                    }
                     break;
                 case BasicType.Real:
-                    SkipIfNotField1(reader);
-                    setProperty(reader.ReadDouble());
+                    if( IsInField( reader, 1 ) )
+                    {
+                        setProperty( reader.ReadDouble() );
+                    }
+                    else
+                    {
+                        setProperty( 0.0 );
+                    }
                     break; ;
                 case BasicType.Boolean:
-                    SkipIfNotField1(reader);
-                    setProperty(reader.ReadBoolean());
+                    if( IsInField( reader, 1 ) )
+                    {
+                        setProperty( reader.ReadBoolean() );
+                    }
+                    else
+                    {
+                        setProperty( false );
+                    }
                     break;
                 case BasicType.Time:
                     ReadTime(reader, setProperty);
                     break;
                 case BasicType.Binary:
-                    SkipIfNotField1(reader);
-                    setProperty(Encoding.UTF8.GetBytes(reader.ReadString()));
+                    if( IsInField( reader, 1 ) )
+                    {
+                        setProperty( new MemoryStream( Encoding.UTF8.GetBytes( reader.ReadString() ) ) );
+                    }
+                    else if (IsInField(reader, 2))
+                    {
+                        setProperty( binaryStore.ResolveStoredBinary( reader.ReadString() ) );
+                    }
                     break;
                 case BasicType.Date:
                     ReadDate(reader, setProperty);
@@ -86,87 +114,93 @@ namespace Tecan.Sila2.DynamicClient
             ProtoReader.EndSubItem(token, reader);
         }
 
+        private static int ReadUIntOfField( ProtoReader reader, int field )
+        {
+            if(IsInField( reader, field ))
+            {
+                return (int)reader.ReadUInt32();
+            }
+            else
+            {
+                return 0;
+            }
+        }
+
         private static void ReadTimestamp(ProtoReader reader, Action<object> setProperty)
         {
-            SkipIfNotField1(reader);
-            var seconds = reader.ReadUInt32();
-            SkipIfNotField1(reader, 2);
-            var minute = reader.ReadUInt32();
-            SkipIfNotField1(reader, 3);
-            var hour = reader.ReadUInt32();
-            SkipIfNotField1(reader, 4);
-            var day = reader.ReadUInt32();
-            SkipIfNotField1(reader, 5);
-            var month = reader.ReadUInt32();
-            SkipIfNotField1(reader, 6);
-            var year = reader.ReadUInt32();
-            SkipIfNotField1(reader, 7);
-            TimeSpan timeZone = ReadTimezone(reader);
+            var seconds = ReadUIntOfField( reader, 1 );
+            var minute = ReadUIntOfField( reader, 2 );
+            var hour = ReadUIntOfField( reader, 3 );
+            var day = ReadUIntOfField( reader, 4 );
+            var month = ReadUIntOfField( reader, 5 );
+            var year = ReadUIntOfField( reader, 6 );
+            TimeSpan timeZone = ReadTimezone(reader, 7);
             setProperty(new DateTimeOffset((int)year, (int)month, (int)day, (int)hour, (int)minute, (int)seconds, timeZone));
         }
 
         private static void ReadDate(ProtoReader reader, Action<object> setProperty)
         {
-            SkipIfNotField1(reader);
-            var day = reader.ReadUInt32();
-            SkipIfNotField1(reader, 2);
-            var month = reader.ReadUInt32();
-            SkipIfNotField1(reader, 3);
-            var year = reader.ReadUInt32();
-            SkipIfNotField1(reader, 4);
-            TimeSpan timeZone = ReadTimezone(reader);
+            var day = ReadUIntOfField( reader, 1 );
+            var month = ReadUIntOfField( reader, 2 );
+            var year = ReadUIntOfField( reader, 3 );
+            TimeSpan timeZone = ReadTimezone(reader, 4);
             setProperty(new DateTimeOffset((int)year, (int)month, (int)day, 0, 0, 0, timeZone));
         }
 
         private static void ReadTime(ProtoReader reader, Action<object> setProperty)
         {
-            SkipIfNotField1(reader);
-            var seconds = reader.ReadUInt32();
-            SkipIfNotField1(reader, 2);
-            var minute = reader.ReadUInt32();
-            SkipIfNotField1(reader, 3);
-            var hour = reader.ReadUInt32();
-            var time = new TimeSpan((int)hour, (int)minute, (int)seconds);
-            SkipIfNotField1(reader, 4);
-            TimeSpan timeZone = ReadTimezone(reader);
+            var seconds = ReadUIntOfField( reader, 1 );
+            var minute = ReadUIntOfField( reader, 2 );
+            var hour = ReadUIntOfField( reader, 3 );
+
+            var time = new TimeSpan(hour, minute, seconds);
+            TimeSpan timeZone = ReadTimezone( reader, 4 );
+
             setProperty(time + timeZone);
         }
 
-        private static TimeSpan ReadTimezone(ProtoReader reader)
+        private static TimeSpan ReadTimezone(ProtoReader reader, int field)
         {
-            var innerToken = ProtoReader.StartSubItem(reader);
-            SkipIfNotField1(reader);
-            var timeZoneHour = reader.ReadInt32();
-            SkipIfNotField1(reader, 2);
-            var timeZoneMinute = reader.ReadUInt32();
-            ProtoReader.EndSubItem(innerToken, reader);
-            var timeZone = new TimeSpan(timeZoneHour, (int)timeZoneMinute, 0);
-            return timeZone;
-        }
-
-        private static void SkipIfNotField1(ProtoReader reader, int field = 1)
-        {
-            if (reader.ReadFieldHeader() != field)
+            if( IsInField( reader, field ) )
             {
-                reader.SkipField();
+                var innerToken = ProtoReader.StartSubItem( reader );
+                int timeZoneHour = 0;
+                if( IsInField( reader, 1 ) )
+                {
+                    timeZoneHour = reader.ReadInt32();
+                }
+
+                var timeZoneMinute = ReadUIntOfField( reader, 2 );
+                ProtoReader.EndSubItem( innerToken, reader );
+                var timeZone = new TimeSpan( timeZoneHour, (int)timeZoneMinute, 0 );
+                return timeZone;
+            }
+            else
+            {
+                return TimeSpan.Zero;
             }
         }
 
-        private void Read(ProtoReader reader, Action<object> setProperty, ListType type)
+        private static bool IsInField( ProtoReader reader, int field )
+        {
+            return reader.TryReadFieldHeader( field );
+        }
+
+        private void Read(ProtoReader reader, Action<object> setProperty, IBinaryStore binaryStore, ListType type)
         {
             var field = reader.FieldNumber;
             var list = new ObservableCollection<object>();
             var action = new Action<object>(list.Add);
-            Read(reader, action,(dynamic)type.DataType.Item);
+            Read(reader, action, binaryStore,(dynamic)type.DataType.Item);
             while (reader.TryReadFieldHeader(field))
             {
-                Read(reader, action, (dynamic)type.DataType.Item);
+                Read(reader, action, binaryStore, (dynamic)type.DataType.Item);
             }
 
             setProperty(list);
         }
 
-        private void Read(ProtoReader reader, Action<object> setProperty, StructureType type)
+        private void Read(ProtoReader reader, Action<object> setProperty, IBinaryStore binaryStore, StructureType type)
         {
             int field;
             var dynamicObject = new DynamicObject();
@@ -182,7 +216,7 @@ namespace Tecan.Sila2.DynamicClient
                     var fieldType = element.DataType;
                     var child = new DynamicObjectProperty(element);
                     dynamicObject.Elements.Add(child);
-                    Read(reader, new Action<object>(child.SetValue), (dynamic) (fieldType.Item));
+                    Read(reader, new Action<object>(child.SetValue), binaryStore, (dynamic) (fieldType.Item));
                 }
                 else
                 {
@@ -193,12 +227,12 @@ namespace Tecan.Sila2.DynamicClient
             if (!first) ProtoReader.EndSubItem(token, reader);
         }
 
-        private void Read(ProtoReader reader, Action<object> setProperty, ConstrainedType type)
+        private void Read(ProtoReader reader, Action<object> setProperty, IBinaryStore binaryStore, ConstrainedType type)
         {
-            Read(reader, setProperty, (dynamic)(type.DataType.Item));
+            Read(reader, setProperty, binaryStore, (dynamic)(type.DataType.Item));
         }
 
-        private void Read(ProtoReader reader, Action<object> setProperty, string typeName)
+        private void Read(ProtoReader reader, Action<object> setProperty, IBinaryStore binaryStore, string typeName)
         {
             var type = DataTypeResolver?.Invoke(typeName)?.Item;
             if (!(type is StructureType))
@@ -215,7 +249,7 @@ namespace Tecan.Sila2.DynamicClient
                     }
                 };
             }
-            Read(reader, setProperty, (dynamic)(type));
+            Read(reader, setProperty, binaryStore, (dynamic)(type));
         }
 
         /// <summary>
@@ -224,7 +258,7 @@ namespace Tecan.Sila2.DynamicClient
         /// <param name="property">The dynamic property</param>
         /// <returns>A byte array</returns>
         /// <exception cref="ArgumentNullException">Thrown, if <paramref name="property"/> is null.</exception>
-        public byte[] Serialize(DynamicObjectProperty property)
+        public byte[] Serialize(DynamicObjectProperty property, IBinaryStore store )
         {
             if (property == null) throw new ArgumentNullException(nameof(property));
 
@@ -232,14 +266,14 @@ namespace Tecan.Sila2.DynamicClient
             {
                 using (var writer = ProtoWriter.Create(ms, null))
                 {
-                    Write(writer, property.Value, 0, (dynamic)property.Type.Item);
+                    Write(writer, property.Value, 0, store, (dynamic)property.Type.Item);
                     writer.Close();
                     return ms.ToArray();
                 }
             }
         }
 
-        private void Write(ProtoWriter writer, object value, int fieldNumber, BasicType type)
+        private void Write(ProtoWriter writer, object value, int fieldNumber, IBinaryStore store, BasicType type)
         {
             ProtoWriter.WriteFieldHeader(fieldNumber, WireType.String, writer);
             var token = ProtoWriter.StartSubItem(value, writer);
@@ -265,8 +299,7 @@ namespace Tecan.Sila2.DynamicClient
                     WriteTime(writer, value);
                     break;
                 case BasicType.Binary:
-                    ProtoWriter.WriteFieldHeader(1, WireType.String, writer);
-                    ProtoWriter.WriteString(Encoding.UTF8.GetString((byte[])value), writer);
+                    WriteBinary(writer, value, store);
                     break;
                 case BasicType.Date:
                     WriteDate(writer, value);
@@ -276,6 +309,56 @@ namespace Tecan.Sila2.DynamicClient
                     break;
             }
             ProtoWriter.EndSubItem(token, writer);
+        }
+
+        private static void WriteBinary(ProtoWriter writer, object value, IBinaryStore store)
+        {
+            switch( value )
+            {
+                case Stream stream:
+                    if( stream.Length > 0 && store.ShouldStoreBinary( stream.Length ) )
+                    {
+                        WriteBinaryIdentifier(writer, store.StoreBinary(stream));
+                    }
+                    else
+                    {
+                        using( var ms = new MemoryStream() )
+                        {
+                            stream.CopyTo(ms);
+                            WriteBinaryData(writer, ms.ToArray());
+                        }
+                    }
+                    return;
+                case byte[] data:
+                    if( store.ShouldStoreBinary( data.LongLength ) )
+                    {
+                        using( var ms = new MemoryStream(data) )
+                        {
+                            WriteBinaryIdentifier(writer, store.StoreBinary( ms ));
+                        }
+                    }
+                    else
+                    {
+                        WriteBinaryData(writer, data);
+                    }
+                    return;
+                case FileInfo fileInfo:
+                    WriteBinaryIdentifier( writer, store.StoreBinary( fileInfo ) );
+                    return;
+                default: throw new InvalidOperationException($"Cannot transfer {value} as binary, need Byte array, Stream or FileInfo.");
+            }
+        }
+
+        private static void WriteBinaryData(ProtoWriter writer, byte[] data)
+        {
+            ProtoWriter.WriteFieldHeader(1, WireType.String, writer);
+            ProtoWriter.WriteString(Encoding.UTF8.GetString(data), writer);
+        }
+
+        private static void WriteBinaryIdentifier(ProtoWriter writer, string identifier)
+        {
+            ProtoWriter.WriteFieldHeader(2, WireType.String, writer);
+            ProtoWriter.WriteString(identifier, writer);
         }
 
         private static void WriteTimestamp(ProtoWriter writer, object value)
@@ -296,9 +379,9 @@ namespace Tecan.Sila2.DynamicClient
             ProtoWriter.WriteFieldHeader(7, WireType.String, writer);
             var subToken = ProtoWriter.StartSubItem(dateTimeOffset, writer);
             ProtoWriter.WriteFieldHeader(1, WireType.Fixed32, writer);
-            ProtoWriter.WriteInt32(0, writer);
+            ProtoWriter.WriteInt32(dateTimeOffset.Offset.Hours, writer);
             ProtoWriter.WriteFieldHeader(2, WireType.Fixed32, writer);
-            ProtoWriter.WriteUInt32(0, writer);
+            ProtoWriter.WriteUInt32((uint)dateTimeOffset.Offset.Minutes, writer);
             ProtoWriter.EndSubItem(subToken, writer);
         }
 
@@ -338,10 +421,18 @@ namespace Tecan.Sila2.DynamicClient
             ProtoWriter.EndSubItem(subToken, writer);
         }
 
-        private void Write(ProtoWriter writer, object value, int fieldNumber, StructureType type)
+        private void Write(ProtoWriter writer, object value, int fieldNumber, IBinaryStore store, StructureType type)
         {
             var dynamicObject = value as DynamicObject;
-            if (dynamicObject == null) return;
+            if( dynamicObject == null )
+            {
+                if( value != null )
+                {
+                    throw new InvalidOperationException($"Cannot write {value} as structured type. Expecting Dynamic Object instead.");
+                }
+
+                return;
+            }
             SubItemToken token = default(SubItemToken);
             if (fieldNumber > 0)
             {
@@ -357,7 +448,7 @@ namespace Tecan.Sila2.DynamicClient
                     var prop = dynamicObject.Elements.FirstOrDefault(p => p.Identifier == element.Identifier);
                     if (prop != null)
                     {
-                        Write(writer, prop.Value, i + 1, (dynamic) element.DataType.Item);
+                        Write(writer, prop.Value, i + 1, store, (dynamic) element.DataType.Item);
                     }
                 }
             }
@@ -368,23 +459,23 @@ namespace Tecan.Sila2.DynamicClient
             }
         }
 
-        private void Write(ProtoWriter writer, object value, int fieldNumber, ListType type)
+        private void Write(ProtoWriter writer, object value, int fieldNumber, IBinaryStore store, ListType type)
         {
             if (value is IEnumerable collection)
             {
                 foreach (var element in collection)
                 {
-                    Write(writer, element, fieldNumber, (dynamic)type.DataType.Item);
+                    Write(writer, element, fieldNumber, store, (dynamic)type.DataType.Item);
                 }
             }
         }
 
-        private void Write(ProtoWriter writer, object value, int fieldNumber, ConstrainedType type)
+        private void Write(ProtoWriter writer, object value, int fieldNumber, IBinaryStore store, ConstrainedType type)
         {
-            Write(writer, value, fieldNumber, (dynamic)type.DataType.Item);
+            Write(writer, value, fieldNumber, store, (dynamic)type.DataType.Item);
         }
 
-        private void Write(ProtoWriter writer, object value, int fieldNumber, string typeName)
+        private void Write(ProtoWriter writer, object value, int fieldNumber, IBinaryStore store, string typeName)
         {
             var type = DataTypeResolver?.Invoke(typeName)?.Item;
             if (!(type is StructureType))
@@ -401,7 +492,7 @@ namespace Tecan.Sila2.DynamicClient
                     }
                 };
             }
-            Write(writer, value, fieldNumber, (dynamic)type);
+            Write(writer, value, fieldNumber, store, (dynamic)type);
         }
     }
 }

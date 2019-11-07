@@ -42,7 +42,6 @@ namespace Tecan.Sila2
             {
                 Serializer.Serialize(ms, instance);
                 var data = ms.ToArray();
-                Debug.WriteLine(Convert.ToBase64String(data));
                 return data;
             }
         }

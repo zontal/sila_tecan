@@ -65,16 +65,34 @@ namespace Tecan.Sila2.Server
                 _server.StartServer();
                 channel.Log( () => "Server listening on port " + args.Port, Severity.Info );
             }
+            catch( CompositionException e )
+            {
+                LogError(channel, e);
+                foreach( var compositionError in e.Errors )
+                {
+                    LogError(channel, e);
+                }
+
+                foreach( var rootCause in e.RootCauses )
+                {
+                    LogError(channel, e);
+                }
+            }
             catch( Exception e )
             {
-                if( channel != null )
-                {
-                    channel.LogException( "Server creation/initialization exception: ".ToString, e );
-                }
-                else
-                {
-                    Console.Error.WriteLine($"Error starting server: {e.Message}");
-                }
+                LogError(channel, e);
+            }
+        }
+
+        private static void LogError(ILoggingChannel channel, Exception e)
+        {
+            if (channel != null)
+            {
+                channel.LogException("Server creation/initialization exception: ".ToString, e);
+            }
+            else
+            {
+                Console.Error.WriteLine($"Error starting server: {e.Message}");
             }
         }
 

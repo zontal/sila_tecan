@@ -23,9 +23,9 @@ namespace Tecan.Sila2.DynamicClient
             if (command.Observable == FeatureCommandObservable.Yes) throw new ArgumentException("The command is observable.", nameof(command));
 
             var requestMarshaller =
-                new Marshaller<DynamicRequest>(context.Serializer.Serialize, DeserializeRequest);
+                new Marshaller<DynamicRequest>(SerializeRequest, DeserializeRequest);
             var responseMarshaller =
-                new Marshaller<DynamicObjectProperty>(context.Serializer.Serialize, DeserializeResponse);
+                new Marshaller<DynamicObjectProperty>(SerializeResponse, DeserializeResponse);
 
             _method = new Method<DynamicRequest, DynamicObjectProperty>(
                 MethodType.Unary,
@@ -54,7 +54,15 @@ namespace Tecan.Sila2.DynamicClient
             {
                 var convertedException = ErrorHandling.ConvertException(exception);
                 callInfo.FinishWithErrors(convertedException);
-                throw convertedException;
+                if( exception != convertedException )
+                {
+                    throw convertedException;
+                }
+                else
+                {
+                    // if the exception has not been converted, there is no need to override the stack trace
+                    throw;
+                }
             }
         }
 

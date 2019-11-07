@@ -11,6 +11,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="TestServer.sila.xml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="TestServer.sila.xml" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="TestServer\" />
   </ItemGroup>
 

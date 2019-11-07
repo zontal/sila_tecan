@@ -24,7 +24,7 @@ namespace Tecan.Sila2.IntegrationTests
             var metadata = new Metadata();
             AddIfNotNull( _lockingIdentifier, "org.silastandard/core/LockController/v1/Metadata/LockIdentifier", metadata );
             AddIfNotNull(_accessToken, "org.silastandard/core/AuthorizationService/v1/Metadata/AccessToken", metadata);
-            return new CallInfo(new CallOptions());
+            return new CallInfo(new CallOptions(headers: metadata));
         }
 
         private void AddIfNotNull( string content, string identifier, Metadata metadata )

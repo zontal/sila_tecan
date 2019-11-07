@@ -36,9 +36,9 @@ namespace Tecan.Sila2.DynamicClient
             if(command.Observable == FeatureCommandObservable.No) throw new ArgumentException( "The command is not observable.", nameof( command ) );
 
             var requestMarshaller =
-                new Marshaller<DynamicRequest>(context.Serializer.Serialize, DeserializeRequest);
+                new Marshaller<DynamicRequest>(SerializeRequest, DeserializeRequest);
             var responseMarshaller =
-                new Marshaller<DynamicObjectProperty>(context.Serializer.Serialize, DeserializeResponse);
+                new Marshaller<DynamicObjectProperty>(SerializeResponse, DeserializeResponse);
 
             _method = new Method<DynamicRequest, CommandConfirmation>(
                 MethodType.Unary,
@@ -103,7 +103,7 @@ namespace Tecan.Sila2.DynamicClient
             };
 
             var intermediateMarshaller =
-                new Marshaller<DynamicObjectProperty>(context.Serializer.Serialize, DeserializeIntermediate);
+                new Marshaller<DynamicObjectProperty>(SerializeResponse, DeserializeIntermediate);
 
             _intermediateMethod = new Method<CommandExecutionUuid, DynamicObjectProperty>(
                 MethodType.ServerStreaming,
@@ -131,7 +131,7 @@ namespace Tecan.Sila2.DynamicClient
         protected DynamicObjectProperty DeserializeIntermediate(byte[] arg)
         {
             var intermediate = CreateIntermediate();
-            Context.Serializer.Deserialize(intermediate, arg, false);
+            Context.Serializer.Deserialize(intermediate, arg, false, Context.ExecutionManager.DownloadBinaryStore);
             return intermediate;
         }
 

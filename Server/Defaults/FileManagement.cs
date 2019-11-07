@@ -7,13 +7,20 @@ namespace Tecan.Sila2.Server
     {
         public string CreateIdentifier(FileInfo file)
         {
-            var tempFile = Path.GetTempFileName();
-            if (file.Exists)
+            if( file.DirectoryName != Path.GetTempPath() )
             {
-                file.CopyTo(tempFile);
-            }
+                var tempFile = Path.GetTempFileName();
+                if( file.Exists )
+                {
+                    file.CopyTo( tempFile, true );
+                }
 
-            return Path.GetFileName(tempFile);
+                return Path.GetFileName( tempFile );
+            }
+            else
+            {
+                return file.Name;
+            }
         }
 
         public virtual string CreateNew(long length)
