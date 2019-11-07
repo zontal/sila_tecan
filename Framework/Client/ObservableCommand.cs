@@ -351,9 +351,13 @@ namespace Tecan.Sila2.Client
                     }
                 }
             }
-            catch (Exception exception)
+            catch (RpcException ex)
             {
-                throw ErrorHandling.ConvertException(exception, ErrorConverter);
+                // if the remote tells us to go away, there is no further intermediate result
+                if( !ex.Status.Detail.StartsWith( "GOAWAY" ) )
+                {
+                    throw;
+                }
             }
         }
 

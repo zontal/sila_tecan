@@ -297,16 +297,14 @@ namespace Tecan.Sila2.IntegrationTests
                 Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("tecan.sila2/integrationtests/TestServer/v1/Command/PassCollection");
                 try
                 {
-                    System.Collections.Generic.ICollection<string> response =
-                        DtoExtensions.Extract( CallInvoker.BlockingUnaryCall( PassCollectionMethod, null, callInfo.Options, request ).ReturnValue,
-                            _executionManager.DownloadBinaryStore );
+                    System.Collections.Generic.ICollection<string> response = Tecan.Sila2.DtoExtensions.Extract(CallInvoker.BlockingUnaryCall(PassCollectionMethod, null, callInfo.Options, request).ReturnValue, _executionManager.DownloadBinaryStore);
                     callInfo.FinishSuccessful();
                     return response;
                 } catch (System.Exception ex)
                 {
                     System.Exception exception = ErrorHandling.ConvertException(ex);
                     callInfo.FinishWithErrors(exception);
-                    throw;
+                    throw exception;
                 }
             }
             
@@ -393,6 +391,12 @@ namespace Tecan.Sila2.IntegrationTests
             protected override Client NewInstance(ClientBaseConfiguration configuration)
             {
                 return new Client(configuration, _executionManager);
+            }
+            
+            private T Extract<T>(Tecan.Sila2.ISilaTransferObject<T> dto)
+            
+            {
+                return dto.Extract(_executionManager.DownloadBinaryStore);
             }
         }
     }
