@@ -261,7 +261,7 @@ namespace Tecan.Sila2.Generator.Generators
                     featureCommand.Response, responseType,
                     client);
                 actualCall.Parameters.Add(
-                    new CodeMethodReferenceExpression(null, featureCommand.Identifier + "ResultMethod"));
+                    new CodeMethodReferenceExpression(null, featureCommand.Identifier + "ResponseMethod" ) );
                 if (intermediateType != null)
                 {
                     requestMethod.ReturnType = new CodeTypeReference(typeof(IIntermediateObservableCommand<,>).FullName, intermediateType, responseType);
@@ -482,9 +482,12 @@ namespace Tecan.Sila2.Generator.Generators
                 if (DtoGenerator.IsCollection(responseType, out _))
                 {
                     response = new CodeMethodInvokeExpression(
-                        new CodeMethodInvokeExpression(response, "Select",
-                            new CodeMethodReferenceExpression(null, nameof(ISilaTransferObject<object>.Extract))),
-                        "ToList");
+                        new CodeTypeReferenceExpression( typeof(DtoExtensions) ),
+                        nameof(DtoExtensions.Extract),
+                        response,
+                        new CodePropertyReferenceExpression(
+                            new CodeFieldReferenceExpression( null, ExecutionManagerFieldName ),
+                            nameof(IClientExecutionManager.DownloadBinaryStore) ) );
                 }
                 else
                 {

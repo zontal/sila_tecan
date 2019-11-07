@@ -1259,7 +1259,7 @@ namespace Tecan.Sila2
         public static List<TDto> Encapsulate<TDto, TInner>(IEnumerable<TInner> source,
             Func<TInner, IBinaryStore, TDto> convertFunc, IBinaryStore resolver)
         {
-            return source.Select(item => convertFunc(item, resolver)).ToList();
+            return source?.Select(item => convertFunc(item, resolver)).ToList();
         }
     }
 }

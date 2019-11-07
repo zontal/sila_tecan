@@ -1154,6 +1154,120 @@ namespace Tecan.Sila2.IntegrationTests
     }
     
     ///  <summary>
+    /// Data transfer object for the request of the PassCollection command
+    /// </summary>
+    [ProtoBuf.ProtoContractAttribute()]
+    public class PassCollectionRequestDto : Tecan.Sila2.ISilaTransferObject, Tecan.Sila2.ISilaRequestObject
+    {
+        
+        private System.Collections.Generic.List<Tecan.Sila2.StringDto> _strings;
+        
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        public PassCollectionRequestDto()
+        {
+        }
+        
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        /// <param name="store">An object to organize binaries.</param>
+        ///  <param name="strings"></param>
+        public PassCollectionRequestDto(System.Collections.Generic.ICollection<string> strings, Tecan.Sila2.Binary.IBinaryStore store)
+        {
+            Strings = Tecan.Sila2.DtoExtensions.Encapsulate(strings, Tecan.Sila2.StringDto.Create, store);
+        }
+        
+        ///  <summary>
+        /// </summary>
+        [ProtoBuf.ProtoMemberAttribute(1)]
+        public System.Collections.Generic.List<Tecan.Sila2.StringDto> Strings
+        {
+            get
+            {
+                return _strings;
+            }
+            set
+            {
+                _strings = value;
+            }
+        }
+        
+        ///  <summary>
+        /// Gets the command identifier for this command
+        /// </summary>
+        /// <returns>The fully qualified command identifier</returns>
+        public string CommandIdentifier
+        {
+            get
+            {
+                return "tecan.sila2/integrationtests/TestServer/v1/Command/PassCollection";
+            }
+        }
+        
+        ///  <summary>
+        /// Validates the contents of this transfer object
+        /// </summary>
+        /// <returns>A validation error or null, if no validation error occurred.</returns>
+        public string GetValidationErrors()
+        {
+            return null;
+        }
+    }
+    
+    ///  <summary>
+    /// Data transfer object for the response of the PassCollection command
+    /// </summary>
+    [ProtoBuf.ProtoContractAttribute()]
+    public class PassCollectionResponseDto : Tecan.Sila2.ISilaTransferObject
+    {
+        
+        private System.Collections.Generic.List<Tecan.Sila2.StringDto> _returnValue;
+        
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        public PassCollectionResponseDto()
+        {
+        }
+        
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        /// <param name="store">An object to organize binaries.</param>
+        ///  <param name="returnValue"></param>
+        public PassCollectionResponseDto(System.Collections.Generic.ICollection<string> returnValue, Tecan.Sila2.Binary.IBinaryStore store)
+        {
+            ReturnValue = Tecan.Sila2.DtoExtensions.Encapsulate(returnValue, Tecan.Sila2.StringDto.Create, store);
+        }
+        
+        ///  <summary>
+        /// </summary>
+        [ProtoBuf.ProtoMemberAttribute(1)]
+        public System.Collections.Generic.List<Tecan.Sila2.StringDto> ReturnValue
+        {
+            get
+            {
+                return _returnValue;
+            }
+            set
+            {
+                _returnValue = value;
+            }
+        }
+        
+        ///  <summary>
+        /// Validates the contents of this transfer object
+        /// </summary>
+        /// <returns>A validation error or null, if no validation error occurred.</returns>
+        public string GetValidationErrors()
+        {
+            return null;
+        }
+    }
+    
+    ///  <summary>
     /// Data transfer object for the request of the PassStructure command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
@@ -1254,6 +1368,197 @@ namespace Tecan.Sila2.IntegrationTests
             set
             {
                 _returnValue = value;
+            }
+        }
+        
+        ///  <summary>
+        /// Validates the contents of this transfer object
+        /// </summary>
+        /// <returns>A validation error or null, if no validation error occurred.</returns>
+        public string GetValidationErrors()
+        {
+            return null;
+        }
+    }
+    
+    ///  <summary>
+    /// Data transfer object for the request of the RunObservable command
+    /// </summary>
+    [ProtoBuf.ProtoContractAttribute()]
+    public class RunObservableRequestDto : Tecan.Sila2.ISilaTransferObject, Tecan.Sila2.ISilaRequestObject
+    {
+        
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        public RunObservableRequestDto()
+        {
+        }
+        
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        /// <param name="store">An object to organize binaries.</param>
+        public RunObservableRequestDto(Tecan.Sila2.Binary.IBinaryStore store)
+        {
+        }
+        
+        ///  <summary>
+        /// Gets the command identifier for this command
+        /// </summary>
+        /// <returns>The fully qualified command identifier</returns>
+        public string CommandIdentifier
+        {
+            get
+            {
+                return "tecan.sila2/integrationtests/TestServer/v1/Command/RunObservable";
+            }
+        }
+        
+        ///  <summary>
+        /// Validates the contents of this transfer object
+        /// </summary>
+        /// <returns>A validation error or null, if no validation error occurred.</returns>
+        public string GetValidationErrors()
+        {
+            return null;
+        }
+    }
+    
+    ///  <summary>
+    /// Data transfer object for the response of the RunObservable command
+    /// </summary>
+    [ProtoBuf.ProtoContractAttribute()]
+    public class RunObservableResponseDto : Tecan.Sila2.ISilaTransferObject
+    {
+        
+        private Tecan.Sila2.IntegerDto _returnValue;
+        
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        public RunObservableResponseDto()
+        {
+        }
+        
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        /// <param name="store">An object to organize binaries.</param>
+        ///  <param name="returnValue"></param>
+        public RunObservableResponseDto(long returnValue, Tecan.Sila2.Binary.IBinaryStore store)
+        {
+            ReturnValue = new Tecan.Sila2.IntegerDto(returnValue, store);
+        }
+        
+        ///  <summary>
+        /// </summary>
+        [ProtoBuf.ProtoMemberAttribute(1)]
+        public Tecan.Sila2.IntegerDto ReturnValue
+        {
+            get
+            {
+                return _returnValue;
+            }
+            set
+            {
+                _returnValue = value;
+            }
+        }
+        
+        ///  <summary>
+        /// Validates the contents of this transfer object
+        /// </summary>
+        /// <returns>A validation error or null, if no validation error occurred.</returns>
+        public string GetValidationErrors()
+        {
+            return null;
+        }
+    }
+    
+    ///  <summary>
+    /// Data transfer object for the request of the RunIntermediateObservableCommand command
+    /// </summary>
+    [ProtoBuf.ProtoContractAttribute()]
+    public class RunIntermediateObservableCommandRequestDto : Tecan.Sila2.ISilaTransferObject, Tecan.Sila2.ISilaRequestObject
+    {
+        
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        public RunIntermediateObservableCommandRequestDto()
+        {
+        }
+        
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        /// <param name="store">An object to organize binaries.</param>
+        public RunIntermediateObservableCommandRequestDto(Tecan.Sila2.Binary.IBinaryStore store)
+        {
+        }
+        
+        ///  <summary>
+        /// Gets the command identifier for this command
+        /// </summary>
+        /// <returns>The fully qualified command identifier</returns>
+        public string CommandIdentifier
+        {
+            get
+            {
+                return "tecan.sila2/integrationtests/TestServer/v1/Command/RunIntermediateObservableComma" +
+                    "nd";
+            }
+        }
+        
+        ///  <summary>
+        /// Validates the contents of this transfer object
+        /// </summary>
+        /// <returns>A validation error or null, if no validation error occurred.</returns>
+        public string GetValidationErrors()
+        {
+            return null;
+        }
+    }
+    
+    ///  <summary>
+    /// Data transfer object for the intermediate response of the RunIntermediateObservableCommand command
+    /// </summary>
+    [ProtoBuf.ProtoContractAttribute()]
+    public class RunIntermediateObservableCommandIntermediateDto : Tecan.Sila2.ISilaTransferObject
+    {
+        
+        private Tecan.Sila2.IntegerDto _intermediate;
+        
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        public RunIntermediateObservableCommandIntermediateDto()
+        {
+        }
+        
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        /// <param name="store">An object to organize binaries.</param>
+        ///  <param name="intermediate"></param>
+        public RunIntermediateObservableCommandIntermediateDto(long intermediate, Tecan.Sila2.Binary.IBinaryStore store)
+        {
+            Intermediate = new Tecan.Sila2.IntegerDto(intermediate, store);
+        }
+        
+        ///  <summary>
+        /// </summary>
+        [ProtoBuf.ProtoMemberAttribute(1)]
+        public Tecan.Sila2.IntegerDto Intermediate
+        {
+            get
+            {
+                return _intermediate;
+            }
+            set
+            {
+                _intermediate = value;
             }
         }
         

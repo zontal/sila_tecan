@@ -163,13 +163,14 @@ namespace Tecan.Sila2.Client
             Method<CommandExecutionUuid, ExecutionState> stateMethod,
             Method<CommandExecutionUuid, TResponse> resultMethod,
             Func<TResponse, TResult> resultConverter,
-            Func<DefinedExecutionErrorDto, Exception> errorConverter)
+            Func<DefinedExecutionErrorDto, Exception> errorConverter )
             where TRequest : class, ISilaRequestObject
             where TResponse : class
         {
-            var confirmation = callInvoker.BlockingUnaryCall(method, null,
-                new CallOptions(), request);
-            var command = new ObservableCommand<TResponse, TResult>(callInfo, callInvoker, confirmation.CommandId, stateMethod, resultMethod, resultConverter, errorConverter);
+            var confirmation = callInvoker.BlockingUnaryCall( method, null,
+                callInfo.Options, request );
+            var command = new ObservableCommand<TResponse, TResult>( callInfo, callInvoker, confirmation.CommandId, stateMethod, resultMethod, resultConverter,
+                errorConverter );
             command.Start();
             return command;
         }
@@ -202,7 +203,7 @@ namespace Tecan.Sila2.Client
             where TIntermediateResponse : class
         {
             var confirmation = callInvoker.BlockingUnaryCall(method, null,
-                new CallOptions(), request);
+                callInfo.Options, request);
             var command = new IntermediateObservableCommand<TIntermediateResponse, TIntermediate>(callInfo, callInvoker, confirmation.CommandId, stateMethod, intermediateMethod, intermediateConverter, errorConverter);
             command.Start();
             return command;
@@ -243,7 +244,7 @@ namespace Tecan.Sila2.Client
             where TResponse : class
         {
             var confirmation = callInvoker.BlockingUnaryCall(method, null,
-                new CallOptions(), request);
+                callInfo.Options, request);
             var command = new IntermediateObservableCommand<TIntermediateResponse, TIntermediate, TResponse, TResult>(callInfo, callInvoker, confirmation.CommandId, stateMethod, intermediateMethod, resultMethod, intermediateConverter, resultConverter, errorConverter);
             command.Start();
             return command;

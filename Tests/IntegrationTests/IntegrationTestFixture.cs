@@ -115,15 +115,15 @@ namespace Tecan.Sila2.IntegrationTests
             var featureContext = new FeatureContext( feature, _server.Channel, executionManager );
             var commandClient = new NonObservableCommandClient( feature.Items.OfType<FeatureCommand>().Single( c => c.Identifier == "PassBool" ), featureContext );
             
-            AssertSameResponse(commandClient, true);
-            AssertSameResponse( commandClient, false );
+            PassAndAssertEquals(commandClient, true);
+            PassAndAssertEquals( commandClient, false );
 
             Unlock( lockId, token );
             Logout( token );
 
         }
 
-        private static void AssertSameResponse(NonObservableCommandClient commandClient, object value)
+        private static void PassAndAssertEquals(NonObservableCommandClient commandClient, object value)
         {
             var request = commandClient.CreateRequest();
             request.Value = new DynamicObject()
@@ -172,13 +172,13 @@ namespace Tecan.Sila2.IntegrationTests
             var featureContext = new FeatureContext( feature, _server.Channel, executionManager );
             var commandClient = new NonObservableCommandClient( feature.Items.OfType<FeatureCommand>().Single( c => c.Identifier == "PassDouble" ), featureContext );
 
-            AssertSameResponse( commandClient, 0.0 );
-            AssertSameResponse( commandClient, 8.15 );
-            AssertSameResponse( commandClient, double.NaN );
-            AssertSameResponse( commandClient, double.PositiveInfinity );
-            AssertSameResponse( commandClient, double.NegativeInfinity );
-            AssertSameResponse( commandClient, double.MaxValue );
-            AssertSameResponse( commandClient, double.MinValue );
+            PassAndAssertEquals( commandClient, 0.0 );
+            PassAndAssertEquals( commandClient, 8.15 );
+            PassAndAssertEquals( commandClient, double.NaN );
+            PassAndAssertEquals( commandClient, double.PositiveInfinity );
+            PassAndAssertEquals( commandClient, double.NegativeInfinity );
+            PassAndAssertEquals( commandClient, double.MaxValue );
+            PassAndAssertEquals( commandClient, double.MinValue );
 
             Unlock( lockId, token );
             Logout( token );
@@ -210,8 +210,8 @@ namespace Tecan.Sila2.IntegrationTests
             var featureContext = new FeatureContext( feature, _server.Channel, executionManager );
             var commandClient = new NonObservableCommandClient( feature.Items.OfType<FeatureCommand>().Single( c => c.Identifier == "PassLong" ), featureContext );
 
-            AssertSameResponse( commandClient, 0L );
-            AssertSameResponse( commandClient, 42L );
+            PassAndAssertEquals( commandClient, 0L );
+            PassAndAssertEquals( commandClient, 42L );
 
             Unlock( lockId, token );
             Logout( token );
@@ -266,8 +266,8 @@ namespace Tecan.Sila2.IntegrationTests
             // everything below seconds is not transmitted, so we cannot simply use now
             var timestamp = new DateTimeOffset( DateTime.Today, DateTimeOffset.Now.Offset );
             var maxTimestamp = new DateTimeOffset( 9999, 12, 31, 23, 59, 59, TimeSpan.Zero );
-            AssertSameResponse( commandClient, timestamp );
-            AssertSameResponse( commandClient, maxTimestamp );
+            PassAndAssertEquals( commandClient, timestamp );
+            PassAndAssertEquals( commandClient, maxTimestamp );
 
             Unlock( lockId, token );
             Logout( token );
@@ -302,8 +302,8 @@ namespace Tecan.Sila2.IntegrationTests
 
             // everything below seconds is not transmitted, so we cannot simply use now
             var timespan = new TimeSpan( 0, 8, 15, 42 );
-            AssertSameResponse( commandClient, TimeSpan.Zero );
-            AssertSameResponse( commandClient, timespan );
+            PassAndAssertEquals( commandClient, TimeSpan.Zero );
+            PassAndAssertEquals( commandClient, timespan );
 
             Unlock( lockId, token );
             Logout( token );
@@ -336,8 +336,8 @@ namespace Tecan.Sila2.IntegrationTests
             var featureContext = new FeatureContext( feature, _server.Channel, executionManager );
             var commandClient = new NonObservableCommandClient( feature.Items.OfType<FeatureCommand>().Single( c => c.Identifier == "PassString" ), featureContext );
 
-            AssertSameResponse( commandClient, "Foo" );
-            AssertSameResponse( commandClient, "֍Bar©" );
+            PassAndAssertEquals( commandClient, "Foo" );
+            PassAndAssertEquals( commandClient, "֍Bar©" );
 
             Unlock( lockId, token );
             Logout( token );
@@ -487,6 +487,158 @@ namespace Tecan.Sila2.IntegrationTests
                 ((Stream) returnStream).CopyTo(responseStream);
                 return responseStream.ToArray();
             }
+        }
+
+        [Test]
+        public void PassCollection_TransmittedSuccessfully()
+        {
+            var token = Login();
+            var lockId = Lock( token );
+            var executionManager = new TestAuthLockingExecutionManager( lockId, token, _server.Channel );
+            var testClient = new TestServerProvider.Client( _server.Channel, executionManager );
+
+            var listOfItems = new List<string>();
+            Assert.That( testClient.PassCollection(listOfItems), Is.Null.Or.EquivalentTo(listOfItems) );
+            listOfItems.Add("Foo");
+            listOfItems.Add("Bar");
+            Assert.That( testClient.PassCollection( listOfItems ), Is.EquivalentTo( listOfItems ) );
+
+            Unlock( lockId, token );
+            Logout( token );
+        }
+
+        [Test]
+        public void PassCollectionDynamic_TransmittedSuccessFully()
+        {
+            var token = Login();
+            var lockId = Lock( token );
+            var executionManager = new TestAuthLockingExecutionManager( lockId, token, _server.Channel );
+
+            var feature = _server.Features.Single( f => f.Identifier == "TestServer" );
+            var featureContext = new FeatureContext( feature, _server.Channel, executionManager );
+            var commandClient = new NonObservableCommandClient( feature.Items.OfType<FeatureCommand>().Single( c => c.Identifier == "PassCollection" ), featureContext );
+
+            var listOfItems = new List<string>();
+            PassAndAssertEquivalent(commandClient, listOfItems);
+            listOfItems.Add("Foo");
+            listOfItems.Add("Bar");
+            PassAndAssertEquivalent( commandClient, listOfItems );
+
+            Unlock( lockId, token );
+            Logout( token );
+        }
+
+        private static void PassAndAssertEquivalent(NonObservableCommandClient commandClient, List<string> listOfItems)
+        {
+            var request = commandClient.CreateRequest();
+            request.Value = new DynamicObject()
+            {
+                Elements =
+                {
+                    new DynamicObjectProperty(((StructureType) request.Type.Item).Element[0])
+                    {
+                        Value = listOfItems
+                    }
+                }
+            };
+            var response = commandClient.Invoke(request);
+            if( listOfItems == null || listOfItems.Count == 0 )
+            {
+                Assert.That( (response.Value as DynamicObject).Elements, Is.Empty);
+            }
+            else
+            {
+                Assert.That( (response.Value as DynamicObject).Elements[0].Value, Is.EquivalentTo( listOfItems ) );
+            }
+        }
+
+
+
+        [Test]
+        public void RunObservableCommand_TransmittedSuccessfully()
+        {
+            var token = Login();
+            var lockId = Lock( token );
+            var executionManager = new TestAuthLockingExecutionManager( lockId, token, _server.Channel );
+            var testClient = new TestServerProvider.Client( _server.Channel, executionManager );
+
+            var stateUpdates = new List<StateUpdateEventArgs>();
+
+            var command = testClient.RunObservable();
+            command.StateUpdateReceived += ( o, e ) => { stateUpdates.Add(e); };
+            command.Response.Wait(TimeSpan.FromMinutes(1));
+            var result = command.Response.Result;
+            Assert.That(result, Is.EqualTo(42L));
+            Assert.That(stateUpdates.Count, Is.EqualTo(4));
+
+            Unlock( lockId, token );
+            Logout( token );
+        }
+
+
+        [Test]
+        public void RunObservableCommandDynamic_TransmittedSuccessFully()
+        {
+            var token = Login();
+            var lockId = Lock( token );
+            var executionManager = new TestAuthLockingExecutionManager( lockId, token, _server.Channel );
+
+            var feature = _server.Features.Single( f => f.Identifier == "TestServer" );
+            var featureContext = new FeatureContext( feature, _server.Channel, executionManager );
+            var commandClient = new ObservableCommandClient( feature.Items.OfType<FeatureCommand>().Single( c => c.Identifier == "RunObservable" ), featureContext );
+
+            var stateUpdates = new List<StateUpdateEventArgs>();
+            var command = commandClient.Invoke( commandClient.CreateRequest() );
+            command.StateUpdateReceived += ( o, e ) => { stateUpdates.Add( e ); };
+            command.Response.Wait( TimeSpan.FromMinutes( 1 ) );
+            var result = command.Response.Result;
+            Assert.That( ((DynamicObject)result.Value).Elements[0].Value, Is.EqualTo( 42L ) );
+            Assert.That( stateUpdates.Count, Is.EqualTo( 4 ) );
+
+
+            Unlock( lockId, token );
+            Logout( token );
+        }
+
+        [Test]
+        public void RunIntermediateCommand_TransmittedSuccessfully()
+        {
+            var token = Login();
+            var lockId = Lock( token );
+            var executionManager = new TestAuthLockingExecutionManager( lockId, token, _server.Channel );
+            var testClient = new TestServerProvider.Client( _server.Channel, executionManager );
+
+            var intermediateResults = new List<long>();
+
+            var command = testClient.RunIntermediateObservableCommand();
+            command.IntermediateResponse += ( o, e ) => { intermediateResults.Add( e.Data ); };
+            command.Response.Wait( TimeSpan.FromMinutes( 1 ) );
+            Assert.That( intermediateResults, Is.EquivalentTo( new long[] { 0, 8, 15 } ) );
+
+            Unlock( lockId, token );
+            Logout( token );
+        }
+
+
+        [Test]
+        public void RunIntermediateCommandDynamic_TransmittedSuccessFully()
+        {
+            var token = Login();
+            var lockId = Lock( token );
+            var executionManager = new TestAuthLockingExecutionManager( lockId, token, _server.Channel );
+
+            var feature = _server.Features.Single( f => f.Identifier == "TestServer" );
+            var featureContext = new FeatureContext( feature, _server.Channel, executionManager );
+            var commandClient = new IntermediateObservableCommandClient( feature.Items.OfType<FeatureCommand>().Single( c => c.Identifier == "RunIntermediateObservableCommand" ), featureContext );
+
+            var intermediateResults = new List<DynamicObjectProperty>();
+            var command = commandClient.Invoke( commandClient.CreateRequest() );
+            command.IntermediateResponse += ( o, e ) => { intermediateResults.Add( e.Data ); };
+            command.Response.Wait( TimeSpan.FromMinutes( 1 ) );
+            Assert.That(intermediateResults.Count, Is.EqualTo(3));
+
+            Unlock( lockId, token );
+            Logout( token );
         }
 
         private static void AssertData(byte[] expected, Stream response)

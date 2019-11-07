@@ -413,8 +413,10 @@ namespace Tecan.Sila2.Generator.Generators
                     Attributes = MemberAttributes.Private,
                     ReturnType = NameProvider.GenerateCommandIntermediateType( featureCommand )
                 };
+                var parameterType = NameProvider.GetMemberType( featureCommand.Identifier + ".Intermediate" )
+                                    ?? CodeGenerationHelper.ExtractType( featureCommand.IntermediateResponse[0].DataType, null );
                 conversionMethod.Parameters.Add( new CodeParameterDeclarationExpression(
-                    CodeGenerationHelper.ExtractType( featureCommand.IntermediateResponse[0].DataType, null ), "intermediate" ) );
+                    parameterType, "intermediate" ) );
                 var resultRef = new CodeArgumentReferenceExpression( "intermediate" );
                 var converted = GenerateClientResultConversionExpression( featureCommand.IntermediateResponse[0].DataType, resultRef,
                     conversionMethod.ReturnType );
@@ -429,11 +431,13 @@ namespace Tecan.Sila2.Generator.Generators
                 var conversionMethod = new CodeMemberMethod
                 {
                     Name = "Convert" + featureCommand.Identifier + "Response",
-                    Attributes = MemberAttributes.Static | MemberAttributes.Private,
+                    Attributes = MemberAttributes.Private,
                     ReturnType = NameProvider.GenerateCommandResponseType( featureCommand )
                 };
+                var parameterType = NameProvider.GetMemberType( featureCommand.Identifier + "." + featureCommand.Response[0].Identifier )
+                                    ?? CodeGenerationHelper.ExtractType( featureCommand.Response[0].DataType, null );
                 conversionMethod.Parameters.Add( new CodeParameterDeclarationExpression(
-                    CodeGenerationHelper.ExtractType( featureCommand.Response[0].DataType, null ), "result" ) );
+                    parameterType, "result" ) );
                 var resultRef = new CodeArgumentReferenceExpression( "result" );
                 var converted = GenerateClientResultConversionExpression( featureCommand.Response[0].DataType, resultRef,
                     conversionMethod.ReturnType );
@@ -652,15 +656,6 @@ namespace Tecan.Sila2.Generator.Generators
             CodeExpression expression, CodeTypeReference resultType )
         {
             var serverRef = new CodeFieldReferenceExpression( null, ServerFieldName );
-            if( DtoGenerator.IsCollection( responseType, out DataTypeType innerType ) )
-            {
-                expression = new CodeMethodInvokeExpression(
-                    new CodeMethodInvokeExpression( expression, "Select",
-                        new CodeMethodReferenceExpression(
-                            new CodeTypeReferenceExpression( DtoGenerator.GetDtoTypeReference( innerType ) ),
-                            "Create" ) ), "ToList" );
-            }
-
             var result = new CodeObjectCreateExpression( resultType, expression, serverRef );
             return result;
         }

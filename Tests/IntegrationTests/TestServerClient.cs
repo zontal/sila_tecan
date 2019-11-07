@@ -45,7 +45,23 @@ namespace Tecan.Sila2.IntegrationTests
         
         private static Grpc.Core.Method<PassBytesRequestDto, PassBytesResponseDto> PassBytesMethod = new Grpc.Core.Method<PassBytesRequestDto, PassBytesResponseDto>(Grpc.Core.MethodType.Unary, @__ServiceName, "PassBytes", ProtobufMarshaller<PassBytesRequestDto>.Default, ProtobufMarshaller<PassBytesResponseDto>.Default);
         
+        private static Grpc.Core.Method<PassCollectionRequestDto, PassCollectionResponseDto> PassCollectionMethod = new Grpc.Core.Method<PassCollectionRequestDto, PassCollectionResponseDto>(Grpc.Core.MethodType.Unary, @__ServiceName, "PassCollection", ProtobufMarshaller<PassCollectionRequestDto>.Default, ProtobufMarshaller<PassCollectionResponseDto>.Default);
+        
         private static Grpc.Core.Method<PassStructureRequestDto, PassStructureResponseDto> PassStructureMethod = new Grpc.Core.Method<PassStructureRequestDto, PassStructureResponseDto>(Grpc.Core.MethodType.Unary, @__ServiceName, "PassStructure", ProtobufMarshaller<PassStructureRequestDto>.Default, ProtobufMarshaller<PassStructureResponseDto>.Default);
+        
+        private static Grpc.Core.Method<RunObservableRequestDto, CommandConfirmation> RunObservableMethod = new Grpc.Core.Method<RunObservableRequestDto, CommandConfirmation>(Grpc.Core.MethodType.Unary, @__ServiceName, "RunObservable", ProtobufMarshaller<RunObservableRequestDto>.Default, ProtobufMarshaller<CommandConfirmation>.Default);
+        
+        private static Grpc.Core.Method<CommandExecutionUuid, ExecutionState> RunObservableStateMethod = new Grpc.Core.Method<CommandExecutionUuid, ExecutionState>(Grpc.Core.MethodType.ServerStreaming, @__ServiceName, "RunObservable_Info", ProtobufMarshaller<CommandExecutionUuid>.Default, ProtobufMarshaller<ExecutionState>.Default);
+        
+        private static Grpc.Core.Method<CommandExecutionUuid, RunObservableResponseDto> RunObservableResponseMethod = new Grpc.Core.Method<CommandExecutionUuid, RunObservableResponseDto>(Grpc.Core.MethodType.Unary, @__ServiceName, "RunObservable_Result", ProtobufMarshaller<CommandExecutionUuid>.Default, ProtobufMarshaller<RunObservableResponseDto>.Default);
+        
+        private static Grpc.Core.Method<RunIntermediateObservableCommandRequestDto, CommandConfirmation> RunIntermediateObservableCommandMethod = new Grpc.Core.Method<RunIntermediateObservableCommandRequestDto, CommandConfirmation>(Grpc.Core.MethodType.Unary, @__ServiceName, "RunIntermediateObservableCommand", ProtobufMarshaller<RunIntermediateObservableCommandRequestDto>.Default, ProtobufMarshaller<CommandConfirmation>.Default);
+        
+        private static Grpc.Core.Method<CommandExecutionUuid, ExecutionState> RunIntermediateObservableCommandStateMethod = new Grpc.Core.Method<CommandExecutionUuid, ExecutionState>(Grpc.Core.MethodType.ServerStreaming, @__ServiceName, "RunIntermediateObservableCommand_Info", ProtobufMarshaller<CommandExecutionUuid>.Default, ProtobufMarshaller<ExecutionState>.Default);
+        
+        private static Grpc.Core.Method<CommandExecutionUuid, RunIntermediateObservableCommandIntermediateDto> RunIntermediateObservableCommandIntermediateMethod = new Grpc.Core.Method<CommandExecutionUuid, RunIntermediateObservableCommandIntermediateDto>(Grpc.Core.MethodType.Unary, @__ServiceName, "RunIntermediateObservableCommand_IntermediateResponses", ProtobufMarshaller<CommandExecutionUuid>.Default, ProtobufMarshaller<RunIntermediateObservableCommandIntermediateDto>.Default);
+        
+        private static Grpc.Core.Method<CommandExecutionUuid, EmptyRequest> RunIntermediateObservableCommandResponseMethod = new Grpc.Core.Method<CommandExecutionUuid, EmptyRequest>(Grpc.Core.MethodType.Unary, @__ServiceName, "RunIntermediateObservableCommand_Result", ProtobufMarshaller<CommandExecutionUuid>.Default, EmptyRequest.Marshaller);
         
         ///  <summary>
         /// Class that implements the ITestServer interface through SiLA2
@@ -274,6 +290,28 @@ namespace Tecan.Sila2.IntegrationTests
             
             ///  <summary>
             /// </summary>
+            /// <param name="strings"></param>
+            public virtual System.Collections.Generic.ICollection<string> PassCollection(System.Collections.Generic.ICollection<string> strings)
+            {
+                PassCollectionRequestDto request = new PassCollectionRequestDto(strings, null);
+                Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("tecan.sila2/integrationtests/TestServer/v1/Command/PassCollection");
+                try
+                {
+                    System.Collections.Generic.ICollection<string> response =
+                        DtoExtensions.Extract( CallInvoker.BlockingUnaryCall( PassCollectionMethod, null, callInfo.Options, request ).ReturnValue,
+                            _executionManager.DownloadBinaryStore );
+                    callInfo.FinishSuccessful();
+                    return response;
+                } catch (System.Exception ex)
+                {
+                    System.Exception exception = ErrorHandling.ConvertException(ex);
+                    callInfo.FinishWithErrors(exception);
+                    throw;
+                }
+            }
+            
+            ///  <summary>
+            /// </summary>
             /// <param name="structure"></param>
             public virtual SomeStructure PassStructure(SomeStructure structure)
             {
@@ -293,18 +331,68 @@ namespace Tecan.Sila2.IntegrationTests
             }
             
             ///  <summary>
+            /// </summary>
+            public virtual Tecan.Sila2.IObservableCommand<long> RunObservable()
+            {
+                RunObservableRequestDto request = new RunObservableRequestDto(null);
+                return ObservableCommand.Create(_executionManager.CreateCallOptions(request.CommandIdentifier), CallInvoker, request, RunObservableMethod, RunObservableStateMethod, RunObservableResponseMethod, ConvertRunObservableResponse, ConvertRunObservableException);
+            }
+            
+            ///  <summary>
+            /// Converts the error ocurred during execution of RunObservable to a proper exception
+            /// </summary>
+            /// <param name="error">The SiLA2 execution error</param>
+            /// <returns>The converted exception or null, if the error is not understood</returns>
+            private static System.Exception ConvertRunObservableException(Tecan.Sila2.DefinedExecutionErrorDto error)
+            {
+                return null;
+            }
+            
+            ///  <summary>
+            /// Unwraps the response of the RunObservableResponse command
+            /// </summary>
+            /// <param name="value">The response data transfer object</param>
+            /// <returns>The actual response</returns>
+            private long ConvertRunObservableResponse(RunObservableResponseDto value)
+            {
+                return value.ReturnValue.Extract(_executionManager.DownloadBinaryStore);
+            }
+            
+            ///  <summary>
+            /// </summary>
+            public virtual Tecan.Sila2.IIntermediateObservableCommand<long> RunIntermediateObservableCommand()
+            {
+                RunIntermediateObservableCommandRequestDto request = new RunIntermediateObservableCommandRequestDto(null);
+                return ObservableCommand.CreateIntermediate(_executionManager.CreateCallOptions(request.CommandIdentifier), CallInvoker, request, RunIntermediateObservableCommandMethod, RunIntermediateObservableCommandStateMethod, RunIntermediateObservableCommandIntermediateMethod, ConvertRunIntermediateObservableCommandIntermediate, ConvertRunIntermediateObservableCommandException);
+            }
+            
+            ///  <summary>
+            /// Converts the error ocurred during execution of RunIntermediateObservableCommand to a proper exception
+            /// </summary>
+            /// <param name="error">The SiLA2 execution error</param>
+            /// <returns>The converted exception or null, if the error is not understood</returns>
+            private static System.Exception ConvertRunIntermediateObservableCommandException(Tecan.Sila2.DefinedExecutionErrorDto error)
+            {
+                return null;
+            }
+            
+            ///  <summary>
+            /// Unwraps the response of the RunIntermediateObservableCommandIntermediate command
+            /// </summary>
+            /// <param name="value">The response data transfer object</param>
+            /// <returns>The actual response</returns>
+            private long ConvertRunIntermediateObservableCommandIntermediate(RunIntermediateObservableCommandIntermediateDto value)
+            {
+                return value.Intermediate.Extract(_executionManager.DownloadBinaryStore);
+            }
+            
+            ///  <summary>
             /// Creates a new instance
             /// </summary>
             /// <param name="configuration">The new client configuration</param>
             protected override Client NewInstance(ClientBaseConfiguration configuration)
             {
                 return new Client(configuration, _executionManager);
-            }
-            
-            private T Extract<T>(Tecan.Sila2.ISilaTransferObject<T> dto)
-            
-            {
-                return dto.Extract(_executionManager.DownloadBinaryStore);
             }
         }
     }

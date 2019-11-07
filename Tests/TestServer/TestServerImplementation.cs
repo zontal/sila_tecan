@@ -64,5 +64,20 @@ namespace Tecan.Sila2.IntegrationTests
         {
             return structure;
         }
+
+        public ICollection<string> PassCollection( ICollection<string> strings )
+        {
+            return strings;
+        }
+
+        public IObservableCommand<int> RunObservable()
+        {
+            return new ObservableTestCommand();
+        }
+
+        public IIntermediateObservableCommand<int> RunIntermediateObservableCommand()
+        {
+            return new IntermediateTestCommand();
+        }
     }
 }

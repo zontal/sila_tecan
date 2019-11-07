@@ -224,6 +224,36 @@
     </Response>
   </Command>
   <Command>
+    <Identifier>PassCollection</Identifier>
+    <DisplayName>PassCollection</DisplayName>
+    <Description />
+    <Observable>No</Observable>
+    <Parameter>
+      <Identifier>Strings</Identifier>
+      <DisplayName>Strings</DisplayName>
+      <Description />
+      <DataType>
+        <List>
+          <DataType>
+            <Basic>String</Basic>
+          </DataType>
+        </List>
+      </DataType>
+    </Parameter>
+    <Response>
+      <Identifier>ReturnValue</Identifier>
+      <DisplayName>ReturnValue</DisplayName>
+      <Description />
+      <DataType>
+        <List>
+          <DataType>
+            <Basic>String</Basic>
+          </DataType>
+        </List>
+      </DataType>
+    </Response>
+  </Command>
+  <Command>
     <Identifier>PassStructure</Identifier>
     <DisplayName>PassStructure</DisplayName>
     <Description />
@@ -244,6 +274,34 @@
         <DataTypeIdentifier>SomeStructure</DataTypeIdentifier>
       </DataType>
     </Response>
+  </Command>
+  <Command>
+    <Identifier>RunObservable</Identifier>
+    <DisplayName>RunObservable</DisplayName>
+    <Description />
+    <Observable>Yes</Observable>
+    <Response>
+      <Identifier>ReturnValue</Identifier>
+      <DisplayName>ReturnValue</DisplayName>
+      <Description />
+      <DataType>
+        <Basic>Integer</Basic>
+      </DataType>
+    </Response>
+  </Command>
+  <Command>
+    <Identifier>RunIntermediateObservableCommand</Identifier>
+    <DisplayName>RunIntermediateObservableCommand</DisplayName>
+    <Description />
+    <Observable>Yes</Observable>
+    <IntermediateResponse>
+      <Identifier>Intermediate</Identifier>
+      <DisplayName>Intermediate</DisplayName>
+      <Description />
+      <DataType>
+        <Basic>Integer</Basic>
+      </DataType>
+    </IntermediateResponse>
   </Command>
   <DataTypeDefinition>
     <Identifier>SomeStructure</Identifier>

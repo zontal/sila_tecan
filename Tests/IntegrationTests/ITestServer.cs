@@ -112,12 +112,34 @@ namespace Tecan.Sila2.IntegrationTests
         
         ///  <summary>
         /// </summary>
+        /// <param name="strings"></param>
+        /// <returns></returns>
+        [Tecan.Sila2.SilaDescriptionAttribute("")]
+        [return: Tecan.Sila2.SilaIdentifierAttribute("ReturnValue")]
+        [return: Tecan.Sila2.SilaDescriptionAttribute("")]
+        System.Collections.Generic.ICollection<string> PassCollection([Tecan.Sila2.SilaDisplayNameAttribute("Strings")] [Tecan.Sila2.SilaDescriptionAttribute("")] System.Collections.Generic.ICollection<string> strings);
+        
+        ///  <summary>
+        /// </summary>
         /// <param name="structure"></param>
         /// <returns></returns>
         [Tecan.Sila2.SilaDescriptionAttribute("")]
         [return: Tecan.Sila2.SilaIdentifierAttribute("ReturnValue")]
         [return: Tecan.Sila2.SilaDescriptionAttribute("")]
         SomeStructure PassStructure([Tecan.Sila2.SilaDisplayNameAttribute("Structure")] [Tecan.Sila2.SilaDescriptionAttribute("")] SomeStructure structure);
+        
+        ///  <summary>
+        /// </summary>
+        /// <returns></returns>
+        [Tecan.Sila2.SilaDescriptionAttribute("")]
+        [return: Tecan.Sila2.SilaIdentifierAttribute("ReturnValue")]
+        [return: Tecan.Sila2.SilaDescriptionAttribute("")]
+        Tecan.Sila2.IObservableCommand<long> RunObservable();
+        
+        ///  <summary>
+        /// </summary>
+        [Tecan.Sila2.SilaDescriptionAttribute("")]
+        Tecan.Sila2.IIntermediateObservableCommand<long> RunIntermediateObservableCommand();
     }
     
     ///  <summary>

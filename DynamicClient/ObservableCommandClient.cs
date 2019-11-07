@@ -66,9 +66,25 @@ namespace Tecan.Sila2.DynamicClient
         /// <param name="args">The command request parameters</param>
         /// <param name="host">The host to which the request should be sent or null to send it to the default host</param>
         /// <returns>An observable command object</returns>
-        public IObservableCommand<DynamicObjectProperty> Invoke(DynamicRequest args, string host = null)
+        public IObservableCommand<DynamicObjectProperty> Invoke( DynamicRequest args, string host = null )
         {
-            return ObservableCommand.Create(Context.ExecutionManager.CreateCallOptions(args.CommandIdentifier), Context.CallInvoker, args, _method, _stateMethod, _resultMethod, dn => dn, Context.ConvertException);
+            try
+            {
+                return ObservableCommand.Create( Context.ExecutionManager.CreateCallOptions( args.CommandIdentifier ), Context.CallInvoker, args, _method, _stateMethod,
+                    _resultMethod, dn => dn, Context.ConvertException );
+            }
+            catch( Exception exception )
+            {
+                var converted = ErrorHandling.ConvertException( exception );
+                if( exception == converted )
+                {
+                    throw;
+                }
+                else
+                {
+                    throw converted;
+                }
+            }
         }
     }
 
@@ -141,9 +157,25 @@ namespace Tecan.Sila2.DynamicClient
         /// <param name="args">The command request parameters</param>
         /// <param name="host">The host to which the request should be sent or null to send it to the default host</param>
         /// <returns>An observable command object</returns>
-        public new IIntermediateObservableCommand<DynamicObjectProperty, DynamicObjectProperty> Invoke(DynamicRequest args, string host = null)
+        public new IIntermediateObservableCommand<DynamicObjectProperty, DynamicObjectProperty> Invoke( DynamicRequest args, string host = null )
         {
-            return ObservableCommand.CreateIntermediate(Context.ExecutionManager.CreateCallOptions(args.CommandIdentifier), Context.CallInvoker, args, _method, _stateMethod, _intermediateMethod, _resultMethod, dn => dn, dn => dn, Context.ConvertException);
+            try
+            {
+                return ObservableCommand.CreateIntermediate( Context.ExecutionManager.CreateCallOptions( args.CommandIdentifier ), Context.CallInvoker, args, _method, _stateMethod,
+                    _intermediateMethod, _resultMethod, dn => dn, dn => dn, Context.ConvertException );
+            }
+            catch( Exception exception )
+            {
+                var converted = ErrorHandling.ConvertException( exception );
+                if( exception == converted )
+                {
+                    throw;
+                }
+                else
+                {
+                    throw converted;
+                }
+            }
         }
     }
 }
