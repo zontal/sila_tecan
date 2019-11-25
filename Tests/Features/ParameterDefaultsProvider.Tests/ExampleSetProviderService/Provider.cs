@@ -24,8 +24,8 @@ namespace Tecan.Sila2.ParameterDefaultsProvider.Tests
     public sealed partial class ExampleSetProviderServiceProvider
     {
         
-        private static string @__ServiceName = "sila2.tecan.sila2.parameterdefaultsprovider.tests.examplesetproviderservice.v1.Ex" +
-            "ampleSetProviderService";
+        private static string @__ServiceName = "sila2.tecan.sila.parameterdefaultsprovider.tests.examplesetproviderservice.v1.Exa" +
+            "mpleSetProviderService";
         
         private static Grpc.Core.Method<ExampleMethodRequestDto, EmptyRequest> ExampleMethodMethod = new Grpc.Core.Method<ExampleMethodRequestDto, EmptyRequest>(Grpc.Core.MethodType.Unary, @__ServiceName, "ExampleMethod", ProtobufMarshaller<ExampleMethodRequestDto>.Default, EmptyRequest.Marshaller);
         
@@ -97,8 +97,8 @@ namespace Tecan.Sila2.ParameterDefaultsProvider.Tests
             /// <returns>A method object or null, if the command is not supported</returns>
             public System.Reflection.MethodInfo GetCommand(string commandIdentifier)
             {
-                if ((commandIdentifier == "tecan.sila2.parameterdefaultsprovider/tests/ExampleSetProviderService/v1/Command/" +
-                    "ExampleMethod"))
+                if ((commandIdentifier == "tecan.sila.parameterdefaultsprovider/tests/ExampleSetProviderService/v1/Command/E" +
+                    "xampleMethod"))
                 {
                     return typeof(IExampleSetProviderService).GetMethod("ExampleMethod");
                 }

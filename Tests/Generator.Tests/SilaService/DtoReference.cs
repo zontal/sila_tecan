@@ -63,8 +63,8 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         {
             get
             {
-                return "tecan.sila2.generator.test/silaservice/SiLAService/v0/Command/GetFeatureDefinitio" +
-                    "n";
+                return "tecan.sila.generator.test/silaservice/SiLAService/v0/Command/GetFeatureDefinition" +
+                    "";
             }
         }
         
@@ -180,7 +180,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         {
             get
             {
-                return "tecan.sila2.generator.test/silaservice/SiLAService/v0/Command/SetServerName";
+                return "tecan.sila.generator.test/silaservice/SiLAService/v0/Command/SetServerName";
             }
         }
         

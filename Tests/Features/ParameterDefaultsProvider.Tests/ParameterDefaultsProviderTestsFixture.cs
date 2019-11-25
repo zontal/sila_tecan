@@ -46,7 +46,7 @@ namespace Tecan.Sila2.ParameterDefaultsProvider.Tests
             Assert.That(constraints.Count, Is.EqualTo(1));
             var constraint = constraints.Single();
             
-            Assert.That(constraint.CommandParameterIdentifier, Is.EqualTo( "tecan.sila2.parameterdefaultsprovider/tests/ExampleSetProviderService/v1/Command/ExampleMethod/Parameter/parameter" ) );
+            Assert.That(constraint.CommandParameterIdentifier, Is.EqualTo( "tecan.sila.parameterdefaultsprovider/tests/ExampleSetProviderService/v1/Command/ExampleMethod/Parameter/parameter" ) );
             var dataType = DataTypeSerializer.LoadType( constraint.Constraints );
             Assert.That(dataType.Item, Is.InstanceOf<ConstrainedType>());
             var constrained = (ConstrainedType)dataType.Item;
@@ -70,7 +70,7 @@ namespace Tecan.Sila2.ParameterDefaultsProvider.Tests
             Assert.That( constraints.Count, Is.EqualTo( 1 ) );
             var constraint = constraints.Single();
 
-            Assert.That( constraint.CommandParameterIdentifier, Is.EqualTo( "tecan.sila2.parameterdefaultsprovider/tests/ExampleFileConstraintProviderService/v1/Command/FileExampleMethod/Parameter/parameter" ) );
+            Assert.That( constraint.CommandParameterIdentifier, Is.EqualTo( "tecan.sila.parameterdefaultsprovider/tests/ExampleFileConstraintProviderService/v1/Command/FileExampleMethod/Parameter/parameter" ) );
             var dataType = DataTypeSerializer.LoadType( constraint.Constraints );
             Assert.That( dataType.Item, Is.InstanceOf<ConstrainedType>() );
             var constrained = (ConstrainedType)dataType.Item;

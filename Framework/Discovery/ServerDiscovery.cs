@@ -68,7 +68,7 @@ namespace Tecan.Sila2.Discovery
         
         private static List<Feature> GetImplementedFeatures(SiLAServiceProvider.Client silaService)
         {
-            return silaService.ImplementedFeatures.Select(f => FeatureSerializer.LoadFromXml(silaService.GetFeatureDefinition(f).Value)).ToList();
+            return silaService.ImplementedFeatures.Select(f => FeatureSerializer.LoadFromXml(silaService.GetFeatureDefinition(f))).ToList();
         }
 
         private static ServerConfig GetServerConfig(SiLAServiceProvider.Client silaService)
@@ -83,7 +83,7 @@ namespace Tecan.Sila2.Discovery
         {
             var type = silaService.ServerType;
             var description = silaService.ServerDescription;
-            var vendorUri = silaService.ServerVendorURL.Value;
+            var vendorUri = silaService.ServerVendorURL;
             var version = silaService.ServerVersion;
             var info = new ServerInformation(type, description, vendorUri, version);
             return info;

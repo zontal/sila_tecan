@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Net.NetworkInformation;
 using System.Reflection;
+using System.Text;
 using CommandLine;
 using Tecan.MAP.Contracts.Services.Logging;
 using Tecan.Sila2.Server.Binary;
@@ -164,12 +165,41 @@ namespace Tecan.Sila2.Server
         {
             var entryAssembly = Assembly.GetEntryAssembly();
             var entryAssemblyName = entryAssembly.GetName();
+            var serverType = entryAssembly.GetCustomAttribute<ServerTypeAttribute>();
             var product = entryAssembly.GetCustomAttribute<AssemblyProductAttribute>();
             return new ServerInformation(
-                product?.Product ?? entryAssemblyName.Name, 
+                CreateServerTypeString( serverType?.ServerType ?? product?.Product ?? entryAssemblyName.Name ),
                 entryAssembly.GetCustomAttribute<AssemblyDescriptionAttribute>()?.Description,
                 entryAssembly.GetCustomAttribute<VendorUriAttribute>()?.VendorUri,
-                entryAssemblyName.Version.ToString());
+                entryAssemblyName.Version.ToString( 2 ) );
+        }
+
+        private string CreateServerTypeString( string input )
+        {
+            var sb = new StringBuilder();
+            foreach(var character in input)
+            {
+                if((character >= 'a' && character <= 'z') ||
+                   (character >= 'A' && character <= 'Z') ||
+                   char.IsDigit( character ) || character == '.')
+                {
+                    sb.Append( character );
+                }
+                else if(character == 'ä')
+                {
+                    sb.Append( "ae" );
+                }
+                else if(character == 'ö')
+                {
+                    sb.Append( "oe" );
+                }
+                else if(character == 'ü')
+                {
+                    sb.Append( "ue" );
+                }
+            }
+
+            return sb.ToString();
         }
 
         /// <summary>

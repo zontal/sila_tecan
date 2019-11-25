@@ -29,9 +29,9 @@ namespace Tecan.Sila2.Discovery
         
         private static Grpc.Core.Method<SetServerNameRequestDto, EmptyRequest> SetServerNameMethod = new Grpc.Core.Method<SetServerNameRequestDto, EmptyRequest>(Grpc.Core.MethodType.Unary, @__ServiceName, "SetServerName", ProtobufMarshaller<SetServerNameRequestDto>.Default, EmptyRequest.Marshaller);
         
-        private static Grpc.Core.Method<EmptyRequest, PropertyResponse<Tecan.Sila2.StringDto>> GetServerNameMethod = new Grpc.Core.Method<EmptyRequest, PropertyResponse<Tecan.Sila2.StringDto>>(Grpc.Core.MethodType.Unary, @__ServiceName, "Get_ServerName", EmptyRequest.Marshaller, ProtobufMarshaller<PropertyResponse<Tecan.Sila2.StringDto>>.Default);
+        private static Grpc.Core.Method<EmptyRequest, ServerNameResponseDto> GetServerNameMethod = new Grpc.Core.Method<EmptyRequest, ServerNameResponseDto>(Grpc.Core.MethodType.Unary, @__ServiceName, "Get_ServerName", EmptyRequest.Marshaller, ProtobufMarshaller<ServerNameResponseDto>.Default);
         
-        private static Grpc.Core.Method<EmptyRequest, PropertyResponse<Tecan.Sila2.StringDto>> GetServerTypeMethod = new Grpc.Core.Method<EmptyRequest, PropertyResponse<Tecan.Sila2.StringDto>>(Grpc.Core.MethodType.Unary, @__ServiceName, "Get_ServerType", EmptyRequest.Marshaller, ProtobufMarshaller<PropertyResponse<Tecan.Sila2.StringDto>>.Default);
+        private static Grpc.Core.Method<EmptyRequest, ServerTypeResponseDto> GetServerTypeMethod = new Grpc.Core.Method<EmptyRequest, ServerTypeResponseDto>(Grpc.Core.MethodType.Unary, @__ServiceName, "Get_ServerType", EmptyRequest.Marshaller, ProtobufMarshaller<ServerTypeResponseDto>.Default);
         
         private static Grpc.Core.Method<EmptyRequest, ServerUUIDResponseDto> GetServerUUIDMethod = new Grpc.Core.Method<EmptyRequest, ServerUUIDResponseDto>(Grpc.Core.MethodType.Unary, @__ServiceName, "Get_ServerUUID", EmptyRequest.Marshaller, ProtobufMarshaller<ServerUUIDResponseDto>.Default);
         
@@ -39,9 +39,9 @@ namespace Tecan.Sila2.Discovery
         
         private static Grpc.Core.Method<EmptyRequest, ServerVersionResponseDto> GetServerVersionMethod = new Grpc.Core.Method<EmptyRequest, ServerVersionResponseDto>(Grpc.Core.MethodType.Unary, @__ServiceName, "Get_ServerVersion", EmptyRequest.Marshaller, ProtobufMarshaller<ServerVersionResponseDto>.Default);
         
-        private static Grpc.Core.Method<EmptyRequest, PropertyResponse<URLDto>> GetServerVendorURLMethod = new Grpc.Core.Method<EmptyRequest, PropertyResponse<URLDto>>(Grpc.Core.MethodType.Unary, @__ServiceName, "Get_ServerVendorURL", EmptyRequest.Marshaller, ProtobufMarshaller<PropertyResponse<URLDto>>.Default);
+        private static Grpc.Core.Method<EmptyRequest, ServerVendorURLResponseDto> GetServerVendorURLMethod = new Grpc.Core.Method<EmptyRequest, ServerVendorURLResponseDto>(Grpc.Core.MethodType.Unary, @__ServiceName, "Get_ServerVendorURL", EmptyRequest.Marshaller, ProtobufMarshaller<ServerVendorURLResponseDto>.Default);
         
-        private static Grpc.Core.Method<EmptyRequest, PropertyResponse<System.Collections.Generic.List<FeatureIdentifierDto>>> GetImplementedFeaturesMethod = new Grpc.Core.Method<EmptyRequest, PropertyResponse<System.Collections.Generic.List<FeatureIdentifierDto>>>(Grpc.Core.MethodType.Unary, @__ServiceName, "Get_ImplementedFeatures", EmptyRequest.Marshaller, ProtobufMarshaller<PropertyResponse<System.Collections.Generic.List<FeatureIdentifierDto>>>.Default);
+        private static Grpc.Core.Method<EmptyRequest, PropertyResponse<System.Collections.Generic.List<Tecan.Sila2.StringDto>>> GetImplementedFeaturesMethod = new Grpc.Core.Method<EmptyRequest, PropertyResponse<System.Collections.Generic.List<Tecan.Sila2.StringDto>>>(Grpc.Core.MethodType.Unary, @__ServiceName, "Get_ImplementedFeatures", EmptyRequest.Marshaller, ProtobufMarshaller<PropertyResponse<System.Collections.Generic.List<Tecan.Sila2.StringDto>>>.Default);
         
         ///  <summary>
         /// A class that exposes the ISiLAService interface via SiLA2
@@ -99,11 +99,11 @@ namespace Tecan.Sila2.Discovery
             {
                 try
                 {
-                    return new GetFeatureDefinitionResponseDto(_implementation.GetFeatureDefinition(request.QualifiedFeatureIdentifier.Extract(_server)), _server);
+                    return new GetFeatureDefinitionResponseDto(_implementation.GetFeatureDefinition(request.FeatureIdentifier.Extract(_server)), _server);
                 } catch (UnimplementedFeatureException ex)
                 {
-                    throw ErrorHandling.CreateExecutionError("org.silastandard/core/SiLAService/v1/DefinedError/UnimplementedFeature", "The feature specified by the given feature identifier is not implemented by the s" +
-                            "erver.", ex.Message);
+                    throw ErrorHandling.CreateExecutionError("org.silastandard/core/SiLAService/v1/DefinedError/UnimplementedFeature", "\n      The Feature specified by the given Feature identifier is not implemented b" +
+                            "y the server.\n    ", ex.Message);
                 }
             }
             
@@ -141,9 +141,9 @@ namespace Tecan.Sila2.Discovery
             /// <param name="request">The request object</param>
             /// <param name="context">The context in which the request is made</param>
             /// <returns>The current value wrapped in a data transfer object</returns>
-            protected virtual System.Threading.Tasks.Task<PropertyResponse<Tecan.Sila2.StringDto>> GetServerName(EmptyRequest request, Grpc.Core.ServerCallContext context)
+            protected virtual System.Threading.Tasks.Task<ServerNameResponseDto> GetServerName(EmptyRequest request, Grpc.Core.ServerCallContext context)
             {
-                return _server.CreatePropertyTask("org.silastandard/core/SiLAService/v1/Property/ServerName", new PropertyResponse<Tecan.Sila2.StringDto>(new Tecan.Sila2.StringDto(_implementation.ServerName, _server)), context);
+                return _server.CreatePropertyTask("org.silastandard/core/SiLAService/v1/Property/ServerName", new ServerNameResponseDto(_implementation.ServerName, _server), context);
             }
             
             ///  <summary>
@@ -152,9 +152,9 @@ namespace Tecan.Sila2.Discovery
             /// <param name="request">The request object</param>
             /// <param name="context">The context in which the request is made</param>
             /// <returns>The current value wrapped in a data transfer object</returns>
-            protected virtual System.Threading.Tasks.Task<PropertyResponse<Tecan.Sila2.StringDto>> GetServerType(EmptyRequest request, Grpc.Core.ServerCallContext context)
+            protected virtual System.Threading.Tasks.Task<ServerTypeResponseDto> GetServerType(EmptyRequest request, Grpc.Core.ServerCallContext context)
             {
-                return _server.CreatePropertyTask("org.silastandard/core/SiLAService/v1/Property/ServerType", new PropertyResponse<Tecan.Sila2.StringDto>(new Tecan.Sila2.StringDto(_implementation.ServerType, _server)), context);
+                return _server.CreatePropertyTask("org.silastandard/core/SiLAService/v1/Property/ServerType", new ServerTypeResponseDto(_implementation.ServerType, _server), context);
             }
             
             ///  <summary>
@@ -196,9 +196,9 @@ namespace Tecan.Sila2.Discovery
             /// <param name="request">The request object</param>
             /// <param name="context">The context in which the request is made</param>
             /// <returns>The current value wrapped in a data transfer object</returns>
-            protected virtual System.Threading.Tasks.Task<PropertyResponse<URLDto>> GetServerVendorURL(EmptyRequest request, Grpc.Core.ServerCallContext context)
+            protected virtual System.Threading.Tasks.Task<ServerVendorURLResponseDto> GetServerVendorURL(EmptyRequest request, Grpc.Core.ServerCallContext context)
             {
-                return _server.CreatePropertyTask("org.silastandard/core/SiLAService/v1/Property/ServerVendorURL", new PropertyResponse<URLDto>(new URLDto(_implementation.ServerVendorURL, _server)), context);
+                return _server.CreatePropertyTask("org.silastandard/core/SiLAService/v1/Property/ServerVendorURL", new ServerVendorURLResponseDto(_implementation.ServerVendorURL, _server), context);
             }
             
             ///  <summary>
@@ -207,9 +207,9 @@ namespace Tecan.Sila2.Discovery
             /// <param name="request">The request object</param>
             /// <param name="context">The context in which the request is made</param>
             /// <returns>The current value wrapped in a data transfer object</returns>
-            protected virtual System.Threading.Tasks.Task<PropertyResponse<System.Collections.Generic.List<FeatureIdentifierDto>>> GetImplementedFeatures(EmptyRequest request, Grpc.Core.ServerCallContext context)
+            protected virtual System.Threading.Tasks.Task<PropertyResponse<System.Collections.Generic.List<Tecan.Sila2.StringDto>>> GetImplementedFeatures(EmptyRequest request, Grpc.Core.ServerCallContext context)
             {
-                return _server.CreatePropertyTask("org.silastandard/core/SiLAService/v1/Property/ImplementedFeatures", new PropertyResponse<System.Collections.Generic.List<FeatureIdentifierDto>>(Tecan.Sila2.DtoExtensions.Encapsulate(_implementation.ImplementedFeatures, FeatureIdentifierDto.Create, _server)), context);
+                return _server.CreatePropertyTask("org.silastandard/core/SiLAService/v1/Property/ImplementedFeatures", new PropertyResponse<System.Collections.Generic.List<Tecan.Sila2.StringDto>>(Tecan.Sila2.DtoExtensions.Encapsulate(_implementation.ImplementedFeatures, Tecan.Sila2.StringDto.Create, _server)), context);
             }
             
             ///  <summary>
@@ -285,9 +285,9 @@ namespace Tecan.Sila2.Discovery
             
             private System.Lazy<string> _serverVersion;
             
-            private System.Lazy<Url> _serverVendorURL;
+            private System.Lazy<string> _serverVendorURL;
             
-            private System.Lazy<System.Collections.Generic.ICollection<FeatureIdentifier>> _implementedFeatures;
+            private System.Lazy<System.Collections.Generic.ICollection<string>> _implementedFeatures;
             
             private IClientExecutionManager _executionManager;
             
@@ -312,7 +312,7 @@ namespace Tecan.Sila2.Discovery
             }
             
             ///  <summary>
-            /// Human readable name of the SiLA Server.
+            /// Human readable name of the SiLA Server. The name can be set using the 'Set Server Name' command.
             /// </summary>
             public virtual string ServerName
             {
@@ -323,7 +323,8 @@ namespace Tecan.Sila2.Discovery
             }
             
             ///  <summary>
-            /// The type of Server this is. Is specified by the implementer of the server and not unique.
+            /// The type of this server. It, could be, e.g., in the case of a SiLA Device the model name.
+            /// It is specified by the implementer of the SiLA Server and MAY not be unique.
             /// </summary>
             public virtual string ServerType
             {
@@ -334,8 +335,8 @@ namespace Tecan.Sila2.Discovery
             }
             
             ///  <summary>
-            /// Globally unique identifier that identifies a SiLA Server. The Server UUID MUST
-            /// be generated once and always remain the same.
+            /// Globally unique identifier that identifies a SiLA Server. The Server UUID MUST be generated once
+            /// and remain the same for all times.
             /// </summary>
             public virtual string ServerUUID
             {
@@ -346,7 +347,7 @@ namespace Tecan.Sila2.Discovery
             }
             
             ///  <summary>
-            /// Description of the SiLA Server.
+            /// Description of the SiLA Server. This should include the use and purpose of this SiLA Server.
             /// </summary>
             public virtual string ServerDescription
             {
@@ -358,8 +359,8 @@ namespace Tecan.Sila2.Discovery
             
             ///  <summary>
             /// Returns the version of the SiLA Server. A "Major" and a "Minor" version number (e.g. 1.0) MUST be provided,
-            /// a Patch version number MAY be provided. Optionally, an arbitrary text, separated by an underscore MAY be appended,
-            /// e.g. “3.19.373_mighty_lab_devices”
+            /// a Patch version number MAY be provided. Optionally, an arbitrary text, separated by an underscore MAY be
+            /// appended, e.g. “3.19.373_mighty_lab_devices”.
             /// </summary>
             public virtual string ServerVersion
             {
@@ -370,10 +371,11 @@ namespace Tecan.Sila2.Discovery
             }
             
             ///  <summary>
-            /// Returns the URL to the website of the vendor or the website
-            /// of the product of this SiLA Server.
+            /// Returns the URL to the website of the vendor or the website of the product of this SiLA Server.
+            /// This URL SHOULD be accessible at all times.
+            /// The URL is a Uniform Resource Locator as defined in RFC 1738.
             /// </summary>
-            public virtual Url ServerVendorURL
+            public virtual string ServerVendorURL
             {
                 get
                 {
@@ -382,10 +384,10 @@ namespace Tecan.Sila2.Discovery
             }
             
             ///  <summary>
-            /// Returns a list of qualified Feature identifiers of all
-            /// implemented Features of this SiLA Server.
+            /// Returns a list of fully qualified Feature identifiers of all implemented Features of this SiLA Server.
+            /// This list SHOULD remain the same throughout the lifetime of the SiLA Server.
             /// </summary>
-            public virtual System.Collections.Generic.ICollection<FeatureIdentifier> ImplementedFeatures
+            public virtual System.Collections.Generic.ICollection<string> ImplementedFeatures
             {
                 get
                 {
@@ -473,12 +475,12 @@ namespace Tecan.Sila2.Discovery
                 }
             }
             
-            private Url RequestServerVendorURL()
+            private string RequestServerVendorURL()
             {
                 Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/core/SiLAService/v1/Property/ServerVendorURL");
                 try
                 {
-                    Url response = CallInvoker.BlockingUnaryCall(GetServerVendorURLMethod, null, callInfo.Options, EmptyRequest.Instance).Value.Extract(_executionManager.DownloadBinaryStore);
+                    string response = CallInvoker.BlockingUnaryCall(GetServerVendorURLMethod, null, callInfo.Options, EmptyRequest.Instance).Value.Extract(_executionManager.DownloadBinaryStore);
                     callInfo.FinishSuccessful();
                     return response;
                 } catch (System.Exception ex)
@@ -489,12 +491,12 @@ namespace Tecan.Sila2.Discovery
                 }
             }
             
-            private System.Collections.Generic.ICollection<FeatureIdentifier> RequestImplementedFeatures()
+            private System.Collections.Generic.ICollection<string> RequestImplementedFeatures()
             {
                 Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/core/SiLAService/v1/Property/ImplementedFeatures");
                 try
                 {
-                    System.Collections.Generic.ICollection<FeatureIdentifier> response = Tecan.Sila2.DtoExtensions.Extract(CallInvoker.BlockingUnaryCall(GetImplementedFeaturesMethod, null, callInfo.Options, EmptyRequest.Instance).Value, _executionManager.DownloadBinaryStore);
+                    System.Collections.Generic.ICollection<string> response = Tecan.Sila2.DtoExtensions.Extract(CallInvoker.BlockingUnaryCall(GetImplementedFeaturesMethod, null, callInfo.Options, EmptyRequest.Instance).Value, _executionManager.DownloadBinaryStore);
                     callInfo.FinishSuccessful();
                     return response;
                 } catch (System.Exception ex)
@@ -515,21 +517,24 @@ namespace Tecan.Sila2.Discovery
                 _serverUUID = new System.Lazy<string>(RequestServerUUID);
                 _serverDescription = new System.Lazy<string>(RequestServerDescription);
                 _serverVersion = new System.Lazy<string>(RequestServerVersion);
-                _serverVendorURL = new System.Lazy<Url>(RequestServerVendorURL);
-                _implementedFeatures = new System.Lazy<System.Collections.Generic.ICollection<FeatureIdentifier>>(RequestImplementedFeatures);
+                _serverVendorURL = new System.Lazy<string>(RequestServerVendorURL);
+                _implementedFeatures = new System.Lazy<System.Collections.Generic.ICollection<string>>(RequestImplementedFeatures);
             }
             
             ///  <summary>
-            /// Get all details on one Feature through the qualified Feature id.
+            /// Get the Feature Definition of an implemented Feature by its fully qualified Feature Identifier.
+            /// This command has no preconditions and no further dependencies and can be called at any time.
             /// </summary>
-            /// <param name="qualifiedFeatureIdentifier">The qualified Feature identifier for which the Feature description should be retrieved.</param>
-            public virtual FeatureDefinition GetFeatureDefinition(FeatureIdentifier qualifiedFeatureIdentifier)
+            /// <param name="featureIdentifier">
+            ///        The fully qualified Feature identifier for which the Feature definition shall be retrieved.
+            ///      </param>
+            public virtual string GetFeatureDefinition(string featureIdentifier)
             {
-                GetFeatureDefinitionRequestDto request = new GetFeatureDefinitionRequestDto(qualifiedFeatureIdentifier, null);
+                GetFeatureDefinitionRequestDto request = new GetFeatureDefinitionRequestDto(featureIdentifier, null);
                 Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/core/SiLAService/v1/Command/GetFeatureDefinition");
                 try
                 {
-                    FeatureDefinition response = CallInvoker.BlockingUnaryCall(GetFeatureDefinitionMethod, null, callInfo.Options, request).FeatureDefinition.Extract(_executionManager.DownloadBinaryStore);
+                    string response = CallInvoker.BlockingUnaryCall(GetFeatureDefinitionMethod, null, callInfo.Options, request).FeatureDefinition.Extract(_executionManager.DownloadBinaryStore);
                     callInfo.FinishSuccessful();
                     return response;
                 } catch (System.Exception ex)
@@ -555,9 +560,10 @@ namespace Tecan.Sila2.Discovery
             }
             
             ///  <summary>
-            /// Sets a human readable name to the Server Name property
+            /// Sets a human readable name to the Server Name Property.Command has no preconditions and
+            /// no further dependencies and can be called at any time.
             /// </summary>
-            /// <param name="serverName">The human readable name of to assign to the SiLA Server</param>
+            /// <param name="serverName">The human readable name to assign to the SiLA Server.</param>
             public virtual void SetServerName(string serverName)
             {
                 SetServerNameRequestDto request = new SetServerNameRequestDto(serverName, null);

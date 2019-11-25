@@ -103,15 +103,16 @@ namespace Tecan.Sila2.Locking
             ///  <summary>
             /// Locks a SiLA Server for exclusive use by setting a lock identifier that has to be sent along with
             /// any following (lock protected) request as long as the SiLA Server is locked.
+            /// The lock can be reset by issuing the 'Unlock Server' command.
             /// </summary>
             /// <param name="lockIdentifier">
-            ///                The lock identifier that has to be sent along with every (lock protected) request to use the server's
-            ///                functionality.
-            ///            </param>
+            ///        The lock identifier that has to be sent along with every (lock protected) request to use the server's
+            ///        functionality.
+            ///      </param>
             /// <param name="timeout">
-            ///                The time after a SiLA Server is automatically unlocked when no request with a valid lock identifier
-            ///                has been received meanwhile. A timeout of 0 specifies an infinite time (no timeout).
-            ///            </param>
+            ///        The time (in seconds) after a SiLA Server is automatically unlocked when no request with a valid lock identifier
+            ///        has been received meanwhile. A timeout of zero seconds specifies an infinite time (no timeout).
+            ///      </param>
             public virtual void LockServer(string lockIdentifier, long timeout)
             {
                 LockServerRequestDto request = new LockServerRequestDto(lockIdentifier, timeout, null);
@@ -145,7 +146,7 @@ namespace Tecan.Sila2.Locking
             
             ///  <summary>
             /// Unlocks a locked SiLA Server. No lock identifier has to be sent for any following calls until
-            /// the server is locked again.
+            /// the server is locked again via the 'Lock Server' command.
             /// </summary>
             /// <param name="lockIdentifier">The lock identifier that has been used to lock the SiLA Server.</param>
             public virtual void UnlockServer(string lockIdentifier)
@@ -175,6 +176,10 @@ namespace Tecan.Sila2.Locking
                 if ((error.ErrorIdentifier == "org.silastandard/core/LockController/v1/DefinedError/ServerNotLocked"))
                 {
                     return new ServerNotLockedException(error.Message);
+                }
+                if ((error.ErrorIdentifier == "org.silastandard/core/LockController/v1/DefinedError/InvalidLockIdentifier"))
+                {
+                    return new InvalidLockIdentifierException(error.Message);
                 }
                 return null;
             }

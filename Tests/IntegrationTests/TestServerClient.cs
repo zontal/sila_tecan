@@ -23,7 +23,7 @@ namespace Tecan.Sila2.IntegrationTests
     public sealed partial class TestServerProvider
     {
         
-        private static string @__ServiceName = "sila2.tecan.sila2.integrationtests.testserver.v1.TestServer";
+        private static string @__ServiceName = "sila2.tecan.sila.integrationtests.testserver.v1.TestServer";
         
         private static Grpc.Core.Method<PassBoolRequestDto, PassBoolResponseDto> PassBoolMethod = new Grpc.Core.Method<PassBoolRequestDto, PassBoolResponseDto>(Grpc.Core.MethodType.Unary, @__ServiceName, "PassBool", ProtobufMarshaller<PassBoolRequestDto>.Default, ProtobufMarshaller<PassBoolResponseDto>.Default);
         
@@ -94,7 +94,7 @@ namespace Tecan.Sila2.IntegrationTests
             public virtual bool PassBool(bool data)
             {
                 PassBoolRequestDto request = new PassBoolRequestDto(data, null);
-                Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("tecan.sila2/integrationtests/TestServer/v1/Command/PassBool");
+                Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("tecan.sila/integrationtests/TestServer/v1/Command/PassBool");
                 try
                 {
                     bool response = CallInvoker.BlockingUnaryCall(PassBoolMethod, null, callInfo.Options, request).ReturnValue.Extract(_executionManager.DownloadBinaryStore);
@@ -114,7 +114,7 @@ namespace Tecan.Sila2.IntegrationTests
             public virtual double PassDouble(double data)
             {
                 PassDoubleRequestDto request = new PassDoubleRequestDto(data, null);
-                Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("tecan.sila2/integrationtests/TestServer/v1/Command/PassDouble");
+                Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("tecan.sila/integrationtests/TestServer/v1/Command/PassDouble");
                 try
                 {
                     double response = CallInvoker.BlockingUnaryCall(PassDoubleMethod, null, callInfo.Options, request).ReturnValue.Extract(_executionManager.DownloadBinaryStore);
@@ -134,7 +134,7 @@ namespace Tecan.Sila2.IntegrationTests
             public virtual long PassLong(long data)
             {
                 PassLongRequestDto request = new PassLongRequestDto(data, null);
-                Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("tecan.sila2/integrationtests/TestServer/v1/Command/PassLong");
+                Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("tecan.sila/integrationtests/TestServer/v1/Command/PassLong");
                 try
                 {
                     long response = CallInvoker.BlockingUnaryCall(PassLongMethod, null, callInfo.Options, request).ReturnValue.Extract(_executionManager.DownloadBinaryStore);
@@ -154,7 +154,7 @@ namespace Tecan.Sila2.IntegrationTests
             public virtual long PassInt(long data)
             {
                 PassIntRequestDto request = new PassIntRequestDto(data, null);
-                Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("tecan.sila2/integrationtests/TestServer/v1/Command/PassInt");
+                Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("tecan.sila/integrationtests/TestServer/v1/Command/PassInt");
                 try
                 {
                     long response = CallInvoker.BlockingUnaryCall(PassIntMethod, null, callInfo.Options, request).ReturnValue.Extract(_executionManager.DownloadBinaryStore);
@@ -174,7 +174,7 @@ namespace Tecan.Sila2.IntegrationTests
             public virtual System.DateTimeOffset PassTimestamp(System.DateTimeOffset timestamp)
             {
                 PassTimestampRequestDto request = new PassTimestampRequestDto(timestamp, null);
-                Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("tecan.sila2/integrationtests/TestServer/v1/Command/PassTimestamp");
+                Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("tecan.sila/integrationtests/TestServer/v1/Command/PassTimestamp");
                 try
                 {
                     System.DateTimeOffset response = CallInvoker.BlockingUnaryCall(PassTimestampMethod, null, callInfo.Options, request).ReturnValue.Extract(_executionManager.DownloadBinaryStore);
@@ -194,7 +194,7 @@ namespace Tecan.Sila2.IntegrationTests
             public virtual System.TimeSpan PassTime(System.TimeSpan time)
             {
                 PassTimeRequestDto request = new PassTimeRequestDto(time, null);
-                Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("tecan.sila2/integrationtests/TestServer/v1/Command/PassTime");
+                Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("tecan.sila/integrationtests/TestServer/v1/Command/PassTime");
                 try
                 {
                     System.TimeSpan response = CallInvoker.BlockingUnaryCall(PassTimeMethod, null, callInfo.Options, request).ReturnValue.Extract(_executionManager.DownloadBinaryStore);
@@ -214,7 +214,7 @@ namespace Tecan.Sila2.IntegrationTests
             public virtual string PassString(string value)
             {
                 PassStringRequestDto request = new PassStringRequestDto(value, null);
-                Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("tecan.sila2/integrationtests/TestServer/v1/Command/PassString");
+                Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("tecan.sila/integrationtests/TestServer/v1/Command/PassString");
                 try
                 {
                     string response = CallInvoker.BlockingUnaryCall(PassStringMethod, null, callInfo.Options, request).ReturnValue.Extract(_executionManager.DownloadBinaryStore);
@@ -233,8 +233,8 @@ namespace Tecan.Sila2.IntegrationTests
             /// <param name="value"></param>
             public virtual System.IO.Stream PassStream(System.IO.Stream value)
             {
-                PassStreamRequestDto request = new PassStreamRequestDto(value, _executionManager.CreateBinaryStore("tecan.sila2/integrationtests/TestServer/v1/Command/PassStream/Parameter/Value"));
-                Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("tecan.sila2/integrationtests/TestServer/v1/Command/PassStream");
+                PassStreamRequestDto request = new PassStreamRequestDto(value, _executionManager.CreateBinaryStore("tecan.sila/integrationtests/TestServer/v1/Command/PassStream/Parameter/Value"));
+                Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("tecan.sila/integrationtests/TestServer/v1/Command/PassStream");
                 try
                 {
                     System.IO.Stream response = CallInvoker.BlockingUnaryCall(PassStreamMethod, null, callInfo.Options, request).ReturnValue.Extract(_executionManager.DownloadBinaryStore);
@@ -253,8 +253,8 @@ namespace Tecan.Sila2.IntegrationTests
             /// <param name="file"></param>
             public virtual System.IO.Stream PassFile(System.IO.Stream file)
             {
-                PassFileRequestDto request = new PassFileRequestDto(file, _executionManager.CreateBinaryStore("tecan.sila2/integrationtests/TestServer/v1/Command/PassFile/Parameter/File"));
-                Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("tecan.sila2/integrationtests/TestServer/v1/Command/PassFile");
+                PassFileRequestDto request = new PassFileRequestDto(file, _executionManager.CreateBinaryStore("tecan.sila/integrationtests/TestServer/v1/Command/PassFile/Parameter/File"));
+                Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("tecan.sila/integrationtests/TestServer/v1/Command/PassFile");
                 try
                 {
                     System.IO.Stream response = CallInvoker.BlockingUnaryCall(PassFileMethod, null, callInfo.Options, request).ReturnValue.Extract(_executionManager.DownloadBinaryStore);
@@ -273,8 +273,8 @@ namespace Tecan.Sila2.IntegrationTests
             /// <param name="bytes"></param>
             public virtual System.IO.Stream PassBytes(System.IO.Stream bytes)
             {
-                PassBytesRequestDto request = new PassBytesRequestDto(bytes, _executionManager.CreateBinaryStore("tecan.sila2/integrationtests/TestServer/v1/Command/PassBytes/Parameter/Bytes"));
-                Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("tecan.sila2/integrationtests/TestServer/v1/Command/PassBytes");
+                PassBytesRequestDto request = new PassBytesRequestDto(bytes, _executionManager.CreateBinaryStore("tecan.sila/integrationtests/TestServer/v1/Command/PassBytes/Parameter/Bytes"));
+                Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("tecan.sila/integrationtests/TestServer/v1/Command/PassBytes");
                 try
                 {
                     System.IO.Stream response = CallInvoker.BlockingUnaryCall(PassBytesMethod, null, callInfo.Options, request).ReturnValue.Extract(_executionManager.DownloadBinaryStore);
@@ -294,7 +294,7 @@ namespace Tecan.Sila2.IntegrationTests
             public virtual System.Collections.Generic.ICollection<string> PassCollection(System.Collections.Generic.ICollection<string> strings)
             {
                 PassCollectionRequestDto request = new PassCollectionRequestDto(strings, null);
-                Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("tecan.sila2/integrationtests/TestServer/v1/Command/PassCollection");
+                Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("tecan.sila/integrationtests/TestServer/v1/Command/PassCollection");
                 try
                 {
                     System.Collections.Generic.ICollection<string> response = Tecan.Sila2.DtoExtensions.Extract(CallInvoker.BlockingUnaryCall(PassCollectionMethod, null, callInfo.Options, request).ReturnValue, _executionManager.DownloadBinaryStore);
@@ -314,7 +314,7 @@ namespace Tecan.Sila2.IntegrationTests
             public virtual SomeStructure PassStructure(SomeStructure structure)
             {
                 PassStructureRequestDto request = new PassStructureRequestDto(structure, null);
-                Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("tecan.sila2/integrationtests/TestServer/v1/Command/PassStructure");
+                Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("tecan.sila/integrationtests/TestServer/v1/Command/PassStructure");
                 try
                 {
                     SomeStructure response = CallInvoker.BlockingUnaryCall(PassStructureMethod, null, callInfo.Options, request).ReturnValue.Extract(_executionManager.DownloadBinaryStore);

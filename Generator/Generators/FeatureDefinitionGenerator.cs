@@ -6,6 +6,7 @@ using System.ComponentModel.Composition;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 using Tecan.Sila2.Generator.Contracts;
 using Tecan.Sila2.Generator.Helper;
 using Tecan.Sila2.Server;
@@ -220,6 +221,46 @@ namespace Tecan.Sila2.Generator.Generators
                 if (originator == null) originator = ns.Substring(0, useCaseStartIndex - 1);
                 if (useCase == null) useCase = ns.Substring(useCaseStartIndex, endIndex - useCaseStartIndex);
             }
+
+            originator = AsStandardLower( originator );
+            useCase = AsStandardLower( useCase );
+        }
+
+        private static string AsStandardLower( string parameter )
+        {
+            var sb = new StringBuilder();
+            foreach( var character in parameter )
+            {
+                if( char.IsLetter( character ) )
+                {
+                    var lower = char.ToLowerInvariant( character );
+                    if( lower >= 'a' && lower <= 'z' )
+                    {
+                        sb.Append( lower );
+                    }
+                    else if (lower == 'ä')
+                    {
+                        sb.Append( "ae" );
+                    }
+                    else if (lower == 'ö')
+                    {
+                        sb.Append( "oe" );
+                    }
+                    else if (lower == 'ü')
+                    {
+                        sb.Append( "ue" );
+                    }
+                    else if (lower == 'ß')
+                    {
+                        sb.Append( "ss" );
+                    }
+                }
+                else if (character == '.')
+                {
+                    sb.Append( character );
+                }
+            }
+            return sb.ToString();
         }
 
         private SiLAElement GenerateDataType(Type dataType, Action<Type> registry)

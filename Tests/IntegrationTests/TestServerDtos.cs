@@ -62,7 +62,7 @@ namespace Tecan.Sila2.IntegrationTests
         {
             get
             {
-                return "tecan.sila2/integrationtests/TestServer/v1/Command/PassBool";
+                return "tecan.sila/integrationtests/TestServer/v1/Command/PassBool";
             }
         }
         
@@ -176,7 +176,7 @@ namespace Tecan.Sila2.IntegrationTests
         {
             get
             {
-                return "tecan.sila2/integrationtests/TestServer/v1/Command/PassDouble";
+                return "tecan.sila/integrationtests/TestServer/v1/Command/PassDouble";
             }
         }
         
@@ -290,7 +290,7 @@ namespace Tecan.Sila2.IntegrationTests
         {
             get
             {
-                return "tecan.sila2/integrationtests/TestServer/v1/Command/PassLong";
+                return "tecan.sila/integrationtests/TestServer/v1/Command/PassLong";
             }
         }
         
@@ -404,7 +404,7 @@ namespace Tecan.Sila2.IntegrationTests
         {
             get
             {
-                return "tecan.sila2/integrationtests/TestServer/v1/Command/PassInt";
+                return "tecan.sila/integrationtests/TestServer/v1/Command/PassInt";
             }
         }
         
@@ -518,7 +518,7 @@ namespace Tecan.Sila2.IntegrationTests
         {
             get
             {
-                return "tecan.sila2/integrationtests/TestServer/v1/Command/PassTimestamp";
+                return "tecan.sila/integrationtests/TestServer/v1/Command/PassTimestamp";
             }
         }
         
@@ -632,7 +632,7 @@ namespace Tecan.Sila2.IntegrationTests
         {
             get
             {
-                return "tecan.sila2/integrationtests/TestServer/v1/Command/PassTime";
+                return "tecan.sila/integrationtests/TestServer/v1/Command/PassTime";
             }
         }
         
@@ -746,7 +746,7 @@ namespace Tecan.Sila2.IntegrationTests
         {
             get
             {
-                return "tecan.sila2/integrationtests/TestServer/v1/Command/PassString";
+                return "tecan.sila/integrationtests/TestServer/v1/Command/PassString";
             }
         }
         
@@ -860,7 +860,7 @@ namespace Tecan.Sila2.IntegrationTests
         {
             get
             {
-                return "tecan.sila2/integrationtests/TestServer/v1/Command/PassStream";
+                return "tecan.sila/integrationtests/TestServer/v1/Command/PassStream";
             }
         }
         
@@ -974,7 +974,7 @@ namespace Tecan.Sila2.IntegrationTests
         {
             get
             {
-                return "tecan.sila2/integrationtests/TestServer/v1/Command/PassFile";
+                return "tecan.sila/integrationtests/TestServer/v1/Command/PassFile";
             }
         }
         
@@ -1088,7 +1088,7 @@ namespace Tecan.Sila2.IntegrationTests
         {
             get
             {
-                return "tecan.sila2/integrationtests/TestServer/v1/Command/PassBytes";
+                return "tecan.sila/integrationtests/TestServer/v1/Command/PassBytes";
             }
         }
         
@@ -1202,7 +1202,7 @@ namespace Tecan.Sila2.IntegrationTests
         {
             get
             {
-                return "tecan.sila2/integrationtests/TestServer/v1/Command/PassCollection";
+                return "tecan.sila/integrationtests/TestServer/v1/Command/PassCollection";
             }
         }
         
@@ -1316,7 +1316,7 @@ namespace Tecan.Sila2.IntegrationTests
         {
             get
             {
-                return "tecan.sila2/integrationtests/TestServer/v1/Command/PassStructure";
+                return "tecan.sila/integrationtests/TestServer/v1/Command/PassStructure";
             }
         }
         
@@ -1411,7 +1411,7 @@ namespace Tecan.Sila2.IntegrationTests
         {
             get
             {
-                return "tecan.sila2/integrationtests/TestServer/v1/Command/RunObservable";
+                return "tecan.sila/integrationtests/TestServer/v1/Command/RunObservable";
             }
         }
         
@@ -1506,8 +1506,8 @@ namespace Tecan.Sila2.IntegrationTests
         {
             get
             {
-                return "tecan.sila2/integrationtests/TestServer/v1/Command/RunIntermediateObservableComma" +
-                    "nd";
+                return "tecan.sila/integrationtests/TestServer/v1/Command/RunIntermediateObservableComman" +
+                    "d";
             }
         }
         

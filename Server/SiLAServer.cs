@@ -83,7 +83,7 @@ namespace Tecan.Sila2.Server
         public string ServerDescription { get; }
 
         /// <inheritdoc />
-        public Url ServerVendorURL { get; }
+        public string ServerVendorURL { get; }
 
         /// <inheritdoc />
         public string ServerVersion { get; }
@@ -123,7 +123,7 @@ namespace Tecan.Sila2.Server
 
             ServerType = startupInfo.Info.Type;
             ServerDescription = startupInfo.Info.Description;
-            ServerVendorURL = new Url(startupInfo.Info.VendorURI);
+            ServerVendorURL = startupInfo.Info.VendorURI;
             ServerVersion = startupInfo.Info.Version;
             ServerUUID = startupInfo.ServerUuid.ToString();
             ServerName = ServerType;
@@ -216,23 +216,23 @@ namespace Tecan.Sila2.Server
         /// </summary>
         /// <param name="qualifiedFeatureIdentifier">The (full qualified) feature identifier.</param>
         /// <returns>The feature description.</returns>
-        public FeatureDefinition GetFeatureDefinition(FeatureIdentifier qualifiedFeatureIdentifier)
+        public string GetFeatureDefinition(string qualifiedFeatureIdentifier)
         {
             if (!ImplementedFeatures.Contains(qualifiedFeatureIdentifier))
             {
-                throw new UnimplementedFeatureException($"Given Feature identifier: \"{qualifiedFeatureIdentifier.Value}\"");
+                throw new UnimplementedFeatureException($"Given Feature identifier: \"{qualifiedFeatureIdentifier}\"");
             }
 
-            var feature = _implementedFeatures.First(f => f.FeatureDefinition.FullyQualifiedIdentifier == qualifiedFeatureIdentifier.Value).FeatureDefinition;
-            return new FeatureDefinition(FeatureSerializer.SaveToString(feature).Replace(Environment.NewLine, string.Empty));
+            var feature = _implementedFeatures.First(f => f.FeatureDefinition.FullyQualifiedIdentifier == qualifiedFeatureIdentifier).FeatureDefinition;
+            return FeatureSerializer.SaveToString(feature).Replace(Environment.NewLine, string.Empty);
         }
 
         /// <summary>
         /// Gets a list of fully qualified identifiers of the implemented features.
         /// </summary>
-        public ICollection<FeatureIdentifier> ImplementedFeatures
+        public ICollection<string> ImplementedFeatures
         {
-            get { return _implementedFeatures.Select(feature => new FeatureIdentifier(feature.FeatureDefinition.FullyQualifiedIdentifier)).ToList(); }
+            get { return _implementedFeatures.Select(feature => feature.FeatureDefinition.FullyQualifiedIdentifier).ToList(); }
         }
 
         /// <summary>

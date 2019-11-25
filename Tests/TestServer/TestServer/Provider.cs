@@ -24,7 +24,7 @@ namespace Tecan.Sila2.IntegrationTests
     public sealed partial class TestServerProvider
     {
         
-        private static string @__ServiceName = "sila2.tecan.sila2.integrationtests.testserver.v1.TestServer";
+        private static string @__ServiceName = "sila2.tecan.sila.integrationtests.testserver.v1.TestServer";
         
         private static Grpc.Core.Method<PassBoolRequestDto, PassBoolResponseDto> PassBoolMethod = new Grpc.Core.Method<PassBoolRequestDto, PassBoolResponseDto>(Grpc.Core.MethodType.Unary, @__ServiceName, "PassBool", ProtobufMarshaller<PassBoolRequestDto>.Default, ProtobufMarshaller<PassBoolResponseDto>.Default);
         
@@ -354,7 +354,7 @@ namespace Tecan.Sila2.IntegrationTests
             /// <returns>The command response wrapped in a data transfer object</returns>
             protected virtual System.Threading.Tasks.Task<Tecan.Sila2.CommandConfirmation> RunObservable(RunObservableRequestDto request, Grpc.Core.ServerCallContext context)
             {
-                return ObservableCommands.StartCommand(_server, "tecan.sila2/integrationtests/TestServer/v1/Command/RunObservable", _implementation.RunObservable(), ConvertRunObservableResponse, context);
+                return ObservableCommands.StartCommand(_server, "tecan.sila/integrationtests/TestServer/v1/Command/RunObservable", _implementation.RunObservable(), ConvertRunObservableResponse, context);
             }
             
             private RunIntermediateObservableCommandIntermediateDto ConvertRunIntermediateObservableCommandIntermediate(int intermediate)
@@ -405,8 +405,8 @@ namespace Tecan.Sila2.IntegrationTests
             /// <returns>The command response wrapped in a data transfer object</returns>
             protected virtual System.Threading.Tasks.Task<Tecan.Sila2.CommandConfirmation> RunIntermediateObservableCommand(RunIntermediateObservableCommandRequestDto request, Grpc.Core.ServerCallContext context)
             {
-                return ObservableCommands.StartCommand(_server, "tecan.sila2/integrationtests/TestServer/v1/Command/RunIntermediateObservableComma" +
-                        "nd", _implementation.RunIntermediateObservableCommand(), ConvertRunIntermediateObservableCommandIntermediate, context);
+                return ObservableCommands.StartCommand(_server, "tecan.sila/integrationtests/TestServer/v1/Command/RunIntermediateObservableComman" +
+                        "d", _implementation.RunIntermediateObservableCommand(), ConvertRunIntermediateObservableCommandIntermediate, context);
             }
             
             ///  <summary>
@@ -416,60 +416,60 @@ namespace Tecan.Sila2.IntegrationTests
             /// <returns>A method object or null, if the command is not supported</returns>
             public System.Reflection.MethodInfo GetCommand(string commandIdentifier)
             {
-                if ((commandIdentifier == "tecan.sila2/integrationtests/TestServer/v1/Command/PassBool"))
+                if ((commandIdentifier == "tecan.sila/integrationtests/TestServer/v1/Command/PassBool"))
                 {
                     return typeof(ITestServer).GetMethod("PassBool");
                 }
-                if ((commandIdentifier == "tecan.sila2/integrationtests/TestServer/v1/Command/PassDouble"))
+                if ((commandIdentifier == "tecan.sila/integrationtests/TestServer/v1/Command/PassDouble"))
                 {
                     return typeof(ITestServer).GetMethod("PassDouble");
                 }
-                if ((commandIdentifier == "tecan.sila2/integrationtests/TestServer/v1/Command/PassLong"))
+                if ((commandIdentifier == "tecan.sila/integrationtests/TestServer/v1/Command/PassLong"))
                 {
                     return typeof(ITestServer).GetMethod("PassLong");
                 }
-                if ((commandIdentifier == "tecan.sila2/integrationtests/TestServer/v1/Command/PassInt"))
+                if ((commandIdentifier == "tecan.sila/integrationtests/TestServer/v1/Command/PassInt"))
                 {
                     return typeof(ITestServer).GetMethod("PassInt");
                 }
-                if ((commandIdentifier == "tecan.sila2/integrationtests/TestServer/v1/Command/PassTimestamp"))
+                if ((commandIdentifier == "tecan.sila/integrationtests/TestServer/v1/Command/PassTimestamp"))
                 {
                     return typeof(ITestServer).GetMethod("PassTimestamp");
                 }
-                if ((commandIdentifier == "tecan.sila2/integrationtests/TestServer/v1/Command/PassTime"))
+                if ((commandIdentifier == "tecan.sila/integrationtests/TestServer/v1/Command/PassTime"))
                 {
                     return typeof(ITestServer).GetMethod("PassTime");
                 }
-                if ((commandIdentifier == "tecan.sila2/integrationtests/TestServer/v1/Command/PassString"))
+                if ((commandIdentifier == "tecan.sila/integrationtests/TestServer/v1/Command/PassString"))
                 {
                     return typeof(ITestServer).GetMethod("PassString");
                 }
-                if ((commandIdentifier == "tecan.sila2/integrationtests/TestServer/v1/Command/PassStream"))
+                if ((commandIdentifier == "tecan.sila/integrationtests/TestServer/v1/Command/PassStream"))
                 {
                     return typeof(ITestServer).GetMethod("PassStream");
                 }
-                if ((commandIdentifier == "tecan.sila2/integrationtests/TestServer/v1/Command/PassFile"))
+                if ((commandIdentifier == "tecan.sila/integrationtests/TestServer/v1/Command/PassFile"))
                 {
                     return typeof(ITestServer).GetMethod("PassFile");
                 }
-                if ((commandIdentifier == "tecan.sila2/integrationtests/TestServer/v1/Command/PassBytes"))
+                if ((commandIdentifier == "tecan.sila/integrationtests/TestServer/v1/Command/PassBytes"))
                 {
                     return typeof(ITestServer).GetMethod("PassBytes");
                 }
-                if ((commandIdentifier == "tecan.sila2/integrationtests/TestServer/v1/Command/PassCollection"))
+                if ((commandIdentifier == "tecan.sila/integrationtests/TestServer/v1/Command/PassCollection"))
                 {
                     return typeof(ITestServer).GetMethod("PassCollection");
                 }
-                if ((commandIdentifier == "tecan.sila2/integrationtests/TestServer/v1/Command/PassStructure"))
+                if ((commandIdentifier == "tecan.sila/integrationtests/TestServer/v1/Command/PassStructure"))
                 {
                     return typeof(ITestServer).GetMethod("PassStructure");
                 }
-                if ((commandIdentifier == "tecan.sila2/integrationtests/TestServer/v1/Command/RunObservable"))
+                if ((commandIdentifier == "tecan.sila/integrationtests/TestServer/v1/Command/RunObservable"))
                 {
                     return typeof(ITestServer).GetMethod("RunObservable");
                 }
-                if ((commandIdentifier == "tecan.sila2/integrationtests/TestServer/v1/Command/RunIntermediateObservableComma" +
-                    "nd"))
+                if ((commandIdentifier == "tecan.sila/integrationtests/TestServer/v1/Command/RunIntermediateObservableComman" +
+                    "d"))
                 {
                     return typeof(ITestServer).GetMethod("RunIntermediateObservableCommand");
                 }

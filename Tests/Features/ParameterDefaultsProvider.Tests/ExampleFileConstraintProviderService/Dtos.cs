@@ -64,8 +64,8 @@ namespace Tecan.Sila2.ParameterDefaultsProvider.Tests
         {
             get
             {
-                return "tecan.sila2.parameterdefaultsprovider/tests/ExampleFileConstraintProviderService/" +
-                    "v1/Command/FileExampleMethod";
+                return "tecan.sila.parameterdefaultsprovider/tests/ExampleFileConstraintProviderService/v" +
+                    "1/Command/FileExampleMethod";
             }
         }
         

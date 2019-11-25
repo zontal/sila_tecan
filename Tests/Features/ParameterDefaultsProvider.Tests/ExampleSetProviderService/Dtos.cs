@@ -64,8 +64,8 @@ namespace Tecan.Sila2.ParameterDefaultsProvider.Tests
         {
             get
             {
-                return "tecan.sila2.parameterdefaultsprovider/tests/ExampleSetProviderService/v1/Command/" +
-                    "ExampleMethod";
+                return "tecan.sila.parameterdefaultsprovider/tests/ExampleSetProviderService/v1/Command/E" +
+                    "xampleMethod";
             }
         }
         

@@ -112,6 +112,9 @@ namespace Tecan.Sila2.Locking
                 } catch (ServerNotLockedException ex)
                 {
                     throw ErrorHandling.CreateExecutionError("org.silastandard/core/LockController/v1/DefinedError/ServerNotLocked", "The SiLA Server can not be unlocked because it is not locked.", ex.Message);
+                } catch (InvalidLockIdentifierException ex)
+                {
+                    throw ErrorHandling.CreateExecutionError("org.silastandard/core/LockController/v1/DefinedError/InvalidLockIdentifier", "The sent lock identifier is not valid.", ex.Message);
                 }
             }
             
@@ -138,7 +141,9 @@ namespace Tecan.Sila2.Locking
             }
             
             ///  <summary>
-            /// Gets the features/commands/properties affected by the metadata The lock identifier has to be sent with every (lock protected) call in order to use the functionality of a locked SiLA Server.
+            /// Gets the features/commands/properties affected by the metadata
+            /// The lock identifier has to be sent with every (lock protected) call in order to use the functionality
+            /// of a locked SiLA Server.
             /// </summary>
             /// <param name="request">The request object (not used)</param>
             /// <param name="context">The request context</param>

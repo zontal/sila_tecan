@@ -24,8 +24,8 @@ namespace Tecan.Sila2.ParameterDefaultsProvider.Tests
     public sealed partial class ExampleFileConstraintProviderServiceProvider
     {
         
-        private static string @__ServiceName = "sila2.tecan.sila2.parameterdefaultsprovider.tests.examplefileconstraintproviderse" +
-            "rvice.v1.ExampleFileConstraintProviderService";
+        private static string @__ServiceName = "sila2.tecan.sila.parameterdefaultsprovider.tests.examplefileconstraintproviderser" +
+            "vice.v1.ExampleFileConstraintProviderService";
         
         private static Grpc.Core.Method<FileExampleMethodRequestDto, EmptyRequest> FileExampleMethodMethod = new Grpc.Core.Method<FileExampleMethodRequestDto, EmptyRequest>(Grpc.Core.MethodType.Unary, @__ServiceName, "FileExampleMethod", ProtobufMarshaller<FileExampleMethodRequestDto>.Default, EmptyRequest.Marshaller);
         
@@ -97,8 +97,8 @@ namespace Tecan.Sila2.ParameterDefaultsProvider.Tests
             /// <returns>A method object or null, if the command is not supported</returns>
             public System.Reflection.MethodInfo GetCommand(string commandIdentifier)
             {
-                if ((commandIdentifier == "tecan.sila2.parameterdefaultsprovider/tests/ExampleFileConstraintProviderService/" +
-                    "v1/Command/FileExampleMethod"))
+                if ((commandIdentifier == "tecan.sila.parameterdefaultsprovider/tests/ExampleFileConstraintProviderService/v" +
+                    "1/Command/FileExampleMethod"))
                 {
                     return typeof(IExampleFileConstraintProviderService).GetMethod("FileExampleMethod");
                 }

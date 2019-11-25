@@ -74,7 +74,7 @@ namespace Tecan.Sila2.Discovery
         [SilaDisplayName("Server Vendor URL")]
         [SilaDescription("Returns the URL to the website of the vendor or the website \nof the p" +
             "roduct of this SiLA Server.")]
-        Url ServerVendorURL
+        string ServerVendorURL
         {
             get;
         }
@@ -85,7 +85,7 @@ namespace Tecan.Sila2.Discovery
         [SilaDisplayName("Implemented Features")]
         [SilaDescription("Returns a list of qualified Feature identifiers of all \nimplemented F" +
             "eatures of this SiLA Server.")]
-        ICollection<FeatureIdentifier> ImplementedFeatures
+        ICollection<string> ImplementedFeatures
         {
             get;
         }
@@ -101,8 +101,8 @@ namespace Tecan.Sila2.Discovery
         [return: SilaIdentifier("FeatureDefinition")]
         [return: SilaDisplayName("Feature Definition")]
         [return: SilaDescription("The Feature Definition in XML format.")]
-        FeatureDefinition GetFeatureDefinition([SilaDisplayName("Qualified Feature Identifier")] [SilaDescription("The qualified Feature identifier for which the Feature description should be retr" +
-            "ieved.")] FeatureIdentifier qualifiedFeatureIdentifier);
+        string GetFeatureDefinition([SilaDisplayName("Qualified Feature Identifier")] [SilaDescription("The qualified Feature identifier for which the Feature description should be retr" +
+            "ieved.")] string qualifiedFeatureIdentifier);
 
         /// <summary>
         /// Sets a human readable name to the Server Name property
@@ -112,74 +112,6 @@ namespace Tecan.Sila2.Discovery
         [SilaDescription("Sets a human readable name to the Server Name property")]
         void SetServerName([SilaDisplayName("Server Name")] [SilaDescription("The human readable name of to assign to the SiLA Server")] string serverName);
 
-    }
-
-    /// <summary>
-    /// Qualified Feature IsDraft as provided by the ImplementedFeatures property.
-    /// </summary>
-    [SilaDisplayName("IsDraft")]
-    [SilaDescription("Qualified Feature IsDraft as provided by the ImplementedFeatures property.")]
-    [MaximalLength(255)]
-    public struct FeatureIdentifier
-    {
-        /// <summary>
-        /// Create a new instance
-        /// </summary>
-        /// <param name="value">The inner value</param>
-        public FeatureIdentifier(string value)
-        {
-            Value = value;
-        }
-
-        /// <summary>
-        /// The inner value
-        /// </summary>
-        public string Value { get; }
-    }
-
-    /// <summary>
-    /// The content of a Feature Definition conforming with the XML Schema
-    /// </summary>
-    [SilaDisplayName("Feature Definition")]
-    [SilaDescription("The content of a Feature Definition conforming with the XML Schema")]
-    public struct FeatureDefinition
-    {
-        /// <summary>
-        /// Create a new instance
-        /// </summary>
-        /// <param name="value">The inner value</param>
-        public FeatureDefinition(string value)
-        {
-            Value = value;
-        }
-
-        /// <summary>
-        /// The inner value
-        /// </summary>
-        public string Value { get; }
-    }
-
-    /// <summary>
-    /// A URL
-    /// </summary>
-    [SilaDisplayName("URL")]
-    [SilaDescription("")]
-    [PatternConstraint("https?://.+")]
-    public struct Url
-    {
-        /// <summary>
-        /// Create a new instance
-        /// </summary>
-        /// <param name="value">The inner value</param>
-        public Url(string value)
-        {
-            Value = value;
-        }
-
-        /// <summary>
-        /// The inner value
-        /// </summary>
-        public string Value { get; }
     }
 
     /// <summary>
