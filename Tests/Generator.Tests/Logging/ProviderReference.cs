@@ -23,7 +23,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
     public sealed partial class LoggingServiceProvider
     {
         
-        private static string @__ServiceName = "sila2.tecan.sila.generator.test.logging.infrastructure.loggingservice.v0.LoggingS" +
+        private static string @__ServiceName = "sila2.tecan.sila.generator.test.logging.infrastructure.loggingservice.v1.LoggingS" +
             "ervice";
         
         private static Grpc.Core.Method<ListenForLogEntriesRequestDto, CommandConfirmation> ListenForLogEntriesMethod = new Grpc.Core.Method<ListenForLogEntriesRequestDto, CommandConfirmation>(Grpc.Core.MethodType.Unary, @__ServiceName, "ListenForLogEntries", ProtobufMarshaller<ListenForLogEntriesRequestDto>.Default, ProtobufMarshaller<CommandConfirmation>.Default);
@@ -132,7 +132,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             /// <returns>The command response wrapped in a data transfer object</returns>
             protected virtual System.Threading.Tasks.Task<Tecan.Sila2.CommandConfirmation> ListenForLogEntries(ListenForLogEntriesRequestDto request, Grpc.Core.ServerCallContext context)
             {
-                return ObservableCommands.StartCommand(_server, "tecan.sila.generator.test.logging/infrastructure/LoggingService/v0/Command/Listen" +
+                return ObservableCommands.StartCommand(_server, "tecan.sila.generator.test.logging/infrastructure/LoggingService/v1/Command/Listen" +
                         "ForLogEntries", _implementation.ListenForLogEntries(), ConvertListenForLogEntriesIntermediate, context);
             }
             
@@ -154,7 +154,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             /// <returns>A method object or null, if the command is not supported</returns>
             public System.Reflection.MethodInfo GetCommand(string commandIdentifier)
             {
-                if ((commandIdentifier == "tecan.sila.generator.test.logging/infrastructure/LoggingService/v0/Command/Listen" +
+                if ((commandIdentifier == "tecan.sila.generator.test.logging/infrastructure/LoggingService/v1/Command/Listen" +
                     "ForLogEntries"))
                 {
                     return typeof(ILoggingService).GetMethod("ListenForLogEntries");
@@ -302,7 +302,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// <returns>A request interception or null, if this is not necessary</returns>
         public Tecan.Sila2.Server.IRequestInterception Intercept(string commandIdentifier, Tecan.Sila2.Server.ISiLAServer server, Grpc.Core.ServerCallContext context)
         {
-            return Intercept(commandIdentifier, Tecan.Sila2.Server.Metadata.Extract<Tecan.Sila2.StringDto>(context, "tecan.sila.generator.test.logging/infrastructure/LoggingService/v0/Metadata/Loggi" +
+            return Intercept(commandIdentifier, Tecan.Sila2.Server.Metadata.Extract<Tecan.Sila2.StringDto>(context, "tecan.sila.generator.test.logging/infrastructure/LoggingService/v1/Metadata/Loggi" +
                         "ngActivity").Extract(server));
         }
     }
