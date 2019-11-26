@@ -12,9 +12,9 @@
         <projectUrl>https://gitlab.com/SiLA2/vendors/sila_tecan</projectUrl>
         <repository type="git" url="https://gitlab.com/SiLA2/vendors/sila_tecan.git" />
         <dependencies>
-            <dependency id="Tecan.Sila2.Contracts" version="[0.1,1.0)" />
-            <dependency id="Tecan.Sila2.Server" version="[0.1,1.0)" />
-            <dependency id="Tecan.Sila2" version="[0.1,1.0)" />
+            <dependency id="Tecan.Sila2.Contracts" version="[1.0,2.0)" />
+            <dependency id="Tecan.Sila2.Server" version="[1.0,2.0)" />
+            <dependency id="Tecan.Sila2" version="[1.0,2.0)" />
         </dependencies>
     </metadata>
     <files>
