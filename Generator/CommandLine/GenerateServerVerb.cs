@@ -104,11 +104,18 @@ namespace Tecan.Sila2.Generator.CommandLine
         public void Execute(CompositionContainer container)
         {
             var rootNamespace = RootNamespace;
+#if NET472
             if( Namespace == null && rootNamespace == null )
             {
                 var project = new Project( ProviderProject );
                 rootNamespace = project.Properties.FirstOrDefault( p => p.Name == "RootNamespace" )?.EvaluatedValue;
             }
+#endif
+            if( Namespace == null && rootNamespace == null )
+            {
+                throw new Exception("Either namespace or root namespace must be set if they cannot be obtained from the project file.");
+            }
+
             var directory = Path.GetDirectoryName(Path.GetFullPath(ProviderProject));
             var assembly = Assembly.LoadFrom(Path.GetFullPath(AssemblyPath));
             var featureTypes = assembly.ExportedTypes.Where(t =>

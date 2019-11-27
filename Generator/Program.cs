@@ -26,7 +26,18 @@ namespace Tecan.Sila2.Generator
                 .ToArray();
 
             Parser.Default.ParseArguments(args, verbTypes)
-                .WithParsed<ICommandLineVerb>(verb => verb.Execute(_container));
+                .WithParsed<ICommandLineVerb>(verb =>
+                {
+                    try
+                    {
+                        verb.Execute( _container );
+                    }
+                    catch( Exception e )
+                    {
+                        Console.Error.WriteLine( e.Message );
+                        Environment.Exit( 1 );
+                    }
+                } );
         }
     }
 }
