@@ -34,13 +34,11 @@ namespace Tecan.Sila2.Generator.CommandLine
         [Value(1, Required = true, HelpText = "The path to the C# project to which the generated provider should be added")]
         public string ProviderProject { get; set; }
 
-#if NETCOREAPP2_1
         /// <summary>
         /// The root namespace in the C# project to which the generated provider should be added
         /// </summary>
-        [Option('r', "root-namespace", Required = true, HelpText = "The root namespace in the C# project to which the generated provider should be added.")]
+        [Option('r', "root-namespace", Required = false, HelpText = "The root namespace in the C# project to which the generated provider should be added.")]
         public string RootNamespace { get; set; }
-#endif
 
         /// <summary>
         /// The name of the interface. If this option is omitted, then a single SiLA interface is assumed.
@@ -105,14 +103,12 @@ namespace Tecan.Sila2.Generator.CommandLine
 
         public void Execute(CompositionContainer container)
         {
-            
-#if NET472
-            var project = new Project(ProviderProject);
-            var rootNamespace = project.Properties.FirstOrDefault(p => p.Name == "RootNamespace")?.EvaluatedValue;
-#elif NETCOREAPP2_1
             var rootNamespace = RootNamespace;
-#endif
-
+            if( Namespace == null && rootNamespace == null )
+            {
+                var project = new Project( ProviderProject );
+                rootNamespace = project.Properties.FirstOrDefault( p => p.Name == "RootNamespace" )?.EvaluatedValue;
+            }
             var directory = Path.GetDirectoryName(Path.GetFullPath(ProviderProject));
             var assembly = Assembly.LoadFrom(Path.GetFullPath(AssemblyPath));
             var featureTypes = assembly.ExportedTypes.Where(t =>
