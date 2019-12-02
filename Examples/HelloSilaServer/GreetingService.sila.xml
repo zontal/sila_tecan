@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Feature xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" SiLA2Version="1.0" FeatureVersion="1.0" Originator="contracts" Category="demo" xmlns="http://www.sila-standard.org">
+  <Identifier>GreetingService</Identifier>
+  <DisplayName>Greeting service</DisplayName>
+  <Description>Service to greet people</Description>
+  <Command>
+    <Identifier>SayHello</Identifier>
+    <DisplayName>SayHello</DisplayName>
+    <Description>Says hello to people</Description>
+    <Observable>No</Observable>
+    <Parameter>
+      <Identifier>Name</Identifier>
+      <DisplayName>Name</DisplayName>
+      <Description>The name of the person greeted</Description>
+      <DataType>
+        <Basic>String</Basic>
+      </DataType>
+    </Parameter>
+    <Response>
+      <Identifier>ReturnValue</Identifier>
+      <DisplayName>ReturnValue</DisplayName>
+      <Description>A greeting</Description>
+      <DataType>
+        <Basic>String</Basic>
+      </DataType>
+    </Response>
+    <DefinedExecutionErrors>
+      <Identifier>UnfriendlyName</Identifier>
+    </DefinedExecutionErrors>
+  </Command>
+  <Property>
+    <Identifier>LastGreeted</Identifier>
+    <DisplayName>LastGreeted</DisplayName>
+    <Description>Gets the name of the last person that was greeted</Description>
+    <Observable>No</Observable>
+    <DataType>
+      <Basic>String</Basic>
+    </DataType>
+  </Property>
+  <DefinedExecutionError>
+    <Identifier>UnfriendlyName</Identifier>
+    <DisplayName>UnfriendlyName</DisplayName>
+    <Description>This exception is thrown if a name is considered an attempted attack</Description>
+  </DefinedExecutionError>
+</Feature>
