@@ -45,7 +45,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         [Tecan.Sila2.SilaDescriptionAttribute("Control the Temperature gradually to a set target,")]
         [Tecan.Sila2.ThrowsAttribute(typeof(TemperatureNotReachableException))]
         [Tecan.Sila2.ThrowsAttribute(typeof(ControlInterruptedException))]
-        Tecan.Sila2.IObservableCommand ControlTemperature([Tecan.Sila2.SilaDisplayNameAttribute("Target Temperature")] [Tecan.Sila2.SilaDescriptionAttribute("The target temperature that the device will try to reach. Note that the command m" +
+        Tecan.Sila2.IObservableCommand ControlTemperature([Tecan.Sila2.UnitAttribute("K", Kelvin=1)] [Tecan.Sila2.MaximalInclusiveAttribute(373D)] [Tecan.Sila2.MinimalExclusiveAttribute(273D)] [Tecan.Sila2.SilaDisplayNameAttribute("Target Temperature")] [Tecan.Sila2.SilaDescriptionAttribute("The target temperature that the device will try to reach. Note that the command m" +
             "ight\nbe completed at a temperature that is close enough.")] double targetTemperature);
     }
     

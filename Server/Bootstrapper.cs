@@ -154,6 +154,11 @@ namespace Tecan.Sila2.Server
                 container.ComposeExportedValue<ILoggingChannelFactory>( new ConsoleLogging() );
             }
 
+            if( container.GetExportedValueOrDefault<IConfigurationStore>() == null )
+            {
+                container.ComposeExportedValue<IConfigurationStore>(new FileConfigurationStore());
+            }
+
             return container;
         }
 

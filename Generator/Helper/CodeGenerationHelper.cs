@@ -41,7 +41,7 @@ namespace Tecan.Sila2.Generator.Helper
             return Char.ToUpperInvariant(identifier[0]) + identifier.Substring(1);
         }
 
-        public static CodeTypeReference ExtractType(DataTypeType dataType, Action<Constraints> constraintHandler)
+        public static CodeTypeReference ExtractType(DataTypeType dataType, Action<Constraints> constraintHandler, string suggestedName, Action<string, StructureType> registerStructure)
         {
             switch (dataType.Item)
             {
@@ -66,10 +66,13 @@ namespace Tecan.Sila2.Generator.Helper
                     }
                     break;
                 case ListType list:
-                    return new CodeTypeReference(typeof(ICollection<>).FullName, ExtractType(list.DataType, constraintHandler));
+                    return new CodeTypeReference(typeof(ICollection<>).FullName, ExtractType(list.DataType, constraintHandler, TurnSingular(suggestedName), registerStructure ) );
                 case ConstrainedType constrained:
                     constraintHandler?.Invoke(constrained.Constraints);
-                    return ExtractType(constrained.DataType, constraintHandler);
+                    return ExtractType(constrained.DataType, constraintHandler, suggestedName, registerStructure );
+                case StructureType structured:
+                    registerStructure?.Invoke( suggestedName, structured );
+                    return new CodeTypeReference(suggestedName);
                 case string identityReference:
                     var isAllUpperCase = identityReference.All( char.IsUpper );
                     if( isAllUpperCase )
@@ -81,6 +84,17 @@ namespace Tecan.Sila2.Generator.Helper
             throw new NotSupportedException($"The data type {dataType.Item} is not supported");
         }
 
+        public static string TurnSingular( string name )
+        {
+            if( name.EndsWith( "s" ) )
+            {
+                return name.Substring( 0, name.Length - 1 );
+            }
+            else
+            {
+                return name + "Item";
+            }
+        }
 
         public static CodeExpression GenerateConversion( CodeMethodInvokeExpression extractionCall, CodeTypeReference customType, DataTypeType dataType )
         {

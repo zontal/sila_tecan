@@ -180,7 +180,7 @@ namespace Tecan.Sila2.Generator.Generators
                 DisplayName = displayName,
                 Description = description,
                 DefinedExecutionErrors = exceptionIdentifiers.Any() ? exceptionIdentifiers.ToArray() : null,
-                DataType = GenerateTypeReferenceAndRegister(metadataType.MetadataType, identifier, propertyInfo,
+                DataType = GenerateTypeReferenceAndRegister(metadataType.MetadataType, identifier, new MemberAttributeReader(propertyInfo),
                     dataTypes)
             };
 
@@ -272,7 +272,7 @@ namespace Tecan.Sila2.Generator.Generators
                 Identifier = id,
                 DisplayName = name,
                 Description = description,
-                DataType = GenerateTypeReference(dataType, null, dataType, false, registry)
+                DataType = GenerateTypeReference(dataType, null, new MemberAttributeReader(dataType), false, registry)
             };
         }
 
@@ -300,7 +300,7 @@ namespace Tecan.Sila2.Generator.Generators
                 Identifier = identifier,
                 DisplayName = displayName,
                 Description = description,
-                DataType = GenerateTypeReferenceAndRegister(propertyInfo.PropertyType, identifier, propertyInfo,
+                DataType = GenerateTypeReferenceAndRegister(propertyInfo.PropertyType, identifier, new MemberAttributeReader( propertyInfo),
                     dataTypes),
                 DefinedExecutionErrors = definedErrors.Any() ? definedErrors.ToArray() : null,
                 Observable = isDynamic ? FeaturePropertyObservable.Yes : FeaturePropertyObservable.No
@@ -334,12 +334,12 @@ namespace Tecan.Sila2.Generator.Generators
             return errors;
         }
 
-        private DataTypeType GenerateTypeReferenceAndRegister(Type type, string origin, MemberInfo member,
+        private DataTypeType GenerateTypeReferenceAndRegister(Type type, string origin, IAttributeReader reader,
             ICollection<Type> registry)
         {
             var (innerType, isCollection) = ExtractType(type);
             registry.Add(innerType);
-            var dataType = GenerateTypeReference(innerType, origin, member, true, registry.Add);
+            var dataType = GenerateTypeReference(innerType, origin, reader, true, registry.Add);
             if (isCollection)
             {
                 if (type.GetGenericTypeDefinition() != typeof(ICollection<>))
@@ -354,7 +354,7 @@ namespace Tecan.Sila2.Generator.Generators
             }
         }
 
-        private DataTypeType GenerateTypeReference(Type type, string origin, MemberInfo member, bool allowReference,
+        private DataTypeType GenerateTypeReference(Type type, string origin, IAttributeReader reader, bool allowReference,
             Action<Type> typeAction)
         {
             DataTypeType resultType = new DataTypeType();
@@ -371,7 +371,7 @@ namespace Tecan.Sila2.Generator.Generators
             {
                 resultType.Item = new ListType()
                 {
-                    DataType = GenerateTypeReference(elementType, origin + ".Item", member, allowReference, typeAction)
+                    DataType = GenerateTypeReference(elementType, origin + ".Item", reader, allowReference, typeAction)
                 };
             }
             else
@@ -392,9 +392,9 @@ namespace Tecan.Sila2.Generator.Generators
                 }
             }
 
-            if (member != null)
+            if (reader != null)
             {
-                resultType = AsConstrained(member, resultType);
+                resultType = AsConstrained(reader, resultType);
             }
 
             return resultType;
@@ -418,7 +418,7 @@ namespace Tecan.Sila2.Generator.Generators
             return false;
         }
 
-        private static DataTypeType AsConstrained(MemberInfo member, DataTypeType resultType)
+        private static DataTypeType AsConstrained( IAttributeReader member, DataTypeType resultType)
         {
             var constraints = new Constraints();
             var requiresConstraints = false;
@@ -443,7 +443,7 @@ namespace Tecan.Sila2.Generator.Generators
             return resultType;
         }
 
-        private static bool ParseUnits(MemberInfo member, Constraints constraints)
+        private static bool ParseUnits( IAttributeReader member, Constraints constraints)
         {
             var requiresConstraints = false;
             if (member.GetCustomAttribute<UnitAttribute>() is var unit && unit != null)
@@ -471,7 +471,7 @@ namespace Tecan.Sila2.Generator.Generators
             return requiresConstraints;
         }
 
-        private static bool ParseThresholds(MemberInfo member, Constraints constraints)
+        private static bool ParseThresholds(IAttributeReader member, Constraints constraints)
         {
             var requiresConstraints = false;
             if (member.GetCustomAttribute<MinimalExclusiveAttribute>() is var minimal && minimal != null)
@@ -503,7 +503,7 @@ namespace Tecan.Sila2.Generator.Generators
             return requiresConstraints;
         }
 
-        private static bool ParseStringConstraints(MemberInfo member, Constraints constraints)
+        private static bool ParseStringConstraints( IAttributeReader member, Constraints constraints)
         {
             var requiresConstraints = false;
             if (member.GetCustomAttribute<PatternConstraintAttribute>() is var pattern && pattern != null)
@@ -521,7 +521,7 @@ namespace Tecan.Sila2.Generator.Generators
             return requiresConstraints;
         }
 
-        private static bool ParseSchemaConstraints(MemberInfo member, Constraints constraints)
+        private static bool ParseSchemaConstraints( IAttributeReader member, Constraints constraints)
         {
             var requiresConstraints = false;
             if (member.GetCustomAttribute<SchemaAttribute>() is var schema && schema != null)
@@ -553,7 +553,7 @@ namespace Tecan.Sila2.Generator.Generators
             }
         }
 
-        private static bool ParseContentType(MemberInfo member, Constraints constraints)
+        private static bool ParseContentType( IAttributeReader member, Constraints constraints)
         {
             var requiresConstraints = false;
             if (member.GetCustomAttribute<ContentTypeAttribute>() is var contentType && contentType != null)
@@ -569,7 +569,7 @@ namespace Tecan.Sila2.Generator.Generators
             return requiresConstraints;
         }
 
-        private static bool ParseIdentifierType(MemberInfo member, Constraints constraints)
+        private static bool ParseIdentifierType( IAttributeReader member, Constraints constraints)
         {
             var requiresConstraints = false;
             if (member.GetCustomAttribute<SilaIdentifierTypeAttribute>() is var identifierType && identifierType != null)
@@ -646,8 +646,8 @@ namespace Tecan.Sila2.Generator.Generators
             if (properties.Length == 1 && properties[0].Name == "Value")
             {
                 var prop = properties[0];
-                return AsConstrained(type,
-                    GenerateTypeReference(prop.PropertyType, identifier + "." + prop.Name, prop, true, null));
+                return AsConstrained(new MemberAttributeReader(type), 
+                    GenerateTypeReference(prop.PropertyType, identifier + "." + prop.Name, new MemberAttributeReader(prop), true, null));
             }
 
             return new DataTypeType
@@ -664,7 +664,7 @@ namespace Tecan.Sila2.Generator.Generators
             return (from prop in DetermineStructureProperties(type)
                 select new SiLAElement
                 {
-                    DataType = GenerateTypeReference(prop.PropertyType, identifier + "." + prop.Name, prop,
+                    DataType = GenerateTypeReference(prop.PropertyType, identifier + "." + prop.Name, new MemberAttributeReader(prop), 
                         true, typeFoundAction),
                     Identifier = prop.GetCustomAttribute<SilaIdentifierAttribute>()?.Identifier ?? prop.Name,
                     DisplayName = prop.GetCustomAttribute<SilaDisplayNameAttribute>()?.DisplayName ??
@@ -853,7 +853,7 @@ namespace Tecan.Sila2.Generator.Generators
                     Description = parameterDescription ?? string.Empty,
                     DataType = GenerateTypeReferenceAndRegister(parameterInfo.ParameterType,
                         identifier + "." + parameterId,
-                        null, dataTypes)
+                        new ParameterAttributeReader(parameterInfo), dataTypes)
                 });
             }
 
@@ -881,7 +881,7 @@ namespace Tecan.Sila2.Generator.Generators
                         Identifier = responseId,
                         DisplayName = responseName,
                         Description = responseDescription ?? string.Empty,
-                        DataType = GenerateTypeReferenceAndRegister(responseType, commandId + "." + responseId, null,
+                        DataType = GenerateTypeReferenceAndRegister(responseType, commandId + "." + responseId, new ParameterAttributeReader(returnParameter), 
                             dataTypes)
                     }
                 };

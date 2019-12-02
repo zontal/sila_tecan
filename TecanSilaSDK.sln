@@ -52,6 +52,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{4FAAA323-D87E-4B6F-953D-A6C0D8E39CE6}"
 	ProjectSection(SolutionItems) = preProject
 		CommonAssemblyInfo.cs = CommonAssemblyInfo.cs
+		GenerateAll.bat = GenerateAll.bat
+		GenerateAll.sh = GenerateAll.sh
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ParameterConstraintsProvider", "Features\ParameterConstraintsProvider\ParameterConstraintsProvider.csproj", "{16E393AF-5469-473C-AC47-61FDCC103E1D}"

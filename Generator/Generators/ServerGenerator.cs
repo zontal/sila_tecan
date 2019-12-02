@@ -245,7 +245,7 @@ namespace Tecan.Sila2.Generator.Generators
             var result = new CodeObjectCreateExpression( responseType );
             if( !(featureProperty.DataType.Item is ConstrainedType) )
             {
-                result.Parameters.Add( DtoGenerator.EncapsulateAsDto( actualImplementation, featureProperty.DataType, serverRef ) );
+                result.Parameters.Add( DtoGenerator.EncapsulateAsDto( actualImplementation, featureProperty.DataType, serverRef, featureProperty.Identifier ) );
             }
             else
             {
@@ -332,7 +332,7 @@ namespace Tecan.Sila2.Generator.Generators
             var serverRef = new CodeFieldReferenceExpression( null, ServerFieldName );
             if( !(featureProperty.DataType.Item is ConstrainedType) )
             {
-                result.Parameters.Add( DtoGenerator.EncapsulateAsDto( actualImplementation, featureProperty.DataType, serverRef ) );
+                result.Parameters.Add( DtoGenerator.EncapsulateAsDto( actualImplementation, featureProperty.DataType, serverRef, featureProperty.Identifier ) );
             }
             else
             {
@@ -414,7 +414,7 @@ namespace Tecan.Sila2.Generator.Generators
                     ReturnType = NameProvider.GenerateCommandIntermediateType( featureCommand )
                 };
                 var parameterType = NameProvider.GetMemberType( featureCommand.Identifier + ".Intermediate" )
-                                    ?? CodeGenerationHelper.ExtractType( featureCommand.IntermediateResponse[0].DataType, null );
+                                    ?? CodeGenerationHelper.ExtractType( featureCommand.IntermediateResponse[0].DataType, null, featureCommand.Identifier + "Intermediate", null );
                 conversionMethod.Parameters.Add( new CodeParameterDeclarationExpression(
                     parameterType, "intermediate" ) );
                 var resultRef = new CodeArgumentReferenceExpression( "intermediate" );
@@ -435,7 +435,7 @@ namespace Tecan.Sila2.Generator.Generators
                     ReturnType = NameProvider.GenerateCommandResponseType( featureCommand )
                 };
                 var parameterType = NameProvider.GetMemberType( featureCommand.Identifier + "." + featureCommand.Response[0].Identifier )
-                                    ?? CodeGenerationHelper.ExtractType( featureCommand.Response[0].DataType, null );
+                                    ?? CodeGenerationHelper.ExtractType( featureCommand.Response[0].DataType, null, featureCommand.Identifier, null );
                 conversionMethod.Parameters.Add( new CodeParameterDeclarationExpression(
                     parameterType, "result" ) );
                 var resultRef = new CodeArgumentReferenceExpression( "result" );
@@ -833,7 +833,7 @@ namespace Tecan.Sila2.Generator.Generators
                     { "feature", "The feature that contains the command or property" },
                     { "commandIdentifier", "The fully qualified identifier of the command or property in question" }
                 } ) );
-            var metadataType = CodeGenerationHelper.ExtractType( metadata.DataType, null );
+            var metadataType = CodeGenerationHelper.ExtractType( metadata.DataType, null, metadata.Identifier, null );
             metadataInterceptor.Members.Add( (new CodeMemberMethod
             {
                 Name = nameof(IRequestInterceptor.Intercept),
@@ -851,11 +851,11 @@ namespace Tecan.Sila2.Generator.Generators
                     { "commandIdentifier", "The fully qualified identifier of the command or property in question" },
                     { char.ToLowerInvariant( metadata.Identifier[0] ) + metadata.Identifier.Substring( 1 ), "The parsed metadata" }
                 } ) );
-            metadataInterceptor.Members.Add( GenerateMetadataInterceptMethod( feature, metadata ) );
+            metadataInterceptor.Members.Add( GenerateMetadataInterceptMethod( feature, metadata, null ) );
             return metadataInterceptor;
         }
 
-        private CodeMemberMethod GenerateMetadataInterceptMethod( Feature feature, FeatureMetadata metadata )
+        private CodeMemberMethod GenerateMetadataInterceptMethod( Feature feature, FeatureMetadata metadata, Action<string, StructureType> structHandler )
         {
             var interceptMethod = new CodeMemberMethod
             {
@@ -871,7 +871,7 @@ namespace Tecan.Sila2.Generator.Generators
             };
             var extractMetadata = new CodeMethodInvokeExpression(
                 new CodeMethodReferenceExpression( new CodeTypeReferenceExpression( typeof(Metadata) ), nameof(Metadata.Extract),
-                    DtoGenerator.GetDtoTypeReference( metadata.DataType ) ),
+                    DtoGenerator.GetDtoTypeReference( metadata.DataType, metadata.Identifier, structHandler ) ),
                 new CodeArgumentReferenceExpression( ContextParameterName ),
                 new CodePrimitiveExpression( feature.GetFullyQualifiedIdentifier( metadata ) ) );
             var statements = GenerateExceptionHandling( feature, metadata.DefinedExecutionErrors, id => FindError( feature, id ), interceptMethod.Statements );

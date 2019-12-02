@@ -23,11 +23,13 @@ namespace Tecan.Sila2.Generator.Generators
             var nSpace = new CodeNamespace(ns);
             unit.Namespaces.Add(nSpace);
 
-            nSpace.Types.Add(GenerateInterface(feature, t => nSpace.Types.Add(t)));
+            var typeManagement = new TypeManagement(nSpace, this);
+
+            nSpace.Types.Add(GenerateInterface(feature, typeManagement));
 
             foreach (var dataTypeDefinition in feature.Items.OfType<SiLAElement>())
             {
-                var type = GenerateDataTypeDefinition(dataTypeDefinition);
+                var type = GenerateDataTypeDefinition(dataTypeDefinition, typeManagement.RegisterStruct);
                 if (type != null)
                 {
                     nSpace.Types.Add(type);
@@ -42,7 +44,38 @@ namespace Tecan.Sila2.Generator.Generators
             return unit;
         }
 
-        private CodeTypeDeclaration GenerateDataTypeDefinition(SiLAElement dataType)
+        private class TypeManagement
+        {
+            private CodeNamespace _namespace;
+            private InterfaceGenerator _parent;
+
+            public TypeManagement( CodeNamespace ns, InterfaceGenerator parent )
+            {
+                _namespace = ns;
+                _parent = parent;
+            }
+
+            public void RegisterType( CodeTypeDeclaration typeDeclaration )
+            {
+                _namespace.Types.Add( typeDeclaration );
+            }
+
+            public void RegisterStruct( string name, StructureType structure )
+            {
+                var element = new SiLAElement()
+                {
+                    Identifier = name,
+                    DisplayName = name,
+                    DataType = new DataTypeType()
+                    {
+                        Item = structure
+                    }
+                };
+                RegisterType(_parent.GenerateStruct(element, structure, false, RegisterStruct));
+            }
+        }
+
+        private CodeTypeDeclaration GenerateDataTypeDefinition(SiLAElement dataType, Action<string, StructureType> structHandler )
         {
             var summary = dataType.Description ?? $"The {dataType.DisplayName} type";
             CodeTypeDeclaration declaration = null;
@@ -55,7 +88,7 @@ namespace Tecan.Sila2.Generator.Generators
             }
             else if (dataType.DataType.Item is StructureType structure)
             {
-                declaration = GenerateStruct(dataType, structure, false);
+                declaration = GenerateStruct(dataType, structure, false, structHandler);
             }
             if (declaration == null)
             {
@@ -71,16 +104,16 @@ namespace Tecan.Sila2.Generator.Generators
                         }
                     }
                 };
-                declaration = GenerateStruct( dataType, newStructure, true );
+                declaration = GenerateStruct( dataType, newStructure, true, structHandler );
             }
 
             declaration.WriteDocumentation( summary );
             return declaration;
         }
 
-        private CodeTypeDeclaration GenerateStruct(SiLAElement dataType, StructureType structureType, bool inline)
+        private CodeTypeDeclaration GenerateStruct(SiLAElement dataType, StructureType structureType, bool inline, Action<string, StructureType> structHandler)
         {
-            var name = CodeGenerationHelper.ExtractType( new DataTypeType() {Item = dataType.Identifier}, null ).BaseType;
+            var name = CodeGenerationHelper.ExtractType( new DataTypeType() {Item = dataType.Identifier}, null, null, null ).BaseType;
             var structure = new CodeTypeDeclaration(name)
             {
                 Attributes = MemberAttributes.Public,
@@ -98,14 +131,14 @@ namespace Tecan.Sila2.Generator.Generators
 
             foreach (var element in structureType.Element)
             {
-                GenerateStructureElement(element, structure, constructor, inline);
+                GenerateStructureElement(element, structure, constructor, inline, structHandler);
             }
 
             return structure;
         }
 
         private void GenerateStructureElement(SiLAElement element, CodeTypeDeclaration structure,
-            CodeConstructor constructor, bool inline)
+            CodeConstructor constructor, bool inline, Action<string, StructureType> structHandler)
         {
             var property = new CodeMemberProperty
             {
@@ -117,7 +150,8 @@ namespace Tecan.Sila2.Generator.Generators
             property.WriteDocumentation( element.Description );
             var targetAttributes = inline ? structure.CustomAttributes : property.CustomAttributes;
             property.Type = CodeGenerationHelper.ExtractType(element.DataType,
-                constraints => HandleConstraints(constraints, targetAttributes ) );
+                constraints => HandleConstraints(constraints, targetAttributes ),
+                structure.Name + element.Identifier, structHandler);
             var parameterName = char.ToLowerInvariant(property.Name[0]) + property.Name.Substring(1);
             var field = new CodeMemberField
             {
@@ -364,7 +398,7 @@ namespace Tecan.Sila2.Generator.Generators
             return type;
         }
 
-        private CodeTypeDeclaration GenerateInterface(Feature feature, Action<CodeTypeDeclaration> typeAdder)
+        private CodeTypeDeclaration GenerateInterface(Feature feature, TypeManagement typeManagement)
         {
             var contract = new CodeTypeDeclaration
             {
@@ -395,18 +429,18 @@ namespace Tecan.Sila2.Generator.Generators
             {
                 if (featureItem is FeatureCommand command)
                 {
-                    contract.Members.Add(GenerateCommandMethod(command, typeAdder));
+                    contract.Members.Add(GenerateCommandMethod(command, typeManagement));
                 }
                 else if (featureItem is FeatureProperty property)
                 {
-                    contract.Members.Add(GenerateProperty(property));
+                    contract.Members.Add(GenerateProperty(property, typeManagement.RegisterStruct));
                 }
             }
 
             return contract;
         }
 
-        private CodeTypeMember GenerateProperty(FeatureProperty property)
+        private CodeTypeMember GenerateProperty(FeatureProperty property, Action<string, StructureType> structHandler)
         {
             var prop = new CodeMemberProperty
             {
@@ -433,7 +467,7 @@ namespace Tecan.Sila2.Generator.Generators
             }
 
             prop.Type = CodeGenerationHelper.ExtractType(property.DataType,
-                constraints => HandleConstraints(constraints, prop.CustomAttributes));
+                constraints => HandleConstraints(constraints, prop.CustomAttributes), property.Identifier, structHandler);
 
             if (property.DefinedExecutionErrors != null)
             {
@@ -449,7 +483,7 @@ namespace Tecan.Sila2.Generator.Generators
             return prop;
         }
 
-        private CodeTypeMember GenerateCommandMethod(FeatureCommand command, Action<CodeTypeDeclaration> typeAdder)
+        private CodeTypeMember GenerateCommandMethod(FeatureCommand command, TypeManagement typeManagement)
         {
             var method = new CodeMemberMethod()
             {
@@ -469,8 +503,8 @@ namespace Tecan.Sila2.Generator.Generators
                     command.Description.Trim());
             }
             var parameters = new Dictionary<string, string>();
-            GenerateCommandMethodParameters(command, method, parameters);
-            GenerateCommandMethodReturnType(command, method, typeAdder, out var returnDescription);
+            GenerateCommandMethodParameters(command, method, parameters, typeManagement.RegisterStruct);
+            GenerateCommandMethodReturnType(command, method, typeManagement.RegisterType, typeManagement.RegisterStruct, out var returnDescription);
 
             if (command.DefinedExecutionErrors != null)
             {
@@ -483,7 +517,7 @@ namespace Tecan.Sila2.Generator.Generators
 
             if (command.Observable == FeatureCommandObservable.Yes)
             {
-                TurnCommandMethodObservable(command, method);
+                TurnCommandMethodObservable(command, method, typeManagement.RegisterStruct);
             }
 
             method.WriteDocumentation( command.Description, returnDescription, parameters );
@@ -491,7 +525,7 @@ namespace Tecan.Sila2.Generator.Generators
             return method;
         }
 
-        private static void TurnCommandMethodObservable(FeatureCommand command, CodeMemberMethod method)
+        private static void TurnCommandMethodObservable(FeatureCommand command, CodeMemberMethod method, Action<string, StructureType> structHandler)
         {
             var intermediate = command.IntermediateResponse ?? new SiLAElement[0];
             if (command.Response != null && command.Response.Length > 0)
@@ -500,7 +534,7 @@ namespace Tecan.Sila2.Generator.Generators
                     throw new NotSupportedException("More than one intermediate response is not supported");
                 method.ReturnType = intermediate.Length == 1
                     ? new CodeTypeReference(typeof(IIntermediateObservableCommand<,>).FullName,
-                        CodeGenerationHelper.ExtractType(intermediate[0].DataType, null), method.ReturnType)
+                        CodeGenerationHelper.ExtractType(intermediate[0].DataType, null, command.Identifier, structHandler), method.ReturnType)
                     : new CodeTypeReference(typeof(IObservableCommand<>).FullName, method.ReturnType);
             }
             else
@@ -509,12 +543,12 @@ namespace Tecan.Sila2.Generator.Generators
                     throw new NotSupportedException("More than one intermediate response is not supported");
                 method.ReturnType = intermediate.Length == 1
                     ? new CodeTypeReference(typeof(IIntermediateObservableCommand<>).FullName,
-                        CodeGenerationHelper.ExtractType(intermediate[0].DataType, null))
+                        CodeGenerationHelper.ExtractType(intermediate[0].DataType, null, command.Identifier + "Intermediate", structHandler))
                     : new CodeTypeReference(typeof(IObservableCommand));
             }
         }
 
-        private void GenerateCommandMethodReturnType(FeatureCommand command, CodeMemberMethod method, Action<CodeTypeDeclaration> typeAdder, out string documentation)
+        private void GenerateCommandMethodReturnType(FeatureCommand command, CodeMemberMethod method, Action<CodeTypeDeclaration> typeAdder, Action<string, StructureType> structureHandler, out string documentation)
         {
             if (command.Response != null && command.Response.Length > 0)
             {
@@ -536,7 +570,7 @@ namespace Tecan.Sila2.Generator.Generators
                     }
 
                     method.ReturnType = CodeGenerationHelper.ExtractType(response.DataType,
-                        constraints => HandleConstraints(constraints, method.ReturnTypeCustomAttributes));
+                        constraints => HandleConstraints(constraints, method.ReturnTypeCustomAttributes), command.Identifier, null );
                     documentation = response.Description;
                 }
                 else
@@ -552,7 +586,7 @@ namespace Tecan.Sila2.Generator.Generators
                             Item = structure
                         }
                     };
-                    var generatedType = GenerateStruct(type, structure, false);
+                    var generatedType = GenerateStruct(type, structure, false, structureHandler);
                     method.ReturnTypeCustomAttributes.Add(
                         new CodeAttributeDeclaration(new CodeTypeReference(typeof(InlineStructAttribute))));
                     typeAdder?.Invoke(generatedType);
@@ -566,7 +600,7 @@ namespace Tecan.Sila2.Generator.Generators
             }
         }
 
-        private void GenerateCommandMethodParameters(FeatureCommand command, CodeMemberMethod method, Dictionary<string, string> documentation)
+        private void GenerateCommandMethodParameters(FeatureCommand command, CodeMemberMethod method, Dictionary<string, string> documentation, Action<string, StructureType> structureHandler)
         {
             if (command.Parameter != null)
             {
@@ -576,7 +610,8 @@ namespace Tecan.Sila2.Generator.Generators
                     var parameterDeclaration = new CodeParameterDeclarationExpression();
                     parameterDeclaration.Name = identifier;
                     parameterDeclaration.Type = CodeGenerationHelper.ExtractType(parameter.DataType,
-                        constraints => HandleConstraints(constraints, parameterDeclaration.CustomAttributes));
+                        constraints => HandleConstraints(constraints, parameterDeclaration.CustomAttributes),
+                        command.Identifier + parameter.Identifier, structureHandler);
                     if (identifier != parameter.DisplayName)
                     {
                         parameterDeclaration.CustomAttributes.AddAttribute( typeof(SilaDisplayNameAttribute),

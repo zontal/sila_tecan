@@ -14,7 +14,7 @@ namespace Tecan.Sila2.ParameterConstraintsProvider
     
     
     [ProtoBuf.ProtoContractAttribute()]
-    public class ParameterConstraintDto : Tecan.Sila2.ISilaTransferObject<ParameterConstraint>
+    public class ParameterConstraintDto : Tecan.Sila2.ISilaTransferObject<ParametersConstraint>
     {
         
         private Tecan.Sila2.StringDto _commandParameterIdentifier;
@@ -25,7 +25,7 @@ namespace Tecan.Sila2.ParameterConstraintsProvider
         {
         }
         
-        public ParameterConstraintDto(ParameterConstraint inner, Tecan.Sila2.Binary.IBinaryStore store)
+        public ParameterConstraintDto(ParametersConstraint inner, Tecan.Sila2.Binary.IBinaryStore store)
         {
             CommandParameterIdentifier = new Tecan.Sila2.StringDto(inner.CommandParameterIdentifier, store);
             Constraints = new Tecan.Sila2.StringDto(inner.Constraints, store);
@@ -66,9 +66,9 @@ namespace Tecan.Sila2.ParameterConstraintsProvider
         /// </summary>
         /// <param name="store">The binary store in which to store binary data</param>
         /// <returns>the inner value</returns>
-        public ParameterConstraint Extract(Tecan.Sila2.Binary.IBinaryStore store)
+        public ParametersConstraint Extract(Tecan.Sila2.Binary.IBinaryStore store)
         {
-            return new ParameterConstraint(CommandParameterIdentifier.Extract(store), Constraints.Extract(store));
+            return new ParametersConstraint(CommandParameterIdentifier.Extract(store), Constraints.Extract(store));
         }
         
         ///  <summary>
@@ -76,7 +76,7 @@ namespace Tecan.Sila2.ParameterConstraintsProvider
         /// </summary>
         /// <param name="inner">The object to transfer</param>
         /// <param name="store">An object to store binary data</param>
-        public static ParameterConstraintDto Create(ParameterConstraint inner, Tecan.Sila2.Binary.IBinaryStore store)
+        public static ParameterConstraintDto Create(ParametersConstraint inner, Tecan.Sila2.Binary.IBinaryStore store)
         {
             return new ParameterConstraintDto(inner, store);
         }

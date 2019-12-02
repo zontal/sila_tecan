@@ -12,40 +12,21 @@ namespace Tecan.Sila2.ParameterConstraintsProvider
 {
     
     
-    ///  <summary>
-    /// </summary>
-    [Tecan.Sila2.SilaFeatureAttribute(false, "core")]
-    [Tecan.Sila2.SilaIdentifierAttribute("ParameterConstraintsProvider")]
-    [Tecan.Sila2.SilaDescriptionAttribute("")]
-    public partial interface IParameterConstraintsProvider
-    {
-        
-        ///  <summary>
-        /// </summary>
-        [Tecan.Sila2.SilaDescriptionAttribute("")]
-        System.Collections.Generic.ICollection<ParameterConstraint> ParametersConstraints
-        {
-            get;
-        }
-    }
-    
-    ///  <summary>
-    /// </summary>
-    [Tecan.Sila2.SilaDescriptionAttribute("")]
-    public struct ParameterConstraint
+    public struct ParametersConstraint
     {
         
         private string _commandParameterIdentifier;
         
         private string _constraints;
         
-        public ParameterConstraint(string commandParameterIdentifier, string constraints)
+        public ParametersConstraint(string commandParameterIdentifier, string constraints)
         {
             _commandParameterIdentifier = commandParameterIdentifier;
             _constraints = constraints;
         }
         
         ///  <summary>
+        /// The fully qualified identifier of a constrained parameter.
         /// </summary>
         [Tecan.Sila2.SilaIdentifierTypeAttribute(Tecan.Sila2.IdentifierType.CommandParameterIdentifier)]
         public string CommandParameterIdentifier
@@ -57,6 +38,7 @@ namespace Tecan.Sila2.ParameterConstraintsProvider
         }
         
         ///  <summary>
+        /// The constraints to apply on the parameter.
         /// </summary>
         [Tecan.Sila2.SchemaAttribute("https://gitlab.com/SiLA2/sila_base/raw/master/schema/Constraints.xsd", Tecan.Sila2.SchemaType.Xml)]
         public string Constraints
@@ -65,6 +47,37 @@ namespace Tecan.Sila2.ParameterConstraintsProvider
             {
                 return _constraints;
             }
+        }
+    }
+    
+    ///  <summary>
+    /// This Feature allows a SiLA Client to receive constraints (min./max value, min./max. length for strings etc.) that
+    /// given parameters of a given Command have which are not defined in the respective Feature Definition;
+    /// also depending on other parameter or state.
+    /// It returns a list of all Constraints of a given Command. It is RECOMMENDED that a SiLA Server implements this
+    /// feature, if it is not possible to provide certain constraints already in the feature design phase.
+    /// </summary>
+    [Tecan.Sila2.SilaFeatureAttribute(false, "core.commands")]
+    [Tecan.Sila2.SilaIdentifierAttribute("ParameterConstraintsProvider")]
+    [Tecan.Sila2.SilaDisplayNameAttribute("Parameter Constraints Provider")]
+    [Tecan.Sila2.SilaDescriptionAttribute(@"This Feature allows a SiLA Client to receive constraints (min./max value, min./max. length for strings etc.) that
+    given parameters of a given Command have which are not defined in the respective Feature Definition;
+    also depending on other parameter or state.
+
+    It returns a list of all Constraints of a given Command. It is RECOMMENDED that a SiLA Server implements this
+    feature, if it is not possible to provide certain constraints already in the feature design phase.")]
+    public partial interface IParameterConstraintsProvider
+    {
+        
+        ///  <summary>
+        /// Provides a list of all constraints of Command Parameters of the SiLA Server.
+        /// </summary>
+        [Tecan.Sila2.SilaDisplayNameAttribute("Parameters Constraints")]
+        [Tecan.Sila2.SilaDescriptionAttribute("Provides a list of all constraints of Command Parameters of the SiLA Server.")]
+        [Tecan.Sila2.DynamicAttribute()]
+        System.Collections.Generic.ICollection<ParametersConstraint> ParametersConstraints
+        {
+            get;
         }
     }
 }

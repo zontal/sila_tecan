@@ -130,7 +130,7 @@ namespace Tecan.Sila2.Generator.Generators
             else
             {
                 propertyResponse = new CodeTypeReference(typeof(PropertyResponse<>).Name,
-                    DtoGenerator.GetDtoTypeReference(featureProperty.DataType));
+                    DtoGenerator.GetDtoTypeReference(featureProperty.DataType, featureProperty.Identifier, null));
             }
 
             return propertyResponse;

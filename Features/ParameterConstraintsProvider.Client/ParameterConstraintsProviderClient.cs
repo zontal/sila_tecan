@@ -23,8 +23,8 @@ namespace Tecan.Sila2.ParameterConstraintsProvider
     public sealed partial class ParameterConstraintsProviderProvider
     {
         
-        private static string @__ServiceName = "sila2.org.silastandard.core.parameterconstraintsprovider.v1.ParameterConstraintsP" +
-            "rovider";
+        private static string @__ServiceName = "sila2.org.silastandard.core.commands.parameterconstraintsprovider.v1.ParameterCon" +
+            "straintsProvider";
         
         private static Grpc.Core.Method<EmptyRequest, PropertyResponse<System.Collections.Generic.List<ParameterConstraintDto>>> GetParametersConstraintsMethod = new Grpc.Core.Method<EmptyRequest, PropertyResponse<System.Collections.Generic.List<ParameterConstraintDto>>>(Grpc.Core.MethodType.Unary, @__ServiceName, "Get_ParametersConstraints", EmptyRequest.Marshaller, ProtobufMarshaller<PropertyResponse<System.Collections.Generic.List<ParameterConstraintDto>>>.Default);
         
@@ -34,7 +34,7 @@ namespace Tecan.Sila2.ParameterConstraintsProvider
         public partial class Client : Grpc.Core.ClientBase<Client>, IParameterConstraintsProvider
         {
             
-            private System.Lazy<System.Collections.Generic.ICollection<ParameterConstraint>> _parametersConstraints;
+            private System.Lazy<System.Collections.Generic.ICollection<ParametersConstraint>> _parametersConstraints;
             
             private IClientExecutionManager _executionManager;
             
@@ -60,7 +60,7 @@ namespace Tecan.Sila2.ParameterConstraintsProvider
             
             ///  <summary>
             /// </summary>
-            public virtual System.Collections.Generic.ICollection<ParameterConstraint> ParametersConstraints
+            public virtual System.Collections.Generic.ICollection<ParametersConstraint> ParametersConstraints
             {
                 get
                 {
@@ -68,13 +68,13 @@ namespace Tecan.Sila2.ParameterConstraintsProvider
                 }
             }
             
-            private System.Collections.Generic.ICollection<ParameterConstraint> RequestParametersConstraints()
+            private System.Collections.Generic.ICollection<ParametersConstraint> RequestParametersConstraints()
             {
-                Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/core/ParameterConstraintsProvider/v1/Property/ParametersConstrai" +
-                        "nts");
+                Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/core.commands/ParameterConstraintsProvider/v1/Property/Parameter" +
+                        "sConstraints");
                 try
                 {
-                    System.Collections.Generic.ICollection<ParameterConstraint> response = Tecan.Sila2.DtoExtensions.Extract(CallInvoker.BlockingUnaryCall(GetParametersConstraintsMethod, null, callInfo.Options, EmptyRequest.Instance).Value, _executionManager.DownloadBinaryStore);
+                    System.Collections.Generic.ICollection<ParametersConstraint> response = Tecan.Sila2.DtoExtensions.Extract(CallInvoker.BlockingUnaryCall(GetParametersConstraintsMethod, null, callInfo.Options, EmptyRequest.Instance).Value, _executionManager.DownloadBinaryStore);
                     callInfo.FinishSuccessful();
                     return response;
                 } catch (System.Exception ex)
@@ -90,7 +90,7 @@ namespace Tecan.Sila2.ParameterConstraintsProvider
             /// </summary>
             private void InitLazyRequests()
             {
-                _parametersConstraints = new System.Lazy<System.Collections.Generic.ICollection<ParameterConstraint>>(RequestParametersConstraints);
+                _parametersConstraints = new System.Lazy<System.Collections.Generic.ICollection<ParametersConstraint>>(RequestParametersConstraints);
             }
             
             ///  <summary>

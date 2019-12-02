@@ -83,17 +83,17 @@ namespace Tecan.Sila2.ParameterConstraintsProvider
             return null;
         }
 
-        public ICollection<ParameterConstraint> ParametersConstraints
+        public ICollection<ParametersConstraint> ParametersConstraints
         {
             get
             {
-                var constraints = new List<ParameterConstraint>();
+                var constraints = new List<ParametersConstraint>();
                 foreach( var entry in _constraintsSource.Value )
                 {
                     var constraint = GetConstraintString(entry.Value.Key, entry.Value.Value);
                     if( constraint != null )
                     {
-                        constraints.Add( new ParameterConstraint( entry.Key, constraint ) );
+                        constraints.Add( new ParametersConstraint( entry.Key, constraint ) );
                     }
                 }
 
