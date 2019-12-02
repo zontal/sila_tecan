@@ -14,6 +14,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="ParameterConstraintsProvider.sila.xml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="..\..\CommonAssemblyInfo.cs" Link="Properties\CommonAssemblyInfo.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="ParameterConstraintsProvider.sila.xml" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\Contracts\Contracts.csproj" />
     <ProjectReference Include="..\..\Framework\Framework.csproj" />
     <ProjectReference Include="..\..\Server\Server.csproj" />
