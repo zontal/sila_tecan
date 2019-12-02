@@ -14,7 +14,6 @@ namespace Tecan.Sila2.Authentication
     
     [Tecan.Sila2.SilaDisplayNameAttribute("Login - Response")]
     [Tecan.Sila2.SilaDescriptionAttribute("Response type for the Login command")]
-    [Tecan.Sila2.UnitAttribute("s", Second=1)]
     public struct LoginResponse
     {
         
@@ -43,6 +42,7 @@ namespace Tecan.Sila2.Authentication
         /// The lifetime (in seconds) of the provided access token as the maximum validity period after the last SiLA Server
         /// request.
         /// </summary>
+        [Tecan.Sila2.UnitAttribute("s", Second=1)]
         public long TokenLifetime
         {
             get

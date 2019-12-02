@@ -51,7 +51,6 @@ namespace Tecan.Sila2.WorktableIntegration
     ///  <summary>
     /// </summary>
     [Tecan.Sila2.SilaDescriptionAttribute("")]
-    [Tecan.Sila2.UnitAttribute("mm", Meter=1, Factor=0.001D)]
     public struct BoundingBox
     {
         
@@ -77,6 +76,7 @@ namespace Tecan.Sila2.WorktableIntegration
         
         ///  <summary>
         /// </summary>
+        [Tecan.Sila2.UnitAttribute("mm", Meter=1, Factor=0.001D)]
         public double Height
         {
             get
@@ -139,7 +139,6 @@ namespace Tecan.Sila2.WorktableIntegration
     ///  <summary>
     /// </summary>
     [Tecan.Sila2.SilaDescriptionAttribute("")]
-    [Tecan.Sila2.UnitAttribute("Degree")]
     public struct Site
     {
         
@@ -191,6 +190,7 @@ namespace Tecan.Sila2.WorktableIntegration
         
         ///  <summary>
         /// </summary>
+        [Tecan.Sila2.UnitAttribute("Degree")]
         public double Rotation
         {
             get

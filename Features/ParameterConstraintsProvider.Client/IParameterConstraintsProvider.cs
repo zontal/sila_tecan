@@ -32,8 +32,6 @@ namespace Tecan.Sila2.ParameterConstraintsProvider
     ///  <summary>
     /// </summary>
     [Tecan.Sila2.SilaDescriptionAttribute("")]
-    [Tecan.Sila2.SilaIdentifierTypeAttribute(Tecan.Sila2.IdentifierType.CommandParameterIdentifier)]
-    [Tecan.Sila2.SchemaAttribute("https://gitlab.com/SiLA2/sila_base/raw/master/schema/Constraints.xsd", Tecan.Sila2.SchemaType.Xml)]
     public struct ParameterConstraint
     {
         
@@ -49,6 +47,7 @@ namespace Tecan.Sila2.ParameterConstraintsProvider
         
         ///  <summary>
         /// </summary>
+        [Tecan.Sila2.SilaIdentifierTypeAttribute(Tecan.Sila2.IdentifierType.CommandParameterIdentifier)]
         public string CommandParameterIdentifier
         {
             get
@@ -59,6 +58,7 @@ namespace Tecan.Sila2.ParameterConstraintsProvider
         
         ///  <summary>
         /// </summary>
+        [Tecan.Sila2.SchemaAttribute("https://gitlab.com/SiLA2/sila_base/raw/master/schema/Constraints.xsd", Tecan.Sila2.SchemaType.Xml)]
         public string Constraints
         {
             get

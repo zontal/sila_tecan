@@ -23,7 +23,7 @@ namespace Tecan.Sila2.ParameterConstraintsProvider
     public sealed partial class ParameterConstraintsProviderProvider
     {
         
-        private static string @__ServiceName = "sila2.org.silastandard.core.parameterconstraintsprovider.v0.ParameterConstraintsP" +
+        private static string @__ServiceName = "sila2.org.silastandard.core.parameterconstraintsprovider.v1.ParameterConstraintsP" +
             "rovider";
         
         private static Grpc.Core.Method<EmptyRequest, PropertyResponse<System.Collections.Generic.List<ParameterConstraintDto>>> GetParametersConstraintsMethod = new Grpc.Core.Method<EmptyRequest, PropertyResponse<System.Collections.Generic.List<ParameterConstraintDto>>>(Grpc.Core.MethodType.Unary, @__ServiceName, "Get_ParametersConstraints", EmptyRequest.Marshaller, ProtobufMarshaller<PropertyResponse<System.Collections.Generic.List<ParameterConstraintDto>>>.Default);
@@ -70,7 +70,7 @@ namespace Tecan.Sila2.ParameterConstraintsProvider
             
             private System.Collections.Generic.ICollection<ParameterConstraint> RequestParametersConstraints()
             {
-                Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/core/ParameterConstraintsProvider/v0/Property/ParametersConstrai" +
+                Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/core/ParameterConstraintsProvider/v1/Property/ParametersConstrai" +
                         "nts");
                 try
                 {
