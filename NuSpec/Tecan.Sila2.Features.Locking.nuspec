@@ -3,7 +3,7 @@
     <metadata>
         <id>Tecan.Sila2.Features.Locking</id>
         <description>Generic Locking support for the Tecan Sila SDK</description>
-        <version>0.1.0-local</version>
+        <version>1.0.0-local</version>
         <authors>Tecan Trading Ltd., Switzerland</authors>
         <owners>Tecan Trading Ltd., Switzerland</owners>
         <copyright>Copyright 2019 by Tecan Trading Ltd., Switzerland</copyright>

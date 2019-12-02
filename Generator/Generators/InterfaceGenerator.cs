@@ -55,7 +55,7 @@ namespace Tecan.Sila2.Generator.Generators
             }
             else if (dataType.DataType.Item is StructureType structure)
             {
-                declaration = GenerateStruct(dataType, structure);
+                declaration = GenerateStruct(dataType, structure, false);
             }
             if (declaration == null)
             {
@@ -67,18 +67,18 @@ namespace Tecan.Sila2.Generator.Generators
                         {
                             DataType = dataType.DataType,
                             DisplayName = "Value",
-                            Identifier = "Value"
+                            Identifier = "Value",
                         }
                     }
                 };
-                declaration = GenerateStruct( dataType, newStructure );
+                declaration = GenerateStruct( dataType, newStructure, true );
             }
 
             declaration.WriteDocumentation( summary );
             return declaration;
         }
 
-        private CodeTypeDeclaration GenerateStruct(SiLAElement dataType, StructureType structureType)
+        private CodeTypeDeclaration GenerateStruct(SiLAElement dataType, StructureType structureType, bool inline)
         {
             var name = CodeGenerationHelper.ExtractType( new DataTypeType() {Item = dataType.Identifier}, null ).BaseType;
             var structure = new CodeTypeDeclaration(name)
@@ -98,14 +98,14 @@ namespace Tecan.Sila2.Generator.Generators
 
             foreach (var element in structureType.Element)
             {
-                GenerateStructureElement(element, structure, constructor);
+                GenerateStructureElement(element, structure, constructor, inline);
             }
 
             return structure;
         }
 
         private void GenerateStructureElement(SiLAElement element, CodeTypeDeclaration structure,
-            CodeConstructor constructor)
+            CodeConstructor constructor, bool inline)
         {
             var property = new CodeMemberProperty
             {
@@ -115,8 +115,9 @@ namespace Tecan.Sila2.Generator.Generators
                 HasGet = true
             };
             property.WriteDocumentation( element.Description );
+            var targetAttributes = inline ? structure.CustomAttributes : property.CustomAttributes;
             property.Type = CodeGenerationHelper.ExtractType(element.DataType,
-                constraints => HandleConstraints(constraints, structure.CustomAttributes));
+                constraints => HandleConstraints(constraints, targetAttributes ) );
             var parameterName = char.ToLowerInvariant(property.Name[0]) + property.Name.Substring(1);
             var field = new CodeMemberField
             {
@@ -545,9 +546,13 @@ namespace Tecan.Sila2.Generator.Generators
                     {
                         Identifier = command.Identifier + "Response",
                         DisplayName = $"{command.DisplayName} - Response",
-                        Description = $"Response type for the {command.DisplayName} command"
+                        Description = $"Response type for the {command.DisplayName} command",
+                        DataType = new DataTypeType()
+                        {
+                            Item = structure
+                        }
                     };
-                    var generatedType = GenerateStruct(type, structure);
+                    var generatedType = GenerateStruct(type, structure, false);
                     method.ReturnTypeCustomAttributes.Add(
                         new CodeAttributeDeclaration(new CodeTypeReference(typeof(InlineStructAttribute))));
                     typeAdder?.Invoke(generatedType);

@@ -24,7 +24,6 @@ namespace Tecan.Sila2
         /// <returns>A data transfer object instance</returns>
         public static T FromByteArray(byte[] data)
         {
-            Debug.WriteLine(Convert.ToBase64String(data));
             using (var ms = new MemoryStream(data))
             {
                 return Serializer.Deserialize<T>(ms);

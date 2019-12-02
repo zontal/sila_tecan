@@ -24,7 +24,7 @@ namespace Tecan.Sila2.WorktableIntegration
     public sealed partial class WorktableServiceProvider
     {
         
-        private static string @__ServiceName = "sila2.tecan.sila.worktableintegration.infrastructure.worktableservice.v0.Worktabl" +
+        private static string @__ServiceName = "sila2.tecan.sila.worktableintegration.infrastructure.worktableservice.v1.Worktabl" +
             "eService";
         
         private static Grpc.Core.Method<EmptyRequest, PropertyResponse<BoundingBoxDto>> GetBoundingBoxMethod = new Grpc.Core.Method<EmptyRequest, PropertyResponse<BoundingBoxDto>>(Grpc.Core.MethodType.Unary, @__ServiceName, "Get_BoundingBox", EmptyRequest.Marshaller, ProtobufMarshaller<PropertyResponse<BoundingBoxDto>>.Default);
@@ -87,7 +87,7 @@ namespace Tecan.Sila2.WorktableIntegration
             /// <returns>The current value wrapped in a data transfer object</returns>
             protected virtual System.Threading.Tasks.Task<PropertyResponse<BoundingBoxDto>> GetBoundingBox(EmptyRequest request, Grpc.Core.ServerCallContext context)
             {
-                return _server.CreatePropertyTask("tecan.sila.worktableintegration/infrastructure/WorktableService/v0/Property/Bound" +
+                return _server.CreatePropertyTask("tecan.sila.worktableintegration/infrastructure/WorktableService/v1/Property/Bound" +
                         "ingBox", new PropertyResponse<BoundingBoxDto>(new BoundingBoxDto(_implementation.BoundingBox, _server)), context);
             }
             
@@ -99,7 +99,7 @@ namespace Tecan.Sila2.WorktableIntegration
             /// <returns>The current value wrapped in a data transfer object</returns>
             protected virtual System.Threading.Tasks.Task<PropertyResponse<System.Collections.Generic.List<SiteTemplateDto>>> GetSiteTemplates(EmptyRequest request, Grpc.Core.ServerCallContext context)
             {
-                return _server.CreatePropertyTask("tecan.sila.worktableintegration/infrastructure/WorktableService/v0/Property/SiteT" +
+                return _server.CreatePropertyTask("tecan.sila.worktableintegration/infrastructure/WorktableService/v1/Property/SiteT" +
                         "emplates", new PropertyResponse<System.Collections.Generic.List<SiteTemplateDto>>(Tecan.Sila2.DtoExtensions.Encapsulate(_implementation.SiteTemplates, SiteTemplateDto.Create, _server)), context);
             }
             
@@ -111,7 +111,7 @@ namespace Tecan.Sila2.WorktableIntegration
             /// <returns>The current value wrapped in a data transfer object</returns>
             protected virtual System.Threading.Tasks.Task<PropertyResponse<System.Collections.Generic.List<SiteDto>>> GetSites(EmptyRequest request, Grpc.Core.ServerCallContext context)
             {
-                return _server.CreatePropertyTask("tecan.sila.worktableintegration/infrastructure/WorktableService/v0/Property/Sites" +
+                return _server.CreatePropertyTask("tecan.sila.worktableintegration/infrastructure/WorktableService/v1/Property/Sites" +
                         "", new PropertyResponse<System.Collections.Generic.List<SiteDto>>(Tecan.Sila2.DtoExtensions.Encapsulate(_implementation.Sites, SiteDto.Create, _server)), context);
             }
             
@@ -132,17 +132,17 @@ namespace Tecan.Sila2.WorktableIntegration
             /// <returns>A property object or null, if the property is not supported</returns>
             public System.Reflection.PropertyInfo GetProperty(string propertyIdentifier)
             {
-                if ((propertyIdentifier == "tecan.sila.worktableintegration/infrastructure/WorktableService/v0/Property/Bound" +
+                if ((propertyIdentifier == "tecan.sila.worktableintegration/infrastructure/WorktableService/v1/Property/Bound" +
                     "ingBox"))
                 {
                     return typeof(IWorktableService).GetProperty("BoundingBox");
                 }
-                if ((propertyIdentifier == "tecan.sila.worktableintegration/infrastructure/WorktableService/v0/Property/SiteT" +
+                if ((propertyIdentifier == "tecan.sila.worktableintegration/infrastructure/WorktableService/v1/Property/SiteT" +
                     "emplates"))
                 {
                     return typeof(IWorktableService).GetProperty("SiteTemplates");
                 }
-                if ((propertyIdentifier == "tecan.sila.worktableintegration/infrastructure/WorktableService/v0/Property/Sites" +
+                if ((propertyIdentifier == "tecan.sila.worktableintegration/infrastructure/WorktableService/v1/Property/Sites" +
                     ""))
                 {
                     return typeof(IWorktableService).GetProperty("Sites");

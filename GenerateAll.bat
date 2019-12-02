@@ -39,3 +39,4 @@ Build\Generator\net472\SilaGen.exe generate-client Tests\TestServer\TestServer.s
 Build\Generator\net472\SilaGen.exe generate-client Features\Authentication\AuthenticationService.sila.xml Features\Authentication.Client\Authentication.Client.csproj -n Tecan.Sila2.Authentication
 Build\Generator\net472\SilaGen.exe generate-client Features\Locking\LockController.sila.xml Features\Locking.Client\Locking.Client.csproj -n Tecan.Sila2.Locking
 Build\Generator\net472\SilaGen.exe generate-client Features\ParameterConstraintsProvider\ParameterConstraintsProviderMock.sila.xml Features\ParameterConstraintsProvider.Client\ParameterConstraintsProvider.Client.csproj -n Tecan.Sila2.ParameterConstraintsProvider
+Build\Generator\net472\SilaGen.exe generate-client Features\WorktableIntegration\WorktableService.sila.xml Features\WorktableIntegration.Client\WorktableIntegration.Client.csproj -n Tecan.Sila2.WorktableIntegration

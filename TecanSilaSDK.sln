@@ -30,8 +30,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NuSpec", "NuSpec", "{B34C24
 	ProjectSection(SolutionItems) = preProject
 		NuSpec\Tecan.Sila2.Contracts.nuspec = NuSpec\Tecan.Sila2.Contracts.nuspec
 		NuSpec\Tecan.Sila2.DynamicClient.nuspec = NuSpec\Tecan.Sila2.DynamicClient.nuspec
+		NuSpec\Tecan.Sila2.Features.Auth.Client.nuspec = NuSpec\Tecan.Sila2.Features.Auth.Client.nuspec
 		NuSpec\Tecan.Sila2.Features.Auth.nuspec = NuSpec\Tecan.Sila2.Features.Auth.nuspec
+		NuSpec\Tecan.Sila2.Features.Locking.Client.nuspec = NuSpec\Tecan.Sila2.Features.Locking.Client.nuspec
 		NuSpec\Tecan.Sila2.Features.Locking.nuspec = NuSpec\Tecan.Sila2.Features.Locking.nuspec
+		NuSpec\Tecan.Sila2.Features.ParameterConstraintsProvider.Client.nuspec = NuSpec\Tecan.Sila2.Features.ParameterConstraintsProvider.Client.nuspec
+		NuSpec\Tecan.Sila2.Features.ParameterConstraintsProvider.nuspec = NuSpec\Tecan.Sila2.Features.ParameterConstraintsProvider.nuspec
+		NuSpec\Tecan.Sila2.Features.WorktableIntegration.Client.nuspec = NuSpec\Tecan.Sila2.Features.WorktableIntegration.Client.nuspec
 		NuSpec\Tecan.Sila2.Features.WorktableIntegration.nuspec = NuSpec\Tecan.Sila2.Features.WorktableIntegration.nuspec
 		NuSpec\Tecan.Sila2.Generator.nuspec = NuSpec\Tecan.Sila2.Generator.nuspec
 		NuSpec\Tecan.Sila2.nuspec = NuSpec\Tecan.Sila2.nuspec
@@ -65,13 +70,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IntegrationTests", "Tests\I
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Features", "Features", "{7FB691BE-23E3-477C-907C-95DB5BD9D7B6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Authentication.Client", "Features\Authentication.Client\Authentication.Client.csproj", "{0E146CF2-361F-4CCD-A252-2A769F840BC3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Authentication.Client", "Features\Authentication.Client\Authentication.Client.csproj", "{0E146CF2-361F-4CCD-A252-2A769F840BC3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Locking.Client", "Features\Locking.Client\Locking.Client.csproj", "{C74ECF4E-D6EC-438E-ACD5-191D0EFAD6B1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Locking.Client", "Features\Locking.Client\Locking.Client.csproj", "{C74ECF4E-D6EC-438E-ACD5-191D0EFAD6B1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParameterConstraintsProvider.Client", "Features\ParameterConstraintsProvider.Client\ParameterConstraintsProvider.Client.csproj", "{A865E812-2844-4247-9A3F-06A951AF9B86}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ParameterConstraintsProvider.Client", "Features\ParameterConstraintsProvider.Client\ParameterConstraintsProvider.Client.csproj", "{A865E812-2844-4247-9A3F-06A951AF9B86}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorktableIntegration.Client", "Features\WorktableIntegration.Client\WorktableIntegration.Client.csproj", "{4605264D-025B-4B83-A8C5-BB6E5B32F239}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WorktableIntegration.Client", "Features\WorktableIntegration.Client\WorktableIntegration.Client.csproj", "{441B7487-E0D4-4ADF-A700-77DDF59A28C0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -151,10 +156,10 @@ Global
 		{A865E812-2844-4247-9A3F-06A951AF9B86}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A865E812-2844-4247-9A3F-06A951AF9B86}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A865E812-2844-4247-9A3F-06A951AF9B86}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4605264D-025B-4B83-A8C5-BB6E5B32F239}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4605264D-025B-4B83-A8C5-BB6E5B32F239}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4605264D-025B-4B83-A8C5-BB6E5B32F239}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4605264D-025B-4B83-A8C5-BB6E5B32F239}.Release|Any CPU.Build.0 = Release|Any CPU
+		{441B7487-E0D4-4ADF-A700-77DDF59A28C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{441B7487-E0D4-4ADF-A700-77DDF59A28C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{441B7487-E0D4-4ADF-A700-77DDF59A28C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{441B7487-E0D4-4ADF-A700-77DDF59A28C0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -179,7 +184,7 @@ Global
 		{0E146CF2-361F-4CCD-A252-2A769F840BC3} = {7FB691BE-23E3-477C-907C-95DB5BD9D7B6}
 		{C74ECF4E-D6EC-438E-ACD5-191D0EFAD6B1} = {7FB691BE-23E3-477C-907C-95DB5BD9D7B6}
 		{A865E812-2844-4247-9A3F-06A951AF9B86} = {7FB691BE-23E3-477C-907C-95DB5BD9D7B6}
-		{4605264D-025B-4B83-A8C5-BB6E5B32F239} = {7FB691BE-23E3-477C-907C-95DB5BD9D7B6}
+		{441B7487-E0D4-4ADF-A700-77DDF59A28C0} = {7FB691BE-23E3-477C-907C-95DB5BD9D7B6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F2AE9C9D-34E5-4A2A-8AAA-5EEA105AF08F}
