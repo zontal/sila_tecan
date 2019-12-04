@@ -209,6 +209,7 @@ namespace Tecan.Sila2.Server
         {
             _implementedFeatures.Add(feature);
             GrpcServer.Services.Add(feature.CreateServiceDefinition());
+            _logger.Log( $"Exposing feature {feature.FeatureDefinition.FullyQualifiedIdentifier}".ToString, Severity.Info );
         }
 
         /// <summary>
