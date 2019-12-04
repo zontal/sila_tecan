@@ -200,9 +200,9 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             {
                 get
                 {
-                    if ((_currentTemperatureUpdateTask != null))
+                    if ((_currentTemperatureUpdateTask == null))
                     {
-                        _currentTemperatureUpdateTask = ObservableCommands.SubscribeTo(CallInvoker, SubscribeCurrentTemperatureMethod, ReceiveNewCurrentTemperature);
+                        _currentTemperatureUpdateTask = ObservableCommands.SubscribeTo(CallInvoker, SubscribeCurrentTemperatureMethod, ReceiveNewCurrentTemperature, _executionManager.CreateCallOptions("tecan.sila.generator/test/TemperatureController/v1/Property/CurrentTemperature"));
                     }
                     return _currentTemperature;
                 }

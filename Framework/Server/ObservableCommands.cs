@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using Grpc.Core;
+using Tecan.Sila2.Client;
 
 namespace Tecan.Sila2.Server
 {
@@ -245,14 +247,26 @@ namespace Tecan.Sila2.Server
         /// <param name="callInvoker">An object that performs the calls</param>
         /// <param name="subscribeMethod">The method to subscribe to values</param>
         /// <param name="newValueReceived">A method that is called when new data arrives</param>
+        /// <param name="callInfo">Caller information for the property subscription</param>
         /// <returns>A task that ends when the subscription ends.</returns>
-        public static async Task SubscribeTo<T>( CallInvoker callInvoker, Method<EmptyRequest, T> subscribeMethod, Action<T> newValueReceived )
+        public static Task SubscribeTo<T>( CallInvoker callInvoker, Method<EmptyRequest, T> subscribeMethod, Action<T> newValueReceived, IClientCallInfo callInfo )
             where T : class
         {
             var asyncCall = callInvoker.AsyncServerStreamingCall( subscribeMethod, null,
-                new CallOptions(), EmptyRequest.Instance );
+                callInfo.Options, EmptyRequest.Instance );
             var responseStream = asyncCall.ResponseStream;
-            while( await responseStream.MoveNext() )
+            if( responseStream.MoveNext().Result )
+            {
+                newValueReceived?.Invoke( responseStream.Current );
+                return ContinueReading( responseStream, newValueReceived );
+            }
+
+            return Task.CompletedTask;
+        }
+
+        private static async Task ContinueReading<T>( IAsyncStreamReader<T> responseStream, Action<T> newValueReceived ) where T : class
+        {
+            while(await responseStream.MoveNext())
             {
                 newValueReceived?.Invoke( responseStream.Current );
             }

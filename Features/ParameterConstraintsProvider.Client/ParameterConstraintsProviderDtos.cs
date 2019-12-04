@@ -14,24 +14,25 @@ namespace Tecan.Sila2.ParameterConstraintsProvider
     
     
     [ProtoBuf.ProtoContractAttribute()]
-    public class ParameterConstraintDto : Tecan.Sila2.ISilaTransferObject<ParametersConstraint>
+    public class ParametersConstraintDto : Tecan.Sila2.ISilaTransferObject<ParametersConstraint>
     {
         
         private Tecan.Sila2.StringDto _commandParameterIdentifier;
         
         private Tecan.Sila2.StringDto _constraints;
         
-        public ParameterConstraintDto()
+        public ParametersConstraintDto()
         {
         }
         
-        public ParameterConstraintDto(ParametersConstraint inner, Tecan.Sila2.Binary.IBinaryStore store)
+        public ParametersConstraintDto(ParametersConstraint inner, Tecan.Sila2.Binary.IBinaryStore store)
         {
             CommandParameterIdentifier = new Tecan.Sila2.StringDto(inner.CommandParameterIdentifier, store);
             Constraints = new Tecan.Sila2.StringDto(inner.Constraints, store);
         }
         
         ///  <summary>
+        /// The fully qualified identifier of a constrained parameter.
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute(1)]
         public Tecan.Sila2.StringDto CommandParameterIdentifier
@@ -47,6 +48,7 @@ namespace Tecan.Sila2.ParameterConstraintsProvider
         }
         
         ///  <summary>
+        /// The constraints to apply on the parameter.
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute(2)]
         public Tecan.Sila2.StringDto Constraints
@@ -76,9 +78,9 @@ namespace Tecan.Sila2.ParameterConstraintsProvider
         /// </summary>
         /// <param name="inner">The object to transfer</param>
         /// <param name="store">An object to store binary data</param>
-        public static ParameterConstraintDto Create(ParametersConstraint inner, Tecan.Sila2.Binary.IBinaryStore store)
+        public static ParametersConstraintDto Create(ParametersConstraint inner, Tecan.Sila2.Binary.IBinaryStore store)
         {
-            return new ParameterConstraintDto(inner, store);
+            return new ParametersConstraintDto(inner, store);
         }
         
         ///  <summary>

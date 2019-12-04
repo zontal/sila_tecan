@@ -525,7 +525,7 @@ namespace Tecan.Sila2.Generator.Generators
             }
             else
             {
-                GenerateClientDynamicProperty(featureProperty, client, propertyType, property);
+                GenerateClientDynamicProperty(feature, featureProperty, client, propertyType, property);
             }
         }
 
@@ -564,7 +564,7 @@ namespace Tecan.Sila2.Generator.Generators
                 featureProperty.DefinedExecutionErrors, featureProperty.Identifier, callInfoRef));
         }
 
-        private void GenerateClientDynamicProperty(FeatureProperty featureProperty, CodeTypeDeclaration client,
+        private void GenerateClientDynamicProperty(Feature feature, FeatureProperty featureProperty, CodeTypeDeclaration client,
             CodeTypeReference propertyType, CodeMemberProperty property)
         {
             var fieldName = "_" + CodeGenerationHelper.ToCamelCase(featureProperty.Identifier);
@@ -579,12 +579,13 @@ namespace Tecan.Sila2.Generator.Generators
                 nameof(ObservableCommands.SubscribeTo),
                 new CodePropertyReferenceExpression(null, "CallInvoker"),
                 new CodeMethodReferenceExpression(null, "Subscribe" + featureProperty.Identifier + "Method"),
-                new CodeMethodReferenceExpression(null, receiveValueMethod.Name));
-            var ifUpdateTaskNotNull = new CodeConditionStatement(
-                new CodeBinaryOperatorExpression(updateTask, CodeBinaryOperatorType.IdentityInequality,
+                new CodeMethodReferenceExpression(null, receiveValueMethod.Name),
+                new CodeMethodInvokeExpression(new CodeFieldReferenceExpression(null, ExecutionManagerFieldName), nameof(IClientExecutionManager.CreateCallOptions), new CodePrimitiveExpression(feature.GetFullyQualifiedIdentifier(featureProperty))));
+            var ifUpdateTaskNull = new CodeConditionStatement(
+                new CodeBinaryOperatorExpression(updateTask, CodeBinaryOperatorType.IdentityEquality,
                     new CodePrimitiveExpression()),
                 new CodeAssignStatement(updateTask, subscription));
-            property.GetStatements.Add(ifUpdateTaskNotNull);
+            property.GetStatements.Add(ifUpdateTaskNull);
             property.GetStatements.Add(new CodeMethodReturnStatement(fieldRef));
             client.Members.Add(receiveValueMethod);
         }

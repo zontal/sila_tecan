@@ -14,7 +14,7 @@ Build\Generator\net472\SilaGen.exe generate-provider Features\Authentication\Aut
 Build\Generator\net472\SilaGen.exe generate-interface Features\Authentication\AuthorizationConfigurationService.sila.xml Features\Authentication\AuthorizationConfiguration\IAuthorizationConfigurationService.cs -n Tecan.Sila2.Authorization
 Build\Generator\net472\SilaGen.exe generate-provider Features\Authentication\AuthorizationConfigurationService.sila.xml Features\Authentication\AuthorizationConfiguration\AuthorizationConfigurationServiceDtos.cs Features\Authentication\AuthorizationConfiguration\AuthorizationConfigurationServiceProvider.cs -n Tecan.Sila2.Authorization -s
 Build\Generator\net472\SilaGen.exe generate-interface Features\ParameterConstraintsProvider\ParameterConstraintsProvider.sila.xml Features\ParameterConstraintsProvider\IParameterConstraintsProvider.cs -n Tecan.Sila2.ParameterConstraintsProvider
-Build\Generator\net472\SilaGen.exe generate-provider Features\ParameterConstraintsProvider\ParameterConstraintsProvider.sila.xml Features\ParameterConstraintsProvider\ParameterConstraintDtos.cs Features\ParameterConstraintsProvider\ParameterConstraintsServiceProvider.cs -n Tecan.Sila2.ParameterConstraintsProvider
+Build\Generator\net472\SilaGen.exe generate-provider Features\ParameterConstraintsProvider\ParameterConstraintsProvider.sila.xml Features\ParameterConstraintsProvider\ParameterConstraintDtos.cs Features\ParameterConstraintsProvider\ParameterConstraintsServiceProvider.cs -n Tecan.Sila2.ParameterConstraintsProvider -s
 
 Build\Generator\net472\SilaGen.exe generate-server Build\Features\netstandard2.0\Tecan.Sila2.WorktableIntegration.dll Features\WorktableIntegration\WorktableIntegration.csproj -n Tecan.Sila2.WorktableIntegration
 

@@ -18,7 +18,7 @@ namespace Tecan.Sila2.ParameterConstraintsProvider
     
     
     ///  <summary>
-    /// Encapsulates provider classes to expose the ParameterConstraintsProvider feature via SiLA2
+    /// Encapsulates provider classes to expose the Parameter Constraints Provider feature via SiLA2
     /// </summary>
     public sealed partial class ParameterConstraintsProviderProvider
     {
@@ -26,71 +26,67 @@ namespace Tecan.Sila2.ParameterConstraintsProvider
         private static string @__ServiceName = "sila2.org.silastandard.core.commands.parameterconstraintsprovider.v1.ParameterCon" +
             "straintsProvider";
         
-        private static Grpc.Core.Method<EmptyRequest, PropertyResponse<System.Collections.Generic.List<ParameterConstraintDto>>> GetParametersConstraintsMethod = new Grpc.Core.Method<EmptyRequest, PropertyResponse<System.Collections.Generic.List<ParameterConstraintDto>>>(Grpc.Core.MethodType.Unary, @__ServiceName, "Get_ParametersConstraints", EmptyRequest.Marshaller, ProtobufMarshaller<PropertyResponse<System.Collections.Generic.List<ParameterConstraintDto>>>.Default);
+        private static Grpc.Core.Method<EmptyRequest, PropertyResponse<System.Collections.Generic.List<ParametersConstraintDto>>> SubscribeParametersConstraintsMethod = new Grpc.Core.Method<EmptyRequest, PropertyResponse<System.Collections.Generic.List<ParametersConstraintDto>>>(Grpc.Core.MethodType.ServerStreaming, @__ServiceName, "Subscribe_ParametersConstraints", EmptyRequest.Marshaller, ProtobufMarshaller<PropertyResponse<System.Collections.Generic.List<ParametersConstraintDto>>>.Default);
         
         ///  <summary>
         /// Class that implements the IParameterConstraintsProvider interface through SiLA2
         /// </summary>
-        public partial class Client : Grpc.Core.ClientBase<Client>, IParameterConstraintsProvider
+        public partial class Client : Grpc.Core.ClientBase<Client>, IParameterConstraintsProvider, System.ComponentModel.INotifyPropertyChanged
         {
             
-            private System.Lazy<System.Collections.Generic.ICollection<ParametersConstraint>> _parametersConstraints;
+            private System.Collections.Generic.ICollection<ParametersConstraint> _parametersConstraints;
+            
+            private System.Threading.Tasks.Task _parametersConstraintsUpdateTask;
             
             private IClientExecutionManager _executionManager;
             
             public Client(IClientExecutionManager executionManager)
             {
-                InitLazyRequests();
                 _executionManager = executionManager;
             }
             
             protected Client(ClientBaseConfiguration configuration, IClientExecutionManager executionManager) : 
                     base(configuration)
             {
-                InitLazyRequests();
                 _executionManager = executionManager;
             }
             
             public Client(Grpc.Core.Channel channel, IClientExecutionManager executionManager) : 
                     base(channel)
             {
-                InitLazyRequests();
                 _executionManager = executionManager;
             }
             
             ///  <summary>
+            /// Provides a list of all constraints of Command Parameters of the SiLA Server.
             /// </summary>
             public virtual System.Collections.Generic.ICollection<ParametersConstraint> ParametersConstraints
             {
                 get
                 {
-                    return _parametersConstraints.Value;
+                    if ((_parametersConstraintsUpdateTask == null))
+                    {
+                        _parametersConstraintsUpdateTask = ObservableCommands.SubscribeTo(CallInvoker, SubscribeParametersConstraintsMethod, ReceiveNewParametersConstraints, _executionManager.CreateCallOptions("org.silastandard/core.commands/ParameterConstraintsProvider/v1/Property/Parameter" +
+                                    "sConstraints"));
+                    }
+                    return _parametersConstraints;
                 }
             }
             
-            private System.Collections.Generic.ICollection<ParametersConstraint> RequestParametersConstraints()
-            {
-                Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/core.commands/ParameterConstraintsProvider/v1/Property/Parameter" +
-                        "sConstraints");
-                try
-                {
-                    System.Collections.Generic.ICollection<ParametersConstraint> response = Tecan.Sila2.DtoExtensions.Extract(CallInvoker.BlockingUnaryCall(GetParametersConstraintsMethod, null, callInfo.Options, EmptyRequest.Instance).Value, _executionManager.DownloadBinaryStore);
-                    callInfo.FinishSuccessful();
-                    return response;
-                } catch (System.Exception ex)
-                {
-                    System.Exception exception = ErrorHandling.ConvertException(ex);
-                    callInfo.FinishWithErrors(exception);
-                    throw exception;
-                }
-            }
+            public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
             
-            ///  <summary>
-            /// Initializes lazies for non-observable properties.
-            /// </summary>
-            private void InitLazyRequests()
+            private void ReceiveNewParametersConstraints(PropertyResponse<System.Collections.Generic.List<ParametersConstraintDto>> parametersConstraints)
             {
-                _parametersConstraints = new System.Lazy<System.Collections.Generic.ICollection<ParametersConstraint>>(RequestParametersConstraints);
+                System.Collections.Generic.ICollection<ParametersConstraint> inner = parametersConstraints.Value.Extract(_executionManager.DownloadBinaryStore);
+                if ((_parametersConstraints != inner))
+                {
+                    _parametersConstraints = inner;
+                    System.ComponentModel.PropertyChangedEventHandler handler = PropertyChanged;
+                    if ((handler != null))
+                    {
+                        handler.Invoke(this, new System.ComponentModel.PropertyChangedEventArgs("ParametersConstraints"));
+                    }
+                }
             }
             
             ///  <summary>
