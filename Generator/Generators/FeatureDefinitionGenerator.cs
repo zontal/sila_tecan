@@ -489,7 +489,7 @@ namespace Tecan.Sila2.Generator.Generators
             if (member.GetCustomAttribute<MinimalInclusiveAttribute>() is var minimalInclusive &&
                 minimalInclusive != null)
             {
-                constraints.MinimalExclusive = minimalInclusive.Threshold.ToString("R");
+                constraints.MinimalInclusive = minimalInclusive.Threshold.ToString("R");
                 requiresConstraints = true;
             }
 
