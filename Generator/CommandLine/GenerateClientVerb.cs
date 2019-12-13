@@ -45,7 +45,7 @@ namespace Tecan.Sila2.Generator.CommandLine
             var feature = FeatureSerializer.Load( Path.GetFullPath( FeaturePath ) );
             var unit = container.GetExportedValue<IInterfaceGenerator>().GenerateInterfaceUnit( feature, Namespace ?? feature.Namespace );
             var directory = Path.GetDirectoryName( ProviderProject );
-            CodeGenerationHelper.GenerateCSharp( unit, Path.Combine(directory, $"I{feature.Identifier}.cs") );
+            CodeGenerationHelper.GenerateCSharp( unit, Path.Combine(directory, feature.Identifier, $"I{feature.Identifier}.cs") );
 
 #if !NETCOREAPP2_1
             if( Namespace == null )
@@ -59,8 +59,8 @@ namespace Tecan.Sila2.Generator.CommandLine
             {
                 ClientOnly = true,
                 FeaturePath = FeaturePath,
-                DtoPath = Path.Combine( directory, feature.Identifier + "Dtos.cs" ),
-                ProviderPath = Path.Combine( directory, feature.Identifier + "Client.cs" ),
+                DtoPath = Path.Combine( directory, feature.Identifier, "Dtos.cs" ),
+                ProviderPath = Path.Combine( directory, feature.Identifier, "Client.cs" ),
                 Namespace = Namespace
             };
             generateProvider.Execute(container);
