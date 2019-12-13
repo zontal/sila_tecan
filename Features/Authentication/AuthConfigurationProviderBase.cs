@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Xml.Serialization;
 using Grpc.Core;
 using Tecan.MAP.Contracts.Services.Logging;
@@ -17,6 +18,7 @@ namespace Tecan.Sila2
     {
         private readonly IServerDiscovery _discovery;
         private readonly AuthConfiguration _configuration;
+        private readonly IServerConnector _serverConnector;
 
         private const string ProviderFeatureId = "org.silastandard/core/AuthorizationProviderService/v1";
 
@@ -24,11 +26,13 @@ namespace Tecan.Sila2
         /// Creates a new instance
         /// </summary>
         /// <param name="loggingChannelFactory">The logging channel factory</param>
+        /// <param name="serverConnector">A component that can connect to servers</param>
         /// <param name="discovery">The discovery that should be used by this auth config</param>
-        public AuthConfigurationProviderBase( ILoggingChannelFactory loggingChannelFactory, IServerDiscovery discovery )
+        protected AuthConfigurationProviderBase( ILoggingChannelFactory loggingChannelFactory, IServerDiscovery discovery, IServerConnector serverConnector )
         {
             var loggingChannel = loggingChannelFactory.CreateChannel( typeof(AuthConfigurationProviderBase) );
             _discovery = discovery;
+            _serverConnector = serverConnector;
             _configuration = LoadConfiguration();
 
             try
@@ -96,7 +100,7 @@ namespace Tecan.Sila2
                 throw new ArgumentException($"The server with id {serverUuid} could not be found.", nameof(serverUuid));
             }
 
-            if (!server.Features.Any(f => f.FullyQualifiedIdentifier == ProviderFeatureId))
+            if ( server.Features.All( f => f.FullyQualifiedIdentifier != ProviderFeatureId ) )
             {
                 throw new ArgumentException("The server is not an authorization provider.", nameof(serverUuid));
             }
@@ -126,9 +130,8 @@ namespace Tecan.Sila2
 
         private void SetAuthorizationProviderCore(string host, int port)
         {
-            var channel = new Channel(host, port, ChannelCredentials.Insecure);
-            var server = _discovery.GetServerData(channel);
-            if (!server.Features.Any(f => f.FullyQualifiedIdentifier == ProviderFeatureId))
+            var server = _serverConnector.Connect( host, port );
+            if (server == null || server.Features.All( f => f.FullyQualifiedIdentifier != ProviderFeatureId ) )
             {
                 throw new ArgumentException("The server is not an authorization provider.", nameof(host));
             }

@@ -10,6 +10,7 @@ using System.Reflection;
 using System.Text;
 using CommandLine;
 using Tecan.MAP.Contracts.Services.Logging;
+using Tecan.Sila2.Discovery;
 using Tecan.Sila2.Server.Binary;
 
 namespace Tecan.Sila2.Server
@@ -144,14 +145,19 @@ namespace Tecan.Sila2.Server
 
             var container = new CompositionContainer(catalog);
 
-            if (container.GetExportedValueOrDefault<IFileManagement>() == null)
-            {
-                container.ComposeExportedValue<IFileManagement>(new FileManagement());
-            }
-
             if (container.GetExportedValueOrDefault<ILoggingChannelFactory>() == null)
             {
                 container.ComposeExportedValue<ILoggingChannelFactory>( new ConsoleLogging() );
+            }
+
+            if( container.GetExportedValueOrDefault<IServerConnector>() == null )
+            {
+                container.ComposeExportedValue<IServerConnector>(new ServerConnector(new DiscoveryExecutionManager(), container.GetExportedValue<ILoggingChannelFactory>()));
+            }
+
+            if (container.GetExportedValueOrDefault<IFileManagement>() == null)
+            {
+                container.ComposeExportedValue<IFileManagement>(new FileManagement());
             }
 
             if( container.GetExportedValueOrDefault<IConfigurationStore>() == null )

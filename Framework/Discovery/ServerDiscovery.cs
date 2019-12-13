@@ -2,7 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
+using System.Threading;
 using Grpc.Core;
+using Makaretu.Dns;
 using Tecan.MAP.Contracts.Services.Logging;
 using Tecan.Sila2.Client;
 
@@ -15,19 +17,19 @@ namespace Tecan.Sila2.Discovery
     public class ServerDiscovery : IServerDiscovery
     {
         private readonly ILoggingChannel _loggingChannel;
-        private readonly ServiceFinder _serviceFinder;
-        private readonly IClientExecutionManager _executionManager;
+        private readonly Networking _networking;
+        private readonly IServerConnector _serverConnector;
 
         /// <summary>
         /// Create a new sila discovery object
         /// </summary>
         /// <param name="factory">A logging factory</param>
-        /// <param name="executionManager">The client execution manager</param>
-        public ServerDiscovery(ILoggingChannelFactory factory, IClientExecutionManager executionManager)
+        /// <param name="serverConnector">A component that creates channels</param>
+        public ServerDiscovery(ILoggingChannelFactory factory, IServerConnector serverConnector)
         {
             _loggingChannel = factory.CreateChannel(typeof(ServerDiscovery));
-            _serviceFinder = new ServiceFinder(factory, new Networking(factory));
-            _executionManager = executionManager;
+            _networking = new Networking(factory);
+            _serverConnector = serverConnector;
         }
         
         /// <summary>
@@ -37,56 +39,50 @@ namespace Tecan.Sila2.Discovery
         /// <returns>"List of valid SiLA2 servers</returns>
         public IEnumerable<ServerData> GetServers(TimeSpan timeout)
         {
-            return _serviceFinder.QueryAllServices(timeout)
-                .Select(channel =>
+
+            var services = new List<ServerData>();
+
+            using(var mdns = new MulticastService( _networking.CreateFilterFunc() ))
+            {
+                // attach the event handler for processing responses.
+                mdns.AnswerReceived += ( s, e ) =>
                 {
-                    try
+                    // The first Answer will be a PTRRecord
+                    var pointers = e.Message.Answers.OfType<PTRRecord>().Where( p => p.Name.ToString().Contains( DiscoveryConstants.ServiceName ) );
+                    foreach(var pointer in pointers)
                     {
-                        return GetServerData(channel);
+                        // Ask for the service instance details
+                        mdns.SendQuery( pointer.DomainName, type: DnsType.SRV );
                     }
-                    catch (Exception e)
+
+                    // The second Answer will be a SRVRecord (also contain A and AAAA records)
+                    var servers = e.Message.Answers.OfType<SRVRecord>().Where( p => p.Name.ToString().Contains( DiscoveryConstants.ServiceName ) );
+                    foreach(var server in servers)
                     {
-                        _loggingChannel.LogException($"Invalid server found at channel: {channel.Target}".ToString, e);
-                        return null;
+                        var aRecord = e.Message.AdditionalRecords.OfType<ARecord>().FirstOrDefault();
+                        if(aRecord != null)
+                        {
+                            try
+                            {
+                                var channel = _serverConnector.Connect( aRecord.Address, server.Port );
+                                services.Add( channel );
+                            }
+                            catch(Exception exception)
+                            {
+                                _loggingChannel.LogException( $"Failed to create channel to {aRecord.Address} on port {server.Port}".ToString, exception );
+                            }
+                        }
                     }
-                })
-                .Where(data => data != null).ToList();
-        }
-        
-        /// <summary>
-        /// Load all server properties 
-        /// </summary>
-        public ServerData GetServerData(Channel channel)
-        {
-            var silaService = new SiLAServiceProvider.Client(channel, _executionManager);
-            var config = GetServerConfig(silaService);
-            var info = GetServerInfo(silaService);
-            var features = GetImplementedFeatures(silaService);
-            var server = new ServerData(channel, config, info, features);
-            return server;
-        }
-        
-        private static List<Feature> GetImplementedFeatures(SiLAServiceProvider.Client silaService)
-        {
-            return silaService.ImplementedFeatures.Select(f => FeatureSerializer.LoadFromXml(silaService.GetFeatureDefinition(f))).ToList();
-        }
+                };
 
-        private static ServerConfig GetServerConfig(SiLAServiceProvider.Client silaService)
-        {
-            var name = silaService.ServerName;
-            var uuid = Guid.Parse(silaService.ServerUUID);
-            var config = new ServerConfig(name, uuid);
-            return config;
-        }
+                mdns.Start();
+                // Ask for PTRRecords (the devices will only respond to SRV that are directed exactly to them)
+                mdns.SendQuery( string.Join( ".", DiscoveryConstants.ServiceName, DiscoveryConstants.ServiceDomainName ), type: DnsType.PTR );
+                Thread.Sleep( timeout );
+                mdns.Stop();
+            }
 
-        private static ServerInformation GetServerInfo(SiLAServiceProvider.Client silaService)
-        {
-            var type = silaService.ServerType;
-            var description = silaService.ServerDescription;
-            var vendorUri = silaService.ServerVendorURL;
-            var version = silaService.ServerVersion;
-            var info = new ServerInformation(type, description, vendorUri, version);
-            return info;
+            return services;
         }
     }
 }

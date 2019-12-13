@@ -15,10 +15,5 @@ namespace Tecan.Sila2.Discovery
         /// <param name="timeout">duration of Query period</param>
         /// <returns>"List of valid SiLA2 servers</returns>
         IEnumerable<ServerData> GetServers(TimeSpan timeout);
-
-        /// <summary>
-        /// Load all server properties 
-        /// </summary>
-        ServerData GetServerData(Channel channel);
     }
 }

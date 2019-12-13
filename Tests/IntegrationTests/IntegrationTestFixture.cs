@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using Grpc.Core;
@@ -67,10 +68,9 @@ namespace Tecan.Sila2.IntegrationTests
             }
 
             var testLogging = new TestLoggingFactory();
-            var serverDiscovery = new ServerDiscovery( testLogging, new DiscoveryExecutionManager() );
+            var connector = new ServerConnector( new DiscoveryExecutionManager(), testLogging );
             
-            var channel = new Channel("127.0.0.1", 50052, ChannelCredentials.Insecure);
-            _server = serverDiscovery.GetServerData( channel );
+            _server = connector.Connect( IPAddress.Loopback, 50052 );
             Assert.That( _server, Is.Not.Null );
         }
 
