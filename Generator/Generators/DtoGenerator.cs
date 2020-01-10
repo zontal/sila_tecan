@@ -319,6 +319,10 @@ namespace Tecan.Sila2.Generator.Generators
             void ElementAction(SiLAElement element, CodePropertyReferenceExpression property)
             {
                 var correspondingPropertyName = property.PropertyName == name ? "Value" : property.PropertyName;
+                if( correspondingPropertyName == nameof(ISilaRequestObject.CommandIdentifier) + "_" )
+                {
+                    correspondingPropertyName = nameof(ISilaRequestObject.CommandIdentifier);
+                }
                 var extractionCall = new CodeMethodInvokeExpression( property, nameof(ISilaTransferObject<object>.Extract),
                     new CodeArgumentReferenceExpression( BinaryStoreParameterName ) );
                 var customType = NameProvider.GetMemberType( name + "." + element.Identifier );
