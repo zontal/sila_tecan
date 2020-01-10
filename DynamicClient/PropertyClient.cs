@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Grpc.Core;
 using Tecan.Sila2.Client;
@@ -57,10 +58,10 @@ namespace Tecan.Sila2.DynamicClient
             return Context.Serializer.Serialize( value, null );
         }
 
-        private async Task<DynamicObjectProperty> RequestDynamic( IClientCallInfo callInfo )
+        private async Task<DynamicObjectProperty> RequestDynamic( CallOptions callOptions )
         {
             var asyncCall =
-                Context.CallInvoker.AsyncServerStreamingCall( _method, null, callInfo.Options, EmptyRequest.Instance );
+                Context.CallInvoker.AsyncServerStreamingCall( _method, null, callOptions, EmptyRequest.Instance );
             var responseStream = asyncCall.ResponseStream;
             if( await responseStream.MoveNext() )
             {
@@ -74,8 +75,9 @@ namespace Tecan.Sila2.DynamicClient
         /// Requests the value for the property one time
         /// </summary>
         /// <param name="host">The host at which the property value should be queries or null to use the default host</param>
+        /// <param name="additionalMetadata">A dictionary with additional request metadata</param>
         /// <returns>A dynamic property with the property value</returns>
-        public DynamicObjectProperty RequestValue(string host = null)
+        public DynamicObjectProperty RequestValue(string host = null, IDictionary<string, byte[]> additionalMetadata = null )
         {
             var callInfo = Context.ExecutionManager.CreateCallOptions(PropertyIdentifier);
             try
@@ -83,7 +85,7 @@ namespace Tecan.Sila2.DynamicClient
                 DynamicObjectProperty result;
                 if (Property.Observable == FeaturePropertyObservable.Yes)
                 {
-                    var task = RequestDynamic(callInfo);
+                    var task = RequestDynamic( MetadataHelper.TakeInMetadata( callInfo, additionalMetadata ) );
                     task.Wait();
                     result = task.Result;
                 }

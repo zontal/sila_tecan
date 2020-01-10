@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Grpc.Core;
+using Tecan.Sila2.Client;
 
 namespace Tecan.Sila2.DynamicClient
 {
@@ -40,13 +42,14 @@ namespace Tecan.Sila2.DynamicClient
         /// </summary>
         /// <param name="args">The command request parameters</param>
         /// <param name="host">The host to target or null</param>
+        /// <param name="additionalMetadata">A dictionary with additional request metadata</param>
         /// <returns>A dynamic property with the response value</returns>
-        public DynamicObjectProperty Invoke(DynamicRequest args, string host = null)
+        public DynamicObjectProperty Invoke(DynamicRequest args, string host = null, IDictionary<string, byte[]> additionalMetadata = null)
         {
             var callInfo = Context.ExecutionManager.CreateCallOptions(args.CommandIdentifier);
             try
             {
-                var result = Context.CallInvoker.BlockingUnaryCall(_method, host, callInfo.Options, args);
+                var result = Context.CallInvoker.BlockingUnaryCall(_method, host, MetadataHelper.TakeInMetadata( callInfo, additionalMetadata ), args);
                 callInfo.FinishSuccessful();
                 return result;
             }
@@ -71,13 +74,14 @@ namespace Tecan.Sila2.DynamicClient
         /// </summary>
         /// <param name="args">The command request parameters</param>
         /// <param name="host">The host to target or null</param>
+        /// <param name="additionalMetadata">A dictionary with additional request metadata</param>
         /// <returns>A dynamic property with the response value</returns>
-        public async Task<DynamicObjectProperty> InvokeAsync(DynamicRequest args, string host = null)
+        public async Task<DynamicObjectProperty> InvokeAsync(DynamicRequest args, string host = null, IDictionary<string, byte[]> additionalMetadata = null )
         {
             var callInfo = Context.ExecutionManager.CreateCallOptions(args.CommandIdentifier);
             try
             {
-                var result = await Context.CallInvoker.AsyncUnaryCall(_method, host, callInfo.Options, args);
+                var result = await Context.CallInvoker.AsyncUnaryCall(_method, host, MetadataHelper.TakeInMetadata( callInfo, additionalMetadata ), args);
                 callInfo.FinishSuccessful();
                 return result;
             }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Grpc.Core;
 using Tecan.Sila2.Client;
 
@@ -65,12 +66,18 @@ namespace Tecan.Sila2.DynamicClient
         /// </summary>
         /// <param name="args">The command request parameters</param>
         /// <param name="host">The host to which the request should be sent or null to send it to the default host</param>
+        /// <param name="additionalMetadata">A dictionary with additional request metadata</param>
         /// <returns>An observable command object</returns>
-        public IObservableCommand<DynamicObjectProperty> Invoke( DynamicRequest args, string host = null )
+        public IObservableCommand<DynamicObjectProperty> Invoke( DynamicRequest args, string host = null, IDictionary<string, byte[]> additionalMetadata = null )
         {
             try
             {
-                return ObservableCommand.Create( Context.ExecutionManager.CreateCallOptions( args.CommandIdentifier ), Context.CallInvoker, args, _method, _stateMethod,
+                var callInfo = Context.ExecutionManager.CreateCallOptions( args.CommandIdentifier );
+                if( additionalMetadata != null )
+                {
+                    callInfo = new DecoratedCallInfo(callInfo, additionalMetadata);
+                }
+                return ObservableCommand.Create( callInfo, Context.CallInvoker, args, _method, _stateMethod,
                     _resultMethod, dn => dn, Context.ConvertException );
             }
             catch( Exception exception )
@@ -156,12 +163,18 @@ namespace Tecan.Sila2.DynamicClient
         /// </summary>
         /// <param name="args">The command request parameters</param>
         /// <param name="host">The host to which the request should be sent or null to send it to the default host</param>
+        /// <param name="additionalMetadata">A dictionary with additional request metadata</param>
         /// <returns>An observable command object</returns>
-        public new IIntermediateObservableCommand<DynamicObjectProperty, DynamicObjectProperty> Invoke( DynamicRequest args, string host = null )
+        public new IIntermediateObservableCommand<DynamicObjectProperty, DynamicObjectProperty> Invoke( DynamicRequest args, string host = null, IDictionary<string, byte[]> additionalMetadata = null )
         {
             try
             {
-                return ObservableCommand.CreateIntermediate( Context.ExecutionManager.CreateCallOptions( args.CommandIdentifier ), Context.CallInvoker, args, _method, _stateMethod,
+                var callInfo = Context.ExecutionManager.CreateCallOptions( args.CommandIdentifier );
+                if(additionalMetadata != null)
+                {
+                    callInfo = new DecoratedCallInfo( callInfo, additionalMetadata );
+                }
+                return ObservableCommand.CreateIntermediate( callInfo, Context.CallInvoker, args, _method, _stateMethod,
                     _intermediateMethod, _resultMethod, dn => dn, dn => dn, Context.ConvertException );
             }
             catch( Exception exception )
