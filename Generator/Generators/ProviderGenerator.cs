@@ -31,6 +31,11 @@ namespace Tecan.Sila2.Generator.Generators
         /// </summary>
         public IServerGenerator ServerGenerator { get; }
 
+        private IEnumerable<IGeneratorHook> Hooks
+        {
+            get;
+        }
+
 
         /// <summary>
         /// Creates a new provider generator
@@ -38,13 +43,15 @@ namespace Tecan.Sila2.Generator.Generators
         /// <param name="nameProvider">The name provider used to generate feature names</param>
         /// <param name="clientGenerator">The generator for the client class</param>
         /// <param name="serverGenerator">The generator for the server class</param>
+        /// <param name="hooks">Code generator hooks</param>
         [ImportingConstructor]
         public ProviderGenerator(ICodeNameProvider nameProvider, IClientGenerator clientGenerator,
-            IServerGenerator serverGenerator)
+            IServerGenerator serverGenerator, [ImportMany] IEnumerable<IGeneratorHook> hooks)
         {
             NameProvider = nameProvider;
             ClientGenerator = clientGenerator;
             ServerGenerator = serverGenerator;
+            Hooks = hooks?.ToList();
         }
 
         /// <inheritdoc />
@@ -70,6 +77,14 @@ namespace Tecan.Sila2.Generator.Generators
             usingNs.Imports.Add(new CodeNamespaceImport("Tecan.Sila2.Client"));
             usingNs.Imports.Add(new CodeNamespaceImport("Tecan.Sila2.Server"));
             unit.Namespaces.Add(usingNs);
+
+            if( Hooks != null )
+            {
+                foreach( var generatorHook in Hooks )
+                {
+                    generatorHook?.OnCodeGenerationComplete(feature, unit);
+                }
+            }
 
             return unit;
         }
@@ -99,6 +114,7 @@ namespace Tecan.Sila2.Generator.Generators
             {
                 GenerateMetadataMethod(metadata, provider, serviceNameRef);
             }
+            
 
             if (generateServer && ServerGenerator != null)
             {

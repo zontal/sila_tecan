@@ -67,7 +67,7 @@ namespace Tecan.Sila2.Generator.Test
         public void Test_GenerateInterface_SilaFeature()
         {
             var feature = FeatureSerializer.Load(FeatureDefinitionFile);
-            var interfaceGenerator = new InterfaceGenerator();
+            var interfaceGenerator = new InterfaceGenerator(null);
             var unit = interfaceGenerator.GenerateInterfaceUnit(feature,
                 "Tecan.Sila2.Generator.Test.TestReference" );
 
@@ -90,7 +90,7 @@ namespace Tecan.Sila2.Generator.Test
         {
             var feature = FeatureSerializer.Load(FeatureDefinitionFile);
             var nameProvider = new CodeNameProvider();
-            var providerGenerator = new ProviderGenerator(nameProvider, new ClientGenerator(nameProvider, null), new ServerGenerator(nameProvider, null));
+            var providerGenerator = new ProviderGenerator(nameProvider, new ClientGenerator(nameProvider, null), new ServerGenerator(nameProvider, null), null);
             var unit = providerGenerator.GenerateInterfaceUnit(feature,
                 "Tecan.Sila2.Generator.Test.TestReference",
                 generateServer: true,

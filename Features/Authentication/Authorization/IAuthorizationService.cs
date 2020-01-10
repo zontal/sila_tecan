@@ -35,6 +35,10 @@ namespace Tecan.Sila2.Authorization
     public class InvalidAccessTokenException : System.Exception
     {
         
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        /// <param name="message">The actual error message</param>
         public InvalidAccessTokenException(string message) : 
                 base(message)
         {

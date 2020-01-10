@@ -50,6 +50,10 @@ namespace Tecan.Sila2.AuthorizationProvider
     public class AuthorizationFailedException : System.Exception
     {
         
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        /// <param name="message">The actual error message</param>
         public AuthorizationFailedException(string message) : 
                 base(message)
         {
@@ -64,6 +68,10 @@ namespace Tecan.Sila2.AuthorizationProvider
     public class InvalidAccessTokenException : System.Exception
     {
         
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        /// <param name="message">The actual error message</param>
         public InvalidAccessTokenException(string message) : 
                 base(message)
         {

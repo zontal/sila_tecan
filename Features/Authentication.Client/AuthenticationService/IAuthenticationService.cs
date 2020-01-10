@@ -102,6 +102,10 @@ namespace Tecan.Sila2.Authentication
     public class AuthenticationFailedException : System.Exception
     {
         
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        /// <param name="message">The actual error message</param>
         public AuthenticationFailedException(string message) : 
                 base(message)
         {
@@ -116,6 +120,10 @@ namespace Tecan.Sila2.Authentication
     public class InvalidAccessTokenException : System.Exception
     {
         
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        /// <param name="message">The actual error message</param>
         public InvalidAccessTokenException(string message) : 
                 base(message)
         {

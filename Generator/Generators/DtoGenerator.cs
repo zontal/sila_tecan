@@ -515,6 +515,10 @@ namespace Tecan.Sila2.Generator.Generators
                 HasGet = true,
                 Type = GetDtoTypeReference(element.DataType, element.Identifier, structHandler)
             };
+            if( element.Identifier == nameof(ISilaRequestObject.CommandIdentifier) )
+            {
+                property.Name += "_";
+            }
             property.WriteDocumentation(element.Description ?? $"The {element.DisplayName} property");
             AddAttribute(property.CustomAttributes, typeof(ProtoMemberAttribute), index);
             dto.Members.Add(property);

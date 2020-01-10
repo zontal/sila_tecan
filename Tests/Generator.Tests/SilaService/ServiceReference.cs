@@ -217,6 +217,10 @@ namespace Tecan.Sila2.Generator.Test.TestReference
     public class UnimplementedFeatureException : System.Exception
     {
         
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        /// <param name="message">The actual error message</param>
         public UnimplementedFeatureException(string message) : 
                 base(message)
         {

@@ -670,8 +670,13 @@ namespace Tecan.Sila2.Generator.Generators
                 var serverRef = new CodeFieldReferenceExpression( null, ServerFieldName );
                 foreach( var parameter in featureCommand.Parameter )
                 {
+                    var propertyName = parameter.Identifier;
+                    if( parameter.Identifier == nameof(ISilaRequestObject.CommandIdentifier) )
+                    {
+                        propertyName += "_";
+                    }
                     var parameterValue = new CodeMethodInvokeExpression(
-                        new CodePropertyReferenceExpression( requestRef, parameter.Identifier ), "Extract", serverRef );
+                        new CodePropertyReferenceExpression( requestRef, propertyName ), "Extract", serverRef );
                     var typeRef = NameProvider?.GetMemberType( featureCommand.Identifier + "." + parameter.Identifier );
 
                     actualImplementation.Parameters.Add( CodeGenerationHelper.GenerateConversion(parameterValue, typeRef, parameter.DataType) );

@@ -28,5 +28,19 @@ namespace Tecan.Sila2.Generator.Contracts
         /// <param name="interfaceType">The interface for which the feature was generated</param>
         /// <param name="feature">The feature that was generated</param>
         void OnFeatureGenerated(Type interfaceType, Feature feature);
+
+        /// <summary>
+        /// Called when an interface is generated for the given type
+        /// </summary>
+        /// <param name="feature">The feature</param>
+        /// <param name="generatedType">A declaration of the interface</param>
+        void OnInterfaceGenerated( Feature feature, CodeTypeDeclaration generatedType );
+
+        /// <summary>
+        /// Called when the code generation for the given interface has completed
+        /// </summary>
+        /// <param name="feature">The feature</param>
+        /// <param name="compileUnit">The generated code</param>
+        void OnCodeGenerationComplete( Feature feature, CodeCompileUnit compileUnit );
     }
 }

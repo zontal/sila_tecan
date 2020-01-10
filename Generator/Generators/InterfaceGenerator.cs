@@ -16,6 +16,17 @@ namespace Tecan.Sila2.Generator.Generators
     [PartCreationPolicy(CreationPolicy.Shared)]
     internal class InterfaceGenerator : IInterfaceGenerator
     {
+        private IEnumerable<IGeneratorHook> Hooks
+        {
+            get;
+        }
+
+        [ImportingConstructor]
+        public InterfaceGenerator( [ImportMany] IEnumerable<IGeneratorHook> hooks )
+        {
+            Hooks = hooks;
+        }
+
         /// <inheritdoc />
         public CodeCompileUnit GenerateInterfaceUnit(Feature feature, string ns)
         {
@@ -25,7 +36,8 @@ namespace Tecan.Sila2.Generator.Generators
 
             var typeManagement = new TypeManagement(nSpace, this);
 
-            nSpace.Types.Add(GenerateInterface(feature, typeManagement));
+            var interfaceType = GenerateInterface( feature, typeManagement );
+            nSpace.Types.Add( interfaceType );
 
             foreach (var dataTypeDefinition in feature.Items.OfType<SiLAElement>())
             {
@@ -39,6 +51,14 @@ namespace Tecan.Sila2.Generator.Generators
             foreach (var error in feature.Items.OfType<FeatureDefinedExecutionError>())
             {
                 nSpace.Types.Add(GenerateStandardExecutionError(error));
+            }
+
+            if( Hooks != null )
+            {
+                foreach( var generatorHook in Hooks )
+                {
+                    generatorHook?.OnInterfaceGenerated(feature, interfaceType);
+                }
             }
 
             return unit;
@@ -393,6 +413,10 @@ namespace Tecan.Sila2.Generator.Generators
             constructor.Attributes = MemberAttributes.Public;
             constructor.Parameters.Add(new CodeParameterDeclarationExpression(typeof(string), "message"));
             constructor.BaseConstructorArgs.Add(new CodeArgumentReferenceExpression("message"));
+            constructor.WriteDocumentation( "Create a new instance", parameters: new Dictionary<string, string>()
+            {
+                { "message", "The actual error message" }
+            } );
             type.Members.Add(constructor);
 
             return type;

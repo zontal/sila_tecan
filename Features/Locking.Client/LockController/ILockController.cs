@@ -96,6 +96,10 @@ namespace Tecan.Sila2.Locking
     public class InvalidLockIdentifierException : System.Exception
     {
         
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        /// <param name="message">The actual error message</param>
         public InvalidLockIdentifierException(string message) : 
                 base(message)
         {
@@ -110,6 +114,10 @@ namespace Tecan.Sila2.Locking
     public class ServerAlreadyLockedException : System.Exception
     {
         
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        /// <param name="message">The actual error message</param>
         public ServerAlreadyLockedException(string message) : 
                 base(message)
         {
@@ -124,6 +132,10 @@ namespace Tecan.Sila2.Locking
     public class ServerNotLockedException : System.Exception
     {
         
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        /// <param name="message">The actual error message</param>
         public ServerNotLockedException(string message) : 
                 base(message)
         {

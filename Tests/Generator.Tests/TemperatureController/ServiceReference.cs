@@ -57,6 +57,10 @@ namespace Tecan.Sila2.Generator.Test.TestReference
     public class TemperatureNotReachableException : System.Exception
     {
         
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        /// <param name="message">The actual error message</param>
         public TemperatureNotReachableException(string message) : 
                 base(message)
         {
@@ -72,6 +76,10 @@ namespace Tecan.Sila2.Generator.Test.TestReference
     public class ControlInterruptedException : System.Exception
     {
         
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        /// <param name="message">The actual error message</param>
         public ControlInterruptedException(string message) : 
                 base(message)
         {
