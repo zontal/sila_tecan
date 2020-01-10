@@ -40,6 +40,15 @@
         <ProjectReference Include="..\..\Framework\Framework.csproj" />
     </ItemGroup>
     <ItemGroup>
+        <Compile Update="Dictionary\DtoReference.cs">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Compile>
+        <Compile Update="Dictionary\ProviderReference.cs">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Compile>
+        <Compile Update="Dictionary\ServiceReference.cs">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Compile>
         <Compile Update="Logging\DtoReference.cs">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Compile>
@@ -78,6 +87,9 @@
         <Reference Include="System.Security" />
     </ItemGroup>
     <ItemGroup>
+        <None Update="Dictionary\Feature.xml">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
         <None Update="Logging\Feature.xml">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>

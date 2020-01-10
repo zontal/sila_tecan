@@ -342,7 +342,7 @@ namespace Tecan.Sila2.Generator.Generators
 
             var ret = new CodeMethodReturnStatement( new CodeMethodInvokeExpression(
                 serverRef,
-                "CreatePropertyTask",
+                nameof(ISiLAServer.CreatePropertyTask),
                 new CodePrimitiveExpression( feature.GetFullyQualifiedIdentifier( featureProperty ) ),
                 result,
                 new CodeArgumentReferenceExpression( ContextParameterName ) ) );

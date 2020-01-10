@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Net.Http.Headers;
+using Makaretu.Dns;
 using ProtoBuf;
 using Tecan.Sila2.Binary;
 
@@ -1231,6 +1233,48 @@ namespace Tecan.Sila2
     }
 
     /// <summary>
+    /// Denotes a data transfer object for a key-value pair
+    /// </summary>
+    /// <typeparam name="TKey">The domain type of the key</typeparam>
+    /// <typeparam name="TKeyDto">The transfer type of the key</typeparam>
+    /// <typeparam name="TValue">The domain type of the value</typeparam>
+    /// <typeparam name="TValueDto">The transfer type of the value</typeparam>
+    public class KeyValuePairDto<TKey, TKeyDto, TValue, TValueDto> : ISilaTransferObject<KeyValuePair<TKey, TValue>> where TKeyDto : ISilaTransferObject<TKey> where TValueDto : ISilaTransferObject<TValue>
+    {
+        /// <summary>
+        /// Gets the transfer object for the key
+        /// </summary>
+        [ProtoMember(1, Name = "key")]
+        public TKeyDto Key
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Gets the transfer object for the value
+        /// </summary>
+        [ProtoMember(2, Name = "value")]
+        public TValueDto Value
+        {
+            get;
+            set;
+        }
+
+        /// <inheritdoc />
+        public KeyValuePair<TKey, TValue> Extract( IBinaryStore resolver )
+        {
+            return new KeyValuePair<TKey, TValue>( Key != null ? Key.Extract( resolver ) : default, Value != null ? Value.Extract( resolver ) : default );
+        }
+
+        /// <inheritdoc />
+        public string GetValidationErrors()
+        {
+            return Key?.GetValidationErrors() + Value?.GetValidationErrors();
+        }
+    }
+
+    /// <summary>
     /// Helper class with extensions for Dtos
     /// </summary>
     public static class DtoExtensions
@@ -1248,6 +1292,34 @@ namespace Tecan.Sila2
         }
 
         /// <summary>
+        /// Extracts the collection of key-value pairs in the collection of data transfer objects
+        /// </summary>
+        /// <typeparam name="TKey">The domain type of the key</typeparam>
+        /// <typeparam name="TKeyDto">The data transfer type of the key</typeparam>
+        /// <typeparam name="TValue">The domain type of the value</typeparam>
+        /// <typeparam name="TValueDto">The data transfer type of the value</typeparam>
+        /// <param name="source">A collection with data transfer objects</param>
+        /// <param name="resolver">A component that resolves binary storage identifiers</param>
+        /// <returns>A dictionary with the underlying data</returns>
+        public static IDictionary<TKey, TValue> Extract<TKey, TKeyDto, TValue, TValueDto>( this IEnumerable<KeyValuePairDto<TKey, TKeyDto, TValue, TValueDto>> source,
+            IBinaryStore resolver )
+            where TKeyDto : ISilaTransferObject<TKey>
+            where TValueDto : ISilaTransferObject<TValue>
+        {
+            if( source == null )
+            {
+                return null;
+            }
+            IDictionary<TKey, TValue> dict = new Dictionary<TKey, TValue>();
+            foreach( var keyValuePairDto in source )
+            {
+                dict.Add( keyValuePairDto.Extract( resolver ) );
+            }
+
+            return dict;
+        }
+
+        /// <summary>
         /// Encapsulates the given collection into data transfer objects
         /// </summary>
         /// <typeparam name="TDto">The type of data transfer objects</typeparam>
@@ -1260,6 +1332,18 @@ namespace Tecan.Sila2
             Func<TInner, IBinaryStore, TDto> convertFunc, IBinaryStore resolver)
         {
             return source?.Select(item => convertFunc(item, resolver)).ToList();
+        }
+
+        public static List<KeyValuePairDto<TKey, TKeyDto, TValue, TValueDto>> Encapsulate<TKeyDto, TKey, TValueDto, TValue>( IEnumerable<KeyValuePair<TKey, TValue>> source,
+            Func<TKey, IBinaryStore, TKeyDto> keyConvertFunc, Func<TValue, IBinaryStore, TValueDto> valueConvertFunc, IBinaryStore resolver )
+            where TKeyDto : ISilaTransferObject<TKey>
+            where TValueDto : ISilaTransferObject<TValue>
+        {
+            return source?.Select( item => new KeyValuePairDto<TKey, TKeyDto, TValue, TValueDto>()
+            {
+                Key = keyConvertFunc( item.Key, resolver ),
+                Value = valueConvertFunc( item.Value, resolver )
+            } ).ToList();
         }
     }
 }

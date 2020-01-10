@@ -84,7 +84,7 @@ namespace Tecan.Sila2.Generator.Generators
             GenerateDataTypes(dataTypes, items, namespaceCollector);
 
             var versionV = version == null ? interfaceType.Assembly.GetName().Version : Version.Parse(version);
-            category = category ?? annotation.Category;
+            category ??= annotation.Category;
             AssignDefaultOriginatorAndUseCase(interfaceType, versionV, ref originator, ref category);
 
             var feature = new Feature
@@ -180,8 +180,8 @@ namespace Tecan.Sila2.Generator.Generators
                 DisplayName = displayName,
                 Description = description,
                 DefinedExecutionErrors = exceptionIdentifiers.Any() ? exceptionIdentifiers.ToArray() : null,
-                DataType = GenerateTypeReferenceAndRegister(metadataType.MetadataType, identifier, new MemberAttributeReader(propertyInfo),
-                    dataTypes)
+                DataType = GenerateTypeReference(metadataType.MetadataType, identifier, new MemberAttributeReader(propertyInfo), true,
+                    dataTypes.Add)
             };
 
             return metadata;
@@ -300,25 +300,11 @@ namespace Tecan.Sila2.Generator.Generators
                 Identifier = identifier,
                 DisplayName = displayName,
                 Description = description,
-                DataType = GenerateTypeReferenceAndRegister(propertyInfo.PropertyType, identifier, new MemberAttributeReader( propertyInfo),
-                    dataTypes),
+                DataType = GenerateTypeReference(propertyInfo.PropertyType, identifier, new MemberAttributeReader( propertyInfo), true,
+                    dataTypes.Add),
                 DefinedExecutionErrors = definedErrors.Any() ? definedErrors.ToArray() : null,
                 Observable = isDynamic ? FeaturePropertyObservable.Yes : FeaturePropertyObservable.No
             };
-        }
-
-        private static (Type, bool) ExtractType(Type type)
-        {
-            var isCollection = type.IsGenericType && 
-                (type.GetGenericTypeDefinition() == typeof(ICollection<>)
-                || type.GetGenericTypeDefinition() == typeof(IEnumerable<>)
-                || type.GetGenericTypeDefinition() == typeof(IList<>));
-            if (isCollection)
-            {
-                type = type.GetGenericArguments()[0];
-            }
-
-            return (type, isCollection);
         }
 
         private List<string> ParseExceptionNamesAndRegister(MemberInfo member, ICollection<Type> exceptions)
@@ -332,26 +318,6 @@ namespace Tecan.Sila2.Generator.Generators
             }
 
             return errors;
-        }
-
-        private DataTypeType GenerateTypeReferenceAndRegister(Type type, string origin, IAttributeReader reader,
-            ICollection<Type> registry)
-        {
-            var (innerType, isCollection) = ExtractType(type);
-            registry.Add(innerType);
-            var dataType = GenerateTypeReference(innerType, origin, reader, true, registry.Add);
-            if (isCollection)
-            {
-                if (type.GetGenericTypeDefinition() != typeof(ICollection<>))
-                {
-                    NameRegistry?.RegisterDifferentType(origin, type);
-                }
-                return AsCollection(dataType);
-            }
-            else
-            {
-                return dataType;
-            }
         }
 
         private DataTypeType GenerateTypeReference(Type type, string origin, IAttributeReader reader, bool allowReference,
@@ -369,9 +335,44 @@ namespace Tecan.Sila2.Generator.Generators
             }
             else if (IsCollectionType(type, out var elementType))
             {
+                if(type.GetGenericTypeDefinition() != typeof( ICollection<> ))
+                {
+                    NameRegistry?.RegisterDifferentType( origin, type );
+                }
                 resultType.Item = new ListType()
                 {
                     DataType = GenerateTypeReference(elementType, origin + ".Item", reader, allowReference, typeAction)
+                };
+            }
+            else if( IsDictionaryType( type, out var keyType, out elementType ) )
+            {
+                if(type.GetGenericTypeDefinition() != typeof( IDictionary<,> ))
+                {
+                    NameRegistry?.RegisterDifferentType( origin, type );
+                }
+                resultType.Item = new ListType()
+                {
+                    DataType = new DataTypeType()
+                    {
+                        Item = new StructureType()
+                        {
+                            Element = new SiLAElement[]
+                            {
+                                new SiLAElement()
+                                {
+                                    Identifier = "Key",
+                                    DisplayName = "Key",
+                                    DataType = GenerateTypeReference( keyType, origin + ".Key", reader, allowReference, typeAction )
+                                },
+                                new SiLAElement()
+                                {
+                                    Identifier = "Value",
+                                    DisplayName = "Value",
+                                    DataType = GenerateTypeReference( elementType, origin + ".Value", reader, allowReference, typeAction )
+                                }
+                            }
+                        }
+                    }
                 };
             }
             else
@@ -400,17 +401,38 @@ namespace Tecan.Sila2.Generator.Generators
             return resultType;
         }
 
-        private bool IsCollectionType(Type type, out Type elementType)
+        private bool IsCollectionType( Type type, out Type elementType )
         {
             elementType = null;
-            if (type.IsGenericType && typeof(IEnumerable).IsAssignableFrom(type))
+            if( type.IsGenericType && typeof(IEnumerable).IsAssignableFrom( type ) )
             {
                 var typeDefinition = type.GetGenericTypeDefinition();
-                if (typeDefinition == typeof(IEnumerable<>)
+                if( typeDefinition == typeof(IEnumerable<>)
                     || typeDefinition == typeof(ICollection<>)
-                    || typeDefinition == typeof(IList<>))
+                    || typeDefinition == typeof(IReadOnlyList<>)
+                    || typeDefinition == typeof(IReadOnlyCollection<>)
+                    || typeDefinition == typeof(IList<>) )
                 {
                     elementType = type.GetGenericArguments()[0];
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        private bool IsDictionaryType( Type type, out Type keyType, out Type elementType )
+        {
+            keyType = null;
+            elementType = null;
+            if(type.IsGenericType && typeof( IEnumerable ).IsAssignableFrom( type ))
+            {
+                var typeDefinition = type.GetGenericTypeDefinition();
+                if(typeDefinition == typeof( IReadOnlyDictionary<,> )
+                   || typeDefinition == typeof( IDictionary<,> ))
+                {
+                    keyType = type.GetGenericArguments()[0];
+                    elementType = type.GetGenericArguments()[1];
                     return true;
                 }
             }
@@ -832,8 +854,8 @@ namespace Tecan.Sila2.Generator.Generators
                     Identifier = "Intermediate",
                     DisplayName = "Intermediate",
                     Description = "",
-                    DataType = GenerateTypeReferenceAndRegister(intermediateType, identifier + ".Intermediate", null,
-                        dataTypes)
+                    DataType = GenerateTypeReference(intermediateType, identifier + ".Intermediate", null, true,
+                        dataTypes.Add)
                 }
             };
         }
@@ -851,9 +873,9 @@ namespace Tecan.Sila2.Generator.Generators
                     Identifier = parameterId,
                     DisplayName = parameterName,
                     Description = parameterDescription ?? string.Empty,
-                    DataType = GenerateTypeReferenceAndRegister(parameterInfo.ParameterType,
+                    DataType = GenerateTypeReference(parameterInfo.ParameterType,
                         identifier + "." + parameterId,
-                        new ParameterAttributeReader(parameterInfo), dataTypes)
+                        new ParameterAttributeReader(parameterInfo), true, dataTypes.Add)
                 });
             }
 
@@ -881,8 +903,8 @@ namespace Tecan.Sila2.Generator.Generators
                         Identifier = responseId,
                         DisplayName = responseName,
                         Description = responseDescription ?? string.Empty,
-                        DataType = GenerateTypeReferenceAndRegister(responseType, commandId + "." + responseId, new ParameterAttributeReader(returnParameter), 
-                            dataTypes)
+                        DataType = GenerateTypeReference(responseType, commandId + "." + responseId, new ParameterAttributeReader(returnParameter), true,
+                            dataTypes.Add)
                     }
                 };
             }

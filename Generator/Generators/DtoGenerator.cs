@@ -361,7 +361,21 @@ namespace Tecan.Sila2.Generator.Generators
         {
             if (IsCollection(dataType, out var innerType))
             {
-                var innerTypeRef = GetDtoTypeReference(innerType, CodeGenerationHelper.TurnSingular(suggestedName), null);
+                var itemName = CodeGenerationHelper.TurnSingular( suggestedName );
+                if( innerType.Item is StructureType structure && IsKeyValueStructure( structure ) )
+                {
+                    var keyRef = GetDtoTypeReference( structure.Element[0].DataType, itemName + "Key", null );
+                    var valueRef = GetDtoTypeReference( structure.Element[1].DataType, itemName + "Value", null );
+
+                    return new CodeMethodInvokeExpression(
+                        new CodeTypeReferenceExpression( typeof(DtoExtensions) ),
+                        nameof(DtoExtensions.Encapsulate),
+                        argument,
+                        new CodeMethodReferenceExpression( new CodeTypeReferenceExpression( keyRef ), "Create" ),
+                        new CodeMethodReferenceExpression( new CodeTypeReferenceExpression( valueRef ), "Create" ),
+                        storeRef );
+                }
+                var innerTypeRef = GetDtoTypeReference(innerType, itemName, null);
                 var wrapped = new CodeMethodInvokeExpression(
                     new CodeTypeReferenceExpression(typeof(DtoExtensions)),
                     nameof(DtoExtensions.Encapsulate),
@@ -543,7 +557,21 @@ namespace Tecan.Sila2.Generator.Generators
                 case string typeName:
                     return new CodeTypeReference(typeName + "Dto");
                 case ListType list:
-                    return new CodeTypeReference(typeof(List<>).FullName, GetDtoTypeReference(list.DataType, CodeGenerationHelper.TurnSingular(suggestedName), structHandler));
+                    var itemName = CodeGenerationHelper.TurnSingular( suggestedName );
+                    if( list.DataType.Item is StructureType structure && IsKeyValueStructure(structure) )
+                    {
+                        var keyType = structure.Element[0].DataType;
+                        var valueType = structure.Element[1].DataType;
+                        var suggestedKeyName = itemName + "Key";
+                        var suggestedValueName = itemName + "Value";
+                        var keyValuePairReference = new CodeTypeReference(typeof(KeyValuePairDto<,,,>).FullName,
+                            CodeGenerationHelper.ExtractType(keyType, null, suggestedKeyName, null),
+                            GetDtoTypeReference(keyType, suggestedKeyName, structHandler),
+                            CodeGenerationHelper.ExtractType(valueType, null, suggestedValueName, null),
+                            GetDtoTypeReference(valueType, suggestedValueName, structHandler));
+                        return new CodeTypeReference(typeof(List<>).FullName, keyValuePairReference);
+                    }
+                    return new CodeTypeReference(typeof(List<>).FullName, GetDtoTypeReference(list.DataType, itemName, structHandler));
                 case ConstrainedType constrained:
                     return GetDtoTypeReference(constrained.DataType, suggestedName, structHandler);
                 case BasicType basic:
@@ -554,6 +582,12 @@ namespace Tecan.Sila2.Generator.Generators
                 default:
                     throw new NotSupportedException();
             }
+        }
+
+        private static bool IsKeyValueStructure( StructureType structure )
+        {
+            return structure.Element != null && structure.Element.Length == 2 && structure.Element[0].Identifier == "Key"
+                   && structure.Element[1].Identifier == "Value";
         }
 
         private static CodeTypeReference GetDtoTypeReference(BasicType basic)

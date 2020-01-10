@@ -66,6 +66,13 @@ namespace Tecan.Sila2.Generator.Helper
                     }
                     break;
                 case ListType list:
+                    if( list.DataType.Item is StructureType inlineStructure && inlineStructure.Element != null && inlineStructure.Element.Length == 2
+                        && inlineStructure.Element[0].Identifier == "Key" && inlineStructure.Element[1].Identifier == "Value" )
+                    {
+                        return new CodeTypeReference(typeof(IDictionary<,>).FullName, 
+                            ExtractType(inlineStructure.Element[0].DataType, null, TurnSingular(suggestedName) + "Key", registerStructure),
+                            ExtractType(inlineStructure.Element[1].DataType, constraintHandler, TurnSingular(suggestedName) + "Value", registerStructure));
+                    }
                     return new CodeTypeReference(typeof(ICollection<>).FullName, ExtractType(list.DataType, constraintHandler, TurnSingular(suggestedName), registerStructure ) );
                 case ConstrainedType constrained:
                     constraintHandler?.Invoke(constrained.Constraints);

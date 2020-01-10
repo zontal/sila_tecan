@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Feature xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" SiLA2Version="1.0" FeatureVersion="1.0" Originator="tecan.sila.generator" Category="test" xmlns="http://www.sila-standard.org">
+  <Identifier>DictionaryService</Identifier>
+  <DisplayName>DictionaryService</DisplayName>
+  <Description />
+  <Property>
+    <Identifier>Lookup</Identifier>
+    <DisplayName>Lookup</DisplayName>
+    <Description />
+    <Observable>No</Observable>
+    <DataType>
+      <List>
+        <DataType>
+          <Structure>
+            <Element>
+              <Identifier>Key</Identifier>
+              <DisplayName>Key</DisplayName>
+              <DataType>
+                <Basic>Integer</Basic>
+              </DataType>
+            </Element>
+            <Element>
+              <Identifier>Value</Identifier>
+              <DisplayName>Value</DisplayName>
+              <DataType>
+                <Basic>String</Basic>
+              </DataType>
+            </Element>
+          </Structure>
+        </DataType>
+      </List>
+    </DataType>
+  </Property>
+</Feature>
