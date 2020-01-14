@@ -19,6 +19,7 @@
     </metadata>
     <files>
         <file src="..\Build\Features\Client\netstandard2.0\Tecan.Sila2.WorktableIntegration.Client.dll" target="lib\netstandard2.0\" />
+        <file src="..\Build\Features\Client\netstandard2.0\Tecan.Sila2.WorktableIntegration.Client.pdb" target="lib\netstandard2.0\" />
         <file src="..\Build\Features\Client\Tecan.Sila2.WorktableIntegration.Client.xml" target="lib\netstandard2.0\" />
     </files>
 </package>

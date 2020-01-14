@@ -19,6 +19,7 @@
     </metadata>
     <files>
         <file src="..\Build\Features\netstandard2.0\Tecan.Sila2.Locking.dll" target="lib\netstandard2.0\" />
+        <file src="..\Build\Features\netstandard2.0\Tecan.Sila2.Locking.pdb" target="lib\netstandard2.0\" />
         <file src="..\Build\Features\Tecan.Sila2.Locking.xml" target="lib\netstandard2.0\" />
     </files>
 </package>
