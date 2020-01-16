@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using Microsoft.CSharp;
+using Tecan.Sila2.DynamicClient;
 
 namespace Tecan.Sila2.Generator.Helper
 {
@@ -63,6 +64,8 @@ namespace Tecan.Sila2.Generator.Helper
                             return new CodeTypeReference(typeof(string));
                         case BasicType.Real:
                             return new CodeTypeReference(typeof(double));
+                        case BasicType.Any:
+                            return new CodeTypeReference(typeof(DynamicObjectProperty));
                     }
                     break;
                 case ListType list:
