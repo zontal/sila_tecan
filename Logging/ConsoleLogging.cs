@@ -2,9 +2,9 @@
 using Tecan.MAP.Contracts.Services.Logging;
 using Tecan.MAP.Contracts.Services.Logging.Configuration;
 
-namespace Tecan.Sila2.Server
+namespace Tecan.Sila2.Logging
 {
-    internal class ConsoleLogging : ILoggingChannelFactory, ILoggingChannel
+    public class ConsoleLogging : ILoggingChannelFactory, ILoggingChannel
     {
         public void Dispose()
         {

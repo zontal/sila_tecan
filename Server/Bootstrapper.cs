@@ -12,6 +12,7 @@ using CommandLine;
 using Tecan.MAP.Contracts.Services.Logging;
 using Tecan.Sila2.Discovery;
 using Tecan.Sila2.Server.Binary;
+using Tecan.Sila2.Logging;
 
 namespace Tecan.Sila2.Server
 {
@@ -28,9 +29,11 @@ namespace Tecan.Sila2.Server
         /// Starts the server with the given command line parameters
         /// </summary>
         /// <param name="args">The command line parameters</param>
-        public static void Start(string[] args)
+        /// <param name="logger">Set a different ILoggingChannelFactory for the Bottstrapper to use. Leave to null to use default ConsoleLogging()</param>
+        public static void Start(string[] args, ILoggingChannelFactory logger = null)
         {
             var bootstrapper = new Bootstrapper();
+            if (logger != null) bootstrapper.Logger = logger;
 
             Parser.Default.ParseArguments<ServerCommandLineArguments>(args)
                 .WithNotParsed(bootstrapper.HandleError)
@@ -86,6 +89,11 @@ namespace Tecan.Sila2.Server
                 LogError(_channel, e);
             }
         }
+
+        /// <summary>
+        /// Get or change the ILoggingChannelFactory used by the Bootstrapper
+        /// </summary>
+        public ILoggingChannelFactory Logger { get; set; } = new ConsoleLogging();
 
         private static void LogError(ILoggingChannel channel, Exception e)
         {
@@ -167,7 +175,7 @@ namespace Tecan.Sila2.Server
 
             if (container.GetExportedValueOrDefault<ILoggingChannelFactory>() == null)
             {
-                container.ComposeExportedValue<ILoggingChannelFactory>( new ConsoleLogging() );
+                container.ComposeExportedValue<ILoggingChannelFactory>( Logger );
             }
 
             if( container.GetExportedValueOrDefault<IServerConnector>() == null )
