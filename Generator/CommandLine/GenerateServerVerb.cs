@@ -101,6 +101,12 @@ namespace Tecan.Sila2.Generator.CommandLine
         [Option('c', "client", Required = false, Default = false, HelpText = "If set, also clients for the respective features are generated")]
         public bool Client { get; set; }
 
+        /// <summary>
+        /// Path to a file that contains additional constraints
+        /// </summary>
+        [Option( "constraints-file", Required = false, HelpText = "Path to a file that contains additional constraints" )]
+        public string ConstraintsFile { get; set; }
+
         public void Execute(CompositionContainer container)
         {
             var rootNamespace = RootNamespace;
@@ -122,6 +128,7 @@ namespace Tecan.Sila2.Generator.CommandLine
                 t.IsInterface && !t.IsGenericType && t.GetCustomAttribute<SilaFeatureAttribute>() != null);
 
             var featureGenerator = container.GetExportedValue<IFeatureDefinitionGenerator>();
+            var constraintsProvider = GenerateFeatureVerb.LoadConstraintMappingFile( ConstraintsFile );
             foreach (var featureType in featureTypes)
             {
                 if (InterfaceName != null && !string.Equals(InterfaceName, featureType.Name, StringComparison.OrdinalIgnoreCase))
@@ -133,7 +140,7 @@ namespace Tecan.Sila2.Generator.CommandLine
 
                 var feature = featureGenerator.GenerateFeature(featureType, Originator,
                     UseCase,
-                    Version, importNamespaces);
+                    Version, importNamespaces, constraintsProvider);
                 // ReSharper disable once AssignNullToNotNullAttribute
                 var featurePath = Path.Combine(directory, FeaturePath ?? feature.Identifier + ".sila.xml");
                 FeatureSerializer.Save(feature, featurePath);

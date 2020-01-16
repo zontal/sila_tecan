@@ -5,6 +5,7 @@ using System.ComponentModel.Composition.Hosting;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Xml.Serialization;
 using CommandLine;
 using Tecan.Sila2.Generator.Contracts;
 // ReSharper disable PossibleMultipleEnumeration
@@ -55,6 +56,12 @@ namespace Tecan.Sila2.Generator.CommandLine
         [Option('v', "version", HelpText = "The version of the given feature. If omitted, the version of the assembly is used.")]
         public string Version { get; set; }
 
+        /// <summary>
+        /// Path to a file that contains additional constraints
+        /// </summary>
+        [Option('c', "constraints-file", Required = false, HelpText = "Path to a file that contains additional constraints")]
+        public string ConstraintsFile { get; set; }
+
         public void Execute(CompositionContainer container)
         {
             var namespaces = new HashSet<string>();
@@ -66,9 +73,33 @@ namespace Tecan.Sila2.Generator.CommandLine
                 ? featureTypes.FirstOrDefault(t => string.Equals(t.FullName, InterfaceName, StringComparison.Ordinal)) ?? featureTypes.Single(t => string.Equals( t.Name, InterfaceName, StringComparison.Ordinal ) )
                 : featureTypes.Single();
             var featureGenerator = container.GetExportedValue<IFeatureDefinitionGenerator>();
+            var predefinedConstraints = LoadConstraintMappingFile(ConstraintsFile);
             var feature = featureGenerator.GenerateFeature(featureType, Originator, UseCase,
-                Version, namespaces);
+                Version, namespaces, predefinedConstraints);
             FeatureSerializer.Save(feature, Path.GetFullPath(OutputPath));
+        }
+
+        internal static IReadOnlyDictionary<string, Constraints> LoadConstraintMappingFile(string constraintsFile)
+        {
+            IReadOnlyDictionary<string, Constraints> predefinedConstraints = null;
+            if (constraintsFile != null)
+            {
+                if (File.Exists(constraintsFile))
+                {
+                    var serializer = new XmlSerializer(typeof(ConstraintProvider));
+                    using (var stream = File.OpenRead(constraintsFile))
+                    {
+                        var constraints = (ConstraintProvider) serializer.Deserialize(stream);
+                        predefinedConstraints = constraints.Mapping?.ToDictionary(m => m.Element, m => m.Constraint);
+                    }
+                }
+                else
+                {
+                    Console.Error.WriteLine($"Constraints file {constraintsFile} could not be found.");
+                }
+            }
+
+            return predefinedConstraints;
         }
     }
 }

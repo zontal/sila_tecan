@@ -16,13 +16,11 @@ namespace Tecan.Sila2.Generator.Test.TestReference
     /// </summary>
     [Tecan.Sila2.SilaFeatureAttribute( true, "test" )]
     [Tecan.Sila2.SilaIdentifierAttribute( "DictionaryService" )]
-    [Tecan.Sila2.SilaDescriptionAttribute( "" )]
     public partial interface IDictionaryService
     {
 
         ///  <summary>
         /// </summary>
-        [Tecan.Sila2.SilaDescriptionAttribute( "" )]
         System.Collections.Generic.IDictionary<long, string> Lookup
         {
             get;

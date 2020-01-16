@@ -380,12 +380,6 @@ namespace Tecan.Sila2.Generator.Generators
                 type.CustomAttributes.AddAttribute( typeof(SilaDisplayNameAttribute),
                     dataType.DisplayName);
             }
-
-            if (dataType.Description != null)
-            {
-                type.CustomAttributes.AddAttribute( typeof(SilaDescriptionAttribute),
-                    dataType.Description.Trim());
-            }
         }
 
         private CodeTypeDeclaration GenerateStandardExecutionError(FeatureDefinedExecutionError error)
@@ -399,12 +393,6 @@ namespace Tecan.Sila2.Generator.Generators
             {
                 type.CustomAttributes.AddAttribute( typeof(SilaDisplayNameAttribute),
                     error.DisplayName);
-            }
-
-            if (error.Description != null)
-            {
-                type.CustomAttributes.AddAttribute( typeof(SilaDescriptionAttribute),
-                    error.Description.Trim());
             }
 
             type.WriteDocumentation( error.Description );
@@ -443,12 +431,6 @@ namespace Tecan.Sila2.Generator.Generators
                     feature.DisplayName);
             }
 
-            if (feature.Description != null)
-            {
-                contract.CustomAttributes.AddAttribute( typeof(SilaDescriptionAttribute),
-                    feature.Description.Trim());
-            }
-
             foreach (var featureItem in feature.Items)
             {
                 if (featureItem is FeatureCommand command)
@@ -477,12 +459,6 @@ namespace Tecan.Sila2.Generator.Generators
             {
                 prop.CustomAttributes.AddAttribute( typeof(SilaDisplayNameAttribute),
                     property.DisplayName);
-            }
-
-            if (property.Description != null)
-            {
-                prop.CustomAttributes.AddAttribute( typeof(SilaDescriptionAttribute),
-                    property.Description.Trim());
             }
 
             if (property.Observable == FeaturePropertyObservable.Yes)
@@ -519,12 +495,6 @@ namespace Tecan.Sila2.Generator.Generators
             {
                 method.CustomAttributes.AddAttribute( typeof(SilaDisplayNameAttribute),
                     command.DisplayName);
-            }
-
-            if (command.Description != null)
-            {
-                method.CustomAttributes.AddAttribute( typeof(SilaDescriptionAttribute),
-                    command.Description.Trim());
             }
             var parameters = new Dictionary<string, string>();
             GenerateCommandMethodParameters(command, method, parameters, typeManagement.RegisterStruct);
@@ -587,12 +557,6 @@ namespace Tecan.Sila2.Generator.Generators
                             response.DisplayName);
                     }
 
-                    if (response.Description != null)
-                    {
-                        method.ReturnTypeCustomAttributes.AddAttribute( typeof(SilaDescriptionAttribute),
-                            response.Description.Trim());
-                    }
-
                     method.ReturnType = CodeGenerationHelper.ExtractType(response.DataType,
                         constraints => HandleConstraints(constraints, method.ReturnTypeCustomAttributes), command.Identifier, null );
                     documentation = response.Description;
@@ -636,16 +600,10 @@ namespace Tecan.Sila2.Generator.Generators
                     parameterDeclaration.Type = CodeGenerationHelper.ExtractType(parameter.DataType,
                         constraints => HandleConstraints(constraints, parameterDeclaration.CustomAttributes),
                         command.Identifier + parameter.Identifier, structureHandler);
-                    if (identifier != parameter.DisplayName)
+                    if (parameter.Identifier != parameter.DisplayName)
                     {
                         parameterDeclaration.CustomAttributes.AddAttribute( typeof(SilaDisplayNameAttribute),
                             parameter.DisplayName);
-                    }
-
-                    if (parameter.Description != null)
-                    {
-                        parameterDeclaration.CustomAttributes.AddAttribute( typeof(SilaDescriptionAttribute),
-                            parameter.Description.Trim());
                     }
 
                     method.Parameters.Add(parameterDeclaration);

@@ -18,8 +18,6 @@ namespace Tecan.Sila2.Generator.Test.TestReference
     [Tecan.Sila2.SilaFeatureAttribute(true, "silaservice")]
     [Tecan.Sila2.SilaIdentifierAttribute("SiLAService")]
     [Tecan.Sila2.SilaDisplayNameAttribute("SiLA Service")]
-    [Tecan.Sila2.SilaDescriptionAttribute("The Feature each SiLA Server MUST implement. It is the entry point to a SiLA Serv" +
-        "er and helps to discover the Features it implements.")]
     public partial interface ISiLAService
     {
         
@@ -27,7 +25,6 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// Human readable name of the SiLA Server.
         /// </summary>
         [Tecan.Sila2.SilaDisplayNameAttribute("Server Name")]
-        [Tecan.Sila2.SilaDescriptionAttribute("Human readable name of the SiLA Server.")]
         string ServerName
         {
             get;
@@ -37,8 +34,6 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// The type of Server this is. Is specified by the implementer of the server and not unique.
         /// </summary>
         [Tecan.Sila2.SilaDisplayNameAttribute("Server Type")]
-        [Tecan.Sila2.SilaDescriptionAttribute("The type of Server this is. Is specified by the implementer of the server and not" +
-            " unique.")]
         string ServerType
         {
             get;
@@ -49,8 +44,6 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// be generated once and always remain the same.
         /// </summary>
         [Tecan.Sila2.SilaDisplayNameAttribute("Server UUID")]
-        [Tecan.Sila2.SilaDescriptionAttribute("Globally unique identifier that identifies a SiLA Server. The Server UUID MUST\nbe" +
-            " generated once and always remain the same.")]
         [Tecan.Sila2.PatternConstraintAttribute("[0-9a-f]{8}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{12}")]
         string ServerUUID
         {
@@ -61,7 +54,6 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// Description of the SiLA Server.
         /// </summary>
         [Tecan.Sila2.SilaDisplayNameAttribute("Server Description")]
-        [Tecan.Sila2.SilaDescriptionAttribute("Description of the SiLA Server.")]
         string ServerDescription
         {
             get;
@@ -72,8 +64,6 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// a Patch version number MAY be provided. Optionally, an arbitrary text, separated by an underscore MAY be appended, e.g. “3.19.373_mighty_lab_devices”
         /// </summary>
         [Tecan.Sila2.SilaDisplayNameAttribute("Server Version")]
-        [Tecan.Sila2.SilaDescriptionAttribute(@"Returns the version of the SiLA Server. A ""Major"" and a ""Minor"" version number (e.g. 1.0) MUST be provided,
-            a Patch version number MAY be provided. Optionally, an arbitrary text, separated by an underscore MAY be appended, e.g. “3.19.373_mighty_lab_devices”")]
         [Tecan.Sila2.PatternConstraintAttribute("(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(\\.(0|[1-9][0-9]*))?(_[_a-zA-Z0-9]+)?")]
         string ServerVersion
         {
@@ -85,8 +75,6 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// of the product of this SiLA Server.
         /// </summary>
         [Tecan.Sila2.SilaDisplayNameAttribute("Server Vendor URL")]
-        [Tecan.Sila2.SilaDescriptionAttribute("Returns the URL to the website of the vendor or the website \nof the product of th" +
-            "is SiLA Server.")]
         Url ServerVendorURL
         {
             get;
@@ -97,8 +85,6 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// implemented Features of this SiLA Server.
         /// </summary>
         [Tecan.Sila2.SilaDisplayNameAttribute("Implemented Features")]
-        [Tecan.Sila2.SilaDescriptionAttribute("Returns a list of qualified Feature identifiers of all \nimplemented Features of t" +
-            "his SiLA Server.")]
         System.Collections.Generic.ICollection<FeatureIdentifier> ImplementedFeatures
         {
             get;
@@ -110,28 +96,23 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// <param name="qualifiedFeatureIdentifier">The qualified Feature identifier for which the Feature description should be retrieved.</param>
         /// <returns>The Feature Definition in XML format.</returns>
         [Tecan.Sila2.SilaDisplayNameAttribute("Get Feature Definition")]
-        [Tecan.Sila2.SilaDescriptionAttribute("Get all details on one Feature through the qualified Feature id.")]
         [Tecan.Sila2.ThrowsAttribute(typeof(UnimplementedFeatureException))]
         [return: Tecan.Sila2.SilaIdentifierAttribute("FeatureDefinition")]
         [return: Tecan.Sila2.SilaDisplayNameAttribute("Feature Definition")]
-        [return: Tecan.Sila2.SilaDescriptionAttribute("The Feature Definition in XML format.")]
-        FeatureDefinition GetFeatureDefinition([Tecan.Sila2.SilaDisplayNameAttribute("Qualified Feature Identifier")] [Tecan.Sila2.SilaDescriptionAttribute("The qualified Feature identifier for which the Feature description should be retr" +
-            "ieved.")] FeatureIdentifier qualifiedFeatureIdentifier);
+        FeatureDefinition GetFeatureDefinition([Tecan.Sila2.SilaDisplayNameAttribute("Qualified Feature Identifier")] FeatureIdentifier qualifiedFeatureIdentifier);
         
         ///  <summary>
         /// Sets a human readable name to the Server Name property
         /// </summary>
         /// <param name="serverName">The human readable name of to assign to the SiLA Server</param>
         [Tecan.Sila2.SilaDisplayNameAttribute("Set Server Name")]
-        [Tecan.Sila2.SilaDescriptionAttribute("Sets a human readable name to the Server Name property")]
-        void SetServerName([Tecan.Sila2.SilaDisplayNameAttribute("Server Name")] [Tecan.Sila2.SilaDescriptionAttribute("The human readable name of to assign to the SiLA Server")] string serverName);
+        void SetServerName([Tecan.Sila2.SilaDisplayNameAttribute("Server Name")] string serverName);
     }
     
     ///  <summary>
     /// Qualified Feature Identifier as provided by the ImplementedFeatures property.
     /// </summary>
     [Tecan.Sila2.SilaDisplayNameAttribute("Feature Identifier")]
-    [Tecan.Sila2.SilaDescriptionAttribute("Qualified Feature Identifier as provided by the ImplementedFeatures property.")]
     [Tecan.Sila2.MaximalLengthAttribute(255)]
     [Tecan.Sila2.SilaIdentifierTypeAttribute(Tecan.Sila2.IdentifierType.FeatureIdentifier)]
     public struct FeatureIdentifier
@@ -159,7 +140,6 @@ namespace Tecan.Sila2.Generator.Test.TestReference
     /// The content of a Feature Definition conforming with the XML Schema.
     /// </summary>
     [Tecan.Sila2.SilaDisplayNameAttribute("Feature Definition")]
-    [Tecan.Sila2.SilaDescriptionAttribute("The content of a Feature Definition conforming with the XML Schema.")]
     [Tecan.Sila2.SchemaAttribute("https://gitlab.com/SiLA2/sila_base/raw/master/schema/FeatureDefinition.xsd", Tecan.Sila2.SchemaType.Xml)]
     public struct FeatureDefinition
     {
@@ -185,7 +165,6 @@ namespace Tecan.Sila2.Generator.Test.TestReference
     ///  <summary>
     /// Uniform Resource Locator as defined in RFC 1738.
     /// </summary>
-    [Tecan.Sila2.SilaDescriptionAttribute("Uniform Resource Locator as defined in RFC 1738.")]
     [Tecan.Sila2.PatternConstraintAttribute("https?://.+")]
     public struct Url
     {
@@ -212,8 +191,6 @@ namespace Tecan.Sila2.Generator.Test.TestReference
     /// The feature specified by the given feature identifier is not implemented by the server.
     /// </summary>
     [Tecan.Sila2.SilaDisplayNameAttribute("Unimplemented Feature")]
-    [Tecan.Sila2.SilaDescriptionAttribute("The feature specified by the given feature identifier is not implemented by the s" +
-        "erver.")]
     public class UnimplementedFeatureException : System.Exception
     {
         

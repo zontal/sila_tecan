@@ -16,11 +16,13 @@ namespace Tecan.Sila2.Generator.Contracts
         /// <param name="category">The use case for the generated feature. If null, a use case is inferred from the namespace</param>
         /// <param name="version">The version of the feature</param>
         /// <param name="namespaceCollector">A component to which accesses to namespace are persisted</param>
+        /// <param name="constraints">A dictionary of predefined constraints, keyed by fully origin identifiers</param>
         /// <returns>The generated feature</returns>
         Feature GenerateFeature(Type interfaceType,
             string originator = null,
             string category = null,
             string version = null,
-            ICollection<string> namespaceCollector = null);
+            ICollection<string> namespaceCollector = null,
+            IReadOnlyDictionary<string, Constraints> constraints = null);
     }
 }

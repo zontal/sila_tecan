@@ -18,7 +18,6 @@ namespace Tecan.Sila2.Generator.Test.TestReference
     [Tecan.Sila2.SilaFeatureAttribute(true, "infrastructure")]
     [Tecan.Sila2.SilaIdentifierAttribute("LoggingService")]
     [Tecan.Sila2.SilaDisplayNameAttribute("Logging")]
-    [Tecan.Sila2.SilaDescriptionAttribute("Provides services for integration of device logging")]
     public partial interface ILoggingService
     {
         
@@ -26,14 +25,12 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// Starts listening for log entries from the device
         /// </summary>
         [Tecan.Sila2.SilaDisplayNameAttribute("Listen for log entries")]
-        [Tecan.Sila2.SilaDescriptionAttribute("Starts listening for log entries from the device")]
         Tecan.Sila2.IIntermediateObservableCommand<LogEntry> ListenForLogEntries();
     }
     
     ///  <summary>
     /// Describes a log entry
     /// </summary>
-    [Tecan.Sila2.SilaDescriptionAttribute("Describes a log entry")]
     public struct LogEntry
     {
         
@@ -96,7 +93,6 @@ namespace Tecan.Sila2.Generator.Test.TestReference
     
     ///  <summary>
     /// </summary>
-    [Tecan.Sila2.SilaDescriptionAttribute("")]
     public enum Severity
     {
         
@@ -115,7 +111,6 @@ namespace Tecan.Sila2.Generator.Test.TestReference
     
     ///  <summary>
     /// </summary>
-    [Tecan.Sila2.SilaDescriptionAttribute("")]
     public struct LogEntryData
     {
         

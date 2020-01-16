@@ -24,10 +24,10 @@ namespace Tecan.Sila2
         public SilaFeatureAttribute() : this(true, null) { }
 
         /// <summary>
-        /// Creates a feature annotation as draft with the given use case
+        /// Creates a feature annotation as draft with the given category
         /// </summary>
-        /// <param name="useCase">The use case of the feature</param>
-        public SilaFeatureAttribute(string useCase) : this(true, useCase) { }
+        /// <param name="category">The use case of the feature</param>
+        public SilaFeatureAttribute(string category) : this(true, category) { }
 
         /// <summary>
         /// Creates a feature annotation
