@@ -55,6 +55,9 @@ namespace Tecan.Sila2.DynamicClient
             var token = ProtoReader.StartSubItem(reader);
             switch (type)
             {
+                case BasicType.Any:
+                    ReadAny(reader, setProperty, binaryStore);
+                    break;
                 case BasicType.String:
                     if( IsInField( reader, 1 ) )
                     {
@@ -124,6 +127,21 @@ namespace Tecan.Sila2.DynamicClient
             {
                 return 0;
             }
+        }
+
+        private static void ReadAny( ProtoReader reader, Action<object> setProperty, IBinaryStore binaryStore )
+        {
+            var dto = new AnyTypeDto();
+            if( IsInField( reader, 1 ) )
+            {
+                dto.Type = reader.ReadString();
+            }
+            if(IsInField( reader, 2 ))
+            {
+                dto.Payload = Encoding.UTF8.GetBytes( reader.ReadString() );
+            }
+
+            setProperty( dto.Extract( binaryStore ) );
         }
 
         private static void ReadTimestamp(ProtoReader reader, Action<object> setProperty)
@@ -307,8 +325,22 @@ namespace Tecan.Sila2.DynamicClient
                 case BasicType.Timestamp:
                     WriteTimestamp(writer, value);
                     break;
+                case BasicType.Any:
+                    WriteAny( writer, value, store );
+                    break;
             }
             ProtoWriter.EndSubItem(token, writer);
+        }
+
+        private void WriteAny( ProtoWriter writer, object value, IBinaryStore store )
+        {
+            if( value is DynamicObjectProperty property )
+            {
+                ProtoWriter.WriteFieldHeader( 1, WireType.String, writer );
+                ProtoWriter.WriteString( DataTypeSerializer.SaveToString( property.Type ), writer );
+                ProtoWriter.WriteFieldHeader( 2, WireType.String, writer );
+                ProtoWriter.WriteString( Encoding.UTF8.GetString( AnyTypeDto.Serializer.Serialize( property, store ) ), writer );
+            }
         }
 
         private static void WriteBinary(ProtoWriter writer, object value, IBinaryStore store)

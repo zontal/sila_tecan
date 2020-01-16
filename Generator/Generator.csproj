@@ -48,6 +48,7 @@
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\Contracts\Contracts.csproj" />
+        <ProjectReference Include="..\DynamicClient\DynamicClient.csproj" />
         <ProjectReference Include="..\Server\Server.csproj" />
         <ProjectReference Include="..\Framework\Framework.csproj" />
     </ItemGroup>

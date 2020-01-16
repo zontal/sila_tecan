@@ -9,6 +9,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using Tecan.Sila2.DynamicClient;
 using Tecan.Sila2.Generator.Contracts;
 using Tecan.Sila2.Generator.Helper;
 using Tecan.Sila2.Server;
@@ -36,7 +37,8 @@ namespace Tecan.Sila2.Generator.Generators
             {typeof(DateTime), (BasicType.Timestamp, true)},
             {typeof(TimeSpan), (BasicType.Time, false)},
             {typeof(FileInfo), (BasicType.Binary, true)},
-            {typeof(Stream), (BasicType.Binary, false)}
+            {typeof(Stream), (BasicType.Binary, false)},
+            {typeof(DynamicObjectProperty), (BasicType.Any, false) }
         };
 
         public FeatureDefinitionGeneratorContext( ICodeNameRegistry nameRegistry, Func<string, Constraints> constraintResolver )

@@ -8,6 +8,7 @@ using System.Reflection;
 using System.Text.RegularExpressions;
 using ProtoBuf;
 using Tecan.Sila2.Binary;
+using Tecan.Sila2.DynamicClient;
 using Tecan.Sila2.Generator.Contracts;
 using Tecan.Sila2.Generator.Helper;
 
@@ -598,6 +599,8 @@ namespace Tecan.Sila2.Generator.Generators
         {
             switch (basic)
             {
+                case BasicType.Any:
+                    return new CodeTypeReference(typeof(AnyTypeDto));
                 case BasicType.Boolean:
                     return new CodeTypeReference(typeof(BooleanDto));
                 case BasicType.Date:
