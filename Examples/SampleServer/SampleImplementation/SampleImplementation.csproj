@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.ComponentModel.Composition" Version="4.6.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Condition=" Exists('../../../Contracts/Contracts.csproj')" Include="../../../Contracts/Contracts.csproj" />
+    <PackageReference Condition="!Exists('../../../Contracts/Contracts.csproj')" Include="Tecan.Sila2.Contracts" Version="1.0.35" />
+  </ItemGroup>
+
+</Project>

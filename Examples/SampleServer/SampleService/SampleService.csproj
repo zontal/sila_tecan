@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="SampleService.sila.xml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Condition=" Exists('../../../Server/Server.csproj')" Include="../../../Server/Server.csproj" />
+    <PackageReference Condition="!Exists('../../../Server/Server.csproj')" Include="Tecan.Sila2.Server" Version="1.0.35" />
+
+    <ProjectReference Include="../SampleImplementation/SampleImplementation.csproj" />
+  </ItemGroup>
+
+</Project>
