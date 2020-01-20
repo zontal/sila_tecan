@@ -544,7 +544,11 @@ namespace Tecan.Sila2.IntegrationTests
             var response = commandClient.Invoke(request);
             if( listOfItems == null || listOfItems.Count == 0 )
             {
-                Assert.That( (response.Value as DynamicObject).Elements, Is.Empty);
+                // response may be null
+                if( response.Value != null )
+                {
+                    Assert.That( (response.Value as DynamicObject).Elements, Is.Empty );
+                }
             }
             else
             {

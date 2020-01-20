@@ -222,7 +222,6 @@ namespace Tecan.Sila2.DynamicClient
         {
             int field;
             var dynamicObject = new DynamicObject();
-            setProperty(dynamicObject);
             var first = reader.LongPosition == 0;
             SubItemToken token = default(SubItemToken);
             if (!first) token = ProtoReader.StartSubItem(reader);
@@ -242,7 +241,15 @@ namespace Tecan.Sila2.DynamicClient
                 }
             }
 
-            if (!first) ProtoReader.EndSubItem(token, reader);
+            if( !first )
+            {
+                ProtoReader.EndSubItem( token, reader );
+
+                if( dynamicObject.Elements.Count > 0 )
+                {
+                    setProperty( dynamicObject );
+                }
+            }
         }
 
         private void Read(ProtoReader reader, Action<object> setProperty, IBinaryStore binaryStore, ConstrainedType type)
