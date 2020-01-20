@@ -1239,6 +1239,7 @@ namespace Tecan.Sila2
     /// <typeparam name="TKeyDto">The transfer type of the key</typeparam>
     /// <typeparam name="TValue">The domain type of the value</typeparam>
     /// <typeparam name="TValueDto">The transfer type of the value</typeparam>
+    [ProtoContract]
     public class KeyValuePairDto<TKey, TKeyDto, TValue, TValueDto> : ISilaTransferObject<KeyValuePair<TKey, TValue>> where TKeyDto : ISilaTransferObject<TKey> where TValueDto : ISilaTransferObject<TValue>
     {
         /// <summary>
