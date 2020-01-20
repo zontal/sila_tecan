@@ -244,11 +244,11 @@ namespace Tecan.Sila2.DynamicClient
             if( !first )
             {
                 ProtoReader.EndSubItem( token, reader );
+            }
 
-                if( dynamicObject.Elements.Count > 0 )
-                {
-                    setProperty( dynamicObject );
-                }
+            if( first || dynamicObject.Elements.Count > 0)
+            {
+                setProperty( dynamicObject );
             }
         }
 
