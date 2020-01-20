@@ -298,7 +298,7 @@ namespace Tecan.Sila2.Generator.Generators
 
             void ElementAction(SiLAElement element, CodePropertyReferenceExpression property)
             {
-                var type = NameProvider.GetMemberType( methodIdentifier + "." + element.Identifier ) ?? CodeGenerationHelper.ExtractType( element.DataType, null, element.Identifier, null );
+                var type = NameProvider.GetMemberType( methodIdentifier + "." + element.Identifier ) ?? CodeGenerationHelper.ExtractType( element.DataType, element.Identifier );
                 var parameter = new CodeParameterDeclarationExpression(type, CodeGenerationHelper.ToCamelCase(element.Identifier));
                 constructor.Parameters.Insert(constructor.Parameters.Count - 1, parameter);
                 constructor.Statements.Add(new CodeAssignStatement(property, EncapsulateAsDto(new CodeArgumentReferenceExpression(parameter.Name), element.DataType, storeRef, element.Identifier)));
@@ -311,7 +311,7 @@ namespace Tecan.Sila2.Generator.Generators
         private Action<SiLAElement, CodePropertyReferenceExpression> ImplementTransferObjectDto(string name,
             CodeTypeDeclaration dto)
         {
-            var innerType = CodeGenerationHelper.ExtractType( new DataTypeType() { Item = name }, null, null, null );
+            var innerType = CodeGenerationHelper.ExtractType( new DataTypeType() { Item = name }, null );
             dto.BaseTypes.Add(new CodeTypeReference(typeof(ISilaTransferObject<>).FullName, innerType));
             var (constructor, innerRef) = GenerateExtractionConstructors(dto, innerType);
             var extracted = GenerateExtraction(dto, innerType);
@@ -327,7 +327,7 @@ namespace Tecan.Sila2.Generator.Generators
                 var extractionCall = new CodeMethodInvokeExpression( property, nameof(ISilaTransferObject<object>.Extract),
                     new CodeArgumentReferenceExpression( BinaryStoreParameterName ) );
                 var customType = NameProvider.GetMemberType( name + "." + element.Identifier );
-                extracted.Add( CodeGenerationHelper.GenerateConversion(extractionCall, customType, element.DataType) );
+                extracted.Add( CodeGenerationHelper.GenerateConversion(extractionCall, element.DataType, customType ) );
                 constructor.Statements.Add(new CodeAssignStatement(property,
                     EncapsulateAsDto(new CodePropertyReferenceExpression(innerRef, correspondingPropertyName),
                         element.DataType, storeRef, element.Identifier)));
@@ -570,9 +570,9 @@ namespace Tecan.Sila2.Generator.Generators
                         var suggestedKeyName = itemName + "Key";
                         var suggestedValueName = itemName + "Value";
                         var keyValuePairReference = new CodeTypeReference(typeof(KeyValuePairDto<,,,>).FullName,
-                            CodeGenerationHelper.ExtractType(keyType, null, suggestedKeyName, null),
+                            CodeGenerationHelper.ExtractType(keyType, suggestedKeyName ),
                             GetDtoTypeReference(keyType, suggestedKeyName, structHandler),
-                            CodeGenerationHelper.ExtractType(valueType, null, suggestedValueName, null),
+                            CodeGenerationHelper.ExtractType(valueType, suggestedValueName ),
                             GetDtoTypeReference(valueType, suggestedValueName, structHandler));
                         return new CodeTypeReference(typeof(List<>).FullName, keyValuePairReference);
                     }

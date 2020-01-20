@@ -172,7 +172,7 @@ namespace Tecan.Sila2.Generator.Generators
                     var parameterName = CodeGenerationHelper.ToCamelCase( parameterType.Identifier );
                     requestMethod.Parameters.Add( new CodeParameterDeclarationExpression(
                         NameProvider?.GetMemberType( featureCommand.Identifier + "." + parameterType.Identifier )
-                        ?? CodeGenerationHelper.ExtractType( parameterType.DataType, null, featureCommand.Identifier + parameterType.Identifier, null ), parameterName ) );
+                        ?? CodeGenerationHelper.ExtractType( parameterType.DataType, featureCommand.Identifier + parameterType.Identifier ), parameterName ) );
                     request.Parameters.Add( new CodeArgumentReferenceExpression( parameterName ) );
                     parameterDictionary.Add( parameterName, parameterType.Description );
                 }
@@ -254,7 +254,7 @@ namespace Tecan.Sila2.Generator.Generators
             if (featureCommand.Response != null && featureCommand.Response.Length > 0)
             {
                 var responseType = NameProvider?.GetMemberType(featureCommand.Identifier + "." + featureCommand.Response[0].Identifier)
-                    ?? CodeGenerationHelper.ExtractType(featureCommand.Response[0].DataType, null, featureCommand.Identifier, null);
+                    ?? CodeGenerationHelper.ExtractType(featureCommand.Response[0].DataType, featureCommand.Identifier );
 
                 var convertResponseMethod = GenerateClientCommandResponseMethod(
                     featureCommand.Identifier + "Response",
@@ -305,7 +305,7 @@ namespace Tecan.Sila2.Generator.Generators
             if (featureCommand.IntermediateResponse != null && featureCommand.IntermediateResponse.Length > 0)
             {
                 return NameProvider?.GetMemberType(featureCommand.Identifier + "." + featureCommand.IntermediateResponse[0].Identifier)
-                                ?? CodeGenerationHelper.ExtractType(featureCommand.IntermediateResponse[0].DataType, null, featureCommand.Identifier + "Intermediate", null);
+                                ?? CodeGenerationHelper.ExtractType(featureCommand.IntermediateResponse[0].DataType, featureCommand.Identifier + "Intermediate" );
             }
             return null;
         }
@@ -353,7 +353,7 @@ namespace Tecan.Sila2.Generator.Generators
                 if (featureCommand.Response.Length == 1)
                 {
                     var customType = NameProvider.GetMemberType( featureCommand.Identifier + "." + featureCommand.Response[0].Identifier );
-                    requestMethod.ReturnType = customType ?? CodeGenerationHelper.ExtractType(featureCommand.Response[0].DataType, null, featureCommand.Identifier, null);
+                    requestMethod.ReturnType = customType ?? CodeGenerationHelper.ExtractType(featureCommand.Response[0].DataType, featureCommand.Identifier );
                     var response = GenerateClientGrpcInvoke(featureCommand.Identifier + "Method",
                         requestRef, featureCommand.Response[0].DataType,
                         featureCommand.Response[0].Identifier,
@@ -496,8 +496,7 @@ namespace Tecan.Sila2.Generator.Generators
                             new CodePropertyReferenceExpression(
                                 new CodeFieldReferenceExpression( null, ExecutionManagerFieldName ),
                                 nameof(IClientExecutionManager.DownloadBinaryStore) ) ),
-                        customType,
-                        responseType );
+                        responseType, customType );
                 }
             }
 
@@ -508,7 +507,7 @@ namespace Tecan.Sila2.Generator.Generators
             CodeMemberMethod initLazyRequests)
         {
             var propertyType = NameProvider?.GetMemberType(featureProperty.Identifier)
-                               ?? CodeGenerationHelper.ExtractType(featureProperty.DataType, null, featureProperty.Identifier, null);
+                               ?? CodeGenerationHelper.ExtractType(featureProperty.DataType, featureProperty.Identifier );
             var property = new CodeMemberProperty()
             {
                 Name = NameProvider.GetPropertyName(featureProperty),
@@ -603,7 +602,7 @@ namespace Tecan.Sila2.Generator.Generators
                 fieldName.Substring(1));
             receiveValueMethod.Parameters.Add(parameter);
             var inner = new CodeVariableDeclarationStatement(
-                CodeGenerationHelper.ExtractType(featureProperty.DataType, null, featureProperty.Identifier, null),
+                CodeGenerationHelper.ExtractType(featureProperty.DataType, featureProperty.Identifier ),
                 "inner",
                 new CodeMethodInvokeExpression(
                     new CodePropertyReferenceExpression(new CodeArgumentReferenceExpression(parameter.Name), "Value"),

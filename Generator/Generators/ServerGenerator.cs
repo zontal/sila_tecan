@@ -414,7 +414,7 @@ namespace Tecan.Sila2.Generator.Generators
                     ReturnType = NameProvider.GenerateCommandIntermediateType( featureCommand )
                 };
                 var parameterType = NameProvider.GetMemberType( featureCommand.Identifier + ".Intermediate" )
-                                    ?? CodeGenerationHelper.ExtractType( featureCommand.IntermediateResponse[0].DataType, null, featureCommand.Identifier + "Intermediate", null );
+                                    ?? CodeGenerationHelper.ExtractType( featureCommand.IntermediateResponse[0].DataType, featureCommand.Identifier + "Intermediate" );
                 conversionMethod.Parameters.Add( new CodeParameterDeclarationExpression(
                     parameterType, "intermediate" ) );
                 var resultRef = new CodeArgumentReferenceExpression( "intermediate" );
@@ -435,7 +435,7 @@ namespace Tecan.Sila2.Generator.Generators
                     ReturnType = NameProvider.GenerateCommandResponseType( featureCommand )
                 };
                 var parameterType = NameProvider.GetMemberType( featureCommand.Identifier + "." + featureCommand.Response[0].Identifier )
-                                    ?? CodeGenerationHelper.ExtractType( featureCommand.Response[0].DataType, null, featureCommand.Identifier, null );
+                                    ?? CodeGenerationHelper.ExtractType( featureCommand.Response[0].DataType, featureCommand.Identifier );
                 conversionMethod.Parameters.Add( new CodeParameterDeclarationExpression(
                     parameterType, "result" ) );
                 var resultRef = new CodeArgumentReferenceExpression( "result" );
@@ -679,7 +679,7 @@ namespace Tecan.Sila2.Generator.Generators
                         new CodePropertyReferenceExpression( requestRef, propertyName ), "Extract", serverRef );
                     var typeRef = NameProvider?.GetMemberType( featureCommand.Identifier + "." + parameter.Identifier );
 
-                    actualImplementation.Parameters.Add( CodeGenerationHelper.GenerateConversion(parameterValue, typeRef, parameter.DataType) );
+                    actualImplementation.Parameters.Add( CodeGenerationHelper.GenerateConversion(parameterValue, parameter.DataType, typeRef ) );
                 }
             }
 
@@ -838,7 +838,7 @@ namespace Tecan.Sila2.Generator.Generators
                     { "feature", "The feature that contains the command or property" },
                     { "commandIdentifier", "The fully qualified identifier of the command or property in question" }
                 } ) );
-            var metadataType = CodeGenerationHelper.ExtractType( metadata.DataType, null, metadata.Identifier, null );
+            var metadataType = CodeGenerationHelper.ExtractType( metadata.DataType, metadata.Identifier );
             metadataInterceptor.Members.Add( (new CodeMemberMethod
             {
                 Name = nameof(IRequestInterceptor.Intercept),

@@ -133,7 +133,7 @@ namespace Tecan.Sila2.Generator.Generators
 
         private CodeTypeDeclaration GenerateStruct(SiLAElement dataType, StructureType structureType, bool inline, Action<string, StructureType> structHandler)
         {
-            var name = CodeGenerationHelper.ExtractType( new DataTypeType() {Item = dataType.Identifier}, null, null, null ).BaseType;
+            var name = CodeGenerationHelper.ExtractType( new DataTypeType() {Item = dataType.Identifier}, null ).BaseType;
             var structure = new CodeTypeDeclaration(name)
             {
                 Attributes = MemberAttributes.Public,
@@ -170,8 +170,7 @@ namespace Tecan.Sila2.Generator.Generators
             property.WriteDocumentation( element.Description );
             var targetAttributes = inline ? structure.CustomAttributes : property.CustomAttributes;
             property.Type = CodeGenerationHelper.ExtractType(element.DataType,
-                constraints => HandleConstraints(constraints, targetAttributes ),
-                structure.Name + element.Identifier, structHandler);
+                structure.Name + element.Identifier, constraints => HandleConstraints(constraints, targetAttributes ), structHandler );
             var parameterName = char.ToLowerInvariant(property.Name[0]) + property.Name.Substring(1);
             var field = new CodeMemberField
             {
@@ -466,8 +465,7 @@ namespace Tecan.Sila2.Generator.Generators
                 prop.CustomAttributes.AddAttribute( typeof(DynamicAttribute));
             }
 
-            prop.Type = CodeGenerationHelper.ExtractType(property.DataType,
-                constraints => HandleConstraints(constraints, prop.CustomAttributes), property.Identifier, structHandler);
+            prop.Type = CodeGenerationHelper.ExtractType(property.DataType, property.Identifier, constraints => HandleConstraints(constraints, prop.CustomAttributes), structHandler );
 
             if (property.DefinedExecutionErrors != null)
             {
@@ -528,7 +526,7 @@ namespace Tecan.Sila2.Generator.Generators
                     throw new NotSupportedException("More than one intermediate response is not supported");
                 method.ReturnType = intermediate.Length == 1
                     ? new CodeTypeReference(typeof(IIntermediateObservableCommand<,>).FullName,
-                        CodeGenerationHelper.ExtractType(intermediate[0].DataType, null, command.Identifier, structHandler), method.ReturnType)
+                        CodeGenerationHelper.ExtractType(intermediate[0].DataType, command.Identifier, null, structHandler ), method.ReturnType)
                     : new CodeTypeReference(typeof(IObservableCommand<>).FullName, method.ReturnType);
             }
             else
@@ -537,7 +535,7 @@ namespace Tecan.Sila2.Generator.Generators
                     throw new NotSupportedException("More than one intermediate response is not supported");
                 method.ReturnType = intermediate.Length == 1
                     ? new CodeTypeReference(typeof(IIntermediateObservableCommand<>).FullName,
-                        CodeGenerationHelper.ExtractType(intermediate[0].DataType, null, command.Identifier + "Intermediate", structHandler))
+                        CodeGenerationHelper.ExtractType(intermediate[0].DataType, command.Identifier + "Intermediate", null, structHandler ))
                     : new CodeTypeReference(typeof(IObservableCommand));
             }
         }
@@ -557,8 +555,7 @@ namespace Tecan.Sila2.Generator.Generators
                             response.DisplayName);
                     }
 
-                    method.ReturnType = CodeGenerationHelper.ExtractType(response.DataType,
-                        constraints => HandleConstraints(constraints, method.ReturnTypeCustomAttributes), command.Identifier, null );
+                    method.ReturnType = CodeGenerationHelper.ExtractType(response.DataType, command.Identifier, constraints => HandleConstraints(constraints, method.ReturnTypeCustomAttributes) );
                     documentation = response.Description;
                 }
                 else
@@ -598,8 +595,7 @@ namespace Tecan.Sila2.Generator.Generators
                     var parameterDeclaration = new CodeParameterDeclarationExpression();
                     parameterDeclaration.Name = identifier;
                     parameterDeclaration.Type = CodeGenerationHelper.ExtractType(parameter.DataType,
-                        constraints => HandleConstraints(constraints, parameterDeclaration.CustomAttributes),
-                        command.Identifier + parameter.Identifier, structureHandler);
+                        command.Identifier + parameter.Identifier, constraints => HandleConstraints(constraints, parameterDeclaration.CustomAttributes), structureHandler );
                     if (parameter.Identifier != parameter.DisplayName)
                     {
                         parameterDeclaration.CustomAttributes.AddAttribute( typeof(SilaDisplayNameAttribute),
