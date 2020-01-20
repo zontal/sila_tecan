@@ -22,6 +22,7 @@ namespace Tecan.Sila2.Server
     {
         private CompositionContainer _container;
         private ISiLAServer _server;
+        private ILoggingChannel _channel;
 
         /// <summary>
         /// Starts the server with the given command line parameters
@@ -45,14 +46,14 @@ namespace Tecan.Sila2.Server
         /// <param name="args">The parsed command line parameters</param>
         public void StartServer(ServerCommandLineArguments args)
         {
-            AppDomain.CurrentDomain.ProcessExit += (o,e) => ShutdownServer();
+            AppDomain.CurrentDomain.ProcessExit += TryShutdownServer;
             var selfInfo = GetServerInformation();
-            ILoggingChannel channel = null;
             try
             {
                 _container = CreateContainer();
                 var logging = _container.GetExportedValue<ILoggingChannelFactory>();
-                channel = logging.CreateChannel( typeof(Bootstrapper) );
+                Common.Logging.LogManager.Adapter = new LoggerFactoryAdapter( logging );
+                _channel = logging.CreateChannel( typeof(Bootstrapper) );
                 var networkInterface = FindNetworkInterface( args.InterfaceNameOrCIDR, logging );
                 var startup = new ServerStartInformation( selfInfo, args.Port, networkInterface, args.ServerUuid );
                 _container.ComposeExportedValue( startup );
@@ -65,24 +66,24 @@ namespace Tecan.Sila2.Server
                 }
 
                 _server.StartServer();
-                channel.Log( () => "Server listening on port " + args.Port, Severity.Info );
+                _channel.Log( () => "Server listening on port " + args.Port, Severity.Info );
             }
             catch( CompositionException e )
             {
-                LogError(channel, e);
+                LogError(_channel, e);
                 foreach( var compositionError in e.Errors )
                 {
-                    LogError(channel, e);
+                    LogError(_channel, compositionError.Exception );
                 }
 
                 foreach( var rootCause in e.RootCauses )
                 {
-                    LogError(channel, e);
+                    LogError(_channel, rootCause );
                 }
             }
             catch( Exception e )
             {
-                LogError(channel, e);
+                LogError(_channel, e);
             }
         }
 
@@ -95,6 +96,25 @@ namespace Tecan.Sila2.Server
             else
             {
                 Console.Error.WriteLine($"Error starting server: {e.Message}");
+            }
+        }
+
+        private void TryShutdownServer(object sender, EventArgs e)
+        {
+            try
+            {
+                ShutdownServer();
+            }
+            catch(Exception exception)
+            {
+                if(_channel != null)
+                {
+                    _channel.LogException( "Error shutting down server".ToString, exception );
+                }
+                else
+                {
+                    throw;
+                }
             }
         }
 

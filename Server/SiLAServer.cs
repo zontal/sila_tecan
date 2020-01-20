@@ -7,6 +7,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Threading.Tasks;
 using Grpc.Core;
+using Grpc.Core.Interceptors;
 using Tecan.MAP.Contracts.Services.Logging;
 using Tecan.Sila2.Discovery;
 using Tecan.Sila2.Server.Binary;
@@ -43,6 +44,7 @@ namespace Tecan.Sila2.Server
         private readonly IFileManagement _fileManagement;
         private readonly BinaryUpload _upload;
         private readonly BinaryDownload _download;
+        private readonly LoggingInterceptor _loggingInterceptor;
 
         #endregion
 
@@ -128,6 +130,7 @@ namespace Tecan.Sila2.Server
             ServerUUID = startupInfo.ServerUuid.ToString();
             ServerName = ServerType;
             _implementedFeatures = new List<IFeatureProvider>();
+            _loggingInterceptor = new LoggingInterceptor( _logger );
 
             GrpcServer = new Grpc.Core.Server();
 
@@ -208,7 +211,7 @@ namespace Tecan.Sila2.Server
         public void AddFeature(IFeatureProvider feature)
         {
             _implementedFeatures.Add(feature);
-            GrpcServer.Services.Add(feature.CreateServiceDefinition());
+            GrpcServer.Services.Add( feature.CreateServiceDefinition().Intercept(_loggingInterceptor) );
             _logger.Log( $"Exposing feature {feature.FeatureDefinition.FullyQualifiedIdentifier}".ToString, Severity.Info );
         }
 
