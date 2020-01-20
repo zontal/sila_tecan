@@ -12,14 +12,9 @@
         <PackageReference Include="Microsoft.Extensions.Configuration" Version="2.1.1" />
         <PackageReference Include="Microsoft.Extensions.Configuration.Xml" Version="2.1.1" />
         <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="2.1.1" />
+        <PackageReference Include="System.ComponentModel.Composition" Version="4.6.0" />
         <PackageReference Include="Tecan.MAP.Contracts.Services.Logging" Version="2.1.0.14695" />
         <PackageReference Include="Common.Logging" Version="3.4.1" />
-        <PackageReference Include="NLog" Version="4.5.11">
-            <NoWarn>NU1701</NoWarn>
-        </PackageReference>
-        <PackageReference Include="Common.Logging.NLog41" Version="3.4.1">
-            <NoWarn>NU1701</NoWarn>
-        </PackageReference>
     </ItemGroup>
 
     <ItemGroup>

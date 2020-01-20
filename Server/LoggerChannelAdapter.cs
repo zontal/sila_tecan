@@ -129,7 +129,7 @@ namespace Tecan.Sila2.Server
 
         public void Info( object message )
         {
-            _innerChannel.Log( message.ToString, Severity.Debug );
+            _innerChannel.Log( message.ToString, Severity.Info );
         }
 
         public void Info( object message, Exception exception )
@@ -179,7 +179,7 @@ namespace Tecan.Sila2.Server
 
         public void Warn( object message )
         {
-            _innerChannel.Log( message.ToString, Severity.Debug );
+            _innerChannel.Log( message.ToString, Severity.Warning );
         }
 
         public void Warn( object message, Exception exception )
@@ -229,7 +229,7 @@ namespace Tecan.Sila2.Server
 
         public void Error( object message )
         {
-            _innerChannel.Log( message.ToString, Severity.Debug );
+            _innerChannel.Log( message.ToString, Severity.Error );
         }
 
         public void Error( object message, Exception exception )
@@ -279,7 +279,7 @@ namespace Tecan.Sila2.Server
 
         public void Fatal( object message )
         {
-            _innerChannel.Log( message.ToString, Severity.Debug );
+            _innerChannel.Log( message.ToString, Severity.Critical );
         }
 
         public void Fatal( object message, Exception exception )

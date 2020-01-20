@@ -7,7 +7,7 @@ namespace Tecan.Sila2.Logging
 {
     public static class Logging
     {
-        /// <summary>Configures the applications logging, to consume Common.Logging abstractins as specified by the config file</summary>
+        /// <summary>Configures the applications logging, to consume Common.Logging abstractions as specified by the config file</summary>
         public static void SetupCommonLogging(string configFile = "logging.config")
         {
             var config = LoadConfigXml(configFile);

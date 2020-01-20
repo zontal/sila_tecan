@@ -28,6 +28,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DynamicClient", "DynamicCli
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NuSpec", "NuSpec", "{B34C24C7-1092-4634-BB86-EA4FABB6F5B2}"
 	ProjectSection(SolutionItems) = preProject
+		NuSpec\Tecan.Sila2.CommonLogging.nuspec = NuSpec\Tecan.Sila2.CommonLogging.nuspec
 		NuSpec\Tecan.Sila2.Contracts.nuspec = NuSpec\Tecan.Sila2.Contracts.nuspec
 		NuSpec\Tecan.Sila2.DynamicClient.nuspec = NuSpec\Tecan.Sila2.DynamicClient.nuspec
 		NuSpec\Tecan.Sila2.Features.Auth.Client.nuspec = NuSpec\Tecan.Sila2.Features.Auth.Client.nuspec
@@ -79,6 +80,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ParameterConstraintsProvider.Client", "Features\ParameterConstraintsProvider.Client\ParameterConstraintsProvider.Client.csproj", "{A865E812-2844-4247-9A3F-06A951AF9B86}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WorktableIntegration.Client", "Features\WorktableIntegration.Client\WorktableIntegration.Client.csproj", "{441B7487-E0D4-4ADF-A700-77DDF59A28C0}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Logging", "Logging\Logging.csproj", "{EC090372-4309-44C2-9A17-0399BD08B6DE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -162,6 +165,10 @@ Global
 		{441B7487-E0D4-4ADF-A700-77DDF59A28C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{441B7487-E0D4-4ADF-A700-77DDF59A28C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{441B7487-E0D4-4ADF-A700-77DDF59A28C0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EC090372-4309-44C2-9A17-0399BD08B6DE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EC090372-4309-44C2-9A17-0399BD08B6DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EC090372-4309-44C2-9A17-0399BD08B6DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EC090372-4309-44C2-9A17-0399BD08B6DE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -187,6 +194,7 @@ Global
 		{C74ECF4E-D6EC-438E-ACD5-191D0EFAD6B1} = {7FB691BE-23E3-477C-907C-95DB5BD9D7B6}
 		{A865E812-2844-4247-9A3F-06A951AF9B86} = {7FB691BE-23E3-477C-907C-95DB5BD9D7B6}
 		{441B7487-E0D4-4ADF-A700-77DDF59A28C0} = {7FB691BE-23E3-477C-907C-95DB5BD9D7B6}
+		{EC090372-4309-44C2-9A17-0399BD08B6DE} = {98D6F41E-A727-4CF4-99C6-8D95BAEB3BB4}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F2AE9C9D-34E5-4A2A-8AAA-5EEA105AF08F}

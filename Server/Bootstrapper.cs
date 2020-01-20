@@ -12,7 +12,6 @@ using CommandLine;
 using Tecan.MAP.Contracts.Services.Logging;
 using Tecan.Sila2.Discovery;
 using Tecan.Sila2.Server.Binary;
-using Tecan.Sila2.Logging;
 
 namespace Tecan.Sila2.Server
 {
@@ -29,11 +28,9 @@ namespace Tecan.Sila2.Server
         /// Starts the server with the given command line parameters
         /// </summary>
         /// <param name="args">The command line parameters</param>
-        /// <param name="logger">Set a different ILoggingChannelFactory for the Bottstrapper to use. Leave to null to use default ConsoleLogging()</param>
-        public static void Start(string[] args, ILoggingChannelFactory logger = null)
+        public static void Start(string[] args )
         {
             var bootstrapper = new Bootstrapper();
-            if (logger != null) bootstrapper.Logger = logger;
 
             Parser.Default.ParseArguments<ServerCommandLineArguments>(args)
                 .WithNotParsed(bootstrapper.HandleError)
@@ -55,7 +52,11 @@ namespace Tecan.Sila2.Server
             {
                 _container = CreateContainer();
                 var logging = _container.GetExportedValue<ILoggingChannelFactory>();
-                Common.Logging.LogManager.Adapter = new LoggerFactoryAdapter( logging );
+                if( Common.Logging.LogManager.Adapter is Common.Logging.Simple.NoOpLoggerFactoryAdapter || Common.Logging.LogManager.Adapter == null )
+                {
+                    Common.Logging.LogManager.Adapter = new LoggerFactoryAdapter( logging );
+                }
+
                 _channel = logging.CreateChannel( typeof(Bootstrapper) );
                 var networkInterface = FindNetworkInterface( args.InterfaceNameOrCIDR, logging );
                 var startup = new ServerStartInformation( selfInfo, args.Port, networkInterface, args.ServerUuid );
@@ -90,11 +91,6 @@ namespace Tecan.Sila2.Server
             }
         }
 
-        /// <summary>
-        /// Get or change the ILoggingChannelFactory used by the Bootstrapper
-        /// </summary>
-        public ILoggingChannelFactory Logger { get; set; } = new ConsoleLogging();
-
         private static void LogError(ILoggingChannel channel, Exception e)
         {
             if (channel != null)
@@ -121,7 +117,7 @@ namespace Tecan.Sila2.Server
                 }
                 else
                 {
-                    throw;
+                    Console.Error.WriteLine($"Error shutting down server: {exception.Message}.");
                 }
             }
         }
@@ -175,7 +171,7 @@ namespace Tecan.Sila2.Server
 
             if (container.GetExportedValueOrDefault<ILoggingChannelFactory>() == null)
             {
-                container.ComposeExportedValue<ILoggingChannelFactory>( Logger );
+                container.ComposeExportedValue<ILoggingChannelFactory>( new ConsoleLogging() );
             }
 
             if( container.GetExportedValueOrDefault<IServerConnector>() == null )
