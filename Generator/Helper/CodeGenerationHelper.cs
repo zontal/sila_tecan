@@ -48,7 +48,7 @@ namespace Tecan.Sila2.Generator.Helper
         /// <returns>A camel case representation of the identifier</returns>
         public static string ToCamelCase( this string identifier )
         {
-            return Char.ToLowerInvariant( identifier[0]) + identifier.Substring(1);
+            return char.ToLowerInvariant( identifier[0]) + identifier.Substring(1);
         }
 
         /// <summary>
@@ -58,28 +58,39 @@ namespace Tecan.Sila2.Generator.Helper
         /// <returns>A Pascal case representation of the identifier</returns>
         public static string ToPascalCase(this string identifier)
         {
-            return Char.ToUpperInvariant(identifier[0]) + identifier.Substring(1);
+            return char.ToUpperInvariant(identifier[0]) + identifier.Substring(1);
         }
 
         /// <summary>
-        /// Creates a type reference for the response DTO for the given property
+        /// Converts the given identifier into a display name
         /// </summary>
-        /// <param name="featureProperty">The property</param>
-        /// <returns>>A type reference to the response DTO generated for this property</returns>
-        public static CodeTypeReference GetPropertyResponseType( ITypeTranslationProvider translationProvider, FeatureProperty featureProperty )
+        /// <param name="identifier">The identifier</param>
+        /// <returns>A display name where a blank space is inserted before each upper-case letter</returns>
+        public static string ToDisplayName( this string identifier )
         {
-            CodeTypeReference propertyResponse;
-            if(featureProperty.DataType.Item is ConstrainedType)
+            if( string.IsNullOrEmpty( identifier ) )
             {
-                propertyResponse = new CodeTypeReference( featureProperty.Identifier + "ResponseDto" );
-            }
-            else
-            {
-                propertyResponse = new CodeTypeReference( typeof( PropertyResponse<> ).Name,
-                    translationProvider.GetDtoTypeReference(  featureProperty.DataType, featureProperty.Identifier, null ) );
+                return string.Empty;
             }
 
-            return propertyResponse;
+            if( identifier.All( char.IsUpper ) )
+            {
+                return identifier;
+            }
+
+            var sb = new StringBuilder();
+            sb.Append( identifier[0] );
+            for( int i = 1; i < identifier.Length; i++ )
+            {
+                if( char.IsUpper( identifier[i] ) )
+                {
+                    sb.Append( ' ' );
+                }
+
+                sb.Append( identifier[i] );
+            }
+
+            return sb.ToString();
         }
 
         /// <summary>

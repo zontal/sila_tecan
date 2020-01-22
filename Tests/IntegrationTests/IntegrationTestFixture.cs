@@ -9,10 +9,13 @@ using System.Threading.Tasks;
 using Grpc.Core;
 using NUnit.Framework;
 using Tecan.Sila2.Authentication;
+using Tecan.Sila2.Authentication.AuthenticationService;
 using Tecan.Sila2.Client;
 using Tecan.Sila2.Discovery;
 using Tecan.Sila2.DynamicClient;
+using Tecan.Sila2.IntegrationTests.TestServer;
 using Tecan.Sila2.Locking;
+using Tecan.Sila2.Locking.LockController;
 using Tecan.Sila2.Server;
 using Tecan.Sila2.Tests;
 

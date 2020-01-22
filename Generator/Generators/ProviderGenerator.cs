@@ -130,7 +130,7 @@ namespace Tecan.Sila2.Generator.Generators
         private void GeneratePropertyMethod(FeatureProperty featureProperty, CodeTypeDeclaration provider,
             CodeFieldReferenceExpression serviceName)
         {
-            var propertyResponse = CodeGenerationHelper.GetPropertyResponseType( _translationProvider,  featureProperty);
+            var propertyResponse = _nameProvider.GetPropertyResponseType( featureProperty, _translationProvider);
             if (featureProperty.Observable == FeaturePropertyObservable.No)
             {
                 provider.Members.Add(GenerateMethod(

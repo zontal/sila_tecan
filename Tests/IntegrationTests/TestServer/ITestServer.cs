@@ -16,7 +16,7 @@ namespace Tecan.Sila2.IntegrationTests
     /// </summary>
     [Tecan.Sila2.SilaFeatureAttribute(true, "integrationtests")]
     [Tecan.Sila2.SilaIdentifierAttribute("TestServer")]
-    [Tecan.Sila2.SilaDescriptionAttribute("")]
+    [Tecan.Sila2.SilaDisplayNameAttribute("Test Server")]
     public partial interface ITestServer
     {
         
@@ -24,127 +24,99 @@ namespace Tecan.Sila2.IntegrationTests
         /// </summary>
         /// <param name="data"></param>
         /// <returns></returns>
-        [Tecan.Sila2.SilaDescriptionAttribute("")]
         [return: Tecan.Sila2.SilaIdentifierAttribute("ReturnValue")]
-        [return: Tecan.Sila2.SilaDescriptionAttribute("")]
-        bool PassBool([Tecan.Sila2.SilaDisplayNameAttribute("Data")] [Tecan.Sila2.SilaDescriptionAttribute("")] bool data);
+        bool PassBool(bool data);
         
         ///  <summary>
         /// </summary>
         /// <param name="data"></param>
         /// <returns></returns>
-        [Tecan.Sila2.SilaDescriptionAttribute("")]
         [return: Tecan.Sila2.SilaIdentifierAttribute("ReturnValue")]
-        [return: Tecan.Sila2.SilaDescriptionAttribute("")]
-        double PassDouble([Tecan.Sila2.SilaDisplayNameAttribute("Data")] [Tecan.Sila2.SilaDescriptionAttribute("")] double data);
+        double PassDouble(double data);
         
         ///  <summary>
         /// </summary>
         /// <param name="data"></param>
         /// <returns></returns>
-        [Tecan.Sila2.SilaDescriptionAttribute("")]
         [return: Tecan.Sila2.SilaIdentifierAttribute("ReturnValue")]
-        [return: Tecan.Sila2.SilaDescriptionAttribute("")]
-        long PassLong([Tecan.Sila2.SilaDisplayNameAttribute("Data")] [Tecan.Sila2.SilaDescriptionAttribute("")] long data);
+        long PassLong(long data);
         
         ///  <summary>
         /// </summary>
         /// <param name="data"></param>
         /// <returns></returns>
-        [Tecan.Sila2.SilaDescriptionAttribute("")]
         [return: Tecan.Sila2.SilaIdentifierAttribute("ReturnValue")]
-        [return: Tecan.Sila2.SilaDescriptionAttribute("")]
-        long PassInt([Tecan.Sila2.SilaDisplayNameAttribute("Data")] [Tecan.Sila2.SilaDescriptionAttribute("")] long data);
+        long PassInt(long data);
         
         ///  <summary>
         /// </summary>
         /// <param name="timestamp"></param>
         /// <returns></returns>
-        [Tecan.Sila2.SilaDescriptionAttribute("")]
         [return: Tecan.Sila2.SilaIdentifierAttribute("ReturnValue")]
-        [return: Tecan.Sila2.SilaDescriptionAttribute("")]
-        System.DateTimeOffset PassTimestamp([Tecan.Sila2.SilaDisplayNameAttribute("Timestamp")] [Tecan.Sila2.SilaDescriptionAttribute("")] System.DateTimeOffset timestamp);
+        System.DateTimeOffset PassTimestamp(System.DateTimeOffset timestamp);
         
         ///  <summary>
         /// </summary>
         /// <param name="time"></param>
         /// <returns></returns>
-        [Tecan.Sila2.SilaDescriptionAttribute("")]
         [return: Tecan.Sila2.SilaIdentifierAttribute("ReturnValue")]
-        [return: Tecan.Sila2.SilaDescriptionAttribute("")]
-        System.TimeSpan PassTime([Tecan.Sila2.SilaDisplayNameAttribute("Time")] [Tecan.Sila2.SilaDescriptionAttribute("")] System.TimeSpan time);
+        System.TimeSpan PassTime(System.TimeSpan time);
         
         ///  <summary>
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
-        [Tecan.Sila2.SilaDescriptionAttribute("")]
         [return: Tecan.Sila2.SilaIdentifierAttribute("ReturnValue")]
-        [return: Tecan.Sila2.SilaDescriptionAttribute("")]
-        string PassString([Tecan.Sila2.SilaDisplayNameAttribute("Value")] [Tecan.Sila2.SilaDescriptionAttribute("")] string value);
+        string PassString(string value);
         
         ///  <summary>
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
-        [Tecan.Sila2.SilaDescriptionAttribute("")]
         [return: Tecan.Sila2.SilaIdentifierAttribute("ReturnValue")]
-        [return: Tecan.Sila2.SilaDescriptionAttribute("")]
-        System.IO.Stream PassStream([Tecan.Sila2.SilaDisplayNameAttribute("Value")] [Tecan.Sila2.SilaDescriptionAttribute("")] System.IO.Stream value);
+        System.IO.Stream PassStream(System.IO.Stream value);
         
         ///  <summary>
         /// </summary>
         /// <param name="file"></param>
         /// <returns></returns>
-        [Tecan.Sila2.SilaDescriptionAttribute("")]
         [return: Tecan.Sila2.SilaIdentifierAttribute("ReturnValue")]
-        [return: Tecan.Sila2.SilaDescriptionAttribute("")]
-        System.IO.Stream PassFile([Tecan.Sila2.SilaDisplayNameAttribute("File")] [Tecan.Sila2.SilaDescriptionAttribute("")] System.IO.Stream file);
+        System.IO.Stream PassFile(System.IO.Stream file);
         
         ///  <summary>
         /// </summary>
         /// <param name="bytes"></param>
         /// <returns></returns>
-        [Tecan.Sila2.SilaDescriptionAttribute("")]
         [return: Tecan.Sila2.SilaIdentifierAttribute("ReturnValue")]
-        [return: Tecan.Sila2.SilaDescriptionAttribute("")]
-        System.IO.Stream PassBytes([Tecan.Sila2.SilaDisplayNameAttribute("Bytes")] [Tecan.Sila2.SilaDescriptionAttribute("")] System.IO.Stream bytes);
+        System.IO.Stream PassBytes(System.IO.Stream bytes);
         
         ///  <summary>
         /// </summary>
         /// <param name="strings"></param>
         /// <returns></returns>
-        [Tecan.Sila2.SilaDescriptionAttribute("")]
         [return: Tecan.Sila2.SilaIdentifierAttribute("ReturnValue")]
-        [return: Tecan.Sila2.SilaDescriptionAttribute("")]
-        System.Collections.Generic.ICollection<string> PassCollection([Tecan.Sila2.SilaDisplayNameAttribute("Strings")] [Tecan.Sila2.SilaDescriptionAttribute("")] System.Collections.Generic.ICollection<string> strings);
+        System.Collections.Generic.ICollection<string> PassCollection(System.Collections.Generic.ICollection<string> strings);
         
         ///  <summary>
         /// </summary>
         /// <param name="structure"></param>
         /// <returns></returns>
-        [Tecan.Sila2.SilaDescriptionAttribute("")]
         [return: Tecan.Sila2.SilaIdentifierAttribute("ReturnValue")]
-        [return: Tecan.Sila2.SilaDescriptionAttribute("")]
-        SomeStructure PassStructure([Tecan.Sila2.SilaDisplayNameAttribute("Structure")] [Tecan.Sila2.SilaDescriptionAttribute("")] SomeStructure structure);
+        SomeStructure PassStructure(SomeStructure structure);
         
         ///  <summary>
         /// </summary>
         /// <returns></returns>
-        [Tecan.Sila2.SilaDescriptionAttribute("")]
         [return: Tecan.Sila2.SilaIdentifierAttribute("ReturnValue")]
-        [return: Tecan.Sila2.SilaDescriptionAttribute("")]
         Tecan.Sila2.IObservableCommand<long> RunObservable();
         
         ///  <summary>
         /// </summary>
-        [Tecan.Sila2.SilaDescriptionAttribute("")]
         Tecan.Sila2.IIntermediateObservableCommand<long> RunIntermediateObservableCommand();
     }
     
     ///  <summary>
     /// </summary>
-    [Tecan.Sila2.SilaDescriptionAttribute("")]
     public struct SomeStructure
     {
         

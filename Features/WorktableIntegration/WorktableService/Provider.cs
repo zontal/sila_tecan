@@ -19,7 +19,7 @@ namespace Tecan.Sila2.WorktableIntegration
     
     
     ///  <summary>
-    /// Encapsulates provider classes to expose the WorktableService feature via SiLA2
+    /// Encapsulates provider classes to expose the Worktable Service feature via SiLA2
     /// </summary>
     public sealed partial class WorktableServiceProvider
     {
@@ -80,7 +80,7 @@ namespace Tecan.Sila2.WorktableIntegration
             }
             
             ///  <summary>
-            /// Gets the current value of the BoundingBox property
+            /// Gets the current value of the Bounding Box property
             /// </summary>
             /// <param name="request">The request object</param>
             /// <param name="context">The context in which the request is made</param>
@@ -92,7 +92,7 @@ namespace Tecan.Sila2.WorktableIntegration
             }
             
             ///  <summary>
-            /// Gets the current value of the SiteTemplates property
+            /// Gets the current value of the Site Templates property
             /// </summary>
             /// <param name="request">The request object</param>
             /// <param name="context">The context in which the request is made</param>

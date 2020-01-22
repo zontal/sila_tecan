@@ -19,7 +19,7 @@
   </Command>
   <Metadata>
     <Identifier>LoggingActivity</Identifier>
-    <DisplayName>LoggingActivity</DisplayName>
+    <DisplayName>Logging Activity</DisplayName>
     <Description />
     <DataType>
       <Basic>String</Basic>
@@ -27,7 +27,7 @@
   </Metadata>
   <DataTypeDefinition>
     <Identifier>LogEntry</Identifier>
-    <DisplayName>LogEntry</DisplayName>
+    <DisplayName>Log Entry</DisplayName>
     <Description>Describes a log entry</Description>
     <DataType>
       <Structure>
@@ -94,7 +94,7 @@
   </DataTypeDefinition>
   <DataTypeDefinition>
     <Identifier>LogEntryData</Identifier>
-    <DisplayName>LogEntryData</DisplayName>
+    <DisplayName>Log Entry Data</DisplayName>
     <Description />
     <DataType>
       <Structure>

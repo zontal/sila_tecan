@@ -12,8 +12,8 @@ namespace Tecan.Sila2.Generator.Generators
     /// <summary>
     /// Generates interfaces from features
     /// </summary>
-    [Export(typeof(IInterfaceGenerator))]
-    [PartCreationPolicy(CreationPolicy.Shared)]
+    [Export( typeof(IInterfaceGenerator) )]
+    [PartCreationPolicy( CreationPolicy.Shared )]
     internal class InterfaceGenerator : IInterfaceGenerator
     {
         private IEnumerable<IGeneratorHook> Hooks
@@ -31,36 +31,36 @@ namespace Tecan.Sila2.Generator.Generators
         }
 
         /// <inheritdoc />
-        public CodeCompileUnit GenerateInterfaceUnit(Feature feature, string ns)
+        public CodeCompileUnit GenerateInterfaceUnit( Feature feature, string ns )
         {
             var unit = new CodeCompileUnit();
-            var nSpace = new CodeNamespace(ns);
-            unit.Namespaces.Add(nSpace);
+            var nSpace = new CodeNamespace( ns );
+            unit.Namespaces.Add( nSpace );
 
-            var typeManagement = new TypeManagement(nSpace, this);
+            var typeManagement = new TypeManagement( nSpace, this );
 
             var interfaceType = GenerateInterface( feature, typeManagement );
             nSpace.Types.Add( interfaceType );
 
-            foreach (var dataTypeDefinition in feature.Items.OfType<SiLAElement>())
+            foreach( var dataTypeDefinition in feature.Items.OfType<SiLAElement>() )
             {
-                var type = GenerateDataTypeDefinition(dataTypeDefinition, typeManagement.RegisterStruct);
-                if (type != null)
+                var type = GenerateDataTypeDefinition( dataTypeDefinition, typeManagement.RegisterStruct );
+                if( type != null )
                 {
-                    nSpace.Types.Add(type);
+                    nSpace.Types.Add( type );
                 }
             }
 
-            foreach (var error in feature.Items.OfType<FeatureDefinedExecutionError>())
+            foreach( var error in feature.Items.OfType<FeatureDefinedExecutionError>() )
             {
-                nSpace.Types.Add(GenerateStandardExecutionError(error));
+                nSpace.Types.Add( GenerateStandardExecutionError( error ) );
             }
 
             if( Hooks != null )
             {
                 foreach( var generatorHook in Hooks )
                 {
-                    generatorHook?.OnInterfaceGenerated(feature, interfaceType);
+                    generatorHook?.OnInterfaceGenerated( feature, interfaceType );
                 }
             }
 
@@ -94,26 +94,27 @@ namespace Tecan.Sila2.Generator.Generators
                         Item = structure
                     }
                 };
-                RegisterType(_parent.GenerateStruct(element, structure, false, RegisterStruct));
+                RegisterType( _parent.GenerateStruct( element, structure, false, RegisterStruct ) );
             }
         }
 
-        private CodeTypeDeclaration GenerateDataTypeDefinition(SiLAElement dataType, Action<string, StructureType> structHandler )
+        private CodeTypeDeclaration GenerateDataTypeDefinition( SiLAElement dataType, Action<string, StructureType> structHandler )
         {
             var summary = dataType.Description ?? $"The {dataType.DisplayName} type";
             CodeTypeDeclaration declaration = null;
-            if (dataType.DataType.Item is ConstrainedType constrained)
+            if( dataType.DataType.Item is ConstrainedType constrained )
             {
-                if (constrained.Constraints.Set != null && constrained.Constraints.Set.Length > 0)
+                if( constrained.Constraints.Set != null && constrained.Constraints.Set.Length > 0 )
                 {
-                    declaration = GenerateEnumeration(dataType, constrained.Constraints.Set);
+                    declaration = GenerateEnumeration( dataType, constrained.Constraints.Set );
                 }
             }
-            else if (dataType.DataType.Item is StructureType structure)
+            else if( dataType.DataType.Item is StructureType structure )
             {
-                declaration = GenerateStruct(dataType, structure, false, structHandler);
+                declaration = GenerateStruct( dataType, structure, false, structHandler );
             }
-            if (declaration == null)
+
+            if( declaration == null )
             {
                 var newStructure = new StructureType
                 {
@@ -134,34 +135,34 @@ namespace Tecan.Sila2.Generator.Generators
             return declaration;
         }
 
-        private CodeTypeDeclaration GenerateStruct(SiLAElement dataType, StructureType structureType, bool inline, Action<string, StructureType> structHandler)
+        private CodeTypeDeclaration GenerateStruct( SiLAElement dataType, StructureType structureType, bool inline, Action<string, StructureType> structHandler )
         {
-            var name = _translationProvider.ExtractType(  new DataTypeType() {Item = dataType.Identifier}, null ).BaseType;
-            var structure = new CodeTypeDeclaration(name)
+            var name = _translationProvider.ExtractType( new DataTypeType() { Item = dataType.Identifier }, null ).BaseType;
+            var structure = new CodeTypeDeclaration( name )
             {
                 Attributes = MemberAttributes.Public,
                 TypeAttributes = TypeAttributes.Public,
                 IsStruct = true
             };
 
-            ApplyDataType(dataType, structure);
+            ApplyDataType( dataType, structure );
 
             var constructor = new CodeConstructor
             {
                 Attributes = MemberAttributes.Public,
             };
-            structure.Members.Add(constructor);
+            structure.Members.Add( constructor );
 
-            foreach (var element in structureType.Element)
+            foreach( var element in structureType.Element )
             {
-                GenerateStructureElement(element, structure, constructor, inline, structHandler);
+                GenerateStructureElement( element, structure, constructor, inline, structHandler );
             }
 
             return structure;
         }
 
-        private void GenerateStructureElement(SiLAElement element, CodeTypeDeclaration structure,
-            CodeConstructor constructor, bool inline, Action<string, StructureType> structHandler)
+        private void GenerateStructureElement( SiLAElement element, CodeTypeDeclaration structure,
+            CodeConstructor constructor, bool inline, Action<string, StructureType> structHandler )
         {
             var property = new CodeMemberProperty
             {
@@ -172,119 +173,119 @@ namespace Tecan.Sila2.Generator.Generators
             };
             property.WriteDocumentation( element.Description );
             var targetAttributes = inline ? structure.CustomAttributes : property.CustomAttributes;
-            property.Type = _translationProvider.ExtractType(  element.DataType,
-                structure.Name + element.Identifier, constraints => HandleConstraints(constraints, targetAttributes ), structHandler );
-            var parameterName = char.ToLowerInvariant(property.Name[0]) + property.Name.Substring(1);
+            property.Type = _translationProvider.ExtractType( element.DataType,
+                structure.Name + element.Identifier, constraints => HandleConstraints( constraints, targetAttributes ), structHandler );
+            var parameterName = char.ToLowerInvariant( property.Name[0] ) + property.Name.Substring( 1 );
             var field = new CodeMemberField
             {
                 Name = "_" + parameterName,
                 Attributes = MemberAttributes.Private,
                 Type = property.Type
             };
-            structure.Members.Add(property);
-            structure.Members.Add(field);
-            var fieldReference = new CodeFieldReferenceExpression(null, field.Name);
-            property.GetStatements.Add(new CodeMethodReturnStatement(fieldReference));
-            constructor.Parameters.Add(new CodeParameterDeclarationExpression(property.Type, parameterName));
-            constructor.Statements.Add(new CodeAssignStatement(
+            structure.Members.Add( property );
+            structure.Members.Add( field );
+            var fieldReference = new CodeFieldReferenceExpression( null, field.Name );
+            property.GetStatements.Add( new CodeMethodReturnStatement( fieldReference ) );
+            constructor.Parameters.Add( new CodeParameterDeclarationExpression( property.Type, parameterName ) );
+            constructor.Statements.Add( new CodeAssignStatement(
                 fieldReference,
-                new CodeArgumentReferenceExpression(parameterName)));
+                new CodeArgumentReferenceExpression( parameterName ) ) );
         }
 
-        private void HandleConstraints(Constraints constraints,
-            CodeAttributeDeclarationCollection attributes)
+        private void HandleConstraints( Constraints constraints,
+            CodeAttributeDeclarationCollection attributes )
         {
-            if (constraints.Pattern != null)
+            if( constraints.Pattern != null )
             {
-                attributes.AddAttribute( typeof(PatternConstraintAttribute), constraints.Pattern);
+                attributes.AddAttribute( typeof(PatternConstraintAttribute), constraints.Pattern );
             }
 
-            if (constraints.MaximalLength != null)
+            if( constraints.MaximalLength != null )
             {
-                var maxLength = int.Parse(constraints.MaximalLength);
-                attributes.AddAttribute( typeof(MaximalLengthAttribute), maxLength);
+                var maxLength = int.Parse( constraints.MaximalLength );
+                attributes.AddAttribute( typeof(MaximalLengthAttribute), maxLength );
             }
 
-            HandleUnitConstraint(constraints, attributes);
-            HandleThresholdConstraints(constraints, attributes);
-            HandleContentTypeConstraints(constraints, attributes);
-            HandleIdentifierTypeConstraints(constraints, attributes);
-            HandleSchemaConstraints(constraints, attributes);
+            HandleUnitConstraint( constraints, attributes );
+            HandleThresholdConstraints( constraints, attributes );
+            HandleContentTypeConstraints( constraints, attributes );
+            HandleIdentifierTypeConstraints( constraints, attributes );
+            HandleSchemaConstraints( constraints, attributes );
         }
 
-        private static void HandleUnitConstraint(Constraints constraints,
-            CodeAttributeDeclarationCollection attributes)
+        private static void HandleUnitConstraint( Constraints constraints,
+            CodeAttributeDeclarationCollection attributes )
         {
-            if (constraints.Unit != null)
+            if( constraints.Unit != null )
             {
                 var argList = new List<object>();
-                argList.Add(constraints.Unit.Label);
-                if (constraints.Unit.UnitComponent != null)
+                argList.Add( constraints.Unit.Label );
+                if( constraints.Unit.UnitComponent != null )
                 {
                     var factor = constraints.Unit.Factor;
                     var offset = constraints.Unit.Offset;
-                    foreach (var unitComponent in constraints.Unit.UnitComponent)
+                    foreach( var unitComponent in constraints.Unit.UnitComponent )
                     {
-                        if (unitComponent.SIUnit != ConstraintsUnitUnitComponentSIUnit.Dimensionless)
+                        if( unitComponent.SIUnit != ConstraintsUnitUnitComponentSIUnit.Dimensionless )
                         {
-                            argList.Add(new CodeAttributeArgument(
+                            argList.Add( new CodeAttributeArgument(
                                 unitComponent.SIUnit.ToString(),
-                                new CodePrimitiveExpression(int.Parse(unitComponent.Exponent))));
+                                new CodePrimitiveExpression( int.Parse( unitComponent.Exponent ) ) ) );
                         }
                     }
 
-                    if (factor != 1.0m)
+                    if( factor != 1.0m )
                     {
-                        argList.Add(new CodeAttributeArgument("Factor", new CodePrimitiveExpression((double) factor)));
+                        argList.Add( new CodeAttributeArgument( "Factor", new CodePrimitiveExpression( (double)factor ) ) );
                     }
 
-                    if (offset != 0.0m)
+                    if( offset != 0.0m )
                     {
-                        argList.Add(new CodeAttributeArgument("Offset", new CodePrimitiveExpression((double) offset)));
+                        argList.Add( new CodeAttributeArgument( "Offset", new CodePrimitiveExpression( (double)offset ) ) );
                     }
                 }
 
-                attributes.AddAttribute( typeof(UnitAttribute), argList.ToArray());
+                attributes.AddAttribute( typeof(UnitAttribute), argList.ToArray() );
             }
         }
 
-        private void HandleThresholdConstraints(Constraints constraints,
-            CodeAttributeDeclarationCollection attributes)
+        private void HandleThresholdConstraints( Constraints constraints,
+            CodeAttributeDeclarationCollection attributes )
         {
-            if (constraints.MaximalExclusive != null)
+            if( constraints.MaximalExclusive != null )
             {
-                var maxExclusive = double.Parse(constraints.MaximalExclusive);
-                attributes.AddAttribute( typeof(MaximalExclusiveAttribute), maxExclusive);
+                var maxExclusive = double.Parse( constraints.MaximalExclusive );
+                attributes.AddAttribute( typeof(MaximalExclusiveAttribute), maxExclusive );
             }
 
-            if (constraints.MaximalInclusive != null)
+            if( constraints.MaximalInclusive != null )
             {
-                var maxInclusive = double.Parse(constraints.MaximalInclusive);
-                attributes.AddAttribute( typeof(MaximalInclusiveAttribute), maxInclusive);
+                var maxInclusive = double.Parse( constraints.MaximalInclusive );
+                attributes.AddAttribute( typeof(MaximalInclusiveAttribute), maxInclusive );
             }
 
-            if (constraints.MinimalExclusive != null)
+            if( constraints.MinimalExclusive != null )
             {
-                var minExclusive = double.Parse(constraints.MinimalExclusive);
-                attributes.AddAttribute( typeof(MinimalExclusiveAttribute), minExclusive);
+                var minExclusive = double.Parse( constraints.MinimalExclusive );
+                attributes.AddAttribute( typeof(MinimalExclusiveAttribute), minExclusive );
             }
 
-            if (constraints.MinimalInclusive != null)
+            if( constraints.MinimalInclusive != null )
             {
-                var minInclusive = double.Parse(constraints.MinimalInclusive);
-                attributes.AddAttribute( typeof(MinimalInclusiveAttribute), minInclusive);
+                var minInclusive = double.Parse( constraints.MinimalInclusive );
+                attributes.AddAttribute( typeof(MinimalInclusiveAttribute), minInclusive );
             }
         }
 
-        private void HandleIdentifierTypeConstraints(Constraints constraints,
-            CodeAttributeDeclarationCollection attributes)
+        private void HandleIdentifierTypeConstraints( Constraints constraints,
+            CodeAttributeDeclarationCollection attributes )
         {
-            if (constraints.FullyQualifiedIdentifierSpecified)
+            if( constraints.FullyQualifiedIdentifierSpecified )
             {
-                var identifierTypeReference = new CodeTypeReferenceExpression(typeof(IdentifierType));
+                var identifierTypeReference = new CodeTypeReferenceExpression( typeof(IdentifierType) );
                 var fieldReference = new CodeFieldReferenceExpression();
                 fieldReference.TargetObject = identifierTypeReference;
-                switch (constraints.FullyQualifiedIdentifier)
+                switch( constraints.FullyQualifiedIdentifier )
                 {
                     case ConstraintsFullyQualifiedIdentifier.CommandIdentifier:
                         fieldReference.FieldName = nameof(IdentifierType.CommandIdentifier);
@@ -308,34 +309,34 @@ namespace Tecan.Sila2.Generator.Generators
                         fieldReference.FieldName = nameof(IdentifierType.TypeIdentifier);
                         break;
                     default:
-                        throw new ArgumentOutOfRangeException(nameof(constraints.FullyQualifiedIdentifier));
+                        throw new ArgumentOutOfRangeException( nameof(constraints.FullyQualifiedIdentifier) );
                 }
 
-                attributes.AddAttribute( typeof(SilaIdentifierTypeAttribute), fieldReference);
+                attributes.AddAttribute( typeof(SilaIdentifierTypeAttribute), fieldReference );
             }
         }
 
-        private void HandleContentTypeConstraints(Constraints constraints,
-            CodeAttributeDeclarationCollection attributes)
+        private void HandleContentTypeConstraints( Constraints constraints,
+            CodeAttributeDeclarationCollection attributes )
         {
-            if (constraints.ContentType != null)
+            if( constraints.ContentType != null )
             {
                 attributes.AddAttribute( typeof(ContentTypeAttribute),
                     constraints.ContentType.Type,
-                    constraints.ContentType.Subtype);
+                    constraints.ContentType.Subtype );
             }
         }
 
-        private void HandleSchemaConstraints(Constraints constraints,
-            CodeAttributeDeclarationCollection attributes)
+        private void HandleSchemaConstraints( Constraints constraints,
+            CodeAttributeDeclarationCollection attributes )
         {
-            if (constraints.Schema != null)
+            if( constraints.Schema != null )
             {
-                var schemaTypeReference = new CodeTypeReferenceExpression(typeof(SchemaType));
+                var schemaTypeReference = new CodeTypeReferenceExpression( typeof(SchemaType) );
                 var fieldReference = new CodeFieldReferenceExpression();
                 fieldReference.TargetObject = schemaTypeReference;
 
-                switch (constraints.Schema.Type)
+                switch( constraints.Schema.Type )
                 {
                     case ConstraintsSchemaType.Json:
                         fieldReference.FieldName = nameof(SchemaType.Json);
@@ -344,75 +345,75 @@ namespace Tecan.Sila2.Generator.Generators
                         fieldReference.FieldName = nameof(SchemaType.Xml);
                         break;
                     default:
-                        throw new ArgumentOutOfRangeException(nameof(constraints.Schema));
+                        throw new ArgumentOutOfRangeException( nameof(constraints.Schema) );
                 }
 
                 attributes.AddAttribute( typeof(SchemaAttribute),
-                    constraints.Schema.Item, fieldReference);
+                    constraints.Schema.Item, fieldReference );
             }
         }
 
-        private CodeTypeDeclaration GenerateEnumeration(SiLAElement dataType, string[] literals)
+        private CodeTypeDeclaration GenerateEnumeration( SiLAElement dataType, string[] literals )
         {
-            var enumeration = new CodeTypeDeclaration(dataType.Identifier)
+            var enumeration = new CodeTypeDeclaration( dataType.Identifier )
             {
                 Attributes = MemberAttributes.Public,
                 TypeAttributes = TypeAttributes.Public,
                 IsEnum = true
             };
-            foreach (var literal in literals)
+            foreach( var literal in literals )
             {
-                enumeration.Members.Add(new CodeMemberField
+                enumeration.Members.Add( new CodeMemberField
                 {
                     Attributes = MemberAttributes.Public | MemberAttributes.Const,
                     Name = literal,
-                    Type = new CodeTypeReference(typeof(int))
-                });
+                    Type = new CodeTypeReference( typeof(int) )
+                } );
             }
 
-            ApplyDataType(dataType, enumeration);
+            ApplyDataType( dataType, enumeration );
 
             return enumeration;
         }
 
-        private void ApplyDataType(SiLAElement dataType, CodeTypeDeclaration type)
+        private void ApplyDataType( SiLAElement dataType, CodeTypeDeclaration type )
         {
-            if (dataType.DisplayName != dataType.Identifier)
+            if( dataType.DisplayName != dataType.Identifier.ToDisplayName() )
             {
                 type.CustomAttributes.AddAttribute( typeof(SilaDisplayNameAttribute),
-                    dataType.DisplayName);
+                    dataType.DisplayName );
             }
         }
 
-        private CodeTypeDeclaration GenerateStandardExecutionError(FeatureDefinedExecutionError error)
+        private CodeTypeDeclaration GenerateStandardExecutionError( FeatureDefinedExecutionError error )
         {
-            var type = new CodeTypeDeclaration(error.Identifier + nameof(Exception));
-            type.BaseTypes.Add(typeof(Exception));
+            var type = new CodeTypeDeclaration( error.Identifier + nameof(Exception) );
+            type.BaseTypes.Add( typeof(Exception) );
             type.Attributes = MemberAttributes.Public;
             type.TypeAttributes = TypeAttributes.Public;
 
-            if (error.DisplayName != error.Identifier)
+            if( error.DisplayName != error.Identifier.ToDisplayName() )
             {
                 type.CustomAttributes.AddAttribute( typeof(SilaDisplayNameAttribute),
-                    error.DisplayName);
+                    error.DisplayName );
             }
 
             type.WriteDocumentation( error.Description );
 
             var constructor = new CodeConstructor();
             constructor.Attributes = MemberAttributes.Public;
-            constructor.Parameters.Add(new CodeParameterDeclarationExpression(typeof(string), "message"));
-            constructor.BaseConstructorArgs.Add(new CodeArgumentReferenceExpression("message"));
+            constructor.Parameters.Add( new CodeParameterDeclarationExpression( typeof(string), "message" ) );
+            constructor.BaseConstructorArgs.Add( new CodeArgumentReferenceExpression( "message" ) );
             constructor.WriteDocumentation( "Create a new instance", parameters: new Dictionary<string, string>()
             {
                 { "message", "The actual error message" }
             } );
-            type.Members.Add(constructor);
+            type.Members.Add( constructor );
 
             return type;
         }
 
-        private CodeTypeDeclaration GenerateInterface(Feature feature, TypeManagement typeManagement)
+        private CodeTypeDeclaration GenerateInterface( Feature feature, TypeManagement typeManagement )
         {
             var contract = new CodeTypeDeclaration
             {
@@ -423,32 +424,32 @@ namespace Tecan.Sila2.Generator.Generators
             };
 
             contract.CustomAttributes.AddAttribute( typeof(SilaFeatureAttribute),
-                feature.MaturityLevel == FeatureMaturityLevel.Draft, feature.Category);
+                feature.MaturityLevel == FeatureMaturityLevel.Draft, feature.Category );
             contract.CustomAttributes.AddAttribute( typeof(SilaIdentifierAttribute),
-                feature.Identifier);
+                feature.Identifier );
             contract.WriteDocumentation( feature.Description );
-            if (feature.Identifier != feature.DisplayName)
+            if( feature.Identifier != feature.DisplayName )
             {
                 contract.CustomAttributes.AddAttribute( typeof(SilaDisplayNameAttribute),
-                    feature.DisplayName);
+                    feature.DisplayName );
             }
 
-            foreach (var featureItem in feature.Items)
+            foreach( var featureItem in feature.Items )
             {
-                if (featureItem is FeatureCommand command)
+                if( featureItem is FeatureCommand command )
                 {
-                    contract.Members.Add(GenerateCommandMethod(command, typeManagement));
+                    contract.Members.Add( GenerateCommandMethod( command, typeManagement ) );
                 }
-                else if (featureItem is FeatureProperty property)
+                else if( featureItem is FeatureProperty property )
                 {
-                    contract.Members.Add(GenerateProperty(property, typeManagement.RegisterStruct));
+                    contract.Members.Add( GenerateProperty( property, typeManagement.RegisterStruct ) );
                 }
             }
 
             return contract;
         }
 
-        private CodeTypeMember GenerateProperty(FeatureProperty property, Action<string, StructureType> structHandler)
+        private CodeTypeMember GenerateProperty( FeatureProperty property, Action<string, StructureType> structHandler )
         {
             var prop = new CodeMemberProperty
             {
@@ -457,25 +458,26 @@ namespace Tecan.Sila2.Generator.Generators
                 HasGet = true
             };
 
-            if (property.DisplayName != property.Identifier)
+            if( property.DisplayName != property.Identifier.ToDisplayName() )
             {
                 prop.CustomAttributes.AddAttribute( typeof(SilaDisplayNameAttribute),
-                    property.DisplayName);
+                    property.DisplayName );
             }
 
-            if (property.Observable == FeaturePropertyObservable.Yes)
+            if( property.Observable == FeaturePropertyObservable.Yes )
             {
-                prop.CustomAttributes.AddAttribute( typeof(DynamicAttribute));
+                prop.CustomAttributes.AddAttribute( typeof(DynamicAttribute) );
             }
 
-            prop.Type = _translationProvider.ExtractType( property.DataType, property.Identifier, constraints => HandleConstraints(constraints, prop.CustomAttributes), structHandler );
+            prop.Type = _translationProvider.ExtractType( property.DataType, property.Identifier, constraints => HandleConstraints( constraints, prop.CustomAttributes ),
+                structHandler );
 
-            if (property.DefinedExecutionErrors != null)
+            if( property.DefinedExecutionErrors != null )
             {
-                foreach (var readError in property.DefinedExecutionErrors)
+                foreach( var readError in property.DefinedExecutionErrors )
                 {
                     prop.CustomAttributes.AddAttribute( typeof(ThrowsAttribute),
-                        new CodeTypeOfExpression(readError + nameof(Exception)));
+                        new CodeTypeOfExpression( readError + nameof(Exception) ) );
                 }
             }
 
@@ -484,7 +486,7 @@ namespace Tecan.Sila2.Generator.Generators
             return prop;
         }
 
-        private CodeTypeMember GenerateCommandMethod(FeatureCommand command, TypeManagement typeManagement)
+        private CodeTypeMember GenerateCommandMethod( FeatureCommand command, TypeManagement typeManagement )
         {
             var method = new CodeMemberMethod()
             {
@@ -492,27 +494,28 @@ namespace Tecan.Sila2.Generator.Generators
                 Attributes = MemberAttributes.Public
             };
 
-            if (command.DisplayName != command.Identifier)
+            if( command.DisplayName != command.Identifier.ToDisplayName() )
             {
                 method.CustomAttributes.AddAttribute( typeof(SilaDisplayNameAttribute),
-                    command.DisplayName);
+                    command.DisplayName );
             }
-            var parameters = new Dictionary<string, string>();
-            GenerateCommandMethodParameters(command, method, parameters, typeManagement.RegisterStruct);
-            GenerateCommandMethodReturnType(command, method, typeManagement.RegisterType, typeManagement.RegisterStruct, out var returnDescription);
 
-            if (command.DefinedExecutionErrors != null)
+            var parameters = new Dictionary<string, string>();
+            GenerateCommandMethodParameters( command, method, parameters, typeManagement.RegisterStruct );
+            GenerateCommandMethodReturnType( command, method, typeManagement.RegisterType, typeManagement.RegisterStruct, out var returnDescription );
+
+            if( command.DefinedExecutionErrors != null )
             {
-                foreach (var commandStandardExecutionError in command.DefinedExecutionErrors)
+                foreach( var commandStandardExecutionError in command.DefinedExecutionErrors )
                 {
                     method.CustomAttributes.AddAttribute( typeof(ThrowsAttribute),
-                        new CodeTypeOfExpression(commandStandardExecutionError + nameof(Exception)));
+                        new CodeTypeOfExpression( commandStandardExecutionError + nameof(Exception) ) );
                 }
             }
 
-            if (command.Observable == FeatureCommandObservable.Yes)
+            if( command.Observable == FeatureCommandObservable.Yes )
             {
-                TurnCommandMethodObservable(command, method, typeManagement.RegisterStruct);
+                TurnCommandMethodObservable( command, method, typeManagement.RegisterStruct );
             }
 
             method.WriteDocumentation( command.Description, returnDescription, parameters );
@@ -520,50 +523,52 @@ namespace Tecan.Sila2.Generator.Generators
             return method;
         }
 
-        private void TurnCommandMethodObservable(FeatureCommand command, CodeMemberMethod method, Action<string, StructureType> structHandler)
+        private void TurnCommandMethodObservable( FeatureCommand command, CodeMemberMethod method, Action<string, StructureType> structHandler )
         {
             var intermediate = command.IntermediateResponse ?? new SiLAElement[0];
-            if (command.Response != null && command.Response.Length > 0)
+            if( command.Response != null && command.Response.Length > 0 )
             {
-                if (intermediate.Length > 1)
-                    throw new NotSupportedException("More than one intermediate response is not supported");
+                if( intermediate.Length > 1 )
+                    throw new NotSupportedException( "More than one intermediate response is not supported" );
                 method.ReturnType = intermediate.Length == 1
-                    ? new CodeTypeReference(typeof(IIntermediateObservableCommand<,>).FullName,
-                        _translationProvider.ExtractType( intermediate[0].DataType, command.Identifier, null, structHandler ), method.ReturnType)
-                    : new CodeTypeReference(typeof(IObservableCommand<>).FullName, method.ReturnType);
+                    ? new CodeTypeReference( typeof(IIntermediateObservableCommand<,>).FullName,
+                        _translationProvider.ExtractType( intermediate[0].DataType, command.Identifier, null, structHandler ), method.ReturnType )
+                    : new CodeTypeReference( typeof(IObservableCommand<>).FullName, method.ReturnType );
             }
             else
             {
-                if (intermediate.Length > 1)
-                    throw new NotSupportedException("More than one intermediate response is not supported");
+                if( intermediate.Length > 1 )
+                    throw new NotSupportedException( "More than one intermediate response is not supported" );
                 method.ReturnType = intermediate.Length == 1
-                    ? new CodeTypeReference(typeof(IIntermediateObservableCommand<>).FullName,
-                        _translationProvider.ExtractType( intermediate[0].DataType, command.Identifier + "Intermediate", null, structHandler ))
-                    : new CodeTypeReference(typeof(IObservableCommand));
+                    ? new CodeTypeReference( typeof(IIntermediateObservableCommand<>).FullName,
+                        _translationProvider.ExtractType( intermediate[0].DataType, command.Identifier + "Intermediate", null, structHandler ) )
+                    : new CodeTypeReference( typeof(IObservableCommand) );
             }
         }
 
-        private void GenerateCommandMethodReturnType(FeatureCommand command, CodeMemberMethod method, Action<CodeTypeDeclaration> typeAdder, Action<string, StructureType> structureHandler, out string documentation)
+        private void GenerateCommandMethodReturnType( FeatureCommand command, CodeMemberMethod method, Action<CodeTypeDeclaration> typeAdder,
+            Action<string, StructureType> structureHandler, out string documentation )
         {
-            if (command.Response != null && command.Response.Length > 0)
+            if( command.Response != null && command.Response.Length > 0 )
             {
-                if (command.Response.Length == 1)
+                if( command.Response.Length == 1 )
                 {
                     var response = command.Response[0];
                     method.ReturnTypeCustomAttributes.AddAttribute( typeof(SilaIdentifierAttribute),
-                        response.Identifier);
-                    if (response.DisplayName != response.Identifier)
+                        response.Identifier );
+                    if( response.DisplayName != response.Identifier.ToDisplayName() )
                     {
                         method.ReturnTypeCustomAttributes.AddAttribute( typeof(SilaDisplayNameAttribute),
-                            response.DisplayName);
+                            response.DisplayName );
                     }
 
-                    method.ReturnType = _translationProvider.ExtractType( response.DataType, command.Identifier, constraints => HandleConstraints(constraints, method.ReturnTypeCustomAttributes) );
+                    method.ReturnType = _translationProvider.ExtractType( response.DataType, command.Identifier,
+                        constraints => HandleConstraints( constraints, method.ReturnTypeCustomAttributes ) );
                     documentation = response.Description;
                 }
                 else
                 {
-                    var structure = new StructureType() {Element = command.Response};
+                    var structure = new StructureType() { Element = command.Response };
                     var type = new SiLAElement()
                     {
                         Identifier = command.Identifier + "Response",
@@ -574,11 +579,11 @@ namespace Tecan.Sila2.Generator.Generators
                             Item = structure
                         }
                     };
-                    var generatedType = GenerateStruct(type, structure, false, structureHandler);
+                    var generatedType = GenerateStruct( type, structure, false, structureHandler );
                     method.ReturnTypeCustomAttributes.Add(
-                        new CodeAttributeDeclaration(new CodeTypeReference(typeof(InlineStructAttribute))));
-                    typeAdder?.Invoke(generatedType);
-                    method.ReturnType = new CodeTypeReference(generatedType.Name);
+                        new CodeAttributeDeclaration( new CodeTypeReference( typeof(InlineStructAttribute) ) ) );
+                    typeAdder?.Invoke( generatedType );
+                    method.ReturnType = new CodeTypeReference( generatedType.Name );
                     documentation = string.Join( ", ", command.Response.Select( r => r.Description ) );
                 }
             }
@@ -588,25 +593,26 @@ namespace Tecan.Sila2.Generator.Generators
             }
         }
 
-        private void GenerateCommandMethodParameters(FeatureCommand command, CodeMemberMethod method, Dictionary<string, string> documentation, Action<string, StructureType> structureHandler)
+        private void GenerateCommandMethodParameters( FeatureCommand command, CodeMemberMethod method, Dictionary<string, string> documentation,
+            Action<string, StructureType> structureHandler )
         {
-            if (command.Parameter != null)
+            if( command.Parameter != null )
             {
-                foreach (var parameter in command.Parameter)
+                foreach( var parameter in command.Parameter )
                 {
-                    var identifier = char.ToLowerInvariant(parameter.Identifier[0]) + parameter.Identifier.Substring(1);
+                    var identifier = char.ToLowerInvariant( parameter.Identifier[0] ) + parameter.Identifier.Substring( 1 );
                     var parameterDeclaration = new CodeParameterDeclarationExpression();
                     parameterDeclaration.Name = identifier;
                     parameterDeclaration.Type = _translationProvider.ExtractType( parameter.DataType,
-                        command.Identifier + parameter.Identifier, constraints => HandleConstraints(constraints, parameterDeclaration.CustomAttributes), structureHandler );
-                    if (parameter.Identifier != parameter.DisplayName)
+                        command.Identifier + parameter.Identifier, constraints => HandleConstraints( constraints, parameterDeclaration.CustomAttributes ), structureHandler );
+                    if( parameter.DisplayName != parameter.Identifier.ToDisplayName() )
                     {
                         parameterDeclaration.CustomAttributes.AddAttribute( typeof(SilaDisplayNameAttribute),
-                            parameter.DisplayName);
+                            parameter.DisplayName );
                     }
 
-                    method.Parameters.Add(parameterDeclaration);
-                    documentation.Add(parameterDeclaration.Name, parameter.Description);
+                    method.Parameters.Add( parameterDeclaration );
+                    documentation.Add( parameterDeclaration.Name, parameter.Description );
                 }
             }
         }

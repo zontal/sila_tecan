@@ -581,7 +581,7 @@ namespace Tecan.Sila2.Generator.Generators
                 Attributes = MemberAttributes.Private
             };
             var parameter = new CodeParameterDeclarationExpression(
-                CodeGenerationHelper.GetPropertyResponseType( _translationProvider, featureProperty),
+                _nameProvider.GetPropertyResponseType( featureProperty, _translationProvider),
                 fieldName.Substring(1));
             receiveValueMethod.Parameters.Add(parameter);
             var inner = new CodeVariableDeclarationStatement(

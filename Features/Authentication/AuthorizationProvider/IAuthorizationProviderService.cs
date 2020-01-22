@@ -18,8 +18,6 @@ namespace Tecan.Sila2.AuthorizationProvider
     [Tecan.Sila2.SilaFeatureAttribute(true, "core")]
     [Tecan.Sila2.SilaIdentifierAttribute("AuthorizationProviderService")]
     [Tecan.Sila2.SilaDisplayNameAttribute("Authorization Provider Service")]
-    [Tecan.Sila2.SilaDescriptionAttribute("This Feature provides SiLA Servers with the ability to check a given access token" +
-        ".")]
     public partial interface IAuthorizationProviderService
     {
         
@@ -30,23 +28,16 @@ namespace Tecan.Sila2.AuthorizationProvider
         /// <param name="requestedServer">The server for which an authorization is requested.</param>
         /// <param name="requestedFeature">The feature that is requested to access.</param>
         /// <returns>The lifetime of the provided access token as the maximum validity period after the last SiLA Server request.</returns>
-        [Tecan.Sila2.SilaDescriptionAttribute("Verifies that a given token is valid for the requested server.")]
         [Tecan.Sila2.ThrowsAttribute(typeof(AuthorizationFailedException))]
         [Tecan.Sila2.ThrowsAttribute(typeof(InvalidAccessTokenException))]
         [return: Tecan.Sila2.SilaIdentifierAttribute("TokenLifetime")]
-        [return: Tecan.Sila2.SilaDisplayNameAttribute("Token Lifetime")]
-        [return: Tecan.Sila2.SilaDescriptionAttribute("The lifetime of the provided access token as the maximum validity period after th" +
-            "e last SiLA Server request.")]
         [return: Tecan.Sila2.UnitAttribute("s", Second=1)]
-        long Verify([Tecan.Sila2.SilaDisplayNameAttribute("Access Token")] [Tecan.Sila2.SilaDescriptionAttribute("The token to be used along with accessing a Command or Property on a SiLA Server." +
-            "")] string accessToken, [Tecan.Sila2.PatternConstraintAttribute("[0-9a-f]{8}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{12}")] [Tecan.Sila2.SilaDisplayNameAttribute("Requested Server")] [Tecan.Sila2.SilaDescriptionAttribute("The server for which an authorization is requested.")] string requestedServer, [Tecan.Sila2.SilaIdentifierTypeAttribute(Tecan.Sila2.IdentifierType.FeatureIdentifier)] [Tecan.Sila2.SilaDisplayNameAttribute("Requested Feature")] [Tecan.Sila2.SilaDescriptionAttribute("The feature that is requested to access.")] string requestedFeature);
+        long Verify(string accessToken, [Tecan.Sila2.PatternConstraintAttribute("[0-9a-f]{8}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{12}")] string requestedServer, [Tecan.Sila2.SilaIdentifierTypeAttribute(Tecan.Sila2.IdentifierType.FeatureIdentifier)] string requestedFeature);
     }
     
     ///  <summary>
     /// The provided access token is not valid for the given server/feature.
     /// </summary>
-    [Tecan.Sila2.SilaDisplayNameAttribute("Authorization Failed")]
-    [Tecan.Sila2.SilaDescriptionAttribute("The provided access token is not valid for the given server/feature.")]
     public class AuthorizationFailedException : System.Exception
     {
         
@@ -63,8 +54,6 @@ namespace Tecan.Sila2.AuthorizationProvider
     ///  <summary>
     /// The sent access token is not valid.
     /// </summary>
-    [Tecan.Sila2.SilaDisplayNameAttribute("Invalid Access Token")]
-    [Tecan.Sila2.SilaDescriptionAttribute("The sent access token is not valid.")]
     public class InvalidAccessTokenException : System.Exception
     {
         

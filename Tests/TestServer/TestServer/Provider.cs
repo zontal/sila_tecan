@@ -19,7 +19,7 @@ namespace Tecan.Sila2.IntegrationTests
     
     
     ///  <summary>
-    /// Encapsulates provider classes to expose the TestServer feature via SiLA2
+    /// Encapsulates provider classes to expose the Test Server feature via SiLA2
     /// </summary>
     public sealed partial class TestServerProvider
     {
@@ -132,7 +132,7 @@ namespace Tecan.Sila2.IntegrationTests
             }
             
             ///  <summary>
-            /// Executes the PassBool command
+            /// Executes the Pass Bool command
             /// </summary>
             /// <param name="request">A data transfer object that contains the command parameters</param>
             /// <param name="context">The context in which the command is issued</param>
@@ -148,7 +148,7 @@ namespace Tecan.Sila2.IntegrationTests
             }
             
             ///  <summary>
-            /// Executes the PassDouble command
+            /// Executes the Pass Double command
             /// </summary>
             /// <param name="request">A data transfer object that contains the command parameters</param>
             /// <param name="context">The context in which the command is issued</param>
@@ -164,7 +164,7 @@ namespace Tecan.Sila2.IntegrationTests
             }
             
             ///  <summary>
-            /// Executes the PassLong command
+            /// Executes the Pass Long command
             /// </summary>
             /// <param name="request">A data transfer object that contains the command parameters</param>
             /// <param name="context">The context in which the command is issued</param>
@@ -176,11 +176,11 @@ namespace Tecan.Sila2.IntegrationTests
             
             private PassIntResponseDto PassIntInternal(PassIntRequestDto request)
             {
-                return new PassIntResponseDto(_implementation.PassInt(((int)(request.Data.Extract(_server)))), _server);
+                return new PassIntResponseDto(_implementation.PassInt(request.Data.Extract(_server)), _server);
             }
             
             ///  <summary>
-            /// Executes the PassInt command
+            /// Executes the Pass Int command
             /// </summary>
             /// <param name="request">A data transfer object that contains the command parameters</param>
             /// <param name="context">The context in which the command is issued</param>
@@ -196,7 +196,7 @@ namespace Tecan.Sila2.IntegrationTests
             }
             
             ///  <summary>
-            /// Executes the PassTimestamp command
+            /// Executes the Pass Timestamp command
             /// </summary>
             /// <param name="request">A data transfer object that contains the command parameters</param>
             /// <param name="context">The context in which the command is issued</param>
@@ -212,7 +212,7 @@ namespace Tecan.Sila2.IntegrationTests
             }
             
             ///  <summary>
-            /// Executes the PassTime command
+            /// Executes the Pass Time command
             /// </summary>
             /// <param name="request">A data transfer object that contains the command parameters</param>
             /// <param name="context">The context in which the command is issued</param>
@@ -228,7 +228,7 @@ namespace Tecan.Sila2.IntegrationTests
             }
             
             ///  <summary>
-            /// Executes the PassString command
+            /// Executes the Pass String command
             /// </summary>
             /// <param name="request">A data transfer object that contains the command parameters</param>
             /// <param name="context">The context in which the command is issued</param>
@@ -244,7 +244,7 @@ namespace Tecan.Sila2.IntegrationTests
             }
             
             ///  <summary>
-            /// Executes the PassStream command
+            /// Executes the Pass Stream command
             /// </summary>
             /// <param name="request">A data transfer object that contains the command parameters</param>
             /// <param name="context">The context in which the command is issued</param>
@@ -256,11 +256,11 @@ namespace Tecan.Sila2.IntegrationTests
             
             private PassFileResponseDto PassFileInternal(PassFileRequestDto request)
             {
-                return new PassFileResponseDto(_implementation.PassFile(request.File.ExtractToFileInfo(_server)), _server);
+                return new PassFileResponseDto(_implementation.PassFile(request.File.Extract(_server)), _server);
             }
             
             ///  <summary>
-            /// Executes the PassFile command
+            /// Executes the Pass File command
             /// </summary>
             /// <param name="request">A data transfer object that contains the command parameters</param>
             /// <param name="context">The context in which the command is issued</param>
@@ -272,11 +272,11 @@ namespace Tecan.Sila2.IntegrationTests
             
             private PassBytesResponseDto PassBytesInternal(PassBytesRequestDto request)
             {
-                return new PassBytesResponseDto(_implementation.PassBytes(request.Bytes.ExtractToBytes(_server)), _server);
+                return new PassBytesResponseDto(_implementation.PassBytes(request.Bytes.Extract(_server)), _server);
             }
             
             ///  <summary>
-            /// Executes the PassBytes command
+            /// Executes the Pass Bytes command
             /// </summary>
             /// <param name="request">A data transfer object that contains the command parameters</param>
             /// <param name="context">The context in which the command is issued</param>
@@ -292,7 +292,7 @@ namespace Tecan.Sila2.IntegrationTests
             }
             
             ///  <summary>
-            /// Executes the PassCollection command
+            /// Executes the Pass Collection command
             /// </summary>
             /// <param name="request">A data transfer object that contains the command parameters</param>
             /// <param name="context">The context in which the command is issued</param>
@@ -308,7 +308,7 @@ namespace Tecan.Sila2.IntegrationTests
             }
             
             ///  <summary>
-            /// Executes the PassStructure command
+            /// Executes the Pass Structure command
             /// </summary>
             /// <param name="request">A data transfer object that contains the command parameters</param>
             /// <param name="context">The context in which the command is issued</param>
@@ -347,7 +347,7 @@ namespace Tecan.Sila2.IntegrationTests
             }
             
             ///  <summary>
-            /// Executes the RunObservable command
+            /// Executes the Run Observable command
             /// </summary>
             /// <param name="request">A data transfer object that contains the command parameters</param>
             /// <param name="context">The context in which the command is issued</param>
@@ -398,7 +398,7 @@ namespace Tecan.Sila2.IntegrationTests
             }
             
             ///  <summary>
-            /// Executes the RunIntermediateObservableCommand command
+            /// Executes the Run Intermediate Observable Command command
             /// </summary>
             /// <param name="request">A data transfer object that contains the command parameters</param>
             /// <param name="context">The context in which the command is issued</param>

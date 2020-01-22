@@ -24,7 +24,6 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         ///  <summary>
         /// Current Temperature as measured by the controller.
         /// </summary>
-        [Tecan.Sila2.SilaDisplayNameAttribute("Current Temperature")]
         [Tecan.Sila2.DynamicAttribute()]
         [Tecan.Sila2.UnitAttribute("K", Kelvin=1)]
         [Tecan.Sila2.MaximalInclusiveAttribute(373D)]
@@ -39,16 +38,14 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// </summary>
         /// <param name="targetTemperature">The target temperature that the device will try to reach. Note that the command might
         ///be completed at a temperature that is close enough.</param>
-        [Tecan.Sila2.SilaDisplayNameAttribute("Control Temperature")]
         [Tecan.Sila2.ThrowsAttribute(typeof(TemperatureNotReachableException))]
         [Tecan.Sila2.ThrowsAttribute(typeof(ControlInterruptedException))]
-        Tecan.Sila2.IObservableCommand ControlTemperature([Tecan.Sila2.UnitAttribute("K", Kelvin=1)] [Tecan.Sila2.MaximalInclusiveAttribute(373D)] [Tecan.Sila2.MinimalExclusiveAttribute(273D)] [Tecan.Sila2.SilaDisplayNameAttribute("Target Temperature")] double targetTemperature);
+        Tecan.Sila2.IObservableCommand ControlTemperature([Tecan.Sila2.UnitAttribute("K", Kelvin=1)] [Tecan.Sila2.MaximalInclusiveAttribute(373D)] [Tecan.Sila2.MinimalExclusiveAttribute(273D)] double targetTemperature);
     }
     
     ///  <summary>
     /// The ambient conditions prohibit the device from reaching the target temperature.
     /// </summary>
-    [Tecan.Sila2.SilaDisplayNameAttribute("Temperature Not Reachable")]
     public class TemperatureNotReachableException : System.Exception
     {
         
@@ -65,7 +62,6 @@ namespace Tecan.Sila2.Generator.Test.TestReference
     ///  <summary>
     /// The control of temperature couldn't be finished as it was interrupted by another target temperature.
     /// </summary>
-    [Tecan.Sila2.SilaDisplayNameAttribute("Control Interrupted")]
     public class ControlInterruptedException : System.Exception
     {
         

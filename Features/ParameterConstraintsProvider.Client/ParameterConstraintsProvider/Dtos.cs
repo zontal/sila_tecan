@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Tecan.Sila2.ParameterConstraintsProvider
+namespace Tecan.Sila2.ParameterConstraintsProvider.ParameterConstraintsProvider
 {
     using Tecan.Sila2;
     

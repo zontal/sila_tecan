@@ -448,7 +448,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
     }
     
     ///  <summary>
-    /// The data transfer object for URL
+    /// The data transfer object for Url
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
     public class UrlDto : Tecan.Sila2.ISilaTransferObject<Url>

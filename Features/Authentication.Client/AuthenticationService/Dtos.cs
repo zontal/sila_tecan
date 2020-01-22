@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Tecan.Sila2.Authentication
+namespace Tecan.Sila2.Authentication.AuthenticationService
 {
     using Tecan.Sila2;
     

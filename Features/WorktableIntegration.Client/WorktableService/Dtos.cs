@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Tecan.Sila2.WorktableIntegration
+namespace Tecan.Sila2.WorktableIntegration.WorktableService
 {
     using Tecan.Sila2;
     

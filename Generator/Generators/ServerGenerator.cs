@@ -209,7 +209,7 @@ namespace Tecan.Sila2.Generator.Generators
                 Attributes = MemberAttributes.Family,
                 ReturnType = new CodeTypeReference( typeof(Task) )
             };
-            var responseType = CodeGenerationHelper.GetPropertyResponseType( _translationProvider, featureProperty );
+            var responseType = _nameProvider.GetPropertyResponseType( featureProperty, _translationProvider );
             implementationMethod.Parameters.Add(
                 new CodeParameterDeclarationExpression( nameof(EmptyRequest), "request" ) );
             implementationMethod.Parameters.Add( new CodeParameterDeclarationExpression(
@@ -306,7 +306,7 @@ namespace Tecan.Sila2.Generator.Generators
                 Name = "Get" + featureProperty.Identifier,
                 Attributes = MemberAttributes.Family
             };
-            var responseType = CodeGenerationHelper.GetPropertyResponseType( _translationProvider, featureProperty );
+            var responseType = _nameProvider.GetPropertyResponseType( featureProperty, _translationProvider );
             implementationMethod.ReturnType = new CodeTypeReference( typeof(Task<>).FullName, responseType );
             implementationMethod.Parameters.Add(
                 new CodeParameterDeclarationExpression( nameof(EmptyRequest), "request" ) );

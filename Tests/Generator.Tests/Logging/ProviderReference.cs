@@ -245,7 +245,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
     }
     
     ///  <summary>
-    /// An abstract base class to support the LoggingActivity metadata
+    /// An abstract base class to support the Logging Activity metadata
     /// </summary>
     public abstract partial class LoggingActivityInterceptorBase : Tecan.Sila2.Server.IRequestInterceptor
     {

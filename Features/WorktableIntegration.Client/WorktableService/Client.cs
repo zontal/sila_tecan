@@ -13,12 +13,12 @@ using Tecan.Sila2;
 using Tecan.Sila2.Client;
 using Tecan.Sila2.Server;
 
-namespace Tecan.Sila2.WorktableIntegration
+namespace Tecan.Sila2.WorktableIntegration.WorktableService
 {
     
     
     ///  <summary>
-    /// Encapsulates provider classes to expose the WorktableService feature via SiLA2
+    /// Encapsulates provider classes to expose the Worktable Service feature via SiLA2
     /// </summary>
     public sealed partial class WorktableServiceProvider
     {
@@ -122,7 +122,7 @@ namespace Tecan.Sila2.WorktableIntegration
                         "emplates");
                 try
                 {
-                    System.Collections.Generic.ICollection<SiteTemplate> response = Tecan.Sila2.DtoExtensions.Extract(CallInvoker.BlockingUnaryCall(GetSiteTemplatesMethod, null, callInfo.Options, EmptyRequest.Instance).Value, _executionManager.DownloadBinaryStore);
+                    System.Collections.Generic.ICollection<SiteTemplate> response = CallInvoker.BlockingUnaryCall(GetSiteTemplatesMethod, null, callInfo.Options, EmptyRequest.Instance).Value.Extract(_executionManager.DownloadBinaryStore);
                     callInfo.FinishSuccessful();
                     return response;
                 } catch (System.Exception ex)
@@ -139,7 +139,7 @@ namespace Tecan.Sila2.WorktableIntegration
                         "");
                 try
                 {
-                    System.Collections.Generic.ICollection<Site> response = Tecan.Sila2.DtoExtensions.Extract(CallInvoker.BlockingUnaryCall(GetSitesMethod, null, callInfo.Options, EmptyRequest.Instance).Value, _executionManager.DownloadBinaryStore);
+                    System.Collections.Generic.ICollection<Site> response = CallInvoker.BlockingUnaryCall(GetSitesMethod, null, callInfo.Options, EmptyRequest.Instance).Value.Extract(_executionManager.DownloadBinaryStore);
                     callInfo.FinishSuccessful();
                     return response;
                 } catch (System.Exception ex)

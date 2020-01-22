@@ -19,7 +19,7 @@ namespace Tecan.Sila2.ParameterDefaultsProvider.Tests
     
     
     ///  <summary>
-    /// Encapsulates provider classes to expose the ExampleFileConstraintProviderService feature via SiLA2
+    /// Encapsulates provider classes to expose the Example File Constraint Provider Service feature via SiLA2
     /// </summary>
     public sealed partial class ExampleFileConstraintProviderServiceProvider
     {
@@ -80,7 +80,7 @@ namespace Tecan.Sila2.ParameterDefaultsProvider.Tests
             }
             
             ///  <summary>
-            /// Executes the FileExampleMethod command
+            /// Executes the File Example Method command
             /// </summary>
             /// <param name="request">A data transfer object that contains the command parameters</param>
             /// <param name="context">The context in which the command is issued</param>

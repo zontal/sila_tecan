@@ -8,13 +8,13 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Tecan.Sila2.IntegrationTests
+namespace Tecan.Sila2.IntegrationTests.TestServer
 {
     using Tecan.Sila2;
     
     
     ///  <summary>
-    /// Data transfer object for the request of the PassBool command
+    /// Data transfer object for the request of the Pass Bool command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
     public class PassBoolRequestDto : Tecan.Sila2.ISilaTransferObject, Tecan.Sila2.ISilaRequestObject
@@ -77,7 +77,7 @@ namespace Tecan.Sila2.IntegrationTests
     }
     
     ///  <summary>
-    /// Data transfer object for the response of the PassBool command
+    /// Data transfer object for the response of the Pass Bool command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
     public class PassBoolResponseDto : Tecan.Sila2.ISilaTransferObject
@@ -128,7 +128,7 @@ namespace Tecan.Sila2.IntegrationTests
     }
     
     ///  <summary>
-    /// Data transfer object for the request of the PassDouble command
+    /// Data transfer object for the request of the Pass Double command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
     public class PassDoubleRequestDto : Tecan.Sila2.ISilaTransferObject, Tecan.Sila2.ISilaRequestObject
@@ -191,7 +191,7 @@ namespace Tecan.Sila2.IntegrationTests
     }
     
     ///  <summary>
-    /// Data transfer object for the response of the PassDouble command
+    /// Data transfer object for the response of the Pass Double command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
     public class PassDoubleResponseDto : Tecan.Sila2.ISilaTransferObject
@@ -242,7 +242,7 @@ namespace Tecan.Sila2.IntegrationTests
     }
     
     ///  <summary>
-    /// Data transfer object for the request of the PassLong command
+    /// Data transfer object for the request of the Pass Long command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
     public class PassLongRequestDto : Tecan.Sila2.ISilaTransferObject, Tecan.Sila2.ISilaRequestObject
@@ -305,7 +305,7 @@ namespace Tecan.Sila2.IntegrationTests
     }
     
     ///  <summary>
-    /// Data transfer object for the response of the PassLong command
+    /// Data transfer object for the response of the Pass Long command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
     public class PassLongResponseDto : Tecan.Sila2.ISilaTransferObject
@@ -356,7 +356,7 @@ namespace Tecan.Sila2.IntegrationTests
     }
     
     ///  <summary>
-    /// Data transfer object for the request of the PassInt command
+    /// Data transfer object for the request of the Pass Int command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
     public class PassIntRequestDto : Tecan.Sila2.ISilaTransferObject, Tecan.Sila2.ISilaRequestObject
@@ -419,7 +419,7 @@ namespace Tecan.Sila2.IntegrationTests
     }
     
     ///  <summary>
-    /// Data transfer object for the response of the PassInt command
+    /// Data transfer object for the response of the Pass Int command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
     public class PassIntResponseDto : Tecan.Sila2.ISilaTransferObject
@@ -470,7 +470,7 @@ namespace Tecan.Sila2.IntegrationTests
     }
     
     ///  <summary>
-    /// Data transfer object for the request of the PassTimestamp command
+    /// Data transfer object for the request of the Pass Timestamp command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
     public class PassTimestampRequestDto : Tecan.Sila2.ISilaTransferObject, Tecan.Sila2.ISilaRequestObject
@@ -533,7 +533,7 @@ namespace Tecan.Sila2.IntegrationTests
     }
     
     ///  <summary>
-    /// Data transfer object for the response of the PassTimestamp command
+    /// Data transfer object for the response of the Pass Timestamp command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
     public class PassTimestampResponseDto : Tecan.Sila2.ISilaTransferObject
@@ -584,7 +584,7 @@ namespace Tecan.Sila2.IntegrationTests
     }
     
     ///  <summary>
-    /// Data transfer object for the request of the PassTime command
+    /// Data transfer object for the request of the Pass Time command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
     public class PassTimeRequestDto : Tecan.Sila2.ISilaTransferObject, Tecan.Sila2.ISilaRequestObject
@@ -647,7 +647,7 @@ namespace Tecan.Sila2.IntegrationTests
     }
     
     ///  <summary>
-    /// Data transfer object for the response of the PassTime command
+    /// Data transfer object for the response of the Pass Time command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
     public class PassTimeResponseDto : Tecan.Sila2.ISilaTransferObject
@@ -698,7 +698,7 @@ namespace Tecan.Sila2.IntegrationTests
     }
     
     ///  <summary>
-    /// Data transfer object for the request of the PassString command
+    /// Data transfer object for the request of the Pass String command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
     public class PassStringRequestDto : Tecan.Sila2.ISilaTransferObject, Tecan.Sila2.ISilaRequestObject
@@ -761,7 +761,7 @@ namespace Tecan.Sila2.IntegrationTests
     }
     
     ///  <summary>
-    /// Data transfer object for the response of the PassString command
+    /// Data transfer object for the response of the Pass String command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
     public class PassStringResponseDto : Tecan.Sila2.ISilaTransferObject
@@ -812,7 +812,7 @@ namespace Tecan.Sila2.IntegrationTests
     }
     
     ///  <summary>
-    /// Data transfer object for the request of the PassStream command
+    /// Data transfer object for the request of the Pass Stream command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
     public class PassStreamRequestDto : Tecan.Sila2.ISilaTransferObject, Tecan.Sila2.ISilaRequestObject
@@ -875,7 +875,7 @@ namespace Tecan.Sila2.IntegrationTests
     }
     
     ///  <summary>
-    /// Data transfer object for the response of the PassStream command
+    /// Data transfer object for the response of the Pass Stream command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
     public class PassStreamResponseDto : Tecan.Sila2.ISilaTransferObject
@@ -926,7 +926,7 @@ namespace Tecan.Sila2.IntegrationTests
     }
     
     ///  <summary>
-    /// Data transfer object for the request of the PassFile command
+    /// Data transfer object for the request of the Pass File command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
     public class PassFileRequestDto : Tecan.Sila2.ISilaTransferObject, Tecan.Sila2.ISilaRequestObject
@@ -989,7 +989,7 @@ namespace Tecan.Sila2.IntegrationTests
     }
     
     ///  <summary>
-    /// Data transfer object for the response of the PassFile command
+    /// Data transfer object for the response of the Pass File command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
     public class PassFileResponseDto : Tecan.Sila2.ISilaTransferObject
@@ -1040,7 +1040,7 @@ namespace Tecan.Sila2.IntegrationTests
     }
     
     ///  <summary>
-    /// Data transfer object for the request of the PassBytes command
+    /// Data transfer object for the request of the Pass Bytes command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
     public class PassBytesRequestDto : Tecan.Sila2.ISilaTransferObject, Tecan.Sila2.ISilaRequestObject
@@ -1103,7 +1103,7 @@ namespace Tecan.Sila2.IntegrationTests
     }
     
     ///  <summary>
-    /// Data transfer object for the response of the PassBytes command
+    /// Data transfer object for the response of the Pass Bytes command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
     public class PassBytesResponseDto : Tecan.Sila2.ISilaTransferObject
@@ -1154,7 +1154,7 @@ namespace Tecan.Sila2.IntegrationTests
     }
     
     ///  <summary>
-    /// Data transfer object for the request of the PassCollection command
+    /// Data transfer object for the request of the Pass Collection command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
     public class PassCollectionRequestDto : Tecan.Sila2.ISilaTransferObject, Tecan.Sila2.ISilaRequestObject
@@ -1217,7 +1217,7 @@ namespace Tecan.Sila2.IntegrationTests
     }
     
     ///  <summary>
-    /// Data transfer object for the response of the PassCollection command
+    /// Data transfer object for the response of the Pass Collection command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
     public class PassCollectionResponseDto : Tecan.Sila2.ISilaTransferObject
@@ -1268,7 +1268,7 @@ namespace Tecan.Sila2.IntegrationTests
     }
     
     ///  <summary>
-    /// Data transfer object for the request of the PassStructure command
+    /// Data transfer object for the request of the Pass Structure command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
     public class PassStructureRequestDto : Tecan.Sila2.ISilaTransferObject, Tecan.Sila2.ISilaRequestObject
@@ -1331,7 +1331,7 @@ namespace Tecan.Sila2.IntegrationTests
     }
     
     ///  <summary>
-    /// Data transfer object for the response of the PassStructure command
+    /// Data transfer object for the response of the Pass Structure command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
     public class PassStructureResponseDto : Tecan.Sila2.ISilaTransferObject
@@ -1382,7 +1382,7 @@ namespace Tecan.Sila2.IntegrationTests
     }
     
     ///  <summary>
-    /// Data transfer object for the request of the RunObservable command
+    /// Data transfer object for the request of the Run Observable command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
     public class RunObservableRequestDto : Tecan.Sila2.ISilaTransferObject, Tecan.Sila2.ISilaRequestObject
@@ -1426,7 +1426,7 @@ namespace Tecan.Sila2.IntegrationTests
     }
     
     ///  <summary>
-    /// Data transfer object for the response of the RunObservable command
+    /// Data transfer object for the response of the Run Observable command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
     public class RunObservableResponseDto : Tecan.Sila2.ISilaTransferObject
@@ -1477,7 +1477,7 @@ namespace Tecan.Sila2.IntegrationTests
     }
     
     ///  <summary>
-    /// Data transfer object for the request of the RunIntermediateObservableCommand command
+    /// Data transfer object for the request of the Run Intermediate Observable Command command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
     public class RunIntermediateObservableCommandRequestDto : Tecan.Sila2.ISilaTransferObject, Tecan.Sila2.ISilaRequestObject
@@ -1522,7 +1522,7 @@ namespace Tecan.Sila2.IntegrationTests
     }
     
     ///  <summary>
-    /// Data transfer object for the intermediate response of the RunIntermediateObservableCommand command
+    /// Data transfer object for the intermediate response of the Run Intermediate Observable Command command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
     public class RunIntermediateObservableCommandIntermediateDto : Tecan.Sila2.ISilaTransferObject

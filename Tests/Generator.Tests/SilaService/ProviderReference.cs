@@ -498,7 +498,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
                         "");
                 try
                 {
-                    System.Collections.Generic.ICollection<FeatureIdentifier> response = CallInvoker.BlockingUnaryCall( GetImplementedFeaturesMethod, null, callInfo.Options, EmptyRequest.Instance ).Value.Extract(_executionManager.DownloadBinaryStore);
+                    System.Collections.Generic.ICollection<FeatureIdentifier> response = CallInvoker.BlockingUnaryCall(GetImplementedFeaturesMethod, null, callInfo.Options, EmptyRequest.Instance).Value.Extract(_executionManager.DownloadBinaryStore);
                     callInfo.FinishSuccessful();
                     return response;
                 } catch (System.Exception ex)

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Feature xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" SiLA2Version="1.0" FeatureVersion="1.0" Originator="tecan.sila.worktableintegration" Category="infrastructure" xmlns="http://www.sila-standard.org">
   <Identifier>WorktableService</Identifier>
-  <DisplayName>WorktableService</DisplayName>
-  <Description />
+  <DisplayName>Worktable Service</DisplayName>
+  <Description>Denotes a service to describe dimensions of a device in order to integrate it into a worktable</Description>
   <Property>
     <Identifier>BoundingBox</Identifier>
-    <DisplayName>BoundingBox</DisplayName>
+    <DisplayName>Bounding Box</DisplayName>
     <Description>The outer hull of the device</Description>
     <Observable>No</Observable>
     <DataType>
@@ -14,7 +14,7 @@
   </Property>
   <Property>
     <Identifier>SiteTemplates</Identifier>
-    <DisplayName>SiteTemplates</DisplayName>
+    <DisplayName>Site Templates</DisplayName>
     <Description>The templates for sites used by this device</Description>
     <Observable>No</Observable>
     <DataType>
@@ -40,8 +40,8 @@
   </Property>
   <DataTypeDefinition>
     <Identifier>BoundingBox</Identifier>
-    <DisplayName>BoundingBox</DisplayName>
-    <Description />
+    <DisplayName>Bounding Box</DisplayName>
+    <Description>Denotes a bounding box for a device</Description>
     <DataType>
       <Structure>
         <Element>
@@ -80,8 +80,8 @@
   </DataTypeDefinition>
   <DataTypeDefinition>
     <Identifier>SiteTemplate</Identifier>
-    <DisplayName>SiteTemplate</DisplayName>
-    <Description />
+    <DisplayName>Site Template</DisplayName>
+    <Description>Defines a template for a site</Description>
     <DataType>
       <Structure>
         <Element>
@@ -118,7 +118,7 @@
   <DataTypeDefinition>
     <Identifier>Site</Identifier>
     <DisplayName>Site</DisplayName>
-    <Description />
+    <Description>Denotes a site on the worktable</Description>
     <DataType>
       <Structure>
         <Element>
@@ -170,7 +170,7 @@
   <DataTypeDefinition>
     <Identifier>Rectangle</Identifier>
     <DisplayName>Rectangle</DisplayName>
-    <Description />
+    <Description>Denotes a rectangle on the ground</Description>
     <DataType>
       <Structure>
         <Element>
@@ -225,7 +225,7 @@
   <DataTypeDefinition>
     <Identifier>Offset</Identifier>
     <DisplayName>Offset</DisplayName>
-    <Description />
+    <Description>Denotes a positional offset</Description>
     <DataType>
       <Structure>
         <Element>

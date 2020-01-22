@@ -16,7 +16,7 @@ namespace Tecan.Sila2.ParameterDefaultsProvider.Tests
     
     
     ///  <summary>
-    /// Data transfer object for the request of the FileExampleMethod command
+    /// Data transfer object for the request of the File Example Method command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
     public class FileExampleMethodRequestDto : Tecan.Sila2.ISilaTransferObject, Tecan.Sila2.ISilaRequestObject

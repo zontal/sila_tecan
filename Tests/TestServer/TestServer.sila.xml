@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Feature xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" SiLA2Version="1.0" FeatureVersion="1.0" Originator="tecan.sila" Category="integrationtests" xmlns="http://www.sila-standard.org">
   <Identifier>TestServer</Identifier>
-  <DisplayName>TestServer</DisplayName>
+  <DisplayName>Test Server</DisplayName>
   <Description />
   <Command>
     <Identifier>PassBool</Identifier>
-    <DisplayName>PassBool</DisplayName>
+    <DisplayName>Pass Bool</DisplayName>
     <Description />
     <Observable>No</Observable>
     <Parameter>
@@ -18,7 +18,7 @@
     </Parameter>
     <Response>
       <Identifier>ReturnValue</Identifier>
-      <DisplayName>ReturnValue</DisplayName>
+      <DisplayName>Return Value</DisplayName>
       <Description />
       <DataType>
         <Basic>Boolean</Basic>
@@ -27,7 +27,7 @@
   </Command>
   <Command>
     <Identifier>PassDouble</Identifier>
-    <DisplayName>PassDouble</DisplayName>
+    <DisplayName>Pass Double</DisplayName>
     <Description />
     <Observable>No</Observable>
     <Parameter>
@@ -40,7 +40,7 @@
     </Parameter>
     <Response>
       <Identifier>ReturnValue</Identifier>
-      <DisplayName>ReturnValue</DisplayName>
+      <DisplayName>Return Value</DisplayName>
       <Description />
       <DataType>
         <Basic>Real</Basic>
@@ -49,7 +49,7 @@
   </Command>
   <Command>
     <Identifier>PassLong</Identifier>
-    <DisplayName>PassLong</DisplayName>
+    <DisplayName>Pass Long</DisplayName>
     <Description />
     <Observable>No</Observable>
     <Parameter>
@@ -62,7 +62,7 @@
     </Parameter>
     <Response>
       <Identifier>ReturnValue</Identifier>
-      <DisplayName>ReturnValue</DisplayName>
+      <DisplayName>Return Value</DisplayName>
       <Description />
       <DataType>
         <Basic>Integer</Basic>
@@ -71,7 +71,7 @@
   </Command>
   <Command>
     <Identifier>PassInt</Identifier>
-    <DisplayName>PassInt</DisplayName>
+    <DisplayName>Pass Int</DisplayName>
     <Description />
     <Observable>No</Observable>
     <Parameter>
@@ -84,7 +84,7 @@
     </Parameter>
     <Response>
       <Identifier>ReturnValue</Identifier>
-      <DisplayName>ReturnValue</DisplayName>
+      <DisplayName>Return Value</DisplayName>
       <Description />
       <DataType>
         <Basic>Integer</Basic>
@@ -93,7 +93,7 @@
   </Command>
   <Command>
     <Identifier>PassTimestamp</Identifier>
-    <DisplayName>PassTimestamp</DisplayName>
+    <DisplayName>Pass Timestamp</DisplayName>
     <Description />
     <Observable>No</Observable>
     <Parameter>
@@ -106,7 +106,7 @@
     </Parameter>
     <Response>
       <Identifier>ReturnValue</Identifier>
-      <DisplayName>ReturnValue</DisplayName>
+      <DisplayName>Return Value</DisplayName>
       <Description />
       <DataType>
         <Basic>Timestamp</Basic>
@@ -115,7 +115,7 @@
   </Command>
   <Command>
     <Identifier>PassTime</Identifier>
-    <DisplayName>PassTime</DisplayName>
+    <DisplayName>Pass Time</DisplayName>
     <Description />
     <Observable>No</Observable>
     <Parameter>
@@ -128,7 +128,7 @@
     </Parameter>
     <Response>
       <Identifier>ReturnValue</Identifier>
-      <DisplayName>ReturnValue</DisplayName>
+      <DisplayName>Return Value</DisplayName>
       <Description />
       <DataType>
         <Basic>Time</Basic>
@@ -137,7 +137,7 @@
   </Command>
   <Command>
     <Identifier>PassString</Identifier>
-    <DisplayName>PassString</DisplayName>
+    <DisplayName>Pass String</DisplayName>
     <Description />
     <Observable>No</Observable>
     <Parameter>
@@ -150,7 +150,7 @@
     </Parameter>
     <Response>
       <Identifier>ReturnValue</Identifier>
-      <DisplayName>ReturnValue</DisplayName>
+      <DisplayName>Return Value</DisplayName>
       <Description />
       <DataType>
         <Basic>String</Basic>
@@ -159,7 +159,7 @@
   </Command>
   <Command>
     <Identifier>PassStream</Identifier>
-    <DisplayName>PassStream</DisplayName>
+    <DisplayName>Pass Stream</DisplayName>
     <Description />
     <Observable>No</Observable>
     <Parameter>
@@ -172,7 +172,7 @@
     </Parameter>
     <Response>
       <Identifier>ReturnValue</Identifier>
-      <DisplayName>ReturnValue</DisplayName>
+      <DisplayName>Return Value</DisplayName>
       <Description />
       <DataType>
         <Basic>Binary</Basic>
@@ -181,7 +181,7 @@
   </Command>
   <Command>
     <Identifier>PassFile</Identifier>
-    <DisplayName>PassFile</DisplayName>
+    <DisplayName>Pass File</DisplayName>
     <Description />
     <Observable>No</Observable>
     <Parameter>
@@ -194,7 +194,7 @@
     </Parameter>
     <Response>
       <Identifier>ReturnValue</Identifier>
-      <DisplayName>ReturnValue</DisplayName>
+      <DisplayName>Return Value</DisplayName>
       <Description />
       <DataType>
         <Basic>Binary</Basic>
@@ -203,7 +203,7 @@
   </Command>
   <Command>
     <Identifier>PassBytes</Identifier>
-    <DisplayName>PassBytes</DisplayName>
+    <DisplayName>Pass Bytes</DisplayName>
     <Description />
     <Observable>No</Observable>
     <Parameter>
@@ -216,7 +216,7 @@
     </Parameter>
     <Response>
       <Identifier>ReturnValue</Identifier>
-      <DisplayName>ReturnValue</DisplayName>
+      <DisplayName>Return Value</DisplayName>
       <Description />
       <DataType>
         <Basic>Binary</Basic>
@@ -225,7 +225,7 @@
   </Command>
   <Command>
     <Identifier>PassCollection</Identifier>
-    <DisplayName>PassCollection</DisplayName>
+    <DisplayName>Pass Collection</DisplayName>
     <Description />
     <Observable>No</Observable>
     <Parameter>
@@ -242,7 +242,7 @@
     </Parameter>
     <Response>
       <Identifier>ReturnValue</Identifier>
-      <DisplayName>ReturnValue</DisplayName>
+      <DisplayName>Return Value</DisplayName>
       <Description />
       <DataType>
         <List>
@@ -255,7 +255,7 @@
   </Command>
   <Command>
     <Identifier>PassStructure</Identifier>
-    <DisplayName>PassStructure</DisplayName>
+    <DisplayName>Pass Structure</DisplayName>
     <Description />
     <Observable>No</Observable>
     <Parameter>
@@ -268,7 +268,7 @@
     </Parameter>
     <Response>
       <Identifier>ReturnValue</Identifier>
-      <DisplayName>ReturnValue</DisplayName>
+      <DisplayName>Return Value</DisplayName>
       <Description />
       <DataType>
         <DataTypeIdentifier>SomeStructure</DataTypeIdentifier>
@@ -277,12 +277,12 @@
   </Command>
   <Command>
     <Identifier>RunObservable</Identifier>
-    <DisplayName>RunObservable</DisplayName>
+    <DisplayName>Run Observable</DisplayName>
     <Description />
     <Observable>Yes</Observable>
     <Response>
       <Identifier>ReturnValue</Identifier>
-      <DisplayName>ReturnValue</DisplayName>
+      <DisplayName>Return Value</DisplayName>
       <Description />
       <DataType>
         <Basic>Integer</Basic>
@@ -291,7 +291,7 @@
   </Command>
   <Command>
     <Identifier>RunIntermediateObservableCommand</Identifier>
-    <DisplayName>RunIntermediateObservableCommand</DisplayName>
+    <DisplayName>Run Intermediate Observable Command</DisplayName>
     <Description />
     <Observable>Yes</Observable>
     <IntermediateResponse>
@@ -305,7 +305,7 @@
   </Command>
   <DataTypeDefinition>
     <Identifier>SomeStructure</Identifier>
-    <DisplayName>SomeStructure</DisplayName>
+    <DisplayName>Some Structure</DisplayName>
     <Description />
     <DataType>
       <Structure>

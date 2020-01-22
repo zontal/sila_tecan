@@ -20,9 +20,6 @@ namespace Tecan.Sila2.Authorization
     [Tecan.Sila2.SilaFeatureAttribute(true, "core")]
     [Tecan.Sila2.SilaIdentifierAttribute("AuthorizationService")]
     [Tecan.Sila2.SilaDisplayNameAttribute("Authorization Service")]
-    [Tecan.Sila2.SilaDescriptionAttribute("This Feature provides access control for the implementing server.\n\n    It specifi" +
-        "es the SiLA Client Metadata for the access token, that has been provided by the\n" +
-        "    AuthenticationService core Feature.")]
     public partial interface IAuthorizationService
     {
     }
@@ -30,8 +27,6 @@ namespace Tecan.Sila2.Authorization
     ///  <summary>
     /// The sent access token is not valid.
     /// </summary>
-    [Tecan.Sila2.SilaDisplayNameAttribute("Invalid Access Token")]
-    [Tecan.Sila2.SilaDescriptionAttribute("The sent access token is not valid.")]
     public class InvalidAccessTokenException : System.Exception
     {
         

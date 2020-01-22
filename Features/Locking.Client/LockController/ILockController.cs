@@ -25,16 +25,6 @@ namespace Tecan.Sila2.Locking
     [Tecan.Sila2.SilaFeatureAttribute(false, "core")]
     [Tecan.Sila2.SilaIdentifierAttribute("LockController")]
     [Tecan.Sila2.SilaDisplayNameAttribute("Lock Controller")]
-    [Tecan.Sila2.SilaDescriptionAttribute(@"This Feature allows a SiLA Client to lock a SiLA Server for exclusive use, preventing other SiLA Clients
-    from using the SiLA Server while it is locked. To lock a SiLA Server a Lock Identifier has to be set, using the
-    'LockServer' command. This Lock Identifier has to be sent along with every (lock protected)
-    request to the SiLA Server in order to use its functionality.
-
-    To send the lock identifier the SiLA Client Meta Data 'LockIdentifier' has to be used.
-
-    When locking a SiLA Server a timeout can be specified that defines the time after which the SiLA Server will
-    be automatically unlocked if no request with a valid lock identifier has been received meanwhile.
-    After the timeout has expired or after explicit unlock no lock identifier has to be sent any more.")]
     public partial interface ILockController
     {
         
@@ -43,9 +33,7 @@ namespace Tecan.Sila2.Locking
         /// This property MUST NOT be lock protected, so that any SiLA Client can query the current lock state
         /// of a SiLA Server.
         /// </summary>
-        [Tecan.Sila2.SilaDescriptionAttribute("Returns true if the SiLA Server is currently locked or false else.\n\n      This pr" +
-            "operty MUST NOT be lock protected, so that any SiLA Client can query the current" +
-            " lock state\n      of a SiLA Server.")]
+        [Tecan.Sila2.SilaDisplayNameAttribute("IsLocked")]
         bool IsLocked
         {
             get;
@@ -64,35 +52,22 @@ namespace Tecan.Sila2.Locking
         ///        The time (in seconds) after a SiLA Server is automatically unlocked when no request with a valid lock identifier
         ///        has been received meanwhile. A timeout of zero seconds specifies an infinite time (no timeout).
         ///      </param>
-        [Tecan.Sila2.SilaDisplayNameAttribute("Lock Server")]
-        [Tecan.Sila2.SilaDescriptionAttribute("Locks a SiLA Server for exclusive use by setting a lock identifier that has to be" +
-            " sent along with\n      any following (lock protected) request as long as the SiL" +
-            "A Server is locked.\n      The lock can be reset by issuing the \'Unlock Server\' c" +
-            "ommand.")]
         [Tecan.Sila2.ThrowsAttribute(typeof(ServerAlreadyLockedException))]
-        void LockServer([Tecan.Sila2.SilaDisplayNameAttribute("Lock Identifier")] [Tecan.Sila2.SilaDescriptionAttribute("The lock identifier that has to be sent along with every (lock protected) request" +
-            " to use the server\'s\n        functionality.")] string lockIdentifier, [Tecan.Sila2.UnitAttribute("s", Second=1)] [Tecan.Sila2.SilaDisplayNameAttribute("Timeout")] [Tecan.Sila2.SilaDescriptionAttribute("The time (in seconds) after a SiLA Server is automatically unlocked when no reque" +
-            "st with a valid lock identifier\n        has been received meanwhile. A timeout o" +
-            "f zero seconds specifies an infinite time (no timeout).")] long timeout);
+        void LockServer(string lockIdentifier, [Tecan.Sila2.UnitAttribute("s", Second=1)] long timeout);
         
         ///  <summary>
         /// Unlocks a locked SiLA Server. No lock identifier has to be sent for any following calls until
         /// the server is locked again via the 'Lock Server' command.
         /// </summary>
         /// <param name="lockIdentifier">The lock identifier that has been used to lock the SiLA Server.</param>
-        [Tecan.Sila2.SilaDisplayNameAttribute("Unlock Server")]
-        [Tecan.Sila2.SilaDescriptionAttribute("Unlocks a locked SiLA Server. No lock identifier has to be sent for any following" +
-            " calls until\n      the server is locked again via the \'Lock Server\' command.")]
         [Tecan.Sila2.ThrowsAttribute(typeof(ServerNotLockedException))]
         [Tecan.Sila2.ThrowsAttribute(typeof(InvalidLockIdentifierException))]
-        void UnlockServer([Tecan.Sila2.SilaDisplayNameAttribute("Lock Identifier")] [Tecan.Sila2.SilaDescriptionAttribute("The lock identifier that has been used to lock the SiLA Server.")] string lockIdentifier);
+        void UnlockServer(string lockIdentifier);
     }
     
     ///  <summary>
     /// The sent lock identifier is not valid.
     /// </summary>
-    [Tecan.Sila2.SilaDisplayNameAttribute("Invalid Lock Identifier")]
-    [Tecan.Sila2.SilaDescriptionAttribute("The sent lock identifier is not valid.")]
     public class InvalidLockIdentifierException : System.Exception
     {
         
@@ -109,8 +84,6 @@ namespace Tecan.Sila2.Locking
     ///  <summary>
     /// The SiLA Server can not be locked because it is already locked.
     /// </summary>
-    [Tecan.Sila2.SilaDisplayNameAttribute("Server Already Locked")]
-    [Tecan.Sila2.SilaDescriptionAttribute("The SiLA Server can not be locked because it is already locked.")]
     public class ServerAlreadyLockedException : System.Exception
     {
         
@@ -127,8 +100,6 @@ namespace Tecan.Sila2.Locking
     ///  <summary>
     /// The SiLA Server can not be unlocked because it is not locked.
     /// </summary>
-    [Tecan.Sila2.SilaDisplayNameAttribute("Server Not Locked")]
-    [Tecan.Sila2.SilaDescriptionAttribute("The SiLA Server can not be unlocked because it is not locked.")]
     public class ServerNotLockedException : System.Exception
     {
         

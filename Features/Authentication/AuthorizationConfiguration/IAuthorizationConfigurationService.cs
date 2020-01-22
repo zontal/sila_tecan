@@ -18,16 +18,12 @@ namespace Tecan.Sila2.Authorization
     [Tecan.Sila2.SilaFeatureAttribute(true, "core")]
     [Tecan.Sila2.SilaIdentifierAttribute("AuthorizationConfigurationService")]
     [Tecan.Sila2.SilaDisplayNameAttribute("Authorization Configuration")]
-    [Tecan.Sila2.SilaDescriptionAttribute("This Feature exposes the server configuration which authorization provider to use" +
-        ".")]
     public partial interface IAuthorizationConfigurationService
     {
         
         ///  <summary>
         /// The UUID of the SiLA server that this server uses to verify access tokens.
         /// </summary>
-        [Tecan.Sila2.SilaDisplayNameAttribute("Authorization Provider")]
-        [Tecan.Sila2.SilaDescriptionAttribute("The UUID of the SiLA server that this server uses to verify access tokens.")]
         [Tecan.Sila2.PatternConstraintAttribute("[0-9a-f]{8}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{12}")]
         string AuthorizationProvider
         {
@@ -38,9 +34,6 @@ namespace Tecan.Sila2.Authorization
         /// Instructs the server to use the given authorization provider starting from the next request.
         /// </summary>
         /// <param name="authorizationProvider">The UUID of the SiLA server that this server uses to verify access tokens.</param>
-        [Tecan.Sila2.SilaDisplayNameAttribute("Set Authorization Provider")]
-        [Tecan.Sila2.SilaDescriptionAttribute("Instructs the server to use the given authorization provider starting from the ne" +
-            "xt request.")]
-        void SetAuthorizationProvider([Tecan.Sila2.PatternConstraintAttribute("[0-9a-f]{8}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{12}")] [Tecan.Sila2.SilaDisplayNameAttribute("Authorization Provider")] [Tecan.Sila2.SilaDescriptionAttribute("The UUID of the SiLA server that this server uses to verify access tokens.")] string authorizationProvider);
+        void SetAuthorizationProvider([Tecan.Sila2.PatternConstraintAttribute("[0-9a-f]{8}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{12}")] string authorizationProvider);
     }
 }

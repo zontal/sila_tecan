@@ -584,7 +584,7 @@ namespace Tecan.Sila2.Generator.Generators
 
             var displayName = member.GetCustomAttribute<SilaDisplayNameAttribute>()?.DisplayName
                               ?? member.GetCustomAttribute<DisplayNameAttribute>()?.DisplayName
-                              ?? identifier;
+                              ?? identifier.ToDisplayName();
 
             var description = member.GetCustomAttribute<SilaDescriptionAttribute>()?.Description
                               ?? member.GetCustomAttribute<DescriptionAttribute>()?.Description
@@ -605,7 +605,7 @@ namespace Tecan.Sila2.Generator.Generators
 
         private string GetDocumentationSummary( ParameterInfo parameter )
         {
-            if(GetDocEntry( parameter.Member ) is var actualDoc)
+            if(GetDocEntry( parameter.Member ) is var actualDoc && actualDoc != null )
             {
                 if( parameter.Position == -1 ) // parameter is method return value
                 {
@@ -683,7 +683,7 @@ namespace Tecan.Sila2.Generator.Generators
 
             var displayName = parameter.GetCustomAttribute<SilaDisplayNameAttribute>()?.DisplayName
                               ?? parameter.GetCustomAttribute<DisplayNameAttribute>()?.DisplayName
-                              ?? identifier;
+                              ?? identifier.ToDisplayName();
 
             var description = parameter.GetCustomAttribute<SilaDescriptionAttribute>()?.Description
                               ?? parameter.GetCustomAttribute<DescriptionAttribute>()?.Description

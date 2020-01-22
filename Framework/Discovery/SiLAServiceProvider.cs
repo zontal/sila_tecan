@@ -496,7 +496,7 @@ namespace Tecan.Sila2.Discovery
                 Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/core/SiLAService/v1/Property/ImplementedFeatures");
                 try
                 {
-                    System.Collections.Generic.ICollection<string> response = Tecan.Sila2.DtoExtensions.Extract(CallInvoker.BlockingUnaryCall(GetImplementedFeaturesMethod, null, callInfo.Options, EmptyRequest.Instance).Value, _executionManager.DownloadBinaryStore);
+                    System.Collections.Generic.ICollection<string> response = CallInvoker.BlockingUnaryCall(GetImplementedFeaturesMethod, null, callInfo.Options, EmptyRequest.Instance).Value.Extract(_executionManager.DownloadBinaryStore);
                     callInfo.FinishSuccessful();
                     return response;
                 } catch (System.Exception ex)

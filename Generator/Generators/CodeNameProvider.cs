@@ -119,5 +119,21 @@ namespace Tecan.Sila2.Generator.Generators
                 return new CodeTypeReference(command.Identifier + "ResponseDto");
             }
         }
+
+        public CodeTypeReference GetPropertyResponseType( FeatureProperty featureProperty, ITypeTranslationProvider translationProvider )
+        {
+            CodeTypeReference propertyResponse;
+            if(featureProperty.DataType.Item is ConstrainedType)
+            {
+                propertyResponse = new CodeTypeReference( featureProperty.Identifier + "ResponseDto" );
+            }
+            else
+            {
+                propertyResponse = new CodeTypeReference( typeof( PropertyResponse<> ).Name,
+                    translationProvider.GetDtoTypeReference( featureProperty.DataType, featureProperty.Identifier, null ) );
+            }
+
+            return propertyResponse;
+        }
     }
 }

@@ -13,17 +13,17 @@ namespace Tecan.Sila2.WorktableIntegration
     
     
     ///  <summary>
+    /// Denotes a service to describe dimensions of a device in order to integrate it into a worktable
     /// </summary>
     [Tecan.Sila2.SilaFeatureAttribute(true, "infrastructure")]
     [Tecan.Sila2.SilaIdentifierAttribute("WorktableService")]
-    [Tecan.Sila2.SilaDescriptionAttribute("")]
+    [Tecan.Sila2.SilaDisplayNameAttribute("Worktable Service")]
     public partial interface IWorktableService
     {
         
         ///  <summary>
         /// The outer hull of the device
         /// </summary>
-        [Tecan.Sila2.SilaDescriptionAttribute("The outer hull of the device")]
         BoundingBox BoundingBox
         {
             get;
@@ -32,7 +32,6 @@ namespace Tecan.Sila2.WorktableIntegration
         ///  <summary>
         /// The templates for sites used by this device
         /// </summary>
-        [Tecan.Sila2.SilaDescriptionAttribute("The templates for sites used by this device")]
         System.Collections.Generic.ICollection<SiteTemplate> SiteTemplates
         {
             get;
@@ -41,7 +40,6 @@ namespace Tecan.Sila2.WorktableIntegration
         ///  <summary>
         /// The sites that this device offers
         /// </summary>
-        [Tecan.Sila2.SilaDescriptionAttribute("The sites that this device offers")]
         System.Collections.Generic.ICollection<Site> Sites
         {
             get;
@@ -49,8 +47,8 @@ namespace Tecan.Sila2.WorktableIntegration
     }
     
     ///  <summary>
+    /// Denotes a bounding box for a device
     /// </summary>
-    [Tecan.Sila2.SilaDescriptionAttribute("")]
     public struct BoundingBox
     {
         
@@ -87,8 +85,8 @@ namespace Tecan.Sila2.WorktableIntegration
     }
     
     ///  <summary>
+    /// Defines a template for a site
     /// </summary>
-    [Tecan.Sila2.SilaDescriptionAttribute("")]
     public struct SiteTemplate
     {
         
@@ -137,8 +135,8 @@ namespace Tecan.Sila2.WorktableIntegration
     }
     
     ///  <summary>
+    /// Denotes a site on the worktable
     /// </summary>
-    [Tecan.Sila2.SilaDescriptionAttribute("")]
     public struct Site
     {
         
@@ -201,8 +199,8 @@ namespace Tecan.Sila2.WorktableIntegration
     }
     
     ///  <summary>
+    /// Denotes a rectangle on the ground
     /// </summary>
-    [Tecan.Sila2.SilaDescriptionAttribute("")]
     public struct Rectangle
     {
         
@@ -240,8 +238,8 @@ namespace Tecan.Sila2.WorktableIntegration
     }
     
     ///  <summary>
+    /// Denotes a positional offset
     /// </summary>
-    [Tecan.Sila2.SilaDescriptionAttribute("")]
     public struct Offset
     {
         

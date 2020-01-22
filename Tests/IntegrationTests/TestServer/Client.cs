@@ -13,12 +13,12 @@ using Tecan.Sila2;
 using Tecan.Sila2.Client;
 using Tecan.Sila2.Server;
 
-namespace Tecan.Sila2.IntegrationTests
+namespace Tecan.Sila2.IntegrationTests.TestServer
 {
     
     
     ///  <summary>
-    /// Encapsulates provider classes to expose the TestServer feature via SiLA2
+    /// Encapsulates provider classes to expose the Test Server feature via SiLA2
     /// </summary>
     public sealed partial class TestServerProvider
     {
@@ -297,7 +297,7 @@ namespace Tecan.Sila2.IntegrationTests
                 Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("tecan.sila/integrationtests/TestServer/v1/Command/PassCollection");
                 try
                 {
-                    System.Collections.Generic.ICollection<string> response = Tecan.Sila2.DtoExtensions.Extract(CallInvoker.BlockingUnaryCall(PassCollectionMethod, null, callInfo.Options, request).ReturnValue, _executionManager.DownloadBinaryStore);
+                    System.Collections.Generic.ICollection<string> response = CallInvoker.BlockingUnaryCall(PassCollectionMethod, null, callInfo.Options, request).ReturnValue.Extract(_executionManager.DownloadBinaryStore);
                     callInfo.FinishSuccessful();
                     return response;
                 } catch (System.Exception ex)

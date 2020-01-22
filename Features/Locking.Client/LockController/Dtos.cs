@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Tecan.Sila2.Locking
+namespace Tecan.Sila2.Locking.LockController
 {
     using Tecan.Sila2;
     

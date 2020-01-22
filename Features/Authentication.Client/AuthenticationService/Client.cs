@@ -13,7 +13,7 @@ using Tecan.Sila2;
 using Tecan.Sila2.Client;
 using Tecan.Sila2.Server;
 
-namespace Tecan.Sila2.Authentication
+namespace Tecan.Sila2.Authentication.AuthenticationService
 {
     
     
