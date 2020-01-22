@@ -18,42 +18,18 @@ namespace Tecan.Sila2.Generator.Generators
 {
     internal class FeatureDefinitionGeneratorContext
     {
-        private static readonly Dictionary<Type, (BasicType Type, bool IsNonDefault)> BasicTypes = new Dictionary<Type, (BasicType, bool)>
-        {
-            {typeof(string), (BasicType.String, false)},
-            {typeof(byte), (BasicType.Integer, true)},
-            {typeof(sbyte), (BasicType.Integer, true)},
-            {typeof(ushort), (BasicType.Integer, true)},
-            {typeof(short), (BasicType.Integer, true)},
-            {typeof(uint), (BasicType.Integer, true)},
-            {typeof(int), (BasicType.Integer, true)},
-            {typeof(ulong), (BasicType.Integer, true)},
-            {typeof(long), (BasicType.Integer, false)},
-            {typeof(float), (BasicType.Real, true)},
-            {typeof(double), (BasicType.Real, false)},
-            {typeof(bool), (BasicType.Boolean, false)},
-            {typeof(byte[]), (BasicType.Binary, true)},
-            {typeof(DateTimeOffset), (BasicType.Timestamp, false)},
-            {typeof(DateTime), (BasicType.Timestamp, true)},
-            {typeof(TimeSpan), (BasicType.Time, false)},
-            {typeof(FileInfo), (BasicType.Binary, true)},
-            {typeof(Stream), (BasicType.Binary, false)},
-            {typeof(DynamicObjectProperty), (BasicType.Any, false) }
-        };
 
-        public FeatureDefinitionGeneratorContext( ICodeNameRegistry nameRegistry, Func<string, Constraints> constraintResolver )
-        {
-            NameRegistry = nameRegistry;
-            _constraintResolver = constraintResolver;
-        }
-
-        /// <summary>
-        /// A registry to which any deviations from suggested rules are reported
-        /// </summary>
-        public ICodeNameRegistry NameRegistry { get; }
-
+        private readonly ICodeNameRegistry _nameRegistry;
         private readonly Dictionary<string, Dictionary<string, XElement>> _loadedDocumentation = new Dictionary<string, Dictionary<string, XElement>>();
         private readonly Func<string, Constraints> _constraintResolver;
+        private readonly ITypeTranslationProvider _translationProvider;
+
+        public FeatureDefinitionGeneratorContext( ICodeNameRegistry nameRegistry, Func<string, Constraints> constraintResolver, ITypeTranslationProvider translationProvider )
+        {
+            _nameRegistry = nameRegistry;
+            _constraintResolver = constraintResolver;
+            _translationProvider = translationProvider;
+        }
 
         public object[] GenerateFeature(Type interfaceType, ICollection<string> namespaceCollector )
         {
@@ -97,18 +73,17 @@ namespace Tecan.Sila2.Generator.Generators
         private void GenerateDataTypes( HashSet<Type> dataTypes, List<object> items,
             ICollection<string> namespaceCollector )
         {
-            var processDataTypes = new Queue<Type>( dataTypes );
-            while(processDataTypes.Count > 0)
+            var processQueue = new Queue<Type>(dataTypes);
+            while( processQueue.Any() && processQueue.Dequeue() is var dataType && dataType != null )
             {
-                var dataType = processDataTypes.Dequeue();
-                if(!BasicTypes.ContainsKey( dataType ))
+                items.Add( GenerateDataType( dataType, t =>
                 {
-                    items.Add( GenerateDataType( dataType, t =>
+                    if( dataTypes.Add( t ) )
                     {
-                        if(dataTypes.Add( t )) processDataTypes.Enqueue( t );
-                    } ) );
-                    namespaceCollector?.Add( dataType.Namespace );
-                }
+                        processQueue.Enqueue( t );
+                    }
+                } ) );
+                namespaceCollector?.Add( dataType.Namespace );
             }
         }
 
@@ -170,7 +145,7 @@ namespace Tecan.Sila2.Generator.Generators
             return metadata;
         }
 
-        private SiLAElement GenerateDataType( Type dataType, Action<Type> registry )
+        private SiLAElement GenerateDataType( Type dataType, Action<Type> typeAction )
         {
             var (id, name, description) = ParseElementData( dataType );
 
@@ -179,7 +154,7 @@ namespace Tecan.Sila2.Generator.Generators
                 Identifier = id,
                 DisplayName = name,
                 Description = description,
-                DataType = GenerateTypeReference( dataType, dataType.FullName, new MemberAttributeReader( dataType ), false, registry )
+                DataType = GenerateTypeReference( dataType, dataType.FullName, new MemberAttributeReader( dataType ), false, typeAction )
             };
         }
 
@@ -253,74 +228,24 @@ namespace Tecan.Sila2.Generator.Generators
         private DataTypeType GenerateTypeReference( Type type, string origin, IAttributeReader reader, bool allowReference,
             Action<Type> typeAction )
         {
-            DataTypeType resultType = new DataTypeType();
+            if(!_translationProvider.TryTranslate(type, origin, out var resultType))
+            {
+                throw new NotSupportedException();
+            }
 
-            if(BasicTypes.TryGetValue( type, out var basic ))
+            if( typeAction != null )
             {
-                resultType.Item = basic.Type;
-                if(basic.IsNonDefault)
-                {
-                    NameRegistry?.RegisterDifferentType( origin, type );
-                }
+                _translationProvider.TraverseTypes(type, origin, typeAction);
             }
-            else if(IsCollectionType( type, out var elementType ))
-            {
-                if(type.GetGenericTypeDefinition() != typeof( ICollection<> ))
-                {
-                    NameRegistry?.RegisterDifferentType( origin, type );
-                }
-                resultType.Item = new ListType()
-                {
-                    DataType = GenerateTypeReference( elementType, origin + ".Item", reader, allowReference, typeAction )
-                };
-            }
-            else if(IsDictionaryType( type, out var keyType, out elementType ))
-            {
-                if(type.GetGenericTypeDefinition() != typeof( IDictionary<,> ))
-                {
-                    NameRegistry?.RegisterDifferentType( origin, type );
-                }
-                resultType.Item = new ListType()
-                {
-                    DataType = new DataTypeType()
-                    {
-                        Item = new StructureType()
-                        {
-                            Element = new SiLAElement[]
-                            {
-                                new SiLAElement()
-                                {
-                                    Identifier = "Key",
-                                    DisplayName = "Key",
-                                    DataType = GenerateTypeReference( keyType, origin + ".Key", reader, allowReference, typeAction )
-                                },
-                                new SiLAElement()
-                                {
-                                    Identifier = "Value",
-                                    DisplayName = "Value",
-                                    DataType = GenerateTypeReference( elementType, origin + ".Value", reader, allowReference, typeAction )
-                                }
-                            }
-                        }
-                    }
-                };
-            }
-            else
-            {
-                typeAction?.Invoke( type );
-                if(allowReference)
-                {
-                    resultType.Item = type.GetCustomAttribute<SilaIdentifierAttribute>()?.Identifier ?? type.Name;
-                }
-                else
-                {
-                    if(type.IsEnum)
-                    {
-                        return GenerateEnum( type );
-                    }
 
-                    return GenerateStructure( type, typeAction );
+            if( !allowReference && resultType.Item is string )
+            {
+                if(type.IsEnum)
+                {
+                    return GenerateEnum( type );
                 }
+
+                return GenerateStructure( type, typeAction );
             }
 
             if(reader != null)
@@ -329,45 +254,6 @@ namespace Tecan.Sila2.Generator.Generators
             }
 
             return resultType;
-        }
-
-        private bool IsCollectionType( Type type, out Type elementType )
-        {
-            elementType = null;
-            if(type.IsGenericType && typeof( IEnumerable ).IsAssignableFrom( type ))
-            {
-                var typeDefinition = type.GetGenericTypeDefinition();
-                if(typeDefinition == typeof( IEnumerable<> )
-                    || typeDefinition == typeof( ICollection<> )
-                    || typeDefinition == typeof( IReadOnlyList<> )
-                    || typeDefinition == typeof( IReadOnlyCollection<> )
-                    || typeDefinition == typeof( IList<> ))
-                {
-                    elementType = type.GetGenericArguments()[0];
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
-        private bool IsDictionaryType( Type type, out Type keyType, out Type elementType )
-        {
-            keyType = null;
-            elementType = null;
-            if(type.IsGenericType && typeof( IEnumerable ).IsAssignableFrom( type ))
-            {
-                var typeDefinition = type.GetGenericTypeDefinition();
-                if(typeDefinition == typeof( IReadOnlyDictionary<,> )
-                   || typeDefinition == typeof( IDictionary<,> ))
-                {
-                    keyType = type.GetGenericArguments()[0];
-                    elementType = type.GetGenericArguments()[1];
-                    return true;
-                }
-            }
-
-            return false;
         }
 
         private static DataTypeType AsConstrained( IAttributeReader member, DataTypeType resultType, Constraints constraints )
@@ -634,7 +520,7 @@ namespace Tecan.Sila2.Generator.Generators
             if(constructor != null)
             {
                 return from par in constructor.GetParameters()
-                       select type.GetProperty( CodeGenerationHelper.ToPascalCase( par.Name ) ) ??
+                       select type.GetProperty( par.Name.ToPascalCase() ) ??
                               throw new InvalidOperationException(
                                   $"Could not find matching property for constructor parameter {par.Name} of type {type.Name}" );
             }
@@ -644,7 +530,7 @@ namespace Tecan.Sila2.Generator.Generators
                                 select staticMethod).FirstOrDefault();
             if(createMethod != null)
             {
-                NameRegistry.RegisterConstructionMethod( type, createMethod );
+                _nameRegistry.RegisterConstructionMethod( type, createMethod );
                 return DetermineStructurePropertiesForConstructionMethod( type, createMethod );
             }
 
@@ -665,7 +551,7 @@ namespace Tecan.Sila2.Generator.Generators
             else
             {
                 propertiesInCorrectOrder = from par in createMethod.GetParameters()
-                                           select type.GetProperty( CodeGenerationHelper.ToPascalCase( par.Name ) ) ??
+                                           select type.GetProperty( par.Name.ToPascalCase() ) ??
                                                   throw new InvalidOperationException(
                                                       $"Could not find matching property for create method {createMethod.Name} parameter {par.Name} of type {type.Name}" );
             }
@@ -693,7 +579,7 @@ namespace Tecan.Sila2.Generator.Generators
             }
             else
             {
-                NameRegistry?.RegisterRename( member.Name, identifier );
+                _nameRegistry?.RegisterRename( member.Name, identifier );
             }
 
             var displayName = member.GetCustomAttribute<SilaDisplayNameAttribute>()?.DisplayName

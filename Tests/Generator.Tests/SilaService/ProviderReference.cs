@@ -39,7 +39,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         
         private static Grpc.Core.Method<EmptyRequest, ServerVersionResponseDto> GetServerVersionMethod = new Grpc.Core.Method<EmptyRequest, ServerVersionResponseDto>(Grpc.Core.MethodType.Unary, @__ServiceName, "Get_ServerVersion", EmptyRequest.Marshaller, ProtobufMarshaller<ServerVersionResponseDto>.Default);
         
-        private static Grpc.Core.Method<EmptyRequest, PropertyResponse<URLDto>> GetServerVendorURLMethod = new Grpc.Core.Method<EmptyRequest, PropertyResponse<URLDto>>(Grpc.Core.MethodType.Unary, @__ServiceName, "Get_ServerVendorURL", EmptyRequest.Marshaller, ProtobufMarshaller<PropertyResponse<URLDto>>.Default);
+        private static Grpc.Core.Method<EmptyRequest, PropertyResponse<UrlDto>> GetServerVendorURLMethod = new Grpc.Core.Method<EmptyRequest, PropertyResponse<UrlDto>>(Grpc.Core.MethodType.Unary, @__ServiceName, "Get_ServerVendorURL", EmptyRequest.Marshaller, ProtobufMarshaller<PropertyResponse<UrlDto>>.Default);
         
         private static Grpc.Core.Method<EmptyRequest, PropertyResponse<System.Collections.Generic.List<FeatureIdentifierDto>>> GetImplementedFeaturesMethod = new Grpc.Core.Method<EmptyRequest, PropertyResponse<System.Collections.Generic.List<FeatureIdentifierDto>>>(Grpc.Core.MethodType.Unary, @__ServiceName, "Get_ImplementedFeatures", EmptyRequest.Marshaller, ProtobufMarshaller<PropertyResponse<System.Collections.Generic.List<FeatureIdentifierDto>>>.Default);
         
@@ -197,9 +197,9 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             /// <param name="request">The request object</param>
             /// <param name="context">The context in which the request is made</param>
             /// <returns>The current value wrapped in a data transfer object</returns>
-            protected virtual System.Threading.Tasks.Task<PropertyResponse<URLDto>> GetServerVendorURL(EmptyRequest request, Grpc.Core.ServerCallContext context)
+            protected virtual System.Threading.Tasks.Task<PropertyResponse<UrlDto>> GetServerVendorURL(EmptyRequest request, Grpc.Core.ServerCallContext context)
             {
-                return _server.CreatePropertyTask("tecan.sila.generator.test/silaservice/SiLAService/v1/Property/ServerVendorURL", new PropertyResponse<URLDto>(new URLDto(_implementation.ServerVendorURL, _server)), context);
+                return _server.CreatePropertyTask("tecan.sila.generator.test/silaservice/SiLAService/v1/Property/ServerVendorURL", new PropertyResponse<UrlDto>(new UrlDto(_implementation.ServerVendorURL, _server)), context);
             }
             
             ///  <summary>
@@ -498,7 +498,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
                         "");
                 try
                 {
-                    System.Collections.Generic.ICollection<FeatureIdentifier> response = Tecan.Sila2.DtoExtensions.Extract(CallInvoker.BlockingUnaryCall(GetImplementedFeaturesMethod, null, callInfo.Options, EmptyRequest.Instance).Value, _executionManager.DownloadBinaryStore);
+                    System.Collections.Generic.ICollection<FeatureIdentifier> response = CallInvoker.BlockingUnaryCall( GetImplementedFeaturesMethod, null, callInfo.Options, EmptyRequest.Instance ).Value.Extract(_executionManager.DownloadBinaryStore);
                     callInfo.FinishSuccessful();
                     return response;
                 } catch (System.Exception ex)

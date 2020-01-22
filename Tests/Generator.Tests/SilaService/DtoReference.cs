@@ -451,18 +451,18 @@ namespace Tecan.Sila2.Generator.Test.TestReference
     /// The data transfer object for URL
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
-    public class URLDto : Tecan.Sila2.ISilaTransferObject<Url>
+    public class UrlDto : Tecan.Sila2.ISilaTransferObject<Url>
     {
         
         private Tecan.Sila2.StringDto _uRL;
         
         public static System.Text.RegularExpressions.Regex URLPattern = new System.Text.RegularExpressions.Regex("https?://.+");
         
-        public URLDto()
+        public UrlDto()
         {
         }
         
-        public URLDto(Url inner, Tecan.Sila2.Binary.IBinaryStore store)
+        public UrlDto(Url inner, Tecan.Sila2.Binary.IBinaryStore store)
         {
             URL = new Tecan.Sila2.StringDto(inner.Value, store);
         }
@@ -498,9 +498,9 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// </summary>
         /// <param name="inner">The object to transfer</param>
         /// <param name="store">An object to store binary data</param>
-        public static URLDto Create(Url inner, Tecan.Sila2.Binary.IBinaryStore store)
+        public static UrlDto Create(Url inner, Tecan.Sila2.Binary.IBinaryStore store)
         {
-            return new URLDto(inner, store);
+            return new UrlDto(inner, store);
         }
         
         ///  <summary>

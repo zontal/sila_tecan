@@ -1,0 +1,152 @@
+﻿using System;
+using System.CodeDom;
+using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel.Composition;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Tecan.Sila2.Generator.Contracts;
+using Tecan.Sila2.Generator.Helper;
+
+namespace Tecan.Sila2.Generator.TypeTranslation
+{
+    [Export( typeof( ITypeTranslator ) )]
+    [PartCreationPolicy( CreationPolicy.Shared )]
+    internal class CollectionTranslator : ITypeTranslator
+    {
+        private readonly ICodeNameRegistry _nameRegistry;
+
+        [ImportingConstructor]
+        public CollectionTranslator( ICodeNameRegistry nameRegistry )
+        {
+            _nameRegistry = nameRegistry;
+        }
+
+        public bool TryTranslate( ITypeTranslationProvider translationProvider, Type interfaceType, string origin, out DataTypeType silaType )
+        {
+            if( IsCollectionType( interfaceType, out var elementType ) && translationProvider.TryTranslate(elementType, origin + ".Item", out var elementSilaType) )
+            {
+                if( interfaceType.GetGenericTypeDefinition() != typeof(ICollection<>) )
+                {
+                    _nameRegistry.RegisterDifferentType(origin, interfaceType);
+                }
+
+                silaType = new DataTypeType()
+                {
+                    Item = new ListType()
+                    {
+                        DataType = elementSilaType
+                    }
+                };
+                return true;
+            }
+
+            silaType = null;
+            return false;
+        }
+
+
+        private bool IsCollectionType( Type type, out Type elementType )
+        {
+            elementType = null;
+            if(type.IsGenericType && typeof( IEnumerable ).IsAssignableFrom( type ))
+            {
+                var typeDefinition = type.GetGenericTypeDefinition();
+                if(typeDefinition == typeof( IEnumerable<> )
+                   || typeDefinition == typeof( ICollection<> )
+                   || typeDefinition == typeof( IReadOnlyList<> )
+                   || typeDefinition == typeof( IReadOnlyCollection<> )
+                   || typeDefinition == typeof( IList<> ))
+                {
+                    elementType = type.GetGenericArguments()[0];
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public bool TryTranslate( ITypeTranslationProvider translationProvider, DataTypeType silaType, string suggestedName, out ITypeTranslationInfo translationInfo,
+            Action<Constraints> constraintHandler = null, Action<string, StructureType> structHandler = null )
+        {
+            translationInfo = null;
+            if( IsCollection( silaType, out var elementType ) && translationProvider.TryTranslate(elementType, CodeGenerationHelper.TurnSingular(suggestedName), out var elementTranslationInfo, constraintHandler, structHandler) )
+            {
+                translationInfo = new TranslationInfo( elementTranslationInfo );
+                return true;
+            }
+
+            return false;
+        }
+
+
+        /// <summary>
+        /// Gets a value indicating whether the given data type is a collection
+        /// </summary>
+        /// <param name="dataType">The SiLA2 data type</param>
+        /// <param name="innerType">The element type</param>
+        /// <returns>True, if <paramref name="dataType"/> is a collection, otherwise False.</returns>
+        public static bool IsCollection( DataTypeType dataType, out DataTypeType innerType )
+        {
+            switch(dataType.Item)
+            {
+                case ListType list:
+                    innerType = list.DataType;
+                    return true;
+                case ConstrainedType constrained:
+                    return IsCollection( constrained.DataType, out innerType );
+                default:
+                    innerType = null;
+                    return false;
+            }
+        }
+
+        public bool TraverseTypes( ITypeTranslationProvider translationProvider, Type interfaceType, string origin, Action<Type> typeAction )
+        {
+            if( IsCollectionType( interfaceType, out var elementType ) )
+            {
+                translationProvider.TraverseTypes( elementType, CodeGenerationHelper.TurnSingular( origin ), typeAction );
+                return true;
+            }
+
+            return false;
+        }
+
+        public int Priority => 1;
+
+        private class TranslationInfo : ITypeTranslationInfo
+        {
+            private readonly ITypeTranslationInfo _elementTranslationInfo;
+
+            public TranslationInfo( ITypeTranslationInfo elementTranslationInfo )
+            {
+                _elementTranslationInfo = elementTranslationInfo;
+            }
+
+            public CodeTypeReference InterfaceType => new CodeTypeReference(typeof(ICollection<>).FullName, _elementTranslationInfo.InterfaceType);
+
+            public CodeTypeReference DataTransferType => new CodeTypeReference( typeof(List<>).FullName, _elementTranslationInfo.DataTransferType );
+
+            public CodeExpression Encapsulate( CodeExpression expression, CodeExpression binaryStorageArgument )
+            {
+                var innerTypeRef = _elementTranslationInfo.DataTransferType;
+                var wrapped = new CodeMethodInvokeExpression(
+                    new CodeTypeReferenceExpression( typeof( DtoExtensions ) ),
+                    nameof( DtoExtensions.Encapsulate ),
+                    expression,
+                    new CodeMethodReferenceExpression( new CodeTypeReferenceExpression( innerTypeRef ), "Create" ),
+                    binaryStorageArgument );
+                return wrapped;
+            }
+
+            public CodeExpression Extract( CodeExpression expression, CodeTypeReference targetType, CodeExpression binaryStorageArgument )
+            {
+                return new CodeMethodInvokeExpression(
+                    expression,
+                    nameof( DtoExtensions.Extract ),
+                    binaryStorageArgument );
+            }
+        }
+    }
+}

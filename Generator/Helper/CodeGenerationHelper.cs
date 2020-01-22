@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.CSharp;
 using Tecan.Sila2.DynamicClient;
+using Tecan.Sila2.Generator.Contracts;
 
 namespace Tecan.Sila2.Generator.Helper
 {
@@ -61,64 +62,24 @@ namespace Tecan.Sila2.Generator.Helper
         }
 
         /// <summary>
-        /// Extracts the default type reference for the given SiLA2 type
+        /// Creates a type reference for the response DTO for the given property
         /// </summary>
-        /// <param name="dataType">The SiLA2 type</param>
-        /// <param name="suggestedName">The suggested name of an anonymous SiLA2 type</param>
-        /// <param name="constraintHandler">A callback if constraints are detected or null</param>
-        /// <param name="registerStructure">A callback if anonymous structures are identified</param>
-        /// <returns>The CodeDOM type reference of the SiLA2 type definition</returns>
-        public static CodeTypeReference ExtractType( DataTypeType dataType, string suggestedName, Action<Constraints> constraintHandler = null,
-            Action<string, StructureType> registerStructure = null )
+        /// <param name="featureProperty">The property</param>
+        /// <returns>>A type reference to the response DTO generated for this property</returns>
+        public static CodeTypeReference GetPropertyResponseType( ITypeTranslationProvider translationProvider, FeatureProperty featureProperty )
         {
-            switch (dataType.Item)
+            CodeTypeReference propertyResponse;
+            if(featureProperty.DataType.Item is ConstrainedType)
             {
-                case BasicType basic:
-                    switch (basic)
-                    {
-                        case BasicType.Boolean:
-                            return new CodeTypeReference(typeof(bool));
-                        case BasicType.Date:
-                        case BasicType.Timestamp:
-                            return new CodeTypeReference(typeof(DateTimeOffset));
-                        case BasicType.Time:
-                            return new CodeTypeReference(typeof(TimeSpan));
-                        case BasicType.Integer:
-                            return new CodeTypeReference(typeof(long));
-                        case BasicType.Binary:
-                            return new CodeTypeReference(typeof(Stream));
-                        case BasicType.String:
-                            return new CodeTypeReference(typeof(string));
-                        case BasicType.Real:
-                            return new CodeTypeReference(typeof(double));
-                        case BasicType.Any:
-                            return new CodeTypeReference(typeof(DynamicObjectProperty));
-                    }
-                    break;
-                case ListType list:
-                    if( list.DataType.Item is StructureType inlineStructure && inlineStructure.Element != null && inlineStructure.Element.Length == 2
-                        && inlineStructure.Element[0].Identifier == "Key" && inlineStructure.Element[1].Identifier == "Value" )
-                    {
-                        return new CodeTypeReference(typeof(IDictionary<,>).FullName, 
-                            ExtractType(inlineStructure.Element[0].DataType, TurnSingular(suggestedName) + "Key", null, registerStructure ),
-                            ExtractType(inlineStructure.Element[1].DataType, TurnSingular(suggestedName) + "Value", constraintHandler, registerStructure ));
-                    }
-                    return new CodeTypeReference(typeof(ICollection<>).FullName, ExtractType(list.DataType, TurnSingular(suggestedName), constraintHandler, registerStructure ) );
-                case ConstrainedType constrained:
-                    constraintHandler?.Invoke(constrained.Constraints);
-                    return ExtractType(constrained.DataType, suggestedName, constraintHandler, registerStructure );
-                case StructureType structured:
-                    registerStructure?.Invoke( suggestedName, structured );
-                    return new CodeTypeReference(suggestedName);
-                case string identityReference:
-                    var isAllUpperCase = identityReference.All( char.IsUpper );
-                    if( isAllUpperCase )
-                    {
-                        return new CodeTypeReference(identityReference[0] + identityReference.Substring(1).ToLowerInvariant());
-                    }
-                    return new CodeTypeReference(identityReference);
+                propertyResponse = new CodeTypeReference( featureProperty.Identifier + "ResponseDto" );
             }
-            throw new NotSupportedException($"The data type {dataType.Item} is not supported");
+            else
+            {
+                propertyResponse = new CodeTypeReference( typeof( PropertyResponse<> ).Name,
+                    translationProvider.GetDtoTypeReference(  featureProperty.DataType, featureProperty.Identifier, null ) );
+            }
+
+            return propertyResponse;
         }
 
         /// <summary>
@@ -128,6 +89,10 @@ namespace Tecan.Sila2.Generator.Helper
         /// <returns>A singular representation</returns>
         public static string TurnSingular( string name )
         {
+            if( name == null )
+            {
+                return null;
+            }
             if( name.EndsWith( "s" ) )
             {
                 return name.Substring( 0, name.Length - 1 );
@@ -136,37 +101,6 @@ namespace Tecan.Sila2.Generator.Helper
             {
                 return name + "Item";
             }
-        }
-
-        /// <summary>
-        /// Wraps the given extraction call into a conversion
-        /// </summary>
-        /// <param name="extractedResult">A call declaration of the Extract method</param>
-        /// <param name="dataType">The data type that should be extracted</param>
-        /// <param name="customType">The custom type</param>
-        /// <returns>A code expression that extracts the DTO into the correct type</returns>
-        public static CodeExpression GenerateConversion( CodeMethodInvokeExpression extractedResult, DataTypeType dataType, CodeTypeReference customType )
-        {
-            if(customType == null)
-            {
-                return extractedResult;
-            }
-
-            if(dataType.Item is BasicType.Binary)
-            {
-                if(customType.ArrayRank == 1)
-                {
-                    extractedResult.Method.MethodName = nameof( BinaryDto.ExtractToBytes );
-                }
-                else if(customType.BaseType == typeof( FileInfo ).FullName)
-                {
-                    extractedResult.Method.MethodName = nameof( BinaryDto.ExtractToFileInfo );
-                }
-
-                return extractedResult;
-            }
-
-            return new CodeCastExpression( customType, extractedResult );
         }
 
         /// <summary>

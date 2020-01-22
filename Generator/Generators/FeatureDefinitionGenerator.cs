@@ -28,17 +28,20 @@ namespace Tecan.Sila2.Generator.Generators
         public ICodeNameRegistry NameRegistry { get; }
 
         private IEnumerable<IGeneratorHook> Hooks { get; }
+        private readonly ITypeTranslationProvider _translationProvider;
 
         /// <summary>
         /// Creates a new feature definition generator for the provided registry
         /// </summary>
         /// <param name="nameRegistry">A component that accepts rename reports</param>
+        /// <param name="translationProvider">A component that translates types between SiLA2 and .NET</param>
         /// <param name="hooks">Generator hooks</param>
         [ImportingConstructor]
-        public FeatureDefinitionGenerator( ICodeNameRegistry nameRegistry, [ImportMany] IEnumerable<IGeneratorHook> hooks )
+        public FeatureDefinitionGenerator( ICodeNameRegistry nameRegistry, ITypeTranslationProvider translationProvider, [ImportMany] IEnumerable<IGeneratorHook> hooks )
         {
             NameRegistry = nameRegistry;
             Hooks = hooks;
+            _translationProvider = translationProvider;
         }
 
         /// <inheritdoc />
@@ -71,7 +74,7 @@ namespace Tecan.Sila2.Generator.Generators
                 };
             }
 
-            var context = new FeatureDefinitionGeneratorContext(NameRegistry, constraintResolver);
+            var context = new FeatureDefinitionGeneratorContext(NameRegistry, constraintResolver, _translationProvider);
             context.TryLoadDocumentation( interfaceType.Assembly );
 
             var (identifier, displayName, description) = context.ParseElementData( interfaceType, prefix: "I" );

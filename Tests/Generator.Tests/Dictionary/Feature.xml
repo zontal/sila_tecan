@@ -15,6 +15,7 @@
             <Element>
               <Identifier>Key</Identifier>
               <DisplayName>Key</DisplayName>
+              <Description></Description>
               <DataType>
                 <Basic>Integer</Basic>
               </DataType>
@@ -22,6 +23,7 @@
             <Element>
               <Identifier>Value</Identifier>
               <DisplayName>Value</DisplayName>
+              <Description></Description>
               <DataType>
                 <Basic>String</Basic>
               </DataType>

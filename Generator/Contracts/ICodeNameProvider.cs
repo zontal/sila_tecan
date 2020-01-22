@@ -69,12 +69,5 @@ namespace Tecan.Sila2.Generator.Contracts
         /// <param name="command">The command</param>
         /// <returns>A type reference to the response DTO generated for this command</returns>
         CodeTypeReference GenerateCommandIntermediateType(FeatureCommand command);
-
-        /// <summary>
-        /// Creates a type reference for the response DTO for the given property
-        /// </summary>
-        /// <param name="featureProperty">The property</param>
-        /// <returns>>A type reference to the response DTO generated for this property</returns>
-        CodeTypeReference GetPropertyResponseType(FeatureProperty featureProperty);
     }
 }

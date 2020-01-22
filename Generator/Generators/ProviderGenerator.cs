@@ -16,25 +16,11 @@ namespace Tecan.Sila2.Generator.Generators
     [PartCreationPolicy(CreationPolicy.Shared)]
     internal class ProviderGenerator : IProviderGenerator
     {
-        /// <summary>
-        /// The name provider used to generate feature names
-        /// </summary>
-        public ICodeNameProvider NameProvider { get; }
-
-        /// <summary>
-        /// The generator used to generate the client class
-        /// </summary>
-        public IClientGenerator ClientGenerator { get; }
-
-        /// <summary>
-        /// The generator used to generate the server class
-        /// </summary>
-        public IServerGenerator ServerGenerator { get; }
-
-        private IEnumerable<IGeneratorHook> Hooks
-        {
-            get;
-        }
+        private readonly ICodeNameProvider _nameProvider;
+        private readonly IClientGenerator _clientGenerator;
+        private readonly IServerGenerator _serverGenerator;
+        private readonly ITypeTranslationProvider _translationProvider;
+        private readonly IEnumerable<IGeneratorHook> _hooks;
 
 
         /// <summary>
@@ -43,15 +29,17 @@ namespace Tecan.Sila2.Generator.Generators
         /// <param name="nameProvider">The name provider used to generate feature names</param>
         /// <param name="clientGenerator">The generator for the client class</param>
         /// <param name="serverGenerator">The generator for the server class</param>
+        /// <param name="translationProvider">A component that translates types between SiLA2 and .NET</param>
         /// <param name="hooks">Code generator hooks</param>
         [ImportingConstructor]
         public ProviderGenerator(ICodeNameProvider nameProvider, IClientGenerator clientGenerator,
-            IServerGenerator serverGenerator, [ImportMany] IEnumerable<IGeneratorHook> hooks)
+            IServerGenerator serverGenerator, ITypeTranslationProvider translationProvider, [ImportMany] IEnumerable<IGeneratorHook> hooks)
         {
-            NameProvider = nameProvider;
-            ClientGenerator = clientGenerator;
-            ServerGenerator = serverGenerator;
-            Hooks = hooks?.ToList();
+            _nameProvider = nameProvider;
+            _clientGenerator = clientGenerator;
+            _serverGenerator = serverGenerator;
+            _hooks = hooks?.ToList();
+            _translationProvider = translationProvider;
         }
 
         /// <inheritdoc />
@@ -67,7 +55,7 @@ namespace Tecan.Sila2.Generator.Generators
             {
                 foreach (var metadata in feature.Items.OfType<FeatureMetadata>())
                 {
-                    nSpace.Types.Add(ServerGenerator.GenerateMetadataInterceptorBase(feature, metadata));
+                    nSpace.Types.Add(_serverGenerator.GenerateMetadataInterceptorBase(feature, metadata));
                 }
             }
 
@@ -78,9 +66,9 @@ namespace Tecan.Sila2.Generator.Generators
             usingNs.Imports.Add(new CodeNamespaceImport("Tecan.Sila2.Server"));
             unit.Namespaces.Add(usingNs);
 
-            if( Hooks != null )
+            if( _hooks != null )
             {
-                foreach( var generatorHook in Hooks )
+                foreach( var generatorHook in _hooks )
                 {
                     generatorHook?.OnCodeGenerationComplete(feature, unit);
                 }
@@ -116,13 +104,13 @@ namespace Tecan.Sila2.Generator.Generators
             }
             
 
-            if (generateServer && ServerGenerator != null)
+            if (generateServer && _serverGenerator != null)
             {
-                provider.Members.Add(ServerGenerator.GenerateServer(feature));
+                provider.Members.Add(_serverGenerator.GenerateServer(feature));
             }
-            if (generateClient && ClientGenerator != null)
+            if (generateClient && _clientGenerator != null)
             {
-                provider.Members.Add(ClientGenerator.GenerateClient(feature));
+                provider.Members.Add(_clientGenerator.GenerateClient(feature));
             }
 
             provider.WriteDocumentation($"Encapsulates provider classes to expose the {feature.DisplayName} feature via SiLA2");
@@ -142,7 +130,7 @@ namespace Tecan.Sila2.Generator.Generators
         private void GeneratePropertyMethod(FeatureProperty featureProperty, CodeTypeDeclaration provider,
             CodeFieldReferenceExpression serviceName)
         {
-            var propertyResponse = NameProvider.GetPropertyResponseType(featureProperty);
+            var propertyResponse = CodeGenerationHelper.GetPropertyResponseType( _translationProvider,  featureProperty);
             if (featureProperty.Observable == FeaturePropertyObservable.No)
             {
                 provider.Members.Add(GenerateMethod(
@@ -164,21 +152,21 @@ namespace Tecan.Sila2.Generator.Generators
         private void GenerateCommandMethod(FeatureCommand featureCommand, CodeTypeDeclaration provider,
             CodeFieldReferenceExpression serviceName)
         {
-            var responseType = NameProvider.GenerateCommandResponseType(featureCommand);
+            var responseType = _nameProvider.GenerateCommandResponseType(featureCommand);
             if (featureCommand.Observable == FeatureCommandObservable.No)
             {
                 provider.Members.Add(GenerateMethod(
                     MethodType.Unary,
                     featureCommand.Identifier, featureCommand.Identifier + "Method",
-                    NameProvider.GenerateCommandRequestType(featureCommand),
-                    NameProvider.GenerateCommandResponseType(featureCommand), serviceName));
+                    _nameProvider.GenerateCommandRequestType(featureCommand),
+                    _nameProvider.GenerateCommandResponseType(featureCommand), serviceName));
             }
             else
             {
                 provider.Members.Add(GenerateMethod(
                     MethodType.Unary,
                     featureCommand.Identifier, featureCommand.Identifier + "Method",
-                    NameProvider.GenerateCommandRequestType(featureCommand),
+                    _nameProvider.GenerateCommandRequestType(featureCommand),
                     new CodeTypeReference(nameof(CommandConfirmation)), serviceName));
                 provider.Members.Add(GenerateMethod(
                     MethodType.ServerStreaming,
@@ -191,14 +179,14 @@ namespace Tecan.Sila2.Generator.Generators
                         MethodType.Unary,
                         featureCommand.Identifier + "_IntermediateResponses", featureCommand.Identifier + "IntermediateMethod",
                         new CodeTypeReference(nameof(CommandExecutionUuid)),
-                        NameProvider.GenerateCommandIntermediateType(featureCommand), serviceName));
+                        _nameProvider.GenerateCommandIntermediateType(featureCommand), serviceName));
 
                 }
                 provider.Members.Add(GenerateMethod(
                     MethodType.Unary,
                     featureCommand.Identifier + "_Result", featureCommand.Identifier + "ResponseMethod",
                     new CodeTypeReference(nameof(CommandExecutionUuid)),
-                    NameProvider.GenerateCommandResponseType(featureCommand), serviceName));
+                    _nameProvider.GenerateCommandResponseType(featureCommand), serviceName));
             }
         }
 
