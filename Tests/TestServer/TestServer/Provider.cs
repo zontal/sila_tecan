@@ -176,7 +176,7 @@ namespace Tecan.Sila2.IntegrationTests
             
             private PassIntResponseDto PassIntInternal(PassIntRequestDto request)
             {
-                return new PassIntResponseDto(_implementation.PassInt(request.Data.Extract(_server)), _server);
+                return new PassIntResponseDto(_implementation.PassInt(((int)(request.Data.Extract(_server)))), _server);
             }
             
             ///  <summary>
@@ -256,7 +256,7 @@ namespace Tecan.Sila2.IntegrationTests
             
             private PassFileResponseDto PassFileInternal(PassFileRequestDto request)
             {
-                return new PassFileResponseDto(_implementation.PassFile(request.File.Extract(_server)), _server);
+                return new PassFileResponseDto(_implementation.PassFile(request.File.ExtractToFileInfo(_server)), _server);
             }
             
             ///  <summary>
@@ -272,7 +272,7 @@ namespace Tecan.Sila2.IntegrationTests
             
             private PassBytesResponseDto PassBytesInternal(PassBytesRequestDto request)
             {
-                return new PassBytesResponseDto(_implementation.PassBytes(request.Bytes.Extract(_server)), _server);
+                return new PassBytesResponseDto(_implementation.PassBytes(request.Bytes.ExtractToBytes(_server)), _server);
             }
             
             ///  <summary>

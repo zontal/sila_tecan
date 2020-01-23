@@ -140,7 +140,7 @@ namespace Tecan.Sila2.Generator.TypeTranslation
                 var extractedResult = new CodeMethodInvokeExpression( expression, nameof(ISilaTransferObject<string>.Extract), binaryStorageArgument );
                 if( BasicTypes.TryGetValue( _interfaceType, out var tuple ) )
                 {
-                    if( targetType == null || !tuple.IsNonDefault )
+                    if( targetType == null )
                     {
                         return extractedResult;
                     }
@@ -158,9 +158,13 @@ namespace Tecan.Sila2.Generator.TypeTranslation
 
                         return extractedResult;
                     }
-                }
 
-                return new CodeCastExpression( targetType, extractedResult );
+                    return new CodeCastExpression( targetType, extractedResult );
+                }
+                else
+                {
+                    throw new InvalidOperationException();
+                }
             }
 
         }

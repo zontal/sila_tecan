@@ -1701,7 +1701,7 @@ namespace Tecan.Sila2.IntegrationTests
         /// <returns>the inner value</returns>
         public SomeStructure Extract(Tecan.Sila2.Binary.IBinaryStore store)
         {
-            return new SomeStructure(Boolean.Extract(store), Real.Extract(store), Long.Extract(store), Int.Extract(store), Timestamp.Extract(store), Time.Extract(store));
+            return new SomeStructure(Boolean.Extract(store), Real.Extract(store), Long.Extract(store), ((int)(Int.Extract(store))), Timestamp.Extract(store), Time.Extract(store));
         }
         
         ///  <summary>

@@ -155,7 +155,6 @@ namespace Tecan.Sila2.Generator.Test.TestReference
     ///  <summary>
     /// Uniform Resource Locator as defined in RFC 1738.
     /// </summary>
-    [Tecan.Sila2.SilaDisplayNameAttribute("Url")]
     [Tecan.Sila2.PatternConstraintAttribute("https?://.+")]
     public struct Url
     {
