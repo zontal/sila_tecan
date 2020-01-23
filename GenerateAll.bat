@@ -30,6 +30,10 @@ Build\Generator\net472\SilaGen.exe generate-interface Tests\Generator.Tests\Temp
 Build\Generator\net472\SilaGen.exe generate-provider Tests\Generator.Tests\TemperatureController\Feature.xml Tests\Generator.Tests\TemperatureController\DtoReference.cs Tests\Generator.Tests\TemperatureController\ProviderReference.cs -n Tecan.Sila2.Generator.Test.TestReference
 Build\Generator\net472\SilaGen.exe generate-feature Build\Test\net472\Tecan.Sila2Generator.Test.dll -i Tecan.Sila2.Generator.Test.TemperatureController.ITemperatureController Tests\Generator.Tests\TemperatureController\Feature.xml
 
+Build\Generator\net472\SilaGen.exe generate-interface Tests\Generator.Tests\Dictionary\Feature.xml Tests\Generator.Tests\Dictionary\ServiceReference.cs -n Tecan.Sila2.Generator.Test.TestReference
+Build\Generator\net472\SilaGen.exe generate-provider Tests\Generator.Tests\Dictionary\Feature.xml Tests\Generator.Tests\Dictionary\DtoReference.cs Tests\Generator.Tests\Dictionary\ProviderReference.cs -n Tecan.Sila2.Generator.Test.TestReference
+Build\Generator\net472\SilaGen.exe generate-feature Build\Test\net472\Tecan.Sila2Generator.Test.dll -i Tecan.Sila2.Generator.Test.Dictionary.IDictionaryService Tests\Generator.Tests\Dictionary\Feature.xml
+
 Build\Generator\net472\SilaGen.exe generate-server Build\Test\Features\ParameterDefaultsProvider\net472\Tecan.Sila2.ParameterDefaultsProvider.Tests.dll Tests\Features\ParameterDefaultsProvider.Tests\ParameterDefaultsProvider.Tests.csproj -n Tecan.Sila2.ParameterDefaultsProvider.Tests
 
 Build\Generator\net472\SilaGen.exe generate-server Build\Test\TestServer\net472\TestServer.exe Tests\TestServer\TestServer.csproj -n Tecan.Sila2.IntegrationTests

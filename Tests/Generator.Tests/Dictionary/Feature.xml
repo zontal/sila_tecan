@@ -1,7 +1,7 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Feature xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" SiLA2Version="1.0" FeatureVersion="1.0" Originator="tecan.sila.generator" Category="test" xmlns="http://www.sila-standard.org">
+<?xml version="1.0" encoding="utf-8"?>
+<Feature xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" SiLA2Version="1.0" FeatureVersion="1.0" Originator="tecan.sila.generator" Category="test" xmlns="http://www.sila-standard.org">
   <Identifier>DictionaryService</Identifier>
-  <DisplayName>DictionaryService</DisplayName>
+  <DisplayName>Dictionary Service</DisplayName>
   <Description />
   <Property>
     <Identifier>Lookup</Identifier>
@@ -15,7 +15,7 @@
             <Element>
               <Identifier>Key</Identifier>
               <DisplayName>Key</DisplayName>
-              <Description></Description>
+              <Description />
               <DataType>
                 <Basic>Integer</Basic>
               </DataType>
@@ -23,7 +23,7 @@
             <Element>
               <Identifier>Value</Identifier>
               <DisplayName>Value</DisplayName>
-              <Description></Description>
+              <Description />
               <DataType>
                 <Basic>String</Basic>
               </DataType>

@@ -17,8 +17,10 @@ $SILAGEN generate-interface Features/Authentication/AuthorizationProviderService
 $SILAGEN generate-provider Features/Authentication/AuthorizationProviderService.sila.xml Features/Authentication/AuthorizationProvider/AuthorizationProviderServiceDtos.cs Features/Authentication/AuthorizationProvider/AuthorizationProviderClient.cs -n Tecan.Sila2.AuthorizationProvider -c
 $SILAGEN generate-interface Features/Authentication/AuthorizationConfigurationService.sila.xml Features/Authentication/AuthorizationConfiguration/IAuthorizationConfigurationService.cs -n Tecan.Sila2.Authorization
 $SILAGEN generate-provider Features/Authentication/AuthorizationConfigurationService.sila.xml Features/Authentication/AuthorizationConfiguration/AuthorizationConfigurationServiceDtos.cs Features/Authentication/AuthorizationConfiguration/AuthorizationConfigurationServiceProvider.cs -n Tecan.Sila2.Authorization -s
+$SILAGEN generate-interface Features/ParameterConstraintsProvider/ParameterConstraintsProvider.sila.xml Features/ParameterConstraintsProvider/IParameterConstraintsProvider.cs -n Tecan.Sila2.ParameterConstraintsProvider
+$SILAGEN generate-provider Features/ParameterConstraintsProvider/ParameterConstraintsProvider.sila.xml Features/ParameterConstraintsProvider/ParameterConstraintDtos.cs Features/ParameterConstraintsProvider/ParameterConstraintsServiceProvider.cs -n Tecan.Sila2.ParameterConstraintsProvider -s
 
-$SILAGEN generate-server Build/Features/netstandard2.0/Tecan.Sila2.WorktableIntegration.dll Features/WorktableIntegration/WorktableIntegration.csproj -n Tecan.Sila2.WorktableIntegration -r Tecan.Sila2.WorktableIntegration
+$SILAGEN generate-server Build/Features/netstandard2.0/Tecan.Sila2.WorktableIntegration.dll Features/WorktableIntegration/WorktableIntegration.csproj -n Tecan.Sila2.WorktableIntegration
 
 $SILAGEN generate-interface Tests/Generator.Tests/Logging/Feature.xml Tests/Generator.Tests/Logging/ServiceReference.cs -n Tecan.Sila2.Generator.Test.TestReference
 $SILAGEN generate-provider Tests/Generator.Tests/Logging/Feature.xml Tests/Generator.Tests/Logging/DtoReference.cs Tests/Generator.Tests/Logging/ProviderReference.cs -n Tecan.Sila2.Generator.Test.TestReference
@@ -32,7 +34,16 @@ $SILAGEN generate-interface Tests/Generator.Tests/TemperatureController/Feature.
 $SILAGEN generate-provider Tests/Generator.Tests/TemperatureController/Feature.xml Tests/Generator.Tests/TemperatureController/DtoReference.cs Tests/Generator.Tests/TemperatureController/ProviderReference.cs -n Tecan.Sila2.Generator.Test.TestReference
 $SILAGEN generate-feature Build/Test/netcoreapp2.1/Tecan.Sila2Generator.Test.dll -i Tecan.Sila2.Generator.Test.TemperatureController.ITemperatureController Tests/Generator.Tests/TemperatureController/Feature.xml
 
-$SILAGEN generate-feature Build/Features/netstandard2.0/Tecan.Sila2.ParameterConstraintsProvider.dll -i Tecan.Sila2.ParameterConstraintsProvider.IParameterConstraintsProvider Features/ParameterConstraintsProvider/ParameterConstraintsProviderMock.sila.xml -o org.silastandard
-$SILAGEN generate-provider Features/ParameterConstraintsProvider/ParameterConstraintsProviderMock.sila.xml Features/ParameterConstraintsProvider/ParameterConstraintDtos.cs Features/ParameterConstraintsProvider/ParameterConstraintsServiceProvider.cs -n Tecan.Sila2.ParameterConstraintsProvider
+$SILAGEN generate-interface Tests/Generator.Tests/Dictionary/Feature.xml Tests/Generator.Tests/Dictionary/ServiceReference.cs -n Tecan.Sila2.Generator.Test.TestReference
+$SILAGEN generate-provider Tests/Generator.Tests/Dictionary/Feature.xml Tests/Generator.Tests/Dictionary/DtoReference.cs Tests/Generator.Tests/Dictionary/ProviderReference.cs -n Tecan.Sila2.Generator.Test.TestReference
+$SILAGEN generate-feature Build/Test/netcoreapp2.1/Tecan.Sila2Generator.Test.dll -i Tecan.Sila2.Generator.Test.Dictionary.IDictionaryService Tests/Generator.Tests/Dictionary/Feature.xml
 
 $SILAGEN generate-server Build/Test/Features/ParameterDefaultsProvider/netcoreapp2.1/Tecan.Sila2.ParameterDefaultsProvider.Tests.dll Tests/Features/ParameterDefaultsProvider.Tests/ParameterDefaultsProvider.Tests.csproj -n Tecan.Sila2.ParameterDefaultsProvider.Tests
+
+$SILAGEN generate-server Build/Test/TestServer/netcoreapp2.1/TestServer.exe Tests/TestServer/TestServer.csproj -n Tecan.Sila2.IntegrationTests
+$SILAGEN generate-client Tests/TestServer/TestServer.sila.xml Tests/IntegrationTests/IntegrationTests.csproj -n Tecan.Sila2.IntegrationTests
+
+$SILAGEN generate-client Features/Authentication/AuthenticationService.sila.xml Features/Authentication.Client/Authentication.Client.csproj -n Tecan.Sila2.Authentication
+$SILAGEN generate-client Features/Locking/LockController.sila.xml Features/Locking.Client/Locking.Client.csproj -n Tecan.Sila2.Locking
+$SILAGEN generate-client Features/ParameterConstraintsProvider/ParameterConstraintsProvider.sila.xml Features/ParameterConstraintsProvider.Client/ParameterConstraintsProvider.Client.csproj -n Tecan.Sila2.ParameterConstraintsProvider
+$SILAGEN generate-client Features/WorktableIntegration/WorktableService.sila.xml Features/WorktableIntegration.Client/WorktableIntegration.Client.csproj -n Tecan.Sila2.WorktableIntegration
