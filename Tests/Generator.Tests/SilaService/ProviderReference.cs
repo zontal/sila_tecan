@@ -121,7 +121,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             
             private EmptyRequest SetServerNameInternal(SetServerNameRequestDto request)
             {
-                _implementation.SetServerName(request.ServerName.Extract(_server));
+                _implementation.ServerName = request.ServerName.Extract(_server);
                 return EmptyRequest.Instance;
             }
             
@@ -279,8 +279,6 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         public partial class Client : Grpc.Core.ClientBase<Client>, ISiLAService
         {
             
-            private System.Lazy<string> _serverName;
-            
             private System.Lazy<string> _serverType;
             
             private System.Lazy<string> _serverUUID;
@@ -322,7 +320,34 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             {
                 get
                 {
-                    return _serverName.Value;
+                    Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("tecan.sila.generator.test/silaservice/SiLAService/v1/Property/ServerName");
+                    try
+                    {
+                        string response = CallInvoker.BlockingUnaryCall(GetServerNameMethod, null, callInfo.Options, EmptyRequest.Instance).Value.Extract(_executionManager.DownloadBinaryStore);
+                        callInfo.FinishSuccessful();
+                        return response;
+                    } catch (System.Exception ex)
+                    {
+                        System.Exception exception = ErrorHandling.ConvertException(ex);
+                        callInfo.FinishWithErrors(exception);
+                        throw exception;
+                    }
+                }
+                set
+                {
+                    SetServerNameRequestDto request = new SetServerNameRequestDto(value, null);
+                    Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("tecan.sila.generator.test/silaservice/SiLAService/v1/Command/SetServerName");
+                    try
+                    {
+                        CallInvoker.BlockingUnaryCall(SetServerNameMethod, null, callInfo.Options, request);
+                        callInfo.FinishSuccessful();
+                        return;
+                    } catch (System.Exception ex)
+                    {
+                        System.Exception exception = ErrorHandling.ConvertException(ex);
+                        callInfo.FinishWithErrors(exception);
+                        throw exception;
+                    }
                 }
             }
             
@@ -393,22 +418,6 @@ namespace Tecan.Sila2.Generator.Test.TestReference
                 get
                 {
                     return _implementedFeatures.Value;
-                }
-            }
-            
-            private string RequestServerName()
-            {
-                Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("tecan.sila.generator.test/silaservice/SiLAService/v1/Property/ServerName");
-                try
-                {
-                    string response = CallInvoker.BlockingUnaryCall(GetServerNameMethod, null, callInfo.Options, EmptyRequest.Instance).Value.Extract(_executionManager.DownloadBinaryStore);
-                    callInfo.FinishSuccessful();
-                    return response;
-                } catch (System.Exception ex)
-                {
-                    System.Exception exception = ErrorHandling.ConvertException(ex);
-                    callInfo.FinishWithErrors(exception);
-                    throw exception;
                 }
             }
             
@@ -514,7 +523,6 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             /// </summary>
             private void InitLazyRequests()
             {
-                _serverName = new System.Lazy<string>(RequestServerName);
                 _serverType = new System.Lazy<string>(RequestServerType);
                 _serverUUID = new System.Lazy<string>(RequestServerUUID);
                 _serverDescription = new System.Lazy<string>(RequestServerDescription);
@@ -558,27 +566,6 @@ namespace Tecan.Sila2.Generator.Test.TestReference
                     return new UnimplementedFeatureException(error.Message);
                 }
                 return null;
-            }
-            
-            ///  <summary>
-            /// Sets a human readable name to the Server Name property
-            /// </summary>
-            /// <param name="serverName">The human readable name of to assign to the SiLA Server</param>
-            public virtual void SetServerName(string serverName)
-            {
-                SetServerNameRequestDto request = new SetServerNameRequestDto(serverName, null);
-                Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("tecan.sila.generator.test/silaservice/SiLAService/v1/Command/SetServerName");
-                try
-                {
-                    CallInvoker.BlockingUnaryCall(SetServerNameMethod, null, callInfo.Options, request);
-                    callInfo.FinishSuccessful();
-                    return;
-                } catch (System.Exception ex)
-                {
-                    System.Exception exception = ErrorHandling.ConvertException(ex);
-                    callInfo.FinishWithErrors(exception);
-                    throw exception;
-                }
             }
             
             ///  <summary>

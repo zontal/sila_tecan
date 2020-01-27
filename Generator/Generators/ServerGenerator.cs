@@ -599,20 +599,30 @@ namespace Tecan.Sila2.Generator.Generators
             };
             implementationMethod.ReturnType = _nameProvider.GenerateCommandResponseType( featureCommand );
             implementationMethod.Parameters.Add( request );
-            var actualImplementation = GenerateCommandImplementationCall( featureCommand, implementation, requestRef );
             CodeStatementCollection statements = GenerateExceptionHandling( feature, featureCommand.DefinedExecutionErrors, errorFinder, implementationMethod.Statements );
-
-            if( featureCommand.Response != null && featureCommand.Response.Length > 0 )
+            var actualImplementation = GenerateCommandImplementationCall( featureCommand, implementation, requestRef );
+            if( CodeGenerationHelper.IsSetterCommand( featureCommand, feature.Items.OfType<FeatureProperty>() ) )
             {
-                var result = GenerateClientResultConversionExpression( featureCommand.Response[0].DataType,
-                    actualImplementation, implementationMethod.ReturnType );
-                statements.Add( new CodeMethodReturnStatement( result ) );
+                statements.Add( new CodeAssignStatement( new CodePropertyReferenceExpression( implementation, featureCommand.Identifier.Substring( 3 ) ),
+                    actualImplementation.Parameters[0] ) );
+                statements.Add( new CodeMethodReturnStatement( new CodeFieldReferenceExpression(
+                    new CodeTypeReferenceExpression( nameof( EmptyRequest ) ), "Instance" ) ) );
             }
             else
             {
-                statements.Add( new CodeExpressionStatement( actualImplementation ) );
-                statements.Add( new CodeMethodReturnStatement( new CodeFieldReferenceExpression(
-                    new CodeTypeReferenceExpression( nameof(EmptyRequest) ), "Instance" ) ) );
+
+                if( featureCommand.Response != null && featureCommand.Response.Length > 0 )
+                {
+                    var result = GenerateClientResultConversionExpression( featureCommand.Response[0].DataType,
+                        actualImplementation, implementationMethod.ReturnType );
+                    statements.Add( new CodeMethodReturnStatement( result ) );
+                }
+                else
+                {
+                    statements.Add( new CodeExpressionStatement( actualImplementation ) );
+                    statements.Add( new CodeMethodReturnStatement( new CodeFieldReferenceExpression(
+                        new CodeTypeReferenceExpression( nameof(EmptyRequest) ), "Instance" ) ) );
+                }
             }
 
             return implementationMethod;

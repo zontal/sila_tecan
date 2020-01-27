@@ -48,7 +48,7 @@ namespace Tecan.Sila2.Generator.Helper
         /// <returns>A camel case representation of the identifier</returns>
         public static string ToCamelCase( this string identifier )
         {
-            return char.ToLowerInvariant( identifier[0]) + identifier.Substring(1);
+            return Char.ToLowerInvariant( identifier[0]) + identifier.Substring(1);
         }
 
         /// <summary>
@@ -58,7 +58,7 @@ namespace Tecan.Sila2.Generator.Helper
         /// <returns>A Pascal case representation of the identifier</returns>
         public static string ToPascalCase(this string identifier)
         {
-            return char.ToUpperInvariant(identifier[0]) + identifier.Substring(1);
+            return Char.ToUpperInvariant(identifier[0]) + identifier.Substring(1);
         }
 
         /// <summary>
@@ -68,12 +68,12 @@ namespace Tecan.Sila2.Generator.Helper
         /// <returns>A display name where a blank space is inserted before each upper-case letter</returns>
         public static string ToDisplayName( this string identifier )
         {
-            if( string.IsNullOrEmpty( identifier ) )
+            if( String.IsNullOrEmpty( identifier ) )
             {
-                return string.Empty;
+                return String.Empty;
             }
 
-            if( identifier.All( char.IsUpper ) )
+            if( identifier.All( Char.IsUpper ) )
             {
                 return identifier;
             }
@@ -82,7 +82,7 @@ namespace Tecan.Sila2.Generator.Helper
             sb.Append( identifier[0] );
             for( int i = 1; i < identifier.Length; i++ )
             {
-                if( char.IsUpper( identifier[i] ) )
+                if( Char.IsUpper( identifier[i] ) )
                 {
                     sb.Append( ' ' );
                 }
@@ -91,6 +91,51 @@ namespace Tecan.Sila2.Generator.Helper
             }
 
             return sb.ToString();
+        }
+
+        /// <summary>
+        /// Determines whether the given command is a setter command
+        /// </summary>
+        /// <param name="command">The command</param>
+        /// <param name="possibleProperties">A collection of possible properties</param>
+        /// <returns>True if the command is a setter</returns>
+        public static bool IsSetterCommand( FeatureCommand command, params FeatureProperty[] possibleProperties )
+        {
+            return IsSetterCommand( command, possibleProperties as IEnumerable<FeatureProperty> );
+        }
+
+        /// <summary>
+        /// Determines whether the given command is a setter command
+        /// </summary>
+        /// <param name="command">The command</param>
+        /// <param name="possibleProperties">A collection of possible properties</param>
+        /// <returns>True if the command is a setter</returns>
+        public static bool IsSetterCommand( FeatureCommand command, IEnumerable<FeatureProperty> possibleProperties )
+        {
+            if(command.Identifier == null || command.Identifier.Length <= 3 || !command.Identifier.StartsWith( "Set" ) ||
+               command.Parameter == null || command.Parameter.Length != 1 || possibleProperties == null)
+            {
+                return false;
+            }
+            foreach(var featureProperty in possibleProperties)
+            {
+                if(command.Identifier == "Set" + featureProperty.Identifier && IsSameType( featureProperty.DataType, command.Parameter[0].DataType ))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="type1"></param>
+        /// <param name="type2"></param>
+        /// <returns></returns>
+        public static bool IsSameType( DataTypeType type1, DataTypeType type2 )
+        {
+            return Equals( type1?.Item, type2?.Item );
         }
 
         /// <summary>
@@ -147,7 +192,7 @@ namespace Tecan.Sila2.Generator.Helper
                 foreach( var line in summary.Split( '\n' ) )
                 {
                     var trimmed = line.Trim();
-                    if( !string.IsNullOrEmpty( trimmed ) )
+                    if( !String.IsNullOrEmpty( trimmed ) )
                     {
                         documentationWriter.AppendLine( " " + trimmed );
                     }

@@ -27,6 +27,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         string ServerName
         {
             get;
+            set;
         }
         
         ///  <summary>
@@ -93,12 +94,6 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         [Tecan.Sila2.ThrowsAttribute(typeof(UnimplementedFeatureException))]
         [return: Tecan.Sila2.SilaIdentifierAttribute("FeatureDefinition")]
         FeatureDefinition GetFeatureDefinition(FeatureIdentifier qualifiedFeatureIdentifier);
-        
-        ///  <summary>
-        /// Sets a human readable name to the Server Name property
-        /// </summary>
-        /// <param name="serverName">The human readable name of to assign to the SiLA Server</param>
-        void SetServerName(string serverName);
     }
     
     ///  <summary>

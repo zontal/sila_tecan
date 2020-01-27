@@ -112,7 +112,11 @@ namespace Tecan.Sila2.Generator.Generators
             {
                 if(!typeof( IRequestInterceptor ).IsAssignableFrom( propertyInfo.PropertyType ))
                 {
-                    items.Add( GenerateProperty( propertyInfo, definedExceptions, dataTypes ) );
+                    items.Add( GenerateProperty( propertyInfo, definedExceptions, dataTypes, out var setterCommand ) );
+                    if( setterCommand != null )
+                    {
+                        items.Add( setterCommand );
+                    }
                 }
                 else
                 {
@@ -171,13 +175,14 @@ namespace Tecan.Sila2.Generator.Generators
         }
 
         private FeatureProperty GenerateProperty( PropertyInfo propertyInfo, ICollection<Type> readExceptions,
-            ICollection<Type> dataTypes )
+            ICollection<Type> dataTypes, out FeatureCommand setterCommand )
         {
             var (identifier, displayName, description) = ParseElementData( propertyInfo );
 
             var definedErrors = ParseExceptionNamesAndRegister( propertyInfo, readExceptions );
             var isDynamic = propertyInfo.GetCustomAttribute<DynamicAttribute>() != null;
-            return new FeatureProperty
+            setterCommand = null;
+            var property = new FeatureProperty
             {
                 Identifier = identifier,
                 DisplayName = displayName,
@@ -187,6 +192,28 @@ namespace Tecan.Sila2.Generator.Generators
                 DefinedExecutionErrors = definedErrors.Any() ? definedErrors.ToArray() : null,
                 Observable = isDynamic ? FeaturePropertyObservable.Yes : FeaturePropertyObservable.No
             };
+            if( propertyInfo.CanWrite )
+            {
+                setterCommand = new FeatureCommand()
+                {
+                    Identifier = "Set" + identifier,
+                    DefinedExecutionErrors = property.DefinedExecutionErrors,
+                    Description = property.Description,
+                    DisplayName = "Set " + displayName,
+                    Observable = FeatureCommandObservable.No,
+                    Parameter = new SiLAElement[]
+                    {
+                        new SiLAElement()
+                        {
+                            Identifier = "Value",
+                            DisplayName = "Value",
+                            Description = "The new " + property.DisplayName,
+                            DataType = property.DataType
+                        }
+                    }
+                };
+            }
+            return property;
         }
 
         private HashSet<string> ParseExceptionNamesAndRegister( MemberInfo member, ICollection<Type> exceptions )

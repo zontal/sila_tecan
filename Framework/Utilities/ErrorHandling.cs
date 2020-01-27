@@ -89,7 +89,7 @@ namespace Tecan.Sila2
                             Encoding.UTF8.GetBytes(rpcEx.Status.Detail));
                         if( error.DefinedExecutionError != null )
                         {
-                            if( executionErrorConversion?.Invoke( error.DefinedExecutionError ) is Exception definedException )
+                            if( executionErrorConversion?.Invoke( error.DefinedExecutionError ) is var definedException && definedException != null )
                             {
                                 return definedException;
                             }

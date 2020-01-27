@@ -98,6 +98,7 @@ namespace Tecan.Sila2.Generator.Generators
             }
         }
 
+
         private CodeTypeDeclaration GenerateDataTypeDefinition( SiLAElement dataType, Action<string, StructureType> structHandler )
         {
             var summary = dataType.Description ?? $"The {dataType.DisplayName} type";
@@ -436,26 +437,28 @@ namespace Tecan.Sila2.Generator.Generators
 
             foreach( var featureItem in feature.Items )
             {
-                if( featureItem is FeatureCommand command )
+                if( featureItem is FeatureCommand command && !CodeGenerationHelper.IsSetterCommand( command, feature.Items.OfType<FeatureProperty>()) )
                 {
                     contract.Members.Add( GenerateCommandMethod( command, typeManagement ) );
                 }
                 else if( featureItem is FeatureProperty property )
                 {
-                    contract.Members.Add( GenerateProperty( property, typeManagement.RegisterStruct ) );
+                    contract.Members.Add( GenerateProperty( property, typeManagement.RegisterStruct,
+                        feature.Items.OfType<FeatureCommand>().Any( c => CodeGenerationHelper.IsSetterCommand( c, property ) ) ) );
                 }
             }
 
             return contract;
         }
 
-        private CodeTypeMember GenerateProperty( FeatureProperty property, Action<string, StructureType> structHandler )
+        private CodeTypeMember GenerateProperty( FeatureProperty property, Action<string, StructureType> structHandler, bool hasSetter )
         {
             var prop = new CodeMemberProperty
             {
                 Name = property.Identifier,
                 Attributes = MemberAttributes.Public,
-                HasGet = true
+                HasGet = true,
+                HasSet = hasSetter
             };
 
             if( property.DisplayName != property.Identifier.ToDisplayName() )
