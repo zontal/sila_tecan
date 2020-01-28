@@ -100,6 +100,14 @@ namespace Tecan.Sila2.Generator.Test.TestReference
                 try
                 {
                     return new GetFeatureDefinitionResponseDto(_implementation.GetFeatureDefinition(request.QualifiedFeatureIdentifier.Extract(_server)), _server);
+                } catch (System.ArgumentException ex)
+                {
+                    if ((ex.ParamName == "qualifiedFeatureIdentifier"))
+                    {
+                        throw ErrorHandling.CreateValidationError("tecan.sila.generator.test/silaservice/SiLAService/v1/Command/GetFeatureDefinition" +
+                                "/Parameter/QualifiedFeatureIdentifier", ex.Message);
+                    }
+                    throw ErrorHandling.CreateUnknownValidationError(ex);
                 } catch (UnimplementedFeatureException ex)
                 {
                     throw ErrorHandling.CreateExecutionError("tecan.sila.generator.test/silaservice/SiLAService/v1/DefinedError/UnimplementedFe" +
@@ -121,8 +129,19 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             
             private EmptyRequest SetServerNameInternal(SetServerNameRequestDto request)
             {
-                _implementation.ServerName = request.ServerName.Extract(_server);
-                return EmptyRequest.Instance;
+                try
+                {
+                    _implementation.ServerName = request.ServerName.Extract(_server);
+                    return EmptyRequest.Instance;
+                } catch (System.ArgumentException ex)
+                {
+                    if ((ex.ParamName == "serverName"))
+                    {
+                        throw ErrorHandling.CreateValidationError("tecan.sila.generator.test/silaservice/SiLAService/v1/Command/SetServerName/Parame" +
+                                "ter/ServerName", ex.Message);
+                    }
+                    throw ErrorHandling.CreateUnknownValidationError(ex);
+                }
             }
             
             ///  <summary>

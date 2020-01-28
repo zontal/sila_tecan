@@ -75,8 +75,19 @@ namespace Tecan.Sila2.ParameterDefaultsProvider.Tests
             
             private EmptyRequest ExampleMethodInternal(ExampleMethodRequestDto request)
             {
-                _implementation.ExampleMethod(request.Parameter.Extract(_server));
-                return EmptyRequest.Instance;
+                try
+                {
+                    _implementation.ExampleMethod(request.Parameter.Extract(_server));
+                    return EmptyRequest.Instance;
+                } catch (System.ArgumentException ex)
+                {
+                    if ((ex.ParamName == "parameter"))
+                    {
+                        throw ErrorHandling.CreateValidationError("tecan.sila.parameterdefaultsprovider/tests/ExampleSetProviderService/v1/Command/E" +
+                                "xampleMethod/Parameter/Parameter", ex.Message);
+                    }
+                    throw ErrorHandling.CreateUnknownValidationError(ex);
+                }
             }
             
             ///  <summary>

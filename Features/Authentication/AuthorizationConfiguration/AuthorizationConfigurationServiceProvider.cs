@@ -77,8 +77,19 @@ namespace Tecan.Sila2.Authorization
             
             private EmptyRequest SetAuthorizationProviderInternal(SetAuthorizationProviderRequestDto request)
             {
-                _implementation.SetAuthorizationProvider(request.AuthorizationProvider.Extract(_server));
-                return EmptyRequest.Instance;
+                try
+                {
+                    _implementation.SetAuthorizationProvider(request.AuthorizationProvider.Extract(_server));
+                    return EmptyRequest.Instance;
+                } catch (System.ArgumentException ex)
+                {
+                    if ((ex.ParamName == "authorizationProvider"))
+                    {
+                        throw ErrorHandling.CreateValidationError("org.silastandard/core/AuthorizationConfigurationService/v1/Command/SetAuthorizati" +
+                                "onProvider/Parameter/AuthorizationProvider", ex.Message);
+                    }
+                    throw ErrorHandling.CreateUnknownValidationError(ex);
+                }
             }
             
             ///  <summary>

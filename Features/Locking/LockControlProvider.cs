@@ -86,6 +86,18 @@ namespace Tecan.Sila2.Locking
                 {
                     _implementation.LockServer(request.LockIdentifier.Extract(_server), request.Timeout.Extract(_server));
                     return EmptyRequest.Instance;
+                } catch (System.ArgumentException ex)
+                {
+                    if ((ex.ParamName == "lockIdentifier"))
+                    {
+                        throw ErrorHandling.CreateValidationError("org.silastandard/core/LockController/v1/Command/LockServer/Parameter/LockIdentifi" +
+                                "er", ex.Message);
+                    }
+                    if ((ex.ParamName == "timeout"))
+                    {
+                        throw ErrorHandling.CreateValidationError("org.silastandard/core/LockController/v1/Command/LockServer/Parameter/Timeout", ex.Message);
+                    }
+                    throw ErrorHandling.CreateUnknownValidationError(ex);
                 } catch (ServerAlreadyLockedException ex)
                 {
                     throw ErrorHandling.CreateExecutionError("org.silastandard/core/LockController/v1/DefinedError/ServerAlreadyLocked", "The SiLA Server can not be locked because it is already locked.", ex.Message);
@@ -109,6 +121,14 @@ namespace Tecan.Sila2.Locking
                 {
                     _implementation.UnlockServer(request.LockIdentifier.Extract(_server));
                     return EmptyRequest.Instance;
+                } catch (System.ArgumentException ex)
+                {
+                    if ((ex.ParamName == "lockIdentifier"))
+                    {
+                        throw ErrorHandling.CreateValidationError("org.silastandard/core/LockController/v1/Command/UnlockServer/Parameter/LockIdenti" +
+                                "fier", ex.Message);
+                    }
+                    throw ErrorHandling.CreateUnknownValidationError(ex);
                 } catch (ServerNotLockedException ex)
                 {
                     throw ErrorHandling.CreateExecutionError("org.silastandard/core/LockController/v1/DefinedError/ServerNotLocked", "The SiLA Server can not be unlocked because it is not locked.", ex.Message);

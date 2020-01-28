@@ -100,6 +100,14 @@ namespace Tecan.Sila2.Discovery
                 try
                 {
                     return new GetFeatureDefinitionResponseDto(_implementation.GetFeatureDefinition(request.FeatureIdentifier.Extract(_server)), _server);
+                } catch (System.ArgumentException ex)
+                {
+                    if ((ex.ParamName == "featureIdentifier"))
+                    {
+                        throw ErrorHandling.CreateValidationError("org.silastandard/core/SiLAService/v1/Command/GetFeatureDefinition/Parameter/Featu" +
+                                "reIdentifier", ex.Message);
+                    }
+                    throw ErrorHandling.CreateUnknownValidationError(ex);
                 } catch (UnimplementedFeatureException ex)
                 {
                     throw ErrorHandling.CreateExecutionError("org.silastandard/core/SiLAService/v1/DefinedError/UnimplementedFeature", "\n      The Feature specified by the given Feature identifier is not implemented b" +
@@ -120,8 +128,18 @@ namespace Tecan.Sila2.Discovery
             
             private EmptyRequest SetServerNameInternal(SetServerNameRequestDto request)
             {
-                _implementation.SetServerName(request.ServerName.Extract(_server));
-                return EmptyRequest.Instance;
+                try
+                {
+                    _implementation.SetServerName(request.ServerName.Extract(_server));
+                    return EmptyRequest.Instance;
+                } catch (System.ArgumentException ex)
+                {
+                    if ((ex.ParamName == "serverName"))
+                    {
+                        throw ErrorHandling.CreateValidationError("org.silastandard/core/SiLAService/v1/Command/SetServerName/Parameter/ServerName", ex.Message);
+                    }
+                    throw ErrorHandling.CreateUnknownValidationError(ex);
+                }
             }
             
             ///  <summary>

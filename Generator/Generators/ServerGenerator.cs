@@ -248,7 +248,7 @@ namespace Tecan.Sila2.Generator.Generators
             }
 
             var ret = new CodeMethodReturnStatement( result );
-            var statements = GenerateExceptionHandling( feature, featureProperty.DefinedExecutionErrors, errorFinder, createResultMethod.Statements );
+            var statements = GenerateExceptionHandling( feature, null, featureProperty.DefinedExecutionErrors, errorFinder, createResultMethod.Statements );
             statements.Add( ret );
 
             var resultCall = new CodeMethodInvokeExpression(
@@ -341,7 +341,7 @@ namespace Tecan.Sila2.Generator.Generators
                 result,
                 new CodeArgumentReferenceExpression( ContextParameterName ) ) );
 
-            var statements = GenerateExceptionHandling( feature, featureProperty.DefinedExecutionErrors, errorFinder, implementationMethod.Statements );
+            var statements = GenerateExceptionHandling( feature, null, featureProperty.DefinedExecutionErrors, errorFinder, implementationMethod.Statements );
             statements.Add( ret );
             server.Members.Add( implementationMethod );
         }
@@ -599,7 +599,9 @@ namespace Tecan.Sila2.Generator.Generators
             };
             implementationMethod.ReturnType = _nameProvider.GenerateCommandResponseType( featureCommand );
             implementationMethod.Parameters.Add( request );
-            CodeStatementCollection statements = GenerateExceptionHandling( feature, featureCommand.DefinedExecutionErrors, errorFinder, implementationMethod.Statements );
+            CodeStatementCollection statements = GenerateExceptionHandling( feature,
+                featureCommand.Parameter?.ToDictionary( e => e.Identifier.ToCamelCase(), e => feature.GetFullyQualifiedParameterIdentifier( featureCommand, e.Identifier ) ),
+                featureCommand.DefinedExecutionErrors, errorFinder, implementationMethod.Statements );
             var actualImplementation = GenerateCommandImplementationCall( featureCommand, implementation, requestRef );
             if( CodeGenerationHelper.IsSetterCommand( featureCommand, feature.Items.OfType<FeatureProperty>() ) )
             {
@@ -628,10 +630,10 @@ namespace Tecan.Sila2.Generator.Generators
             return implementationMethod;
         }
 
-        private CodeStatementCollection GenerateExceptionHandling( Feature feature, string[] executionErrors, Func<string, FeatureDefinedExecutionError> errorFinder,
+        private CodeStatementCollection GenerateExceptionHandling( Feature feature, IReadOnlyDictionary<string, string> parameters, string[] executionErrors, Func<string, FeatureDefinedExecutionError> errorFinder,
             CodeStatementCollection statements )
         {
-            if( executionErrors == null || executionErrors.Length == 0 )
+            if( (executionErrors == null || executionErrors.Length == 0) && (parameters == null || parameters.Count == 0) )
             {
                 return statements;
             }
@@ -639,17 +641,39 @@ namespace Tecan.Sila2.Generator.Generators
             {
                 var tryStmt = new CodeTryCatchFinallyStatement();
                 statements.Add( tryStmt );
-                foreach( var executionError in executionErrors )
+                var errorHandlingRef = new CodeTypeReferenceExpression( nameof(ErrorHandling) );
+                if( parameters != null && parameters.Count > 0 )
                 {
-                    var error = errorFinder( executionError );
-                    var clause = new CodeCatchClause( "ex", _nameProvider.CreateExceptionReference( executionError ) );
-                    var exception = new CodeMethodInvokeExpression(
-                        new CodeTypeReferenceExpression( nameof(ErrorHandling) ), nameof(ErrorHandling.CreateExecutionError),
-                        new CodePrimitiveExpression( feature.GetFullyQualifiedIdentifier( error ) ),
-                        new CodePrimitiveExpression( error.Description ),
-                        new CodePropertyReferenceExpression( new CodeArgumentReferenceExpression( clause.LocalName ), nameof(Exception.Message) ) );
-                    clause.Statements.Add( new CodeThrowExceptionStatement( exception ) );
-                    tryStmt.CatchClauses.Add( clause );
+                    var argException = new CodeCatchClause("ex", new CodeTypeReference(typeof(ArgumentException)));
+                    tryStmt.CatchClauses.Add( argException );
+                    var message = new CodePropertyReferenceExpression( new CodeArgumentReferenceExpression( argException.LocalName ), nameof(Exception.Message) );
+                    var parameterName = new CodePropertyReferenceExpression( message.TargetObject, nameof(ArgumentException.ParamName) );
+                    foreach( var parameter in parameters )
+                    {
+                        var exception = new CodeMethodInvokeExpression( errorHandlingRef, nameof(ErrorHandling.CreateValidationError),
+                            new CodePrimitiveExpression( parameter.Value ),
+                            message );
+                        argException.Statements.Add( new CodeConditionStatement(
+                            new CodeBinaryOperatorExpression( parameterName, CodeBinaryOperatorType.ValueEquality, new CodePrimitiveExpression( parameter.Key ) ),
+                            new CodeThrowExceptionStatement( exception ) ) );
+                    }
+
+                    argException.Statements.Add( new CodeThrowExceptionStatement(new CodeMethodInvokeExpression(errorHandlingRef, nameof(ErrorHandling.CreateUnknownValidationError), message.TargetObject)) );
+                }
+                if( executionErrors != null )
+                {
+                    foreach( var executionError in executionErrors )
+                    {
+                        var error = errorFinder( executionError );
+                        var clause = new CodeCatchClause( "ex", _nameProvider.CreateExceptionReference( executionError ) );
+                        var exception = new CodeMethodInvokeExpression(
+                            errorHandlingRef, nameof(ErrorHandling.CreateExecutionError),
+                            new CodePrimitiveExpression( feature.GetFullyQualifiedIdentifier( error ) ),
+                            new CodePrimitiveExpression( error.Description ),
+                            new CodePropertyReferenceExpression( new CodeArgumentReferenceExpression( clause.LocalName ), nameof(Exception.Message) ) );
+                        clause.Statements.Add( new CodeThrowExceptionStatement( exception ) );
+                        tryStmt.CatchClauses.Add( clause );
+                    }
                 }
 
                 return tryStmt.TryStatements;
@@ -881,7 +905,7 @@ namespace Tecan.Sila2.Generator.Generators
                     _translationProvider.GetDtoTypeReference( metadata.DataType, metadata.Identifier, structHandler ) ),
                 new CodeArgumentReferenceExpression( ContextParameterName ),
                 new CodePrimitiveExpression( feature.GetFullyQualifiedIdentifier( metadata ) ) );
-            var statements = GenerateExceptionHandling( feature, metadata.DefinedExecutionErrors, id => FindError( feature, id ), interceptMethod.Statements );
+            var statements = GenerateExceptionHandling( feature, null, metadata.DefinedExecutionErrors, id => FindError( feature, id ), interceptMethod.Statements );
             statements.Add( new CodeMethodReturnStatement(
                 new CodeMethodInvokeExpression(
                     null,

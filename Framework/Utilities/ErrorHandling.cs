@@ -5,31 +5,47 @@ using Grpc.Core;
 namespace Tecan.Sila2
 {
     /// <summary>
-    /// Provides methods to generate SiLA errors and raise gRPC exceptions and to handle those execptions.
+    /// Provides methods to generate SiLA errors and raise gRPC exceptions and to handle those exceptions.
     /// </summary>
     public class ErrorHandling
     {
-        private static string ToUtf8String(SiLAErrorDto error)
+        private static string ToBase64String(SiLAErrorDto error)
         {
             var bytes = ProtobufMarshaller<SiLAErrorDto>.Default.Serializer(error);
-            return Encoding.UTF8.GetString(bytes);
+            return Convert.ToBase64String( bytes );
         }
 
         /// <summary>
         /// Creates a server-side validation error
         /// </summary>
-        /// <param name="parameter">The erroneous parameter</param>
-        /// <param name="value">The actually provided value</param>
-        /// <param name="details">Details of the error</param>
+        /// <param name="parameter">The fully qualified identifier of the erroneous parameter</param>
+        /// <param name="message">The error message</param>
         /// <returns>An exception</returns>
-        public static Exception RaiseValidationError(string parameter, string value, string details = null)
+        public static Exception CreateValidationError(string parameter, string message )
         {
-            return new RpcException(new Status(StatusCode.Aborted, ToUtf8String(new SiLAErrorDto
+            return new RpcException(new Status(StatusCode.Aborted, ToBase64String(new SiLAErrorDto
             {
                 ValidationError = new ValidationErrorDto()
                 {
-                    Message = $"Provided value {value} is invalid, {details}",
+                    Message = message,
                     Parameter = parameter
+                }
+            })));
+        }
+
+        /// <summary>
+        /// Creates an exception for a non-classified server-side validation error
+        /// </summary>
+        /// <param name="exception">The argument exception</param>
+        /// <returns>An exception</returns>
+        public static Exception CreateUnknownValidationError( ArgumentException exception )
+        {
+            return new RpcException(new Status(StatusCode.Aborted, ToBase64String(new SiLAErrorDto
+            {
+                ValidationError = new ValidationErrorDto()
+                {
+                    Message = exception.Message,
+                    Parameter = exception.ParamName
                 }
             })));
         }
@@ -43,7 +59,7 @@ namespace Tecan.Sila2
         /// <returns>An exception</returns>
         public static Exception CreateExecutionError( string identifier, string description, string details = null )
         {
-            return new RpcException( new Status( StatusCode.Aborted, ToUtf8String( new SiLAErrorDto
+            return new RpcException( new Status( StatusCode.Aborted, ToBase64String( new SiLAErrorDto
             {
                 DefinedExecutionError = new DefinedExecutionErrorDto()
                 {
@@ -59,7 +75,7 @@ namespace Tecan.Sila2
         /// <param name="identifier">The type of the error</param>
         public static Exception CreateFrameworkError(FrameworkErrorType identifier)
         {
-            return new RpcException(new Status(StatusCode.Aborted, ToUtf8String(new SiLAErrorDto
+            return new RpcException(new Status(StatusCode.Aborted, ToBase64String(new SiLAErrorDto
             {
                 FrameworkError = new FrameworkErrorDto()
                 {
@@ -86,7 +102,7 @@ namespace Tecan.Sila2
                     try
                     {
                         var error = ProtobufMarshaller<SiLAErrorDto>.FromByteArray(
-                            Encoding.UTF8.GetBytes(rpcEx.Status.Detail));
+                            Convert.FromBase64String(rpcEx.Status.Detail));
                         if( error.DefinedExecutionError != null )
                         {
                             if( executionErrorConversion?.Invoke( error.DefinedExecutionError ) is var definedException && definedException != null )
@@ -109,6 +125,16 @@ namespace Tecan.Sila2
                         }
                         if (error.ValidationError != null)
                         {
+                            if( error.ValidationError.Parameter != null )
+                            {
+                                var lastSlash = error.ValidationError.Parameter.LastIndexOf( '/' );
+                                if( lastSlash != -1 && lastSlash < error.ValidationError.Parameter.Length - 1 )
+                                {
+                                    var parameterName = error.ValidationError.Parameter.Substring( lastSlash + 1 );
+                                    parameterName = char.ToLowerInvariant( parameterName[0] ) + parameterName.Substring( 1 );
+                                    return new ArgumentException( error.ValidationError.Message, parameterName );
+                                }
+                            }
                             return new ValidationException(error.ValidationError.Message, error.ValidationError.Parameter);
                         }
                         return new SilaException("An unknown error occured.");

@@ -79,6 +79,28 @@ namespace Tecan.Sila2.Authentication
                 try
                 {
                     return new LoginResponseDto(_implementation.Login(request.UserIdentification.Extract(_server), request.Password.Extract(_server), request.RequestedServer.Extract(_server), request.RequestedFeatures.Extract(_server)), _server);
+                } catch (System.ArgumentException ex)
+                {
+                    if ((ex.ParamName == "userIdentification"))
+                    {
+                        throw ErrorHandling.CreateValidationError("org.silastandard/core/AuthenticationService/v1/Command/Login/Parameter/UserIdenti" +
+                                "fication", ex.Message);
+                    }
+                    if ((ex.ParamName == "password"))
+                    {
+                        throw ErrorHandling.CreateValidationError("org.silastandard/core/AuthenticationService/v1/Command/Login/Parameter/Password", ex.Message);
+                    }
+                    if ((ex.ParamName == "requestedServer"))
+                    {
+                        throw ErrorHandling.CreateValidationError("org.silastandard/core/AuthenticationService/v1/Command/Login/Parameter/RequestedS" +
+                                "erver", ex.Message);
+                    }
+                    if ((ex.ParamName == "requestedFeatures"))
+                    {
+                        throw ErrorHandling.CreateValidationError("org.silastandard/core/AuthenticationService/v1/Command/Login/Parameter/RequestedF" +
+                                "eatures", ex.Message);
+                    }
+                    throw ErrorHandling.CreateUnknownValidationError(ex);
                 } catch (AuthenticationFailedException ex)
                 {
                     throw ErrorHandling.CreateExecutionError("org.silastandard/core/AuthenticationService/v1/DefinedError/AuthenticationFailed", "The provided credentials are not valid.", ex.Message);
@@ -102,6 +124,14 @@ namespace Tecan.Sila2.Authentication
                 {
                     _implementation.Logout(request.AccessToken.Extract(_server));
                     return EmptyRequest.Instance;
+                } catch (System.ArgumentException ex)
+                {
+                    if ((ex.ParamName == "accessToken"))
+                    {
+                        throw ErrorHandling.CreateValidationError("org.silastandard/core/AuthenticationService/v1/Command/Logout/Parameter/AccessTok" +
+                                "en", ex.Message);
+                    }
+                    throw ErrorHandling.CreateUnknownValidationError(ex);
                 } catch (InvalidAccessTokenException ex)
                 {
                     throw ErrorHandling.CreateExecutionError("org.silastandard/core/AuthenticationService/v1/DefinedError/InvalidAccessToken", "The sent access token is not valid.", ex.Message);

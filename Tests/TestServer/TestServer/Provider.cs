@@ -128,7 +128,17 @@ namespace Tecan.Sila2.IntegrationTests
             
             private PassBoolResponseDto PassBoolInternal(PassBoolRequestDto request)
             {
-                return new PassBoolResponseDto(_implementation.PassBool(request.Data.Extract(_server)), _server);
+                try
+                {
+                    return new PassBoolResponseDto(_implementation.PassBool(request.Data.Extract(_server)), _server);
+                } catch (System.ArgumentException ex)
+                {
+                    if ((ex.ParamName == "data"))
+                    {
+                        throw ErrorHandling.CreateValidationError("tecan.sila/integrationtests/TestServer/v1/Command/PassBool/Parameter/Data", ex.Message);
+                    }
+                    throw ErrorHandling.CreateUnknownValidationError(ex);
+                }
             }
             
             ///  <summary>
@@ -144,7 +154,17 @@ namespace Tecan.Sila2.IntegrationTests
             
             private PassDoubleResponseDto PassDoubleInternal(PassDoubleRequestDto request)
             {
-                return new PassDoubleResponseDto(_implementation.PassDouble(request.Data.Extract(_server)), _server);
+                try
+                {
+                    return new PassDoubleResponseDto(_implementation.PassDouble(request.Data.Extract(_server)), _server);
+                } catch (System.ArgumentException ex)
+                {
+                    if ((ex.ParamName == "data"))
+                    {
+                        throw ErrorHandling.CreateValidationError("tecan.sila/integrationtests/TestServer/v1/Command/PassDouble/Parameter/Data", ex.Message);
+                    }
+                    throw ErrorHandling.CreateUnknownValidationError(ex);
+                }
             }
             
             ///  <summary>
@@ -160,7 +180,17 @@ namespace Tecan.Sila2.IntegrationTests
             
             private PassLongResponseDto PassLongInternal(PassLongRequestDto request)
             {
-                return new PassLongResponseDto(_implementation.PassLong(request.Data.Extract(_server)), _server);
+                try
+                {
+                    return new PassLongResponseDto(_implementation.PassLong(request.Data.Extract(_server)), _server);
+                } catch (System.ArgumentException ex)
+                {
+                    if ((ex.ParamName == "data"))
+                    {
+                        throw ErrorHandling.CreateValidationError("tecan.sila/integrationtests/TestServer/v1/Command/PassLong/Parameter/Data", ex.Message);
+                    }
+                    throw ErrorHandling.CreateUnknownValidationError(ex);
+                }
             }
             
             ///  <summary>
@@ -176,7 +206,17 @@ namespace Tecan.Sila2.IntegrationTests
             
             private PassIntResponseDto PassIntInternal(PassIntRequestDto request)
             {
-                return new PassIntResponseDto(_implementation.PassInt(((int)(request.Data.Extract(_server)))), _server);
+                try
+                {
+                    return new PassIntResponseDto(_implementation.PassInt(((int)(request.Data.Extract(_server)))), _server);
+                } catch (System.ArgumentException ex)
+                {
+                    if ((ex.ParamName == "data"))
+                    {
+                        throw ErrorHandling.CreateValidationError("tecan.sila/integrationtests/TestServer/v1/Command/PassInt/Parameter/Data", ex.Message);
+                    }
+                    throw ErrorHandling.CreateUnknownValidationError(ex);
+                }
             }
             
             ///  <summary>
@@ -192,7 +232,18 @@ namespace Tecan.Sila2.IntegrationTests
             
             private PassTimestampResponseDto PassTimestampInternal(PassTimestampRequestDto request)
             {
-                return new PassTimestampResponseDto(_implementation.PassTimestamp(request.Timestamp.Extract(_server)), _server);
+                try
+                {
+                    return new PassTimestampResponseDto(_implementation.PassTimestamp(request.Timestamp.Extract(_server)), _server);
+                } catch (System.ArgumentException ex)
+                {
+                    if ((ex.ParamName == "timestamp"))
+                    {
+                        throw ErrorHandling.CreateValidationError("tecan.sila/integrationtests/TestServer/v1/Command/PassTimestamp/Parameter/Timesta" +
+                                "mp", ex.Message);
+                    }
+                    throw ErrorHandling.CreateUnknownValidationError(ex);
+                }
             }
             
             ///  <summary>
@@ -208,7 +259,17 @@ namespace Tecan.Sila2.IntegrationTests
             
             private PassTimeResponseDto PassTimeInternal(PassTimeRequestDto request)
             {
-                return new PassTimeResponseDto(_implementation.PassTime(request.Time.Extract(_server)), _server);
+                try
+                {
+                    return new PassTimeResponseDto(_implementation.PassTime(request.Time.Extract(_server)), _server);
+                } catch (System.ArgumentException ex)
+                {
+                    if ((ex.ParamName == "time"))
+                    {
+                        throw ErrorHandling.CreateValidationError("tecan.sila/integrationtests/TestServer/v1/Command/PassTime/Parameter/Time", ex.Message);
+                    }
+                    throw ErrorHandling.CreateUnknownValidationError(ex);
+                }
             }
             
             ///  <summary>
@@ -224,7 +285,17 @@ namespace Tecan.Sila2.IntegrationTests
             
             private PassStringResponseDto PassStringInternal(PassStringRequestDto request)
             {
-                return new PassStringResponseDto(_implementation.PassString(request.Value.Extract(_server)), _server);
+                try
+                {
+                    return new PassStringResponseDto(_implementation.PassString(request.Value.Extract(_server)), _server);
+                } catch (System.ArgumentException ex)
+                {
+                    if ((ex.ParamName == "value"))
+                    {
+                        throw ErrorHandling.CreateValidationError("tecan.sila/integrationtests/TestServer/v1/Command/PassString/Parameter/Value", ex.Message);
+                    }
+                    throw ErrorHandling.CreateUnknownValidationError(ex);
+                }
             }
             
             ///  <summary>
@@ -240,7 +311,17 @@ namespace Tecan.Sila2.IntegrationTests
             
             private PassStreamResponseDto PassStreamInternal(PassStreamRequestDto request)
             {
-                return new PassStreamResponseDto(_implementation.PassStream(request.Value.Extract(_server)), _server);
+                try
+                {
+                    return new PassStreamResponseDto(_implementation.PassStream(request.Value.Extract(_server)), _server);
+                } catch (System.ArgumentException ex)
+                {
+                    if ((ex.ParamName == "value"))
+                    {
+                        throw ErrorHandling.CreateValidationError("tecan.sila/integrationtests/TestServer/v1/Command/PassStream/Parameter/Value", ex.Message);
+                    }
+                    throw ErrorHandling.CreateUnknownValidationError(ex);
+                }
             }
             
             ///  <summary>
@@ -256,7 +337,17 @@ namespace Tecan.Sila2.IntegrationTests
             
             private PassFileResponseDto PassFileInternal(PassFileRequestDto request)
             {
-                return new PassFileResponseDto(_implementation.PassFile(request.File.ExtractToFileInfo(_server)), _server);
+                try
+                {
+                    return new PassFileResponseDto(_implementation.PassFile(request.File.ExtractToFileInfo(_server)), _server);
+                } catch (System.ArgumentException ex)
+                {
+                    if ((ex.ParamName == "file"))
+                    {
+                        throw ErrorHandling.CreateValidationError("tecan.sila/integrationtests/TestServer/v1/Command/PassFile/Parameter/File", ex.Message);
+                    }
+                    throw ErrorHandling.CreateUnknownValidationError(ex);
+                }
             }
             
             ///  <summary>
@@ -272,7 +363,17 @@ namespace Tecan.Sila2.IntegrationTests
             
             private PassBytesResponseDto PassBytesInternal(PassBytesRequestDto request)
             {
-                return new PassBytesResponseDto(_implementation.PassBytes(request.Bytes.ExtractToBytes(_server)), _server);
+                try
+                {
+                    return new PassBytesResponseDto(_implementation.PassBytes(request.Bytes.ExtractToBytes(_server)), _server);
+                } catch (System.ArgumentException ex)
+                {
+                    if ((ex.ParamName == "bytes"))
+                    {
+                        throw ErrorHandling.CreateValidationError("tecan.sila/integrationtests/TestServer/v1/Command/PassBytes/Parameter/Bytes", ex.Message);
+                    }
+                    throw ErrorHandling.CreateUnknownValidationError(ex);
+                }
             }
             
             ///  <summary>
@@ -288,7 +389,18 @@ namespace Tecan.Sila2.IntegrationTests
             
             private PassCollectionResponseDto PassCollectionInternal(PassCollectionRequestDto request)
             {
-                return new PassCollectionResponseDto(_implementation.PassCollection(request.Strings.Extract(_server)), _server);
+                try
+                {
+                    return new PassCollectionResponseDto(_implementation.PassCollection(request.Strings.Extract(_server)), _server);
+                } catch (System.ArgumentException ex)
+                {
+                    if ((ex.ParamName == "strings"))
+                    {
+                        throw ErrorHandling.CreateValidationError("tecan.sila/integrationtests/TestServer/v1/Command/PassCollection/Parameter/String" +
+                                "s", ex.Message);
+                    }
+                    throw ErrorHandling.CreateUnknownValidationError(ex);
+                }
             }
             
             ///  <summary>
@@ -304,7 +416,18 @@ namespace Tecan.Sila2.IntegrationTests
             
             private PassStructureResponseDto PassStructureInternal(PassStructureRequestDto request)
             {
-                return new PassStructureResponseDto(_implementation.PassStructure(request.Structure.Extract(_server)), _server);
+                try
+                {
+                    return new PassStructureResponseDto(_implementation.PassStructure(request.Structure.Extract(_server)), _server);
+                } catch (System.ArgumentException ex)
+                {
+                    if ((ex.ParamName == "structure"))
+                    {
+                        throw ErrorHandling.CreateValidationError("tecan.sila/integrationtests/TestServer/v1/Command/PassStructure/Parameter/Structu" +
+                                "re", ex.Message);
+                    }
+                    throw ErrorHandling.CreateUnknownValidationError(ex);
+                }
             }
             
             ///  <summary>
