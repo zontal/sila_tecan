@@ -261,7 +261,38 @@ namespace Tecan.Sila2.Server
             ServerCallContext context)
             where TRequest : ISilaRequestObject
         {
-            return InvokeCommand(() => Task<TResponse>.Factory.StartNew(() => command(request)), request.CommandIdentifier, context);
+            return Task.Factory.StartNew( () => InvokeCommandCore( command, request, context ) );
+        }
+
+        private TResponse InvokeCommandCore<TRequest, TResponse>( Func<TRequest, TResponse> command, TRequest request,
+            ServerCallContext context )
+            where TRequest : ISilaRequestObject
+        {
+            var interceptions = RequestInterceptions( request.CommandIdentifier, context );
+            try
+            {
+                var result = command( request );
+                if(interceptions != null)
+                {
+                    foreach(var interception in interceptions)
+                    {
+                        interception.ReportSuccess();
+                    }
+                }
+                return result;
+            }
+            catch(Exception exception)
+            {
+                if(interceptions != null)
+                {
+                    foreach(var interception in interceptions)
+                    {
+                        interception.ReportException( exception );
+                    }
+                }
+
+                throw;
+            }
         }
 
         /// <summary>
@@ -274,11 +305,10 @@ namespace Tecan.Sila2.Server
         /// <returns>An awaitable task with the command response</returns>
         public async Task<TResponse> InvokeCommand<TResponse>(Func<Task<TResponse>> command, string commandIdentifier, ServerCallContext context)
         {
-            TResponse result = default(TResponse);
             var interceptions = RequestInterceptions(commandIdentifier, context);
             try
             {
-                result = await command();
+                var result = await command();
                 if (interceptions != null)
                 {
                     foreach (var interception in interceptions)
