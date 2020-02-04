@@ -33,6 +33,12 @@ namespace Tecan.Sila2
         /// Creates a feature annotation
         /// </summary>
         /// <param name="isDraft">indicates whether the feature is draft</param>
+        public SilaFeatureAttribute( bool isDraft ) : this(isDraft, null) { }
+
+        /// <summary>
+        /// Creates a feature annotation
+        /// </summary>
+        /// <param name="isDraft">indicates whether the feature is draft</param>
         /// <param name="category">the use case of the feature</param>
         public SilaFeatureAttribute(bool isDraft, string category)
         {
