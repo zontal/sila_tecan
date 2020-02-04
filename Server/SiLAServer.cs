@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using System.Threading.Channels;
 using System.Threading.Tasks;
 using Grpc.Core;
 using Grpc.Core.Interceptors;
@@ -416,7 +417,7 @@ namespace Tecan.Sila2.Server
         }
 
         /// <inheritdoc />
-        public CommandExecutionInfo AddObservableCommandExecution<TIntermediate>(string commandIdentifier, IValueGenerator<TIntermediate> intermediateValueGenerator, ServerCallContext context)
+        public CommandExecutionInfo AddObservableCommandExecution<TIntermediate>(string commandIdentifier, Channel<TIntermediate> intermediateValueGenerator, ServerCallContext context)
         {
             var interceptions = RequestInterceptions( commandIdentifier, context );
             // create command ID
@@ -433,7 +434,7 @@ namespace Tecan.Sila2.Server
         }
 
         /// <inheritdoc />
-        public CommandExecutionInfo AddObservableCommandExecution<TIntermediate, T>(string commandIdentifier, IValueGenerator<TIntermediate> intermediateValueGenerator, Func<T> resultFactory, ServerCallContext context)
+        public CommandExecutionInfo AddObservableCommandExecution<TIntermediate, T>(string commandIdentifier, Channel<TIntermediate> intermediateValueGenerator, Func<T> resultFactory, ServerCallContext context)
         {
             var interceptions = RequestInterceptions( commandIdentifier, context );
             // create command ID
@@ -447,19 +448,6 @@ namespace Tecan.Sila2.Server
             _commandExecutions.Add(execution);
 
             return new CommandExecutionInfo(commandExecutionId, execution.CurrentState);
-        }
-        
-        /// <inheritdoc />
-        public IValueGenerator<TIntermediate> GetIntermediateValueGenerator<TIntermediate>(string commandExecutionId, ServerCallContext context)
-        {
-
-            var command = _commandExecutions.Find(c => c.CommandExecutionID == commandExecutionId);
-            if (command == null)
-            {
-                // if command execution ID hasn't been found -> raise SiLA Framework Error
-                throw ErrorHandling.CreateFrameworkError(FrameworkErrorType.InvalidCommandExecutionUuid);
-            }
-            return command.IntermediateGenerator as IValueGenerator<TIntermediate>;
         }
 
         /// <inheritdoc />
@@ -508,6 +496,38 @@ namespace Tecan.Sila2.Server
         public FileInfo ResolveStoredBinaryFile( string identifier )
         {
             return _fileManagement.Locate( identifier );
+        }
+
+        /// <inheritdoc />
+        public async Task RegisterIntermediateCallback<TIntermediate>( string commandExecutionId, ServerCallContext context, IServerStreamWriter<TIntermediate> callback )
+        {
+            var command = _commandExecutions.Find( c => c.CommandExecutionID == commandExecutionId );
+            if(command == null)
+            {
+                // if command execution ID hasn't been found -> raise SiLA Framework Error
+                throw ErrorHandling.CreateFrameworkError( FrameworkErrorType.InvalidCommandExecutionUuid );
+            }
+            var generator = command.IntermediateGenerator as Channel<TIntermediate>;
+            if( generator == null )
+            {
+                throw new InvalidOperationException($"The given command does not intermediate values of type {typeof(TIntermediate).Name}.");
+            }
+
+            while( await generator.Reader.WaitToReadAsync( context.CancellationToken ))
+            {
+                if( generator.Reader.TryRead( out var data ) )
+                {
+                    try
+                    {
+                        await callback.WriteAsync( data );
+                    }
+                    catch(Exception exception)
+                    {
+                        _logger.LogException( $"Intermediate result could not be delivered to server {context.Host}".ToString, exception );
+                        return;
+                    }
+                }
+            }
         }
 
         #endregion

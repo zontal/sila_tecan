@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Threading;
+using System.Threading.Channels;
 using System.Threading.Tasks;
 using Grpc.Core;
 using Tecan.Sila2.Client;
@@ -105,7 +105,7 @@ namespace Tecan.Sila2.Server
         {
             var intermediateGenerator = new IntermediateValueGenerator<TIntermediate, TIntermediateResponse>(command, intermediateConverter);
             intermediateGenerator.Start();
-            var executionInfo = server.AddObservableCommandExecution(commandIdentifier, intermediateGenerator, context);
+            var executionInfo = server.AddObservableCommandExecution(commandIdentifier, intermediateGenerator.Channel, context);
             command.StateUpdateReceived += CreateCommandUpdateEventHandler(executionInfo.State);
             return Task.FromResult(new CommandConfirmation(executionInfo.ExecutionUuid));
         }
@@ -128,7 +128,7 @@ namespace Tecan.Sila2.Server
         {
             var intermediateGenerator = new IntermediateValueGenerator<TIntermediate, TIntermediateResponse>(command, intermediateConverter);
             intermediateGenerator.Start();
-            var executionInfo = server.AddObservableCommandExecution(commandIdentifier, intermediateGenerator, () => resultConverter(command.Response.Result), context);
+            var executionInfo = server.AddObservableCommandExecution(commandIdentifier, intermediateGenerator.Channel, () => resultConverter(command.Response.Result), context);
             command.StateUpdateReceived += CreateCommandUpdateEventHandler(executionInfo.State);
             return Task.FromResult(new CommandConfirmation(executionInfo.ExecutionUuid));
         }
@@ -178,14 +178,9 @@ namespace Tecan.Sila2.Server
         /// <param name="responseStream">A stream of command responses</param>
         /// <param name="context">The context in which the call is made</param>
         /// <returns>An awaitable task that completes when the command execution is done.</returns>
-        public static async Task RetrieveIntermediateResults<TIntermediate>(ISiLAServer server, CommandExecutionUuid commandId, IServerStreamWriter<TIntermediate> responseStream, ServerCallContext context)
+        public static Task RetrieveIntermediateResults<TIntermediate>(ISiLAServer server, CommandExecutionUuid commandId, IServerStreamWriter<TIntermediate> responseStream, ServerCallContext context)
         {
-            var generator = server.GetIntermediateValueGenerator<TIntermediate>(commandId.CommandId, context);
-            generator.NewData += data => responseStream.WriteAsync(data);
-            while (!context.CancellationToken.IsCancellationRequested)
-            {
-                await Task.Delay(500);
-            }
+            return server.RegisterIntermediateCallback<TIntermediate>(commandId.CommandId, context, responseStream);
         }
 
         /// <summary>
@@ -273,8 +268,13 @@ namespace Tecan.Sila2.Server
         }
     }
 
-    internal class IntermediateValueGenerator<TIntermediate, TIntermediateResponse> : IValueGenerator<TIntermediateResponse>
+    internal class IntermediateValueGenerator<TIntermediate, TIntermediateResponse>
     {
+        public Channel<TIntermediateResponse> Channel
+        {
+            get;
+        } = System.Threading.Channels.Channel.CreateUnbounded<TIntermediateResponse>();
+
         public Func<TIntermediate, TIntermediateResponse> Converter { get; }
 
         public IIntermediateObservableCommand<TIntermediate> Command { get; set; }
@@ -297,9 +297,7 @@ namespace Tecan.Sila2.Server
 
         private void Command_IntermediateResponse(object sender, IntermediateResponseEventArgs<TIntermediate> e)
         {
-            NewData?.Invoke(Converter(e.Data));
+            Channel.Writer.TryWrite( Converter(e.Data) );
         }
-
-        public event Action<TIntermediateResponse> NewData;
     }
 }

@@ -15,6 +15,7 @@
             <dependency id="Tecan.Sila2" version="[1.0,2.0)" />
             <dependency id="Grpc.Core" version="2.23" />
             <dependency id="CommandLineParser" version="2.6.0" />
+            <dependency id="System.Threading.Channels" version="4.7.0" />
         </dependencies>
     </metadata>
     <files>

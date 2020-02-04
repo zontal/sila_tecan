@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Channels;
 using System.Threading.Tasks;
 using Grpc.Core;
 using Tecan.Sila2.Binary;
@@ -88,23 +89,23 @@ namespace Tecan.Sila2.Server
         /// Adds an observable command execution
         /// </summary>
         /// <typeparam name="TIntermediate">The type of the intermediate values</typeparam>
-        /// <param name="intermediateValueGenerator">An object that provides intermediate values</param>
+        /// <param name="intermediateValueChannel">An object that provides intermediate values</param>
         /// <param name="commandIdentifier">The fully qualified command identifier</param>
         /// <param name="context">The context in which the call is made</param>
         /// <returns>The current state of the execution</returns>
-        CommandExecutionInfo AddObservableCommandExecution<TIntermediate>(string commandIdentifier, IValueGenerator<TIntermediate> intermediateValueGenerator, ServerCallContext context);
+        CommandExecutionInfo AddObservableCommandExecution<TIntermediate>(string commandIdentifier, Channel<TIntermediate> intermediateValueChannel, ServerCallContext context);
 
         /// <summary>
         /// Adds an observable command execution
         /// </summary>
         /// <typeparam name="T">The type of the result</typeparam>
         /// <typeparam name="TIntermediate">The type of the intermediate values</typeparam>
-        /// <param name="intermediateValueGenerator">An object that provides intermediate values</param>
+        /// <param name="intermediateValueChannel">An object that provides intermediate values</param>
         /// <param name="commandIdentifier">The fully qualified command identifier</param>
         /// <param name="resultFactory">Method to obtain the result</param>
         /// <param name="context">The context in which the call is made</param>
         /// <returns>The current state of the execution</returns>
-        CommandExecutionInfo AddObservableCommandExecution<TIntermediate, T>(string commandIdentifier, IValueGenerator<TIntermediate> intermediateValueGenerator, Func<T> resultFactory, ServerCallContext context);
+        CommandExecutionInfo AddObservableCommandExecution<TIntermediate, T>(string commandIdentifier, Channel<TIntermediate> intermediateValueChannel, Func<T> resultFactory, ServerCallContext context);
         
         /// <summary>
         /// Gets the execution state of the given command execution identifier
@@ -124,13 +125,13 @@ namespace Tecan.Sila2.Server
         (ExecutionState state, Func<T> result) GetObservableCommandExecutionState<T>(string commandExecutionID, ServerCallContext context);
 
         /// <summary>
-        /// Gets the intermediate value generator for the given command execution identifier
+        /// Registers the given callback for intermediate values
         /// </summary>
-        /// <typeparam name="TIntermediate">The type of the intermediate results</typeparam>
+        /// <typeparam name="TIntermediate">The type of intermediate results</typeparam>
         /// <param name="commandExecutionID">The command execution identifier</param>
         /// <param name="context">The context in which the call is made</param>
-        /// <returns>The intermediate value generator</returns>
-        IValueGenerator<TIntermediate> GetIntermediateValueGenerator<TIntermediate>(string commandExecutionID, ServerCallContext context);
+        /// <param name="callback">A callback that should be called when a new intermediate value is available</param>
+        Task RegisterIntermediateCallback<TIntermediate>( string commandExecutionID, ServerCallContext context, IServerStreamWriter<TIntermediate> callback );
     }
 
     /// <summary>
@@ -158,17 +159,5 @@ namespace Tecan.Sila2.Server
             ExecutionUuid = executionUuid;
             State = state;
         }
-    }
-
-    /// <summary>
-    /// Denotes an interface for an object that raises data
-    /// </summary>
-    /// <typeparam name="T">the type of the data</typeparam>
-    public interface IValueGenerator<T>
-    {
-        /// <summary>
-        /// Raised when new data arrives
-        /// </summary>
-        event Action<T> NewData;
     }
 }
