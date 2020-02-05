@@ -70,42 +70,11 @@ namespace Tecan.Sila2.Server
         /// <summary>
         /// Adds an observable command execution
         /// </summary>
+        /// <param name="command">The command that should be executed</param>
         /// <param name="commandIdentifier">The fully qualified command identifier</param>
         /// <param name="context">The context in which the call is made</param>
         /// <returns>The current state of the execution</returns>
-        CommandExecutionInfo AddObservableCommandExecution(string commandIdentifier, ServerCallContext context);
-
-        /// <summary>
-        /// Adds an observable command execution
-        /// </summary>
-        /// <typeparam name="T">The type of the result</typeparam>
-        /// <param name="commandIdentifier">The fully qualified command identifier</param>
-        /// <param name="context">The context in which the call is made</param>
-        /// <param name="resultFactory">Method to obtain the result</param>
-        /// <returns>The current state of the execution</returns>
-        CommandExecutionInfo AddObservableCommandExecution<T>(string commandIdentifier, Func<T> resultFactory, ServerCallContext context);
-
-        /// <summary>
-        /// Adds an observable command execution
-        /// </summary>
-        /// <typeparam name="TIntermediate">The type of the intermediate values</typeparam>
-        /// <param name="intermediateValueChannel">An object that provides intermediate values</param>
-        /// <param name="commandIdentifier">The fully qualified command identifier</param>
-        /// <param name="context">The context in which the call is made</param>
-        /// <returns>The current state of the execution</returns>
-        CommandExecutionInfo AddObservableCommandExecution<TIntermediate>(string commandIdentifier, Channel<TIntermediate> intermediateValueChannel, ServerCallContext context);
-
-        /// <summary>
-        /// Adds an observable command execution
-        /// </summary>
-        /// <typeparam name="T">The type of the result</typeparam>
-        /// <typeparam name="TIntermediate">The type of the intermediate values</typeparam>
-        /// <param name="intermediateValueChannel">An object that provides intermediate values</param>
-        /// <param name="commandIdentifier">The fully qualified command identifier</param>
-        /// <param name="resultFactory">Method to obtain the result</param>
-        /// <param name="context">The context in which the call is made</param>
-        /// <returns>The current state of the execution</returns>
-        CommandExecutionInfo AddObservableCommandExecution<TIntermediate, T>(string commandIdentifier, Channel<TIntermediate> intermediateValueChannel, Func<T> resultFactory, ServerCallContext context);
+        string AddObservableCommandExecution(string commandIdentifier, IObservableCommand command, ServerCallContext context);
         
         /// <summary>
         /// Gets the execution state of the given command execution identifier
@@ -113,51 +82,47 @@ namespace Tecan.Sila2.Server
         /// <param name="commandExecutionID">The identifier of the command execution</param>
         /// <param name="context">The context in which the call is made</param>
         /// <returns>The execution state</returns>
-        ExecutionState GetObservableCommandExecutionState(string commandExecutionID, ServerCallContext context);
+        CommandExecutionInfo GetObservableCommandExecutionState(string commandExecutionID, ServerCallContext context);
 
         /// <summary>
-        /// Gets the execution state of the given command execution identifier
-        /// </summary>
-        /// <typeparam name="T">The command response type</typeparam>
-        /// <param name="commandExecutionID">The identifier of the command execution</param>
-        /// <param name="context">The context in which the call is made</param>
-        /// <returns>The execution state and a function to get the result</returns>
-        (ExecutionState state, Func<T> result) GetObservableCommandExecutionState<T>(string commandExecutionID, ServerCallContext context);
-
-        /// <summary>
-        /// Registers the given callback for intermediate values
+        /// Gets the intermediate channel for the given command execution id
         /// </summary>
         /// <typeparam name="TIntermediate">The type of intermediate results</typeparam>
         /// <param name="commandExecutionID">The command execution identifier</param>
         /// <param name="context">The context in which the call is made</param>
-        /// <param name="callback">A callback that should be called when a new intermediate value is available</param>
-        Task RegisterIntermediateCallback<TIntermediate>( string commandExecutionID, ServerCallContext context, IServerStreamWriter<TIntermediate> callback );
+        ChannelReader<TIntermediate> GetIntermediateChannel<TIntermediate>( string commandExecutionID, ServerCallContext context );
     }
 
     /// <summary>
-    /// Denotes the current state of an observable command execution
+    /// Denotes the server information of an observable command execution
     /// </summary>
     public struct CommandExecutionInfo
     {
         /// <summary>
-        /// Gets the execution identifier
+        /// Gets the state channel 
         /// </summary>
-        public string ExecutionUuid { get; }
+        public ChannelReader<StateUpdate> StateChannel
+        {
+            get;
+        }
 
         /// <summary>
-        /// Gets the current state of the execution
+        /// Gets the task for the long-running observable command
         /// </summary>
-        public ExecutionState State { get; }
+        public Task ResultTask
+        {
+            get;
+        }
 
         /// <summary>
         /// Creates a new instance
         /// </summary>
-        /// <param name="executionUuid">the execution identifier</param>
-        /// <param name="state">the current state of the execution</param>
-        public CommandExecutionInfo(string executionUuid, ExecutionState state) : this()
+        /// <param name="stateChannel">The state channel</param>
+        /// <param name="resultTask">The result task</param>
+        public CommandExecutionInfo( ChannelReader<StateUpdate> stateChannel, Task resultTask )
         {
-            ExecutionUuid = executionUuid;
-            State = state;
+            StateChannel = stateChannel;
+            ResultTask = resultTask;
         }
     }
 }

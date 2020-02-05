@@ -243,8 +243,8 @@ namespace Tecan.Sila2.Generator.Generators
                 nameof(IClientExecutionManager.CreateCallOptions),
                 new CodePropertyReferenceExpression(requestRef, nameof(ISilaRequestObject.CommandIdentifier)));
             var actualCall = new CodeMethodInvokeExpression(
-                new CodeTypeReferenceExpression(nameof(ObservableCommand)),
-                intermediateType != null ? nameof(ObservableCommand.CreateIntermediate) : nameof(ObservableCommand.Create),
+                new CodeTypeReferenceExpression(nameof(ObservableClientCommands)),
+                intermediateType != null ? nameof(ObservableClientCommands.CreateIntermediate) : nameof(ObservableClientCommands.Create),
                 callInfo,
                 new CodePropertyReferenceExpression(null, "CallInvoker"),
                 requestRef,

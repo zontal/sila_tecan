@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Threading;
+using System.Threading.Channels;
 using System.Threading.Tasks;
 using Grpc.Core;
 using NUnit.Framework;
@@ -568,11 +569,9 @@ namespace Tecan.Sila2.IntegrationTests
             var lockId = Lock( token );
             var executionManager = new TestAuthLockingExecutionManager( lockId, token, _server.Channel );
             var testClient = new TestServerProvider.Client( _server.Channel, executionManager );
-
-            var stateUpdates = new List<StateUpdateEventArgs>();
-
+            
             var command = testClient.RunObservable();
-            command.StateUpdateReceived += ( o, e ) => { stateUpdates.Add(e); };
+            var stateUpdates = ReadChannel( command.StateUpdates );
             command.Response.Wait(TimeSpan.FromMinutes(1));
             var result = command.Response.Result;
             Assert.That(result, Is.EqualTo(42L));
@@ -594,9 +593,8 @@ namespace Tecan.Sila2.IntegrationTests
             var featureContext = new FeatureContext( feature, _server.Channel, executionManager );
             var commandClient = new ObservableCommandClient( feature.Items.OfType<FeatureCommand>().Single( c => c.Identifier == "RunObservable" ), featureContext );
 
-            var stateUpdates = new List<StateUpdateEventArgs>();
             var command = commandClient.Invoke( commandClient.CreateRequest() );
-            command.StateUpdateReceived += ( o, e ) => { stateUpdates.Add( e ); };
+            var stateUpdates = ReadChannel( command.StateUpdates );
             command.Response.Wait( TimeSpan.FromMinutes( 1 ) );
             var result = command.Response.Result;
             Assert.That( ((DynamicObject)result.Value).Elements[0].Value, Is.EqualTo( 42L ) );
@@ -607,6 +605,27 @@ namespace Tecan.Sila2.IntegrationTests
             Logout( token );
         }
 
+        private static async Task<List<T>> ReadChannelCore<T>( ChannelReader<T> channel )
+        {
+            var values = new List<T>();
+            while(await channel.WaitToReadAsync())
+            {
+                if(channel.TryRead( out var item ))
+                {
+                    values.Add( item );
+                }
+            }
+
+            return values;
+        }
+
+        private static List<T> ReadChannel<T>( ChannelReader<T> channel )
+        {
+            var task = ReadChannelCore( channel );
+            task.Wait(TimeSpan.FromMinutes(1));
+            return task.Result;
+        }
+
         [Test]
         public void RunIntermediateCommand_TransmittedSuccessfully()
         {
@@ -614,11 +633,9 @@ namespace Tecan.Sila2.IntegrationTests
             var lockId = Lock( token );
             var executionManager = new TestAuthLockingExecutionManager( lockId, token, _server.Channel );
             var testClient = new TestServerProvider.Client( _server.Channel, executionManager );
-
-            var intermediateResults = new List<long>();
-
+            
             var command = testClient.RunIntermediateObservableCommand();
-            command.IntermediateResponse += ( o, e ) => { intermediateResults.Add( e.Data ); };
+            var intermediateResults = ReadChannel( command.IntermediateValues );
             command.Response.Wait( TimeSpan.FromMinutes( 1 ) );
             Assert.That( intermediateResults, Is.EquivalentTo( new long[] { 0, 8, 15 } ) );
 
@@ -638,9 +655,8 @@ namespace Tecan.Sila2.IntegrationTests
             var featureContext = new FeatureContext( feature, _server.Channel, executionManager );
             var commandClient = new IntermediateObservableCommandClient( feature.Items.OfType<FeatureCommand>().Single( c => c.Identifier == "RunIntermediateObservableCommand" ), featureContext );
 
-            var intermediateResults = new List<DynamicObjectProperty>();
             var command = commandClient.Invoke( commandClient.CreateRequest() );
-            command.IntermediateResponse += ( o, e ) => { intermediateResults.Add( e.Data ); };
+            var intermediateResults = ReadChannel( command.IntermediateValues );
             command.Response.Wait( TimeSpan.FromMinutes( 1 ) );
             Assert.That(intermediateResults.Count, Is.EqualTo(3));
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.IO;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Tecan.Sila2.IntegrationTests
 {
@@ -72,12 +73,33 @@ namespace Tecan.Sila2.IntegrationTests
 
         public IObservableCommand<int> RunObservable()
         {
-            return new ObservableTestCommand();
+            return new ObservableCommand<int>( RunObservableCore );
+        }
+
+        private async Task<int> RunObservableCore( Func<StateUpdate, ValueTask> updateState)
+        {
+            await updateState( new StateUpdate( 0, TimeSpan.FromHours( 2 ), CommandState.NotStarted ) );
+            await Task.Delay( 100 );
+            await updateState( new StateUpdate( 0.8, TimeSpan.FromSeconds( 23 ), CommandState.Running ) );
+            await Task.Delay( 100 );
+            await updateState( new StateUpdate( 0.7, TimeSpan.FromSeconds( 42 ), CommandState.Running ) );
+            await Task.Delay( 100 );
+            return 42;
         }
 
         public IIntermediateObservableCommand<int> RunIntermediateObservableCommand()
         {
-            return new IntermediateTestCommand();
+            return new ObservableIntermediatesCommand<int>( RunIntermediateObservableCommandCore );
+        }
+
+
+        private async Task RunIntermediateObservableCommandCore(Func<StateUpdate, ValueTask> updateState, Func<int, ValueTask> sendIntermediateResult)
+        {
+            await sendIntermediateResult( 0 );
+            await Task.Delay( 100 );
+            await sendIntermediateResult( 8 );
+            await Task.Delay( 100 );
+            await sendIntermediateResult( 15 );
         }
     }
 }

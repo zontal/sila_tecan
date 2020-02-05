@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Channels;
+using System.Threading.Tasks;
 
 namespace Tecan.Sila2.Server
 {
     internal class ObservableCommandExecution
     {
-        public ObservableCommandExecution(string commandExecutionUUID, string commandIdentifier, IEnumerable<IRequestInterception> interceptions)
+        public ObservableCommandExecution(string commandExecutionUUID, string commandIdentifier, IObservableCommand command, IEnumerable<IRequestInterception> interceptions)
         {
             CommandExecutionID = commandExecutionUUID;
             CommandIdentifier = commandIdentifier;
@@ -17,28 +19,27 @@ namespace Tecan.Sila2.Server
                 EstimatedRemainingTime = new DurationDto(TimeSpan.Zero)
             };
             Interceptions = interceptions;
+            Command = command;
+        }
+
+        public IObservableCommand Command
+        {
+            get;
         }
 
         public string CommandExecutionID { get; }
         public string CommandIdentifier { get; }
         public ExecutionState CurrentState { get; }
 
+        public DateTime? Expiration
+        {
+            get;
+            set;
+        }
+
         public IEnumerable<IRequestInterception> Interceptions
         {
             get;
         }
-
-        public object IntermediateGenerator { get; set; }
-    }
-
-    internal class ObservableCommandExecution<T> : ObservableCommandExecution
-    {
-        public ObservableCommandExecution(string commandExecutionUUID, string commandIdentifier, Func<T> resultFactory, IEnumerable<IRequestInterception> interceptions ) : base(commandExecutionUUID, commandIdentifier, interceptions)
-        {
-            ResultFactory = resultFactory;
-        }
-
-        public Func<T> ResultFactory { get; }
-   
     }
 }

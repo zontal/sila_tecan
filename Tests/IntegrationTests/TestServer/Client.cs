@@ -333,7 +333,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             public virtual Tecan.Sila2.IObservableCommand<long> RunObservable()
             {
                 RunObservableRequestDto request = new RunObservableRequestDto(null);
-                return ObservableCommand.Create(_executionManager.CreateCallOptions(request.CommandIdentifier), CallInvoker, request, RunObservableMethod, RunObservableStateMethod, RunObservableResponseMethod, ConvertRunObservableResponse, ConvertRunObservableException);
+                return ObservableClientCommands.Create(_executionManager.CreateCallOptions(request.CommandIdentifier), CallInvoker, request, RunObservableMethod, RunObservableStateMethod, RunObservableResponseMethod, ConvertRunObservableResponse, ConvertRunObservableException);
             }
             
             ///  <summary>
@@ -361,7 +361,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             public virtual Tecan.Sila2.IIntermediateObservableCommand<long> RunIntermediateObservableCommand()
             {
                 RunIntermediateObservableCommandRequestDto request = new RunIntermediateObservableCommandRequestDto(null);
-                return ObservableCommand.CreateIntermediate(_executionManager.CreateCallOptions(request.CommandIdentifier), CallInvoker, request, RunIntermediateObservableCommandMethod, RunIntermediateObservableCommandStateMethod, RunIntermediateObservableCommandIntermediateMethod, ConvertRunIntermediateObservableCommandIntermediate, ConvertRunIntermediateObservableCommandException);
+                return ObservableClientCommands.CreateIntermediate(_executionManager.CreateCallOptions(request.CommandIdentifier), CallInvoker, request, RunIntermediateObservableCommandMethod, RunIntermediateObservableCommandStateMethod, RunIntermediateObservableCommandIntermediateMethod, ConvertRunIntermediateObservableCommandIntermediate, ConvertRunIntermediateObservableCommandException);
             }
             
             ///  <summary>

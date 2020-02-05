@@ -1,118 +1,16 @@
 ﻿using System;
+using System.Threading.Channels;
 using System.Threading.Tasks;
 using Grpc.Core;
+using Channel = System.Threading.Channels.Channel;
 
 namespace Tecan.Sila2.Client
 {
     /// <summary>
-    /// Default implementation of an observable command via SiLA2
+    /// Denotes helper methods to create observable command implementations that delegate their functionality via SiLA2
     /// </summary>
-    public class ObservableCommand : IObservableCommand
+    public static class ObservableClientCommands
     {
-        /// <summary>
-        /// The call info
-        /// </summary>
-        internal IClientCallInfo CallInfo { get; }
-
-        /// <summary>
-        /// The internal call invoker
-        /// </summary>
-        internal CallInvoker CallInvoker { get; }
-
-        /// <summary>
-        /// The command execution id
-        /// </summary>
-        public CommandExecutionUuid CommandId { get; }
-
-        /// <summary>
-        /// The method to obtain the command state
-        /// </summary>
-        internal Method<CommandExecutionUuid, ExecutionState> StateMethod { get; }
-
-        /// <summary>
-        /// Gets a function that can convert errors
-        /// </summary>
-        internal Func<DefinedExecutionErrorDto, Exception> ErrorConverter { get; }
-
-        /// <summary>
-        /// Create a new observable command
-        /// </summary>
-        /// <param name="callInfo">The call info</param>
-        /// <param name="callInvoker">An invoker for gRPC</param>
-        /// <param name="commandId">The command execution identifier</param>
-        /// <param name="stateMethod">The state method</param>
-        /// <param name="errorConverter">An error converter</param>
-        internal ObservableCommand(IClientCallInfo callInfo, CallInvoker callInvoker, CommandExecutionUuid commandId, Method<CommandExecutionUuid, ExecutionState> stateMethod, Func<DefinedExecutionErrorDto, Exception> errorConverter)
-        {
-            CallInfo = callInfo;
-            CallInvoker = callInvoker;
-            CommandId = commandId;
-            StateMethod = stateMethod;
-        }
-
-        internal virtual async Task Run()
-        {
-            try
-            {
-                await RunCore();
-                CallInfo.FinishSuccessful();
-            }
-            catch (Exception exception)
-            {
-                var ex = ErrorHandling.ConvertException(exception, ErrorConverter);
-                CallInfo.FinishWithErrors(exception);
-                throw ex;
-            }
-        }
-
-        internal async Task RunCore()
-        {
-            using (var streamingCall =
-                                CallInvoker.AsyncServerStreamingCall(StateMethod, null, CallInfo.Options, CommandId))
-            {
-                var responseStream = streamingCall.ResponseStream;
-                while (await responseStream.MoveNext())
-                {
-                    var state = ConvertState(responseStream.Current.Status);
-                    var estimated = responseStream.Current.EstimatedRemainingTime.Extract(null);
-                    var progress = responseStream.Current.Progress.Value;
-                    StateUpdateReceived?.Invoke(this, new StateUpdateEventArgs(progress, estimated, state));
-                }
-            }
-        }
-
-        private static CommandState ConvertState(ExecutionState.CommandStatus state)
-        {
-            switch (state)
-            {
-                case ExecutionState.CommandStatus.Waiting:
-                    return CommandState.NotStarted;
-                case ExecutionState.CommandStatus.Running:
-                    return CommandState.Running;
-                case ExecutionState.CommandStatus.FinishedWithError:
-                    return CommandState.FinishedWithErrors;
-                case ExecutionState.CommandStatus.FinishedSuccessfully:
-                    return CommandState.FinishedSuccess;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(state));
-            }
-        }
-
-
-        /// <inheritdoc />
-        public Task Response { get; protected set; }
-
-        /// <inheritdoc />
-        public event EventHandler<StateUpdateEventArgs> StateUpdateReceived;
-
-        /// <summary>
-        /// Starts the command
-        /// </summary>
-        protected virtual void Start()
-        {
-            Response = Run();
-        }
-
         /// <summary>
         /// Creates an observable command
         /// </summary>
@@ -130,12 +28,12 @@ namespace Tecan.Sila2.Client
             TRequest request,
             Method<TRequest, CommandConfirmation> method,
             Method<CommandExecutionUuid, ExecutionState> stateMethod,
-            Func<DefinedExecutionErrorDto, Exception> errorConverter)
+            Func<DefinedExecutionErrorDto, Exception> errorConverter )
             where TRequest : class, ISilaRequestObject
         {
-            var confirmation = callInvoker.BlockingUnaryCall(method, null,
-                callInfo.Options, request);
-            var command = new ObservableCommand(callInfo, callInvoker, confirmation.CommandId, stateMethod, errorConverter);
+            var confirmation = callInvoker.BlockingUnaryCall( method, null,
+                callInfo.Options, request );
+            var command = new ObservableClientCommand( callInfo, callInvoker, confirmation.CommandId, stateMethod, errorConverter );
             command.Start();
             return command;
         }
@@ -169,7 +67,7 @@ namespace Tecan.Sila2.Client
         {
             var confirmation = callInvoker.BlockingUnaryCall( method, null,
                 callInfo.Options, request );
-            var command = new ObservableCommand<TResponse, TResult>( callInfo, callInvoker, confirmation.CommandId, stateMethod, resultMethod, resultConverter,
+            var command = new ObservableClientCommand<TResponse, TResult>( callInfo, callInvoker, confirmation.CommandId, stateMethod, resultMethod, resultConverter,
                 errorConverter );
             command.Start();
             return command;
@@ -198,13 +96,13 @@ namespace Tecan.Sila2.Client
             Method<CommandExecutionUuid, ExecutionState> stateMethod,
             Method<CommandExecutionUuid, TIntermediateResponse> intermediateMethod,
             Func<TIntermediateResponse, TIntermediate> intermediateConverter,
-            Func<DefinedExecutionErrorDto, Exception> errorConverter)
+            Func<DefinedExecutionErrorDto, Exception> errorConverter )
             where TRequest : class
             where TIntermediateResponse : class
         {
-            var confirmation = callInvoker.BlockingUnaryCall(method, null,
-                callInfo.Options, request);
-            var command = new IntermediateObservableCommand<TIntermediateResponse, TIntermediate>(callInfo, callInvoker, confirmation.CommandId, stateMethod, intermediateMethod, intermediateConverter, errorConverter);
+            var confirmation = callInvoker.BlockingUnaryCall( method, null,
+                callInfo.Options, request );
+            var command = new ObservableIntermediateClientCommand<TIntermediateResponse, TIntermediate>( callInfo, callInvoker, confirmation.CommandId, stateMethod, intermediateMethod, intermediateConverter, errorConverter );
             command.Start();
             return command;
         }
@@ -238,20 +136,123 @@ namespace Tecan.Sila2.Client
             Method<CommandExecutionUuid, TResponse> resultMethod,
             Func<TIntermediateResponse, TIntermediate> intermediateConverter,
             Func<TResponse, TResult> resultConverter,
-            Func<DefinedExecutionErrorDto, Exception> errorConverter)
+            Func<DefinedExecutionErrorDto, Exception> errorConverter )
             where TRequest : class
             where TIntermediateResponse : class
             where TResponse : class
         {
-            var confirmation = callInvoker.BlockingUnaryCall(method, null,
-                callInfo.Options, request);
-            var command = new IntermediateObservableCommand<TIntermediateResponse, TIntermediate, TResponse, TResult>(callInfo, callInvoker, confirmation.CommandId, stateMethod, intermediateMethod, resultMethod, intermediateConverter, resultConverter, errorConverter);
+            var confirmation = callInvoker.BlockingUnaryCall( method, null,
+                callInfo.Options, request );
+            var command = new ObservableIntermediateClientCommand<TIntermediateResponse, TIntermediate, TResponse, TResult>( callInfo, callInvoker, confirmation.CommandId, stateMethod, intermediateMethod, resultMethod, intermediateConverter, resultConverter, errorConverter );
             command.Start();
             return command;
         }
     }
 
-    internal class ObservableCommand<TResponse, TResult> : ObservableCommand, IObservableCommand<TResult>
+    /// <summary>
+    /// Default implementation of an observable command via SiLA2
+    /// </summary>
+    internal class ObservableClientCommand : IObservableCommand
+    {
+        private readonly Channel<StateUpdate> _stateUpdateChannel;
+
+        public IClientCallInfo CallInfo { get; }
+
+        public CallInvoker CallInvoker { get; }
+
+        public CommandExecutionUuid CommandId { get; }
+
+        public ChannelReader<StateUpdate> StateUpdates => _stateUpdateChannel.Reader;
+
+        public Method<CommandExecutionUuid, ExecutionState> StateMethod { get; }
+
+        public Func<DefinedExecutionErrorDto, Exception> ErrorConverter { get; }
+
+        public ObservableClientCommand(IClientCallInfo callInfo, CallInvoker callInvoker, CommandExecutionUuid commandId, Method<CommandExecutionUuid, ExecutionState> stateMethod, Func<DefinedExecutionErrorDto, Exception> errorConverter)
+        {
+            CallInfo = callInfo;
+            CallInvoker = callInvoker;
+            CommandId = commandId;
+            StateMethod = stateMethod;
+
+            _stateUpdateChannel = Channel.CreateUnbounded<StateUpdate>( new UnboundedChannelOptions()
+            {
+                AllowSynchronousContinuations = true,
+                SingleReader = false,
+                SingleWriter = true
+            } );
+            ErrorConverter = errorConverter;
+        }
+
+        internal virtual async Task Run()
+        {
+            try
+            {
+                await RunCore();
+                CallInfo.FinishSuccessful();
+            }
+            catch (Exception exception)
+            {
+                var ex = ErrorHandling.ConvertException(exception, ErrorConverter);
+                CallInfo.FinishWithErrors(exception);
+                throw ex;
+            }
+        }
+
+        internal async Task RunCore()
+        {
+            using (var streamingCall = CallInvoker.AsyncServerStreamingCall(StateMethod, null, CallInfo.Options, CommandId))
+            {
+                var responseStream = streamingCall.ResponseStream;
+                Exception exception = null;
+                try
+                {
+                    while( await responseStream.MoveNext() )
+                    {
+                        var state = ConvertState( responseStream.Current.Status );
+                        var estimated = responseStream.Current.EstimatedRemainingTime.Extract( null );
+                        var progress = responseStream.Current.Progress.Value;
+                        _stateUpdateChannel.Writer.TryWrite( new StateUpdate( progress, estimated, state ) );
+                    }
+                }
+                catch( Exception ex )
+                {
+                    exception = ex;
+                    throw;
+                }
+                finally
+                {
+                    _stateUpdateChannel.Writer.Complete(exception);
+                }
+            }
+        }
+
+        private static CommandState ConvertState(ExecutionState.CommandStatus state)
+        {
+            switch (state)
+            {
+                case ExecutionState.CommandStatus.Waiting:
+                    return CommandState.NotStarted;
+                case ExecutionState.CommandStatus.Running:
+                    return CommandState.Running;
+                case ExecutionState.CommandStatus.FinishedWithError:
+                    return CommandState.FinishedWithErrors;
+                case ExecutionState.CommandStatus.FinishedSuccessfully:
+                    return CommandState.FinishedSuccess;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(state));
+            }
+        }
+
+        public Task Response { get; protected set; }
+
+        public virtual void Start()
+        {
+            Response = Run();
+        }
+    }
+
+    internal class ObservableClientCommand<TResponse, TResult> : ObservableClientCommand, IObservableCommand<TResult>
         where TResponse : class
     {
         internal Method<CommandExecutionUuid, TResponse> ResultMethod { get; }
@@ -267,7 +268,7 @@ namespace Tecan.Sila2.Client
         /// <param name="errorConverter">An error converter</param>
         /// <param name="resultMethod">The method to obtain the result</param>
         /// <param name="resultConverter">A method to extract the result from the data transfer</param>
-        public ObservableCommand(
+        public ObservableClientCommand(
             IClientCallInfo executionManager,
             CallInvoker callInvoker,
             CommandExecutionUuid commandId,
@@ -281,7 +282,7 @@ namespace Tecan.Sila2.Client
             ResultConverter = resultConverter;
         }
 
-        protected override void Start()
+        public override void Start()
         {
             base.Response = RunAndGetResponse();
         }
@@ -307,15 +308,18 @@ namespace Tecan.Sila2.Client
         public new Task<TResult> Response => base.Response as Task<TResult>;
     }
 
-    internal class IntermediateObservableCommand<TIntermediateResponse, TIntermediate> : ObservableCommand, IIntermediateObservableCommand<TIntermediate>
+    internal class ObservableIntermediateClientCommand<TIntermediateResponse, TIntermediate> : ObservableClientCommand, IIntermediateObservableCommand<TIntermediate>
         where TIntermediateResponse : class
     {
+        private readonly Channel<TIntermediate> _intermediateValuesChannel;
+
         public Func<TIntermediateResponse, TIntermediate> IntermediateConverter { get; }
 
         public Method<CommandExecutionUuid, TIntermediateResponse> IntermediateMethod { get; }
 
+        public ChannelReader<TIntermediate> IntermediateValues => _intermediateValuesChannel.Reader;
 
-        public IntermediateObservableCommand(
+        public ObservableIntermediateClientCommand(
             IClientCallInfo executionManager,
             CallInvoker callInvoker,
             CommandExecutionUuid commandId,
@@ -327,11 +331,18 @@ namespace Tecan.Sila2.Client
         {
             IntermediateConverter = intermediateConverter;
             IntermediateMethod = intermediateMethod;
+
+            _intermediateValuesChannel = Channel.CreateUnbounded<TIntermediate>( new UnboundedChannelOptions()
+            {
+                AllowSynchronousContinuations = true,
+                SingleReader = false,
+                SingleWriter = true
+            } );
         }
 
-        protected override void Start()
+        public override void Start()
         {
-            Response = Run();
+            base.Start();
             FetchIntermediateResponses();
         }
 
@@ -339,16 +350,28 @@ namespace Tecan.Sila2.Client
         {
             try
             {
-                using (var streamingCall =
-                    CallInvoker.AsyncServerStreamingCall(IntermediateMethod, null, CallInfo.Options, CommandId))
+                Exception exception = null;
+                try
                 {
-                    var responseStream = streamingCall.ResponseStream;
-                    while (await responseStream.MoveNext())
+                    using( var streamingCall =
+                        CallInvoker.AsyncServerStreamingCall( IntermediateMethod, null, CallInfo.Options, CommandId ) )
                     {
-                        var intermediateResult = IntermediateConverter(responseStream.Current);
-                        IntermediateResponse?.Invoke(this,
-                            new IntermediateResponseEventArgs<TIntermediate>(intermediateResult));
+                        var responseStream = streamingCall.ResponseStream;
+                        while( await responseStream.MoveNext() )
+                        {
+                            var intermediateResult = IntermediateConverter( responseStream.Current );
+                            _intermediateValuesChannel.Writer.TryWrite( intermediateResult );
+                        }
                     }
+                }
+                catch( Exception ex )
+                {
+                    exception = ex;
+                    throw;
+                }
+                finally
+                {
+                    _intermediateValuesChannel.Writer.Complete( exception );
                 }
             }
             catch (RpcException ex)
@@ -360,18 +383,16 @@ namespace Tecan.Sila2.Client
                 }
             }
         }
-
-        public event EventHandler<IntermediateResponseEventArgs<TIntermediate>> IntermediateResponse;
     }
 
-    internal class IntermediateObservableCommand<TIntermediateResponse, TIntermediate, TResultResponse, TResult> : IntermediateObservableCommand<TIntermediateResponse, TIntermediate>, IIntermediateObservableCommand<TIntermediate, TResult>
+    internal class ObservableIntermediateClientCommand<TIntermediateResponse, TIntermediate, TResultResponse, TResult> : ObservableIntermediateClientCommand<TIntermediateResponse, TIntermediate>, IIntermediateObservableCommand<TIntermediate, TResult>
         where TIntermediateResponse : class
         where TResultResponse : class
     {
         public Method<CommandExecutionUuid, TResultResponse> ResultMethod { get; }
         public Func<TResultResponse, TResult> ResultConverter { get; }
 
-        public IntermediateObservableCommand(
+        public ObservableIntermediateClientCommand(
             IClientCallInfo callInfo,
             CallInvoker callInvoker,
             CommandExecutionUuid commandId,
@@ -387,7 +408,7 @@ namespace Tecan.Sila2.Client
             ResultConverter = resultConverter;
         }
 
-        protected override void Start()
+        public override void Start()
         {
             base.Response = RunAndGetResponse();
             FetchIntermediateResponses();

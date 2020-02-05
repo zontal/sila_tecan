@@ -77,7 +77,7 @@ namespace Tecan.Sila2.DynamicClient
                 {
                     callInfo = new DecoratedCallInfo(callInfo, additionalMetadata);
                 }
-                return ObservableCommand.Create( callInfo, Context.CallInvoker, args, _method, _stateMethod,
+                return ObservableClientCommands.Create( callInfo, Context.CallInvoker, args, _method, _stateMethod,
                     _resultMethod, dn => dn, Context.ConvertException );
             }
             catch( Exception exception )
@@ -174,7 +174,7 @@ namespace Tecan.Sila2.DynamicClient
                 {
                     callInfo = new DecoratedCallInfo( callInfo, additionalMetadata );
                 }
-                return ObservableCommand.CreateIntermediate( callInfo, Context.CallInvoker, args, _method, _stateMethod,
+                return ObservableClientCommands.CreateIntermediate( callInfo, Context.CallInvoker, args, _method, _stateMethod,
                     _intermediateMethod, _resultMethod, dn => dn, dn => dn, Context.ConvertException );
             }
             catch( Exception exception )

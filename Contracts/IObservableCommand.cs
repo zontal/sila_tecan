@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Channels;
 using System.Threading.Tasks;
 
 namespace Tecan.Sila2
@@ -21,9 +22,12 @@ namespace Tecan.Sila2
     public interface IObservableCommand
     {
         /// <summary>
-        /// Fires when a new state update is received
+        /// Gets a channel on which the command sends state updates
         /// </summary>
-        event EventHandler<StateUpdateEventArgs> StateUpdateReceived;
+        ChannelReader<StateUpdate> StateUpdates
+        {
+            get;
+        }
 
         /// <summary>
         /// Gets the underlying task for this observable command
@@ -38,9 +42,12 @@ namespace Tecan.Sila2
     public interface IIntermediateObservableCommand<TIntermediate> : IObservableCommand
     {
         /// <summary>
-        /// Gets fired when there are new intemediate results for the given command available
+        /// Gets a channel on which the command sends intermediate values
         /// </summary>
-        event EventHandler<IntermediateResponseEventArgs<TIntermediate>> IntermediateResponse;
+        ChannelReader<TIntermediate> IntermediateValues
+        {
+            get;
+        }
     }
 
     /// <summary>

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Channels;
 using System.Threading.Tasks;
 using Grpc.Core;
@@ -23,56 +24,41 @@ namespace Tecan.Sila2.Server
             IServerStreamWriter<ExecutionState> responseStream, ServerCallContext context)
         {
             var executionState = server.GetObservableCommandExecutionState(commandId.CommandId, context);
-            
-            while (executionState.Status == ExecutionState.CommandStatus.Waiting || executionState.Status == ExecutionState.CommandStatus.Running)
+
+            while( await executionState.StateChannel.WaitToReadAsync(context.CancellationToken) )
             {
-                await responseStream.WriteAsync(executionState);
-                await Task.Delay(500);
+                if( executionState.StateChannel.TryRead( out var currentState ) )
+                {
+                    await responseStream.WriteAsync( ConvertStateUpdate(currentState) );
+                }
+            }
+        }
+
+        private static ExecutionState ConvertStateUpdate( StateUpdate stateUpdate )
+        {
+            var state = new ExecutionState()
+            {
+                EstimatedRemainingTime = new DurationDto( stateUpdate.EstimatedRemainingTime ),
+                Progress = new RealDto( stateUpdate.Progress ),
+                UpdatedLifetimeOfExecution = new DurationDto( TimeSpan.FromMinutes( 5 ) )
+            };
+            switch(stateUpdate.State)
+            {
+                case CommandState.FinishedSuccess:
+                    state.Status = ExecutionState.CommandStatus.FinishedSuccessfully;
+                    break;
+                case CommandState.FinishedWithErrors:
+                    state.Status = ExecutionState.CommandStatus.FinishedWithError;
+                    break;
+                case CommandState.NotStarted:
+                    state.Status = ExecutionState.CommandStatus.Waiting;
+                    break;
+                case CommandState.Running:
+                    state.Status = ExecutionState.CommandStatus.Running;
+                    break;
             }
 
-            await responseStream.WriteAsync(executionState);
-        }
-
-        private static EventHandler<StateUpdateEventArgs> CreateCommandUpdateEventHandler(ExecutionState state)
-        {
-            return (o, e) =>
-            {
-                state.EstimatedRemainingTime = new DurationDto(e.EstimatedRemainingTime);
-                state.Progress = new RealDto(e.Progress);
-                switch (e.State)
-                {
-                    case CommandState.FinishedSuccess:
-                        state.Status = ExecutionState.CommandStatus.FinishedSuccessfully;
-                        break;
-                    case CommandState.FinishedWithErrors:
-                        state.Status = ExecutionState.CommandStatus.FinishedWithError;
-                        break;
-                    case CommandState.NotStarted:
-                        state.Status = ExecutionState.CommandStatus.Waiting;
-                        break;
-                    case CommandState.Running:
-                        state.Status = ExecutionState.CommandStatus.Running;
-                        break;
-                }
-            };
-        }
-
-        /// <summary>
-        /// Starts the given observable command
-        /// </summary>
-        /// <typeparam name="TResult">The result type of the command</typeparam>
-        /// <typeparam name="TResultResponse">The data transfer object type for the command response</typeparam>
-        /// <param name="server">The server that should be used to add the command</param>
-        /// <param name="commandIdentifier">The fully qualified command identifier</param>
-        /// <param name="command">The command that should be added</param>
-        /// <param name="resultConverter">A method to convert the command response</param>
-        /// <param name="context">The context in which the call is made</param>
-        /// <returns>A task that retuns the command confirmation from the server</returns>
-        public static Task<CommandConfirmation> StartCommand<TResult, TResultResponse>(ISiLAServer server, string commandIdentifier, IObservableCommand<TResult> command, Func<TResult, TResultResponse> resultConverter, ServerCallContext context)
-        {
-            var executionInfo = server.AddObservableCommandExecution(commandIdentifier, () => resultConverter(command.Response.Result), context);
-            command.StateUpdateReceived += CreateCommandUpdateEventHandler(executionInfo.State);
-            return Task.FromResult(new CommandConfirmation(executionInfo.ExecutionUuid));
+            return state;
         }
 
         /// <summary>
@@ -82,55 +68,11 @@ namespace Tecan.Sila2.Server
         /// <param name="commandIdentifier">The fully qualified command identifier</param>
         /// <param name="command">The command that should be added</param>
         /// <param name="context">The context in which the call is made</param>
-        /// <returns>A task that retuns the command confirmation from the server</returns>
+        /// <returns>A task that returns the command confirmation from the server</returns>
         public static Task<CommandConfirmation> StartCommand(ISiLAServer server, string commandIdentifier, IObservableCommand command, ServerCallContext context)
         {
-            var executionInfo = server.AddObservableCommandExecution(commandIdentifier, context);
-            command.StateUpdateReceived += CreateCommandUpdateEventHandler(executionInfo.State);
-            return Task.FromResult(new CommandConfirmation(executionInfo.ExecutionUuid));
-        }
-
-        /// <summary>
-        /// Starts the given observable command
-        /// </summary>
-        /// <typeparam name="TIntermediate">The intermediate type of the command</typeparam>
-        /// <typeparam name="TIntermediateResponse">The data transfer object type for the command intermediate response</typeparam>
-        /// <param name="intermediateConverter">A function to encapsulate the intermediate response</param>
-        /// <param name="server">The server that should be used to add the command</param>
-        /// <param name="commandIdentifier">The fully qualified command identifier</param>
-        /// <param name="command">The command that should be added</param>
-        /// <param name="context">The context in which the call is made</param>
-        /// <returns>A task that retuns the command confirmation from the server</returns>
-        public static Task<CommandConfirmation> StartCommand<TIntermediate, TIntermediateResponse>(ISiLAServer server, string commandIdentifier, IIntermediateObservableCommand<TIntermediate> command, Func<TIntermediate, TIntermediateResponse> intermediateConverter, ServerCallContext context)
-        {
-            var intermediateGenerator = new IntermediateValueGenerator<TIntermediate, TIntermediateResponse>(command, intermediateConverter);
-            intermediateGenerator.Start();
-            var executionInfo = server.AddObservableCommandExecution(commandIdentifier, intermediateGenerator.Channel, context);
-            command.StateUpdateReceived += CreateCommandUpdateEventHandler(executionInfo.State);
-            return Task.FromResult(new CommandConfirmation(executionInfo.ExecutionUuid));
-        }
-
-        /// <summary>
-        /// Starts the given observable command
-        /// </summary>
-        /// <typeparam name="TResult">The result type of the command</typeparam>
-        /// <typeparam name="TResultResponse">The data transfer object type for the command response</typeparam>
-        /// <typeparam name="TIntermediate">The intermediate type of the command</typeparam>
-        /// <typeparam name="TIntermediateResponse">The data transfer object type for the command intermediate response</typeparam>
-        /// <param name="intermediateConverter">A function to encapsulate the intermediate response</param>
-        /// <param name="server">The server that should be used to add the command</param>
-        /// <param name="commandIdentifier">The fully qualified command identifier</param>
-        /// <param name="command">The command that should be added</param>
-        /// <param name="resultConverter">A method to convert the command response</param>
-        /// <param name="context">The context in which the call is made</param>
-        /// <returns>A task that retuns the command confirmation from the server</returns>
-        public static Task<CommandConfirmation> StartCommand<TIntermediate, TIntermediateResponse, TResult, TResultResponse>(ISiLAServer server, string commandIdentifier, IIntermediateObservableCommand<TIntermediate, TResult> command, Func<TIntermediate, TIntermediateResponse> intermediateConverter, Func<TResult, TResultResponse> resultConverter, ServerCallContext context)
-        {
-            var intermediateGenerator = new IntermediateValueGenerator<TIntermediate, TIntermediateResponse>(command, intermediateConverter);
-            intermediateGenerator.Start();
-            var executionInfo = server.AddObservableCommandExecution(commandIdentifier, intermediateGenerator.Channel, () => resultConverter(command.Response.Result), context);
-            command.StateUpdateReceived += CreateCommandUpdateEventHandler(executionInfo.State);
-            return Task.FromResult(new CommandConfirmation(executionInfo.ExecutionUuid));
+            var executionId = server.AddObservableCommandExecution(commandIdentifier, command, context);
+            return Task.FromResult(new CommandConfirmation( executionId ) );
         }
 
         /// <summary>
@@ -143,11 +85,7 @@ namespace Tecan.Sila2.Server
         public static async Task<EmptyRequest> WaitCommandExecution(ISiLAServer server, CommandExecutionUuid commandId, ServerCallContext context)
         {
             var state = server.GetObservableCommandExecutionState(commandId.CommandId, context);
-            while (state.Status != ExecutionState.CommandStatus.FinishedSuccessfully && state.Status != ExecutionState.CommandStatus.FinishedWithError)
-            {
-                await Task.Delay(500);
-            }
-
+            await state.ResultTask;
             return EmptyRequest.Instance;
         }
 
@@ -157,30 +95,46 @@ namespace Tecan.Sila2.Server
         /// <param name="server">The server that should be connected</param>
         /// <param name="commandId">The command execution identifier</param>
         /// <param name="context">The context in which the call is made</param>
+        /// <param name="converter">A function that specifies how to convert the response into a data transfer object</param>
         /// <returns>An awaitable task that completes when the command execution is done</returns>
-        public static async Task<TResponse> WaitCommandExecution<TResponse>(ISiLAServer server, CommandExecutionUuid commandId, ServerCallContext context)
+        public static async Task<TResponseDto> WaitCommandExecution<TResponse, TResponseDto>(ISiLAServer server, CommandExecutionUuid commandId, ServerCallContext context, Func<TResponse, TResponseDto> converter)
         {
-            var (state, result) = server.GetObservableCommandExecutionState<TResponse>(commandId.CommandId, context);
-            while (state.Status != ExecutionState.CommandStatus.FinishedSuccessfully && state.Status != ExecutionState.CommandStatus.FinishedWithError)
+            var state = server.GetObservableCommandExecutionState(commandId.CommandId, context);
+            var resultTask = state.ResultTask as Task<TResponse>;
+            if( resultTask == null )
             {
-                await Task.Delay(500);
+                throw new ArgumentOutOfRangeException( nameof(commandId) );
             }
 
-            return result();
+            if( converter == null )
+            {
+                throw new ArgumentNullException( nameof(converter) );
+            }
+            return converter( await resultTask );
         }
 
         /// <summary>
         /// Retrieves intermediate results for the command with the given command execution identifier
         /// </summary>
         /// <typeparam name="TIntermediate">The type of the intermediate responses</typeparam>
+        /// <typeparam name="TIntermediateDto">The data transfer type of the the intermediate responses</typeparam>
         /// <param name="server">The server that is connected</param>
         /// <param name="commandId">The command execution identifier</param>
         /// <param name="responseStream">A stream of command responses</param>
+        /// <param name="converter">A converter function to encapsulate intermediate values in data transfer objects</param>
         /// <param name="context">The context in which the call is made</param>
         /// <returns>An awaitable task that completes when the command execution is done.</returns>
-        public static Task RetrieveIntermediateResults<TIntermediate>(ISiLAServer server, CommandExecutionUuid commandId, IServerStreamWriter<TIntermediate> responseStream, ServerCallContext context)
+        public static async Task RetrieveIntermediateResults<TIntermediate, TIntermediateDto>(ISiLAServer server, CommandExecutionUuid commandId, IServerStreamWriter<TIntermediateDto> responseStream, Func<TIntermediate, TIntermediateDto> converter, ServerCallContext context)
         {
-            return server.RegisterIntermediateCallback<TIntermediate>(commandId.CommandId, context, responseStream);
+            var reader = server.GetIntermediateChannel<TIntermediate>( commandId.CommandId, context );
+
+            while( await reader.WaitToReadAsync( context.CancellationToken ) )
+            {
+                if( reader.TryRead( out var intermediate ) )
+                {
+                    await responseStream.WriteAsync( converter( intermediate ) );
+                }
+            }
         }
 
         /// <summary>
@@ -265,39 +219,6 @@ namespace Tecan.Sila2.Server
             {
                 newValueReceived?.Invoke( responseStream.Current );
             }
-        }
-    }
-
-    internal class IntermediateValueGenerator<TIntermediate, TIntermediateResponse>
-    {
-        public Channel<TIntermediateResponse> Channel
-        {
-            get;
-        } = System.Threading.Channels.Channel.CreateUnbounded<TIntermediateResponse>();
-
-        public Func<TIntermediate, TIntermediateResponse> Converter { get; }
-
-        public IIntermediateObservableCommand<TIntermediate> Command { get; set; }
-
-        public IntermediateValueGenerator(IIntermediateObservableCommand<TIntermediate> command, Func<TIntermediate, TIntermediateResponse> converter)
-        {
-            Command = command;
-            Converter = converter;
-        }
-
-        public void Start()
-        {
-            Command.IntermediateResponse += Command_IntermediateResponse;
-        }
-
-        public void Stop()
-        {
-            Command.IntermediateResponse -= Command_IntermediateResponse;
-        }
-
-        private void Command_IntermediateResponse(object sender, IntermediateResponseEventArgs<TIntermediate> e)
-        {
-            Channel.Writer.TryWrite( Converter(e.Data) );
         }
     }
 }

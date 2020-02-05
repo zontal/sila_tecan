@@ -3,9 +3,9 @@
 namespace Tecan.Sila2
 {
     /// <summary>
-    /// Describes event arguments when an observable command emits a state update
+    /// Describes an update of an observable command
     /// </summary>
-    public class StateUpdateEventArgs : EventArgs
+    public struct StateUpdate
     {
         /// <summary>
         /// Creates new even arguments
@@ -13,7 +13,7 @@ namespace Tecan.Sila2
         /// <param name="progress">The progress of the observable command</param>
         /// <param name="estimatedRemainingTime">The estimated remaining time</param>
         /// <param name="state">The state of the command</param>
-        public StateUpdateEventArgs(double progress, TimeSpan estimatedRemainingTime, CommandState state)
+        public StateUpdate(double progress, TimeSpan estimatedRemainingTime, CommandState state)
         {
             Progress = progress;
             EstimatedRemainingTime = estimatedRemainingTime;

@@ -399,48 +399,6 @@ namespace Tecan.Sila2.Generator.Generators
             startServerCall.Parameters.Add(
                 GenerateCommandImplementationCall( featureCommand, implementationRef, requestRef ) );
 
-            if( featureCommand.IntermediateResponse != null && featureCommand.IntermediateResponse.Length > 0 )
-            {
-                var conversionMethod = new CodeMemberMethod
-                {
-                    Name = "Convert" + featureCommand.Identifier + "Intermediate",
-                    Attributes = MemberAttributes.Private,
-                    ReturnType = _nameProvider.GenerateCommandIntermediateType( featureCommand )
-                };
-                var parameterType = _nameProvider.GetMemberType( featureCommand.Identifier + ".Intermediate" )
-                                    ?? _translationProvider.ExtractType(  featureCommand.IntermediateResponse[0].DataType, featureCommand.Identifier + "Intermediate" );
-                conversionMethod.Parameters.Add( new CodeParameterDeclarationExpression(
-                    parameterType, "intermediate" ) );
-                var resultRef = new CodeArgumentReferenceExpression( "intermediate" );
-                var converted = GenerateClientResultConversionExpression( featureCommand.IntermediateResponse[0].DataType, resultRef,
-                    conversionMethod.ReturnType );
-                conversionMethod.Statements.Add( new CodeMethodReturnStatement( converted ) );
-                server.Members.Add( conversionMethod );
-
-                startServerCall.Parameters.Add( new CodeMethodReferenceExpression( null, conversionMethod.Name ) );
-            }
-
-            if( featureCommand.Response != null && featureCommand.Response.Length > 0 )
-            {
-                var conversionMethod = new CodeMemberMethod
-                {
-                    Name = "Convert" + featureCommand.Identifier + "Response",
-                    Attributes = MemberAttributes.Private,
-                    ReturnType = _nameProvider.GenerateCommandResponseType( featureCommand )
-                };
-                var parameterType = _nameProvider.GetMemberType( featureCommand.Identifier + "." + featureCommand.Response[0].Identifier )
-                                    ?? _translationProvider.ExtractType(  featureCommand.Response[0].DataType, featureCommand.Identifier );
-                conversionMethod.Parameters.Add( new CodeParameterDeclarationExpression(
-                    parameterType, "result" ) );
-                var resultRef = new CodeArgumentReferenceExpression( "result" );
-                var converted = GenerateClientResultConversionExpression( featureCommand.Response[0].DataType, resultRef,
-                    conversionMethod.ReturnType );
-                conversionMethod.Statements.Add( new CodeMethodReturnStatement( converted ) );
-                server.Members.Add( conversionMethod );
-
-                startServerCall.Parameters.Add( new CodeMethodReferenceExpression( null, conversionMethod.Name ) );
-            }
-
             startServerCall.Parameters.Add( contextRef );
             commandMethod.Statements.Add( new CodeMethodReturnStatement( startServerCall ) );
 
@@ -456,11 +414,54 @@ namespace Tecan.Sila2.Generator.Generators
                 contextRef );
         }
 
+        private CodeMemberMethod GenerateServerConvertResponseMethod(FeatureCommand featureCommand)
+        {
+            var conversionMethod = new CodeMemberMethod
+            {
+                Name = "Convert" + featureCommand.Identifier + "Response",
+                Attributes = MemberAttributes.Private,
+                ReturnType = _nameProvider.GenerateCommandResponseType(featureCommand)
+            };
+            var parameterType =
+                _nameProvider.GetMemberType(featureCommand.Identifier + "." + featureCommand.Response[0].Identifier)
+                ?? _translationProvider.ExtractType(featureCommand.Response[0].DataType, featureCommand.Identifier);
+            conversionMethod.Parameters.Add(new CodeParameterDeclarationExpression(
+                parameterType, "result"));
+            var resultRef = new CodeArgumentReferenceExpression("result");
+            var converted = GenerateClientResultConversionExpression(featureCommand.Response[0].DataType, resultRef,
+                conversionMethod.ReturnType);
+            conversionMethod.Statements.Add(new CodeMethodReturnStatement(converted));
+            return conversionMethod;
+        }
+
+        private CodeMemberMethod GenerateServerConvertIntermediateResponseMethod(FeatureCommand featureCommand)
+        {
+            var conversionMethod = new CodeMemberMethod
+            {
+                Name = "Convert" + featureCommand.Identifier + "Intermediate",
+                Attributes = MemberAttributes.Private,
+                ReturnType = _nameProvider.GenerateCommandIntermediateType(featureCommand)
+            };
+            var parameterType = _nameProvider.GetMemberType(featureCommand.Identifier + ".Intermediate")
+                                ?? _translationProvider.ExtractType(featureCommand.IntermediateResponse[0].DataType,
+                                    featureCommand.Identifier + "Intermediate");
+            conversionMethod.Parameters.Add(new CodeParameterDeclarationExpression(
+                parameterType, "intermediate"));
+            var resultRef = new CodeArgumentReferenceExpression("intermediate");
+            var converted = GenerateClientResultConversionExpression(featureCommand.IntermediateResponse[0].DataType, resultRef,
+                conversionMethod.ReturnType);
+            conversionMethod.Statements.Add(new CodeMethodReturnStatement(converted));
+            return conversionMethod;
+        }
+
         private void GenerateServerCommandIntermediateMethod( FeatureCommand featureCommand, CodeTypeDeclaration server,
             CodeFieldReferenceExpression serverRef, CodeParameterDeclarationExpression context,
             CodeArgumentReferenceExpression requestRef, CodeParameterDeclarationExpression request,
             CodeArgumentReferenceExpression contextRef )
         {
+            var conversionMethod = GenerateServerConvertIntermediateResponseMethod( featureCommand );
+            server.Members.Add( conversionMethod );
+
             var commandRequest = new CodeParameterDeclarationExpression( typeof(CommandExecutionUuid), request.Name );
             var responseMethod = new CodeMemberMethod
             {
@@ -482,14 +483,17 @@ namespace Tecan.Sila2.Generator.Generators
                 } );
             var retrieveIntermediateMethod =
                 new CodeMethodReferenceExpression( new CodeTypeReferenceExpression( nameof(ObservableCommands) ),
-                    "RetrieveIntermediateResults" );
+                    nameof(ObservableCommands.RetrieveIntermediateResults) );
+            retrieveIntermediateMethod.TypeArguments.Add( _translationProvider.ExtractType( featureCommand.IntermediateResponse[0].DataType, featureCommand.Identifier + "IntermediateResponse" ) );
             retrieveIntermediateMethod.TypeArguments.Add( _nameProvider.GenerateCommandIntermediateType( featureCommand ) );
 
             var waitCommandExecution =
                 new CodeMethodInvokeExpression( retrieveIntermediateMethod,
                     serverRef,
                     requestRef,
-                    new CodeArgumentReferenceExpression( "responseStream" ), contextRef );
+                    new CodeArgumentReferenceExpression( "responseStream" ), 
+                    new CodeMethodReferenceExpression(null, conversionMethod.Name),
+                    contextRef );
             responseMethod.Statements.Add( new CodeMethodReturnStatement( waitCommandExecution ) );
             server.Members.Add( responseMethod );
         }
@@ -499,6 +503,7 @@ namespace Tecan.Sila2.Generator.Generators
             CodeArgumentReferenceExpression requestRef, CodeParameterDeclarationExpression request,
             CodeArgumentReferenceExpression contextRef )
         {
+
             var commandRequest = new CodeParameterDeclarationExpression( typeof(CommandExecutionUuid), request.Name );
             var responseMethod = new CodeMemberMethod
             {
@@ -517,19 +522,38 @@ namespace Tecan.Sila2.Generator.Generators
                 } );
             var waitCommandMethod =
                 new CodeMethodReferenceExpression( new CodeTypeReferenceExpression( nameof(ObservableCommands) ),
-                    "WaitCommandExecution" );
-            if( featureCommand.Response != null && featureCommand.Response.Length > 0 )
-            {
-                waitCommandMethod.TypeArguments.Add( _nameProvider.GenerateCommandResponseType( featureCommand ) );
-            }
+                    nameof(ObservableCommands.WaitCommandExecution) );
 
             var waitCommandExecution =
                 new CodeMethodInvokeExpression( waitCommandMethod,
                     serverRef,
                     requestRef,
-                    contextRef );
+                    contextRef);
+
+            if( featureCommand.Response != null && featureCommand.Response.Length > 0 )
+            {
+                var conversionMethod = GenerateServerConvertResponseMethod( featureCommand );
+                server.Members.Add( conversionMethod );
+
+                waitCommandMethod.TypeArguments.Add( GetServerCommandResponseType( featureCommand ) );
+                waitCommandMethod.TypeArguments.Add( _nameProvider.GenerateCommandResponseType( featureCommand ) );
+                waitCommandExecution.Parameters.Add( new CodeMethodReferenceExpression( null, conversionMethod.Name ) );
+            }
             responseMethod.Statements.Add( new CodeMethodReturnStatement( waitCommandExecution ) );
             server.Members.Add( responseMethod );
+        }
+
+        private CodeTypeReference GetServerCommandResponseType( FeatureCommand featureCommand )
+        {
+            if(featureCommand.Response.Length == 1)
+            {
+                var customType = _nameProvider.GetMemberType( featureCommand.Identifier + "." + featureCommand.Response[0].Identifier );
+                return customType ?? _translationProvider.ExtractType( featureCommand.Response[0].DataType, featureCommand.Identifier );
+            }
+            else
+            {
+                return new CodeTypeReference( featureCommand.Identifier + "Response" );
+            }
         }
 
         private static void GenerateServerCommandStateMethod( Feature feature, FeatureCommand featureCommand, CodeTypeDeclaration server,

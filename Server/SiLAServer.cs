@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using System.Threading;
 using System.Threading.Channels;
 using System.Threading.Tasks;
 using Grpc.Core;
@@ -46,6 +47,8 @@ namespace Tecan.Sila2.Server
         private readonly BinaryUpload _upload;
         private readonly BinaryDownload _download;
         private readonly LoggingInterceptor _loggingInterceptor;
+
+        private readonly Timer _cleanupTimer;
 
         #endregion
 
@@ -170,6 +173,35 @@ namespace Tecan.Sila2.Server
 
             GrpcServer.Services.Add(_upload.CreateServiceDefinition());
             GrpcServer.Services.Add(_download.CreateServiceDefinition());
+
+            var cleanupInterval = TimeSpan.FromSeconds( 30 );
+            _cleanupTimer = new Timer( Cleanup, null, cleanupInterval, cleanupInterval );
+        }
+
+        private void Cleanup( object state )
+        {
+            lock( _commandExecutions )
+            {
+                for( int i = _commandExecutions.Count - 1; i >= 0; i-- )
+                {
+                    var commandExecution = _commandExecutions[i];
+                    if( commandExecution.CurrentState.Status == ExecutionState.CommandStatus.FinishedSuccessfully
+                        || commandExecution.CurrentState.Status == ExecutionState.CommandStatus.FinishedWithError )
+                    {
+                        if( !commandExecution.Expiration.HasValue )
+                        {
+                            commandExecution.Expiration = DateTime.Now + TimeSpan.FromMinutes( 5 );
+                            
+                        }
+                        else if (commandExecution.Expiration.Value < DateTime.Now)
+                        {
+                            _logger.Log($"Forgetting command execution {commandExecution.CommandExecutionID} ({commandExecution.CommandIdentifier}).".ToString);
+                            _commandExecutions.RemoveAt(i);
+                            
+                        }
+                    }
+                }
+            }
         }
 
         #endregion
@@ -197,6 +229,7 @@ namespace Tecan.Sila2.Server
         public async Task ShutdownServer()
         {
             _announcer?.Dispose();
+            _cleanupTimer.Dispose();
             _logger.Log("Shutting down Grpc server".ToString, Severity.Info);
             await GrpcServer.ShutdownAsync();
         }
@@ -336,118 +369,68 @@ namespace Tecan.Sila2.Server
         private Stack<IRequestInterception> RequestInterceptions(string commandIdentifier, ServerCallContext context)
         {
             Stack<IRequestInterception> interceptions = null;
-            foreach (var interceptor in GetInterceptors(commandIdentifier))
+            try
             {
-                var interception = interceptor.Intercept(commandIdentifier, this, context);
-                if (interception != null)
+                foreach( var interceptor in GetInterceptors( commandIdentifier ) )
                 {
-                    if (interceptions == null) interceptions = new Stack<IRequestInterception>();
-                    interceptions.Push(interception);
+                    var interception = interceptor.Intercept( commandIdentifier, this, context );
+                    if( interception != null )
+                    {
+                        if( interceptions == null ) interceptions = new Stack<IRequestInterception>();
+                        interceptions.Push( interception );
+                    }
                 }
+            }
+            catch( Exception exception )
+            {
+                if( interceptions != null )
+                {
+                    while( interceptions.Count > 0 )
+                    {
+                        interceptions.Pop()?.ReportException(exception);
+                    }
+                }
+                throw;
             }
 
             return interceptions;
         }
 
         /// <inheritdoc />
-        public CommandExecutionInfo AddObservableCommandExecution(string commandIdentifier, ServerCallContext context)
+        public string AddObservableCommandExecution(string commandIdentifier, IObservableCommand command, ServerCallContext context)
         {
             var interceptions = RequestInterceptions( commandIdentifier, context );
             // create command ID
             var commandExecutionId = Guid.NewGuid().ToString();
 
-            var execution = new ObservableCommandExecution(commandExecutionId, commandIdentifier, interceptions);
-            // add command to list
-            _commandExecutions.Add(execution);
+            var execution = new ObservableCommandExecution(commandExecutionId, commandIdentifier, command, interceptions);
+            RegisterExecution(execution);
 
-            return new CommandExecutionInfo(commandExecutionId, execution.CurrentState);
+            return commandExecutionId;
         }
 
-        /// <inheritdoc />
-        public CommandExecutionInfo AddObservableCommandExecution<T>(string commandIdentifier, Func<T> resultFactory, ServerCallContext context)
+        private void RegisterExecution( ObservableCommandExecution execution )
         {
-            var interceptions = RequestInterceptions( commandIdentifier, context );
-            // create command ID
-            var commandExecutionId = Guid.NewGuid().ToString();
-
-            var execution = new ObservableCommandExecution<T>(commandExecutionId, commandIdentifier, resultFactory, interceptions);
-            // add command to list
-            _commandExecutions.Add(execution);
-
-            return new CommandExecutionInfo(commandExecutionId, execution.CurrentState);
-        }
-
-        /// <inheritdoc />
-        public void CheckCommandExecutionId(string commandExecutionId, ServerCallContext context)
-        {
-            var command = _commandExecutions.Find(c => c.CommandExecutionID == commandExecutionId);
-            if (command == null)
+            lock( _commandExecutions )
             {
-                // if command execution ID hasn't been found -> raise SiLA Framework Error
-                throw ErrorHandling.CreateFrameworkError(FrameworkErrorType.InvalidCommandExecutionUuid);
+                _commandExecutions.Add( execution );
             }
         }
 
         /// <inheritdoc />
-        public ExecutionState GetObservableCommandExecutionState(string commandExecutionId, ServerCallContext context)
+        public CommandExecutionInfo GetObservableCommandExecutionState( string commandExecutionId, ServerCallContext context )
         {
-            var command = _commandExecutions.Find(c => c.CommandExecutionID == commandExecutionId);
-            if (command == null)
+            lock( _commandExecutions )
             {
-                // if command execution ID hasn't been found -> raise SiLA Framework Error
-                throw ErrorHandling.CreateFrameworkError(FrameworkErrorType.InvalidCommandExecutionUuid);
+                var command = _commandExecutions.Find( c => c.CommandExecutionID == commandExecutionId );
+                if( command == null )
+                {
+                    // if command execution ID hasn't been found -> raise SiLA Framework Error
+                    throw ErrorHandling.CreateFrameworkError( FrameworkErrorType.InvalidCommandExecutionUuid );
+                }
+
+                return new CommandExecutionInfo(command.Command.StateUpdates, command.Command.Response);
             }
-
-            return command.CurrentState;
-        }
-
-        /// <inheritdoc />
-        public (ExecutionState state, Func<T> result) GetObservableCommandExecutionState<T>(string commandExecutionId, ServerCallContext context)
-        {
-            var command =
-                _commandExecutions.Find(c => c.CommandExecutionID == commandExecutionId) as
-                    ObservableCommandExecution<T>;
-            if (command == null)
-            {
-                // if command execution ID hasn't been found -> raise SiLA Framework Error
-                throw ErrorHandling.CreateFrameworkError(FrameworkErrorType.InvalidCommandExecutionUuid);
-            }
-
-            return (command.CurrentState, command.ResultFactory);
-        }
-
-        /// <inheritdoc />
-        public CommandExecutionInfo AddObservableCommandExecution<TIntermediate>(string commandIdentifier, Channel<TIntermediate> intermediateValueGenerator, ServerCallContext context)
-        {
-            var interceptions = RequestInterceptions( commandIdentifier, context );
-            // create command ID
-            var commandExecutionId = Guid.NewGuid().ToString();
-
-            var execution = new ObservableCommandExecution(commandExecutionId, commandIdentifier, interceptions)
-            {
-                IntermediateGenerator = intermediateValueGenerator
-            };
-            // add command to list
-            _commandExecutions.Add(execution);
-
-            return new CommandExecutionInfo(commandExecutionId, execution.CurrentState);
-        }
-
-        /// <inheritdoc />
-        public CommandExecutionInfo AddObservableCommandExecution<TIntermediate, T>(string commandIdentifier, Channel<TIntermediate> intermediateValueGenerator, Func<T> resultFactory, ServerCallContext context)
-        {
-            var interceptions = RequestInterceptions( commandIdentifier, context );
-            // create command ID
-            var commandExecutionId = Guid.NewGuid().ToString();
-
-            var execution = new ObservableCommandExecution<T>(commandExecutionId, commandIdentifier, resultFactory, interceptions)
-            {
-                IntermediateGenerator = intermediateValueGenerator
-            };
-            // add command to list
-            _commandExecutions.Add(execution);
-
-            return new CommandExecutionInfo(commandExecutionId, execution.CurrentState);
         }
 
         /// <inheritdoc />
@@ -499,35 +482,25 @@ namespace Tecan.Sila2.Server
         }
 
         /// <inheritdoc />
-        public async Task RegisterIntermediateCallback<TIntermediate>( string commandExecutionId, ServerCallContext context, IServerStreamWriter<TIntermediate> callback )
+        public ChannelReader<TIntermediate> GetIntermediateChannel<TIntermediate>( string commandExecutionId, ServerCallContext context )
         {
-            var command = _commandExecutions.Find( c => c.CommandExecutionID == commandExecutionId );
-            if(command == null)
+            ObservableCommandExecution commandExecution;
+            lock( _commandExecutions )
+            {
+                commandExecution = _commandExecutions.Find( c => c.CommandExecutionID == commandExecutionId );
+            }
+            if(commandExecution == null)
             {
                 // if command execution ID hasn't been found -> raise SiLA Framework Error
                 throw ErrorHandling.CreateFrameworkError( FrameworkErrorType.InvalidCommandExecutionUuid );
             }
-            var generator = command.IntermediateGenerator as Channel<TIntermediate>;
-            if( generator == null )
+            var command = commandExecution.Command as IIntermediateObservableCommand<TIntermediate>;
+            if( command == null )
             {
                 throw new InvalidOperationException($"The given command does not intermediate values of type {typeof(TIntermediate).Name}.");
             }
 
-            while( await generator.Reader.WaitToReadAsync( context.CancellationToken ))
-            {
-                if( generator.Reader.TryRead( out var data ) )
-                {
-                    try
-                    {
-                        await callback.WriteAsync( data );
-                    }
-                    catch(Exception exception)
-                    {
-                        _logger.LogException( $"Intermediate result could not be delivered to server {context.Host}".ToString, exception );
-                        return;
-                    }
-                }
-            }
+            return command.IntermediateValues;
         }
 
         #endregion
