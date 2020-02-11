@@ -3,7 +3,7 @@
     <metadata>
         <id>Tecan.Sila2.Features.Auth</id>
         <description>Generic authentication/authorization support for the Tecan Sila SDK</description>
-        <version>1.0.0-local</version>
+        <version>2.0.0-local</version>
         <authors>Tecan Trading Ltd., Switzerland</authors>
         <owners>Tecan Trading Ltd., Switzerland</owners>
         <copyright>Copyright 2019 by Tecan Trading Ltd., Switzerland</copyright>
@@ -12,9 +12,9 @@
         <projectUrl>https://gitlab.com/SiLA2/vendors/sila_tecan</projectUrl>
         <repository type="git" url="https://gitlab.com/SiLA2/vendors/sila_tecan.git" />
         <dependencies>
-            <dependency id="Tecan.Sila2.Contracts" version="[1.0,2.0)" />
-            <dependency id="Tecan.Sila2.Server" version="[1.0,2.0)" />
-            <dependency id="Tecan.Sila2" version="[1.0,2.0)" />
+            <dependency id="Tecan.Sila2.Contracts" version="[2.0,3.0)" />
+            <dependency id="Tecan.Sila2.Server" version="[2.0,3.0)" />
+            <dependency id="Tecan.Sila2" version="[2.0,3.0)" />
         </dependencies>
     </metadata>
     <files>

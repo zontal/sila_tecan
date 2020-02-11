@@ -3,7 +3,7 @@
     <metadata>
         <id>Tecan.Sila2.Server</id>
         <description>The server part of the Tecan SiLA2 SDK</description>
-        <version>1.0.0-local</version>
+        <version>2.0.0-local</version>
         <authors>Tecan Trading Ltd., Switzerland</authors>
         <owners>Tecan Trading Ltd., Switzerland</owners>
         <copyright>Copyright 2019 by Tecan Trading Ltd., Switzerland</copyright>
@@ -12,8 +12,8 @@
         <projectUrl>https://gitlab.com/SiLA2/vendors/sila_tecan</projectUrl>
         <repository type="git" url="https://gitlab.com/SiLA2/vendors/sila_tecan.git" />
         <dependencies>
-            <dependency id="Tecan.Sila2" version="[1.0,2.0)" />
-            <dependency id="Grpc.Core" version="2.23" />
+            <dependency id="Tecan.Sila2" version="[2.0,3.0)" />
+            <dependency id="Grpc.Core" version="2.27" />
             <dependency id="CommandLineParser" version="2.6.0" />
             <dependency id="System.Threading.Channels" version="4.7.0" />
         </dependencies>
