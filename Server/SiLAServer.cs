@@ -418,22 +418,6 @@ namespace Tecan.Sila2.Server
         }
 
         /// <inheritdoc />
-        public CommandExecutionInfo GetObservableCommandExecutionState( string commandExecutionId, ServerCallContext context )
-        {
-            lock( _commandExecutions )
-            {
-                var command = _commandExecutions.Find( c => c.CommandExecutionID == commandExecutionId );
-                if( command == null )
-                {
-                    // if command execution ID hasn't been found -> raise SiLA Framework Error
-                    throw ErrorHandling.CreateFrameworkError( FrameworkErrorType.InvalidCommandExecutionUuid );
-                }
-
-                return new CommandExecutionInfo(command.Command.StateUpdates, command.Command.Response);
-            }
-        }
-
-        /// <inheritdoc />
         public Task<T> CreatePropertyTask<T>(string propertyIdentifier, T value, ServerCallContext context)
         {
             return Task.FromResult(value);
@@ -482,25 +466,19 @@ namespace Tecan.Sila2.Server
         }
 
         /// <inheritdoc />
-        public ChannelReader<TIntermediate> GetIntermediateChannel<TIntermediate>( string commandExecutionId, ServerCallContext context )
+        public IObservableCommand GetCommandExecution( string commandExecutionId, ServerCallContext context )
         {
-            ObservableCommandExecution commandExecution;
-            lock( _commandExecutions )
+            lock(_commandExecutions)
             {
-                commandExecution = _commandExecutions.Find( c => c.CommandExecutionID == commandExecutionId );
-            }
-            if(commandExecution == null)
-            {
-                // if command execution ID hasn't been found -> raise SiLA Framework Error
-                throw ErrorHandling.CreateFrameworkError( FrameworkErrorType.InvalidCommandExecutionUuid );
-            }
-            var command = commandExecution.Command as IIntermediateObservableCommand<TIntermediate>;
-            if( command == null )
-            {
-                throw new InvalidOperationException($"The given command does not intermediate values of type {typeof(TIntermediate).Name}.");
-            }
+                var command = _commandExecutions.Find( c => c.CommandExecutionID == commandExecutionId );
+                if(command == null)
+                {
+                    // if command execution ID hasn't been found -> raise SiLA Framework Error
+                    throw ErrorHandling.CreateFrameworkError( FrameworkErrorType.InvalidCommandExecutionUuid );
+                }
 
-            return command.IntermediateValues;
+                return command.Command;
+            }
         }
 
         #endregion

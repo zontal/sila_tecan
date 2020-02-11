@@ -23,11 +23,12 @@ namespace Tecan.Sila2.Server
         public static async Task QueryCommandState(ISiLAServer server, CommandExecutionUuid commandId,
             IServerStreamWriter<ExecutionState> responseStream, ServerCallContext context)
         {
-            var executionState = server.GetObservableCommandExecutionState(commandId.CommandId, context);
+            var command = server.GetCommandExecution(commandId.CommandId, context);
+            var stateReader = command.StateUpdates;
 
-            while( await executionState.StateChannel.WaitToReadAsync(context.CancellationToken) )
+            while( await stateReader.WaitToReadAsync(context.CancellationToken) )
             {
-                if( executionState.StateChannel.TryRead( out var currentState ) )
+                if(stateReader.TryRead( out var currentState ) )
                 {
                     await responseStream.WriteAsync( ConvertStateUpdate(currentState) );
                 }
@@ -84,8 +85,8 @@ namespace Tecan.Sila2.Server
         /// <returns>An awaitable task that completes when the command execution is done</returns>
         public static async Task<EmptyRequest> WaitCommandExecution(ISiLAServer server, CommandExecutionUuid commandId, ServerCallContext context)
         {
-            var state = server.GetObservableCommandExecutionState(commandId.CommandId, context);
-            await state.ResultTask;
+            var command = server.GetCommandExecution( commandId.CommandId, context );
+            await command.Response;
             return EmptyRequest.Instance;
         }
 
@@ -99,8 +100,8 @@ namespace Tecan.Sila2.Server
         /// <returns>An awaitable task that completes when the command execution is done</returns>
         public static async Task<TResponseDto> WaitCommandExecution<TResponse, TResponseDto>(ISiLAServer server, CommandExecutionUuid commandId, ServerCallContext context, Func<TResponse, TResponseDto> converter)
         {
-            var state = server.GetObservableCommandExecutionState(commandId.CommandId, context);
-            var resultTask = state.ResultTask as Task<TResponse>;
+            var command = server.GetCommandExecution( commandId.CommandId, context );
+            var resultTask = command.Response as Task<TResponse>;
             if( resultTask == null )
             {
                 throw new ArgumentOutOfRangeException( nameof(commandId) );
@@ -126,7 +127,8 @@ namespace Tecan.Sila2.Server
         /// <returns>An awaitable task that completes when the command execution is done.</returns>
         public static async Task RetrieveIntermediateResults<TIntermediate, TIntermediateDto>(ISiLAServer server, CommandExecutionUuid commandId, IServerStreamWriter<TIntermediateDto> responseStream, Func<TIntermediate, TIntermediateDto> converter, ServerCallContext context)
         {
-            var reader = server.GetIntermediateChannel<TIntermediate>( commandId.CommandId, context );
+            var command = (IIntermediateObservableCommand<TIntermediate>)server.GetCommandExecution( commandId.CommandId, context );
+            var reader = command.IntermediateValues;
 
             while( await reader.WaitToReadAsync( context.CancellationToken ) )
             {

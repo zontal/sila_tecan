@@ -75,22 +75,14 @@ namespace Tecan.Sila2.Server
         /// <param name="context">The context in which the call is made</param>
         /// <returns>The current state of the execution</returns>
         string AddObservableCommandExecution(string commandIdentifier, IObservableCommand command, ServerCallContext context);
-        
-        /// <summary>
-        /// Gets the execution state of the given command execution identifier
-        /// </summary>
-        /// <param name="commandExecutionID">The identifier of the command execution</param>
-        /// <param name="context">The context in which the call is made</param>
-        /// <returns>The execution state</returns>
-        CommandExecutionInfo GetObservableCommandExecutionState(string commandExecutionID, ServerCallContext context);
 
         /// <summary>
-        /// Gets the intermediate channel for the given command execution id
+        /// Gets the command execution registered for the given command execution id
         /// </summary>
-        /// <typeparam name="TIntermediate">The type of intermediate results</typeparam>
-        /// <param name="commandExecutionID">The command execution identifier</param>
+        /// <param name="commandExecutionId">The identifier of the command execution</param>
         /// <param name="context">The context in which the call is made</param>
-        ChannelReader<TIntermediate> GetIntermediateChannel<TIntermediate>( string commandExecutionID, ServerCallContext context );
+        /// <returns>The command execution object</returns>
+        IObservableCommand GetCommandExecution( string commandExecutionId, ServerCallContext context );
     }
 
     /// <summary>
