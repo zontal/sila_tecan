@@ -104,6 +104,9 @@ namespace Tecan.Sila2
         public bool IsCancellationSupported => _cancellationTokenSource != null;
 
         /// <inheritdoc />
+        public bool IsStarted => Response != null;
+
+        /// <inheritdoc />
         public void Cancel()
         {
             if( _cancellationTokenSource != null )
@@ -216,6 +219,9 @@ namespace Tecan.Sila2
 
         /// <inheritdoc />
         public bool IsCancellationSupported => _cancellationTokenSource != null;
+
+        /// <inheritdoc />
+        public bool IsStarted => Response != null;
 
         /// <inheritdoc />
         public void Cancel()

@@ -277,6 +277,8 @@ namespace Tecan.Sila2.Client
         {
             Response = Run();
         }
+
+        public bool IsStarted => Response != null;
     }
 
     internal class ObservableClientCommand<TResponse, TResult> : ObservableClientCommand, IObservableCommand<TResult>

@@ -36,6 +36,14 @@ namespace Tecan.Sila2
         void Start();
 
         /// <summary>
+        /// Gets a value indicating whether the command has started
+        /// </summary>
+        bool IsStarted
+        {
+            get;
+        }
+
+        /// <summary>
         /// Gets the underlying task for this observable command
         /// </summary>
         Task Response { get; }
