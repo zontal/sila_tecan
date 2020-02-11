@@ -404,17 +404,17 @@ namespace Tecan.Sila2.Server
             var commandExecutionId = Guid.NewGuid().ToString();
 
             var execution = new ObservableCommandExecution(commandExecutionId, commandIdentifier, command, interceptions);
-            RegisterExecution(execution);
 
-            return commandExecutionId;
-        }
-
-        private void RegisterExecution( ObservableCommandExecution execution )
-        {
             lock( _commandExecutions )
             {
                 _commandExecutions.Add( execution );
             }
+            if( !command.IsStarted )
+            {
+                command.Start();
+            }
+
+            return commandExecutionId;
         }
 
         /// <inheritdoc />

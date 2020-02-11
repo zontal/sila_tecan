@@ -34,7 +34,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Grpc.Core" Version="2.23.0" />
+        <PackageReference Include="Grpc.Core" Version="2.27.0" />
         <PackageReference Include="IPNetwork2" Version="2.1.2" />
         <PackageReference Include="protobuf-net" Version="2.4.0" />
         <PackageReference Include="Makaretu.Dns.Multicast" Version="0.25.0" />
