@@ -13,6 +13,7 @@ namespace Tecan.Sila2.Generator.Test.Logging
     [SilaDescription("Provides services for integration of device logging")]
     public interface ILoggingService
     {
+        [Observable]
         [SilaIdentifier("ListenForLogEntries")]
         [SilaDisplayName("Listen for log entries")]
         [SilaDescription("Starts listening for log entries from the device")]

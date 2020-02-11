@@ -73,33 +73,33 @@ namespace Tecan.Sila2.IntegrationTests
 
         public IObservableCommand<int> RunObservable()
         {
-            return new ObservableCommand<int>( RunObservableCore );
+            return ObservableCommands.Create( RunObservableCore );
         }
 
-        private async Task<int> RunObservableCore( Func<StateUpdate, ValueTask> updateState)
+        private async Task<int> RunObservableCore( Action<double, TimeSpan, CommandState> updateState)
         {
-            await updateState( new StateUpdate( 0, TimeSpan.FromHours( 2 ), CommandState.NotStarted ) );
+            updateState( 0, TimeSpan.FromHours( 2 ), CommandState.NotStarted );
             await Task.Delay( 100 );
-            await updateState( new StateUpdate( 0.8, TimeSpan.FromSeconds( 23 ), CommandState.Running ) );
+            updateState( 0.8, TimeSpan.FromSeconds( 23 ), CommandState.Running );
             await Task.Delay( 100 );
-            await updateState( new StateUpdate( 0.7, TimeSpan.FromSeconds( 42 ), CommandState.Running ) );
+            updateState( 0.7, TimeSpan.FromSeconds( 42 ), CommandState.Running );
             await Task.Delay( 100 );
             return 42;
         }
 
         public IIntermediateObservableCommand<int> RunIntermediateObservableCommand()
         {
-            return new ObservableIntermediatesCommand<int>( RunIntermediateObservableCommandCore );
+            return ObservableCommands.Create<int>( RunIntermediateObservableCommandCore );
         }
 
 
-        private async Task RunIntermediateObservableCommandCore(Func<StateUpdate, ValueTask> updateState, Func<int, ValueTask> sendIntermediateResult)
+        private async Task RunIntermediateObservableCommandCore( Action<double, TimeSpan, CommandState> updateState, Action<int> sendIntermediateResult)
         {
-            await sendIntermediateResult( 0 );
+            sendIntermediateResult( 0 );
             await Task.Delay( 100 );
-            await sendIntermediateResult( 8 );
+            sendIntermediateResult( 8 );
             await Task.Delay( 100 );
-            await sendIntermediateResult( 15 );
+            sendIntermediateResult( 15 );
         }
     }
 }

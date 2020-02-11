@@ -98,18 +98,23 @@ namespace Tecan.Sila2.Generator.Test
         public void Test_GenerateDto_SilaFeature()
         {
             var feature = FeatureSerializer.Load( FeatureDefinitionFile );
-            var dtoGenerator = new DtoGenerator( _typeTranslationProvider, new CodeNameProvider() );
+            var dtoGenerator = new DtoGenerator( _typeTranslationProvider, CreateNameProvider() );
             var unit = dtoGenerator.GenerateInterfaceUnit( feature,
                 "Tecan.Sila2.Generator.Test.TestReference" );
 
             GenerateAndCompare( unit, DtoReference );
         }
 
+        protected virtual ICodeNameProvider CreateNameProvider()
+        {
+            return new CodeNameProvider();
+        }
+
         [Test]
         public void Test_GenerateProvider_SilaFeature()
         {
             var feature = FeatureSerializer.Load( FeatureDefinitionFile );
-            var nameProvider = new CodeNameProvider();
+            var nameProvider = CreateNameProvider();
             var providerGenerator = new ProviderGenerator( nameProvider, new ClientGenerator( nameProvider, _typeTranslationProvider, null ),
                 new ServerGenerator( _typeTranslationProvider, nameProvider, null ), _typeTranslationProvider, null );
             var unit = providerGenerator.GenerateInterfaceUnit( feature,

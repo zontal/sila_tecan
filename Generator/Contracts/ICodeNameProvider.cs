@@ -1,4 +1,5 @@
 ﻿using System.CodeDom;
+using System.Reflection;
 
 namespace Tecan.Sila2.Generator.Contracts
 {
@@ -77,5 +78,12 @@ namespace Tecan.Sila2.Generator.Contracts
         /// <param name="typeTranslationProvider">The type translation provider in which context the property type is resolved</param>
         /// <returns>>A type reference to the response DTO generated for this property</returns>
         CodeTypeReference GetPropertyResponseType( FeatureProperty featureProperty, ITypeTranslationProvider typeTranslationProvider );
+
+        /// <summary>
+        /// Gets a non-standard method description, if registered
+        /// </summary>
+        /// <param name="command">The command for which the method is requested</param>
+        /// <returns>A method info with the non-standard original method or null, if not applicable</returns>
+        MethodInfo GetNonstandardMethod( FeatureCommand command );
     }
 }

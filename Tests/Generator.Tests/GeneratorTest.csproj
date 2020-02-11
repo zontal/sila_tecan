@@ -23,6 +23,9 @@
         <OutputPath>..\..\Build\Test\</OutputPath>
     </PropertyGroup>
     <ItemGroup>
+      <Compile Remove="InlineObservable\ServiceReference.cs" />
+    </ItemGroup>
+    <ItemGroup>
         <Compile Include="..\..\CommonAssemblyInfo.cs" Link="Properties\CommonAssemblyInfo.cs" />
     </ItemGroup>
 
@@ -47,6 +50,12 @@
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Compile>
         <Compile Update="Dictionary\ServiceReference.cs">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Compile>
+        <Compile Update="InlineObservable\DtoReference.cs">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Compile>
+        <Compile Update="InlineObservable\ProviderReference.cs">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Compile>
         <Compile Update="Logging\DtoReference.cs">
@@ -84,10 +93,18 @@
         <Folder Include="Properties\" />
     </ItemGroup>
     <ItemGroup>
+      <None Include="InlineObservable\ServiceReference.cs">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
+    <ItemGroup>
         <Reference Include="System.Security" />
     </ItemGroup>
     <ItemGroup>
         <None Update="Dictionary\Feature.xml">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="InlineObservable\Feature.xml">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
         <None Update="Logging\Feature.xml">

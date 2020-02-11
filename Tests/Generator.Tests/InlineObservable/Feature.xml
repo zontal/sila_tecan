@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Feature xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" SiLA2Version="1.0" FeatureVersion="1.0" Originator="tecan.sila.generator.test" Category="testreference" xmlns="http://www.sila-standard.org">
+  <Identifier>InlineObservableService</Identifier>
+  <DisplayName>Inline Observable Service</DisplayName>
+  <Description />
+  <Command>
+    <Identifier>TestInlineObservable</Identifier>
+    <DisplayName>Test Inline Observable</DisplayName>
+    <Description />
+    <Observable>Yes</Observable>
+    <Parameter>
+      <Identifier>Parameter</Identifier>
+      <DisplayName>Parameter</DisplayName>
+      <Description />
+      <DataType>
+        <Basic>String</Basic>
+      </DataType>
+    </Parameter>
+    <Response>
+      <Identifier>ReturnValue</Identifier>
+      <DisplayName>Return Value</DisplayName>
+      <Description />
+      <DataType>
+        <Basic>Boolean</Basic>
+      </DataType>
+    </Response>
+  </Command>
+</Feature>

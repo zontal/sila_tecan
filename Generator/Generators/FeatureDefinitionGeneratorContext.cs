@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using Tecan.Sila2.DynamicClient;
@@ -180,7 +181,7 @@ namespace Tecan.Sila2.Generator.Generators
             var (identifier, displayName, description) = ParseElementData( propertyInfo );
 
             var definedErrors = ParseExceptionNamesAndRegister( propertyInfo, readExceptions );
-            var isDynamic = propertyInfo.GetCustomAttribute<DynamicAttribute>() != null;
+            var isDynamic = propertyInfo.GetCustomAttribute<ObservableAttribute>() != null;
             setterCommand = null;
             var property = new FeatureProperty
             {
@@ -726,8 +727,8 @@ namespace Tecan.Sila2.Generator.Generators
             var (identifier, displayName, description) = ParseElementData( methodInfo );
 
             var exceptionIdentifiers = ParseExceptionNamesAndRegister( methodInfo, executeExceptions );
-            var parameters = ParseCommandParameters( methodInfo, dataTypes, identifier );
-            var (responseType, intermediateType, isObservable) = ParseCommandTypes( methodInfo.ReturnType );
+            var (responseType, intermediateType, isObservable) = ParseCommandTypes( methodInfo, identifier );
+            var parameters = ParseCommandParameters( methodInfo, dataTypes, identifier, isObservable );
 
             var inlineResponse = methodInfo.ReturnTypeCustomAttributes.IsDefined( typeof( InlineStructAttribute ), false );
 
@@ -766,11 +767,22 @@ namespace Tecan.Sila2.Generator.Generators
         }
 
         private SiLAElement[] ParseCommandParameters( MethodInfo methodInfo, ICollection<Type> dataTypes,
-            string identifier )
+            string identifier, bool isObservable )
         {
             var parameters = new List<SiLAElement>();
             foreach(var parameterInfo in methodInfo.GetParameters())
             {
+                if( parameterInfo.ParameterType == typeof(CancellationToken) )
+                {
+                    if( isObservable )
+                    {
+                        continue;
+                    }
+                    else
+                    {
+                        throw new InvalidOperationException( $"The method {methodInfo.Name} has a parameter with a cancellation token but is not marked observable." );
+                    }
+                }
                 var (parameterId, parameterName, parameterDescription) = ParseElementData( parameterInfo );
 
                 parameters.Add( new SiLAElement
@@ -815,10 +827,16 @@ namespace Tecan.Sila2.Generator.Generators
             }
         }
 
-        private (Type, Type, bool) ParseCommandTypes( Type returnType )
+        private (Type, Type, bool) ParseCommandTypes( MethodInfo commandMethod, string identifier )
         {
+            var isObservable = commandMethod.GetCustomAttribute<ObservableAttribute>() != null;
+            var returnType = commandMethod.ReturnType;
             if(returnType.IsGenericType)
             {
+                if( !isObservable )
+                {
+                    throw new InvalidOperationException( $"The method {commandMethod.Name} seems observable but is not marked observable." );
+                }
                 var typeDefinition = returnType.GetGenericTypeDefinition();
                 if(typeDefinition == typeof( IObservableCommand<> ))
                 {
@@ -836,13 +854,29 @@ namespace Tecan.Sila2.Generator.Generators
                     var arguments = returnType.GetGenericArguments();
                     return (typeof( void ), arguments[0], true);
                 }
+
+                if( typeDefinition == typeof(Task<>) )
+                {
+                    _nameRegistry?.RegisterMethod( identifier, commandMethod );
+                    return (returnType.GetGenericArguments()[0], null, true);
+                }
             }
             else if(returnType == typeof( IObservableCommand ))
             {
-                return (typeof( void ), null, true);
+                return (typeof(void), null, true);
+            }
+            else if( returnType == typeof(Task) )
+            {
+                _nameRegistry?.RegisterMethod( identifier, commandMethod );
+                return (typeof(void), null, true);
             }
 
-            return (returnType, null, false);
+            if( isObservable )
+            {
+                _nameRegistry?.RegisterMethod( identifier, commandMethod );
+            }
+
+            return (returnType, null, isObservable);
         }
     }
 }

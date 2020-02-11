@@ -31,8 +31,10 @@ namespace Tecan.Sila2.IntegrationTests
 
         SomeStructure PassStructure( SomeStructure structure );
 
+        [Observable]
         IObservableCommand<int> RunObservable();
 
+        [Observable]
         IIntermediateObservableCommand<int> RunIntermediateObservableCommand();
     }
 

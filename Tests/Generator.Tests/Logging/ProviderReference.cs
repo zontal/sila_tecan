@@ -93,7 +93,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             /// <returns>A stream of intermediate responses</returns>
             private System.Threading.Tasks.Task ListenForLogEntriesState(Tecan.Sila2.CommandExecutionUuid request, Grpc.Core.IServerStreamWriter<Tecan.Sila2.ExecutionState> responseStream, Grpc.Core.ServerCallContext context)
             {
-                return ObservableCommands.QueryCommandState(_server, request, responseStream, context);
+                return ObservableCommandHelper.QueryCommandState(_server, request, responseStream, context);
             }
             
             private ListenForLogEntriesIntermediateDto ConvertListenForLogEntriesIntermediate(LogEntry intermediate)
@@ -110,7 +110,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             /// <returns>A stream of intermediate responses</returns>
             private System.Threading.Tasks.Task ListenForLogEntriesIntermediateResponse(Tecan.Sila2.CommandExecutionUuid request, Grpc.Core.IServerStreamWriter<ListenForLogEntriesIntermediateDto> responseStream, Grpc.Core.ServerCallContext context)
             {
-                return ObservableCommands.RetrieveIntermediateResults<LogEntry, ListenForLogEntriesIntermediateDto>(_server, request, responseStream, ConvertListenForLogEntriesIntermediate, context);
+                return ObservableCommandHelper.RetrieveIntermediateResults<LogEntry, ListenForLogEntriesIntermediateDto>(_server, request, responseStream, ConvertListenForLogEntriesIntermediate, context);
             }
             
             ///  <summary>
@@ -121,7 +121,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             /// <returns>A task with the command result data transfer object</returns>
             private System.Threading.Tasks.Task<EmptyRequest> ListenForLogEntriesResponse(Tecan.Sila2.CommandExecutionUuid request, Grpc.Core.ServerCallContext context)
             {
-                return ObservableCommands.WaitCommandExecution(_server, request, context);
+                return ObservableCommandHelper.WaitCommandExecution(_server, request, context);
             }
             
             ///  <summary>
@@ -132,7 +132,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             /// <returns>The command response wrapped in a data transfer object</returns>
             protected virtual System.Threading.Tasks.Task<Tecan.Sila2.CommandConfirmation> ListenForLogEntries(ListenForLogEntriesRequestDto request, Grpc.Core.ServerCallContext context)
             {
-                return ObservableCommands.StartCommand(_server, "tecan.sila.generator.test.logging/infrastructure/LoggingService/v1/Command/Listen" +
+                return ObservableCommandHelper.StartCommand(_server, "tecan.sila.generator.test.logging/infrastructure/LoggingService/v1/Command/Listen" +
                         "ForLogEntries", _implementation.ListenForLogEntries(), context);
             }
             

@@ -10,7 +10,7 @@ namespace Tecan.Sila2.Server
     /// <summary>
     /// Helper class for observable commands
     /// </summary>
-    public static class ObservableCommands
+    public static class ObservableCommandHelper
     {
         /// <summary>
         /// Queries the command state for the given command execution identifier
@@ -207,17 +207,26 @@ namespace Tecan.Sila2.Server
             if( responseStream.MoveNext().Result )
             {
                 newValueReceived?.Invoke( responseStream.Current );
-                return ContinueReading( responseStream, newValueReceived );
+                return ContinueReading( responseStream, newValueReceived, callInfo );
             }
 
             return Task.CompletedTask;
         }
 
-        private static async Task ContinueReading<T>( IAsyncStreamReader<T> responseStream, Action<T> newValueReceived ) where T : class
+        private static async Task ContinueReading<T>( IAsyncStreamReader<T> responseStream, Action<T> newValueReceived, IClientCallInfo callInfo ) where T : class
         {
-            while(await responseStream.MoveNext())
+            try
             {
-                newValueReceived?.Invoke( responseStream.Current );
+                while(await responseStream.MoveNext())
+                {
+                    newValueReceived?.Invoke( responseStream.Current );
+                }
+                callInfo.FinishSuccessful();
+            }
+            catch( Exception exception )
+            {
+                callInfo.FinishWithErrors(exception);
+                throw;
             }
         }
     }

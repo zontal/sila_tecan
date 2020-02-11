@@ -24,7 +24,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         ///  <summary>
         /// Current Temperature as measured by the controller.
         /// </summary>
-        [Tecan.Sila2.DynamicAttribute()]
+        [Tecan.Sila2.ObservableAttribute()]
         [Tecan.Sila2.UnitAttribute("K", Kelvin=1)]
         [Tecan.Sila2.MaximalInclusiveAttribute(373D)]
         [Tecan.Sila2.MinimalExclusiveAttribute(273D)]
@@ -38,6 +38,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// </summary>
         /// <param name="targetTemperature">The target temperature that the device will try to reach. Note that the command might
         ///be completed at a temperature that is close enough.</param>
+        [Tecan.Sila2.ObservableAttribute()]
         [Tecan.Sila2.ThrowsAttribute(typeof(TemperatureNotReachableException))]
         [Tecan.Sila2.ThrowsAttribute(typeof(ControlInterruptedException))]
         Tecan.Sila2.IObservableCommand ControlTemperature([Tecan.Sila2.UnitAttribute("K", Kelvin=1)] [Tecan.Sila2.MaximalInclusiveAttribute(373D)] [Tecan.Sila2.MinimalExclusiveAttribute(273D)] double targetTemperature);

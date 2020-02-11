@@ -67,7 +67,7 @@ namespace Tecan.Sila2.ParameterConstraintsProvider
         ///  <summary>
         /// Provides a list of all constraints of Command Parameters of the SiLA Server.
         /// </summary>
-        [Tecan.Sila2.DynamicAttribute()]
+        [Tecan.Sila2.ObservableAttribute()]
         System.Collections.Generic.ICollection<ParametersConstraint> ParametersConstraints
         {
             get;

@@ -455,7 +455,7 @@ namespace Tecan.Sila2.IntegrationTests
             /// <returns>A stream of intermediate responses</returns>
             private System.Threading.Tasks.Task RunObservableState(Tecan.Sila2.CommandExecutionUuid request, Grpc.Core.IServerStreamWriter<Tecan.Sila2.ExecutionState> responseStream, Grpc.Core.ServerCallContext context)
             {
-                return ObservableCommands.QueryCommandState(_server, request, responseStream, context);
+                return ObservableCommandHelper.QueryCommandState(_server, request, responseStream, context);
             }
             
             ///  <summary>
@@ -466,7 +466,7 @@ namespace Tecan.Sila2.IntegrationTests
             /// <returns>A task with the command result data transfer object</returns>
             private System.Threading.Tasks.Task<RunObservableResponseDto> RunObservableResponse(Tecan.Sila2.CommandExecutionUuid request, Grpc.Core.ServerCallContext context)
             {
-                return ObservableCommands.WaitCommandExecution<int, RunObservableResponseDto>(_server, request, context, ConvertRunObservableResponse);
+                return ObservableCommandHelper.WaitCommandExecution<int, RunObservableResponseDto>(_server, request, context, ConvertRunObservableResponse);
             }
             
             ///  <summary>
@@ -477,7 +477,7 @@ namespace Tecan.Sila2.IntegrationTests
             /// <returns>The command response wrapped in a data transfer object</returns>
             protected virtual System.Threading.Tasks.Task<Tecan.Sila2.CommandConfirmation> RunObservable(RunObservableRequestDto request, Grpc.Core.ServerCallContext context)
             {
-                return ObservableCommands.StartCommand(_server, "tecan.sila/integrationtests/TestServer/v1/Command/RunObservable", _implementation.RunObservable(), context);
+                return ObservableCommandHelper.StartCommand(_server, "tecan.sila/integrationtests/TestServer/v1/Command/RunObservable", _implementation.RunObservable(), context);
             }
             
             private RunIntermediateObservableCommandIntermediateDto ConvertRunIntermediateObservableCommandIntermediate(int intermediate)
@@ -494,7 +494,7 @@ namespace Tecan.Sila2.IntegrationTests
             /// <returns>A stream of intermediate responses</returns>
             private System.Threading.Tasks.Task RunIntermediateObservableCommandState(Tecan.Sila2.CommandExecutionUuid request, Grpc.Core.IServerStreamWriter<Tecan.Sila2.ExecutionState> responseStream, Grpc.Core.ServerCallContext context)
             {
-                return ObservableCommands.QueryCommandState(_server, request, responseStream, context);
+                return ObservableCommandHelper.QueryCommandState(_server, request, responseStream, context);
             }
             
             ///  <summary>
@@ -506,7 +506,7 @@ namespace Tecan.Sila2.IntegrationTests
             /// <returns>A stream of intermediate responses</returns>
             private System.Threading.Tasks.Task RunIntermediateObservableCommandIntermediateResponse(Tecan.Sila2.CommandExecutionUuid request, Grpc.Core.IServerStreamWriter<RunIntermediateObservableCommandIntermediateDto> responseStream, Grpc.Core.ServerCallContext context)
             {
-                return ObservableCommands.RetrieveIntermediateResults<int, RunIntermediateObservableCommandIntermediateDto>(_server, request, responseStream, ConvertRunIntermediateObservableCommandIntermediate, context);
+                return ObservableCommandHelper.RetrieveIntermediateResults<int, RunIntermediateObservableCommandIntermediateDto>(_server, request, responseStream, ConvertRunIntermediateObservableCommandIntermediate, context);
             }
             
             ///  <summary>
@@ -517,7 +517,7 @@ namespace Tecan.Sila2.IntegrationTests
             /// <returns>A task with the command result data transfer object</returns>
             private System.Threading.Tasks.Task<EmptyRequest> RunIntermediateObservableCommandResponse(Tecan.Sila2.CommandExecutionUuid request, Grpc.Core.ServerCallContext context)
             {
-                return ObservableCommands.WaitCommandExecution(_server, request, context);
+                return ObservableCommandHelper.WaitCommandExecution(_server, request, context);
             }
             
             ///  <summary>
@@ -528,7 +528,7 @@ namespace Tecan.Sila2.IntegrationTests
             /// <returns>The command response wrapped in a data transfer object</returns>
             protected virtual System.Threading.Tasks.Task<Tecan.Sila2.CommandConfirmation> RunIntermediateObservableCommand(RunIntermediateObservableCommandRequestDto request, Grpc.Core.ServerCallContext context)
             {
-                return ObservableCommands.StartCommand(_server, "tecan.sila/integrationtests/TestServer/v1/Command/RunIntermediateObservableComman" +
+                return ObservableCommandHelper.StartCommand(_server, "tecan.sila/integrationtests/TestServer/v1/Command/RunIntermediateObservableComman" +
                         "d", _implementation.RunIntermediateObservableCommand(), context);
             }
             

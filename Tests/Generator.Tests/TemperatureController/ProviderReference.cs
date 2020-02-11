@@ -89,7 +89,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             /// <returns>A stream of intermediate responses</returns>
             private System.Threading.Tasks.Task ControlTemperatureState(Tecan.Sila2.CommandExecutionUuid request, Grpc.Core.IServerStreamWriter<Tecan.Sila2.ExecutionState> responseStream, Grpc.Core.ServerCallContext context)
             {
-                return ObservableCommands.QueryCommandState(_server, request, responseStream, context);
+                return ObservableCommandHelper.QueryCommandState(_server, request, responseStream, context);
             }
             
             ///  <summary>
@@ -100,7 +100,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             /// <returns>A task with the command result data transfer object</returns>
             private System.Threading.Tasks.Task<EmptyRequest> ControlTemperatureResponse(Tecan.Sila2.CommandExecutionUuid request, Grpc.Core.ServerCallContext context)
             {
-                return ObservableCommands.WaitCommandExecution(_server, request, context);
+                return ObservableCommandHelper.WaitCommandExecution(_server, request, context);
             }
             
             ///  <summary>
@@ -111,7 +111,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             /// <returns>The command response wrapped in a data transfer object</returns>
             protected virtual System.Threading.Tasks.Task<Tecan.Sila2.CommandConfirmation> ControlTemperature(ControlTemperatureRequestDto request, Grpc.Core.ServerCallContext context)
             {
-                return ObservableCommands.StartCommand(_server, "tecan.sila.generator/test/TemperatureController/v1/Command/ControlTemperature", _implementation.ControlTemperature(request.TargetTemperature.Extract(_server)), context);
+                return ObservableCommandHelper.StartCommand(_server, "tecan.sila.generator/test/TemperatureController/v1/Command/ControlTemperature", _implementation.ControlTemperature(request.TargetTemperature.Extract(_server)), context);
             }
             
             ///  <summary>
@@ -123,7 +123,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             /// <returns>A task that ends when the subscription ends</returns>
             protected virtual System.Threading.Tasks.Task SubscribeCurrentTemperature(EmptyRequest request, Grpc.Core.IServerStreamWriter<CurrentTemperatureResponseDto> responseStream, Grpc.Core.ServerCallContext context)
             {
-                return ObservableCommands.ContinuouslySendValue(_server, "tecan.sila.generator/test/TemperatureController/v1/Property/CurrentTemperature", responseStream, CreateCurrentTemperatureResponse, 1000, context);
+                return ObservableCommandHelper.ContinuouslySendValue(_server, "tecan.sila.generator/test/TemperatureController/v1/Property/CurrentTemperature", responseStream, CreateCurrentTemperatureResponse, 1000, context);
             }
             
             ///  <summary>
@@ -202,7 +202,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
                 {
                     if ((_currentTemperatureUpdateTask == null))
                     {
-                        _currentTemperatureUpdateTask = ObservableCommands.SubscribeTo(CallInvoker, SubscribeCurrentTemperatureMethod, ReceiveNewCurrentTemperature, _executionManager.CreateCallOptions("tecan.sila.generator/test/TemperatureController/v1/Property/CurrentTemperature"));
+                        _currentTemperatureUpdateTask = ObservableCommandHelper.SubscribeTo(CallInvoker, SubscribeCurrentTemperatureMethod, ReceiveNewCurrentTemperature, _executionManager.CreateCallOptions("tecan.sila.generator/test/TemperatureController/v1/Property/CurrentTemperature"));
                     }
                     return _currentTemperature;
                 }

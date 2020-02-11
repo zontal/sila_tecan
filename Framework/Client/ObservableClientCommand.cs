@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Channels;
 using System.Threading.Tasks;
 using Grpc.Core;
@@ -168,6 +169,11 @@ namespace Tecan.Sila2.Client
 
         public Func<DefinedExecutionErrorDto, Exception> ErrorConverter { get; }
 
+        public CancellationTokenSource CancellationTokenSource
+        {
+            get;
+        }
+
         public ObservableClientCommand(IClientCallInfo callInfo, CallInvoker callInvoker, CommandExecutionUuid commandId, Method<CommandExecutionUuid, ExecutionState> stateMethod, Func<DefinedExecutionErrorDto, Exception> errorConverter)
         {
             CallInfo = callInfo;
@@ -182,6 +188,12 @@ namespace Tecan.Sila2.Client
                 SingleWriter = true
             } );
             ErrorConverter = errorConverter;
+            CancellationTokenSource = CreateCancellationTokenSource();
+        }
+
+        private CancellationTokenSource CreateCancellationTokenSource()
+        {
+            return null;
         }
 
         internal virtual async Task Run()
@@ -245,6 +257,21 @@ namespace Tecan.Sila2.Client
         }
 
         public Task Response { get; protected set; }
+        public CancellationToken CancellationToken => CancellationTokenSource?.Token ?? new CancellationToken( false );
+
+        public bool IsCancellationSupported => CancellationTokenSource != null;
+
+        public void Cancel()
+        {
+            if( CancellationTokenSource != null )
+            {
+                CancellationTokenSource.Cancel();
+            }
+            else
+            {
+                throw new NotSupportedException();
+            }
+        }
 
         public virtual void Start()
         {

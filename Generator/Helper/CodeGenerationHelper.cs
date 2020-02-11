@@ -176,6 +176,29 @@ namespace Tecan.Sila2.Generator.Helper
         }
 
         /// <summary>
+        /// Adds a field to the given type declaration and adds a parameter in the given constructor
+        /// </summary>
+        /// <param name="declaringType">The type that declares the field</param>
+        /// <param name="name">The name of the field, without a prefix</param>
+        /// <param name="type">The type of the field</param>
+        /// <param name="constructor">The constructor to which a parameter should be added or null</param>
+        /// <returns>A field reference</returns>
+        public static CodeFieldReferenceExpression AddField( this CodeTypeDeclaration declaringType, string name, CodeTypeReference type, CodeConstructor constructor )
+        {
+            var fieldDeclaration = new CodeMemberField
+            {
+                Name = "_" + name,
+                Type = type,
+                Attributes = MemberAttributes.Private | MemberAttributes.Final
+            };
+            var fieldReference = new CodeFieldReferenceExpression( null, fieldDeclaration.Name );
+            declaringType.Members.Add( fieldDeclaration );
+            constructor?.Parameters.Add( new CodeParameterDeclarationExpression( type, name ) );
+            constructor?.Statements.Add( new CodeAssignStatement( fieldReference, new CodeArgumentReferenceExpression( name ) ) );
+            return fieldReference;
+        }
+
+        /// <summary>
         /// Generates documentation for the given code member
         /// </summary>
         /// <param name="member">The member for which code should be generated</param>
@@ -217,6 +240,15 @@ namespace Tecan.Sila2.Generator.Helper
 
             member.Comments.Add( new CodeCommentStatement( documentationWriter.ToString(), true ) );
             return member;
+        }
+
+        /// <summary>
+        /// Writes a comment that documentation is inherited
+        /// </summary>
+        /// <param name="member">The member to which the documentation tag should be written</param>
+        public static void WriteInheritDoc( this CodeTypeMember member )
+        {
+            member.Comments.Add( new CodeCommentStatement( " <inheritdoc />", true ) );
         }
     }
 }

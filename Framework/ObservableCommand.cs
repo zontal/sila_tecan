@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading;
 using System.Threading.Channels;
 using System.Threading.Tasks;
 
@@ -9,43 +10,48 @@ namespace Tecan.Sila2
     /// <summary>
     /// Denotes the base class for an observable command
     /// </summary>
-    public class ObservableCommand : IObservableCommand
+    public abstract class ObservableCommand : IObservableCommand, IDisposable
     {
         private readonly Channel<StateUpdate> _stateUpdateChannel;
+        private readonly CancellationTokenSource _cancellationTokenSource;
 
         /// <summary>
         /// Creates an observable command
         /// </summary>
-        /// <param name="command">The actual command method</param>
-        public ObservableCommand( Action<Action<StateUpdate>> command ) : this(ConvertCommandHandler(command))
-        {
-        }
+        protected ObservableCommand() : this(null) { }
 
         /// <summary>
         /// Creates an observable command
         /// </summary>
-        /// <param name="command">The actual command method</param>
-        public ObservableCommand(Func<Func<StateUpdate, ValueTask>, Task> command)
+        protected ObservableCommand(CancellationTokenSource cancellationTokenSource)
         {
             _stateUpdateChannel = Channels.CreateStateUpdateChannel();
-            Response = StartCommand(command);
+            _cancellationTokenSource = cancellationTokenSource;
         }
 
-        private static Func<Func<StateUpdate, ValueTask>, Task> ConvertCommandHandler( Action<Action<StateUpdate>> command )
+        /// <inheritdoc />
+        public void Start()
         {
-            return updateHandler =>
+            if( Response != null )
             {
-                var newUpdateHandler = new Action<StateUpdate>(update => updateHandler(update).AsTask().Wait());
-                return Task.Factory.StartNew( () => command( newUpdateHandler ) );
-            };
+                throw new InvalidOperationException("The command was already started");
+            }
+            Response = WrapRun();
         }
 
-        private async Task StartCommand( Func<Func<StateUpdate, ValueTask>, Task> command )
+        /// <summary>
+        /// Runs the command in a derived class
+        /// </summary>
+        /// <returns>The command main response task</returns>
+        public abstract Task Run();
+
+
+        private async Task WrapRun( )
         {
             Exception exception = null;
             try
             {
-                await command( PushStateUpdate );
+                await Run();
             }
             catch( Exception ex )
             {
@@ -54,14 +60,31 @@ namespace Tecan.Sila2
             }
             finally
             {
-                await PushStateUpdate( new StateUpdate( 1, TimeSpan.Zero, exception != null ? CommandState.FinishedWithErrors : CommandState.FinishedSuccess ) );
-                _stateUpdateChannel.Writer.Complete( exception );
+                PushStateUpdate( 1, TimeSpan.Zero, exception != null ? CommandState.FinishedWithErrors : CommandState.FinishedSuccess );
+                Cleanup(exception);
             }
         }
 
-        private ValueTask PushStateUpdate( StateUpdate stateUpdate )
+        /// <summary>
+        /// Pushes an updated state
+        /// </summary>
+        /// <param name="progress">The percentage to which the command is finished, in a range from 0-1</param>
+        /// <param name="remainingTime">An estimation of the remaining time</param>
+        /// <param name="state">The current state of the command execution</param>
+        /// <returns></returns>
+        protected void PushStateUpdate( double progress, TimeSpan remainingTime, CommandState state )
         {
-            return _stateUpdateChannel.Writer.WriteAsync( stateUpdate );
+            _stateUpdateChannel.Writer.TryWrite( new StateUpdate(progress, remainingTime, state) );
+        }
+
+        /// <summary>
+        /// Cleans up resources used for the execution of this command
+        /// </summary>
+        /// <param name="exception">An exception that caused the command to terminate or null, if the command completed successfully</param>
+        public virtual void Cleanup( Exception exception )
+        {
+            _stateUpdateChannel.Writer.Complete( exception );
+            _cancellationTokenSource?.Dispose();
         }
 
         /// <inheritdoc />
@@ -71,49 +94,75 @@ namespace Tecan.Sila2
         public Task Response
         {
             get;
+            private set;
+        }
+
+        /// <inheritdoc />
+        public CancellationToken CancellationToken => _cancellationTokenSource?.Token ?? CancellationToken.None;
+
+        /// <inheritdoc />
+        public bool IsCancellationSupported => _cancellationTokenSource != null;
+
+        /// <inheritdoc />
+        public void Cancel()
+        {
+            if( _cancellationTokenSource != null )
+            {
+                _cancellationTokenSource.Cancel();
+            }
+            else
+            {
+                throw new NotSupportedException();
+            }
+        }
+
+        /// <inheritdoc />
+        public void Dispose()
+        {
+            Cleanup(null);
         }
     }
 
     /// <summary>
     /// Denotes the base class for an observable command
     /// </summary>
-    public class ObservableCommand<T> : IObservableCommand<T>
+    public abstract class ObservableCommand<T> : IObservableCommand<T>, IDisposable
     {
         private readonly Channel<StateUpdate> _stateUpdateChannel;
+        private readonly CancellationTokenSource _cancellationTokenSource;
 
         /// <summary>
         /// Creates an observable command
         /// </summary>
-        /// <param name="command">The actual command method</param>
-        public ObservableCommand( Func<Action<StateUpdate>, T> command ) : this( ConvertCommandHandler( command ) )
-        {
-        }
+        protected ObservableCommand() : this( null ) { }
 
         /// <summary>
         /// Creates an observable command
         /// </summary>
-        /// <param name="command">The actual command method</param>
-        public ObservableCommand( Func<Func<StateUpdate, ValueTask>, Task<T>> command )
+        protected ObservableCommand( CancellationTokenSource cancellationTokenSource )
         {
             _stateUpdateChannel = Channels.CreateStateUpdateChannel();
-            Response = StartCommand( command );
+            _cancellationTokenSource = cancellationTokenSource;
         }
 
-        private static Func<Func<StateUpdate, ValueTask>, Task<T>> ConvertCommandHandler( Func<Action<StateUpdate>, T> command )
+        /// <inheritdoc />
+        public void Start()
         {
-            return updateHandler =>
-            {
-                var newUpdateHandler = new Action<StateUpdate>( update => updateHandler( update ).AsTask().Wait() );
-                return Task.Factory.StartNew( () => command( newUpdateHandler ) );
-            };
+            Response = WrapRun();
         }
 
-        private async Task<T> StartCommand( Func<Func<StateUpdate, ValueTask>, Task<T>> command )
+        /// <summary>
+        /// Runs the command in a derived class
+        /// </summary>
+        /// <returns>The command main response task</returns>
+        public abstract Task<T> Run();
+
+        private async Task<T> WrapRun()
         {
             Exception exception = null;
             try
             {
-                return await command( PushStateUpdate );
+                return await Run();
             }
             catch(Exception ex)
             {
@@ -122,14 +171,31 @@ namespace Tecan.Sila2
             }
             finally
             {
-                await PushStateUpdate( new StateUpdate( 1, TimeSpan.Zero, exception != null ? CommandState.FinishedWithErrors : CommandState.FinishedSuccess ) );
-                _stateUpdateChannel.Writer.Complete( exception );
+                PushStateUpdate( 1, TimeSpan.Zero, exception != null ? CommandState.FinishedWithErrors : CommandState.FinishedSuccess );
+                Cleanup(exception);
             }
         }
 
-        private ValueTask PushStateUpdate( StateUpdate stateUpdate )
+        /// <summary>
+        /// Cleans up resources used for the execution of this command
+        /// </summary>
+        /// <param name="exception">An exception that caused the command to terminate or null, if the command completed successfully</param>
+        public virtual void Cleanup( Exception exception )
         {
-            return _stateUpdateChannel.Writer.WriteAsync( stateUpdate );
+            _stateUpdateChannel.Writer.Complete( exception );
+            _cancellationTokenSource?.Dispose();
+        }
+
+        /// <summary>
+        /// Pushes an updated state
+        /// </summary>
+        /// <param name="progress">The percentage to which the command is finished, in a range from 0-1</param>
+        /// <param name="remainingTime">An estimation of the remaining time</param>
+        /// <param name="state">The current state of the command execution</param>
+        /// <returns></returns>
+        protected void PushStateUpdate( double progress, TimeSpan remainingTime, CommandState state )
+        {
+            _stateUpdateChannel.Writer.TryWrite( new StateUpdate( progress, remainingTime, state ) );
         }
 
         /// <inheritdoc />
@@ -139,8 +205,35 @@ namespace Tecan.Sila2
         public Task<T> Response
         {
             get;
+            private set;
         }
 
         Task IObservableCommand.Response => Response;
+
+
+        /// <inheritdoc />
+        public CancellationToken CancellationToken => _cancellationTokenSource?.Token ?? CancellationToken.None;
+
+        /// <inheritdoc />
+        public bool IsCancellationSupported => _cancellationTokenSource != null;
+
+        /// <inheritdoc />
+        public void Cancel()
+        {
+            if(_cancellationTokenSource != null)
+            {
+                _cancellationTokenSource.Cancel();
+            }
+            else
+            {
+                throw new NotSupportedException();
+            }
+        }
+
+        /// <inheritdoc />
+        public void Dispose()
+        {
+            Cleanup( null );
+        }
     }
 }

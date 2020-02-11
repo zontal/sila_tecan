@@ -81,7 +81,7 @@ namespace Tecan.Sila2.ParameterConstraintsProvider
             /// <returns>A task that ends when the subscription ends</returns>
             protected virtual System.Threading.Tasks.Task SubscribeParametersConstraints(EmptyRequest request, Grpc.Core.IServerStreamWriter<PropertyResponse<System.Collections.Generic.List<ParametersConstraintDto>>> responseStream, Grpc.Core.ServerCallContext context)
             {
-                return ObservableCommands.ContinuouslySendValue(_server, "org.silastandard/core.commands/ParameterConstraintsProvider/v1/Property/Parameter" +
+                return ObservableCommandHelper.ContinuouslySendValue(_server, "org.silastandard/core.commands/ParameterConstraintsProvider/v1/Property/Parameter" +
                         "sConstraints", responseStream, CreateParametersConstraintsResponse, 1000, context);
             }
             

@@ -17,6 +17,7 @@ namespace Tecan.Sila2.Generator.Generators
     {
         private readonly Dictionary<string, string> _renames = new Dictionary<string, string>();
         private readonly Dictionary<string, MethodInfo> _constructorReplacements = new Dictionary<string, MethodInfo>();
+        private readonly Dictionary<string, MethodInfo> _nonstandardMethods = new Dictionary<string, MethodInfo>();
         private readonly Dictionary<string, Type> _typeOverrides = new Dictionary<string, Type>();
 
         /// <inheritdoc />
@@ -78,6 +79,11 @@ namespace Tecan.Sila2.Generator.Generators
             _typeOverrides.Add(identifier, type);
         }
 
+        public void RegisterMethod( string commandIdentifier, MethodInfo method )
+        {
+            _nonstandardMethods.Add( commandIdentifier, method );
+        }
+
         /// <inheritdoc />
         public CodeTypeReference GetMemberType(string identifier)
         {
@@ -134,6 +140,16 @@ namespace Tecan.Sila2.Generator.Generators
             }
 
             return propertyResponse;
+        }
+
+        public MethodInfo GetNonstandardMethod( FeatureCommand command )
+        {
+            if( _nonstandardMethods.TryGetValue( command.Identifier, out var method ) )
+            {
+                return method;
+            }
+
+            return null;
         }
     }
 }

@@ -24,6 +24,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         ///  <summary>
         /// Starts listening for log entries from the device
         /// </summary>
+        [Tecan.Sila2.ObservableAttribute()]
         [Tecan.Sila2.SilaDisplayNameAttribute("Listen for log entries")]
         Tecan.Sila2.IIntermediateObservableCommand<LogEntry> ListenForLogEntries();
     }

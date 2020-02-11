@@ -19,7 +19,7 @@ namespace Tecan.Sila2.Generator.Test.TemperatureController
 
         [SilaDisplayName("Current Temperature")]
         [SilaDescription("Current Temperature as measured by the controller.")]
-        [Dynamic(1000)]
+        [Observable]
         [Unit("K", Kelvin = 1)]
         [MinimalExclusive(273.0)]
         [MaximalInclusive(373.0)]

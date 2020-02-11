@@ -66,7 +66,7 @@ namespace Tecan.Sila2.ParameterConstraintsProvider.ParameterConstraintsProvider
                 {
                     if ((_parametersConstraintsUpdateTask == null))
                     {
-                        _parametersConstraintsUpdateTask = ObservableCommands.SubscribeTo(CallInvoker, SubscribeParametersConstraintsMethod, ReceiveNewParametersConstraints, _executionManager.CreateCallOptions("org.silastandard/core.commands/ParameterConstraintsProvider/v1/Property/Parameter" +
+                        _parametersConstraintsUpdateTask = ObservableCommandHelper.SubscribeTo(CallInvoker, SubscribeParametersConstraintsMethod, ReceiveNewParametersConstraints, _executionManager.CreateCallOptions("org.silastandard/core.commands/ParameterConstraintsProvider/v1/Property/Parameter" +
                                     "sConstraints"));
                     }
                     return _parametersConstraints;

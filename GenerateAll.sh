@@ -38,6 +38,9 @@ $SILAGEN generate-interface Tests/Generator.Tests/Dictionary/Feature.xml Tests/G
 $SILAGEN generate-provider Tests/Generator.Tests/Dictionary/Feature.xml Tests/Generator.Tests/Dictionary/DtoReference.cs Tests/Generator.Tests/Dictionary/ProviderReference.cs -n Tecan.Sila2.Generator.Test.TestReference
 $SILAGEN generate-feature Build/Test/netcoreapp2.1/Tecan.Sila2Generator.Test.dll -i Tecan.Sila2.Generator.Test.Dictionary.IDictionaryService Tests/Generator.Tests/Dictionary/Feature.xml
 
+$SILAGEN generate-interface Tests/Generator.Tests/InlineObservable/Feature.xml Tests/Generator.Tests/InlineObservable/ServiceReference.cs -n Tecan.Sila2.Generator.Test.TestReference
+$SILAGEN generate-feature Build/Test/net472/Tecan.Sila2Generator.Test.dll -i Tecan.Sila2.Generator.Test.TestReference.IInlineObservableService Tests/Generator.Tests/InlineObservable/Feature.xml
+
 $SILAGEN generate-server Build/Test/Features/ParameterDefaultsProvider/netcoreapp2.1/Tecan.Sila2.ParameterDefaultsProvider.Tests.dll Tests/Features/ParameterDefaultsProvider.Tests/ParameterDefaultsProvider.Tests.csproj -n Tecan.Sila2.ParameterDefaultsProvider.Tests
 
 $SILAGEN generate-server Build/Test/TestServer/netcoreapp2.1/TestServer.exe Tests/TestServer/TestServer.csproj -n Tecan.Sila2.IntegrationTests

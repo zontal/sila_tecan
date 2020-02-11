@@ -469,7 +469,7 @@ namespace Tecan.Sila2.Generator.Generators
 
             if( property.Observable == FeaturePropertyObservable.Yes )
             {
-                prop.CustomAttributes.AddAttribute( typeof(DynamicAttribute) );
+                prop.CustomAttributes.AddAttribute( typeof(ObservableAttribute) );
             }
 
             prop.Type = _translationProvider.ExtractType( property.DataType, property.Identifier, constraints => HandleConstraints( constraints, prop.CustomAttributes ),
@@ -496,6 +496,11 @@ namespace Tecan.Sila2.Generator.Generators
                 Name = command.Identifier,
                 Attributes = MemberAttributes.Public
             };
+
+            if( command.Observable == FeatureCommandObservable.Yes )
+            {
+                method.CustomAttributes.AddAttribute(typeof(ObservableAttribute));
+            }
 
             if( command.DisplayName != command.Identifier.ToDisplayName() )
             {

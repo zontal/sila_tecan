@@ -28,5 +28,12 @@ namespace Tecan.Sila2.Generator.Contracts
         /// <param name="identifier">The identifier of the feature element</param>
         /// <param name="type">The deviating type</param>
         void RegisterDifferentType(string identifier, Type type);
+
+        /// <summary>
+        /// Registers that the command with the given identifier has a non-standard method
+        /// </summary>
+        /// <param name="commandIdentifier">The identifier of the command</param>
+        /// <param name="method">The original command method</param>
+        void RegisterMethod( string commandIdentifier, MethodInfo method );
     }
 }

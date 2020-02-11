@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.ComponentModel.Composition;
 using System.Linq;
 using System.Reflection;
+using System.Threading;
 using System.Threading.Tasks;
 using Grpc.Core;
 using Tecan.Sila2.Client;
@@ -168,26 +169,44 @@ namespace Tecan.Sila2.Generator.Generators
             var request = new CodeObjectCreateExpression(requestType);
             var requestRef = new CodeVariableReferenceExpression(nameof(request));
             string binaryParameterIdentifier = null;
-            if( featureCommand.Parameter != null )
+            var method = _nameProvider.GetNonstandardMethod( featureCommand );
+            if( method != null )
             {
-                foreach( var parameterType in featureCommand.Parameter )
+                var parameters = method.GetParameters();
+                foreach( var parameterInfo in parameters )
                 {
-                    var parameterName = parameterType.Identifier.ToCamelCase();
-                    requestMethod.Parameters.Add( new CodeParameterDeclarationExpression(
-                        _nameProvider?.GetMemberType( featureCommand.Identifier + "." + parameterType.Identifier )
-                        ?? _translationProvider.ExtractType( parameterType.DataType, featureCommand.Identifier + parameterType.Identifier ), parameterName ) );
-                    request.Parameters.Add( new CodeArgumentReferenceExpression( parameterName ) );
-                    parameterDictionary.Add( parameterName, parameterType.Description );
+                    requestMethod.Parameters.Add( new CodeParameterDeclarationExpression( parameterInfo.ParameterType, parameterInfo.Name ) );
+                    if( parameterInfo.ParameterType != typeof(CancellationToken) )
+                    {
+                        request.Parameters.Add( new CodeArgumentReferenceExpression( parameterInfo.Name ) );
+                    }
                 }
-
-                var binaryParameter = featureCommand.Parameter.SingleOrDefault( p => ContainsBinaries( p.DataType, id => feature.Items.OfType<SiLAElement>().Single(e => e.Identifier == id).DataType ) );
-                if( binaryParameter != null )
-                {
-                    binaryParameterIdentifier = feature.GetFullyQualifiedParameterIdentifier( featureCommand, binaryParameter.Identifier );
-                }
+                requestMethod.WriteInheritDoc();
             }
+            else
+            {
+                if( featureCommand.Parameter != null )
+                {
+                    foreach( var parameterType in featureCommand.Parameter )
+                    {
+                        var parameterName = parameterType.Identifier.ToCamelCase();
+                        requestMethod.Parameters.Add( new CodeParameterDeclarationExpression(
+                            _nameProvider?.GetMemberType( featureCommand.Identifier + "." + parameterType.Identifier )
+                            ?? _translationProvider.ExtractType( parameterType.DataType, featureCommand.Identifier + parameterType.Identifier ), parameterName ) );
+                        request.Parameters.Add( new CodeArgumentReferenceExpression( parameterName ) );
+                        parameterDictionary.Add( parameterName, parameterType.Description );
+                    }
 
-            requestMethod.WriteDocumentation(featureCommand.Description, parameters: parameterDictionary);
+                    var binaryParameter = featureCommand.Parameter.SingleOrDefault( p =>
+                        ContainsBinaries( p.DataType, id => feature.Items.OfType<SiLAElement>().Single( e => e.Identifier == id ).DataType ) );
+                    if( binaryParameter != null )
+                    {
+                        binaryParameterIdentifier = feature.GetFullyQualifiedParameterIdentifier( featureCommand, binaryParameter.Identifier );
+                    }
+                }
+
+                requestMethod.WriteDocumentation(featureCommand.Description, parameters: parameterDictionary);
+            }
             
             request.Parameters.Add(GenerateCreateBinaryStore(binaryParameterIdentifier));
             requestMethod.Statements.Add(new CodeVariableDeclarationStatement(requestType, nameof(request), request));
@@ -200,7 +219,64 @@ namespace Tecan.Sila2.Generator.Generators
             }
             else
             {
-                GenerateClientObservableCommandImplementation(feature, featureCommand, client, requestMethod, requestRef);
+                var commandCall = GenerateClientObservableCommandImplementation( feature, featureCommand, client, requestRef );
+                if( method == null )
+                {
+                    requestMethod.ReturnType = GetObservableCommandReturnType( featureCommand );
+                    requestMethod.Statements.Add( new CodeMethodReturnStatement( commandCall ) );
+                }
+                else
+                {
+                    requestMethod.ReturnType = new CodeTypeReference(method.ReturnType);
+                    GenerateNonstandardObservableCommandBody(featureCommand, requestMethod, commandCall, method);
+                }
+            }
+        }
+
+        private void GenerateNonstandardObservableCommandBody(FeatureCommand featureCommand, CodeMemberMethod requestMethod,
+            CodeMethodInvokeExpression commandCall, MethodInfo method)
+        {
+            var command = new CodeVariableReferenceExpression("command");
+            CodeArgumentReferenceExpression cancellationToken = null;
+            requestMethod.Statements.Add(new CodeVariableDeclarationStatement(GetObservableCommandReturnType(featureCommand),
+                command.VariableName, commandCall));
+            if (method.GetParameters() is var parameters && parameters.Length > 0 &&
+                parameters[parameters.Length - 1].ParameterType == typeof(CancellationToken))
+            {
+                cancellationToken = new CodeArgumentReferenceExpression(parameters[parameters.Length - 1].Name);
+                var canBeCancelled =
+                    new CodePropertyReferenceExpression(cancellationToken, nameof(CancellationToken.CanBeCanceled));
+                var cancellationSupported =
+                    new CodePropertyReferenceExpression(command, nameof(IObservableCommand.IsCancellationSupported));
+                requestMethod.Statements.Add(new CodeConditionStatement(
+                    new CodeBinaryOperatorExpression(canBeCancelled, CodeBinaryOperatorType.BooleanAnd, cancellationSupported),
+                    new CodeExpressionStatement(new CodeMethodInvokeExpression(
+                        cancellationToken,
+                        nameof(CancellationToken.Register),
+                        new CodeMethodReferenceExpression(command, nameof(IObservableCommand.Cancel))))));
+            }
+
+            requestMethod.Statements.Add(new CodeMethodInvokeExpression(command, nameof(IObservableCommand.Start)));
+            var response = new CodePropertyReferenceExpression(command, nameof(IObservableCommand.Response));
+            if (typeof(Task).IsAssignableFrom(method.ReturnType))
+            {
+                requestMethod.Statements.Add(new CodeMethodReturnStatement(response));
+            }
+            else
+            {
+                var wait = new CodeMethodInvokeExpression(response, nameof(Task.Wait));
+                if (cancellationToken != null)
+                {
+                    wait.Parameters.Add(cancellationToken);
+                }
+
+                requestMethod.Statements.Add(wait);
+                if (method.ReturnType.IsGenericType || !typeof(Task).IsAssignableFrom(method.ReturnType))
+                {
+                    requestMethod.Statements.Add(
+                        new CodeMethodReturnStatement(
+                            new CodePropertyReferenceExpression(response, nameof(Task<object>.Result))));
+                }
             }
         }
 
@@ -230,9 +306,8 @@ namespace Tecan.Sila2.Generator.Generators
             return new CodeMethodInvokeExpression(new CodeFieldReferenceExpression(null, ExecutionManagerFieldName), nameof(IClientExecutionManager.CreateBinaryStore), new CodePrimitiveExpression(commandParameterIdentifier));
         }
 
-        private void GenerateClientObservableCommandImplementation(Feature feature, FeatureCommand featureCommand,
+        private CodeMethodInvokeExpression GenerateClientObservableCommandImplementation(Feature feature, FeatureCommand featureCommand,
             CodeTypeDeclaration client,
-            CodeMemberMethod requestMethod,
             CodeVariableReferenceExpression requestRef)
         {
             var exceptionConverter =
@@ -268,7 +343,6 @@ namespace Tecan.Sila2.Generator.Generators
                     new CodeMethodReferenceExpression(null, featureCommand.Identifier + "ResponseMethod" ) );
                 if (intermediateType != null)
                 {
-                    requestMethod.ReturnType = new CodeTypeReference(typeof(IIntermediateObservableCommand<,>).FullName, intermediateType, responseType);
                     var convertIntermediateResponseMethod = GenerateClientCommandResponseMethod(
                         featureCommand.Identifier + "Intermediate",
                         featureCommand.IntermediateResponse,
@@ -276,32 +350,46 @@ namespace Tecan.Sila2.Generator.Generators
                         client);
                     actualCall.Parameters.Add(new CodeMethodReferenceExpression(null, convertIntermediateResponseMethod.Name));
                 }
-                else
-                {
-                    requestMethod.ReturnType = new CodeTypeReference(typeof(IObservableCommand<>).FullName, responseType);
-                }
                 actualCall.Parameters.Add(new CodeMethodReferenceExpression(null, convertResponseMethod.Name));
             }
             else
             {
                 if (intermediateType != null)
                 {
-                    requestMethod.ReturnType = new CodeTypeReference(typeof(IIntermediateObservableCommand<>).FullName, intermediateType);
                     var convertIntermediateResponseMethod = GenerateClientCommandResponseMethod(
                         featureCommand.Identifier + "Intermediate",
                         featureCommand.IntermediateResponse, intermediateType,
                         client);
                     actualCall.Parameters.Add(new CodeMethodReferenceExpression(null, convertIntermediateResponseMethod.Name));
                 }
-                else
-                {
-                    requestMethod.ReturnType = new CodeTypeReference(typeof(IObservableCommand));
-                }
             }
 
             actualCall.Parameters.Add(new CodeMethodReferenceExpression(null, exceptionConverter.Name));
 
-            requestMethod.Statements.Add(new CodeMethodReturnStatement(actualCall));
+            return actualCall;
+        }
+
+        private CodeTypeReference GetObservableCommandReturnType( FeatureCommand featureCommand )
+        {
+            CodeTypeReference intermediateType = GetIntermediateType( featureCommand );
+            if( featureCommand.Response != null && featureCommand.Response.Length > 0 )
+            {
+                var responseType = _nameProvider?.GetMemberType( featureCommand.Identifier + "." + featureCommand.Response[0].Identifier )
+                                   ?? _translationProvider.ExtractType( featureCommand.Response[0].DataType, featureCommand.Identifier );
+                if( intermediateType != null )
+                {
+                    return new CodeTypeReference( typeof(IIntermediateObservableCommand<,>).FullName, intermediateType, responseType );
+                }
+
+                return new CodeTypeReference( typeof(IObservableCommand<>).FullName, responseType );
+            }
+
+            if( intermediateType != null )
+            {
+                return new CodeTypeReference( typeof(IIntermediateObservableCommand<>).FullName, intermediateType );
+            }
+
+            return new CodeTypeReference( typeof(IObservableCommand) );
         }
 
         private CodeTypeReference GetIntermediateType(FeatureCommand featureCommand)
@@ -608,8 +696,8 @@ namespace Tecan.Sila2.Generator.Generators
 
             var receiveValueMethod = GenerateClientReceiveValueMethod(featureProperty, fieldName, fieldRef, property);
             var subscription = new CodeMethodInvokeExpression(
-                new CodeTypeReferenceExpression(nameof(ObservableCommands)),
-                nameof(ObservableCommands.SubscribeTo),
+                new CodeTypeReferenceExpression(nameof(ObservableCommandHelper)),
+                nameof(ObservableCommandHelper.SubscribeTo),
                 new CodePropertyReferenceExpression(null, "CallInvoker"),
                 new CodeMethodReferenceExpression(null, "Subscribe" + featureProperty.Identifier + "Method"),
                 new CodeMethodReferenceExpression(null, receiveValueMethod.Name),

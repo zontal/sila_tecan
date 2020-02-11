@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Channels;
 using System.Threading.Tasks;
 
@@ -30,9 +31,35 @@ namespace Tecan.Sila2
         }
 
         /// <summary>
+        /// Explicitly starts the command execution
+        /// </summary>
+        void Start();
+
+        /// <summary>
         /// Gets the underlying task for this observable command
         /// </summary>
         Task Response { get; }
+
+        /// <summary>
+        /// Gets a cancellation token to inform clients when the command was cancelled
+        /// </summary>
+        CancellationToken CancellationToken
+        {
+            get;
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether cancellation is supported
+        /// </summary>
+        bool IsCancellationSupported
+        {
+            get;
+        }
+
+        /// <summary>
+        /// Cancels the command
+        /// </summary>
+        void Cancel();
     }
 
     /// <summary>

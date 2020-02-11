@@ -107,11 +107,13 @@ namespace Tecan.Sila2.IntegrationTests
         ///  <summary>
         /// </summary>
         /// <returns></returns>
+        [Tecan.Sila2.ObservableAttribute()]
         [return: Tecan.Sila2.SilaIdentifierAttribute("ReturnValue")]
         Tecan.Sila2.IObservableCommand<long> RunObservable();
         
         ///  <summary>
         /// </summary>
+        [Tecan.Sila2.ObservableAttribute()]
         Tecan.Sila2.IIntermediateObservableCommand<long> RunIntermediateObservableCommand();
     }
     
