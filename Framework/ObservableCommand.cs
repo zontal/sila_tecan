@@ -14,6 +14,7 @@ namespace Tecan.Sila2
     {
         private readonly Channel<StateUpdate> _stateUpdateChannel;
         private readonly CancellationTokenSource _cancellationTokenSource;
+        private StateUpdate _stateUpdate;
 
         /// <summary>
         /// Creates an observable command
@@ -74,7 +75,9 @@ namespace Tecan.Sila2
         /// <returns></returns>
         protected void PushStateUpdate( double progress, TimeSpan remainingTime, CommandState state )
         {
-            _stateUpdateChannel.Writer.TryWrite( new StateUpdate(progress, remainingTime, state) );
+            var update = new StateUpdate( progress, remainingTime, state );
+            _stateUpdateChannel.Writer.TryWrite( update );
+            _stateUpdate = update;
         }
 
         /// <summary>
@@ -107,6 +110,9 @@ namespace Tecan.Sila2
         public bool IsStarted => Response != null;
 
         /// <inheritdoc />
+        public StateUpdate State => _stateUpdate;
+
+        /// <inheritdoc />
         public void Cancel()
         {
             if( _cancellationTokenSource != null )
@@ -133,6 +139,7 @@ namespace Tecan.Sila2
     {
         private readonly Channel<StateUpdate> _stateUpdateChannel;
         private readonly CancellationTokenSource _cancellationTokenSource;
+        private StateUpdate _stateUpdate;
 
         /// <summary>
         /// Creates an observable command
@@ -198,7 +205,9 @@ namespace Tecan.Sila2
         /// <returns></returns>
         protected void PushStateUpdate( double progress, TimeSpan remainingTime, CommandState state )
         {
-            _stateUpdateChannel.Writer.TryWrite( new StateUpdate( progress, remainingTime, state ) );
+            var update = new StateUpdate( progress, remainingTime, state );
+            _stateUpdateChannel.Writer.TryWrite( update );
+            _stateUpdate = update;
         }
 
         /// <inheritdoc />
@@ -222,6 +231,9 @@ namespace Tecan.Sila2
 
         /// <inheritdoc />
         public bool IsStarted => Response != null;
+
+        /// <inheritdoc />
+        public StateUpdate State => _stateUpdate;
 
         /// <inheritdoc />
         public void Cancel()

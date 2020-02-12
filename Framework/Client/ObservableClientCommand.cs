@@ -163,6 +163,12 @@ namespace Tecan.Sila2.Client
 
         public CommandExecutionUuid CommandId { get; }
 
+        public StateUpdate State
+        {
+            get;
+            private set;
+        }
+
         public ChannelReader<StateUpdate> StateUpdates => _stateUpdateChannel.Reader;
 
         public Method<CommandExecutionUuid, ExecutionState> StateMethod { get; }
@@ -224,7 +230,9 @@ namespace Tecan.Sila2.Client
                         var state = ConvertState( responseStream.Current.Status );
                         var estimated = responseStream.Current.EstimatedRemainingTime.Extract( null );
                         var progress = responseStream.Current.Progress.Value;
-                        _stateUpdateChannel.Writer.TryWrite( new StateUpdate( progress, estimated, state ) );
+                        var update = new StateUpdate( progress, estimated, state );
+                        State = update;
+                        _stateUpdateChannel.Writer.TryWrite( update );
                     }
                 }
                 catch( Exception ex )

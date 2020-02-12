@@ -441,11 +441,6 @@ namespace Tecan.Sila2.IntegrationTests
                 return _server.InvokeCommand(PassStructureInternal, request, context);
             }
             
-            private RunObservableResponseDto ConvertRunObservableResponse(int result)
-            {
-                return new RunObservableResponseDto(result, _server);
-            }
-            
             ///  <summary>
             /// Obtains a stream of states for the given command execution id
             /// </summary>
@@ -456,6 +451,11 @@ namespace Tecan.Sila2.IntegrationTests
             private System.Threading.Tasks.Task RunObservableState(Tecan.Sila2.CommandExecutionUuid request, Grpc.Core.IServerStreamWriter<Tecan.Sila2.ExecutionState> responseStream, Grpc.Core.ServerCallContext context)
             {
                 return ObservableCommandHelper.QueryCommandState(_server, request, responseStream, context);
+            }
+            
+            private RunObservableResponseDto ConvertRunObservableResponse(int result)
+            {
+                return new RunObservableResponseDto(result, _server);
             }
             
             ///  <summary>
@@ -480,11 +480,6 @@ namespace Tecan.Sila2.IntegrationTests
                 return ObservableCommandHelper.StartCommand(_server, "tecan.sila/integrationtests/TestServer/v1/Command/RunObservable", _implementation.RunObservable(), context);
             }
             
-            private RunIntermediateObservableCommandIntermediateDto ConvertRunIntermediateObservableCommandIntermediate(int intermediate)
-            {
-                return new RunIntermediateObservableCommandIntermediateDto(intermediate, _server);
-            }
-            
             ///  <summary>
             /// Obtains a stream of states for the given command execution id
             /// </summary>
@@ -495,6 +490,11 @@ namespace Tecan.Sila2.IntegrationTests
             private System.Threading.Tasks.Task RunIntermediateObservableCommandState(Tecan.Sila2.CommandExecutionUuid request, Grpc.Core.IServerStreamWriter<Tecan.Sila2.ExecutionState> responseStream, Grpc.Core.ServerCallContext context)
             {
                 return ObservableCommandHelper.QueryCommandState(_server, request, responseStream, context);
+            }
+            
+            private RunIntermediateObservableCommandIntermediateDto ConvertRunIntermediateObservableCommandIntermediate(int intermediate)
+            {
+                return new RunIntermediateObservableCommandIntermediateDto(intermediate, _server);
             }
             
             ///  <summary>

@@ -572,7 +572,7 @@ namespace Tecan.Sila2.Generator.Generators
             var retrieveIntermediateMethod =
                 new CodeMethodReferenceExpression( new CodeTypeReferenceExpression( nameof(ObservableCommandHelper) ),
                     nameof(ObservableCommandHelper.RetrieveIntermediateResults) );
-            retrieveIntermediateMethod.TypeArguments.Add( _translationProvider.ExtractType( featureCommand.IntermediateResponse[0].DataType, featureCommand.Identifier + "IntermediateResponse" ) );
+            retrieveIntermediateMethod.TypeArguments.Add( conversionMethod.ReturnType );
             retrieveIntermediateMethod.TypeArguments.Add( _nameProvider.GenerateCommandIntermediateType( featureCommand ) );
 
             var waitCommandExecution =

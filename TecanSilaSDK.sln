@@ -33,6 +33,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NuSpec", "NuSpec", "{B34C24
 		NuSpec\Tecan.Sila2.DynamicClient.nuspec = NuSpec\Tecan.Sila2.DynamicClient.nuspec
 		NuSpec\Tecan.Sila2.Features.Auth.Client.nuspec = NuSpec\Tecan.Sila2.Features.Auth.Client.nuspec
 		NuSpec\Tecan.Sila2.Features.Auth.nuspec = NuSpec\Tecan.Sila2.Features.Auth.nuspec
+		NuSpec\Tecan.Sila2.Features.Cancellation.Client.nuspec = NuSpec\Tecan.Sila2.Features.Cancellation.Client.nuspec
+		NuSpec\Tecan.Sila2.Features.Cancellation.nuspec = NuSpec\Tecan.Sila2.Features.Cancellation.nuspec
 		NuSpec\Tecan.Sila2.Features.Locking.Client.nuspec = NuSpec\Tecan.Sila2.Features.Locking.Client.nuspec
 		NuSpec\Tecan.Sila2.Features.Locking.nuspec = NuSpec\Tecan.Sila2.Features.Locking.nuspec
 		NuSpec\Tecan.Sila2.Features.ParameterConstraintsProvider.Client.nuspec = NuSpec\Tecan.Sila2.Features.ParameterConstraintsProvider.Client.nuspec
@@ -82,6 +84,10 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WorktableIntegration.Client", "Features\WorktableIntegration.Client\WorktableIntegration.Client.csproj", "{441B7487-E0D4-4ADF-A700-77DDF59A28C0}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Logging", "Logging\Logging.csproj", "{EC090372-4309-44C2-9A17-0399BD08B6DE}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cancellation", "Features\Cancellation\Cancellation.csproj", "{5F4258F9-2C9F-4A87-A82D-FB80A0C41F52}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cancellation.Client", "Features\Cancellation.Client\Cancellation.Client.csproj", "{44FA5C9A-1C7F-4428-9076-ED2581C327DE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -169,6 +175,14 @@ Global
 		{EC090372-4309-44C2-9A17-0399BD08B6DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EC090372-4309-44C2-9A17-0399BD08B6DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EC090372-4309-44C2-9A17-0399BD08B6DE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5F4258F9-2C9F-4A87-A82D-FB80A0C41F52}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5F4258F9-2C9F-4A87-A82D-FB80A0C41F52}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5F4258F9-2C9F-4A87-A82D-FB80A0C41F52}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5F4258F9-2C9F-4A87-A82D-FB80A0C41F52}.Release|Any CPU.Build.0 = Release|Any CPU
+		{44FA5C9A-1C7F-4428-9076-ED2581C327DE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{44FA5C9A-1C7F-4428-9076-ED2581C327DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{44FA5C9A-1C7F-4428-9076-ED2581C327DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{44FA5C9A-1C7F-4428-9076-ED2581C327DE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -195,6 +209,8 @@ Global
 		{A865E812-2844-4247-9A3F-06A951AF9B86} = {7FB691BE-23E3-477C-907C-95DB5BD9D7B6}
 		{441B7487-E0D4-4ADF-A700-77DDF59A28C0} = {7FB691BE-23E3-477C-907C-95DB5BD9D7B6}
 		{EC090372-4309-44C2-9A17-0399BD08B6DE} = {98D6F41E-A727-4CF4-99C6-8D95BAEB3BB4}
+		{5F4258F9-2C9F-4A87-A82D-FB80A0C41F52} = {0E82C9E0-FD04-401F-9BB9-4C9E6419FA47}
+		{44FA5C9A-1C7F-4428-9076-ED2581C327DE} = {7FB691BE-23E3-477C-907C-95DB5BD9D7B6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F2AE9C9D-34E5-4A2A-8AAA-5EEA105AF08F}

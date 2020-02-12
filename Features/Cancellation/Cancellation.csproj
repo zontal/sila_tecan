@@ -1,0 +1,38 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+      <RootNamespace>Tecan.Sila2.Cancellation</RootNamespace>
+      <AssemblyName>Tecan.Sila2.Cancellation</AssemblyName>
+      <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+      <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+
+    <PropertyGroup>
+        <OutputPath>..\..\Build\Features</OutputPath>
+        <DocumentationFile>..\..\Build\Features\Tecan.Sila2.Cancellation.xml</DocumentationFile>
+    </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="CancelController.sila.xml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="..\..\CommonAssemblyInfo.cs" Link="Properties\CommonAssemblyInfo.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="CancelController.sila.xml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Contracts\Contracts.csproj" />
+    <ProjectReference Include="..\..\Framework\Framework.csproj" />
+    <ProjectReference Include="..\..\Server\Server.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+
+</Project>

@@ -12,12 +12,6 @@ namespace Tecan.Sila2.Server
         {
             CommandExecutionID = commandExecutionUUID;
             CommandIdentifier = commandIdentifier;
-            CurrentState = new ExecutionState
-            {
-                Status = ExecutionState.CommandStatus.Waiting,
-                Progress = new RealDto(0.0),
-                EstimatedRemainingTime = new DurationDto(TimeSpan.Zero)
-            };
             Interceptions = interceptions;
             Command = command;
         }
@@ -29,7 +23,6 @@ namespace Tecan.Sila2.Server
 
         public string CommandExecutionID { get; }
         public string CommandIdentifier { get; }
-        public ExecutionState CurrentState { get; }
 
         public DateTime? Expiration
         {

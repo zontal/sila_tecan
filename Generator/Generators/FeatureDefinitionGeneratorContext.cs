@@ -833,7 +833,7 @@ namespace Tecan.Sila2.Generator.Generators
             var returnType = commandMethod.ReturnType;
             if(returnType.IsGenericType)
             {
-                if( !isObservable )
+                if( !isObservable && (typeof(IObservableCommand).IsAssignableFrom(returnType) || typeof(Task).IsAssignableFrom(returnType) ))
                 {
                     throw new InvalidOperationException( $"The method {commandMethod.Name} seems observable but is not marked observable." );
                 }

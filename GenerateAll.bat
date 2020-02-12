@@ -15,6 +15,8 @@ Build\Generator\net472\SilaGen.exe generate-interface Features\Authentication\Au
 Build\Generator\net472\SilaGen.exe generate-provider Features\Authentication\AuthorizationConfigurationService.sila.xml Features\Authentication\AuthorizationConfiguration\AuthorizationConfigurationServiceDtos.cs Features\Authentication\AuthorizationConfiguration\AuthorizationConfigurationServiceProvider.cs -n Tecan.Sila2.Authorization -s
 Build\Generator\net472\SilaGen.exe generate-interface Features\ParameterConstraintsProvider\ParameterConstraintsProvider.sila.xml Features\ParameterConstraintsProvider\IParameterConstraintsProvider.cs -n Tecan.Sila2.ParameterConstraintsProvider
 Build\Generator\net472\SilaGen.exe generate-provider Features\ParameterConstraintsProvider\ParameterConstraintsProvider.sila.xml Features\ParameterConstraintsProvider\ParameterConstraintDtos.cs Features\ParameterConstraintsProvider\ParameterConstraintsServiceProvider.cs -n Tecan.Sila2.ParameterConstraintsProvider -s
+Build\Generator\net472\SilaGen.exe generate-interface Features\Cancellation\CancelController.sila.xml Features\Cancellation\ICancellationProvider.cs -n Tecan.Sila2.Cancellation
+Build\Generator\net472\SilaGen.exe generate-provider Features\Cancellation\CancelController.sila.xml Features\Cancellation\CancellationDtos.cs Features\Cancellation\CancellationProvider.cs -n Tecan.Sila2.Cancellation -s
 
 Build\Generator\net472\SilaGen.exe generate-server Build\Features\netstandard2.0\Tecan.Sila2.WorktableIntegration.dll Features\WorktableIntegration\WorktableIntegration.csproj -n Tecan.Sila2.WorktableIntegration
 
@@ -46,3 +48,4 @@ Build\Generator\net472\SilaGen.exe generate-client Features\Authentication\Authe
 Build\Generator\net472\SilaGen.exe generate-client Features\Locking\LockController.sila.xml Features\Locking.Client\Locking.Client.csproj -n Tecan.Sila2.Locking
 Build\Generator\net472\SilaGen.exe generate-client Features\ParameterConstraintsProvider\ParameterConstraintsProvider.sila.xml Features\ParameterConstraintsProvider.Client\ParameterConstraintsProvider.Client.csproj -n Tecan.Sila2.ParameterConstraintsProvider
 Build\Generator\net472\SilaGen.exe generate-client Features\WorktableIntegration\WorktableService.sila.xml Features\WorktableIntegration.Client\WorktableIntegration.Client.csproj -n Tecan.Sila2.WorktableIntegration
+Build\Generator\net472\SilaGen.exe generate-client Features\Cancellation\CancelController.sila.xml Features\Cancellation.Client\Cancellation.Client.csproj -n Tecan.Sila2.Cancellation

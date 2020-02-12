@@ -19,6 +19,8 @@ $SILAGEN generate-interface Features/Authentication/AuthorizationConfigurationSe
 $SILAGEN generate-provider Features/Authentication/AuthorizationConfigurationService.sila.xml Features/Authentication/AuthorizationConfiguration/AuthorizationConfigurationServiceDtos.cs Features/Authentication/AuthorizationConfiguration/AuthorizationConfigurationServiceProvider.cs -n Tecan.Sila2.Authorization -s
 $SILAGEN generate-interface Features/ParameterConstraintsProvider/ParameterConstraintsProvider.sila.xml Features/ParameterConstraintsProvider/IParameterConstraintsProvider.cs -n Tecan.Sila2.ParameterConstraintsProvider
 $SILAGEN generate-provider Features/ParameterConstraintsProvider/ParameterConstraintsProvider.sila.xml Features/ParameterConstraintsProvider/ParameterConstraintDtos.cs Features/ParameterConstraintsProvider/ParameterConstraintsServiceProvider.cs -n Tecan.Sila2.ParameterConstraintsProvider -s
+$SILAGEN generate-interface Features/Cancellation/CancelController.sila.xml Features/Cancellation/ICancellationProvider.cs -n Tecan.Sila2.Cancellation
+$SILAGEN generate-provider Features/Cancellation/CancelController.sila.xml Features/Cancellation/CancellationDtos.cs Features/Cancellation/CancellationProvider.cs -n Tecan.Sila2.Cancellation -s
 
 $SILAGEN generate-server Build/Features/netstandard2.0/Tecan.Sila2.WorktableIntegration.dll Features/WorktableIntegration/WorktableIntegration.csproj -n Tecan.Sila2.WorktableIntegration
 
@@ -50,3 +52,4 @@ $SILAGEN generate-client Features/Authentication/AuthenticationService.sila.xml 
 $SILAGEN generate-client Features/Locking/LockController.sila.xml Features/Locking.Client/Locking.Client.csproj -n Tecan.Sila2.Locking
 $SILAGEN generate-client Features/ParameterConstraintsProvider/ParameterConstraintsProvider.sila.xml Features/ParameterConstraintsProvider.Client/ParameterConstraintsProvider.Client.csproj -n Tecan.Sila2.ParameterConstraintsProvider
 $SILAGEN generate-client Features/WorktableIntegration/WorktableService.sila.xml Features/WorktableIntegration.Client/WorktableIntegration.Client.csproj -n Tecan.Sila2.WorktableIntegration
+$SILAGEN generate-client Features/Cancellation/CancelController.sila.xml Features/Cancellation.Client/Cancellation.Client.csproj -n Tecan.Sila2.Cancellation

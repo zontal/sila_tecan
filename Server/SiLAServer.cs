@@ -185,13 +185,12 @@ namespace Tecan.Sila2.Server
                 for( int i = _commandExecutions.Count - 1; i >= 0; i-- )
                 {
                     var commandExecution = _commandExecutions[i];
-                    if( commandExecution.CurrentState.Status == ExecutionState.CommandStatus.FinishedSuccessfully
-                        || commandExecution.CurrentState.Status == ExecutionState.CommandStatus.FinishedWithError )
+                    var responseTask = commandExecution.Command.Response;
+                    if( responseTask.IsCanceled || responseTask.IsCompleted || responseTask.IsFaulted )
                     {
                         if( !commandExecution.Expiration.HasValue )
                         {
                             commandExecution.Expiration = DateTime.Now + TimeSpan.FromMinutes( 5 );
-                            
                         }
                         else if (commandExecution.Expiration.Value < DateTime.Now)
                         {
@@ -277,6 +276,18 @@ namespace Tecan.Sila2.Server
         /// Gets the features implemented by the current server
         /// </summary>
         public IEnumerable<IFeatureProvider> Features => _implementedFeatures.AsReadOnly();
+
+        /// <inheritdoc />
+        public IObservableCommand[] FindCommandExecutions( Predicate<CommandState> stateFilter )
+        {
+            lock (_commandExecutions)
+            {
+                return _commandExecutions
+                    .Where( ex => stateFilter(ex.Command.State.State))
+                    .Select( ex => ex.Command )
+                    .ToArray();
+            }
+        }
 
         #endregion
 
@@ -466,7 +477,7 @@ namespace Tecan.Sila2.Server
         }
 
         /// <inheritdoc />
-        public IObservableCommand GetCommandExecution( string commandExecutionId, ServerCallContext context )
+        public IObservableCommand GetCommandExecution( string commandExecutionId )
         {
             lock(_commandExecutions)
             {

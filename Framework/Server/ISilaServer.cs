@@ -80,9 +80,14 @@ namespace Tecan.Sila2.Server
         /// Gets the command execution registered for the given command execution id
         /// </summary>
         /// <param name="commandExecutionId">The identifier of the command execution</param>
-        /// <param name="context">The context in which the call is made</param>
         /// <returns>The command execution object</returns>
-        IObservableCommand GetCommandExecution( string commandExecutionId, ServerCallContext context );
+        IObservableCommand GetCommandExecution( string commandExecutionId );
+
+        /// <summary>
+        /// Gets a collection of currently running commands that match the given filter
+        /// </summary>
+        /// <param name="stateFilter">The state filter or null to return all command executions</param>
+        IObservableCommand[] FindCommandExecutions( Predicate<CommandState> stateFilter );
     }
 
     /// <summary>

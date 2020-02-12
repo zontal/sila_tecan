@@ -23,7 +23,7 @@ namespace Tecan.Sila2.Server
         public static async Task QueryCommandState(ISiLAServer server, CommandExecutionUuid commandId,
             IServerStreamWriter<ExecutionState> responseStream, ServerCallContext context)
         {
-            var command = server.GetCommandExecution(commandId.CommandId, context);
+            var command = server.GetCommandExecution(commandId.CommandId);
             var stateReader = command.StateUpdates;
 
             while( await stateReader.WaitToReadAsync(context.CancellationToken) )
@@ -85,7 +85,7 @@ namespace Tecan.Sila2.Server
         /// <returns>An awaitable task that completes when the command execution is done</returns>
         public static async Task<EmptyRequest> WaitCommandExecution(ISiLAServer server, CommandExecutionUuid commandId, ServerCallContext context)
         {
-            var command = server.GetCommandExecution( commandId.CommandId, context );
+            var command = server.GetCommandExecution( commandId.CommandId );
             await command.Response;
             return EmptyRequest.Instance;
         }
@@ -100,7 +100,7 @@ namespace Tecan.Sila2.Server
         /// <returns>An awaitable task that completes when the command execution is done</returns>
         public static async Task<TResponseDto> WaitCommandExecution<TResponse, TResponseDto>(ISiLAServer server, CommandExecutionUuid commandId, ServerCallContext context, Func<TResponse, TResponseDto> converter)
         {
-            var command = server.GetCommandExecution( commandId.CommandId, context );
+            var command = server.GetCommandExecution( commandId.CommandId );
             var resultTask = command.Response as Task<TResponse>;
             if( resultTask == null )
             {
@@ -127,7 +127,7 @@ namespace Tecan.Sila2.Server
         /// <returns>An awaitable task that completes when the command execution is done.</returns>
         public static async Task RetrieveIntermediateResults<TIntermediate, TIntermediateDto>(ISiLAServer server, CommandExecutionUuid commandId, IServerStreamWriter<TIntermediateDto> responseStream, Func<TIntermediate, TIntermediateDto> converter, ServerCallContext context)
         {
-            var command = (IIntermediateObservableCommand<TIntermediate>)server.GetCommandExecution( commandId.CommandId, context );
+            var command = (IIntermediateObservableCommand<TIntermediate>)server.GetCommandExecution( commandId.CommandId );
             var reader = command.IntermediateValues;
 
             while( await reader.WaitToReadAsync( context.CancellationToken ) )

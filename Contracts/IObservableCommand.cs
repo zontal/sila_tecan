@@ -23,6 +23,14 @@ namespace Tecan.Sila2
     public interface IObservableCommand
     {
         /// <summary>
+        /// Gets the current state of the command
+        /// </summary>
+        StateUpdate State
+        {
+            get;
+        }
+
+        /// <summary>
         /// Gets a channel on which the command sends state updates
         /// </summary>
         ChannelReader<StateUpdate> StateUpdates
