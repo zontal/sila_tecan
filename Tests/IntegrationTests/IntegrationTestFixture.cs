@@ -37,7 +37,7 @@ namespace Tecan.Sila2.IntegrationTests
             var dir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "TestServer");
             var serverId = Guid.NewGuid();
             var payloadArguments = $"-u {serverId} -i 127.0.0.1";
-            var attachDebugger = Debugger.IsAttached;
+            var attachDebugger = false; // Debugger.IsAttached;
             if( attachDebugger )
             {
                 payloadArguments = "debug " + payloadArguments;
@@ -118,7 +118,7 @@ namespace Tecan.Sila2.IntegrationTests
             var executionManager = new TestAuthLockingExecutionManager( lockId, token, _server.Channel );
 
             var feature = _server.Features.Single( f => f.Identifier == "TestServer" );
-            var featureContext = new FeatureContext( feature, _server.Channel, executionManager );
+            var featureContext = new FeatureContext( feature, _server, executionManager );
             var commandClient = new NonObservableCommandClient( feature.Items.OfType<FeatureCommand>().Single( c => c.Identifier == "PassBool" ), featureContext );
             
             PassAndAssertEquals(commandClient, true);
@@ -175,7 +175,7 @@ namespace Tecan.Sila2.IntegrationTests
             var executionManager = new TestAuthLockingExecutionManager( lockId, token, _server.Channel );
 
             var feature = _server.Features.Single( f => f.Identifier == "TestServer" );
-            var featureContext = new FeatureContext( feature, _server.Channel, executionManager );
+            var featureContext = new FeatureContext( feature, _server, executionManager );
             var commandClient = new NonObservableCommandClient( feature.Items.OfType<FeatureCommand>().Single( c => c.Identifier == "PassDouble" ), featureContext );
 
             PassAndAssertEquals( commandClient, 0.0 );
@@ -213,7 +213,7 @@ namespace Tecan.Sila2.IntegrationTests
             var executionManager = new TestAuthLockingExecutionManager( lockId, token, _server.Channel );
 
             var feature = _server.Features.Single( f => f.Identifier == "TestServer" );
-            var featureContext = new FeatureContext( feature, _server.Channel, executionManager );
+            var featureContext = new FeatureContext( feature, _server, executionManager );
             var commandClient = new NonObservableCommandClient( feature.Items.OfType<FeatureCommand>().Single( c => c.Identifier == "PassLong" ), featureContext );
 
             PassAndAssertEquals( commandClient, 0L );
@@ -266,7 +266,7 @@ namespace Tecan.Sila2.IntegrationTests
             var executionManager = new TestAuthLockingExecutionManager( lockId, token, _server.Channel );
 
             var feature = _server.Features.Single( f => f.Identifier == "TestServer" );
-            var featureContext = new FeatureContext( feature, _server.Channel, executionManager );
+            var featureContext = new FeatureContext( feature, _server, executionManager );
             var commandClient = new NonObservableCommandClient( feature.Items.OfType<FeatureCommand>().Single( c => c.Identifier == "PassTimestamp" ), featureContext );
 
             // everything below seconds is not transmitted, so we cannot simply use now
@@ -303,7 +303,7 @@ namespace Tecan.Sila2.IntegrationTests
             var executionManager = new TestAuthLockingExecutionManager( lockId, token, _server.Channel );
 
             var feature = _server.Features.Single( f => f.Identifier == "TestServer" );
-            var featureContext = new FeatureContext( feature, _server.Channel, executionManager );
+            var featureContext = new FeatureContext( feature, _server, executionManager );
             var commandClient = new NonObservableCommandClient( feature.Items.OfType<FeatureCommand>().Single( c => c.Identifier == "PassTime" ), featureContext );
 
             // everything below seconds is not transmitted, so we cannot simply use now
@@ -339,7 +339,7 @@ namespace Tecan.Sila2.IntegrationTests
             var executionManager = new TestAuthLockingExecutionManager( lockId, token, _server.Channel );
 
             var feature = _server.Features.Single( f => f.Identifier == "TestServer" );
-            var featureContext = new FeatureContext( feature, _server.Channel, executionManager );
+            var featureContext = new FeatureContext( feature, _server, executionManager );
             var commandClient = new NonObservableCommandClient( feature.Items.OfType<FeatureCommand>().Single( c => c.Identifier == "PassString" ), featureContext );
 
             PassAndAssertEquals( commandClient, "Foo" );
@@ -372,7 +372,7 @@ namespace Tecan.Sila2.IntegrationTests
             var executionManager = new TestAuthLockingExecutionManager( lockId, token, _server.Channel );
 
             var feature = _server.Features.Single( f => f.Identifier == "TestServer" );
-            var featureContext = new FeatureContext( feature, _server.Channel, executionManager );
+            var featureContext = new FeatureContext( feature, _server, executionManager );
             var commandClient = new NonObservableCommandClient( feature.Items.OfType<FeatureCommand>().Single( c => c.Identifier == "PassStructure" ), featureContext );
             var structure = new SomeStructure( true, 8.15, 42L, 23, DateTimeOffset.MinValue, new TimeSpan( 0, 8, 15 ) );
 
@@ -460,7 +460,7 @@ namespace Tecan.Sila2.IntegrationTests
             var executionManager = new TestAuthLockingExecutionManager( lockId, token, _server.Channel );
 
             var feature = _server.Features.Single( f => f.Identifier == "TestServer" );
-            var featureContext = new FeatureContext( feature, _server.Channel, executionManager );
+            var featureContext = new FeatureContext( feature, _server, executionManager );
             var commandClient = new NonObservableCommandClient( feature.Items.OfType<FeatureCommand>().Single( c => c.Identifier == "PassBytes" ), featureContext );
 
             var value = new byte[] {0, 8, 15};
@@ -521,7 +521,7 @@ namespace Tecan.Sila2.IntegrationTests
             var executionManager = new TestAuthLockingExecutionManager( lockId, token, _server.Channel );
 
             var feature = _server.Features.Single( f => f.Identifier == "TestServer" );
-            var featureContext = new FeatureContext( feature, _server.Channel, executionManager );
+            var featureContext = new FeatureContext( feature, _server, executionManager );
             var commandClient = new NonObservableCommandClient( feature.Items.OfType<FeatureCommand>().Single( c => c.Identifier == "PassCollection" ), featureContext );
 
             var listOfItems = new List<string>();
@@ -592,8 +592,8 @@ namespace Tecan.Sila2.IntegrationTests
             var executionManager = new TestAuthLockingExecutionManager( lockId, token, _server.Channel );
 
             var feature = _server.Features.Single( f => f.Identifier == "TestServer" );
-            var featureContext = new FeatureContext( feature, _server.Channel, executionManager );
-            var commandClient = new ObservableCommandClient( feature.Items.OfType<FeatureCommand>().Single( c => c.Identifier == "RunObservable" ), featureContext );
+            var featureContext = new FeatureContext( feature, _server, executionManager );
+            var commandClient = new ObservableCommandClient( feature.Items.OfType<FeatureCommand>().Single( c => c.Identifier == nameof(ITestServer.RunObservable) ), featureContext );
 
             var command = commandClient.Invoke( commandClient.CreateRequest() );
             var stateUpdates = ReadChannel( command.StateUpdates );
@@ -625,7 +625,38 @@ namespace Tecan.Sila2.IntegrationTests
 
             Unlock( lockId, token );
             Logout( token );
+        }
 
+        [Test]
+        public void CancelObservableCommandDynamic_CancellationSuccessful()
+        {
+            var token = Login();
+            var lockId = Lock( token );
+            var executionManager = new TestAuthLockingExecutionManager( lockId, token, _server.Channel );
+            var testClient = new TestServerClient( _server.Channel, executionManager );
+
+            var feature = _server.Features.Single( f => f.Identifier == "TestServer" );
+            var featureContext = new FeatureContext( feature, _server, executionManager );
+            var commandClient = new ObservableCommandClient( feature.Items.OfType<FeatureCommand>().Single( c => c.Identifier == nameof(ITestServer.WaitForCancelOrThrow) ), featureContext );
+            var request = commandClient.CreateRequest();
+            request.Value = new DynamicObject()
+            {
+                Elements =
+                {
+                    new DynamicObjectProperty(((StructureType) request.Type.Item).Element[0])
+                    {
+                        Value = TimeSpan.FromMinutes(1)
+                    }
+                }
+            };
+            var command = commandClient.Invoke( request );
+            command.Cancel();
+
+            Assert.ThrowsAsync<OperationCanceledException>( () => command.Response );
+            Assert.That(testClient.IsCancelled(command.CommandId.CommandId), Is.True);
+
+            Unlock( lockId, token );
+            Logout( token );
         }
 
         private static async Task<List<T>> ReadChannelCore<T>( ChannelReader<T> channel )
@@ -675,7 +706,7 @@ namespace Tecan.Sila2.IntegrationTests
             var executionManager = new TestAuthLockingExecutionManager( lockId, token, _server.Channel );
 
             var feature = _server.Features.Single( f => f.Identifier == "TestServer" );
-            var featureContext = new FeatureContext( feature, _server.Channel, executionManager );
+            var featureContext = new FeatureContext( feature, _server, executionManager );
             var commandClient = new IntermediateObservableCommandClient( feature.Items.OfType<FeatureCommand>().Single( c => c.Identifier == "RunIntermediateObservableCommand" ), featureContext );
 
             var command = commandClient.Invoke( commandClient.CreateRequest() );
@@ -688,7 +719,7 @@ namespace Tecan.Sila2.IntegrationTests
         }
 
         [Test]
-        public void UnobservableCommand_RunsIntoException_TranslatedSuccessfully()
+        public void UnobservableCommand_RunsIntoDefinedException_TranslatedSuccessfully()
         {
             var token = Login();
             var lockId = Lock( token );
@@ -699,11 +730,10 @@ namespace Tecan.Sila2.IntegrationTests
 
             Unlock( lockId, token );
             Logout( token );
-
         }
 
         [Test]
-        public void ObservableCommand_RunsIntoException_TranslatedSuccessfully()
+        public void ObservableCommand_RunsIntoDefinedException_TranslatedSuccessfully()
         {
             var token = Login();
             var lockId = Lock( token );
@@ -716,6 +746,83 @@ namespace Tecan.Sila2.IntegrationTests
             Unlock( lockId, token );
             Logout( token );
 
+        }
+
+
+        [Test]
+        public void UnobservableCommandDynamic_RunsIntoDefinedException_TranslatedSuccessfully()
+        {
+            var token = Login();
+            var lockId = Lock( token );
+            var executionManager = new TestAuthLockingExecutionManager( lockId, token, _server.Channel );
+
+            var feature = _server.Features.Single( f => f.Identifier == "TestServer" );
+            var featureContext = new FeatureContext( feature, _server, executionManager );
+            var commandClient = new NonObservableCommandClient( feature.Items.OfType<FeatureCommand>().Single( c => c.Identifier == nameof(ITestServer.RunIntoFailure) ), featureContext );
+            var command = commandClient.InvokeAsync( commandClient.CreateRequest() );
+
+            var exception = Assert.ThrowsAsync<DefinedErrorException>( () => command );
+            var fake = feature.Items.OfType<FeatureDefinedExecutionError>().Single( e => e.Identifier == "Fake" );
+            Assert.That(exception.ErrorIdentifier, Is.EqualTo(feature.GetFullyQualifiedIdentifier(fake)));
+
+            Unlock( lockId, token );
+            Logout( token );
+        }
+
+        [Test]
+        public void ObservableCommandDynamic_RunsIntoDefinedException_TranslatedSuccessfully()
+        {
+            var token = Login();
+            var lockId = Lock( token );
+            var executionManager = new TestAuthLockingExecutionManager( lockId, token, _server.Channel );
+
+            var feature = _server.Features.Single( f => f.Identifier == "TestServer" );
+            var featureContext = new FeatureContext( feature, _server, executionManager );
+            var commandClient = new ObservableCommandClient( feature.Items.OfType<FeatureCommand>().Single( c => c.Identifier == nameof( ITestServer.RunIntoFailureObservably ) ), featureContext );
+            var command = commandClient.Invoke( commandClient.CreateRequest() );
+
+            var exception = Assert.ThrowsAsync<DefinedErrorException>( () => command.Response );
+            var fake = feature.Items.OfType<FeatureDefinedExecutionError>().Single( e => e.Identifier == "Fake" );
+            Assert.That( exception.ErrorIdentifier, Is.EqualTo( feature.GetFullyQualifiedIdentifier( fake ) ) );
+
+            Unlock( lockId, token );
+            Logout( token );
+        }
+
+
+        [Test]
+        public void UnobservableCommand_RunsIntoUndefinedException_TranslatedSuccessfully()
+        {
+            var token = Login();
+            var lockId = Lock( token );
+            var executionManager = new TestAuthLockingExecutionManager( lockId, token, _server.Channel );
+            var testClient = new TestServerClient( _server.Channel, executionManager );
+
+            var exception = Assert.Throws<SilaException>( () => testClient.ThrowRuntimeException() );
+            Assert.That(exception.Message, Contains.Substring(nameof(InvalidOperationException)));
+
+            Unlock( lockId, token );
+            Logout( token );
+        }
+
+
+        [Test]
+        public void UnobservableCommandDynamic_RunsIntoUndefinedException_TranslatedSuccessfully()
+        {
+            var token = Login();
+            var lockId = Lock( token );
+            var executionManager = new TestAuthLockingExecutionManager( lockId, token, _server.Channel );
+
+            var feature = _server.Features.Single( f => f.Identifier == "TestServer" );
+            var featureContext = new FeatureContext( feature, _server, executionManager );
+            var commandClient = new NonObservableCommandClient( feature.Items.OfType<FeatureCommand>().Single( c => c.Identifier == nameof( ITestServer.ThrowRuntimeException ) ), featureContext );
+            var command = commandClient.InvokeAsync( commandClient.CreateRequest() );
+
+            var exception = Assert.ThrowsAsync<SilaException>( () => command );
+            Assert.That( exception.Message, Contains.Substring( nameof(InvalidOperationException) ) );
+
+            Unlock( lockId, token );
+            Logout( token );
         }
 
         private static void AssertData(byte[] expected, Stream response)
@@ -731,8 +838,8 @@ namespace Tecan.Sila2.IntegrationTests
         [Test]
         public void InvalidLogin_ThrowsSilaException()
         {
-            Assert.Throws<SilaException>( () => Lock( null ) );
-            Assert.Throws<SilaException>( () => Lock( "bullshit" ) );
+            Assert.Throws<DefinedErrorException>( () => Lock( null ) );
+            Assert.Throws<DefinedErrorException>( () => Lock( "bullshit" ) );
         }
 
         private string Login()

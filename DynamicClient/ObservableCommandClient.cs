@@ -13,17 +13,17 @@ namespace Tecan.Sila2.DynamicClient
         /// <summary>
         /// Remote method for the SiLA-Command
         /// </summary>
-        protected readonly Method<DynamicRequest, CommandConfirmation> _method;
+        protected readonly Method<DynamicRequest, CommandConfirmation> Method;
 
         /// <summary>
         /// Remote method for the SiLA-Command's State/Info stream
         /// </summary>
-        protected readonly Method<CommandExecutionUuid, ExecutionState> _stateMethod;
+        protected readonly Method<CommandExecutionUuid, ExecutionState> StateMethod;
 
         /// <summary>
         /// Remote method for the SiLA-Command's Results
         /// </summary>
-        protected readonly Method<CommandExecutionUuid, DynamicObjectProperty> _resultMethod;
+        protected readonly Method<CommandExecutionUuid, DynamicObjectProperty> ResultMethod;
 
         /// <summary>
         /// Creates a new client for an observable command
@@ -41,19 +41,19 @@ namespace Tecan.Sila2.DynamicClient
             var responseMarshaller =
                 new Marshaller<DynamicObjectProperty>(SerializeResponse, DeserializeResponse);
 
-            _method = new Method<DynamicRequest, CommandConfirmation>(
+            Method = new Method<DynamicRequest, CommandConfirmation>(
                 MethodType.Unary,
                 context.ServiceName,
                 command.Identifier,
                 requestMarshaller,
                 ProtobufMarshaller<CommandConfirmation>.Default);
-            _stateMethod = new Method<CommandExecutionUuid, ExecutionState>(
+            StateMethod = new Method<CommandExecutionUuid, ExecutionState>(
                 MethodType.ServerStreaming,
                 context.ServiceName,
                 command.Identifier + "_Info",
                 ProtobufMarshaller<CommandExecutionUuid>.Default,
                 ProtobufMarshaller<ExecutionState>.Default);
-            _resultMethod = new Method<CommandExecutionUuid, DynamicObjectProperty>(
+            ResultMethod = new Method<CommandExecutionUuid, DynamicObjectProperty>(
                 MethodType.Unary,
                 context.ServiceName,
                 command.Identifier + "_Result",
@@ -68,7 +68,7 @@ namespace Tecan.Sila2.DynamicClient
         /// <param name="host">The host to which the request should be sent or null to send it to the default host</param>
         /// <param name="additionalMetadata">A dictionary with additional request metadata</param>
         /// <returns>An observable command object</returns>
-        public IObservableCommand<DynamicObjectProperty> Invoke( DynamicRequest args, string host = null, IDictionary<string, byte[]> additionalMetadata = null )
+        public DynamicCommand Invoke( DynamicRequest args, string host = null, IDictionary<string, byte[]> additionalMetadata = null )
         {
             try
             {
@@ -77,8 +77,9 @@ namespace Tecan.Sila2.DynamicClient
                 {
                     callInfo = new DecoratedCallInfo(callInfo, additionalMetadata);
                 }
-                return ObservableClientCommands.Create( callInfo, Context.CallInvoker, args, _method, _stateMethod,
-                    _resultMethod, dn => dn, Context.ConvertException );
+
+                return new DynamicCommand( ObservableClientCommands.Create( callInfo, Context.CallInvoker, args, Method, StateMethod,
+                    ResultMethod, dn => dn, Context.ConvertException ), Context );
             }
             catch( Exception exception )
             {
@@ -108,7 +109,7 @@ namespace Tecan.Sila2.DynamicClient
         /// <summary>
         /// Remote method for the SiLA-Command's IntermediateResults stream
         /// </summary>
-        protected readonly Method<CommandExecutionUuid, DynamicObjectProperty> _intermediateMethod;
+        private readonly Method<CommandExecutionUuid, DynamicObjectProperty> _intermediateMethod;
 
         /// <summary>
         /// Creates a new client for an observable command that creates IntermediateResponses
@@ -174,8 +175,9 @@ namespace Tecan.Sila2.DynamicClient
                 {
                     callInfo = new DecoratedCallInfo( callInfo, additionalMetadata );
                 }
-                return ObservableClientCommands.CreateIntermediate( callInfo, Context.CallInvoker, args, _method, _stateMethod,
-                    _intermediateMethod, _resultMethod, dn => dn, dn => dn, Context.ConvertException );
+
+                return new DynamicIntermediateCommand( ObservableClientCommands.CreateIntermediate( callInfo, Context.CallInvoker, args, Method, StateMethod,
+                    _intermediateMethod, ResultMethod, dn => dn, dn => dn, Context.ConvertException ), Context );
             }
             catch( Exception exception )
             {

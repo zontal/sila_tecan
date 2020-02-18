@@ -41,7 +41,7 @@ namespace Tecan.Sila2.DynamicClient
         /// </summary>
         /// <param name="command">The command client</param>
         /// <param name="context">The feature context</param>
-        public CommandClient(FeatureCommand command, FeatureContext context)
+        protected CommandClient(FeatureCommand command, FeatureContext context)
         {
             Context = context;
             Command = command;

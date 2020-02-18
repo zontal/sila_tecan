@@ -5,6 +5,7 @@ using System.IO;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Tecan.Sila2.Server;
 
 namespace Tecan.Sila2.IntegrationTests
 {
@@ -12,6 +13,14 @@ namespace Tecan.Sila2.IntegrationTests
     [PartCreationPolicy(CreationPolicy.Shared)]
     internal class TestServerImplementation : ITestServer
     {
+        private readonly ISiLAServer _server;
+
+        [ImportingConstructor]
+        public TestServerImplementation( ISiLAServer server )
+        {
+            _server = server;
+        }
+
         public bool PassBool( bool data )
         {
             return data;
@@ -117,6 +126,17 @@ namespace Tecan.Sila2.IntegrationTests
         public void RunIntoFailureObservably( CancellationToken cancellationToken )
         {
             throw new FakeException("This is only fake");
+        }
+
+        public bool IsCancelled( string commandId )
+        {
+            var command = _server.GetCommandExecution( commandId );
+            return command.Response.IsCanceled;
+        }
+
+        public void ThrowRuntimeException()
+        {
+            throw new InvalidOperationException("This came totally unexpected!");
         }
     }
 }

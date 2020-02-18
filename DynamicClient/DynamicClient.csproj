@@ -31,6 +31,7 @@
 
     <ItemGroup>
         <ProjectReference Include="..\Contracts\Contracts.csproj" />
+        <ProjectReference Include="..\Features\Cancellation.Client\Cancellation.Client.csproj" />
         <ProjectReference Include="..\Framework\Framework.csproj" />
     </ItemGroup>
 </Project>

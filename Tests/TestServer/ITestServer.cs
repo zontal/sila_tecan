@@ -49,6 +49,10 @@ namespace Tecan.Sila2.IntegrationTests
         [Observable]
         [Throws(typeof(FakeException))]
         void RunIntoFailureObservably(CancellationToken cancellationToken);
+
+        bool IsCancelled( string commandId );
+
+        void ThrowRuntimeException();
     }
 
     public class FakeException : Exception

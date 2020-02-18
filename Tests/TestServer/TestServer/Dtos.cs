@@ -1725,6 +1725,164 @@ namespace Tecan.Sila2.IntegrationTests
         }
     }
     
+    ///  <summary>
+    /// Data transfer object for the request of the Is Cancelled command
+    /// </summary>
+    [ProtoBuf.ProtoContractAttribute()]
+    public class IsCancelledRequestDto : Tecan.Sila2.ISilaTransferObject, Tecan.Sila2.ISilaRequestObject
+    {
+        
+        private Tecan.Sila2.StringDto _commandId;
+        
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        public IsCancelledRequestDto()
+        {
+        }
+        
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        /// <param name="store">An object to organize binaries.</param>
+        ///  <param name="commandId"></param>
+        public IsCancelledRequestDto(string commandId, Tecan.Sila2.Binary.IBinaryStore store)
+        {
+            CommandId = new Tecan.Sila2.StringDto(commandId, store);
+        }
+        
+        ///  <summary>
+        /// </summary>
+        [ProtoBuf.ProtoMemberAttribute(1)]
+        public Tecan.Sila2.StringDto CommandId
+        {
+            get
+            {
+                return _commandId;
+            }
+            set
+            {
+                _commandId = value;
+            }
+        }
+        
+        ///  <summary>
+        /// Gets the command identifier for this command
+        /// </summary>
+        /// <returns>The fully qualified command identifier</returns>
+        public string CommandIdentifier
+        {
+            get
+            {
+                return "tecan.sila/integrationtests/TestServer/v1/Command/IsCancelled";
+            }
+        }
+        
+        ///  <summary>
+        /// Validates the contents of this transfer object
+        /// </summary>
+        /// <returns>A validation error or null, if no validation error occurred.</returns>
+        public string GetValidationErrors()
+        {
+            return null;
+        }
+    }
+    
+    ///  <summary>
+    /// Data transfer object for the response of the Is Cancelled command
+    /// </summary>
+    [ProtoBuf.ProtoContractAttribute()]
+    public class IsCancelledResponseDto : Tecan.Sila2.ISilaTransferObject
+    {
+        
+        private Tecan.Sila2.BooleanDto _returnValue;
+        
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        public IsCancelledResponseDto()
+        {
+        }
+        
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        /// <param name="store">An object to organize binaries.</param>
+        ///  <param name="returnValue"></param>
+        public IsCancelledResponseDto(bool returnValue, Tecan.Sila2.Binary.IBinaryStore store)
+        {
+            ReturnValue = new Tecan.Sila2.BooleanDto(returnValue, store);
+        }
+        
+        ///  <summary>
+        /// </summary>
+        [ProtoBuf.ProtoMemberAttribute(1)]
+        public Tecan.Sila2.BooleanDto ReturnValue
+        {
+            get
+            {
+                return _returnValue;
+            }
+            set
+            {
+                _returnValue = value;
+            }
+        }
+        
+        ///  <summary>
+        /// Validates the contents of this transfer object
+        /// </summary>
+        /// <returns>A validation error or null, if no validation error occurred.</returns>
+        public string GetValidationErrors()
+        {
+            return null;
+        }
+    }
+    
+    ///  <summary>
+    /// Data transfer object for the request of the Throw Runtime Exception command
+    /// </summary>
+    [ProtoBuf.ProtoContractAttribute()]
+    public class ThrowRuntimeExceptionRequestDto : Tecan.Sila2.ISilaTransferObject, Tecan.Sila2.ISilaRequestObject
+    {
+        
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        public ThrowRuntimeExceptionRequestDto()
+        {
+        }
+        
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        /// <param name="store">An object to organize binaries.</param>
+        public ThrowRuntimeExceptionRequestDto(Tecan.Sila2.Binary.IBinaryStore store)
+        {
+        }
+        
+        ///  <summary>
+        /// Gets the command identifier for this command
+        /// </summary>
+        /// <returns>The fully qualified command identifier</returns>
+        public string CommandIdentifier
+        {
+            get
+            {
+                return "tecan.sila/integrationtests/TestServer/v1/Command/ThrowRuntimeException";
+            }
+        }
+        
+        ///  <summary>
+        /// Validates the contents of this transfer object
+        /// </summary>
+        /// <returns>A validation error or null, if no validation error occurred.</returns>
+        public string GetValidationErrors()
+        {
+            return null;
+        }
+    }
+    
     [ProtoBuf.ProtoContractAttribute()]
     public class SomeStructureDto : Tecan.Sila2.ISilaTransferObject<SomeStructure>
     {

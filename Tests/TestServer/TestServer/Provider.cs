@@ -89,6 +89,8 @@ namespace Tecan.Sila2.IntegrationTests
             builder.AddMethod(TestServerProvider.RunIntoFailureObservablyMethod, RunIntoFailureObservably);
             builder.AddMethod(TestServerProvider.RunIntoFailureObservablyStateMethod, RunIntoFailureObservablyState);
             builder.AddMethod(TestServerProvider.RunIntoFailureObservablyResponseMethod, RunIntoFailureObservablyResponse);
+            builder.AddMethod(TestServerProvider.IsCancelledMethod, IsCancelled);
+            builder.AddMethod(TestServerProvider.ThrowRuntimeExceptionMethod, ThrowRuntimeException);
             return builder.Build();
         }
         
@@ -619,6 +621,50 @@ namespace Tecan.Sila2.IntegrationTests
             return ObservableCommandHelper.StartCommand(_server, "tecan.sila/integrationtests/TestServer/v1/Command/RunIntoFailureObservably", new RunIntoFailureObservablyCommand(this, request), context);
         }
         
+        private IsCancelledResponseDto IsCancelledInternal(IsCancelledRequestDto request)
+        {
+            try
+            {
+                return new IsCancelledResponseDto(_implementation.IsCancelled(request.CommandId.Extract(_server)), _server);
+            } catch (System.ArgumentException ex)
+            {
+                if ((ex.ParamName == "commandId"))
+                {
+                    throw ErrorHandling.CreateValidationError("tecan.sila/integrationtests/TestServer/v1/Command/IsCancelled/Parameter/CommandId" +
+                            "", ex.Message);
+                }
+                throw ErrorHandling.CreateUnknownValidationError(ex);
+            }
+        }
+        
+        ///  <summary>
+        /// Executes the Is Cancelled command
+        /// </summary>
+        /// <param name="request">A data transfer object that contains the command parameters</param>
+        /// <param name="context">The context in which the command is issued</param>
+        /// <returns>The command response wrapped in a data transfer object</returns>
+        protected virtual System.Threading.Tasks.Task<IsCancelledResponseDto> IsCancelled(IsCancelledRequestDto request, Grpc.Core.ServerCallContext context)
+        {
+            return _server.InvokeCommand(IsCancelledInternal, request, context);
+        }
+        
+        private EmptyRequest ThrowRuntimeExceptionInternal(ThrowRuntimeExceptionRequestDto request)
+        {
+            _implementation.ThrowRuntimeException();
+            return EmptyRequest.Instance;
+        }
+        
+        ///  <summary>
+        /// Executes the Throw Runtime Exception command
+        /// </summary>
+        /// <param name="request">A data transfer object that contains the command parameters</param>
+        /// <param name="context">The context in which the command is issued</param>
+        /// <returns>The command response wrapped in a data transfer object</returns>
+        protected virtual System.Threading.Tasks.Task<EmptyRequest> ThrowRuntimeException(ThrowRuntimeExceptionRequestDto request, Grpc.Core.ServerCallContext context)
+        {
+            return _server.InvokeCommand(ThrowRuntimeExceptionInternal, request, context);
+        }
+        
         ///  <summary>
         /// Gets the command with the given identifier
         /// </summary>
@@ -694,6 +740,14 @@ namespace Tecan.Sila2.IntegrationTests
             if ((commandIdentifier == "tecan.sila/integrationtests/TestServer/v1/Command/RunIntoFailureObservably"))
             {
                 return typeof(ITestServer).GetMethod("RunIntoFailureObservably");
+            }
+            if ((commandIdentifier == "tecan.sila/integrationtests/TestServer/v1/Command/IsCancelled"))
+            {
+                return typeof(ITestServer).GetMethod("IsCancelled");
+            }
+            if ((commandIdentifier == "tecan.sila/integrationtests/TestServer/v1/Command/ThrowRuntimeException"))
+            {
+                return typeof(ITestServer).GetMethod("ThrowRuntimeException");
             }
             return null;
         }
@@ -813,6 +867,10 @@ namespace Tecan.Sila2.IntegrationTests
         public static Grpc.Core.Method<CommandExecutionUuid, ExecutionState> RunIntoFailureObservablyStateMethod = new Grpc.Core.Method<CommandExecutionUuid, ExecutionState>(Grpc.Core.MethodType.ServerStreaming, @__ServiceName, "RunIntoFailureObservably_Info", ProtobufMarshaller<CommandExecutionUuid>.Default, ProtobufMarshaller<ExecutionState>.Default);
         
         public static Grpc.Core.Method<CommandExecutionUuid, EmptyRequest> RunIntoFailureObservablyResponseMethod = new Grpc.Core.Method<CommandExecutionUuid, EmptyRequest>(Grpc.Core.MethodType.Unary, @__ServiceName, "RunIntoFailureObservably_Result", ProtobufMarshaller<CommandExecutionUuid>.Default, EmptyRequest.Marshaller);
+        
+        public static Grpc.Core.Method<IsCancelledRequestDto, IsCancelledResponseDto> IsCancelledMethod = new Grpc.Core.Method<IsCancelledRequestDto, IsCancelledResponseDto>(Grpc.Core.MethodType.Unary, @__ServiceName, "IsCancelled", ProtobufMarshaller<IsCancelledRequestDto>.Default, ProtobufMarshaller<IsCancelledResponseDto>.Default);
+        
+        public static Grpc.Core.Method<ThrowRuntimeExceptionRequestDto, EmptyRequest> ThrowRuntimeExceptionMethod = new Grpc.Core.Method<ThrowRuntimeExceptionRequestDto, EmptyRequest>(Grpc.Core.MethodType.Unary, @__ServiceName, "ThrowRuntimeException", ProtobufMarshaller<ThrowRuntimeExceptionRequestDto>.Default, EmptyRequest.Marshaller);
     }
 }
 

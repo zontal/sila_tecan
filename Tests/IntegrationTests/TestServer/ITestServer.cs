@@ -133,6 +133,17 @@ namespace Tecan.Sila2.IntegrationTests
         [Tecan.Sila2.ObservableAttribute()]
         [Tecan.Sila2.ThrowsAttribute(typeof(FakeException))]
         Tecan.Sila2.IObservableCommand RunIntoFailureObservably();
+        
+        ///  <summary>
+        /// </summary>
+        /// <param name="commandId"></param>
+        /// <returns></returns>
+        [return: Tecan.Sila2.SilaIdentifierAttribute("ReturnValue")]
+        bool IsCancelled(string commandId);
+        
+        ///  <summary>
+        /// </summary>
+        void ThrowRuntimeException();
     }
     
     ///  <summary>

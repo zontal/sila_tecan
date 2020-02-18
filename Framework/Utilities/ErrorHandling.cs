@@ -53,6 +53,22 @@ namespace Tecan.Sila2
         }
 
         /// <summary>
+        /// Creates an exception for a server-side undefined execution error
+        /// </summary>
+        /// <param name="exception">The exception that occurred</param>
+        /// <returns>An exception</returns>
+        public static Exception CreateUndefinedExecutionError( Exception exception )
+        {
+            return new RpcException(new Status(StatusCode.Aborted, ToBase64String(new SiLAErrorDto
+            {
+                UndefinedExecutionError = new UndefinedExecutionErrorDto
+                {
+                    Message = $"{exception.GetType().Name}: {exception.Message}"
+                }
+            })));
+        }
+
+        /// <summary>
         /// Creates a server-side execution error
         /// </summary>
         /// <param name="identifier">The fully qualified identifier of the error</param>
@@ -127,7 +143,7 @@ namespace Tecan.Sila2
                             }
                             else
                             {
-                                return new SilaException($"Unknown Sila error {error.DefinedExecutionError.ErrorIdentifier} happened: {error.DefinedExecutionError.Message}");
+                                return new DefinedErrorException(error.DefinedExecutionError.ErrorIdentifier, error.DefinedExecutionError.Message);
                             }
                         }
 
@@ -155,11 +171,15 @@ namespace Tecan.Sila2
                         }
                         return new SilaException("An unknown error occured.");
                     }
-                    catch (Exception)
+                    catch (Exception conversionException)
                     {
                         // any other gRPC error => SiLA Connection Error
-                        return new SilaException("SiLA Connection Error occured: " + rpcEx.Message);
+                        return new SilaException("SiLA error could not be translated: " + conversionException.Message, conversionException);
                     }
+                }
+                else if( rpcEx.StatusCode == StatusCode.Cancelled )
+                {
+                    throw new OperationCanceledException("The operation was cancelled at the server", rpcEx);
                 }
                 else
                 {

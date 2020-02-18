@@ -338,6 +338,34 @@
       <Identifier>Fake</Identifier>
     </DefinedExecutionErrors>
   </Command>
+  <Command>
+    <Identifier>IsCancelled</Identifier>
+    <DisplayName>Is Cancelled</DisplayName>
+    <Description />
+    <Observable>No</Observable>
+    <Parameter>
+      <Identifier>CommandId</Identifier>
+      <DisplayName>Command Id</DisplayName>
+      <Description />
+      <DataType>
+        <Basic>String</Basic>
+      </DataType>
+    </Parameter>
+    <Response>
+      <Identifier>ReturnValue</Identifier>
+      <DisplayName>Return Value</DisplayName>
+      <Description />
+      <DataType>
+        <Basic>Boolean</Basic>
+      </DataType>
+    </Response>
+  </Command>
+  <Command>
+    <Identifier>ThrowRuntimeException</Identifier>
+    <DisplayName>Throw Runtime Exception</DisplayName>
+    <Description />
+    <Observable>No</Observable>
+  </Command>
   <DefinedExecutionError>
     <Identifier>ShouldHaveBeenCancelled</Identifier>
     <DisplayName>Should Have Been Cancelled</DisplayName>

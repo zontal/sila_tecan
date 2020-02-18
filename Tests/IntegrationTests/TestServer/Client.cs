@@ -442,6 +442,45 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         }
         
         ///  <summary>
+        /// </summary>
+        /// <param name="commandId"></param>
+        public virtual bool IsCancelled(string commandId)
+        {
+            IsCancelledRequestDto request = new IsCancelledRequestDto(commandId, null);
+            Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("tecan.sila/integrationtests/TestServer/v1/Command/IsCancelled");
+            try
+            {
+                bool response = CallInvoker.BlockingUnaryCall(TestServerProvider.IsCancelledMethod, null, callInfo.Options, request).ReturnValue.Extract(_executionManager.DownloadBinaryStore);
+                callInfo.FinishSuccessful();
+                return response;
+            } catch (System.Exception ex)
+            {
+                System.Exception exception = ErrorHandling.ConvertException(ex);
+                callInfo.FinishWithErrors(exception);
+                throw exception;
+            }
+        }
+        
+        ///  <summary>
+        /// </summary>
+        public virtual void ThrowRuntimeException()
+        {
+            ThrowRuntimeExceptionRequestDto request = new ThrowRuntimeExceptionRequestDto(null);
+            Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("tecan.sila/integrationtests/TestServer/v1/Command/ThrowRuntimeException");
+            try
+            {
+                CallInvoker.BlockingUnaryCall(TestServerProvider.ThrowRuntimeExceptionMethod, null, callInfo.Options, request);
+                callInfo.FinishSuccessful();
+                return;
+            } catch (System.Exception ex)
+            {
+                System.Exception exception = ErrorHandling.ConvertException(ex);
+                callInfo.FinishWithErrors(exception);
+                throw exception;
+            }
+        }
+        
+        ///  <summary>
         /// Creates a new instance
         /// </summary>
         /// <param name="configuration">The new client configuration</param>
@@ -516,6 +555,10 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         public static Grpc.Core.Method<CommandExecutionUuid, ExecutionState> RunIntoFailureObservablyStateMethod = new Grpc.Core.Method<CommandExecutionUuid, ExecutionState>(Grpc.Core.MethodType.ServerStreaming, @__ServiceName, "RunIntoFailureObservably_Info", ProtobufMarshaller<CommandExecutionUuid>.Default, ProtobufMarshaller<ExecutionState>.Default);
         
         public static Grpc.Core.Method<CommandExecutionUuid, EmptyRequest> RunIntoFailureObservablyResponseMethod = new Grpc.Core.Method<CommandExecutionUuid, EmptyRequest>(Grpc.Core.MethodType.Unary, @__ServiceName, "RunIntoFailureObservably_Result", ProtobufMarshaller<CommandExecutionUuid>.Default, EmptyRequest.Marshaller);
+        
+        public static Grpc.Core.Method<IsCancelledRequestDto, IsCancelledResponseDto> IsCancelledMethod = new Grpc.Core.Method<IsCancelledRequestDto, IsCancelledResponseDto>(Grpc.Core.MethodType.Unary, @__ServiceName, "IsCancelled", ProtobufMarshaller<IsCancelledRequestDto>.Default, ProtobufMarshaller<IsCancelledResponseDto>.Default);
+        
+        public static Grpc.Core.Method<ThrowRuntimeExceptionRequestDto, EmptyRequest> ThrowRuntimeExceptionMethod = new Grpc.Core.Method<ThrowRuntimeExceptionRequestDto, EmptyRequest>(Grpc.Core.MethodType.Unary, @__ServiceName, "ThrowRuntimeException", ProtobufMarshaller<ThrowRuntimeExceptionRequestDto>.Default, EmptyRequest.Marshaller);
     }
 }
 
