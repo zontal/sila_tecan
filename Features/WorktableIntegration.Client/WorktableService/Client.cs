@@ -112,7 +112,7 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
         
         private BoundingBox RequestBoundingBox()
         {
-            Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("tecan.sila.worktableintegration/infrastructure/WorktableService/v2/Property/Bound" +
+            Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("tecan.sila.worktableintegration/infrastructure/WorktableService/v1/Property/Bound" +
                     "ingBox");
             try
             {
@@ -129,7 +129,7 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
         
         private System.Collections.Generic.ICollection<SiteTemplate> RequestSiteTemplates()
         {
-            Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("tecan.sila.worktableintegration/infrastructure/WorktableService/v2/Property/SiteT" +
+            Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("tecan.sila.worktableintegration/infrastructure/WorktableService/v1/Property/SiteT" +
                     "emplates");
             try
             {
@@ -146,7 +146,7 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
         
         private System.Collections.Generic.ICollection<Site> RequestSites()
         {
-            Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("tecan.sila.worktableintegration/infrastructure/WorktableService/v2/Property/Sites" +
+            Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("tecan.sila.worktableintegration/infrastructure/WorktableService/v1/Property/Sites" +
                     "");
             try
             {
@@ -193,7 +193,7 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
     internal sealed partial class WorktableServiceProvider
     {
         
-        private static string @__ServiceName = "sila2.tecan.sila.worktableintegration.infrastructure.worktableservice.v2.Worktabl" +
+        private static string @__ServiceName = "sila2.tecan.sila.worktableintegration.infrastructure.worktableservice.v1.Worktabl" +
             "eService";
         
         public static Grpc.Core.Method<EmptyRequest, PropertyResponse<BoundingBoxDto>> GetBoundingBoxMethod = new Grpc.Core.Method<EmptyRequest, PropertyResponse<BoundingBoxDto>>(Grpc.Core.MethodType.Unary, @__ServiceName, "Get_BoundingBox", EmptyRequest.Marshaller, ProtobufMarshaller<PropertyResponse<BoundingBoxDto>>.Default);

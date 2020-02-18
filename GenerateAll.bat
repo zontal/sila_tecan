@@ -18,7 +18,7 @@ Build\Generator\net472\SilaGen.exe generate-provider Features\ParameterConstrain
 Build\Generator\net472\SilaGen.exe generate-interface Features\Cancellation\CancelController.sila.xml Features\Cancellation\ICancellationProvider.cs -n Tecan.Sila2.Cancellation
 Build\Generator\net472\SilaGen.exe generate-provider Features\Cancellation\CancelController.sila.xml Features\Cancellation\CancellationDtos.cs Features\Cancellation\CancellationProvider.cs -n Tecan.Sila2.Cancellation -s
 
-Build\Generator\net472\SilaGen.exe generate-server Build\Features\netstandard2.0\Tecan.Sila2.WorktableIntegration.dll Features\WorktableIntegration\WorktableIntegration.csproj -n Tecan.Sila2.WorktableIntegration
+Build\Generator\net472\SilaGen.exe generate-server Build\Features\netstandard2.0\Tecan.Sila2.WorktableIntegration.dll Features\WorktableIntegration\WorktableIntegration.csproj -n Tecan.Sila2.WorktableIntegration -v 1.0
 
 Build\Generator\net472\SilaGen.exe generate-interface Tests\Generator.Tests\Logging\Feature.xml Tests\Generator.Tests\Logging\ServiceReference.cs -n Tecan.Sila2.Generator.Test.TestReference
 Build\Generator\net472\SilaGen.exe generate-provider Tests\Generator.Tests\Logging\Feature.xml Tests\Generator.Tests\Logging\DtoReference.cs Tests\Generator.Tests\Logging\ProviderReference.cs -n Tecan.Sila2.Generator.Test.TestReference

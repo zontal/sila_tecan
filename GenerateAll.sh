@@ -22,7 +22,7 @@ $SILAGEN generate-provider Features/ParameterConstraintsProvider/ParameterConstr
 $SILAGEN generate-interface Features/Cancellation/CancelController.sila.xml Features/Cancellation/ICancellationProvider.cs -n Tecan.Sila2.Cancellation
 $SILAGEN generate-provider Features/Cancellation/CancelController.sila.xml Features/Cancellation/CancellationDtos.cs Features/Cancellation/CancellationProvider.cs -n Tecan.Sila2.Cancellation -s
 
-$SILAGEN generate-server Build/Features/netstandard2.0/Tecan.Sila2.WorktableIntegration.dll Features/WorktableIntegration/WorktableIntegration.csproj -n Tecan.Sila2.WorktableIntegration
+$SILAGEN generate-server Build/Features/netstandard2.0/Tecan.Sila2.WorktableIntegration.dll Features/WorktableIntegration/WorktableIntegration.csproj -n Tecan.Sila2.WorktableIntegration -v 1.0
 
 $SILAGEN generate-interface Tests/Generator.Tests/Logging/Feature.xml Tests/Generator.Tests/Logging/ServiceReference.cs -n Tecan.Sila2.Generator.Test.TestReference
 $SILAGEN generate-provider Tests/Generator.Tests/Logging/Feature.xml Tests/Generator.Tests/Logging/DtoReference.cs Tests/Generator.Tests/Logging/ProviderReference.cs -n Tecan.Sila2.Generator.Test.TestReference

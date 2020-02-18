@@ -214,10 +214,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         {
             TestInlineObservableRequestDto request = new TestInlineObservableRequestDto( parameter, null );
             Tecan.Sila2.IObservableCommand<bool> command = ObservableClientCommands.Create( _executionManager.CreateCallOptions( request.CommandIdentifier ), CallInvoker, request, InlineObservableServiceProvider.TestInlineObservableMethod, InlineObservableServiceProvider.TestInlineObservableStateMethod, InlineObservableServiceProvider.TestInlineObservableResponseMethod, ConvertTestInlineObservableResponse, ConvertTestInlineObservableException );
-            if((cancellationToken.CanBeCanceled && command.IsCancellationSupported))
-            {
-                cancellationToken.Register( command.Cancel );
-            }
+            Tecan.Sila2.Cancellation.CancellationHelper.RegisterCancellation( ((Tecan.Sila2.Client.IClientCommand)(command)), _executionManager, cancellationToken );
             command.Start();
             command.Response.Wait( cancellationToken );
             return command.Response.Result;

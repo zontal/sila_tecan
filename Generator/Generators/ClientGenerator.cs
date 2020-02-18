@@ -8,6 +8,7 @@ using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using Grpc.Core;
+using Tecan.Sila2.Cancellation;
 using Tecan.Sila2.Client;
 using Tecan.Sila2.Generator.Contracts;
 using Tecan.Sila2.Generator.Helper;
@@ -244,16 +245,10 @@ namespace Tecan.Sila2.Generator.Generators
                 parameters[parameters.Length - 1].ParameterType == typeof(CancellationToken))
             {
                 cancellationToken = new CodeArgumentReferenceExpression(parameters[parameters.Length - 1].Name);
-                var canBeCancelled =
-                    new CodePropertyReferenceExpression(cancellationToken, nameof(CancellationToken.CanBeCanceled));
-                var cancellationSupported =
-                    new CodePropertyReferenceExpression(command, nameof(IObservableCommand.IsCancellationSupported));
-                requestMethod.Statements.Add(new CodeConditionStatement(
-                    new CodeBinaryOperatorExpression(canBeCancelled, CodeBinaryOperatorType.BooleanAnd, cancellationSupported),
-                    new CodeExpressionStatement(new CodeMethodInvokeExpression(
-                        cancellationToken,
-                        nameof(CancellationToken.Register),
-                        new CodeMethodReferenceExpression(command, nameof(IObservableCommand.Cancel))))));
+                requestMethod.Statements.Add( new CodeMethodInvokeExpression(new CodeTypeReferenceExpression(typeof(CancellationHelper)), nameof(CancellationHelper.RegisterCancellation),
+                    new CodeCastExpression(typeof(IClientCommand), command),
+                    new CodeFieldReferenceExpression( null, ExecutionManagerFieldName ),
+                    cancellationToken) );
             }
 
             requestMethod.Statements.Add(new CodeMethodInvokeExpression(command, nameof(IObservableCommand.Start)));
