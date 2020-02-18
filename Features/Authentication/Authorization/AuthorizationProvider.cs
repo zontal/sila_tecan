@@ -18,90 +18,95 @@ namespace Tecan.Sila2.Authorization
     
     
     ///  <summary>
+    /// A class that exposes the IAuthorizationService interface via SiLA2
+    /// </summary>
+    [System.ComponentModel.Composition.ExportAttribute(typeof(IFeatureProvider))]
+    [System.ComponentModel.Composition.PartCreationPolicyAttribute(System.ComponentModel.Composition.CreationPolicy.Shared)]
+    public partial class AuthorizationService : IFeatureProvider
+    {
+        
+        private IAuthorizationService _implementation;
+        
+        private Tecan.Sila2.Server.ISiLAServer _server;
+        
+        private static Tecan.Sila2.Feature _feature = FeatureSerializer.LoadFromAssembly(typeof(AuthorizationService).Assembly, "AuthorizationService.sila.xml");
+        
+        ///  <summary>
+        /// Creates a new instance
+        /// </summary>
+        /// <param name="implementation">The implementation to exported through SiLA2</param>
+        /// <param name="server">The SiLA2 server instance through which the implementation shall be exported</param>
+        [System.ComponentModel.Composition.ImportingConstructorAttribute()]
+        public AuthorizationService(IAuthorizationService implementation, Tecan.Sila2.Server.ISiLAServer server)
+        {
+            _implementation = implementation;
+            _server = server;
+        }
+        
+        ///  <summary>
+        /// The feature that is exposed by this feature provider
+        /// </summary>
+        /// <returns>A feature object</returns>
+        public Tecan.Sila2.Feature FeatureDefinition
+        {
+            get
+            {
+                return _feature;
+            }
+        }
+        
+        ///  <summary>
+        /// Creates a service definition for this service provider
+        /// </summary>
+        /// <returns>An object that describes which services are offered by this instance</returns>
+        public Grpc.Core.ServerServiceDefinition CreateServiceDefinition()
+        {
+            Grpc.Core.ServerServiceDefinition.Builder builder = Grpc.Core.ServerServiceDefinition.CreateBuilder();
+            builder.AddMethod(AuthorizationServiceProvider.GetAffectedByAccessTokenMethod, GetAffectedByAccessToken);
+            return builder.Build();
+        }
+        
+        ///  <summary>
+        /// Gets the features/commands/properties affected by the metadata Token to be sent with every call in order to get access to the SiLA Server functionality.
+        /// </summary>
+        /// <param name="request">The request object (not used)</param>
+        /// <param name="context">The request context</param>
+        /// <returns>A list of fully qualified identifiers</returns>
+        protected virtual System.Threading.Tasks.Task<System.Collections.Generic.List<Tecan.Sila2.StringDto>> GetAffectedByAccessToken(EmptyRequest request, Grpc.Core.ServerCallContext context)
+        {
+            return Tecan.Sila2.Server.Metadata.GetAffectedIdentifiers(_server, _implementation.AccessToken);
+        }
+        
+        ///  <summary>
+        /// Gets the command with the given identifier
+        /// </summary>
+        /// <param name="commandIdentifier">A fully qualified command identifier</param>
+        /// <returns>A method object or null, if the command is not supported</returns>
+        public System.Reflection.MethodInfo GetCommand(string commandIdentifier)
+        {
+            return null;
+        }
+        
+        ///  <summary>
+        /// Gets the property with the given identifier
+        /// </summary>
+        /// <param name="propertyIdentifier">A fully qualified property identifier</param>
+        /// <returns>A property object or null, if the property is not supported</returns>
+        public System.Reflection.PropertyInfo GetProperty(string propertyIdentifier)
+        {
+            return null;
+        }
+    }
+    
+    ///  <summary>
     /// Encapsulates provider classes to expose the Authorization Service feature via SiLA2
     /// </summary>
-    public sealed partial class AuthorizationServiceProvider
+    internal sealed partial class AuthorizationServiceProvider
     {
         
         private static string @__ServiceName = "sila2.org.silastandard.core.authorizationservice.v1.AuthorizationService";
         
-        private static Grpc.Core.Method<EmptyRequest, System.Collections.Generic.List<Tecan.Sila2.StringDto>> GetAffectedByAccessTokenMethod = new Grpc.Core.Method<EmptyRequest, System.Collections.Generic.List<Tecan.Sila2.StringDto>>(Grpc.Core.MethodType.Unary, @__ServiceName, "Get_FCPAffectedByMetadata_AccessToken", EmptyRequest.Marshaller, ProtobufMarshaller<System.Collections.Generic.List<Tecan.Sila2.StringDto>>.Default);
-        
-        ///  <summary>
-        /// A class that exposes the IAuthorizationService interface via SiLA2
-        /// </summary>
-        [System.ComponentModel.Composition.ExportAttribute(typeof(IFeatureProvider))]
-        [System.ComponentModel.Composition.PartCreationPolicyAttribute(System.ComponentModel.Composition.CreationPolicy.Shared)]
-        public partial class Server : IFeatureProvider
-        {
-            
-            private IAuthorizationService _implementation;
-            
-            private Tecan.Sila2.Server.ISiLAServer _server;
-            
-            private static Tecan.Sila2.Feature _feature = FeatureSerializer.LoadFromAssembly(typeof(Server).Assembly, "AuthorizationService.sila.xml");
-            
-            [System.ComponentModel.Composition.ImportingConstructorAttribute()]
-            public Server(IAuthorizationService implementation, Tecan.Sila2.Server.ISiLAServer server)
-            {
-                _implementation = implementation;
-                _server = server;
-            }
-            
-            ///  <summary>
-            /// The feature that is exposed by this feature provider
-            /// </summary>
-            /// <returns>A feature object</returns>
-            public Tecan.Sila2.Feature FeatureDefinition
-            {
-                get
-                {
-                    return _feature;
-                }
-            }
-            
-            ///  <summary>
-            /// Creates a service definition for this service provider
-            /// </summary>
-            /// <returns>An object that describes which services are offered by this instance</returns>
-            public Grpc.Core.ServerServiceDefinition CreateServiceDefinition()
-            {
-                Grpc.Core.ServerServiceDefinition.Builder builder = Grpc.Core.ServerServiceDefinition.CreateBuilder();
-                builder.AddMethod(GetAffectedByAccessTokenMethod, GetAffectedByAccessToken);
-                return builder.Build();
-            }
-            
-            ///  <summary>
-            /// Gets the features/commands/properties affected by the metadata Token to be sent with every call in order to get access to the SiLA Server functionality.
-            /// </summary>
-            /// <param name="request">The request object (not used)</param>
-            /// <param name="context">The request context</param>
-            /// <returns>A list of fully qualified identifiers</returns>
-            protected virtual System.Threading.Tasks.Task<System.Collections.Generic.List<Tecan.Sila2.StringDto>> GetAffectedByAccessToken(EmptyRequest request, Grpc.Core.ServerCallContext context)
-            {
-                return Tecan.Sila2.Server.Metadata.GetAffectedIdentifiers(_server, _implementation.AccessToken);
-            }
-            
-            ///  <summary>
-            /// Gets the command with the given identifier
-            /// </summary>
-            /// <param name="commandIdentifier">A fully qualified command identifier</param>
-            /// <returns>A method object or null, if the command is not supported</returns>
-            public System.Reflection.MethodInfo GetCommand(string commandIdentifier)
-            {
-                return null;
-            }
-            
-            ///  <summary>
-            /// Gets the property with the given identifier
-            /// </summary>
-            /// <param name="propertyIdentifier">A fully qualified property identifier</param>
-            /// <returns>A property object or null, if the property is not supported</returns>
-            public System.Reflection.PropertyInfo GetProperty(string propertyIdentifier)
-            {
-                return null;
-            }
-        }
+        public static Grpc.Core.Method<EmptyRequest, System.Collections.Generic.List<Tecan.Sila2.StringDto>> GetAffectedByAccessTokenMethod = new Grpc.Core.Method<EmptyRequest, System.Collections.Generic.List<Tecan.Sila2.StringDto>>(Grpc.Core.MethodType.Unary, @__ServiceName, "Get_FCPAffectedByMetadata_AccessToken", EmptyRequest.Marshaller, ProtobufMarshaller<System.Collections.Generic.List<Tecan.Sila2.StringDto>>.Default);
     }
     
     ///  <summary>

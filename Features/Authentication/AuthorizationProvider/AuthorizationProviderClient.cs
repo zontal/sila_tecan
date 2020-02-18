@@ -18,99 +18,124 @@ namespace Tecan.Sila2.AuthorizationProvider
     
     
     ///  <summary>
+    /// Class that implements the IAuthorizationProviderService interface through SiLA2
+    /// </summary>
+    public partial class AuthorizationProviderServiceClient : Grpc.Core.ClientBase<AuthorizationProviderServiceClient>, IAuthorizationProviderService
+    {
+        
+        private IClientExecutionManager _executionManager;
+        
+        ///  <summary>
+        /// Creates a new instance
+        /// </summary>
+        /// <param name="executionManager">A component that attaches metadata to SiLA2 calls</param>
+        public AuthorizationProviderServiceClient(IClientExecutionManager executionManager)
+        {
+            _executionManager = executionManager;
+        }
+        
+        ///  <summary>
+        /// Creates a new instance
+        /// </summary>
+        /// <param name="configuration">The underlying configuration</param>
+        /// <param name="executionManager">A component that attaches metadata to SiLA2 calls</param>
+        protected AuthorizationProviderServiceClient(ClientBaseConfiguration configuration, IClientExecutionManager executionManager) : 
+                base(configuration)
+        {
+            _executionManager = executionManager;
+        }
+        
+        ///  <summary>
+        /// Creates a new instance
+        /// </summary>
+        /// <param name="channel">The underlying channel</param>
+        /// <param name="executionManager">A component that attaches metadata to SiLA2 calls</param>
+        public AuthorizationProviderServiceClient(Grpc.Core.Channel channel, IClientExecutionManager executionManager) : 
+                base(channel)
+        {
+            _executionManager = executionManager;
+        }
+        
+        ///  <summary>
+        /// Creates a new instance
+        /// </summary>
+        /// <param name="invoker">The underlying invoker</param>
+        /// <param name="executionManager">A component that attaches metadata to SiLA2 calls</param>
+        public AuthorizationProviderServiceClient(Grpc.Core.CallInvoker invoker, IClientExecutionManager executionManager) : 
+                base(invoker)
+        {
+            _executionManager = executionManager;
+        }
+        
+        ///  <summary>
+        /// Verifies that a given token is valid for the requested server.
+        /// </summary>
+        /// <param name="accessToken">The token to be used along with accessing a Command or Property on a SiLA Server.</param>
+        /// <param name="requestedServer">The server for which an authorization is requested.</param>
+        /// <param name="requestedFeature">The feature that is requested to access.</param>
+        public virtual long Verify(string accessToken, string requestedServer, string requestedFeature)
+        {
+            VerifyRequestDto request = new VerifyRequestDto(accessToken, requestedServer, requestedFeature, null);
+            Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/core/AuthorizationProviderService/v1/Command/Verify");
+            try
+            {
+                long response = CallInvoker.BlockingUnaryCall(AuthorizationProviderServiceProvider.VerifyMethod, null, callInfo.Options, request).TokenLifetime.Extract(_executionManager.DownloadBinaryStore);
+                callInfo.FinishSuccessful();
+                return response;
+            } catch (System.Exception ex)
+            {
+                System.Exception exception = ErrorHandling.ConvertException(ex, ConvertVerifyException);
+                callInfo.FinishWithErrors(exception);
+                throw exception;
+            }
+        }
+        
+        ///  <summary>
+        /// Converts the error ocurred during execution of Verify to a proper exception
+        /// </summary>
+        /// <param name="error">The SiLA2 execution error</param>
+        /// <returns>The converted exception or null, if the error is not understood</returns>
+        private static System.Exception ConvertVerifyException(Tecan.Sila2.DefinedExecutionErrorDto error)
+        {
+            if ((error.ErrorIdentifier == "org.silastandard/core/AuthorizationProviderService/v1/DefinedError/AuthorizationF" +
+                "ailed"))
+            {
+                return new AuthorizationFailedException(error.Message);
+            }
+            if ((error.ErrorIdentifier == "org.silastandard/core/AuthorizationProviderService/v1/DefinedError/InvalidAccessT" +
+                "oken"))
+            {
+                return new InvalidAccessTokenException(error.Message);
+            }
+            return null;
+        }
+        
+        ///  <summary>
+        /// Creates a new instance
+        /// </summary>
+        /// <param name="configuration">The new client configuration</param>
+        protected override AuthorizationProviderServiceClient NewInstance(ClientBaseConfiguration configuration)
+        {
+            return new AuthorizationProviderServiceClient(configuration, _executionManager);
+        }
+        
+        private T Extract<T>(Tecan.Sila2.ISilaTransferObject<T> dto)
+        
+        {
+            return dto.Extract(_executionManager.DownloadBinaryStore);
+        }
+    }
+    
+    ///  <summary>
     /// Encapsulates provider classes to expose the Authorization Provider Service feature via SiLA2
     /// </summary>
-    public sealed partial class AuthorizationProviderServiceProvider
+    internal sealed partial class AuthorizationProviderServiceProvider
     {
         
         private static string @__ServiceName = "sila2.org.silastandard.core.authorizationproviderservice.v1.AuthorizationProvider" +
             "Service";
         
-        private static Grpc.Core.Method<VerifyRequestDto, VerifyResponseDto> VerifyMethod = new Grpc.Core.Method<VerifyRequestDto, VerifyResponseDto>(Grpc.Core.MethodType.Unary, @__ServiceName, "Verify", ProtobufMarshaller<VerifyRequestDto>.Default, ProtobufMarshaller<VerifyResponseDto>.Default);
-        
-        ///  <summary>
-        /// Class that implements the IAuthorizationProviderService interface through SiLA2
-        /// </summary>
-        public partial class Client : Grpc.Core.ClientBase<Client>, IAuthorizationProviderService
-        {
-            
-            private IClientExecutionManager _executionManager;
-            
-            public Client(IClientExecutionManager executionManager)
-            {
-                _executionManager = executionManager;
-            }
-            
-            protected Client(ClientBaseConfiguration configuration, IClientExecutionManager executionManager) : 
-                    base(configuration)
-            {
-                _executionManager = executionManager;
-            }
-            
-            public Client(Grpc.Core.Channel channel, IClientExecutionManager executionManager) : 
-                    base(channel)
-            {
-                _executionManager = executionManager;
-            }
-            
-            ///  <summary>
-            /// Verifies that a given token is valid for the requested server.
-            /// </summary>
-            /// <param name="accessToken">The token to be used along with accessing a Command or Property on a SiLA Server.</param>
-            /// <param name="requestedServer">The server for which an authorization is requested.</param>
-            /// <param name="requestedFeature">The feature that is requested to access.</param>
-            public virtual long Verify(string accessToken, string requestedServer, string requestedFeature)
-            {
-                VerifyRequestDto request = new VerifyRequestDto(accessToken, requestedServer, requestedFeature, null);
-                Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/core/AuthorizationProviderService/v1/Command/Verify");
-                try
-                {
-                    long response = CallInvoker.BlockingUnaryCall(VerifyMethod, null, callInfo.Options, request).TokenLifetime.Extract(_executionManager.DownloadBinaryStore);
-                    callInfo.FinishSuccessful();
-                    return response;
-                } catch (System.Exception ex)
-                {
-                    System.Exception exception = ErrorHandling.ConvertException(ex, ConvertVerifyException);
-                    callInfo.FinishWithErrors(exception);
-                    throw exception;
-                }
-            }
-            
-            ///  <summary>
-            /// Converts the error ocurred during execution of Verify to a proper exception
-            /// </summary>
-            /// <param name="error">The SiLA2 execution error</param>
-            /// <returns>The converted exception or null, if the error is not understood</returns>
-            private static System.Exception ConvertVerifyException(Tecan.Sila2.DefinedExecutionErrorDto error)
-            {
-                if ((error.ErrorIdentifier == "org.silastandard/core/AuthorizationProviderService/v1/DefinedError/AuthorizationF" +
-                    "ailed"))
-                {
-                    return new AuthorizationFailedException(error.Message);
-                }
-                if ((error.ErrorIdentifier == "org.silastandard/core/AuthorizationProviderService/v1/DefinedError/InvalidAccessT" +
-                    "oken"))
-                {
-                    return new InvalidAccessTokenException(error.Message);
-                }
-                return null;
-            }
-            
-            ///  <summary>
-            /// Creates a new instance
-            /// </summary>
-            /// <param name="configuration">The new client configuration</param>
-            protected override Client NewInstance(ClientBaseConfiguration configuration)
-            {
-                return new Client(configuration, _executionManager);
-            }
-            
-            private T Extract<T>(Tecan.Sila2.ISilaTransferObject<T> dto)
-            
-            {
-                return dto.Extract(_executionManager.DownloadBinaryStore);
-            }
-        }
+        public static Grpc.Core.Method<VerifyRequestDto, VerifyResponseDto> VerifyMethod = new Grpc.Core.Method<VerifyRequestDto, VerifyResponseDto>(Grpc.Core.MethodType.Unary, @__ServiceName, "Verify", ProtobufMarshaller<VerifyRequestDto>.Default, ProtobufMarshaller<VerifyResponseDto>.Default);
     }
 }
 

@@ -6,12 +6,12 @@ namespace Tecan.Sila2.Cancellation
 {
     [Export(typeof(ICancelController))]
     [PartCreationPolicy(CreationPolicy.Shared)]
-    internal class CancelController : ICancelController
+    internal class CancelControllerService : ICancelController
     {
         private readonly ISiLAServer _server;
 
         [ImportingConstructor]
-        public CancelController( ISiLAServer server )
+        public CancelControllerService( ISiLAServer server )
         {
             _server = server;
         }

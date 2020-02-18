@@ -18,107 +18,112 @@ namespace Tecan.Sila2.ParameterConstraintsProvider
     
     
     ///  <summary>
+    /// A class that exposes the IParameterConstraintsProvider interface via SiLA2
+    /// </summary>
+    [System.ComponentModel.Composition.ExportAttribute(typeof(IFeatureProvider))]
+    [System.ComponentModel.Composition.PartCreationPolicyAttribute(System.ComponentModel.Composition.CreationPolicy.Shared)]
+    public partial class ParameterConstraintsProvider : IFeatureProvider
+    {
+        
+        private IParameterConstraintsProvider _implementation;
+        
+        private Tecan.Sila2.Server.ISiLAServer _server;
+        
+        private static Tecan.Sila2.Feature _feature = FeatureSerializer.LoadFromAssembly(typeof(ParameterConstraintsProvider).Assembly, "ParameterConstraintsProvider.sila.xml");
+        
+        ///  <summary>
+        /// Creates a new instance
+        /// </summary>
+        /// <param name="implementation">The implementation to exported through SiLA2</param>
+        /// <param name="server">The SiLA2 server instance through which the implementation shall be exported</param>
+        [System.ComponentModel.Composition.ImportingConstructorAttribute()]
+        public ParameterConstraintsProvider(IParameterConstraintsProvider implementation, Tecan.Sila2.Server.ISiLAServer server)
+        {
+            _implementation = implementation;
+            _server = server;
+        }
+        
+        ///  <summary>
+        /// The feature that is exposed by this feature provider
+        /// </summary>
+        /// <returns>A feature object</returns>
+        public Tecan.Sila2.Feature FeatureDefinition
+        {
+            get
+            {
+                return _feature;
+            }
+        }
+        
+        ///  <summary>
+        /// Creates a service definition for this service provider
+        /// </summary>
+        /// <returns>An object that describes which services are offered by this instance</returns>
+        public Grpc.Core.ServerServiceDefinition CreateServiceDefinition()
+        {
+            Grpc.Core.ServerServiceDefinition.Builder builder = Grpc.Core.ServerServiceDefinition.CreateBuilder();
+            builder.AddMethod(ParameterConstraintsProviderProvider.SubscribeParametersConstraintsMethod, SubscribeParametersConstraints);
+            return builder.Build();
+        }
+        
+        ///  <summary>
+        /// Subscribes to the Parameters Constraints property
+        /// </summary>
+        /// <param name="request">The request in which the call was made</param>
+        /// <param name="responseStream">The stream in which to write new property values</param>
+        /// <param name="context">The context in which the request is made</param>
+        /// <returns>A task that ends when the subscription ends</returns>
+        protected virtual System.Threading.Tasks.Task SubscribeParametersConstraints(EmptyRequest request, Grpc.Core.IServerStreamWriter<PropertyResponse<System.Collections.Generic.List<ParametersConstraintDto>>> responseStream, Grpc.Core.ServerCallContext context)
+        {
+            return ObservableCommandHelper.ContinuouslySendValue(_server, "org.silastandard/core.commands/ParameterConstraintsProvider/v1/Property/Parameter" +
+                    "sConstraints", responseStream, CreateParametersConstraintsResponse, 1000, context);
+        }
+        
+        ///  <summary>
+        /// Wrap the current value of Parameters Constraints into a data transfer object
+        /// </summary>
+        /// <returns>A data transfer object with the current value</returns>
+        private PropertyResponse<System.Collections.Generic.List<ParametersConstraintDto>> CreateParametersConstraintsResponse()
+        {
+            return new PropertyResponse<System.Collections.Generic.List<ParametersConstraintDto>>(Tecan.Sila2.DtoExtensions.Encapsulate(_implementation.ParametersConstraints, ParametersConstraintDto.Create, _server));
+        }
+        
+        ///  <summary>
+        /// Gets the command with the given identifier
+        /// </summary>
+        /// <param name="commandIdentifier">A fully qualified command identifier</param>
+        /// <returns>A method object or null, if the command is not supported</returns>
+        public System.Reflection.MethodInfo GetCommand(string commandIdentifier)
+        {
+            return null;
+        }
+        
+        ///  <summary>
+        /// Gets the property with the given identifier
+        /// </summary>
+        /// <param name="propertyIdentifier">A fully qualified property identifier</param>
+        /// <returns>A property object or null, if the property is not supported</returns>
+        public System.Reflection.PropertyInfo GetProperty(string propertyIdentifier)
+        {
+            if ((propertyIdentifier == "org.silastandard/core.commands/ParameterConstraintsProvider/v1/Property/Parameter" +
+                "sConstraints"))
+            {
+                return typeof(IParameterConstraintsProvider).GetProperty("ParametersConstraints");
+            }
+            return null;
+        }
+    }
+    
+    ///  <summary>
     /// Encapsulates provider classes to expose the Parameter Constraints Provider feature via SiLA2
     /// </summary>
-    public sealed partial class ParameterConstraintsProviderProvider
+    internal sealed partial class ParameterConstraintsProviderProvider
     {
         
         private static string @__ServiceName = "sila2.org.silastandard.core.commands.parameterconstraintsprovider.v1.ParameterCon" +
             "straintsProvider";
         
-        private static Grpc.Core.Method<EmptyRequest, PropertyResponse<System.Collections.Generic.List<ParametersConstraintDto>>> SubscribeParametersConstraintsMethod = new Grpc.Core.Method<EmptyRequest, PropertyResponse<System.Collections.Generic.List<ParametersConstraintDto>>>(Grpc.Core.MethodType.ServerStreaming, @__ServiceName, "Subscribe_ParametersConstraints", EmptyRequest.Marshaller, ProtobufMarshaller<PropertyResponse<System.Collections.Generic.List<ParametersConstraintDto>>>.Default);
-        
-        ///  <summary>
-        /// A class that exposes the IParameterConstraintsProvider interface via SiLA2
-        /// </summary>
-        [System.ComponentModel.Composition.ExportAttribute(typeof(IFeatureProvider))]
-        [System.ComponentModel.Composition.PartCreationPolicyAttribute(System.ComponentModel.Composition.CreationPolicy.Shared)]
-        public partial class Server : IFeatureProvider
-        {
-            
-            private IParameterConstraintsProvider _implementation;
-            
-            private Tecan.Sila2.Server.ISiLAServer _server;
-            
-            private static Tecan.Sila2.Feature _feature = FeatureSerializer.LoadFromAssembly(typeof(Server).Assembly, "ParameterConstraintsProvider.sila.xml");
-            
-            [System.ComponentModel.Composition.ImportingConstructorAttribute()]
-            public Server(IParameterConstraintsProvider implementation, Tecan.Sila2.Server.ISiLAServer server)
-            {
-                _implementation = implementation;
-                _server = server;
-            }
-            
-            ///  <summary>
-            /// The feature that is exposed by this feature provider
-            /// </summary>
-            /// <returns>A feature object</returns>
-            public Tecan.Sila2.Feature FeatureDefinition
-            {
-                get
-                {
-                    return _feature;
-                }
-            }
-            
-            ///  <summary>
-            /// Creates a service definition for this service provider
-            /// </summary>
-            /// <returns>An object that describes which services are offered by this instance</returns>
-            public Grpc.Core.ServerServiceDefinition CreateServiceDefinition()
-            {
-                Grpc.Core.ServerServiceDefinition.Builder builder = Grpc.Core.ServerServiceDefinition.CreateBuilder();
-                builder.AddMethod(SubscribeParametersConstraintsMethod, SubscribeParametersConstraints);
-                return builder.Build();
-            }
-            
-            ///  <summary>
-            /// Subscribes to the Parameters Constraints property
-            /// </summary>
-            /// <param name="request">The request in which the call was made</param>
-            /// <param name="responseStream">The stream in which to write new property values</param>
-            /// <param name="context">The context in which the request is made</param>
-            /// <returns>A task that ends when the subscription ends</returns>
-            protected virtual System.Threading.Tasks.Task SubscribeParametersConstraints(EmptyRequest request, Grpc.Core.IServerStreamWriter<PropertyResponse<System.Collections.Generic.List<ParametersConstraintDto>>> responseStream, Grpc.Core.ServerCallContext context)
-            {
-                return ObservableCommandHelper.ContinuouslySendValue(_server, "org.silastandard/core.commands/ParameterConstraintsProvider/v1/Property/Parameter" +
-                        "sConstraints", responseStream, CreateParametersConstraintsResponse, 1000, context);
-            }
-            
-            ///  <summary>
-            /// Wrap the current value of Parameters Constraints into a data transfer object
-            /// </summary>
-            /// <returns>A data transfer object with the current value</returns>
-            private PropertyResponse<System.Collections.Generic.List<ParametersConstraintDto>> CreateParametersConstraintsResponse()
-            {
-                return new PropertyResponse<System.Collections.Generic.List<ParametersConstraintDto>>(Tecan.Sila2.DtoExtensions.Encapsulate(_implementation.ParametersConstraints, ParametersConstraintDto.Create, _server));
-            }
-            
-            ///  <summary>
-            /// Gets the command with the given identifier
-            /// </summary>
-            /// <param name="commandIdentifier">A fully qualified command identifier</param>
-            /// <returns>A method object or null, if the command is not supported</returns>
-            public System.Reflection.MethodInfo GetCommand(string commandIdentifier)
-            {
-                return null;
-            }
-            
-            ///  <summary>
-            /// Gets the property with the given identifier
-            /// </summary>
-            /// <param name="propertyIdentifier">A fully qualified property identifier</param>
-            /// <returns>A property object or null, if the property is not supported</returns>
-            public System.Reflection.PropertyInfo GetProperty(string propertyIdentifier)
-            {
-                if ((propertyIdentifier == "org.silastandard/core.commands/ParameterConstraintsProvider/v1/Property/Parameter" +
-                    "sConstraints"))
-                {
-                    return typeof(IParameterConstraintsProvider).GetProperty("ParametersConstraints");
-                }
-                return null;
-            }
-        }
+        public static Grpc.Core.Method<EmptyRequest, PropertyResponse<System.Collections.Generic.List<ParametersConstraintDto>>> SubscribeParametersConstraintsMethod = new Grpc.Core.Method<EmptyRequest, PropertyResponse<System.Collections.Generic.List<ParametersConstraintDto>>>(Grpc.Core.MethodType.ServerStreaming, @__ServiceName, "Subscribe_ParametersConstraints", EmptyRequest.Marshaller, ProtobufMarshaller<PropertyResponse<System.Collections.Generic.List<ParametersConstraintDto>>>.Default);
     }
 }
 

@@ -18,19 +18,37 @@ namespace Tecan.Sila2.Server
         /// <param name="server">The server that is connected</param>
         /// <param name="commandId">The command execution identifier</param>
         /// <param name="responseStream">The stream to which responses should be written to</param>
+        /// <param name="exceptionConverter">A function that converts execution errors</param>
         /// <param name="context">The context in which the call is made</param>
         /// <returns>An awaitable task that completes when the client disconnects</returns>
         public static async Task QueryCommandState(ISiLAServer server, CommandExecutionUuid commandId,
-            IServerStreamWriter<ExecutionState> responseStream, ServerCallContext context)
+            IServerStreamWriter<ExecutionState> responseStream, Func<Exception, Exception> exceptionConverter, ServerCallContext context)
         {
             var command = server.GetCommandExecution(commandId.CommandId);
             var stateReader = command.StateUpdates;
-
-            while( await stateReader.WaitToReadAsync(context.CancellationToken) )
+            try
             {
-                if(stateReader.TryRead( out var currentState ) )
+                while(await stateReader.WaitToReadAsync( context.CancellationToken ))
                 {
-                    await responseStream.WriteAsync( ConvertStateUpdate(currentState) );
+                    if(stateReader.TryRead( out var currentState ))
+                    {
+                        await responseStream.WriteAsync( ConvertStateUpdate( currentState ) );
+                    }
+                }
+            }
+            catch(OperationCanceledException exception)
+            {
+                throw ErrorHandling.CreateCancellationError( exception.Message );
+            }
+            catch( Exception exception )
+            {
+                if( exceptionConverter != null )
+                {
+                    throw exceptionConverter( exception );
+                }
+                else
+                {
+                    throw;
                 }
             }
         }
@@ -81,13 +99,32 @@ namespace Tecan.Sila2.Server
         /// </summary>
         /// <param name="server">The server that should be connected</param>
         /// <param name="commandId">The command execution identifier</param>
+        /// <param name="exceptionConverter">A function that converts execution errors</param>
         /// <param name="context">The context in which the call is made</param>
         /// <returns>An awaitable task that completes when the command execution is done</returns>
-        public static async Task<EmptyRequest> WaitCommandExecution(ISiLAServer server, CommandExecutionUuid commandId, ServerCallContext context)
+        public static async Task<EmptyRequest> WaitCommandExecution(ISiLAServer server, CommandExecutionUuid commandId, Func<Exception, Exception> exceptionConverter, ServerCallContext context )
         {
-            var command = server.GetCommandExecution( commandId.CommandId );
-            await command.Response;
-            return EmptyRequest.Instance;
+            try
+            {
+                var command = server.GetCommandExecution( commandId.CommandId );
+                await command.Response;
+                return EmptyRequest.Instance;
+            }
+            catch( OperationCanceledException exception )
+            {
+                throw ErrorHandling.CreateCancellationError( exception.Message );
+            }
+            catch(Exception otherException)
+            {
+                if(exceptionConverter != null)
+                {
+                    throw exceptionConverter( otherException );
+                }
+                else
+                {
+                    throw;
+                }
+            }
         }
 
         /// <summary>
@@ -96,22 +133,42 @@ namespace Tecan.Sila2.Server
         /// <param name="server">The server that should be connected</param>
         /// <param name="commandId">The command execution identifier</param>
         /// <param name="context">The context in which the call is made</param>
+        /// <param name="exceptionConverter">A function that converts execution errors</param>
         /// <param name="converter">A function that specifies how to convert the response into a data transfer object</param>
         /// <returns>An awaitable task that completes when the command execution is done</returns>
-        public static async Task<TResponseDto> WaitCommandExecution<TResponse, TResponseDto>(ISiLAServer server, CommandExecutionUuid commandId, ServerCallContext context, Func<TResponse, TResponseDto> converter)
+        public static async Task<TResponseDto> WaitCommandExecution<TResponse, TResponseDto>(ISiLAServer server, CommandExecutionUuid commandId, Func<Exception, Exception> exceptionConverter, ServerCallContext context, Func<TResponse, TResponseDto> converter)
         {
-            var command = server.GetCommandExecution( commandId.CommandId );
-            var resultTask = command.Response as Task<TResponse>;
-            if( resultTask == null )
+            try
             {
-                throw new ArgumentOutOfRangeException( nameof(commandId) );
-            }
+                var command = server.GetCommandExecution( commandId.CommandId );
+                var resultTask = command.Response as Task<TResponse>;
+                if( resultTask == null )
+                {
+                    throw new ArgumentOutOfRangeException( nameof(commandId) );
+                }
 
-            if( converter == null )
-            {
-                throw new ArgumentNullException( nameof(converter) );
+                if( converter == null )
+                {
+                    throw new ArgumentNullException( nameof(converter) );
+                }
+
+                return converter( await resultTask );
             }
-            return converter( await resultTask );
+            catch( OperationCanceledException exception )
+            {
+                throw ErrorHandling.CreateCancellationError( exception.Message );
+            }
+            catch(Exception otherException)
+            {
+                if(exceptionConverter != null)
+                {
+                    throw exceptionConverter( otherException );
+                }
+                else
+                {
+                    throw;
+                }
+            }
         }
 
         /// <summary>
@@ -122,19 +179,38 @@ namespace Tecan.Sila2.Server
         /// <param name="server">The server that is connected</param>
         /// <param name="commandId">The command execution identifier</param>
         /// <param name="responseStream">A stream of command responses</param>
+        /// <param name="exceptionConverter">A function that converts execution errors</param>
         /// <param name="converter">A converter function to encapsulate intermediate values in data transfer objects</param>
         /// <param name="context">The context in which the call is made</param>
         /// <returns>An awaitable task that completes when the command execution is done.</returns>
-        public static async Task RetrieveIntermediateResults<TIntermediate, TIntermediateDto>(ISiLAServer server, CommandExecutionUuid commandId, IServerStreamWriter<TIntermediateDto> responseStream, Func<TIntermediate, TIntermediateDto> converter, ServerCallContext context)
+        public static async Task RetrieveIntermediateResults<TIntermediate, TIntermediateDto>(ISiLAServer server, CommandExecutionUuid commandId, IServerStreamWriter<TIntermediateDto> responseStream, Func<Exception, Exception> exceptionConverter, Func<TIntermediate, TIntermediateDto> converter, ServerCallContext context)
         {
-            var command = (IIntermediateObservableCommand<TIntermediate>)server.GetCommandExecution( commandId.CommandId );
-            var reader = command.IntermediateValues;
-
-            while( await reader.WaitToReadAsync( context.CancellationToken ) )
+            try
             {
-                if( reader.TryRead( out var intermediate ) )
+                var command = (IIntermediateObservableCommand<TIntermediate>)server.GetCommandExecution( commandId.CommandId );
+                var reader = command.IntermediateValues;
+
+                while( await reader.WaitToReadAsync( context.CancellationToken ) )
                 {
-                    await responseStream.WriteAsync( converter( intermediate ) );
+                    if( reader.TryRead( out var intermediate ) )
+                    {
+                        await responseStream.WriteAsync( converter( intermediate ) );
+                    }
+                }
+            }
+            catch(OperationCanceledException exception)
+            {
+                throw ErrorHandling.CreateCancellationError( exception.Message );
+            }
+            catch( Exception exception )
+            {
+                if(exceptionConverter != null )
+                {
+                    throw exceptionConverter( exception );
+                }
+                else
+                {
+                    throw;
                 }
             }
         }

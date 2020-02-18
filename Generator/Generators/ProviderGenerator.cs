@@ -49,7 +49,7 @@ namespace Tecan.Sila2.Generator.Generators
             var unit = new CodeCompileUnit();
             var nSpace = new CodeNamespace(ns);
             unit.Namespaces.Add(nSpace);
-            nSpace.Types.Add(GenerateProviderClass(feature, generateServer, generateClient));
+            nSpace.Types.Add(GenerateProviderClass(feature, generateServer, generateClient, nSpace));
 
             if (generateServer)
             {
@@ -77,14 +77,14 @@ namespace Tecan.Sila2.Generator.Generators
             return unit;
         }
 
-        private CodeTypeDeclaration GenerateProviderClass(Feature feature, bool generateServer, bool generateClient)
+        private CodeTypeDeclaration GenerateProviderClass(Feature feature, bool generateServer, bool generateClient, CodeNamespace ns)
         {
             var provider = new CodeTypeDeclaration(feature.Identifier + "Provider")
             {
-                Attributes = MemberAttributes.Public,
+                Attributes = MemberAttributes.Assembly | MemberAttributes.Static,
                 IsClass = true,
                 IsPartial = true,
-                TypeAttributes = TypeAttributes.Sealed | TypeAttributes.Public
+                TypeAttributes = TypeAttributes.Sealed | TypeAttributes.NestedAssembly
             };
             var serviceNameRef = GenerateServiceNameField(feature, provider);
 
@@ -106,11 +106,11 @@ namespace Tecan.Sila2.Generator.Generators
 
             if (generateServer && _serverGenerator != null)
             {
-                provider.Members.Add(_serverGenerator.GenerateServer(feature));
+                ns.Types.Add(_serverGenerator.GenerateServer(feature));
             }
             if (generateClient && _clientGenerator != null)
             {
-                provider.Members.Add(_clientGenerator.GenerateClient(feature));
+                ns.Types.Add(_clientGenerator.GenerateClient(feature));
             }
 
             provider.WriteDocumentation($"Encapsulates provider classes to expose the {feature.DisplayName} feature via SiLA2");
@@ -203,7 +203,7 @@ namespace Tecan.Sila2.Generator.Generators
             return new CodeMemberField
             {
                 Name = fieldName,
-                Attributes = MemberAttributes.Private | MemberAttributes.Final | MemberAttributes.Static,
+                Attributes = MemberAttributes.Public | MemberAttributes.Final | MemberAttributes.Static,
                 Type = fieldType,
                 InitExpression = new CodeObjectCreateExpression(
                     fieldType,

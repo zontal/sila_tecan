@@ -227,6 +227,16 @@ namespace Tecan.Sila2.Server
         /// <returns>An awaitable task that shuts down the server</returns>
         public async Task ShutdownServer()
         {
+            lock( _commandExecutions )
+            {
+                foreach( var execution in _commandExecutions )
+                {
+                    if( execution.Command.IsCancellationSupported )
+                    {
+                        execution.Command.Cancel();
+                    }
+                }
+            }
             _announcer?.Dispose();
             _cleanupTimer.Dispose();
             _logger.Log("Shutting down Grpc server".ToString, Severity.Info);
@@ -335,7 +345,11 @@ namespace Tecan.Sila2.Server
                         interception.ReportException( exception );
                     }
                 }
-
+                
+                if( exception is OperationCanceledException )
+                {
+                    throw ErrorHandling.CreateCancellationError( exception.Message );
+                }
                 throw;
             }
         }

@@ -127,7 +127,15 @@ namespace Tecan.Sila2.Server
         /// </summary>
         public virtual void ShutdownServer()
         {
-            _server.ShutdownServer();
+            try
+            {
+                _server.ShutdownServer();
+            }
+            catch( Exception exception )
+            {
+                _channel?.LogException( "Error shutting down server".ToString, exception );
+            }
+
             _container.Dispose();
         }
 

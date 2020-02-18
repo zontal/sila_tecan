@@ -8,7 +8,7 @@ namespace Tecan.Sila2.Locking
     [Export(typeof(ILockController))]
     [Export(typeof(IRequestInterceptor))]
     [PartCreationPolicy(CreationPolicy.Shared)]
-    internal class LockController : LockIdentifierInterceptorBase, ILockController, IRequestInterceptor
+    internal class LockControllerService : LockIdentifierInterceptorBase, ILockController, IRequestInterceptor
     {
         private DateTime _expiry;
         private string _lock;

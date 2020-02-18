@@ -9,6 +9,8 @@ namespace Tecan.Sila2
     /// </summary>
     public class ErrorHandling
     {
+        private const string CancellationIdentifier = "OperationCancelled";
+
         private static string ToBase64String(SiLAErrorDto error)
         {
             var bytes = ProtobufMarshaller<SiLAErrorDto>.Default.Serializer(error);
@@ -63,10 +65,20 @@ namespace Tecan.Sila2
             {
                 DefinedExecutionError = new DefinedExecutionErrorDto()
                 {
-                    Message = details ?? description,
+                    Message = details != null ? $"{description}: {details}" : description,
                     ErrorIdentifier = identifier
                 }
             } ) ) );
+        }
+
+        /// <summary>
+        /// Creates a server-side exception for a cancellation error
+        /// </summary>
+        /// <param name="cancellationMessage">The message explaining how and why the operation was cancelled</param>
+        /// <returns>An exception</returns>
+        public static Exception CreateCancellationError( string cancellationMessage )
+        {
+            return CreateExecutionError( CancellationIdentifier, cancellationMessage );
         }
 
         /// <summary>
@@ -105,6 +117,10 @@ namespace Tecan.Sila2
                             Convert.FromBase64String(rpcEx.Status.Detail));
                         if( error.DefinedExecutionError != null )
                         {
+                            if( error.DefinedExecutionError.ErrorIdentifier == CancellationIdentifier )
+                            {
+                                return new OperationCanceledException( error.DefinedExecutionError.Message );
+                            }
                             if( executionErrorConversion?.Invoke( error.DefinedExecutionError ) is var definedException && definedException != null )
                             {
                                 return definedException;

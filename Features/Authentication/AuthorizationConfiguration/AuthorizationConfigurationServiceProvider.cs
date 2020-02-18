@@ -18,133 +18,138 @@ namespace Tecan.Sila2.Authorization
     
     
     ///  <summary>
+    /// A class that exposes the IAuthorizationConfigurationService interface via SiLA2
+    /// </summary>
+    [System.ComponentModel.Composition.ExportAttribute(typeof(IFeatureProvider))]
+    [System.ComponentModel.Composition.PartCreationPolicyAttribute(System.ComponentModel.Composition.CreationPolicy.Shared)]
+    public partial class AuthorizationConfigurationService : IFeatureProvider
+    {
+        
+        private IAuthorizationConfigurationService _implementation;
+        
+        private Tecan.Sila2.Server.ISiLAServer _server;
+        
+        private static Tecan.Sila2.Feature _feature = FeatureSerializer.LoadFromAssembly(typeof(AuthorizationConfigurationService).Assembly, "AuthorizationConfigurationService.sila.xml");
+        
+        ///  <summary>
+        /// Creates a new instance
+        /// </summary>
+        /// <param name="implementation">The implementation to exported through SiLA2</param>
+        /// <param name="server">The SiLA2 server instance through which the implementation shall be exported</param>
+        [System.ComponentModel.Composition.ImportingConstructorAttribute()]
+        public AuthorizationConfigurationService(IAuthorizationConfigurationService implementation, Tecan.Sila2.Server.ISiLAServer server)
+        {
+            _implementation = implementation;
+            _server = server;
+        }
+        
+        ///  <summary>
+        /// The feature that is exposed by this feature provider
+        /// </summary>
+        /// <returns>A feature object</returns>
+        public Tecan.Sila2.Feature FeatureDefinition
+        {
+            get
+            {
+                return _feature;
+            }
+        }
+        
+        ///  <summary>
+        /// Creates a service definition for this service provider
+        /// </summary>
+        /// <returns>An object that describes which services are offered by this instance</returns>
+        public Grpc.Core.ServerServiceDefinition CreateServiceDefinition()
+        {
+            Grpc.Core.ServerServiceDefinition.Builder builder = Grpc.Core.ServerServiceDefinition.CreateBuilder();
+            builder.AddMethod(AuthorizationConfigurationServiceProvider.SetAuthorizationProviderMethod, SetAuthorizationProvider);
+            builder.AddMethod(AuthorizationConfigurationServiceProvider.GetAuthorizationProviderMethod, GetAuthorizationProvider);
+            return builder.Build();
+        }
+        
+        private EmptyRequest SetAuthorizationProviderInternal(SetAuthorizationProviderRequestDto request)
+        {
+            try
+            {
+                _implementation.SetAuthorizationProvider(request.AuthorizationProvider.Extract(_server));
+                return EmptyRequest.Instance;
+            } catch (System.ArgumentException ex)
+            {
+                if ((ex.ParamName == "authorizationProvider"))
+                {
+                    throw ErrorHandling.CreateValidationError("org.silastandard/core/AuthorizationConfigurationService/v1/Command/SetAuthorizati" +
+                            "onProvider/Parameter/AuthorizationProvider", ex.Message);
+                }
+                throw ErrorHandling.CreateUnknownValidationError(ex);
+            }
+        }
+        
+        ///  <summary>
+        /// Executes the Set Authorization Provider command
+        /// </summary>
+        /// <param name="request">A data transfer object that contains the command parameters</param>
+        /// <param name="context">The context in which the command is issued</param>
+        /// <returns>The command response wrapped in a data transfer object</returns>
+        protected virtual System.Threading.Tasks.Task<EmptyRequest> SetAuthorizationProvider(SetAuthorizationProviderRequestDto request, Grpc.Core.ServerCallContext context)
+        {
+            return _server.InvokeCommand(SetAuthorizationProviderInternal, request, context);
+        }
+        
+        ///  <summary>
+        /// Gets the current value of the Authorization Provider property
+        /// </summary>
+        /// <param name="request">The request object</param>
+        /// <param name="context">The context in which the request is made</param>
+        /// <returns>The current value wrapped in a data transfer object</returns>
+        protected virtual System.Threading.Tasks.Task<AuthorizationProviderResponseDto> GetAuthorizationProvider(EmptyRequest request, Grpc.Core.ServerCallContext context)
+        {
+            return _server.CreatePropertyTask("org.silastandard/core/AuthorizationConfigurationService/v1/Property/Authorization" +
+                    "Provider", new AuthorizationProviderResponseDto(_implementation.AuthorizationProvider, _server), context);
+        }
+        
+        ///  <summary>
+        /// Gets the command with the given identifier
+        /// </summary>
+        /// <param name="commandIdentifier">A fully qualified command identifier</param>
+        /// <returns>A method object or null, if the command is not supported</returns>
+        public System.Reflection.MethodInfo GetCommand(string commandIdentifier)
+        {
+            if ((commandIdentifier == "org.silastandard/core/AuthorizationConfigurationService/v1/Command/SetAuthorizati" +
+                "onProvider"))
+            {
+                return typeof(IAuthorizationConfigurationService).GetMethod("SetAuthorizationProvider");
+            }
+            return null;
+        }
+        
+        ///  <summary>
+        /// Gets the property with the given identifier
+        /// </summary>
+        /// <param name="propertyIdentifier">A fully qualified property identifier</param>
+        /// <returns>A property object or null, if the property is not supported</returns>
+        public System.Reflection.PropertyInfo GetProperty(string propertyIdentifier)
+        {
+            if ((propertyIdentifier == "org.silastandard/core/AuthorizationConfigurationService/v1/Property/Authorization" +
+                "Provider"))
+            {
+                return typeof(IAuthorizationConfigurationService).GetProperty("AuthorizationProvider");
+            }
+            return null;
+        }
+    }
+    
+    ///  <summary>
     /// Encapsulates provider classes to expose the Authorization Configuration feature via SiLA2
     /// </summary>
-    public sealed partial class AuthorizationConfigurationServiceProvider
+    internal sealed partial class AuthorizationConfigurationServiceProvider
     {
         
         private static string @__ServiceName = "sila2.org.silastandard.core.authorizationconfigurationservice.v1.AuthorizationCon" +
             "figurationService";
         
-        private static Grpc.Core.Method<SetAuthorizationProviderRequestDto, EmptyRequest> SetAuthorizationProviderMethod = new Grpc.Core.Method<SetAuthorizationProviderRequestDto, EmptyRequest>(Grpc.Core.MethodType.Unary, @__ServiceName, "SetAuthorizationProvider", ProtobufMarshaller<SetAuthorizationProviderRequestDto>.Default, EmptyRequest.Marshaller);
+        public static Grpc.Core.Method<SetAuthorizationProviderRequestDto, EmptyRequest> SetAuthorizationProviderMethod = new Grpc.Core.Method<SetAuthorizationProviderRequestDto, EmptyRequest>(Grpc.Core.MethodType.Unary, @__ServiceName, "SetAuthorizationProvider", ProtobufMarshaller<SetAuthorizationProviderRequestDto>.Default, EmptyRequest.Marshaller);
         
-        private static Grpc.Core.Method<EmptyRequest, AuthorizationProviderResponseDto> GetAuthorizationProviderMethod = new Grpc.Core.Method<EmptyRequest, AuthorizationProviderResponseDto>(Grpc.Core.MethodType.Unary, @__ServiceName, "Get_AuthorizationProvider", EmptyRequest.Marshaller, ProtobufMarshaller<AuthorizationProviderResponseDto>.Default);
-        
-        ///  <summary>
-        /// A class that exposes the IAuthorizationConfigurationService interface via SiLA2
-        /// </summary>
-        [System.ComponentModel.Composition.ExportAttribute(typeof(IFeatureProvider))]
-        [System.ComponentModel.Composition.PartCreationPolicyAttribute(System.ComponentModel.Composition.CreationPolicy.Shared)]
-        public partial class Server : IFeatureProvider
-        {
-            
-            private IAuthorizationConfigurationService _implementation;
-            
-            private Tecan.Sila2.Server.ISiLAServer _server;
-            
-            private static Tecan.Sila2.Feature _feature = FeatureSerializer.LoadFromAssembly(typeof(Server).Assembly, "AuthorizationConfigurationService.sila.xml");
-            
-            [System.ComponentModel.Composition.ImportingConstructorAttribute()]
-            public Server(IAuthorizationConfigurationService implementation, Tecan.Sila2.Server.ISiLAServer server)
-            {
-                _implementation = implementation;
-                _server = server;
-            }
-            
-            ///  <summary>
-            /// The feature that is exposed by this feature provider
-            /// </summary>
-            /// <returns>A feature object</returns>
-            public Tecan.Sila2.Feature FeatureDefinition
-            {
-                get
-                {
-                    return _feature;
-                }
-            }
-            
-            ///  <summary>
-            /// Creates a service definition for this service provider
-            /// </summary>
-            /// <returns>An object that describes which services are offered by this instance</returns>
-            public Grpc.Core.ServerServiceDefinition CreateServiceDefinition()
-            {
-                Grpc.Core.ServerServiceDefinition.Builder builder = Grpc.Core.ServerServiceDefinition.CreateBuilder();
-                builder.AddMethod(SetAuthorizationProviderMethod, SetAuthorizationProvider);
-                builder.AddMethod(GetAuthorizationProviderMethod, GetAuthorizationProvider);
-                return builder.Build();
-            }
-            
-            private EmptyRequest SetAuthorizationProviderInternal(SetAuthorizationProviderRequestDto request)
-            {
-                try
-                {
-                    _implementation.SetAuthorizationProvider(request.AuthorizationProvider.Extract(_server));
-                    return EmptyRequest.Instance;
-                } catch (System.ArgumentException ex)
-                {
-                    if ((ex.ParamName == "authorizationProvider"))
-                    {
-                        throw ErrorHandling.CreateValidationError("org.silastandard/core/AuthorizationConfigurationService/v1/Command/SetAuthorizati" +
-                                "onProvider/Parameter/AuthorizationProvider", ex.Message);
-                    }
-                    throw ErrorHandling.CreateUnknownValidationError(ex);
-                }
-            }
-            
-            ///  <summary>
-            /// Executes the Set Authorization Provider command
-            /// </summary>
-            /// <param name="request">A data transfer object that contains the command parameters</param>
-            /// <param name="context">The context in which the command is issued</param>
-            /// <returns>The command response wrapped in a data transfer object</returns>
-            protected virtual System.Threading.Tasks.Task<EmptyRequest> SetAuthorizationProvider(SetAuthorizationProviderRequestDto request, Grpc.Core.ServerCallContext context)
-            {
-                return _server.InvokeCommand(SetAuthorizationProviderInternal, request, context);
-            }
-            
-            ///  <summary>
-            /// Gets the current value of the Authorization Provider property
-            /// </summary>
-            /// <param name="request">The request object</param>
-            /// <param name="context">The context in which the request is made</param>
-            /// <returns>The current value wrapped in a data transfer object</returns>
-            protected virtual System.Threading.Tasks.Task<AuthorizationProviderResponseDto> GetAuthorizationProvider(EmptyRequest request, Grpc.Core.ServerCallContext context)
-            {
-                return _server.CreatePropertyTask("org.silastandard/core/AuthorizationConfigurationService/v1/Property/Authorization" +
-                        "Provider", new AuthorizationProviderResponseDto(_implementation.AuthorizationProvider, _server), context);
-            }
-            
-            ///  <summary>
-            /// Gets the command with the given identifier
-            /// </summary>
-            /// <param name="commandIdentifier">A fully qualified command identifier</param>
-            /// <returns>A method object or null, if the command is not supported</returns>
-            public System.Reflection.MethodInfo GetCommand(string commandIdentifier)
-            {
-                if ((commandIdentifier == "org.silastandard/core/AuthorizationConfigurationService/v1/Command/SetAuthorizati" +
-                    "onProvider"))
-                {
-                    return typeof(IAuthorizationConfigurationService).GetMethod("SetAuthorizationProvider");
-                }
-                return null;
-            }
-            
-            ///  <summary>
-            /// Gets the property with the given identifier
-            /// </summary>
-            /// <param name="propertyIdentifier">A fully qualified property identifier</param>
-            /// <returns>A property object or null, if the property is not supported</returns>
-            public System.Reflection.PropertyInfo GetProperty(string propertyIdentifier)
-            {
-                if ((propertyIdentifier == "org.silastandard/core/AuthorizationConfigurationService/v1/Property/Authorization" +
-                    "Provider"))
-                {
-                    return typeof(IAuthorizationConfigurationService).GetProperty("AuthorizationProvider");
-                }
-                return null;
-            }
-        }
+        public static Grpc.Core.Method<EmptyRequest, AuthorizationProviderResponseDto> GetAuthorizationProviderMethod = new Grpc.Core.Method<EmptyRequest, AuthorizationProviderResponseDto>(Grpc.Core.MethodType.Unary, @__ServiceName, "Get_AuthorizationProvider", EmptyRequest.Marshaller, ProtobufMarshaller<AuthorizationProviderResponseDto>.Default);
     }
 }
 

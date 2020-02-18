@@ -31,7 +31,7 @@ namespace Tecan.Sila2
         }
 
         /// <inheritdoc />
-        public void Start()
+        public virtual void Start()
         {
             if( Response != null )
             {
@@ -61,10 +61,19 @@ namespace Tecan.Sila2
             }
             finally
             {
-                PushStateUpdate( 1, TimeSpan.Zero, exception != null ? CommandState.FinishedWithErrors : CommandState.FinishedSuccess );
+                if( SendLastUpdate )
+                {
+                    PushStateUpdate( 1, TimeSpan.Zero, exception != null ? CommandState.FinishedWithErrors : CommandState.FinishedSuccess );
+                }
+
                 Cleanup(exception);
             }
         }
+
+        /// <summary>
+        /// Gets a value indicating whether the command should implicitly send a state update after being finished
+        /// </summary>
+        protected virtual bool SendLastUpdate => true;
 
         /// <summary>
         /// Pushes an updated state
@@ -75,7 +84,16 @@ namespace Tecan.Sila2
         /// <returns></returns>
         protected void PushStateUpdate( double progress, TimeSpan remainingTime, CommandState state )
         {
-            var update = new StateUpdate( progress, remainingTime, state );
+            PushStateUpdate( new StateUpdate( progress, remainingTime, state ) );
+        }
+
+        /// <summary>
+        /// Pushes an updated state
+        /// </summary>
+        /// <param name="update">The state update</param>
+        /// <returns></returns>
+        protected void PushStateUpdate( StateUpdate update )
+        {
             _stateUpdateChannel.Writer.TryWrite( update );
             _stateUpdate = update;
         }
@@ -156,7 +174,7 @@ namespace Tecan.Sila2
         }
 
         /// <inheritdoc />
-        public void Start()
+        public virtual void Start()
         {
             Response = WrapRun();
         }
@@ -181,10 +199,19 @@ namespace Tecan.Sila2
             }
             finally
             {
-                PushStateUpdate( 1, TimeSpan.Zero, exception != null ? CommandState.FinishedWithErrors : CommandState.FinishedSuccess );
+                if( SendLastUpdate )
+                {
+                    PushStateUpdate( 1, TimeSpan.Zero, exception != null ? CommandState.FinishedWithErrors : CommandState.FinishedSuccess );
+                }
+
                 Cleanup(exception);
             }
         }
+
+        /// <summary>
+        /// Gets a value indicating whether the command should implicitly send a state update after being finished
+        /// </summary>
+        protected virtual bool SendLastUpdate => true;
 
         /// <summary>
         /// Cleans up resources used for the execution of this command

@@ -303,6 +303,51 @@
       </DataType>
     </IntermediateResponse>
   </Command>
+  <Command>
+    <Identifier>WaitForCancelOrThrow</Identifier>
+    <DisplayName>Wait For Cancel Or Throw</DisplayName>
+    <Description />
+    <Observable>Yes</Observable>
+    <Parameter>
+      <Identifier>Duration</Identifier>
+      <DisplayName>Duration</DisplayName>
+      <Description />
+      <DataType>
+        <Basic>Time</Basic>
+      </DataType>
+    </Parameter>
+    <DefinedExecutionErrors>
+      <Identifier>ShouldHaveBeenCancelled</Identifier>
+    </DefinedExecutionErrors>
+  </Command>
+  <Command>
+    <Identifier>RunIntoFailure</Identifier>
+    <DisplayName>Run Into Failure</DisplayName>
+    <Description />
+    <Observable>No</Observable>
+    <DefinedExecutionErrors>
+      <Identifier>Fake</Identifier>
+    </DefinedExecutionErrors>
+  </Command>
+  <Command>
+    <Identifier>RunIntoFailureObservably</Identifier>
+    <DisplayName>Run Into Failure Observably</DisplayName>
+    <Description />
+    <Observable>Yes</Observable>
+    <DefinedExecutionErrors>
+      <Identifier>Fake</Identifier>
+    </DefinedExecutionErrors>
+  </Command>
+  <DefinedExecutionError>
+    <Identifier>ShouldHaveBeenCancelled</Identifier>
+    <DisplayName>Should Have Been Cancelled</DisplayName>
+    <Description />
+  </DefinedExecutionError>
+  <DefinedExecutionError>
+    <Identifier>Fake</Identifier>
+    <DisplayName>Fake</DisplayName>
+    <Description />
+  </DefinedExecutionError>
   <DataTypeDefinition>
     <Identifier>SomeStructure</Identifier>
     <DisplayName>Some Structure</DisplayName>

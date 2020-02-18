@@ -18,174 +18,205 @@ namespace Tecan.Sila2.Generator.Test.TestReference
     
     
     ///  <summary>
-    /// Encapsulates provider classes to expose the Dictionary Service feature via SiLA2
+    /// A class that exposes the IDictionaryService interface via SiLA2
     /// </summary>
-    public sealed partial class DictionaryServiceProvider
+    [System.ComponentModel.Composition.ExportAttribute(typeof(IFeatureProvider))]
+    [System.ComponentModel.Composition.PartCreationPolicyAttribute(System.ComponentModel.Composition.CreationPolicy.Shared)]
+    public partial class DictionaryService : IFeatureProvider
     {
         
-        private static string @__ServiceName = "sila2.tecan.sila.generator.test.dictionaryservice.v1.DictionaryService";
+        private IDictionaryService _implementation;
         
-        private static Grpc.Core.Method<EmptyRequest, PropertyResponse<System.Collections.Generic.List<Tecan.Sila2.KeyValuePairDto<long, Tecan.Sila2.IntegerDto, string, Tecan.Sila2.StringDto>>>> GetLookupMethod = new Grpc.Core.Method<EmptyRequest, PropertyResponse<System.Collections.Generic.List<Tecan.Sila2.KeyValuePairDto<long, Tecan.Sila2.IntegerDto, string, Tecan.Sila2.StringDto>>>>(Grpc.Core.MethodType.Unary, @__ServiceName, "Get_Lookup", EmptyRequest.Marshaller, ProtobufMarshaller<PropertyResponse<System.Collections.Generic.List<Tecan.Sila2.KeyValuePairDto<long, Tecan.Sila2.IntegerDto, string, Tecan.Sila2.StringDto>>>>.Default);
+        private Tecan.Sila2.Server.ISiLAServer _server;
+        
+        private static Tecan.Sila2.Feature _feature = FeatureSerializer.LoadFromAssembly(typeof(DictionaryService).Assembly, "DictionaryService.sila.xml");
         
         ///  <summary>
-        /// A class that exposes the IDictionaryService interface via SiLA2
+        /// Creates a new instance
         /// </summary>
-        [System.ComponentModel.Composition.ExportAttribute(typeof(IFeatureProvider))]
-        [System.ComponentModel.Composition.PartCreationPolicyAttribute(System.ComponentModel.Composition.CreationPolicy.Shared)]
-        public partial class Server : IFeatureProvider
+        /// <param name="implementation">The implementation to exported through SiLA2</param>
+        /// <param name="server">The SiLA2 server instance through which the implementation shall be exported</param>
+        [System.ComponentModel.Composition.ImportingConstructorAttribute()]
+        public DictionaryService(IDictionaryService implementation, Tecan.Sila2.Server.ISiLAServer server)
         {
-            
-            private IDictionaryService _implementation;
-            
-            private Tecan.Sila2.Server.ISiLAServer _server;
-            
-            private static Tecan.Sila2.Feature _feature = FeatureSerializer.LoadFromAssembly(typeof(Server).Assembly, "DictionaryService.sila.xml");
-            
-            [System.ComponentModel.Composition.ImportingConstructorAttribute()]
-            public Server(IDictionaryService implementation, Tecan.Sila2.Server.ISiLAServer server)
+            _implementation = implementation;
+            _server = server;
+        }
+        
+        ///  <summary>
+        /// The feature that is exposed by this feature provider
+        /// </summary>
+        /// <returns>A feature object</returns>
+        public Tecan.Sila2.Feature FeatureDefinition
+        {
+            get
             {
-                _implementation = implementation;
-                _server = server;
-            }
-            
-            ///  <summary>
-            /// The feature that is exposed by this feature provider
-            /// </summary>
-            /// <returns>A feature object</returns>
-            public Tecan.Sila2.Feature FeatureDefinition
-            {
-                get
-                {
-                    return _feature;
-                }
-            }
-            
-            ///  <summary>
-            /// Creates a service definition for this service provider
-            /// </summary>
-            /// <returns>An object that describes which services are offered by this instance</returns>
-            public Grpc.Core.ServerServiceDefinition CreateServiceDefinition()
-            {
-                Grpc.Core.ServerServiceDefinition.Builder builder = Grpc.Core.ServerServiceDefinition.CreateBuilder();
-                builder.AddMethod(GetLookupMethod, GetLookup);
-                return builder.Build();
-            }
-            
-            ///  <summary>
-            /// Gets the current value of the Lookup property
-            /// </summary>
-            /// <param name="request">The request object</param>
-            /// <param name="context">The context in which the request is made</param>
-            /// <returns>The current value wrapped in a data transfer object</returns>
-            protected virtual System.Threading.Tasks.Task<PropertyResponse<System.Collections.Generic.List<Tecan.Sila2.KeyValuePairDto<long, Tecan.Sila2.IntegerDto, string, Tecan.Sila2.StringDto>>>> GetLookup(EmptyRequest request, Grpc.Core.ServerCallContext context)
-            {
-                return _server.CreatePropertyTask("tecan.sila.generator/test/DictionaryService/v1/Property/Lookup", new PropertyResponse<System.Collections.Generic.List<Tecan.Sila2.KeyValuePairDto<long, Tecan.Sila2.IntegerDto, string, Tecan.Sila2.StringDto>>>(Tecan.Sila2.DtoExtensions.Encapsulate(_implementation.Lookup, Tecan.Sila2.IntegerDto.Create, Tecan.Sila2.StringDto.Create, _server)), context);
-            }
-            
-            ///  <summary>
-            /// Gets the command with the given identifier
-            /// </summary>
-            /// <param name="commandIdentifier">A fully qualified command identifier</param>
-            /// <returns>A method object or null, if the command is not supported</returns>
-            public System.Reflection.MethodInfo GetCommand(string commandIdentifier)
-            {
-                return null;
-            }
-            
-            ///  <summary>
-            /// Gets the property with the given identifier
-            /// </summary>
-            /// <param name="propertyIdentifier">A fully qualified property identifier</param>
-            /// <returns>A property object or null, if the property is not supported</returns>
-            public System.Reflection.PropertyInfo GetProperty(string propertyIdentifier)
-            {
-                if ((propertyIdentifier == "tecan.sila.generator/test/DictionaryService/v1/Property/Lookup"))
-                {
-                    return typeof(IDictionaryService).GetProperty("Lookup");
-                }
-                return null;
+                return _feature;
             }
         }
         
         ///  <summary>
-        /// Class that implements the IDictionaryService interface through SiLA2
+        /// Creates a service definition for this service provider
         /// </summary>
-        public partial class Client : Grpc.Core.ClientBase<Client>, IDictionaryService
+        /// <returns>An object that describes which services are offered by this instance</returns>
+        public Grpc.Core.ServerServiceDefinition CreateServiceDefinition()
         {
-            
-            private System.Lazy<System.Collections.Generic.IDictionary<long, string>> _lookup;
-            
-            private IClientExecutionManager _executionManager;
-            
-            public Client(IClientExecutionManager executionManager)
+            Grpc.Core.ServerServiceDefinition.Builder builder = Grpc.Core.ServerServiceDefinition.CreateBuilder();
+            builder.AddMethod(DictionaryServiceProvider.GetLookupMethod, GetLookup);
+            return builder.Build();
+        }
+        
+        ///  <summary>
+        /// Gets the current value of the Lookup property
+        /// </summary>
+        /// <param name="request">The request object</param>
+        /// <param name="context">The context in which the request is made</param>
+        /// <returns>The current value wrapped in a data transfer object</returns>
+        protected virtual System.Threading.Tasks.Task<PropertyResponse<System.Collections.Generic.List<Tecan.Sila2.KeyValuePairDto<long, Tecan.Sila2.IntegerDto, string, Tecan.Sila2.StringDto>>>> GetLookup(EmptyRequest request, Grpc.Core.ServerCallContext context)
+        {
+            return _server.CreatePropertyTask("tecan.sila.generator/test/DictionaryService/v2/Property/Lookup", new PropertyResponse<System.Collections.Generic.List<Tecan.Sila2.KeyValuePairDto<long, Tecan.Sila2.IntegerDto, string, Tecan.Sila2.StringDto>>>(Tecan.Sila2.DtoExtensions.Encapsulate(_implementation.Lookup, Tecan.Sila2.IntegerDto.Create, Tecan.Sila2.StringDto.Create, _server)), context);
+        }
+        
+        ///  <summary>
+        /// Gets the command with the given identifier
+        /// </summary>
+        /// <param name="commandIdentifier">A fully qualified command identifier</param>
+        /// <returns>A method object or null, if the command is not supported</returns>
+        public System.Reflection.MethodInfo GetCommand(string commandIdentifier)
+        {
+            return null;
+        }
+        
+        ///  <summary>
+        /// Gets the property with the given identifier
+        /// </summary>
+        /// <param name="propertyIdentifier">A fully qualified property identifier</param>
+        /// <returns>A property object or null, if the property is not supported</returns>
+        public System.Reflection.PropertyInfo GetProperty(string propertyIdentifier)
+        {
+            if ((propertyIdentifier == "tecan.sila.generator/test/DictionaryService/v2/Property/Lookup"))
             {
-                InitLazyRequests();
-                _executionManager = executionManager;
+                return typeof(IDictionaryService).GetProperty("Lookup");
             }
-            
-            protected Client(ClientBaseConfiguration configuration, IClientExecutionManager executionManager) : 
-                    base(configuration)
+            return null;
+        }
+    }
+    
+    ///  <summary>
+    /// Class that implements the IDictionaryService interface through SiLA2
+    /// </summary>
+    public partial class DictionaryServiceClient : Grpc.Core.ClientBase<DictionaryServiceClient>, IDictionaryService
+    {
+        
+        private System.Lazy<System.Collections.Generic.IDictionary<long, string>> _lookup;
+        
+        private IClientExecutionManager _executionManager;
+        
+        ///  <summary>
+        /// Creates a new instance
+        /// </summary>
+        /// <param name="executionManager">A component that attaches metadata to SiLA2 calls</param>
+        public DictionaryServiceClient(IClientExecutionManager executionManager)
+        {
+            InitLazyRequests();
+            _executionManager = executionManager;
+        }
+        
+        ///  <summary>
+        /// Creates a new instance
+        /// </summary>
+        /// <param name="configuration">The underlying configuration</param>
+        /// <param name="executionManager">A component that attaches metadata to SiLA2 calls</param>
+        protected DictionaryServiceClient(ClientBaseConfiguration configuration, IClientExecutionManager executionManager) : 
+                base(configuration)
+        {
+            InitLazyRequests();
+            _executionManager = executionManager;
+        }
+        
+        ///  <summary>
+        /// Creates a new instance
+        /// </summary>
+        /// <param name="channel">The underlying channel</param>
+        /// <param name="executionManager">A component that attaches metadata to SiLA2 calls</param>
+        public DictionaryServiceClient(Grpc.Core.Channel channel, IClientExecutionManager executionManager) : 
+                base(channel)
+        {
+            InitLazyRequests();
+            _executionManager = executionManager;
+        }
+        
+        ///  <summary>
+        /// Creates a new instance
+        /// </summary>
+        /// <param name="invoker">The underlying invoker</param>
+        /// <param name="executionManager">A component that attaches metadata to SiLA2 calls</param>
+        public DictionaryServiceClient(Grpc.Core.CallInvoker invoker, IClientExecutionManager executionManager) : 
+                base(invoker)
+        {
+            InitLazyRequests();
+            _executionManager = executionManager;
+        }
+        
+        ///  <summary>
+        /// </summary>
+        public virtual System.Collections.Generic.IDictionary<long, string> Lookup
+        {
+            get
             {
-                InitLazyRequests();
-                _executionManager = executionManager;
-            }
-            
-            public Client(Grpc.Core.Channel channel, IClientExecutionManager executionManager) : 
-                    base(channel)
-            {
-                InitLazyRequests();
-                _executionManager = executionManager;
-            }
-            
-            ///  <summary>
-            /// </summary>
-            public virtual System.Collections.Generic.IDictionary<long, string> Lookup
-            {
-                get
-                {
-                    return _lookup.Value;
-                }
-            }
-            
-            private System.Collections.Generic.IDictionary<long, string> RequestLookup()
-            {
-                Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("tecan.sila.generator/test/DictionaryService/v1/Property/Lookup");
-                try
-                {
-                    System.Collections.Generic.IDictionary<long, string> response = Tecan.Sila2.DtoExtensions.Extract(CallInvoker.BlockingUnaryCall(GetLookupMethod, null, callInfo.Options, EmptyRequest.Instance).Value, _executionManager.DownloadBinaryStore);
-                    callInfo.FinishSuccessful();
-                    return response;
-                } catch (System.Exception ex)
-                {
-                    System.Exception exception = ErrorHandling.ConvertException(ex);
-                    callInfo.FinishWithErrors(exception);
-                    throw exception;
-                }
-            }
-            
-            ///  <summary>
-            /// Initializes lazies for non-observable properties.
-            /// </summary>
-            private void InitLazyRequests()
-            {
-                _lookup = new System.Lazy<System.Collections.Generic.IDictionary<long, string>>(RequestLookup);
-            }
-            
-            ///  <summary>
-            /// Creates a new instance
-            /// </summary>
-            /// <param name="configuration">The new client configuration</param>
-            protected override Client NewInstance(ClientBaseConfiguration configuration)
-            {
-                return new Client(configuration, _executionManager);
-            }
-            
-            private T Extract<T>(Tecan.Sila2.ISilaTransferObject<T> dto)
-            
-            {
-                return dto.Extract(_executionManager.DownloadBinaryStore);
+                return _lookup.Value;
             }
         }
+        
+        private System.Collections.Generic.IDictionary<long, string> RequestLookup()
+        {
+            Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("tecan.sila.generator/test/DictionaryService/v2/Property/Lookup");
+            try
+            {
+                System.Collections.Generic.IDictionary<long, string> response = Tecan.Sila2.DtoExtensions.Extract(CallInvoker.BlockingUnaryCall(DictionaryServiceProvider.GetLookupMethod, null, callInfo.Options, EmptyRequest.Instance).Value, _executionManager.DownloadBinaryStore);
+                callInfo.FinishSuccessful();
+                return response;
+            } catch (System.Exception ex)
+            {
+                System.Exception exception = ErrorHandling.ConvertException(ex);
+                callInfo.FinishWithErrors(exception);
+                throw exception;
+            }
+        }
+        
+        ///  <summary>
+        /// Initializes lazies for non-observable properties.
+        /// </summary>
+        private void InitLazyRequests()
+        {
+            _lookup = new System.Lazy<System.Collections.Generic.IDictionary<long, string>>(RequestLookup);
+        }
+        
+        ///  <summary>
+        /// Creates a new instance
+        /// </summary>
+        /// <param name="configuration">The new client configuration</param>
+        protected override DictionaryServiceClient NewInstance(ClientBaseConfiguration configuration)
+        {
+            return new DictionaryServiceClient(configuration, _executionManager);
+        }
+        
+        private T Extract<T>(Tecan.Sila2.ISilaTransferObject<T> dto)
+        
+        {
+            return dto.Extract(_executionManager.DownloadBinaryStore);
+        }
+    }
+    
+    ///  <summary>
+    /// Encapsulates provider classes to expose the Dictionary Service feature via SiLA2
+    /// </summary>
+    internal sealed partial class DictionaryServiceProvider
+    {
+        
+        private static string @__ServiceName = "sila2.tecan.sila.generator.test.dictionaryservice.v2.DictionaryService";
+        
+        public static Grpc.Core.Method<EmptyRequest, PropertyResponse<System.Collections.Generic.List<Tecan.Sila2.KeyValuePairDto<long, Tecan.Sila2.IntegerDto, string, Tecan.Sila2.StringDto>>>> GetLookupMethod = new Grpc.Core.Method<EmptyRequest, PropertyResponse<System.Collections.Generic.List<Tecan.Sila2.KeyValuePairDto<long, Tecan.Sila2.IntegerDto, string, Tecan.Sila2.StringDto>>>>(Grpc.Core.MethodType.Unary, @__ServiceName, "Get_Lookup", EmptyRequest.Marshaller, ProtobufMarshaller<PropertyResponse<System.Collections.Generic.List<Tecan.Sila2.KeyValuePairDto<long, Tecan.Sila2.IntegerDto, string, Tecan.Sila2.StringDto>>>>.Default);
     }
 }
 

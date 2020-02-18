@@ -7,11 +7,8 @@ using Tecan.Sila2.Server;
 
 namespace Tecan.Sila2.Generator.Test.TestReference
 {
-    public sealed partial class LoggingServiceProvider
+    public partial class LoggingServiceClient
     {
-        partial class Client
-        {
-            public IRequestInterceptor LoggingActivity => null;
-        }
+        public IRequestInterceptor LoggingActivity => null;
     }
 }

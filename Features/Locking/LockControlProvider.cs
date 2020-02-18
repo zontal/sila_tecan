@@ -18,193 +18,198 @@ namespace Tecan.Sila2.Locking
     
     
     ///  <summary>
+    /// A class that exposes the ILockController interface via SiLA2
+    /// </summary>
+    [System.ComponentModel.Composition.ExportAttribute(typeof(IFeatureProvider))]
+    [System.ComponentModel.Composition.PartCreationPolicyAttribute(System.ComponentModel.Composition.CreationPolicy.Shared)]
+    public partial class LockController : IFeatureProvider
+    {
+        
+        private ILockController _implementation;
+        
+        private Tecan.Sila2.Server.ISiLAServer _server;
+        
+        private static Tecan.Sila2.Feature _feature = FeatureSerializer.LoadFromAssembly(typeof(LockController).Assembly, "LockController.sila.xml");
+        
+        ///  <summary>
+        /// Creates a new instance
+        /// </summary>
+        /// <param name="implementation">The implementation to exported through SiLA2</param>
+        /// <param name="server">The SiLA2 server instance through which the implementation shall be exported</param>
+        [System.ComponentModel.Composition.ImportingConstructorAttribute()]
+        public LockController(ILockController implementation, Tecan.Sila2.Server.ISiLAServer server)
+        {
+            _implementation = implementation;
+            _server = server;
+        }
+        
+        ///  <summary>
+        /// The feature that is exposed by this feature provider
+        /// </summary>
+        /// <returns>A feature object</returns>
+        public Tecan.Sila2.Feature FeatureDefinition
+        {
+            get
+            {
+                return _feature;
+            }
+        }
+        
+        ///  <summary>
+        /// Creates a service definition for this service provider
+        /// </summary>
+        /// <returns>An object that describes which services are offered by this instance</returns>
+        public Grpc.Core.ServerServiceDefinition CreateServiceDefinition()
+        {
+            Grpc.Core.ServerServiceDefinition.Builder builder = Grpc.Core.ServerServiceDefinition.CreateBuilder();
+            builder.AddMethod(LockControllerProvider.LockServerMethod, LockServer);
+            builder.AddMethod(LockControllerProvider.UnlockServerMethod, UnlockServer);
+            builder.AddMethod(LockControllerProvider.GetIsLockedMethod, GetIsLocked);
+            builder.AddMethod(LockControllerProvider.GetAffectedByLockIdentifierMethod, GetAffectedByLockIdentifier);
+            return builder.Build();
+        }
+        
+        private EmptyRequest LockServerInternal(LockServerRequestDto request)
+        {
+            try
+            {
+                _implementation.LockServer(request.LockIdentifier.Extract(_server), request.Timeout.Extract(_server));
+                return EmptyRequest.Instance;
+            } catch (System.ArgumentException ex)
+            {
+                if ((ex.ParamName == "lockIdentifier"))
+                {
+                    throw ErrorHandling.CreateValidationError("org.silastandard/core/LockController/v1/Command/LockServer/Parameter/LockIdentifi" +
+                            "er", ex.Message);
+                }
+                if ((ex.ParamName == "timeout"))
+                {
+                    throw ErrorHandling.CreateValidationError("org.silastandard/core/LockController/v1/Command/LockServer/Parameter/Timeout", ex.Message);
+                }
+                throw ErrorHandling.CreateUnknownValidationError(ex);
+            } catch (ServerAlreadyLockedException ex)
+            {
+                throw ErrorHandling.CreateExecutionError("org.silastandard/core/LockController/v1/DefinedError/ServerAlreadyLocked", "The SiLA Server can not be locked because it is already locked.", ex.Message);
+            }
+        }
+        
+        ///  <summary>
+        /// Executes the Lock Server command
+        /// </summary>
+        /// <param name="request">A data transfer object that contains the command parameters</param>
+        /// <param name="context">The context in which the command is issued</param>
+        /// <returns>The command response wrapped in a data transfer object</returns>
+        protected virtual System.Threading.Tasks.Task<EmptyRequest> LockServer(LockServerRequestDto request, Grpc.Core.ServerCallContext context)
+        {
+            return _server.InvokeCommand(LockServerInternal, request, context);
+        }
+        
+        private EmptyRequest UnlockServerInternal(UnlockServerRequestDto request)
+        {
+            try
+            {
+                _implementation.UnlockServer(request.LockIdentifier.Extract(_server));
+                return EmptyRequest.Instance;
+            } catch (System.ArgumentException ex)
+            {
+                if ((ex.ParamName == "lockIdentifier"))
+                {
+                    throw ErrorHandling.CreateValidationError("org.silastandard/core/LockController/v1/Command/UnlockServer/Parameter/LockIdenti" +
+                            "fier", ex.Message);
+                }
+                throw ErrorHandling.CreateUnknownValidationError(ex);
+            } catch (ServerNotLockedException ex)
+            {
+                throw ErrorHandling.CreateExecutionError("org.silastandard/core/LockController/v1/DefinedError/ServerNotLocked", "The SiLA Server can not be unlocked because it is not locked.", ex.Message);
+            } catch (InvalidLockIdentifierException ex)
+            {
+                throw ErrorHandling.CreateExecutionError("org.silastandard/core/LockController/v1/DefinedError/InvalidLockIdentifier", "The sent lock identifier is not valid.", ex.Message);
+            }
+        }
+        
+        ///  <summary>
+        /// Executes the Unlock Server command
+        /// </summary>
+        /// <param name="request">A data transfer object that contains the command parameters</param>
+        /// <param name="context">The context in which the command is issued</param>
+        /// <returns>The command response wrapped in a data transfer object</returns>
+        protected virtual System.Threading.Tasks.Task<EmptyRequest> UnlockServer(UnlockServerRequestDto request, Grpc.Core.ServerCallContext context)
+        {
+            return _server.InvokeCommand(UnlockServerInternal, request, context);
+        }
+        
+        ///  <summary>
+        /// Gets the current value of the IsLocked property
+        /// </summary>
+        /// <param name="request">The request object</param>
+        /// <param name="context">The context in which the request is made</param>
+        /// <returns>The current value wrapped in a data transfer object</returns>
+        protected virtual System.Threading.Tasks.Task<PropertyResponse<Tecan.Sila2.BooleanDto>> GetIsLocked(EmptyRequest request, Grpc.Core.ServerCallContext context)
+        {
+            return _server.CreatePropertyTask("org.silastandard/core/LockController/v1/Property/IsLocked", new PropertyResponse<Tecan.Sila2.BooleanDto>(new Tecan.Sila2.BooleanDto(_implementation.IsLocked, _server)), context);
+        }
+        
+        ///  <summary>
+        /// Gets the features/commands/properties affected by the metadata
+        /// The lock identifier has to be sent with every (lock protected) call in order to use the functionality
+        /// of a locked SiLA Server.
+        /// </summary>
+        /// <param name="request">The request object (not used)</param>
+        /// <param name="context">The request context</param>
+        /// <returns>A list of fully qualified identifiers</returns>
+        protected virtual System.Threading.Tasks.Task<System.Collections.Generic.List<Tecan.Sila2.StringDto>> GetAffectedByLockIdentifier(EmptyRequest request, Grpc.Core.ServerCallContext context)
+        {
+            return Tecan.Sila2.Server.Metadata.GetAffectedIdentifiers(_server, _implementation.LockIdentifier);
+        }
+        
+        ///  <summary>
+        /// Gets the command with the given identifier
+        /// </summary>
+        /// <param name="commandIdentifier">A fully qualified command identifier</param>
+        /// <returns>A method object or null, if the command is not supported</returns>
+        public System.Reflection.MethodInfo GetCommand(string commandIdentifier)
+        {
+            if ((commandIdentifier == "org.silastandard/core/LockController/v1/Command/LockServer"))
+            {
+                return typeof(ILockController).GetMethod("LockServer");
+            }
+            if ((commandIdentifier == "org.silastandard/core/LockController/v1/Command/UnlockServer"))
+            {
+                return typeof(ILockController).GetMethod("UnlockServer");
+            }
+            return null;
+        }
+        
+        ///  <summary>
+        /// Gets the property with the given identifier
+        /// </summary>
+        /// <param name="propertyIdentifier">A fully qualified property identifier</param>
+        /// <returns>A property object or null, if the property is not supported</returns>
+        public System.Reflection.PropertyInfo GetProperty(string propertyIdentifier)
+        {
+            if ((propertyIdentifier == "org.silastandard/core/LockController/v1/Property/IsLocked"))
+            {
+                return typeof(ILockController).GetProperty("IsLocked");
+            }
+            return null;
+        }
+    }
+    
+    ///  <summary>
     /// Encapsulates provider classes to expose the Lock Controller feature via SiLA2
     /// </summary>
-    public sealed partial class LockControllerProvider
+    internal sealed partial class LockControllerProvider
     {
         
         private static string @__ServiceName = "sila2.org.silastandard.core.lockcontroller.v1.LockController";
         
-        private static Grpc.Core.Method<LockServerRequestDto, EmptyRequest> LockServerMethod = new Grpc.Core.Method<LockServerRequestDto, EmptyRequest>(Grpc.Core.MethodType.Unary, @__ServiceName, "LockServer", ProtobufMarshaller<LockServerRequestDto>.Default, EmptyRequest.Marshaller);
+        public static Grpc.Core.Method<LockServerRequestDto, EmptyRequest> LockServerMethod = new Grpc.Core.Method<LockServerRequestDto, EmptyRequest>(Grpc.Core.MethodType.Unary, @__ServiceName, "LockServer", ProtobufMarshaller<LockServerRequestDto>.Default, EmptyRequest.Marshaller);
         
-        private static Grpc.Core.Method<UnlockServerRequestDto, EmptyRequest> UnlockServerMethod = new Grpc.Core.Method<UnlockServerRequestDto, EmptyRequest>(Grpc.Core.MethodType.Unary, @__ServiceName, "UnlockServer", ProtobufMarshaller<UnlockServerRequestDto>.Default, EmptyRequest.Marshaller);
+        public static Grpc.Core.Method<UnlockServerRequestDto, EmptyRequest> UnlockServerMethod = new Grpc.Core.Method<UnlockServerRequestDto, EmptyRequest>(Grpc.Core.MethodType.Unary, @__ServiceName, "UnlockServer", ProtobufMarshaller<UnlockServerRequestDto>.Default, EmptyRequest.Marshaller);
         
-        private static Grpc.Core.Method<EmptyRequest, PropertyResponse<Tecan.Sila2.BooleanDto>> GetIsLockedMethod = new Grpc.Core.Method<EmptyRequest, PropertyResponse<Tecan.Sila2.BooleanDto>>(Grpc.Core.MethodType.Unary, @__ServiceName, "Get_IsLocked", EmptyRequest.Marshaller, ProtobufMarshaller<PropertyResponse<Tecan.Sila2.BooleanDto>>.Default);
+        public static Grpc.Core.Method<EmptyRequest, PropertyResponse<Tecan.Sila2.BooleanDto>> GetIsLockedMethod = new Grpc.Core.Method<EmptyRequest, PropertyResponse<Tecan.Sila2.BooleanDto>>(Grpc.Core.MethodType.Unary, @__ServiceName, "Get_IsLocked", EmptyRequest.Marshaller, ProtobufMarshaller<PropertyResponse<Tecan.Sila2.BooleanDto>>.Default);
         
-        private static Grpc.Core.Method<EmptyRequest, System.Collections.Generic.List<Tecan.Sila2.StringDto>> GetAffectedByLockIdentifierMethod = new Grpc.Core.Method<EmptyRequest, System.Collections.Generic.List<Tecan.Sila2.StringDto>>(Grpc.Core.MethodType.Unary, @__ServiceName, "Get_FCPAffectedByMetadata_LockIdentifier", EmptyRequest.Marshaller, ProtobufMarshaller<System.Collections.Generic.List<Tecan.Sila2.StringDto>>.Default);
-        
-        ///  <summary>
-        /// A class that exposes the ILockController interface via SiLA2
-        /// </summary>
-        [System.ComponentModel.Composition.ExportAttribute(typeof(IFeatureProvider))]
-        [System.ComponentModel.Composition.PartCreationPolicyAttribute(System.ComponentModel.Composition.CreationPolicy.Shared)]
-        public partial class Server : IFeatureProvider
-        {
-            
-            private ILockController _implementation;
-            
-            private Tecan.Sila2.Server.ISiLAServer _server;
-            
-            private static Tecan.Sila2.Feature _feature = FeatureSerializer.LoadFromAssembly(typeof(Server).Assembly, "LockController.sila.xml");
-            
-            [System.ComponentModel.Composition.ImportingConstructorAttribute()]
-            public Server(ILockController implementation, Tecan.Sila2.Server.ISiLAServer server)
-            {
-                _implementation = implementation;
-                _server = server;
-            }
-            
-            ///  <summary>
-            /// The feature that is exposed by this feature provider
-            /// </summary>
-            /// <returns>A feature object</returns>
-            public Tecan.Sila2.Feature FeatureDefinition
-            {
-                get
-                {
-                    return _feature;
-                }
-            }
-            
-            ///  <summary>
-            /// Creates a service definition for this service provider
-            /// </summary>
-            /// <returns>An object that describes which services are offered by this instance</returns>
-            public Grpc.Core.ServerServiceDefinition CreateServiceDefinition()
-            {
-                Grpc.Core.ServerServiceDefinition.Builder builder = Grpc.Core.ServerServiceDefinition.CreateBuilder();
-                builder.AddMethod(LockServerMethod, LockServer);
-                builder.AddMethod(UnlockServerMethod, UnlockServer);
-                builder.AddMethod(GetIsLockedMethod, GetIsLocked);
-                builder.AddMethod(GetAffectedByLockIdentifierMethod, GetAffectedByLockIdentifier);
-                return builder.Build();
-            }
-            
-            private EmptyRequest LockServerInternal(LockServerRequestDto request)
-            {
-                try
-                {
-                    _implementation.LockServer(request.LockIdentifier.Extract(_server), request.Timeout.Extract(_server));
-                    return EmptyRequest.Instance;
-                } catch (System.ArgumentException ex)
-                {
-                    if ((ex.ParamName == "lockIdentifier"))
-                    {
-                        throw ErrorHandling.CreateValidationError("org.silastandard/core/LockController/v1/Command/LockServer/Parameter/LockIdentifi" +
-                                "er", ex.Message);
-                    }
-                    if ((ex.ParamName == "timeout"))
-                    {
-                        throw ErrorHandling.CreateValidationError("org.silastandard/core/LockController/v1/Command/LockServer/Parameter/Timeout", ex.Message);
-                    }
-                    throw ErrorHandling.CreateUnknownValidationError(ex);
-                } catch (ServerAlreadyLockedException ex)
-                {
-                    throw ErrorHandling.CreateExecutionError("org.silastandard/core/LockController/v1/DefinedError/ServerAlreadyLocked", "The SiLA Server can not be locked because it is already locked.", ex.Message);
-                }
-            }
-            
-            ///  <summary>
-            /// Executes the Lock Server command
-            /// </summary>
-            /// <param name="request">A data transfer object that contains the command parameters</param>
-            /// <param name="context">The context in which the command is issued</param>
-            /// <returns>The command response wrapped in a data transfer object</returns>
-            protected virtual System.Threading.Tasks.Task<EmptyRequest> LockServer(LockServerRequestDto request, Grpc.Core.ServerCallContext context)
-            {
-                return _server.InvokeCommand(LockServerInternal, request, context);
-            }
-            
-            private EmptyRequest UnlockServerInternal(UnlockServerRequestDto request)
-            {
-                try
-                {
-                    _implementation.UnlockServer(request.LockIdentifier.Extract(_server));
-                    return EmptyRequest.Instance;
-                } catch (System.ArgumentException ex)
-                {
-                    if ((ex.ParamName == "lockIdentifier"))
-                    {
-                        throw ErrorHandling.CreateValidationError("org.silastandard/core/LockController/v1/Command/UnlockServer/Parameter/LockIdenti" +
-                                "fier", ex.Message);
-                    }
-                    throw ErrorHandling.CreateUnknownValidationError(ex);
-                } catch (ServerNotLockedException ex)
-                {
-                    throw ErrorHandling.CreateExecutionError("org.silastandard/core/LockController/v1/DefinedError/ServerNotLocked", "The SiLA Server can not be unlocked because it is not locked.", ex.Message);
-                } catch (InvalidLockIdentifierException ex)
-                {
-                    throw ErrorHandling.CreateExecutionError("org.silastandard/core/LockController/v1/DefinedError/InvalidLockIdentifier", "The sent lock identifier is not valid.", ex.Message);
-                }
-            }
-            
-            ///  <summary>
-            /// Executes the Unlock Server command
-            /// </summary>
-            /// <param name="request">A data transfer object that contains the command parameters</param>
-            /// <param name="context">The context in which the command is issued</param>
-            /// <returns>The command response wrapped in a data transfer object</returns>
-            protected virtual System.Threading.Tasks.Task<EmptyRequest> UnlockServer(UnlockServerRequestDto request, Grpc.Core.ServerCallContext context)
-            {
-                return _server.InvokeCommand(UnlockServerInternal, request, context);
-            }
-            
-            ///  <summary>
-            /// Gets the current value of the IsLocked property
-            /// </summary>
-            /// <param name="request">The request object</param>
-            /// <param name="context">The context in which the request is made</param>
-            /// <returns>The current value wrapped in a data transfer object</returns>
-            protected virtual System.Threading.Tasks.Task<PropertyResponse<Tecan.Sila2.BooleanDto>> GetIsLocked(EmptyRequest request, Grpc.Core.ServerCallContext context)
-            {
-                return _server.CreatePropertyTask("org.silastandard/core/LockController/v1/Property/IsLocked", new PropertyResponse<Tecan.Sila2.BooleanDto>(new Tecan.Sila2.BooleanDto(_implementation.IsLocked, _server)), context);
-            }
-            
-            ///  <summary>
-            /// Gets the features/commands/properties affected by the metadata
-            /// The lock identifier has to be sent with every (lock protected) call in order to use the functionality
-            /// of a locked SiLA Server.
-            /// </summary>
-            /// <param name="request">The request object (not used)</param>
-            /// <param name="context">The request context</param>
-            /// <returns>A list of fully qualified identifiers</returns>
-            protected virtual System.Threading.Tasks.Task<System.Collections.Generic.List<Tecan.Sila2.StringDto>> GetAffectedByLockIdentifier(EmptyRequest request, Grpc.Core.ServerCallContext context)
-            {
-                return Tecan.Sila2.Server.Metadata.GetAffectedIdentifiers(_server, _implementation.LockIdentifier);
-            }
-            
-            ///  <summary>
-            /// Gets the command with the given identifier
-            /// </summary>
-            /// <param name="commandIdentifier">A fully qualified command identifier</param>
-            /// <returns>A method object or null, if the command is not supported</returns>
-            public System.Reflection.MethodInfo GetCommand(string commandIdentifier)
-            {
-                if ((commandIdentifier == "org.silastandard/core/LockController/v1/Command/LockServer"))
-                {
-                    return typeof(ILockController).GetMethod("LockServer");
-                }
-                if ((commandIdentifier == "org.silastandard/core/LockController/v1/Command/UnlockServer"))
-                {
-                    return typeof(ILockController).GetMethod("UnlockServer");
-                }
-                return null;
-            }
-            
-            ///  <summary>
-            /// Gets the property with the given identifier
-            /// </summary>
-            /// <param name="propertyIdentifier">A fully qualified property identifier</param>
-            /// <returns>A property object or null, if the property is not supported</returns>
-            public System.Reflection.PropertyInfo GetProperty(string propertyIdentifier)
-            {
-                if ((propertyIdentifier == "org.silastandard/core/LockController/v1/Property/IsLocked"))
-                {
-                    return typeof(ILockController).GetProperty("IsLocked");
-                }
-                return null;
-            }
-        }
+        public static Grpc.Core.Method<EmptyRequest, System.Collections.Generic.List<Tecan.Sila2.StringDto>> GetAffectedByLockIdentifierMethod = new Grpc.Core.Method<EmptyRequest, System.Collections.Generic.List<Tecan.Sila2.StringDto>>(Grpc.Core.MethodType.Unary, @__ServiceName, "Get_FCPAffectedByMetadata_LockIdentifier", EmptyRequest.Marshaller, ProtobufMarshaller<System.Collections.Generic.List<Tecan.Sila2.StringDto>>.Default);
     }
     
     ///  <summary>

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Tecan.Sila2.IntegrationTests
 {
@@ -36,6 +38,27 @@ namespace Tecan.Sila2.IntegrationTests
 
         [Observable]
         IIntermediateObservableCommand<int> RunIntermediateObservableCommand();
+
+        [Observable]
+        [Throws(typeof(ShouldHaveBeenCancelledException))]
+        Task WaitForCancelOrThrow( TimeSpan duration, CancellationToken cancellationToken );
+
+        [Throws(typeof(FakeException))]
+        void RunIntoFailure();
+
+        [Observable]
+        [Throws(typeof(FakeException))]
+        void RunIntoFailureObservably(CancellationToken cancellationToken);
+    }
+
+    public class FakeException : Exception
+    {
+        public FakeException(string message) : base(message) { }
+    }
+
+    public class ShouldHaveBeenCancelledException : Exception
+    {
+        public ShouldHaveBeenCancelledException(string message) : base(message) { }
     }
 
     public class SomeStructure

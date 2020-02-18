@@ -18,165 +18,170 @@ namespace Tecan.Sila2.Authentication
     
     
     ///  <summary>
+    /// A class that exposes the IAuthenticationService interface via SiLA2
+    /// </summary>
+    [System.ComponentModel.Composition.ExportAttribute(typeof(IFeatureProvider))]
+    [System.ComponentModel.Composition.PartCreationPolicyAttribute(System.ComponentModel.Composition.CreationPolicy.Shared)]
+    public partial class AuthenticationService : IFeatureProvider
+    {
+        
+        private IAuthenticationService _implementation;
+        
+        private Tecan.Sila2.Server.ISiLAServer _server;
+        
+        private static Tecan.Sila2.Feature _feature = FeatureSerializer.LoadFromAssembly(typeof(AuthenticationService).Assembly, "AuthenticationService.sila.xml");
+        
+        ///  <summary>
+        /// Creates a new instance
+        /// </summary>
+        /// <param name="implementation">The implementation to exported through SiLA2</param>
+        /// <param name="server">The SiLA2 server instance through which the implementation shall be exported</param>
+        [System.ComponentModel.Composition.ImportingConstructorAttribute()]
+        public AuthenticationService(IAuthenticationService implementation, Tecan.Sila2.Server.ISiLAServer server)
+        {
+            _implementation = implementation;
+            _server = server;
+        }
+        
+        ///  <summary>
+        /// The feature that is exposed by this feature provider
+        /// </summary>
+        /// <returns>A feature object</returns>
+        public Tecan.Sila2.Feature FeatureDefinition
+        {
+            get
+            {
+                return _feature;
+            }
+        }
+        
+        ///  <summary>
+        /// Creates a service definition for this service provider
+        /// </summary>
+        /// <returns>An object that describes which services are offered by this instance</returns>
+        public Grpc.Core.ServerServiceDefinition CreateServiceDefinition()
+        {
+            Grpc.Core.ServerServiceDefinition.Builder builder = Grpc.Core.ServerServiceDefinition.CreateBuilder();
+            builder.AddMethod(AuthenticationServiceProvider.LoginMethod, Login);
+            builder.AddMethod(AuthenticationServiceProvider.LogoutMethod, Logout);
+            return builder.Build();
+        }
+        
+        private LoginResponseDto LoginInternal(LoginRequestDto request)
+        {
+            try
+            {
+                return new LoginResponseDto(_implementation.Login(request.UserIdentification.Extract(_server), request.Password.Extract(_server), request.RequestedServer.Extract(_server), request.RequestedFeatures.Extract(_server)), _server);
+            } catch (System.ArgumentException ex)
+            {
+                if ((ex.ParamName == "userIdentification"))
+                {
+                    throw ErrorHandling.CreateValidationError("org.silastandard/core/AuthenticationService/v1/Command/Login/Parameter/UserIdenti" +
+                            "fication", ex.Message);
+                }
+                if ((ex.ParamName == "password"))
+                {
+                    throw ErrorHandling.CreateValidationError("org.silastandard/core/AuthenticationService/v1/Command/Login/Parameter/Password", ex.Message);
+                }
+                if ((ex.ParamName == "requestedServer"))
+                {
+                    throw ErrorHandling.CreateValidationError("org.silastandard/core/AuthenticationService/v1/Command/Login/Parameter/RequestedS" +
+                            "erver", ex.Message);
+                }
+                if ((ex.ParamName == "requestedFeatures"))
+                {
+                    throw ErrorHandling.CreateValidationError("org.silastandard/core/AuthenticationService/v1/Command/Login/Parameter/RequestedF" +
+                            "eatures", ex.Message);
+                }
+                throw ErrorHandling.CreateUnknownValidationError(ex);
+            } catch (AuthenticationFailedException ex)
+            {
+                throw ErrorHandling.CreateExecutionError("org.silastandard/core/AuthenticationService/v1/DefinedError/AuthenticationFailed", "The provided credentials are not valid.", ex.Message);
+            }
+        }
+        
+        ///  <summary>
+        /// Executes the Login command
+        /// </summary>
+        /// <param name="request">A data transfer object that contains the command parameters</param>
+        /// <param name="context">The context in which the command is issued</param>
+        /// <returns>The command response wrapped in a data transfer object</returns>
+        protected virtual System.Threading.Tasks.Task<LoginResponseDto> Login(LoginRequestDto request, Grpc.Core.ServerCallContext context)
+        {
+            return _server.InvokeCommand(LoginInternal, request, context);
+        }
+        
+        private EmptyRequest LogoutInternal(LogoutRequestDto request)
+        {
+            try
+            {
+                _implementation.Logout(request.AccessToken.Extract(_server));
+                return EmptyRequest.Instance;
+            } catch (System.ArgumentException ex)
+            {
+                if ((ex.ParamName == "accessToken"))
+                {
+                    throw ErrorHandling.CreateValidationError("org.silastandard/core/AuthenticationService/v1/Command/Logout/Parameter/AccessTok" +
+                            "en", ex.Message);
+                }
+                throw ErrorHandling.CreateUnknownValidationError(ex);
+            } catch (InvalidAccessTokenException ex)
+            {
+                throw ErrorHandling.CreateExecutionError("org.silastandard/core/AuthenticationService/v1/DefinedError/InvalidAccessToken", "The sent access token is not valid.", ex.Message);
+            }
+        }
+        
+        ///  <summary>
+        /// Executes the Logout command
+        /// </summary>
+        /// <param name="request">A data transfer object that contains the command parameters</param>
+        /// <param name="context">The context in which the command is issued</param>
+        /// <returns>The command response wrapped in a data transfer object</returns>
+        protected virtual System.Threading.Tasks.Task<EmptyRequest> Logout(LogoutRequestDto request, Grpc.Core.ServerCallContext context)
+        {
+            return _server.InvokeCommand(LogoutInternal, request, context);
+        }
+        
+        ///  <summary>
+        /// Gets the command with the given identifier
+        /// </summary>
+        /// <param name="commandIdentifier">A fully qualified command identifier</param>
+        /// <returns>A method object or null, if the command is not supported</returns>
+        public System.Reflection.MethodInfo GetCommand(string commandIdentifier)
+        {
+            if ((commandIdentifier == "org.silastandard/core/AuthenticationService/v1/Command/Login"))
+            {
+                return typeof(IAuthenticationService).GetMethod("Login");
+            }
+            if ((commandIdentifier == "org.silastandard/core/AuthenticationService/v1/Command/Logout"))
+            {
+                return typeof(IAuthenticationService).GetMethod("Logout");
+            }
+            return null;
+        }
+        
+        ///  <summary>
+        /// Gets the property with the given identifier
+        /// </summary>
+        /// <param name="propertyIdentifier">A fully qualified property identifier</param>
+        /// <returns>A property object or null, if the property is not supported</returns>
+        public System.Reflection.PropertyInfo GetProperty(string propertyIdentifier)
+        {
+            return null;
+        }
+    }
+    
+    ///  <summary>
     /// Encapsulates provider classes to expose the Authentication Service feature via SiLA2
     /// </summary>
-    public sealed partial class AuthenticationServiceProvider
+    internal sealed partial class AuthenticationServiceProvider
     {
         
         private static string @__ServiceName = "sila2.org.silastandard.core.authenticationservice.v1.AuthenticationService";
         
-        private static Grpc.Core.Method<LoginRequestDto, LoginResponseDto> LoginMethod = new Grpc.Core.Method<LoginRequestDto, LoginResponseDto>(Grpc.Core.MethodType.Unary, @__ServiceName, "Login", ProtobufMarshaller<LoginRequestDto>.Default, ProtobufMarshaller<LoginResponseDto>.Default);
+        public static Grpc.Core.Method<LoginRequestDto, LoginResponseDto> LoginMethod = new Grpc.Core.Method<LoginRequestDto, LoginResponseDto>(Grpc.Core.MethodType.Unary, @__ServiceName, "Login", ProtobufMarshaller<LoginRequestDto>.Default, ProtobufMarshaller<LoginResponseDto>.Default);
         
-        private static Grpc.Core.Method<LogoutRequestDto, EmptyRequest> LogoutMethod = new Grpc.Core.Method<LogoutRequestDto, EmptyRequest>(Grpc.Core.MethodType.Unary, @__ServiceName, "Logout", ProtobufMarshaller<LogoutRequestDto>.Default, EmptyRequest.Marshaller);
-        
-        ///  <summary>
-        /// A class that exposes the IAuthenticationService interface via SiLA2
-        /// </summary>
-        [System.ComponentModel.Composition.ExportAttribute(typeof(IFeatureProvider))]
-        [System.ComponentModel.Composition.PartCreationPolicyAttribute(System.ComponentModel.Composition.CreationPolicy.Shared)]
-        public partial class Server : IFeatureProvider
-        {
-            
-            private IAuthenticationService _implementation;
-            
-            private Tecan.Sila2.Server.ISiLAServer _server;
-            
-            private static Tecan.Sila2.Feature _feature = FeatureSerializer.LoadFromAssembly(typeof(Server).Assembly, "AuthenticationService.sila.xml");
-            
-            [System.ComponentModel.Composition.ImportingConstructorAttribute()]
-            public Server(IAuthenticationService implementation, Tecan.Sila2.Server.ISiLAServer server)
-            {
-                _implementation = implementation;
-                _server = server;
-            }
-            
-            ///  <summary>
-            /// The feature that is exposed by this feature provider
-            /// </summary>
-            /// <returns>A feature object</returns>
-            public Tecan.Sila2.Feature FeatureDefinition
-            {
-                get
-                {
-                    return _feature;
-                }
-            }
-            
-            ///  <summary>
-            /// Creates a service definition for this service provider
-            /// </summary>
-            /// <returns>An object that describes which services are offered by this instance</returns>
-            public Grpc.Core.ServerServiceDefinition CreateServiceDefinition()
-            {
-                Grpc.Core.ServerServiceDefinition.Builder builder = Grpc.Core.ServerServiceDefinition.CreateBuilder();
-                builder.AddMethod(LoginMethod, Login);
-                builder.AddMethod(LogoutMethod, Logout);
-                return builder.Build();
-            }
-            
-            private LoginResponseDto LoginInternal(LoginRequestDto request)
-            {
-                try
-                {
-                    return new LoginResponseDto(_implementation.Login(request.UserIdentification.Extract(_server), request.Password.Extract(_server), request.RequestedServer.Extract(_server), request.RequestedFeatures.Extract(_server)), _server);
-                } catch (System.ArgumentException ex)
-                {
-                    if ((ex.ParamName == "userIdentification"))
-                    {
-                        throw ErrorHandling.CreateValidationError("org.silastandard/core/AuthenticationService/v1/Command/Login/Parameter/UserIdenti" +
-                                "fication", ex.Message);
-                    }
-                    if ((ex.ParamName == "password"))
-                    {
-                        throw ErrorHandling.CreateValidationError("org.silastandard/core/AuthenticationService/v1/Command/Login/Parameter/Password", ex.Message);
-                    }
-                    if ((ex.ParamName == "requestedServer"))
-                    {
-                        throw ErrorHandling.CreateValidationError("org.silastandard/core/AuthenticationService/v1/Command/Login/Parameter/RequestedS" +
-                                "erver", ex.Message);
-                    }
-                    if ((ex.ParamName == "requestedFeatures"))
-                    {
-                        throw ErrorHandling.CreateValidationError("org.silastandard/core/AuthenticationService/v1/Command/Login/Parameter/RequestedF" +
-                                "eatures", ex.Message);
-                    }
-                    throw ErrorHandling.CreateUnknownValidationError(ex);
-                } catch (AuthenticationFailedException ex)
-                {
-                    throw ErrorHandling.CreateExecutionError("org.silastandard/core/AuthenticationService/v1/DefinedError/AuthenticationFailed", "The provided credentials are not valid.", ex.Message);
-                }
-            }
-            
-            ///  <summary>
-            /// Executes the Login command
-            /// </summary>
-            /// <param name="request">A data transfer object that contains the command parameters</param>
-            /// <param name="context">The context in which the command is issued</param>
-            /// <returns>The command response wrapped in a data transfer object</returns>
-            protected virtual System.Threading.Tasks.Task<LoginResponseDto> Login(LoginRequestDto request, Grpc.Core.ServerCallContext context)
-            {
-                return _server.InvokeCommand(LoginInternal, request, context);
-            }
-            
-            private EmptyRequest LogoutInternal(LogoutRequestDto request)
-            {
-                try
-                {
-                    _implementation.Logout(request.AccessToken.Extract(_server));
-                    return EmptyRequest.Instance;
-                } catch (System.ArgumentException ex)
-                {
-                    if ((ex.ParamName == "accessToken"))
-                    {
-                        throw ErrorHandling.CreateValidationError("org.silastandard/core/AuthenticationService/v1/Command/Logout/Parameter/AccessTok" +
-                                "en", ex.Message);
-                    }
-                    throw ErrorHandling.CreateUnknownValidationError(ex);
-                } catch (InvalidAccessTokenException ex)
-                {
-                    throw ErrorHandling.CreateExecutionError("org.silastandard/core/AuthenticationService/v1/DefinedError/InvalidAccessToken", "The sent access token is not valid.", ex.Message);
-                }
-            }
-            
-            ///  <summary>
-            /// Executes the Logout command
-            /// </summary>
-            /// <param name="request">A data transfer object that contains the command parameters</param>
-            /// <param name="context">The context in which the command is issued</param>
-            /// <returns>The command response wrapped in a data transfer object</returns>
-            protected virtual System.Threading.Tasks.Task<EmptyRequest> Logout(LogoutRequestDto request, Grpc.Core.ServerCallContext context)
-            {
-                return _server.InvokeCommand(LogoutInternal, request, context);
-            }
-            
-            ///  <summary>
-            /// Gets the command with the given identifier
-            /// </summary>
-            /// <param name="commandIdentifier">A fully qualified command identifier</param>
-            /// <returns>A method object or null, if the command is not supported</returns>
-            public System.Reflection.MethodInfo GetCommand(string commandIdentifier)
-            {
-                if ((commandIdentifier == "org.silastandard/core/AuthenticationService/v1/Command/Login"))
-                {
-                    return typeof(IAuthenticationService).GetMethod("Login");
-                }
-                if ((commandIdentifier == "org.silastandard/core/AuthenticationService/v1/Command/Logout"))
-                {
-                    return typeof(IAuthenticationService).GetMethod("Logout");
-                }
-                return null;
-            }
-            
-            ///  <summary>
-            /// Gets the property with the given identifier
-            /// </summary>
-            /// <param name="propertyIdentifier">A fully qualified property identifier</param>
-            /// <returns>A property object or null, if the property is not supported</returns>
-            public System.Reflection.PropertyInfo GetProperty(string propertyIdentifier)
-            {
-                return null;
-            }
-        }
+        public static Grpc.Core.Method<LogoutRequestDto, EmptyRequest> LogoutMethod = new Grpc.Core.Method<LogoutRequestDto, EmptyRequest>(Grpc.Core.MethodType.Unary, @__ServiceName, "Logout", ProtobufMarshaller<LogoutRequestDto>.Default, EmptyRequest.Marshaller);
     }
 }
 

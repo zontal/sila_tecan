@@ -18,187 +18,213 @@ namespace Tecan.Sila2.Locking.LockController
     
     
     ///  <summary>
+    /// Class that implements the ILockController interface through SiLA2
+    /// </summary>
+    public partial class LockControllerClient : Grpc.Core.ClientBase<LockControllerClient>, ILockController
+    {
+        
+        private System.Lazy<bool> _isLocked;
+        
+        private IClientExecutionManager _executionManager;
+        
+        ///  <summary>
+        /// Creates a new instance
+        /// </summary>
+        /// <param name="executionManager">A component that attaches metadata to SiLA2 calls</param>
+        public LockControllerClient(IClientExecutionManager executionManager)
+        {
+            InitLazyRequests();
+            _executionManager = executionManager;
+        }
+        
+        ///  <summary>
+        /// Creates a new instance
+        /// </summary>
+        /// <param name="configuration">The underlying configuration</param>
+        /// <param name="executionManager">A component that attaches metadata to SiLA2 calls</param>
+        protected LockControllerClient(ClientBaseConfiguration configuration, IClientExecutionManager executionManager) : 
+                base(configuration)
+        {
+            InitLazyRequests();
+            _executionManager = executionManager;
+        }
+        
+        ///  <summary>
+        /// Creates a new instance
+        /// </summary>
+        /// <param name="channel">The underlying channel</param>
+        /// <param name="executionManager">A component that attaches metadata to SiLA2 calls</param>
+        public LockControllerClient(Grpc.Core.Channel channel, IClientExecutionManager executionManager) : 
+                base(channel)
+        {
+            InitLazyRequests();
+            _executionManager = executionManager;
+        }
+        
+        ///  <summary>
+        /// Creates a new instance
+        /// </summary>
+        /// <param name="invoker">The underlying invoker</param>
+        /// <param name="executionManager">A component that attaches metadata to SiLA2 calls</param>
+        public LockControllerClient(Grpc.Core.CallInvoker invoker, IClientExecutionManager executionManager) : 
+                base(invoker)
+        {
+            InitLazyRequests();
+            _executionManager = executionManager;
+        }
+        
+        ///  <summary>
+        /// Returns true if the SiLA Server is currently locked or false else.
+        /// This property MUST NOT be lock protected, so that any SiLA Client can query the current lock state
+        /// of a SiLA Server.
+        /// </summary>
+        public virtual bool IsLocked
+        {
+            get
+            {
+                return _isLocked.Value;
+            }
+        }
+        
+        private bool RequestIsLocked()
+        {
+            Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/core/LockController/v1/Property/IsLocked");
+            try
+            {
+                bool response = CallInvoker.BlockingUnaryCall(LockControllerProvider.GetIsLockedMethod, null, callInfo.Options, EmptyRequest.Instance).Value.Extract(_executionManager.DownloadBinaryStore);
+                callInfo.FinishSuccessful();
+                return response;
+            } catch (System.Exception ex)
+            {
+                System.Exception exception = ErrorHandling.ConvertException(ex);
+                callInfo.FinishWithErrors(exception);
+                throw exception;
+            }
+        }
+        
+        ///  <summary>
+        /// Initializes lazies for non-observable properties.
+        /// </summary>
+        private void InitLazyRequests()
+        {
+            _isLocked = new System.Lazy<bool>(RequestIsLocked);
+        }
+        
+        ///  <summary>
+        /// Locks a SiLA Server for exclusive use by setting a lock identifier that has to be sent along with
+        /// any following (lock protected) request as long as the SiLA Server is locked.
+        /// The lock can be reset by issuing the 'Unlock Server' command.
+        /// </summary>
+        /// <param name="lockIdentifier">
+        ///        The lock identifier that has to be sent along with every (lock protected) request to use the server's
+        ///        functionality.
+        ///      </param>
+        /// <param name="timeout">
+        ///        The time (in seconds) after a SiLA Server is automatically unlocked when no request with a valid lock identifier
+        ///        has been received meanwhile. A timeout of zero seconds specifies an infinite time (no timeout).
+        ///      </param>
+        public virtual void LockServer(string lockIdentifier, long timeout)
+        {
+            LockServerRequestDto request = new LockServerRequestDto(lockIdentifier, timeout, null);
+            Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/core/LockController/v1/Command/LockServer");
+            try
+            {
+                CallInvoker.BlockingUnaryCall(LockControllerProvider.LockServerMethod, null, callInfo.Options, request);
+                callInfo.FinishSuccessful();
+                return;
+            } catch (System.Exception ex)
+            {
+                System.Exception exception = ErrorHandling.ConvertException(ex, ConvertLockServerException);
+                callInfo.FinishWithErrors(exception);
+                throw exception;
+            }
+        }
+        
+        ///  <summary>
+        /// Converts the error ocurred during execution of LockServer to a proper exception
+        /// </summary>
+        /// <param name="error">The SiLA2 execution error</param>
+        /// <returns>The converted exception or null, if the error is not understood</returns>
+        private static System.Exception ConvertLockServerException(Tecan.Sila2.DefinedExecutionErrorDto error)
+        {
+            if ((error.ErrorIdentifier == "org.silastandard/core/LockController/v1/DefinedError/ServerAlreadyLocked"))
+            {
+                return new ServerAlreadyLockedException(error.Message);
+            }
+            return null;
+        }
+        
+        ///  <summary>
+        /// Unlocks a locked SiLA Server. No lock identifier has to be sent for any following calls until
+        /// the server is locked again via the 'Lock Server' command.
+        /// </summary>
+        /// <param name="lockIdentifier">The lock identifier that has been used to lock the SiLA Server.</param>
+        public virtual void UnlockServer(string lockIdentifier)
+        {
+            UnlockServerRequestDto request = new UnlockServerRequestDto(lockIdentifier, null);
+            Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/core/LockController/v1/Command/UnlockServer");
+            try
+            {
+                CallInvoker.BlockingUnaryCall(LockControllerProvider.UnlockServerMethod, null, callInfo.Options, request);
+                callInfo.FinishSuccessful();
+                return;
+            } catch (System.Exception ex)
+            {
+                System.Exception exception = ErrorHandling.ConvertException(ex, ConvertUnlockServerException);
+                callInfo.FinishWithErrors(exception);
+                throw exception;
+            }
+        }
+        
+        ///  <summary>
+        /// Converts the error ocurred during execution of UnlockServer to a proper exception
+        /// </summary>
+        /// <param name="error">The SiLA2 execution error</param>
+        /// <returns>The converted exception or null, if the error is not understood</returns>
+        private static System.Exception ConvertUnlockServerException(Tecan.Sila2.DefinedExecutionErrorDto error)
+        {
+            if ((error.ErrorIdentifier == "org.silastandard/core/LockController/v1/DefinedError/ServerNotLocked"))
+            {
+                return new ServerNotLockedException(error.Message);
+            }
+            if ((error.ErrorIdentifier == "org.silastandard/core/LockController/v1/DefinedError/InvalidLockIdentifier"))
+            {
+                return new InvalidLockIdentifierException(error.Message);
+            }
+            return null;
+        }
+        
+        ///  <summary>
+        /// Creates a new instance
+        /// </summary>
+        /// <param name="configuration">The new client configuration</param>
+        protected override LockControllerClient NewInstance(ClientBaseConfiguration configuration)
+        {
+            return new LockControllerClient(configuration, _executionManager);
+        }
+        
+        private T Extract<T>(Tecan.Sila2.ISilaTransferObject<T> dto)
+        
+        {
+            return dto.Extract(_executionManager.DownloadBinaryStore);
+        }
+    }
+    
+    ///  <summary>
     /// Encapsulates provider classes to expose the Lock Controller feature via SiLA2
     /// </summary>
-    public sealed partial class LockControllerProvider
+    internal sealed partial class LockControllerProvider
     {
         
         private static string @__ServiceName = "sila2.org.silastandard.core.lockcontroller.v1.LockController";
         
-        private static Grpc.Core.Method<LockServerRequestDto, EmptyRequest> LockServerMethod = new Grpc.Core.Method<LockServerRequestDto, EmptyRequest>(Grpc.Core.MethodType.Unary, @__ServiceName, "LockServer", ProtobufMarshaller<LockServerRequestDto>.Default, EmptyRequest.Marshaller);
+        public static Grpc.Core.Method<LockServerRequestDto, EmptyRequest> LockServerMethod = new Grpc.Core.Method<LockServerRequestDto, EmptyRequest>(Grpc.Core.MethodType.Unary, @__ServiceName, "LockServer", ProtobufMarshaller<LockServerRequestDto>.Default, EmptyRequest.Marshaller);
         
-        private static Grpc.Core.Method<UnlockServerRequestDto, EmptyRequest> UnlockServerMethod = new Grpc.Core.Method<UnlockServerRequestDto, EmptyRequest>(Grpc.Core.MethodType.Unary, @__ServiceName, "UnlockServer", ProtobufMarshaller<UnlockServerRequestDto>.Default, EmptyRequest.Marshaller);
+        public static Grpc.Core.Method<UnlockServerRequestDto, EmptyRequest> UnlockServerMethod = new Grpc.Core.Method<UnlockServerRequestDto, EmptyRequest>(Grpc.Core.MethodType.Unary, @__ServiceName, "UnlockServer", ProtobufMarshaller<UnlockServerRequestDto>.Default, EmptyRequest.Marshaller);
         
-        private static Grpc.Core.Method<EmptyRequest, PropertyResponse<Tecan.Sila2.BooleanDto>> GetIsLockedMethod = new Grpc.Core.Method<EmptyRequest, PropertyResponse<Tecan.Sila2.BooleanDto>>(Grpc.Core.MethodType.Unary, @__ServiceName, "Get_IsLocked", EmptyRequest.Marshaller, ProtobufMarshaller<PropertyResponse<Tecan.Sila2.BooleanDto>>.Default);
+        public static Grpc.Core.Method<EmptyRequest, PropertyResponse<Tecan.Sila2.BooleanDto>> GetIsLockedMethod = new Grpc.Core.Method<EmptyRequest, PropertyResponse<Tecan.Sila2.BooleanDto>>(Grpc.Core.MethodType.Unary, @__ServiceName, "Get_IsLocked", EmptyRequest.Marshaller, ProtobufMarshaller<PropertyResponse<Tecan.Sila2.BooleanDto>>.Default);
         
-        private static Grpc.Core.Method<EmptyRequest, System.Collections.Generic.List<Tecan.Sila2.StringDto>> GetAffectedByLockIdentifierMethod = new Grpc.Core.Method<EmptyRequest, System.Collections.Generic.List<Tecan.Sila2.StringDto>>(Grpc.Core.MethodType.Unary, @__ServiceName, "Get_FCPAffectedByMetadata_LockIdentifier", EmptyRequest.Marshaller, ProtobufMarshaller<System.Collections.Generic.List<Tecan.Sila2.StringDto>>.Default);
-        
-        ///  <summary>
-        /// Class that implements the ILockController interface through SiLA2
-        /// </summary>
-        public partial class Client : Grpc.Core.ClientBase<Client>, ILockController
-        {
-            
-            private System.Lazy<bool> _isLocked;
-            
-            private IClientExecutionManager _executionManager;
-            
-            public Client(IClientExecutionManager executionManager)
-            {
-                InitLazyRequests();
-                _executionManager = executionManager;
-            }
-            
-            protected Client(ClientBaseConfiguration configuration, IClientExecutionManager executionManager) : 
-                    base(configuration)
-            {
-                InitLazyRequests();
-                _executionManager = executionManager;
-            }
-            
-            public Client(Grpc.Core.Channel channel, IClientExecutionManager executionManager) : 
-                    base(channel)
-            {
-                InitLazyRequests();
-                _executionManager = executionManager;
-            }
-            
-            ///  <summary>
-            /// Returns true if the SiLA Server is currently locked or false else.
-            /// This property MUST NOT be lock protected, so that any SiLA Client can query the current lock state
-            /// of a SiLA Server.
-            /// </summary>
-            public virtual bool IsLocked
-            {
-                get
-                {
-                    return _isLocked.Value;
-                }
-            }
-            
-            private bool RequestIsLocked()
-            {
-                Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/core/LockController/v1/Property/IsLocked");
-                try
-                {
-                    bool response = CallInvoker.BlockingUnaryCall(GetIsLockedMethod, null, callInfo.Options, EmptyRequest.Instance).Value.Extract(_executionManager.DownloadBinaryStore);
-                    callInfo.FinishSuccessful();
-                    return response;
-                } catch (System.Exception ex)
-                {
-                    System.Exception exception = ErrorHandling.ConvertException(ex);
-                    callInfo.FinishWithErrors(exception);
-                    throw exception;
-                }
-            }
-            
-            ///  <summary>
-            /// Initializes lazies for non-observable properties.
-            /// </summary>
-            private void InitLazyRequests()
-            {
-                _isLocked = new System.Lazy<bool>(RequestIsLocked);
-            }
-            
-            ///  <summary>
-            /// Locks a SiLA Server for exclusive use by setting a lock identifier that has to be sent along with
-            /// any following (lock protected) request as long as the SiLA Server is locked.
-            /// The lock can be reset by issuing the 'Unlock Server' command.
-            /// </summary>
-            /// <param name="lockIdentifier">
-            ///        The lock identifier that has to be sent along with every (lock protected) request to use the server's
-            ///        functionality.
-            ///      </param>
-            /// <param name="timeout">
-            ///        The time (in seconds) after a SiLA Server is automatically unlocked when no request with a valid lock identifier
-            ///        has been received meanwhile. A timeout of zero seconds specifies an infinite time (no timeout).
-            ///      </param>
-            public virtual void LockServer(string lockIdentifier, long timeout)
-            {
-                LockServerRequestDto request = new LockServerRequestDto(lockIdentifier, timeout, null);
-                Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/core/LockController/v1/Command/LockServer");
-                try
-                {
-                    CallInvoker.BlockingUnaryCall(LockServerMethod, null, callInfo.Options, request);
-                    callInfo.FinishSuccessful();
-                    return;
-                } catch (System.Exception ex)
-                {
-                    System.Exception exception = ErrorHandling.ConvertException(ex, ConvertLockServerException);
-                    callInfo.FinishWithErrors(exception);
-                    throw exception;
-                }
-            }
-            
-            ///  <summary>
-            /// Converts the error ocurred during execution of LockServer to a proper exception
-            /// </summary>
-            /// <param name="error">The SiLA2 execution error</param>
-            /// <returns>The converted exception or null, if the error is not understood</returns>
-            private static System.Exception ConvertLockServerException(Tecan.Sila2.DefinedExecutionErrorDto error)
-            {
-                if ((error.ErrorIdentifier == "org.silastandard/core/LockController/v1/DefinedError/ServerAlreadyLocked"))
-                {
-                    return new ServerAlreadyLockedException(error.Message);
-                }
-                return null;
-            }
-            
-            ///  <summary>
-            /// Unlocks a locked SiLA Server. No lock identifier has to be sent for any following calls until
-            /// the server is locked again via the 'Lock Server' command.
-            /// </summary>
-            /// <param name="lockIdentifier">The lock identifier that has been used to lock the SiLA Server.</param>
-            public virtual void UnlockServer(string lockIdentifier)
-            {
-                UnlockServerRequestDto request = new UnlockServerRequestDto(lockIdentifier, null);
-                Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/core/LockController/v1/Command/UnlockServer");
-                try
-                {
-                    CallInvoker.BlockingUnaryCall(UnlockServerMethod, null, callInfo.Options, request);
-                    callInfo.FinishSuccessful();
-                    return;
-                } catch (System.Exception ex)
-                {
-                    System.Exception exception = ErrorHandling.ConvertException(ex, ConvertUnlockServerException);
-                    callInfo.FinishWithErrors(exception);
-                    throw exception;
-                }
-            }
-            
-            ///  <summary>
-            /// Converts the error ocurred during execution of UnlockServer to a proper exception
-            /// </summary>
-            /// <param name="error">The SiLA2 execution error</param>
-            /// <returns>The converted exception or null, if the error is not understood</returns>
-            private static System.Exception ConvertUnlockServerException(Tecan.Sila2.DefinedExecutionErrorDto error)
-            {
-                if ((error.ErrorIdentifier == "org.silastandard/core/LockController/v1/DefinedError/ServerNotLocked"))
-                {
-                    return new ServerNotLockedException(error.Message);
-                }
-                if ((error.ErrorIdentifier == "org.silastandard/core/LockController/v1/DefinedError/InvalidLockIdentifier"))
-                {
-                    return new InvalidLockIdentifierException(error.Message);
-                }
-                return null;
-            }
-            
-            ///  <summary>
-            /// Creates a new instance
-            /// </summary>
-            /// <param name="configuration">The new client configuration</param>
-            protected override Client NewInstance(ClientBaseConfiguration configuration)
-            {
-                return new Client(configuration, _executionManager);
-            }
-            
-            private T Extract<T>(Tecan.Sila2.ISilaTransferObject<T> dto)
-            
-            {
-                return dto.Extract(_executionManager.DownloadBinaryStore);
-            }
-        }
+        public static Grpc.Core.Method<EmptyRequest, System.Collections.Generic.List<Tecan.Sila2.StringDto>> GetAffectedByLockIdentifierMethod = new Grpc.Core.Method<EmptyRequest, System.Collections.Generic.List<Tecan.Sila2.StringDto>>(Grpc.Core.MethodType.Unary, @__ServiceName, "Get_FCPAffectedByMetadata_LockIdentifier", EmptyRequest.Marshaller, ProtobufMarshaller<System.Collections.Generic.List<Tecan.Sila2.StringDto>>.Default);
     }
 }
 

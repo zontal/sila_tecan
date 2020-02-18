@@ -5,12 +5,12 @@ namespace Tecan.Sila2.Locking.Tests
     [TestFixture]
     public class LockingTestsFixture
     {
-        private LockController _lockController;
+        private LockControllerService _lockController;
 
         [SetUp]
         public void Initialize()
         {
-            _lockController = new LockController();
+            _lockController = new LockControllerService();
         }
 
         [Test]

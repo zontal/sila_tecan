@@ -25,6 +25,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Contracts\Contracts.csproj" />
     <ProjectReference Include="..\..\Features\Authentication\Authentication.csproj" />
+    <ProjectReference Include="..\..\Features\Cancellation\Cancellation.csproj" />
     <ProjectReference Include="..\..\Features\Locking\Locking.csproj" />
     <ProjectReference Include="..\..\Framework\Framework.csproj" />
     <ProjectReference Include="..\..\Server\Server.csproj" />

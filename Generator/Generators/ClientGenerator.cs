@@ -46,7 +46,7 @@ namespace Tecan.Sila2.Generator.Generators
         /// <inheritdoc />
         public CodeTypeDeclaration GenerateClient(Feature feature)
         {
-            var client = new CodeTypeDeclaration("Client")
+            var client = new CodeTypeDeclaration( feature.Identifier + "Client")
             {
                 Attributes = MemberAttributes.Public,
                 TypeAttributes = TypeAttributes.Public,
@@ -317,18 +317,19 @@ namespace Tecan.Sila2.Generator.Generators
             var callInfo = new CodeMethodInvokeExpression(new CodeFieldReferenceExpression(null, ExecutionManagerFieldName),
                 nameof(IClientExecutionManager.CreateCallOptions),
                 new CodePropertyReferenceExpression(requestRef, nameof(ISilaRequestObject.CommandIdentifier)));
+            var providerReference = new CodeTypeReferenceExpression( feature.Identifier + "Provider" );
             var actualCall = new CodeMethodInvokeExpression(
                 new CodeTypeReferenceExpression(nameof(ObservableClientCommands)),
                 intermediateType != null ? nameof(ObservableClientCommands.CreateIntermediate) : nameof(ObservableClientCommands.Create),
                 callInfo,
                 new CodePropertyReferenceExpression(null, "CallInvoker"),
                 requestRef,
-                new CodeFieldReferenceExpression(null, featureCommand.Identifier + "Method"),
-                new CodeFieldReferenceExpression(null, featureCommand.Identifier + "StateMethod"));
+                new CodeFieldReferenceExpression(providerReference, featureCommand.Identifier + "Method"),
+                new CodeFieldReferenceExpression(providerReference, featureCommand.Identifier + "StateMethod"));
             
             if (intermediateType != null)
             {
-                actualCall.Parameters.Add(new CodeFieldReferenceExpression(null, featureCommand.Identifier + "IntermediateMethod"));
+                actualCall.Parameters.Add(new CodeFieldReferenceExpression(providerReference, featureCommand.Identifier + "IntermediateMethod"));
             }
             if (featureCommand.Response != null && featureCommand.Response.Length > 0)
             {
@@ -340,7 +341,7 @@ namespace Tecan.Sila2.Generator.Generators
                     featureCommand.Response, responseType,
                     client);
                 actualCall.Parameters.Add(
-                    new CodeMethodReferenceExpression(null, featureCommand.Identifier + "ResponseMethod" ) );
+                    new CodeMethodReferenceExpression(providerReference, featureCommand.Identifier + "ResponseMethod" ) );
                 if (intermediateType != null)
                 {
                     var convertIntermediateResponseMethod = GenerateClientCommandResponseMethod(
@@ -463,7 +464,7 @@ namespace Tecan.Sila2.Generator.Generators
                 if (featureCommand.Response.Length == 1)
                 {
                     var customType = _nameProvider.GetMemberType( featureCommand.Identifier + "." + featureCommand.Response[0].Identifier );
-                    var response = GenerateClientGrpcInvoke(featureCommand.Identifier + "Method",
+                    var response = GenerateClientGrpcInvoke( feature, featureCommand.Identifier + "Method",
                         requestRef, featureCommand.Response[0].DataType,
                         featureCommand.Response[0].Identifier,
                         callInfoRef, customType);
@@ -471,7 +472,7 @@ namespace Tecan.Sila2.Generator.Generators
                 }
                 else
                 {
-                    var response = GenerateClientGrpcInvoke(featureCommand.Identifier + "Method",
+                    var response = GenerateClientGrpcInvoke( feature, featureCommand.Identifier + "Method",
                         requestRef, null, null, callInfoRef, null);
                     ret = new CodeMethodInvokeExpression(response,
                         nameof(ISilaTransferObject<object>.Extract),
@@ -482,7 +483,7 @@ namespace Tecan.Sila2.Generator.Generators
             }
             else
             {
-                ret = GenerateClientGrpcInvoke(featureCommand.Identifier + "Method",
+                ret = GenerateClientGrpcInvoke( feature, featureCommand.Identifier + "Method",
                     requestRef, null, null, callInfoRef, null);
             }
 
@@ -568,13 +569,14 @@ namespace Tecan.Sila2.Generator.Generators
             return convertExceptionMethod;
         }
 
-        private CodeExpression GenerateClientGrpcInvoke(string methodName, CodeExpression request,
+        private CodeExpression GenerateClientGrpcInvoke(Feature feature, string methodName, CodeExpression request,
             DataTypeType responseType, string propertyName, CodeExpression callInfoRef, CodeTypeReference customResponseType)
         {
+            var providerReference = new CodeTypeReferenceExpression( feature.Identifier + "Provider" );
             CodeExpression response = new CodeMethodInvokeExpression(
                 new CodePropertyReferenceExpression(null, "CallInvoker"),
                 "BlockingUnaryCall",
-                new CodeFieldReferenceExpression(null, methodName),
+                new CodeFieldReferenceExpression(providerReference, methodName),
                 new CodePrimitiveExpression(null),
                 new CodePropertyReferenceExpression(callInfoRef, "Options"),
                 request);
@@ -677,7 +679,7 @@ namespace Tecan.Sila2.Generator.Generators
             requestMethod.Add(
                 new CodeVariableDeclarationStatement(typeof(IClientCallInfo), callInfoRef.VariableName, callInfo));
 
-            CodeExpression response = GenerateClientGrpcInvoke("Get" + featureProperty.Identifier + "Method",
+            CodeExpression response = GenerateClientGrpcInvoke( feature, "Get" + featureProperty.Identifier + "Method",
                 new CodePropertyReferenceExpression(new CodeTypeReferenceExpression(nameof(EmptyRequest)),
                     "Instance"), featureProperty.DataType, "Value", callInfoRef,
                 _nameProvider.GetMemberType(featureProperty.Identifier));
@@ -694,12 +696,13 @@ namespace Tecan.Sila2.Generator.Generators
             var updateTask = new CodeFieldReferenceExpression(null, fieldName + "UpdateTask");
             client.Members.Add(new CodeMemberField(typeof(Task), updateTask.FieldName));
 
+            var providerReference = new CodeTypeReferenceExpression( feature.Identifier + "Provider" );
             var receiveValueMethod = GenerateClientReceiveValueMethod(featureProperty, fieldName, fieldRef, property);
             var subscription = new CodeMethodInvokeExpression(
                 new CodeTypeReferenceExpression(nameof(ObservableCommandHelper)),
                 nameof(ObservableCommandHelper.SubscribeTo),
                 new CodePropertyReferenceExpression(null, "CallInvoker"),
-                new CodeMethodReferenceExpression(null, "Subscribe" + featureProperty.Identifier + "Method"),
+                new CodeMethodReferenceExpression(providerReference, "Subscribe" + featureProperty.Identifier + "Method"),
                 new CodeMethodReferenceExpression(null, receiveValueMethod.Name),
                 new CodeMethodInvokeExpression(new CodeFieldReferenceExpression(null, ExecutionManagerFieldName), nameof(IClientExecutionManager.CreateCallOptions), new CodePrimitiveExpression(feature.GetFullyQualifiedIdentifier(featureProperty))));
             var ifUpdateTaskNull = new CodeConditionStatement(
@@ -762,13 +765,19 @@ namespace Tecan.Sila2.Generator.Generators
         {
             var callInitLazyRequests = new CodeMethodInvokeExpression(null, "InitLazyRequests");
             var defaultConstructor = new CodeConstructor() { Attributes = MemberAttributes.Public };
+            var callInvokerConstructor = new CodeConstructor() { Attributes = MemberAttributes.Public };
+            callInvokerConstructor.Parameters.Add( new CodeParameterDeclarationExpression( typeof(CallInvoker), "invoker" ) );
+            callInvokerConstructor.BaseConstructorArgs.Add( new CodeArgumentReferenceExpression( "invoker" ) );
+            
             var configurationConstructor = new CodeConstructor() { Attributes = MemberAttributes.Family };
-            var channelConstructor = new CodeConstructor() { Attributes = MemberAttributes.Public };
             configurationConstructor.Parameters.Add(
                 new CodeParameterDeclarationExpression("ClientBaseConfiguration", "configuration"));
             configurationConstructor.BaseConstructorArgs.Add(new CodeArgumentReferenceExpression("configuration"));
+
+            var channelConstructor = new CodeConstructor() { Attributes = MemberAttributes.Public };
             channelConstructor.Parameters.Add(new CodeParameterDeclarationExpression(typeof(Channel), "channel"));
             channelConstructor.BaseConstructorArgs.Add(new CodeArgumentReferenceExpression("channel"));
+            
             var resolverParameter = new CodeParameterDeclarationExpression(typeof(IClientExecutionManager).Name, "executionManager");
             var resolverField = new CodeMemberField(typeof(IClientExecutionManager).Name, ExecutionManagerFieldName);
             client.Members.Add(resolverField);
@@ -777,15 +786,25 @@ namespace Tecan.Sila2.Generator.Generators
             FinishConstructor(defaultConstructor, client, initLazyRequests, callInitLazyRequests, resolverParameter, resolverAssignment);
             FinishConstructor(configurationConstructor, client, initLazyRequests, callInitLazyRequests, resolverParameter, resolverAssignment);
             FinishConstructor(channelConstructor, client, initLazyRequests, callInitLazyRequests, resolverParameter, resolverAssignment);
+            FinishConstructor(callInvokerConstructor, client, initLazyRequests, callInitLazyRequests, resolverParameter, resolverAssignment);
         }
 
         private static void FinishConstructor(CodeConstructor constructor, CodeTypeDeclaration client, bool initLazyRequests, CodeMethodInvokeExpression callInitLazyRequests, CodeParameterDeclarationExpression resolverParameter, CodeAssignStatement resolverAssignment)
         {
+            var parameterDocumentation = new Dictionary<string, string>();
+            foreach( CodeParameterDeclarationExpression parameter in constructor.Parameters )
+            {
+                parameterDocumentation.Add(parameter.Name, $"The underlying {parameter.Name}");
+            }
+            parameterDocumentation.Add(resolverParameter.Name, "A component that attaches metadata to SiLA2 calls");
+            constructor.WriteDocumentation( "Creates a new instance", parameters: parameterDocumentation );
+
             constructor.Parameters.Add(resolverParameter);
             if (initLazyRequests)
             {
                 constructor.Statements.Add(callInitLazyRequests);
             }
+
             constructor.Statements.Add(resolverAssignment);
             client.Members.Add(constructor);
         }

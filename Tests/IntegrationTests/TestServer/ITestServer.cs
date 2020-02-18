@@ -115,6 +115,24 @@ namespace Tecan.Sila2.IntegrationTests
         /// </summary>
         [Tecan.Sila2.ObservableAttribute()]
         Tecan.Sila2.IIntermediateObservableCommand<long> RunIntermediateObservableCommand();
+        
+        ///  <summary>
+        /// </summary>
+        /// <param name="duration"></param>
+        [Tecan.Sila2.ObservableAttribute()]
+        [Tecan.Sila2.ThrowsAttribute(typeof(ShouldHaveBeenCancelledException))]
+        Tecan.Sila2.IObservableCommand WaitForCancelOrThrow(System.TimeSpan duration);
+        
+        ///  <summary>
+        /// </summary>
+        [Tecan.Sila2.ThrowsAttribute(typeof(FakeException))]
+        void RunIntoFailure();
+        
+        ///  <summary>
+        /// </summary>
+        [Tecan.Sila2.ObservableAttribute()]
+        [Tecan.Sila2.ThrowsAttribute(typeof(FakeException))]
+        Tecan.Sila2.IObservableCommand RunIntoFailureObservably();
     }
     
     ///  <summary>
@@ -202,6 +220,36 @@ namespace Tecan.Sila2.IntegrationTests
             {
                 return _time;
             }
+        }
+    }
+    
+    ///  <summary>
+    /// </summary>
+    public class ShouldHaveBeenCancelledException : System.Exception
+    {
+        
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        /// <param name="message">The actual error message</param>
+        public ShouldHaveBeenCancelledException(string message) : 
+                base(message)
+        {
+        }
+    }
+    
+    ///  <summary>
+    /// </summary>
+    public class FakeException : System.Exception
+    {
+        
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        /// <param name="message">The actual error message</param>
+        public FakeException(string message) : 
+                base(message)
+        {
         }
     }
 }

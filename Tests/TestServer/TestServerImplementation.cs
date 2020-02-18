@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.IO;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Tecan.Sila2.IntegrationTests
@@ -100,6 +101,22 @@ namespace Tecan.Sila2.IntegrationTests
             sendIntermediateResult( 8 );
             await Task.Delay( 100 );
             sendIntermediateResult( 15 );
+        }
+
+        public async Task WaitForCancelOrThrow( TimeSpan duration, CancellationToken cancellationToken )
+        {
+            await Task.Delay( duration, cancellationToken );
+            throw new ShouldHaveBeenCancelledException("The command was supposed to be cancelled");
+        }
+
+        public void RunIntoFailure()
+        {
+            throw new FakeException("This is only fake");
+        }
+
+        public void RunIntoFailureObservably( CancellationToken cancellationToken )
+        {
+            throw new FakeException("This is only fake");
         }
     }
 }

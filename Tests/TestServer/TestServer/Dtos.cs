@@ -1574,6 +1574,157 @@ namespace Tecan.Sila2.IntegrationTests
         }
     }
     
+    ///  <summary>
+    /// Data transfer object for the request of the Wait For Cancel Or Throw command
+    /// </summary>
+    [ProtoBuf.ProtoContractAttribute()]
+    public class WaitForCancelOrThrowRequestDto : Tecan.Sila2.ISilaTransferObject, Tecan.Sila2.ISilaRequestObject
+    {
+        
+        private Tecan.Sila2.TimeDto _duration;
+        
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        public WaitForCancelOrThrowRequestDto()
+        {
+        }
+        
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        /// <param name="store">An object to organize binaries.</param>
+        ///  <param name="duration"></param>
+        public WaitForCancelOrThrowRequestDto(System.TimeSpan duration, Tecan.Sila2.Binary.IBinaryStore store)
+        {
+            Duration = new Tecan.Sila2.TimeDto(duration, store);
+        }
+        
+        ///  <summary>
+        /// </summary>
+        [ProtoBuf.ProtoMemberAttribute(1)]
+        public Tecan.Sila2.TimeDto Duration
+        {
+            get
+            {
+                return _duration;
+            }
+            set
+            {
+                _duration = value;
+            }
+        }
+        
+        ///  <summary>
+        /// Gets the command identifier for this command
+        /// </summary>
+        /// <returns>The fully qualified command identifier</returns>
+        public string CommandIdentifier
+        {
+            get
+            {
+                return "tecan.sila/integrationtests/TestServer/v1/Command/WaitForCancelOrThrow";
+            }
+        }
+        
+        ///  <summary>
+        /// Validates the contents of this transfer object
+        /// </summary>
+        /// <returns>A validation error or null, if no validation error occurred.</returns>
+        public string GetValidationErrors()
+        {
+            return null;
+        }
+    }
+    
+    ///  <summary>
+    /// Data transfer object for the request of the Run Into Failure command
+    /// </summary>
+    [ProtoBuf.ProtoContractAttribute()]
+    public class RunIntoFailureRequestDto : Tecan.Sila2.ISilaTransferObject, Tecan.Sila2.ISilaRequestObject
+    {
+        
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        public RunIntoFailureRequestDto()
+        {
+        }
+        
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        /// <param name="store">An object to organize binaries.</param>
+        public RunIntoFailureRequestDto(Tecan.Sila2.Binary.IBinaryStore store)
+        {
+        }
+        
+        ///  <summary>
+        /// Gets the command identifier for this command
+        /// </summary>
+        /// <returns>The fully qualified command identifier</returns>
+        public string CommandIdentifier
+        {
+            get
+            {
+                return "tecan.sila/integrationtests/TestServer/v1/Command/RunIntoFailure";
+            }
+        }
+        
+        ///  <summary>
+        /// Validates the contents of this transfer object
+        /// </summary>
+        /// <returns>A validation error or null, if no validation error occurred.</returns>
+        public string GetValidationErrors()
+        {
+            return null;
+        }
+    }
+    
+    ///  <summary>
+    /// Data transfer object for the request of the Run Into Failure Observably command
+    /// </summary>
+    [ProtoBuf.ProtoContractAttribute()]
+    public class RunIntoFailureObservablyRequestDto : Tecan.Sila2.ISilaTransferObject, Tecan.Sila2.ISilaRequestObject
+    {
+        
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        public RunIntoFailureObservablyRequestDto()
+        {
+        }
+        
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        /// <param name="store">An object to organize binaries.</param>
+        public RunIntoFailureObservablyRequestDto(Tecan.Sila2.Binary.IBinaryStore store)
+        {
+        }
+        
+        ///  <summary>
+        /// Gets the command identifier for this command
+        /// </summary>
+        /// <returns>The fully qualified command identifier</returns>
+        public string CommandIdentifier
+        {
+            get
+            {
+                return "tecan.sila/integrationtests/TestServer/v1/Command/RunIntoFailureObservably";
+            }
+        }
+        
+        ///  <summary>
+        /// Validates the contents of this transfer object
+        /// </summary>
+        /// <returns>A validation error or null, if no validation error occurred.</returns>
+        public string GetValidationErrors()
+        {
+            return null;
+        }
+    }
+    
     [ProtoBuf.ProtoContractAttribute()]
     public class SomeStructureDto : Tecan.Sila2.ISilaTransferObject<SomeStructure>
     {

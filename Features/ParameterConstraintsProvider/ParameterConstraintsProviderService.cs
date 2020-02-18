@@ -12,7 +12,7 @@ namespace Tecan.Sila2.ParameterConstraintsProvider
 {
     [Export(typeof( IParameterConstraintsProvider ) )]
     [PartCreationPolicy(CreationPolicy.Shared)]
-    internal class ParameterConstraintsProvider : IParameterConstraintsProvider
+    internal class ParameterConstraintsProviderService : IParameterConstraintsProvider
     {
 
         private readonly Lazy<ISiLAServer> _server;
@@ -21,7 +21,7 @@ namespace Tecan.Sila2.ParameterConstraintsProvider
         private readonly ILoggingChannel _loggingChannel;
 
         [ImportingConstructor]
-        public ParameterConstraintsProvider( Lazy<ISiLAServer> server, [ImportMany] IEnumerable<IParameterConstraintResolver> resolvers, ILoggingChannelFactory loggingChannelFactory )
+        public ParameterConstraintsProviderService( Lazy<ISiLAServer> server, [ImportMany] IEnumerable<IParameterConstraintResolver> resolvers, ILoggingChannelFactory loggingChannelFactory )
         {
             _server = server;
             _constraintsSource = new Lazy<Dictionary<string, KeyValuePair<ConstraintProviderAttribute, IParameterConstraintResolver>>>(InitializeConstraintsSource);

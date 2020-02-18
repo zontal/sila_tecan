@@ -18,92 +18,117 @@ namespace Tecan.Sila2.ParameterConstraintsProvider.ParameterConstraintsProvider
     
     
     ///  <summary>
+    /// Class that implements the IParameterConstraintsProvider interface through SiLA2
+    /// </summary>
+    public partial class ParameterConstraintsProviderClient : Grpc.Core.ClientBase<ParameterConstraintsProviderClient>, IParameterConstraintsProvider, System.ComponentModel.INotifyPropertyChanged
+    {
+        
+        private System.Collections.Generic.ICollection<ParametersConstraint> _parametersConstraints;
+        
+        private System.Threading.Tasks.Task _parametersConstraintsUpdateTask;
+        
+        private IClientExecutionManager _executionManager;
+        
+        ///  <summary>
+        /// Creates a new instance
+        /// </summary>
+        /// <param name="executionManager">A component that attaches metadata to SiLA2 calls</param>
+        public ParameterConstraintsProviderClient(IClientExecutionManager executionManager)
+        {
+            _executionManager = executionManager;
+        }
+        
+        ///  <summary>
+        /// Creates a new instance
+        /// </summary>
+        /// <param name="configuration">The underlying configuration</param>
+        /// <param name="executionManager">A component that attaches metadata to SiLA2 calls</param>
+        protected ParameterConstraintsProviderClient(ClientBaseConfiguration configuration, IClientExecutionManager executionManager) : 
+                base(configuration)
+        {
+            _executionManager = executionManager;
+        }
+        
+        ///  <summary>
+        /// Creates a new instance
+        /// </summary>
+        /// <param name="channel">The underlying channel</param>
+        /// <param name="executionManager">A component that attaches metadata to SiLA2 calls</param>
+        public ParameterConstraintsProviderClient(Grpc.Core.Channel channel, IClientExecutionManager executionManager) : 
+                base(channel)
+        {
+            _executionManager = executionManager;
+        }
+        
+        ///  <summary>
+        /// Creates a new instance
+        /// </summary>
+        /// <param name="invoker">The underlying invoker</param>
+        /// <param name="executionManager">A component that attaches metadata to SiLA2 calls</param>
+        public ParameterConstraintsProviderClient(Grpc.Core.CallInvoker invoker, IClientExecutionManager executionManager) : 
+                base(invoker)
+        {
+            _executionManager = executionManager;
+        }
+        
+        ///  <summary>
+        /// Provides a list of all constraints of Command Parameters of the SiLA Server.
+        /// </summary>
+        public virtual System.Collections.Generic.ICollection<ParametersConstraint> ParametersConstraints
+        {
+            get
+            {
+                if ((_parametersConstraintsUpdateTask == null))
+                {
+                    _parametersConstraintsUpdateTask = ObservableCommandHelper.SubscribeTo(CallInvoker, ParameterConstraintsProviderProvider.SubscribeParametersConstraintsMethod, ReceiveNewParametersConstraints, _executionManager.CreateCallOptions("org.silastandard/core.commands/ParameterConstraintsProvider/v1/Property/Parameter" +
+                                "sConstraints"));
+                }
+                return _parametersConstraints;
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        private void ReceiveNewParametersConstraints(PropertyResponse<System.Collections.Generic.List<ParametersConstraintDto>> parametersConstraints)
+        {
+            System.Collections.Generic.ICollection<ParametersConstraint> inner = parametersConstraints.Value.Extract(_executionManager.DownloadBinaryStore);
+            if ((_parametersConstraints != inner))
+            {
+                _parametersConstraints = inner;
+                System.ComponentModel.PropertyChangedEventHandler handler = PropertyChanged;
+                if ((handler != null))
+                {
+                    handler.Invoke(this, new System.ComponentModel.PropertyChangedEventArgs("ParametersConstraints"));
+                }
+            }
+        }
+        
+        ///  <summary>
+        /// Creates a new instance
+        /// </summary>
+        /// <param name="configuration">The new client configuration</param>
+        protected override ParameterConstraintsProviderClient NewInstance(ClientBaseConfiguration configuration)
+        {
+            return new ParameterConstraintsProviderClient(configuration, _executionManager);
+        }
+        
+        private T Extract<T>(Tecan.Sila2.ISilaTransferObject<T> dto)
+        
+        {
+            return dto.Extract(_executionManager.DownloadBinaryStore);
+        }
+    }
+    
+    ///  <summary>
     /// Encapsulates provider classes to expose the Parameter Constraints Provider feature via SiLA2
     /// </summary>
-    public sealed partial class ParameterConstraintsProviderProvider
+    internal sealed partial class ParameterConstraintsProviderProvider
     {
         
         private static string @__ServiceName = "sila2.org.silastandard.core.commands.parameterconstraintsprovider.v1.ParameterCon" +
             "straintsProvider";
         
-        private static Grpc.Core.Method<EmptyRequest, PropertyResponse<System.Collections.Generic.List<ParametersConstraintDto>>> SubscribeParametersConstraintsMethod = new Grpc.Core.Method<EmptyRequest, PropertyResponse<System.Collections.Generic.List<ParametersConstraintDto>>>(Grpc.Core.MethodType.ServerStreaming, @__ServiceName, "Subscribe_ParametersConstraints", EmptyRequest.Marshaller, ProtobufMarshaller<PropertyResponse<System.Collections.Generic.List<ParametersConstraintDto>>>.Default);
-        
-        ///  <summary>
-        /// Class that implements the IParameterConstraintsProvider interface through SiLA2
-        /// </summary>
-        public partial class Client : Grpc.Core.ClientBase<Client>, IParameterConstraintsProvider, System.ComponentModel.INotifyPropertyChanged
-        {
-            
-            private System.Collections.Generic.ICollection<ParametersConstraint> _parametersConstraints;
-            
-            private System.Threading.Tasks.Task _parametersConstraintsUpdateTask;
-            
-            private IClientExecutionManager _executionManager;
-            
-            public Client(IClientExecutionManager executionManager)
-            {
-                _executionManager = executionManager;
-            }
-            
-            protected Client(ClientBaseConfiguration configuration, IClientExecutionManager executionManager) : 
-                    base(configuration)
-            {
-                _executionManager = executionManager;
-            }
-            
-            public Client(Grpc.Core.Channel channel, IClientExecutionManager executionManager) : 
-                    base(channel)
-            {
-                _executionManager = executionManager;
-            }
-            
-            ///  <summary>
-            /// Provides a list of all constraints of Command Parameters of the SiLA Server.
-            /// </summary>
-            public virtual System.Collections.Generic.ICollection<ParametersConstraint> ParametersConstraints
-            {
-                get
-                {
-                    if ((_parametersConstraintsUpdateTask == null))
-                    {
-                        _parametersConstraintsUpdateTask = ObservableCommandHelper.SubscribeTo(CallInvoker, SubscribeParametersConstraintsMethod, ReceiveNewParametersConstraints, _executionManager.CreateCallOptions("org.silastandard/core.commands/ParameterConstraintsProvider/v1/Property/Parameter" +
-                                    "sConstraints"));
-                    }
-                    return _parametersConstraints;
-                }
-            }
-            
-            public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-            
-            private void ReceiveNewParametersConstraints(PropertyResponse<System.Collections.Generic.List<ParametersConstraintDto>> parametersConstraints)
-            {
-                System.Collections.Generic.ICollection<ParametersConstraint> inner = parametersConstraints.Value.Extract(_executionManager.DownloadBinaryStore);
-                if ((_parametersConstraints != inner))
-                {
-                    _parametersConstraints = inner;
-                    System.ComponentModel.PropertyChangedEventHandler handler = PropertyChanged;
-                    if ((handler != null))
-                    {
-                        handler.Invoke(this, new System.ComponentModel.PropertyChangedEventArgs("ParametersConstraints"));
-                    }
-                }
-            }
-            
-            ///  <summary>
-            /// Creates a new instance
-            /// </summary>
-            /// <param name="configuration">The new client configuration</param>
-            protected override Client NewInstance(ClientBaseConfiguration configuration)
-            {
-                return new Client(configuration, _executionManager);
-            }
-            
-            private T Extract<T>(Tecan.Sila2.ISilaTransferObject<T> dto)
-            
-            {
-                return dto.Extract(_executionManager.DownloadBinaryStore);
-            }
-        }
+        public static Grpc.Core.Method<EmptyRequest, PropertyResponse<System.Collections.Generic.List<ParametersConstraintDto>>> SubscribeParametersConstraintsMethod = new Grpc.Core.Method<EmptyRequest, PropertyResponse<System.Collections.Generic.List<ParametersConstraintDto>>>(Grpc.Core.MethodType.ServerStreaming, @__ServiceName, "Subscribe_ParametersConstraints", EmptyRequest.Marshaller, ProtobufMarshaller<PropertyResponse<System.Collections.Generic.List<ParametersConstraintDto>>>.Default);
     }
 }
 

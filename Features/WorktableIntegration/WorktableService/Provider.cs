@@ -19,137 +19,142 @@ namespace Tecan.Sila2.WorktableIntegration
     
     
     ///  <summary>
-    /// Encapsulates provider classes to expose the Worktable Service feature via SiLA2
+    /// A class that exposes the IWorktableService interface via SiLA2
     /// </summary>
-    public sealed partial class WorktableServiceProvider
+    [System.ComponentModel.Composition.ExportAttribute(typeof(IFeatureProvider))]
+    [System.ComponentModel.Composition.PartCreationPolicyAttribute(System.ComponentModel.Composition.CreationPolicy.Shared)]
+    public partial class WorktableService : IFeatureProvider
     {
         
-        private static string @__ServiceName = "sila2.tecan.sila.worktableintegration.infrastructure.worktableservice.v1.Worktabl" +
-            "eService";
+        private IWorktableService _implementation;
         
-        private static Grpc.Core.Method<EmptyRequest, PropertyResponse<BoundingBoxDto>> GetBoundingBoxMethod = new Grpc.Core.Method<EmptyRequest, PropertyResponse<BoundingBoxDto>>(Grpc.Core.MethodType.Unary, @__ServiceName, "Get_BoundingBox", EmptyRequest.Marshaller, ProtobufMarshaller<PropertyResponse<BoundingBoxDto>>.Default);
+        private Tecan.Sila2.Server.ISiLAServer _server;
         
-        private static Grpc.Core.Method<EmptyRequest, PropertyResponse<System.Collections.Generic.List<SiteTemplateDto>>> GetSiteTemplatesMethod = new Grpc.Core.Method<EmptyRequest, PropertyResponse<System.Collections.Generic.List<SiteTemplateDto>>>(Grpc.Core.MethodType.Unary, @__ServiceName, "Get_SiteTemplates", EmptyRequest.Marshaller, ProtobufMarshaller<PropertyResponse<System.Collections.Generic.List<SiteTemplateDto>>>.Default);
-        
-        private static Grpc.Core.Method<EmptyRequest, PropertyResponse<System.Collections.Generic.List<SiteDto>>> GetSitesMethod = new Grpc.Core.Method<EmptyRequest, PropertyResponse<System.Collections.Generic.List<SiteDto>>>(Grpc.Core.MethodType.Unary, @__ServiceName, "Get_Sites", EmptyRequest.Marshaller, ProtobufMarshaller<PropertyResponse<System.Collections.Generic.List<SiteDto>>>.Default);
+        private static Tecan.Sila2.Feature _feature = FeatureSerializer.LoadFromAssembly(typeof(WorktableService).Assembly, "WorktableService.sila.xml");
         
         ///  <summary>
-        /// A class that exposes the IWorktableService interface via SiLA2
+        /// Creates a new instance
         /// </summary>
-        [System.ComponentModel.Composition.ExportAttribute(typeof(IFeatureProvider))]
-        [System.ComponentModel.Composition.PartCreationPolicyAttribute(System.ComponentModel.Composition.CreationPolicy.Shared)]
-        public partial class Server : IFeatureProvider
+        /// <param name="implementation">The implementation to exported through SiLA2</param>
+        /// <param name="server">The SiLA2 server instance through which the implementation shall be exported</param>
+        [System.ComponentModel.Composition.ImportingConstructorAttribute()]
+        public WorktableService(IWorktableService implementation, Tecan.Sila2.Server.ISiLAServer server)
         {
-            
-            private IWorktableService _implementation;
-            
-            private Tecan.Sila2.Server.ISiLAServer _server;
-            
-            private static Tecan.Sila2.Feature _feature = FeatureSerializer.LoadFromAssembly(typeof(Server).Assembly, "WorktableService.sila.xml");
-            
-            [System.ComponentModel.Composition.ImportingConstructorAttribute()]
-            public Server(IWorktableService implementation, Tecan.Sila2.Server.ISiLAServer server)
+            _implementation = implementation;
+            _server = server;
+        }
+        
+        ///  <summary>
+        /// The feature that is exposed by this feature provider
+        /// </summary>
+        /// <returns>A feature object</returns>
+        public Tecan.Sila2.Feature FeatureDefinition
+        {
+            get
             {
-                _implementation = implementation;
-                _server = server;
-            }
-            
-            ///  <summary>
-            /// The feature that is exposed by this feature provider
-            /// </summary>
-            /// <returns>A feature object</returns>
-            public Tecan.Sila2.Feature FeatureDefinition
-            {
-                get
-                {
-                    return _feature;
-                }
-            }
-            
-            ///  <summary>
-            /// Creates a service definition for this service provider
-            /// </summary>
-            /// <returns>An object that describes which services are offered by this instance</returns>
-            public Grpc.Core.ServerServiceDefinition CreateServiceDefinition()
-            {
-                Grpc.Core.ServerServiceDefinition.Builder builder = Grpc.Core.ServerServiceDefinition.CreateBuilder();
-                builder.AddMethod(GetBoundingBoxMethod, GetBoundingBox);
-                builder.AddMethod(GetSiteTemplatesMethod, GetSiteTemplates);
-                builder.AddMethod(GetSitesMethod, GetSites);
-                return builder.Build();
-            }
-            
-            ///  <summary>
-            /// Gets the current value of the Bounding Box property
-            /// </summary>
-            /// <param name="request">The request object</param>
-            /// <param name="context">The context in which the request is made</param>
-            /// <returns>The current value wrapped in a data transfer object</returns>
-            protected virtual System.Threading.Tasks.Task<PropertyResponse<BoundingBoxDto>> GetBoundingBox(EmptyRequest request, Grpc.Core.ServerCallContext context)
-            {
-                return _server.CreatePropertyTask("tecan.sila.worktableintegration/infrastructure/WorktableService/v1/Property/Bound" +
-                        "ingBox", new PropertyResponse<BoundingBoxDto>(new BoundingBoxDto(_implementation.BoundingBox, _server)), context);
-            }
-            
-            ///  <summary>
-            /// Gets the current value of the Site Templates property
-            /// </summary>
-            /// <param name="request">The request object</param>
-            /// <param name="context">The context in which the request is made</param>
-            /// <returns>The current value wrapped in a data transfer object</returns>
-            protected virtual System.Threading.Tasks.Task<PropertyResponse<System.Collections.Generic.List<SiteTemplateDto>>> GetSiteTemplates(EmptyRequest request, Grpc.Core.ServerCallContext context)
-            {
-                return _server.CreatePropertyTask("tecan.sila.worktableintegration/infrastructure/WorktableService/v1/Property/SiteT" +
-                        "emplates", new PropertyResponse<System.Collections.Generic.List<SiteTemplateDto>>(Tecan.Sila2.DtoExtensions.Encapsulate(_implementation.SiteTemplates, SiteTemplateDto.Create, _server)), context);
-            }
-            
-            ///  <summary>
-            /// Gets the current value of the Sites property
-            /// </summary>
-            /// <param name="request">The request object</param>
-            /// <param name="context">The context in which the request is made</param>
-            /// <returns>The current value wrapped in a data transfer object</returns>
-            protected virtual System.Threading.Tasks.Task<PropertyResponse<System.Collections.Generic.List<SiteDto>>> GetSites(EmptyRequest request, Grpc.Core.ServerCallContext context)
-            {
-                return _server.CreatePropertyTask("tecan.sila.worktableintegration/infrastructure/WorktableService/v1/Property/Sites" +
-                        "", new PropertyResponse<System.Collections.Generic.List<SiteDto>>(Tecan.Sila2.DtoExtensions.Encapsulate(_implementation.Sites, SiteDto.Create, _server)), context);
-            }
-            
-            ///  <summary>
-            /// Gets the command with the given identifier
-            /// </summary>
-            /// <param name="commandIdentifier">A fully qualified command identifier</param>
-            /// <returns>A method object or null, if the command is not supported</returns>
-            public System.Reflection.MethodInfo GetCommand(string commandIdentifier)
-            {
-                return null;
-            }
-            
-            ///  <summary>
-            /// Gets the property with the given identifier
-            /// </summary>
-            /// <param name="propertyIdentifier">A fully qualified property identifier</param>
-            /// <returns>A property object or null, if the property is not supported</returns>
-            public System.Reflection.PropertyInfo GetProperty(string propertyIdentifier)
-            {
-                if ((propertyIdentifier == "tecan.sila.worktableintegration/infrastructure/WorktableService/v1/Property/Bound" +
-                    "ingBox"))
-                {
-                    return typeof(IWorktableService).GetProperty("BoundingBox");
-                }
-                if ((propertyIdentifier == "tecan.sila.worktableintegration/infrastructure/WorktableService/v1/Property/SiteT" +
-                    "emplates"))
-                {
-                    return typeof(IWorktableService).GetProperty("SiteTemplates");
-                }
-                if ((propertyIdentifier == "tecan.sila.worktableintegration/infrastructure/WorktableService/v1/Property/Sites" +
-                    ""))
-                {
-                    return typeof(IWorktableService).GetProperty("Sites");
-                }
-                return null;
+                return _feature;
             }
         }
+        
+        ///  <summary>
+        /// Creates a service definition for this service provider
+        /// </summary>
+        /// <returns>An object that describes which services are offered by this instance</returns>
+        public Grpc.Core.ServerServiceDefinition CreateServiceDefinition()
+        {
+            Grpc.Core.ServerServiceDefinition.Builder builder = Grpc.Core.ServerServiceDefinition.CreateBuilder();
+            builder.AddMethod(WorktableServiceProvider.GetBoundingBoxMethod, GetBoundingBox);
+            builder.AddMethod(WorktableServiceProvider.GetSiteTemplatesMethod, GetSiteTemplates);
+            builder.AddMethod(WorktableServiceProvider.GetSitesMethod, GetSites);
+            return builder.Build();
+        }
+        
+        ///  <summary>
+        /// Gets the current value of the Bounding Box property
+        /// </summary>
+        /// <param name="request">The request object</param>
+        /// <param name="context">The context in which the request is made</param>
+        /// <returns>The current value wrapped in a data transfer object</returns>
+        protected virtual System.Threading.Tasks.Task<PropertyResponse<BoundingBoxDto>> GetBoundingBox(EmptyRequest request, Grpc.Core.ServerCallContext context)
+        {
+            return _server.CreatePropertyTask("tecan.sila.worktableintegration/infrastructure/WorktableService/v2/Property/Bound" +
+                    "ingBox", new PropertyResponse<BoundingBoxDto>(new BoundingBoxDto(_implementation.BoundingBox, _server)), context);
+        }
+        
+        ///  <summary>
+        /// Gets the current value of the Site Templates property
+        /// </summary>
+        /// <param name="request">The request object</param>
+        /// <param name="context">The context in which the request is made</param>
+        /// <returns>The current value wrapped in a data transfer object</returns>
+        protected virtual System.Threading.Tasks.Task<PropertyResponse<System.Collections.Generic.List<SiteTemplateDto>>> GetSiteTemplates(EmptyRequest request, Grpc.Core.ServerCallContext context)
+        {
+            return _server.CreatePropertyTask("tecan.sila.worktableintegration/infrastructure/WorktableService/v2/Property/SiteT" +
+                    "emplates", new PropertyResponse<System.Collections.Generic.List<SiteTemplateDto>>(Tecan.Sila2.DtoExtensions.Encapsulate(_implementation.SiteTemplates, SiteTemplateDto.Create, _server)), context);
+        }
+        
+        ///  <summary>
+        /// Gets the current value of the Sites property
+        /// </summary>
+        /// <param name="request">The request object</param>
+        /// <param name="context">The context in which the request is made</param>
+        /// <returns>The current value wrapped in a data transfer object</returns>
+        protected virtual System.Threading.Tasks.Task<PropertyResponse<System.Collections.Generic.List<SiteDto>>> GetSites(EmptyRequest request, Grpc.Core.ServerCallContext context)
+        {
+            return _server.CreatePropertyTask("tecan.sila.worktableintegration/infrastructure/WorktableService/v2/Property/Sites" +
+                    "", new PropertyResponse<System.Collections.Generic.List<SiteDto>>(Tecan.Sila2.DtoExtensions.Encapsulate(_implementation.Sites, SiteDto.Create, _server)), context);
+        }
+        
+        ///  <summary>
+        /// Gets the command with the given identifier
+        /// </summary>
+        /// <param name="commandIdentifier">A fully qualified command identifier</param>
+        /// <returns>A method object or null, if the command is not supported</returns>
+        public System.Reflection.MethodInfo GetCommand(string commandIdentifier)
+        {
+            return null;
+        }
+        
+        ///  <summary>
+        /// Gets the property with the given identifier
+        /// </summary>
+        /// <param name="propertyIdentifier">A fully qualified property identifier</param>
+        /// <returns>A property object or null, if the property is not supported</returns>
+        public System.Reflection.PropertyInfo GetProperty(string propertyIdentifier)
+        {
+            if ((propertyIdentifier == "tecan.sila.worktableintegration/infrastructure/WorktableService/v2/Property/Bound" +
+                "ingBox"))
+            {
+                return typeof(IWorktableService).GetProperty("BoundingBox");
+            }
+            if ((propertyIdentifier == "tecan.sila.worktableintegration/infrastructure/WorktableService/v2/Property/SiteT" +
+                "emplates"))
+            {
+                return typeof(IWorktableService).GetProperty("SiteTemplates");
+            }
+            if ((propertyIdentifier == "tecan.sila.worktableintegration/infrastructure/WorktableService/v2/Property/Sites" +
+                ""))
+            {
+                return typeof(IWorktableService).GetProperty("Sites");
+            }
+            return null;
+        }
+    }
+    
+    ///  <summary>
+    /// Encapsulates provider classes to expose the Worktable Service feature via SiLA2
+    /// </summary>
+    internal sealed partial class WorktableServiceProvider
+    {
+        
+        private static string @__ServiceName = "sila2.tecan.sila.worktableintegration.infrastructure.worktableservice.v2.Worktabl" +
+            "eService";
+        
+        public static Grpc.Core.Method<EmptyRequest, PropertyResponse<BoundingBoxDto>> GetBoundingBoxMethod = new Grpc.Core.Method<EmptyRequest, PropertyResponse<BoundingBoxDto>>(Grpc.Core.MethodType.Unary, @__ServiceName, "Get_BoundingBox", EmptyRequest.Marshaller, ProtobufMarshaller<PropertyResponse<BoundingBoxDto>>.Default);
+        
+        public static Grpc.Core.Method<EmptyRequest, PropertyResponse<System.Collections.Generic.List<SiteTemplateDto>>> GetSiteTemplatesMethod = new Grpc.Core.Method<EmptyRequest, PropertyResponse<System.Collections.Generic.List<SiteTemplateDto>>>(Grpc.Core.MethodType.Unary, @__ServiceName, "Get_SiteTemplates", EmptyRequest.Marshaller, ProtobufMarshaller<PropertyResponse<System.Collections.Generic.List<SiteTemplateDto>>>.Default);
+        
+        public static Grpc.Core.Method<EmptyRequest, PropertyResponse<System.Collections.Generic.List<SiteDto>>> GetSitesMethod = new Grpc.Core.Method<EmptyRequest, PropertyResponse<System.Collections.Generic.List<SiteDto>>>(Grpc.Core.MethodType.Unary, @__ServiceName, "Get_Sites", EmptyRequest.Marshaller, ProtobufMarshaller<PropertyResponse<System.Collections.Generic.List<SiteDto>>>.Default);
     }
 }
 

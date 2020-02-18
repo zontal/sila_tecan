@@ -19,113 +19,118 @@ namespace Tecan.Sila2.ParameterDefaultsProvider.Tests
     
     
     ///  <summary>
+    /// A class that exposes the IExampleSetProviderService interface via SiLA2
+    /// </summary>
+    [System.ComponentModel.Composition.ExportAttribute(typeof(IFeatureProvider))]
+    [System.ComponentModel.Composition.PartCreationPolicyAttribute(System.ComponentModel.Composition.CreationPolicy.Shared)]
+    public partial class ExampleSetProviderService : IFeatureProvider
+    {
+        
+        private IExampleSetProviderService _implementation;
+        
+        private Tecan.Sila2.Server.ISiLAServer _server;
+        
+        private static Tecan.Sila2.Feature _feature = FeatureSerializer.LoadFromAssembly(typeof(ExampleSetProviderService).Assembly, "ExampleSetProviderService.sila.xml");
+        
+        ///  <summary>
+        /// Creates a new instance
+        /// </summary>
+        /// <param name="implementation">The implementation to exported through SiLA2</param>
+        /// <param name="server">The SiLA2 server instance through which the implementation shall be exported</param>
+        [System.ComponentModel.Composition.ImportingConstructorAttribute()]
+        public ExampleSetProviderService(IExampleSetProviderService implementation, Tecan.Sila2.Server.ISiLAServer server)
+        {
+            _implementation = implementation;
+            _server = server;
+        }
+        
+        ///  <summary>
+        /// The feature that is exposed by this feature provider
+        /// </summary>
+        /// <returns>A feature object</returns>
+        public Tecan.Sila2.Feature FeatureDefinition
+        {
+            get
+            {
+                return _feature;
+            }
+        }
+        
+        ///  <summary>
+        /// Creates a service definition for this service provider
+        /// </summary>
+        /// <returns>An object that describes which services are offered by this instance</returns>
+        public Grpc.Core.ServerServiceDefinition CreateServiceDefinition()
+        {
+            Grpc.Core.ServerServiceDefinition.Builder builder = Grpc.Core.ServerServiceDefinition.CreateBuilder();
+            builder.AddMethod(ExampleSetProviderServiceProvider.ExampleMethodMethod, ExampleMethod);
+            return builder.Build();
+        }
+        
+        private EmptyRequest ExampleMethodInternal(ExampleMethodRequestDto request)
+        {
+            try
+            {
+                _implementation.ExampleMethod(request.Parameter.Extract(_server));
+                return EmptyRequest.Instance;
+            } catch (System.ArgumentException ex)
+            {
+                if ((ex.ParamName == "parameter"))
+                {
+                    throw ErrorHandling.CreateValidationError("tecan.sila.parameterdefaultsprovider/tests/ExampleSetProviderService/v1/Command/E" +
+                            "xampleMethod/Parameter/Parameter", ex.Message);
+                }
+                throw ErrorHandling.CreateUnknownValidationError(ex);
+            }
+        }
+        
+        ///  <summary>
+        /// Executes the Example Method command
+        /// </summary>
+        /// <param name="request">A data transfer object that contains the command parameters</param>
+        /// <param name="context">The context in which the command is issued</param>
+        /// <returns>The command response wrapped in a data transfer object</returns>
+        protected virtual System.Threading.Tasks.Task<EmptyRequest> ExampleMethod(ExampleMethodRequestDto request, Grpc.Core.ServerCallContext context)
+        {
+            return _server.InvokeCommand(ExampleMethodInternal, request, context);
+        }
+        
+        ///  <summary>
+        /// Gets the command with the given identifier
+        /// </summary>
+        /// <param name="commandIdentifier">A fully qualified command identifier</param>
+        /// <returns>A method object or null, if the command is not supported</returns>
+        public System.Reflection.MethodInfo GetCommand(string commandIdentifier)
+        {
+            if ((commandIdentifier == "tecan.sila.parameterdefaultsprovider/tests/ExampleSetProviderService/v1/Command/E" +
+                "xampleMethod"))
+            {
+                return typeof(IExampleSetProviderService).GetMethod("ExampleMethod");
+            }
+            return null;
+        }
+        
+        ///  <summary>
+        /// Gets the property with the given identifier
+        /// </summary>
+        /// <param name="propertyIdentifier">A fully qualified property identifier</param>
+        /// <returns>A property object or null, if the property is not supported</returns>
+        public System.Reflection.PropertyInfo GetProperty(string propertyIdentifier)
+        {
+            return null;
+        }
+    }
+    
+    ///  <summary>
     /// Encapsulates provider classes to expose the Example Set Provider Service feature via SiLA2
     /// </summary>
-    public sealed partial class ExampleSetProviderServiceProvider
+    internal sealed partial class ExampleSetProviderServiceProvider
     {
         
         private static string @__ServiceName = "sila2.tecan.sila.parameterdefaultsprovider.tests.examplesetproviderservice.v1.Exa" +
             "mpleSetProviderService";
         
-        private static Grpc.Core.Method<ExampleMethodRequestDto, EmptyRequest> ExampleMethodMethod = new Grpc.Core.Method<ExampleMethodRequestDto, EmptyRequest>(Grpc.Core.MethodType.Unary, @__ServiceName, "ExampleMethod", ProtobufMarshaller<ExampleMethodRequestDto>.Default, EmptyRequest.Marshaller);
-        
-        ///  <summary>
-        /// A class that exposes the IExampleSetProviderService interface via SiLA2
-        /// </summary>
-        [System.ComponentModel.Composition.ExportAttribute(typeof(IFeatureProvider))]
-        [System.ComponentModel.Composition.PartCreationPolicyAttribute(System.ComponentModel.Composition.CreationPolicy.Shared)]
-        public partial class Server : IFeatureProvider
-        {
-            
-            private IExampleSetProviderService _implementation;
-            
-            private Tecan.Sila2.Server.ISiLAServer _server;
-            
-            private static Tecan.Sila2.Feature _feature = FeatureSerializer.LoadFromAssembly(typeof(Server).Assembly, "ExampleSetProviderService.sila.xml");
-            
-            [System.ComponentModel.Composition.ImportingConstructorAttribute()]
-            public Server(IExampleSetProviderService implementation, Tecan.Sila2.Server.ISiLAServer server)
-            {
-                _implementation = implementation;
-                _server = server;
-            }
-            
-            ///  <summary>
-            /// The feature that is exposed by this feature provider
-            /// </summary>
-            /// <returns>A feature object</returns>
-            public Tecan.Sila2.Feature FeatureDefinition
-            {
-                get
-                {
-                    return _feature;
-                }
-            }
-            
-            ///  <summary>
-            /// Creates a service definition for this service provider
-            /// </summary>
-            /// <returns>An object that describes which services are offered by this instance</returns>
-            public Grpc.Core.ServerServiceDefinition CreateServiceDefinition()
-            {
-                Grpc.Core.ServerServiceDefinition.Builder builder = Grpc.Core.ServerServiceDefinition.CreateBuilder();
-                builder.AddMethod(ExampleMethodMethod, ExampleMethod);
-                return builder.Build();
-            }
-            
-            private EmptyRequest ExampleMethodInternal(ExampleMethodRequestDto request)
-            {
-                try
-                {
-                    _implementation.ExampleMethod(request.Parameter.Extract(_server));
-                    return EmptyRequest.Instance;
-                } catch (System.ArgumentException ex)
-                {
-                    if ((ex.ParamName == "parameter"))
-                    {
-                        throw ErrorHandling.CreateValidationError("tecan.sila.parameterdefaultsprovider/tests/ExampleSetProviderService/v1/Command/E" +
-                                "xampleMethod/Parameter/Parameter", ex.Message);
-                    }
-                    throw ErrorHandling.CreateUnknownValidationError(ex);
-                }
-            }
-            
-            ///  <summary>
-            /// Executes the Example Method command
-            /// </summary>
-            /// <param name="request">A data transfer object that contains the command parameters</param>
-            /// <param name="context">The context in which the command is issued</param>
-            /// <returns>The command response wrapped in a data transfer object</returns>
-            protected virtual System.Threading.Tasks.Task<EmptyRequest> ExampleMethod(ExampleMethodRequestDto request, Grpc.Core.ServerCallContext context)
-            {
-                return _server.InvokeCommand(ExampleMethodInternal, request, context);
-            }
-            
-            ///  <summary>
-            /// Gets the command with the given identifier
-            /// </summary>
-            /// <param name="commandIdentifier">A fully qualified command identifier</param>
-            /// <returns>A method object or null, if the command is not supported</returns>
-            public System.Reflection.MethodInfo GetCommand(string commandIdentifier)
-            {
-                if ((commandIdentifier == "tecan.sila.parameterdefaultsprovider/tests/ExampleSetProviderService/v1/Command/E" +
-                    "xampleMethod"))
-                {
-                    return typeof(IExampleSetProviderService).GetMethod("ExampleMethod");
-                }
-                return null;
-            }
-            
-            ///  <summary>
-            /// Gets the property with the given identifier
-            /// </summary>
-            /// <param name="propertyIdentifier">A fully qualified property identifier</param>
-            /// <returns>A property object or null, if the property is not supported</returns>
-            public System.Reflection.PropertyInfo GetProperty(string propertyIdentifier)
-            {
-                return null;
-            }
-        }
+        public static Grpc.Core.Method<ExampleMethodRequestDto, EmptyRequest> ExampleMethodMethod = new Grpc.Core.Method<ExampleMethodRequestDto, EmptyRequest>(Grpc.Core.MethodType.Unary, @__ServiceName, "ExampleMethod", ProtobufMarshaller<ExampleMethodRequestDto>.Default, EmptyRequest.Marshaller);
     }
 }
 

@@ -71,7 +71,7 @@ namespace Tecan.Sila2.Discovery
         /// </summary>
         public ServerData GetServerData( Channel channel )
         {
-            var silaService = new SiLAServiceProvider.Client( channel, _executionManager );
+            var silaService = new SiLAServiceClient( channel, _executionManager );
             var config = GetServerConfig( silaService );
             var info = GetServerInfo( silaService );
             var features = GetImplementedFeatures( silaService );
@@ -79,12 +79,12 @@ namespace Tecan.Sila2.Discovery
             return server;
         }
 
-        private static List<Feature> GetImplementedFeatures( SiLAServiceProvider.Client silaService )
+        private static List<Feature> GetImplementedFeatures( ISiLAService silaService )
         {
             return silaService.ImplementedFeatures.Select( f => FeatureSerializer.LoadFromXml( silaService.GetFeatureDefinition( f ) ) ).ToList();
         }
 
-        private static ServerConfig GetServerConfig( SiLAServiceProvider.Client silaService )
+        private static ServerConfig GetServerConfig( ISiLAService silaService )
         {
             var name = silaService.ServerName;
             var uuid = Guid.Parse( silaService.ServerUUID );
@@ -92,7 +92,7 @@ namespace Tecan.Sila2.Discovery
             return config;
         }
 
-        private static ServerInformation GetServerInfo( SiLAServiceProvider.Client silaService )
+        private static ServerInformation GetServerInfo( ISiLAService silaService )
         {
             var type = silaService.ServerType;
             var description = silaService.ServerDescription;

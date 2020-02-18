@@ -18,230 +18,260 @@ namespace Tecan.Sila2.Generator.Test.TestReference
     
     
     ///  <summary>
-    /// Encapsulates provider classes to expose the Logging feature via SiLA2
+    /// A class that exposes the ILoggingService interface via SiLA2
     /// </summary>
-    public sealed partial class LoggingServiceProvider
+    [System.ComponentModel.Composition.ExportAttribute(typeof(IFeatureProvider))]
+    [System.ComponentModel.Composition.PartCreationPolicyAttribute(System.ComponentModel.Composition.CreationPolicy.Shared)]
+    public partial class LoggingService : IFeatureProvider
     {
         
-        private static string @__ServiceName = "sila2.tecan.sila.generator.test.logging.infrastructure.loggingservice.v1.LoggingS" +
+        private ILoggingService _implementation;
+        
+        private Tecan.Sila2.Server.ISiLAServer _server;
+        
+        private static Tecan.Sila2.Feature _feature = FeatureSerializer.LoadFromAssembly(typeof(LoggingService).Assembly, "LoggingService.sila.xml");
+        
+        ///  <summary>
+        /// Creates a new instance
+        /// </summary>
+        /// <param name="implementation">The implementation to exported through SiLA2</param>
+        /// <param name="server">The SiLA2 server instance through which the implementation shall be exported</param>
+        [System.ComponentModel.Composition.ImportingConstructorAttribute()]
+        public LoggingService(ILoggingService implementation, Tecan.Sila2.Server.ISiLAServer server)
+        {
+            _implementation = implementation;
+            _server = server;
+        }
+        
+        ///  <summary>
+        /// The feature that is exposed by this feature provider
+        /// </summary>
+        /// <returns>A feature object</returns>
+        public Tecan.Sila2.Feature FeatureDefinition
+        {
+            get
+            {
+                return _feature;
+            }
+        }
+        
+        ///  <summary>
+        /// Creates a service definition for this service provider
+        /// </summary>
+        /// <returns>An object that describes which services are offered by this instance</returns>
+        public Grpc.Core.ServerServiceDefinition CreateServiceDefinition()
+        {
+            Grpc.Core.ServerServiceDefinition.Builder builder = Grpc.Core.ServerServiceDefinition.CreateBuilder();
+            builder.AddMethod(LoggingServiceProvider.ListenForLogEntriesMethod, ListenForLogEntries);
+            builder.AddMethod(LoggingServiceProvider.ListenForLogEntriesStateMethod, ListenForLogEntriesState);
+            builder.AddMethod(LoggingServiceProvider.ListenForLogEntriesIntermediateMethod, ListenForLogEntriesIntermediateResponse);
+            builder.AddMethod(LoggingServiceProvider.ListenForLogEntriesResponseMethod, ListenForLogEntriesResponse);
+            builder.AddMethod(LoggingServiceProvider.GetAffectedByLoggingActivityMethod, GetAffectedByLoggingActivity);
+            return builder.Build();
+        }
+        
+        ///  <summary>
+        /// Obtains a stream of states for the given command execution id
+        /// </summary>
+        /// <param name="request">The request including the command execution id</param>
+        /// <param name="responseStream">The stream in which execution states should be written</param>
+        /// <param name="context">The context in which the request is made</param>
+        /// <returns>A stream of intermediate responses</returns>
+        private System.Threading.Tasks.Task ListenForLogEntriesState(Tecan.Sila2.CommandExecutionUuid request, Grpc.Core.IServerStreamWriter<Tecan.Sila2.ExecutionState> responseStream, Grpc.Core.ServerCallContext context)
+        {
+            return ObservableCommandHelper.QueryCommandState(_server, request, responseStream, null, context);
+        }
+        
+        private ListenForLogEntriesIntermediateDto ConvertListenForLogEntriesIntermediate(LogEntry intermediate)
+        {
+            return new ListenForLogEntriesIntermediateDto(intermediate, _server);
+        }
+        
+        ///  <summary>
+        /// Obtains a stream of intermediate results for the given command execution id
+        /// </summary>
+        /// <param name="request">The request including the command execution id</param>
+        /// <param name="responseStream">The stream in which intermediate responses should be written</param>
+        /// <param name="context">The context in which the request is made</param>
+        /// <returns>A stream of intermediate responses</returns>
+        private System.Threading.Tasks.Task ListenForLogEntriesIntermediateResponse(Tecan.Sila2.CommandExecutionUuid request, Grpc.Core.IServerStreamWriter<ListenForLogEntriesIntermediateDto> responseStream, Grpc.Core.ServerCallContext context)
+        {
+            return ObservableCommandHelper.RetrieveIntermediateResults<LogEntry, ListenForLogEntriesIntermediateDto>(_server, request, responseStream, null, ConvertListenForLogEntriesIntermediate, context);
+        }
+        
+        ///  <summary>
+        /// Waits for the completion of the given command execution id and returns the result
+        /// </summary>
+        /// <param name="request">The request including the command execution identifier</param>
+        /// <param name="context">The context in which the request is made</param>
+        /// <returns>A task with the command result data transfer object</returns>
+        private System.Threading.Tasks.Task<EmptyRequest> ListenForLogEntriesResponse(Tecan.Sila2.CommandExecutionUuid request, Grpc.Core.ServerCallContext context)
+        {
+            return ObservableCommandHelper.WaitCommandExecution(_server, request, null, context);
+        }
+        
+        ///  <summary>
+        /// Executes the Listen for log entries command
+        /// </summary>
+        /// <param name="request">A data transfer object that contains the command parameters</param>
+        /// <param name="context">The context in which the command is issued</param>
+        /// <returns>The command response wrapped in a data transfer object</returns>
+        protected virtual System.Threading.Tasks.Task<Tecan.Sila2.CommandConfirmation> ListenForLogEntries(ListenForLogEntriesRequestDto request, Grpc.Core.ServerCallContext context)
+        {
+            return ObservableCommandHelper.StartCommand(_server, "tecan.sila.generator.test.logging/infrastructure/LoggingService/v2/Command/Listen" +
+                    "ForLogEntries", _implementation.ListenForLogEntries(), context);
+        }
+        
+        ///  <summary>
+        /// Gets the features/commands/properties affected by the metadata
+        /// </summary>
+        /// <param name="request">The request object (not used)</param>
+        /// <param name="context">The request context</param>
+        /// <returns>A list of fully qualified identifiers</returns>
+        protected virtual System.Threading.Tasks.Task<System.Collections.Generic.List<Tecan.Sila2.StringDto>> GetAffectedByLoggingActivity(EmptyRequest request, Grpc.Core.ServerCallContext context)
+        {
+            return Tecan.Sila2.Server.Metadata.GetAffectedIdentifiers(_server, _implementation.LoggingActivity);
+        }
+        
+        ///  <summary>
+        /// Gets the command with the given identifier
+        /// </summary>
+        /// <param name="commandIdentifier">A fully qualified command identifier</param>
+        /// <returns>A method object or null, if the command is not supported</returns>
+        public System.Reflection.MethodInfo GetCommand(string commandIdentifier)
+        {
+            if ((commandIdentifier == "tecan.sila.generator.test.logging/infrastructure/LoggingService/v2/Command/Listen" +
+                "ForLogEntries"))
+            {
+                return typeof(ILoggingService).GetMethod("ListenForLogEntries");
+            }
+            return null;
+        }
+        
+        ///  <summary>
+        /// Gets the property with the given identifier
+        /// </summary>
+        /// <param name="propertyIdentifier">A fully qualified property identifier</param>
+        /// <returns>A property object or null, if the property is not supported</returns>
+        public System.Reflection.PropertyInfo GetProperty(string propertyIdentifier)
+        {
+            return null;
+        }
+    }
+    
+    ///  <summary>
+    /// Class that implements the ILoggingService interface through SiLA2
+    /// </summary>
+    public partial class LoggingServiceClient : Grpc.Core.ClientBase<LoggingServiceClient>, ILoggingService
+    {
+        
+        private IClientExecutionManager _executionManager;
+        
+        ///  <summary>
+        /// Creates a new instance
+        /// </summary>
+        /// <param name="executionManager">A component that attaches metadata to SiLA2 calls</param>
+        public LoggingServiceClient(IClientExecutionManager executionManager)
+        {
+            _executionManager = executionManager;
+        }
+        
+        ///  <summary>
+        /// Creates a new instance
+        /// </summary>
+        /// <param name="configuration">The underlying configuration</param>
+        /// <param name="executionManager">A component that attaches metadata to SiLA2 calls</param>
+        protected LoggingServiceClient(ClientBaseConfiguration configuration, IClientExecutionManager executionManager) : 
+                base(configuration)
+        {
+            _executionManager = executionManager;
+        }
+        
+        ///  <summary>
+        /// Creates a new instance
+        /// </summary>
+        /// <param name="channel">The underlying channel</param>
+        /// <param name="executionManager">A component that attaches metadata to SiLA2 calls</param>
+        public LoggingServiceClient(Grpc.Core.Channel channel, IClientExecutionManager executionManager) : 
+                base(channel)
+        {
+            _executionManager = executionManager;
+        }
+        
+        ///  <summary>
+        /// Creates a new instance
+        /// </summary>
+        /// <param name="invoker">The underlying invoker</param>
+        /// <param name="executionManager">A component that attaches metadata to SiLA2 calls</param>
+        public LoggingServiceClient(Grpc.Core.CallInvoker invoker, IClientExecutionManager executionManager) : 
+                base(invoker)
+        {
+            _executionManager = executionManager;
+        }
+        
+        ///  <summary>
+        /// Starts listening for log entries from the device
+        /// </summary>
+        public virtual Tecan.Sila2.IIntermediateObservableCommand<LogEntry> ListenForLogEntries()
+        {
+            ListenForLogEntriesRequestDto request = new ListenForLogEntriesRequestDto(null);
+            return ObservableClientCommands.CreateIntermediate(_executionManager.CreateCallOptions(request.CommandIdentifier), CallInvoker, request, LoggingServiceProvider.ListenForLogEntriesMethod, LoggingServiceProvider.ListenForLogEntriesStateMethod, LoggingServiceProvider.ListenForLogEntriesIntermediateMethod, ConvertListenForLogEntriesIntermediate, ConvertListenForLogEntriesException);
+        }
+        
+        ///  <summary>
+        /// Converts the error ocurred during execution of ListenForLogEntries to a proper exception
+        /// </summary>
+        /// <param name="error">The SiLA2 execution error</param>
+        /// <returns>The converted exception or null, if the error is not understood</returns>
+        private static System.Exception ConvertListenForLogEntriesException(Tecan.Sila2.DefinedExecutionErrorDto error)
+        {
+            return null;
+        }
+        
+        ///  <summary>
+        /// Unwraps the response of the ListenForLogEntriesIntermediate command
+        /// </summary>
+        /// <param name="value">The response data transfer object</param>
+        /// <returns>The actual response</returns>
+        private LogEntry ConvertListenForLogEntriesIntermediate(ListenForLogEntriesIntermediateDto value)
+        {
+            return value.Intermediate.Extract(_executionManager.DownloadBinaryStore);
+        }
+        
+        ///  <summary>
+        /// Creates a new instance
+        /// </summary>
+        /// <param name="configuration">The new client configuration</param>
+        protected override LoggingServiceClient NewInstance(ClientBaseConfiguration configuration)
+        {
+            return new LoggingServiceClient(configuration, _executionManager);
+        }
+        
+        private T Extract<T>(Tecan.Sila2.ISilaTransferObject<T> dto)
+        
+        {
+            return dto.Extract(_executionManager.DownloadBinaryStore);
+        }
+    }
+    
+    ///  <summary>
+    /// Encapsulates provider classes to expose the Logging feature via SiLA2
+    /// </summary>
+    internal sealed partial class LoggingServiceProvider
+    {
+        
+        private static string @__ServiceName = "sila2.tecan.sila.generator.test.logging.infrastructure.loggingservice.v2.LoggingS" +
             "ervice";
         
-        private static Grpc.Core.Method<ListenForLogEntriesRequestDto, CommandConfirmation> ListenForLogEntriesMethod = new Grpc.Core.Method<ListenForLogEntriesRequestDto, CommandConfirmation>(Grpc.Core.MethodType.Unary, @__ServiceName, "ListenForLogEntries", ProtobufMarshaller<ListenForLogEntriesRequestDto>.Default, ProtobufMarshaller<CommandConfirmation>.Default);
+        public static Grpc.Core.Method<ListenForLogEntriesRequestDto, CommandConfirmation> ListenForLogEntriesMethod = new Grpc.Core.Method<ListenForLogEntriesRequestDto, CommandConfirmation>(Grpc.Core.MethodType.Unary, @__ServiceName, "ListenForLogEntries", ProtobufMarshaller<ListenForLogEntriesRequestDto>.Default, ProtobufMarshaller<CommandConfirmation>.Default);
         
-        private static Grpc.Core.Method<CommandExecutionUuid, ExecutionState> ListenForLogEntriesStateMethod = new Grpc.Core.Method<CommandExecutionUuid, ExecutionState>(Grpc.Core.MethodType.ServerStreaming, @__ServiceName, "ListenForLogEntries_Info", ProtobufMarshaller<CommandExecutionUuid>.Default, ProtobufMarshaller<ExecutionState>.Default);
+        public static Grpc.Core.Method<CommandExecutionUuid, ExecutionState> ListenForLogEntriesStateMethod = new Grpc.Core.Method<CommandExecutionUuid, ExecutionState>(Grpc.Core.MethodType.ServerStreaming, @__ServiceName, "ListenForLogEntries_Info", ProtobufMarshaller<CommandExecutionUuid>.Default, ProtobufMarshaller<ExecutionState>.Default);
         
-        private static Grpc.Core.Method<CommandExecutionUuid, ListenForLogEntriesIntermediateDto> ListenForLogEntriesIntermediateMethod = new Grpc.Core.Method<CommandExecutionUuid, ListenForLogEntriesIntermediateDto>(Grpc.Core.MethodType.Unary, @__ServiceName, "ListenForLogEntries_IntermediateResponses", ProtobufMarshaller<CommandExecutionUuid>.Default, ProtobufMarshaller<ListenForLogEntriesIntermediateDto>.Default);
+        public static Grpc.Core.Method<CommandExecutionUuid, ListenForLogEntriesIntermediateDto> ListenForLogEntriesIntermediateMethod = new Grpc.Core.Method<CommandExecutionUuid, ListenForLogEntriesIntermediateDto>(Grpc.Core.MethodType.Unary, @__ServiceName, "ListenForLogEntries_IntermediateResponses", ProtobufMarshaller<CommandExecutionUuid>.Default, ProtobufMarshaller<ListenForLogEntriesIntermediateDto>.Default);
         
-        private static Grpc.Core.Method<CommandExecutionUuid, EmptyRequest> ListenForLogEntriesResponseMethod = new Grpc.Core.Method<CommandExecutionUuid, EmptyRequest>(Grpc.Core.MethodType.Unary, @__ServiceName, "ListenForLogEntries_Result", ProtobufMarshaller<CommandExecutionUuid>.Default, EmptyRequest.Marshaller);
+        public static Grpc.Core.Method<CommandExecutionUuid, EmptyRequest> ListenForLogEntriesResponseMethod = new Grpc.Core.Method<CommandExecutionUuid, EmptyRequest>(Grpc.Core.MethodType.Unary, @__ServiceName, "ListenForLogEntries_Result", ProtobufMarshaller<CommandExecutionUuid>.Default, EmptyRequest.Marshaller);
         
-        private static Grpc.Core.Method<EmptyRequest, System.Collections.Generic.List<Tecan.Sila2.StringDto>> GetAffectedByLoggingActivityMethod = new Grpc.Core.Method<EmptyRequest, System.Collections.Generic.List<Tecan.Sila2.StringDto>>(Grpc.Core.MethodType.Unary, @__ServiceName, "Get_FCPAffectedByMetadata_LoggingActivity", EmptyRequest.Marshaller, ProtobufMarshaller<System.Collections.Generic.List<Tecan.Sila2.StringDto>>.Default);
-        
-        ///  <summary>
-        /// A class that exposes the ILoggingService interface via SiLA2
-        /// </summary>
-        [System.ComponentModel.Composition.ExportAttribute(typeof(IFeatureProvider))]
-        [System.ComponentModel.Composition.PartCreationPolicyAttribute(System.ComponentModel.Composition.CreationPolicy.Shared)]
-        public partial class Server : IFeatureProvider
-        {
-            
-            private ILoggingService _implementation;
-            
-            private Tecan.Sila2.Server.ISiLAServer _server;
-            
-            private static Tecan.Sila2.Feature _feature = FeatureSerializer.LoadFromAssembly(typeof(Server).Assembly, "LoggingService.sila.xml");
-            
-            [System.ComponentModel.Composition.ImportingConstructorAttribute()]
-            public Server(ILoggingService implementation, Tecan.Sila2.Server.ISiLAServer server)
-            {
-                _implementation = implementation;
-                _server = server;
-            }
-            
-            ///  <summary>
-            /// The feature that is exposed by this feature provider
-            /// </summary>
-            /// <returns>A feature object</returns>
-            public Tecan.Sila2.Feature FeatureDefinition
-            {
-                get
-                {
-                    return _feature;
-                }
-            }
-            
-            ///  <summary>
-            /// Creates a service definition for this service provider
-            /// </summary>
-            /// <returns>An object that describes which services are offered by this instance</returns>
-            public Grpc.Core.ServerServiceDefinition CreateServiceDefinition()
-            {
-                Grpc.Core.ServerServiceDefinition.Builder builder = Grpc.Core.ServerServiceDefinition.CreateBuilder();
-                builder.AddMethod(ListenForLogEntriesMethod, ListenForLogEntries);
-                builder.AddMethod(ListenForLogEntriesStateMethod, ListenForLogEntriesState);
-                builder.AddMethod(ListenForLogEntriesIntermediateMethod, ListenForLogEntriesIntermediateResponse);
-                builder.AddMethod(ListenForLogEntriesResponseMethod, ListenForLogEntriesResponse);
-                builder.AddMethod(GetAffectedByLoggingActivityMethod, GetAffectedByLoggingActivity);
-                return builder.Build();
-            }
-            
-            ///  <summary>
-            /// Obtains a stream of states for the given command execution id
-            /// </summary>
-            /// <param name="request">The request including the command execution id</param>
-            /// <param name="responseStream">The stream in which execution states should be written</param>
-            /// <param name="context">The context in which the request is made</param>
-            /// <returns>A stream of intermediate responses</returns>
-            private System.Threading.Tasks.Task ListenForLogEntriesState(Tecan.Sila2.CommandExecutionUuid request, Grpc.Core.IServerStreamWriter<Tecan.Sila2.ExecutionState> responseStream, Grpc.Core.ServerCallContext context)
-            {
-                return ObservableCommandHelper.QueryCommandState(_server, request, responseStream, context);
-            }
-            
-            private ListenForLogEntriesIntermediateDto ConvertListenForLogEntriesIntermediate(LogEntry intermediate)
-            {
-                return new ListenForLogEntriesIntermediateDto(intermediate, _server);
-            }
-            
-            ///  <summary>
-            /// Obtains a stream of intermediate results for the given command execution id
-            /// </summary>
-            /// <param name="request">The request including the command execution id</param>
-            /// <param name="responseStream">The stream in which intermediate responses should be written</param>
-            /// <param name="context">The context in which the request is made</param>
-            /// <returns>A stream of intermediate responses</returns>
-            private System.Threading.Tasks.Task ListenForLogEntriesIntermediateResponse(Tecan.Sila2.CommandExecutionUuid request, Grpc.Core.IServerStreamWriter<ListenForLogEntriesIntermediateDto> responseStream, Grpc.Core.ServerCallContext context)
-            {
-                return ObservableCommandHelper.RetrieveIntermediateResults<LogEntry, ListenForLogEntriesIntermediateDto>(_server, request, responseStream, ConvertListenForLogEntriesIntermediate, context);
-            }
-            
-            ///  <summary>
-            /// Waits for the completion of the given command execution id and returns the result
-            /// </summary>
-            /// <param name="request">The request including the command execution identifier</param>
-            /// <param name="context">The context in which the request is made</param>
-            /// <returns>A task with the command result data transfer object</returns>
-            private System.Threading.Tasks.Task<EmptyRequest> ListenForLogEntriesResponse(Tecan.Sila2.CommandExecutionUuid request, Grpc.Core.ServerCallContext context)
-            {
-                return ObservableCommandHelper.WaitCommandExecution(_server, request, context);
-            }
-            
-            ///  <summary>
-            /// Executes the Listen for log entries command
-            /// </summary>
-            /// <param name="request">A data transfer object that contains the command parameters</param>
-            /// <param name="context">The context in which the command is issued</param>
-            /// <returns>The command response wrapped in a data transfer object</returns>
-            protected virtual System.Threading.Tasks.Task<Tecan.Sila2.CommandConfirmation> ListenForLogEntries(ListenForLogEntriesRequestDto request, Grpc.Core.ServerCallContext context)
-            {
-                return ObservableCommandHelper.StartCommand(_server, "tecan.sila.generator.test.logging/infrastructure/LoggingService/v1/Command/Listen" +
-                        "ForLogEntries", _implementation.ListenForLogEntries(), context);
-            }
-            
-            ///  <summary>
-            /// Gets the features/commands/properties affected by the metadata
-            /// </summary>
-            /// <param name="request">The request object (not used)</param>
-            /// <param name="context">The request context</param>
-            /// <returns>A list of fully qualified identifiers</returns>
-            protected virtual System.Threading.Tasks.Task<System.Collections.Generic.List<Tecan.Sila2.StringDto>> GetAffectedByLoggingActivity(EmptyRequest request, Grpc.Core.ServerCallContext context)
-            {
-                return Tecan.Sila2.Server.Metadata.GetAffectedIdentifiers(_server, _implementation.LoggingActivity);
-            }
-            
-            ///  <summary>
-            /// Gets the command with the given identifier
-            /// </summary>
-            /// <param name="commandIdentifier">A fully qualified command identifier</param>
-            /// <returns>A method object or null, if the command is not supported</returns>
-            public System.Reflection.MethodInfo GetCommand(string commandIdentifier)
-            {
-                if ((commandIdentifier == "tecan.sila.generator.test.logging/infrastructure/LoggingService/v1/Command/Listen" +
-                    "ForLogEntries"))
-                {
-                    return typeof(ILoggingService).GetMethod("ListenForLogEntries");
-                }
-                return null;
-            }
-            
-            ///  <summary>
-            /// Gets the property with the given identifier
-            /// </summary>
-            /// <param name="propertyIdentifier">A fully qualified property identifier</param>
-            /// <returns>A property object or null, if the property is not supported</returns>
-            public System.Reflection.PropertyInfo GetProperty(string propertyIdentifier)
-            {
-                return null;
-            }
-        }
-        
-        ///  <summary>
-        /// Class that implements the ILoggingService interface through SiLA2
-        /// </summary>
-        public partial class Client : Grpc.Core.ClientBase<Client>, ILoggingService
-        {
-            
-            private IClientExecutionManager _executionManager;
-            
-            public Client(IClientExecutionManager executionManager)
-            {
-                _executionManager = executionManager;
-            }
-            
-            protected Client(ClientBaseConfiguration configuration, IClientExecutionManager executionManager) : 
-                    base(configuration)
-            {
-                _executionManager = executionManager;
-            }
-            
-            public Client(Grpc.Core.Channel channel, IClientExecutionManager executionManager) : 
-                    base(channel)
-            {
-                _executionManager = executionManager;
-            }
-            
-            ///  <summary>
-            /// Starts listening for log entries from the device
-            /// </summary>
-            public virtual Tecan.Sila2.IIntermediateObservableCommand<LogEntry> ListenForLogEntries()
-            {
-                ListenForLogEntriesRequestDto request = new ListenForLogEntriesRequestDto(null);
-                return ObservableClientCommands.CreateIntermediate(_executionManager.CreateCallOptions(request.CommandIdentifier), CallInvoker, request, ListenForLogEntriesMethod, ListenForLogEntriesStateMethod, ListenForLogEntriesIntermediateMethod, ConvertListenForLogEntriesIntermediate, ConvertListenForLogEntriesException);
-            }
-            
-            ///  <summary>
-            /// Converts the error ocurred during execution of ListenForLogEntries to a proper exception
-            /// </summary>
-            /// <param name="error">The SiLA2 execution error</param>
-            /// <returns>The converted exception or null, if the error is not understood</returns>
-            private static System.Exception ConvertListenForLogEntriesException(Tecan.Sila2.DefinedExecutionErrorDto error)
-            {
-                return null;
-            }
-            
-            ///  <summary>
-            /// Unwraps the response of the ListenForLogEntriesIntermediate command
-            /// </summary>
-            /// <param name="value">The response data transfer object</param>
-            /// <returns>The actual response</returns>
-            private LogEntry ConvertListenForLogEntriesIntermediate(ListenForLogEntriesIntermediateDto value)
-            {
-                return value.Intermediate.Extract(_executionManager.DownloadBinaryStore);
-            }
-            
-            ///  <summary>
-            /// Creates a new instance
-            /// </summary>
-            /// <param name="configuration">The new client configuration</param>
-            protected override Client NewInstance(ClientBaseConfiguration configuration)
-            {
-                return new Client(configuration, _executionManager);
-            }
-            
-            private T Extract<T>(Tecan.Sila2.ISilaTransferObject<T> dto)
-            
-            {
-                return dto.Extract(_executionManager.DownloadBinaryStore);
-            }
-        }
+        public static Grpc.Core.Method<EmptyRequest, System.Collections.Generic.List<Tecan.Sila2.StringDto>> GetAffectedByLoggingActivityMethod = new Grpc.Core.Method<EmptyRequest, System.Collections.Generic.List<Tecan.Sila2.StringDto>>(Grpc.Core.MethodType.Unary, @__ServiceName, "Get_FCPAffectedByMetadata_LoggingActivity", EmptyRequest.Marshaller, ProtobufMarshaller<System.Collections.Generic.List<Tecan.Sila2.StringDto>>.Default);
     }
     
     ///  <summary>
@@ -302,7 +332,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// <returns>A request interception or null, if this is not necessary</returns>
         public Tecan.Sila2.Server.IRequestInterception Intercept(string commandIdentifier, Tecan.Sila2.Server.ISiLAServer server, Grpc.Core.ServerCallContext context)
         {
-            return Intercept(commandIdentifier, Tecan.Sila2.Server.Metadata.Extract<Tecan.Sila2.StringDto>(context, "tecan.sila.generator.test.logging/infrastructure/LoggingService/v1/Metadata/Loggi" +
+            return Intercept(commandIdentifier, Tecan.Sila2.Server.Metadata.Extract<Tecan.Sila2.StringDto>(context, "tecan.sila.generator.test.logging/infrastructure/LoggingService/v2/Metadata/Loggi" +
                         "ngActivity").Extract(server));
         }
     }

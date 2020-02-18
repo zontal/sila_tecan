@@ -18,145 +18,150 @@ namespace Tecan.Sila2.Cancellation
     
     
     ///  <summary>
+    /// A class that exposes the ICancelController interface via SiLA2
+    /// </summary>
+    [System.ComponentModel.Composition.ExportAttribute(typeof(IFeatureProvider))]
+    [System.ComponentModel.Composition.PartCreationPolicyAttribute(System.ComponentModel.Composition.CreationPolicy.Shared)]
+    public partial class CancelController : IFeatureProvider
+    {
+        
+        private ICancelController _implementation;
+        
+        private Tecan.Sila2.Server.ISiLAServer _server;
+        
+        private static Tecan.Sila2.Feature _feature = FeatureSerializer.LoadFromAssembly(typeof(CancelController).Assembly, "CancelController.sila.xml");
+        
+        ///  <summary>
+        /// Creates a new instance
+        /// </summary>
+        /// <param name="implementation">The implementation to exported through SiLA2</param>
+        /// <param name="server">The SiLA2 server instance through which the implementation shall be exported</param>
+        [System.ComponentModel.Composition.ImportingConstructorAttribute()]
+        public CancelController(ICancelController implementation, Tecan.Sila2.Server.ISiLAServer server)
+        {
+            _implementation = implementation;
+            _server = server;
+        }
+        
+        ///  <summary>
+        /// The feature that is exposed by this feature provider
+        /// </summary>
+        /// <returns>A feature object</returns>
+        public Tecan.Sila2.Feature FeatureDefinition
+        {
+            get
+            {
+                return _feature;
+            }
+        }
+        
+        ///  <summary>
+        /// Creates a service definition for this service provider
+        /// </summary>
+        /// <returns>An object that describes which services are offered by this instance</returns>
+        public Grpc.Core.ServerServiceDefinition CreateServiceDefinition()
+        {
+            Grpc.Core.ServerServiceDefinition.Builder builder = Grpc.Core.ServerServiceDefinition.CreateBuilder();
+            builder.AddMethod(CancelControllerProvider.CancelCommandMethod, CancelCommand);
+            builder.AddMethod(CancelControllerProvider.CancelAllMethod, CancelAll);
+            return builder.Build();
+        }
+        
+        private EmptyRequest CancelCommandInternal(CancelCommandRequestDto request)
+        {
+            try
+            {
+                _implementation.CancelCommand(request.CommandExecutionUUID.Extract(_server));
+                return EmptyRequest.Instance;
+            } catch (System.ArgumentException ex)
+            {
+                if ((ex.ParamName == "commandExecutionUUID"))
+                {
+                    throw ErrorHandling.CreateValidationError("org.silastandard/core.commands/CancelController/v1/Command/CancelCommand/Paramete" +
+                            "r/CommandExecutionUUID", ex.Message);
+                }
+                throw ErrorHandling.CreateUnknownValidationError(ex);
+            } catch (InvalidCommandExecutionUUIDException ex)
+            {
+                throw ErrorHandling.CreateExecutionError("org.silastandard/core.commands/CancelController/v1/DefinedError/InvalidCommandExe" +
+                        "cutionUUID", "\n      The given Command Execution UUID does not specify a command that is curren" +
+                        "tly being executed.\n    ", ex.Message);
+            } catch (OperationNotSupportedException ex)
+            {
+                throw ErrorHandling.CreateExecutionError("org.silastandard/core.commands/CancelController/v1/DefinedError/OperationNotSuppo" +
+                        "rted", "\n      Canceling is not supported for the SiLA 2 Command with the\n      specified" +
+                        " CommandExecutionUUID.\n    ", ex.Message);
+            }
+        }
+        
+        ///  <summary>
+        /// Executes the Cancel Command command
+        /// </summary>
+        /// <param name="request">A data transfer object that contains the command parameters</param>
+        /// <param name="context">The context in which the command is issued</param>
+        /// <returns>The command response wrapped in a data transfer object</returns>
+        protected virtual System.Threading.Tasks.Task<EmptyRequest> CancelCommand(CancelCommandRequestDto request, Grpc.Core.ServerCallContext context)
+        {
+            return _server.InvokeCommand(CancelCommandInternal, request, context);
+        }
+        
+        private EmptyRequest CancelAllInternal(CancelAllRequestDto request)
+        {
+            _implementation.CancelAll();
+            return EmptyRequest.Instance;
+        }
+        
+        ///  <summary>
+        /// Executes the Cancel All command
+        /// </summary>
+        /// <param name="request">A data transfer object that contains the command parameters</param>
+        /// <param name="context">The context in which the command is issued</param>
+        /// <returns>The command response wrapped in a data transfer object</returns>
+        protected virtual System.Threading.Tasks.Task<EmptyRequest> CancelAll(CancelAllRequestDto request, Grpc.Core.ServerCallContext context)
+        {
+            return _server.InvokeCommand(CancelAllInternal, request, context);
+        }
+        
+        ///  <summary>
+        /// Gets the command with the given identifier
+        /// </summary>
+        /// <param name="commandIdentifier">A fully qualified command identifier</param>
+        /// <returns>A method object or null, if the command is not supported</returns>
+        public System.Reflection.MethodInfo GetCommand(string commandIdentifier)
+        {
+            if ((commandIdentifier == "org.silastandard/core.commands/CancelController/v1/Command/CancelCommand"))
+            {
+                return typeof(ICancelController).GetMethod("CancelCommand");
+            }
+            if ((commandIdentifier == "org.silastandard/core.commands/CancelController/v1/Command/CancelAll"))
+            {
+                return typeof(ICancelController).GetMethod("CancelAll");
+            }
+            return null;
+        }
+        
+        ///  <summary>
+        /// Gets the property with the given identifier
+        /// </summary>
+        /// <param name="propertyIdentifier">A fully qualified property identifier</param>
+        /// <returns>A property object or null, if the property is not supported</returns>
+        public System.Reflection.PropertyInfo GetProperty(string propertyIdentifier)
+        {
+            return null;
+        }
+    }
+    
+    ///  <summary>
     /// Encapsulates provider classes to expose the Cancel Controller feature via SiLA2
     /// </summary>
-    public sealed partial class CancelControllerProvider
+    internal sealed partial class CancelControllerProvider
     {
         
         private static string @__ServiceName = "sila2.org.silastandard.core.commands.cancelcontroller.v1.CancelController";
         
-        private static Grpc.Core.Method<CancelCommandRequestDto, EmptyRequest> CancelCommandMethod = new Grpc.Core.Method<CancelCommandRequestDto, EmptyRequest>(Grpc.Core.MethodType.Unary, @__ServiceName, "CancelCommand", ProtobufMarshaller<CancelCommandRequestDto>.Default, EmptyRequest.Marshaller);
+        public static Grpc.Core.Method<CancelCommandRequestDto, EmptyRequest> CancelCommandMethod = new Grpc.Core.Method<CancelCommandRequestDto, EmptyRequest>(Grpc.Core.MethodType.Unary, @__ServiceName, "CancelCommand", ProtobufMarshaller<CancelCommandRequestDto>.Default, EmptyRequest.Marshaller);
         
-        private static Grpc.Core.Method<CancelAllRequestDto, EmptyRequest> CancelAllMethod = new Grpc.Core.Method<CancelAllRequestDto, EmptyRequest>(Grpc.Core.MethodType.Unary, @__ServiceName, "CancelAll", ProtobufMarshaller<CancelAllRequestDto>.Default, EmptyRequest.Marshaller);
-        
-        ///  <summary>
-        /// A class that exposes the ICancelController interface via SiLA2
-        /// </summary>
-        [System.ComponentModel.Composition.ExportAttribute(typeof(IFeatureProvider))]
-        [System.ComponentModel.Composition.PartCreationPolicyAttribute(System.ComponentModel.Composition.CreationPolicy.Shared)]
-        public partial class Server : IFeatureProvider
-        {
-            
-            private ICancelController _implementation;
-            
-            private Tecan.Sila2.Server.ISiLAServer _server;
-            
-            private static Tecan.Sila2.Feature _feature = FeatureSerializer.LoadFromAssembly(typeof(Server).Assembly, "CancelController.sila.xml");
-            
-            [System.ComponentModel.Composition.ImportingConstructorAttribute()]
-            public Server(ICancelController implementation, Tecan.Sila2.Server.ISiLAServer server)
-            {
-                _implementation = implementation;
-                _server = server;
-            }
-            
-            ///  <summary>
-            /// The feature that is exposed by this feature provider
-            /// </summary>
-            /// <returns>A feature object</returns>
-            public Tecan.Sila2.Feature FeatureDefinition
-            {
-                get
-                {
-                    return _feature;
-                }
-            }
-            
-            ///  <summary>
-            /// Creates a service definition for this service provider
-            /// </summary>
-            /// <returns>An object that describes which services are offered by this instance</returns>
-            public Grpc.Core.ServerServiceDefinition CreateServiceDefinition()
-            {
-                Grpc.Core.ServerServiceDefinition.Builder builder = Grpc.Core.ServerServiceDefinition.CreateBuilder();
-                builder.AddMethod(CancelCommandMethod, CancelCommand);
-                builder.AddMethod(CancelAllMethod, CancelAll);
-                return builder.Build();
-            }
-            
-            private EmptyRequest CancelCommandInternal(CancelCommandRequestDto request)
-            {
-                try
-                {
-                    _implementation.CancelCommand(request.CommandExecutionUUID.Extract(_server));
-                    return EmptyRequest.Instance;
-                } catch (System.ArgumentException ex)
-                {
-                    if ((ex.ParamName == "commandExecutionUUID"))
-                    {
-                        throw ErrorHandling.CreateValidationError("org.silastandard/core.commands/CancelController/v1/Command/CancelCommand/Paramete" +
-                                "r/CommandExecutionUUID", ex.Message);
-                    }
-                    throw ErrorHandling.CreateUnknownValidationError(ex);
-                } catch (InvalidCommandExecutionUUIDException ex)
-                {
-                    throw ErrorHandling.CreateExecutionError("org.silastandard/core.commands/CancelController/v1/DefinedError/InvalidCommandExe" +
-                            "cutionUUID", "\n      The given Command Execution UUID does not specify a command that is curren" +
-                            "tly being executed.\n    ", ex.Message);
-                } catch (OperationNotSupportedException ex)
-                {
-                    throw ErrorHandling.CreateExecutionError("org.silastandard/core.commands/CancelController/v1/DefinedError/OperationNotSuppo" +
-                            "rted", "\n      Canceling is not supported for the SiLA 2 Command with the\n      specified" +
-                            " CommandExecutionUUID.\n    ", ex.Message);
-                }
-            }
-            
-            ///  <summary>
-            /// Executes the Cancel Command command
-            /// </summary>
-            /// <param name="request">A data transfer object that contains the command parameters</param>
-            /// <param name="context">The context in which the command is issued</param>
-            /// <returns>The command response wrapped in a data transfer object</returns>
-            protected virtual System.Threading.Tasks.Task<EmptyRequest> CancelCommand(CancelCommandRequestDto request, Grpc.Core.ServerCallContext context)
-            {
-                return _server.InvokeCommand(CancelCommandInternal, request, context);
-            }
-            
-            private EmptyRequest CancelAllInternal(CancelAllRequestDto request)
-            {
-                _implementation.CancelAll();
-                return EmptyRequest.Instance;
-            }
-            
-            ///  <summary>
-            /// Executes the Cancel All command
-            /// </summary>
-            /// <param name="request">A data transfer object that contains the command parameters</param>
-            /// <param name="context">The context in which the command is issued</param>
-            /// <returns>The command response wrapped in a data transfer object</returns>
-            protected virtual System.Threading.Tasks.Task<EmptyRequest> CancelAll(CancelAllRequestDto request, Grpc.Core.ServerCallContext context)
-            {
-                return _server.InvokeCommand(CancelAllInternal, request, context);
-            }
-            
-            ///  <summary>
-            /// Gets the command with the given identifier
-            /// </summary>
-            /// <param name="commandIdentifier">A fully qualified command identifier</param>
-            /// <returns>A method object or null, if the command is not supported</returns>
-            public System.Reflection.MethodInfo GetCommand(string commandIdentifier)
-            {
-                if ((commandIdentifier == "org.silastandard/core.commands/CancelController/v1/Command/CancelCommand"))
-                {
-                    return typeof(ICancelController).GetMethod("CancelCommand");
-                }
-                if ((commandIdentifier == "org.silastandard/core.commands/CancelController/v1/Command/CancelAll"))
-                {
-                    return typeof(ICancelController).GetMethod("CancelAll");
-                }
-                return null;
-            }
-            
-            ///  <summary>
-            /// Gets the property with the given identifier
-            /// </summary>
-            /// <param name="propertyIdentifier">A fully qualified property identifier</param>
-            /// <returns>A property object or null, if the property is not supported</returns>
-            public System.Reflection.PropertyInfo GetProperty(string propertyIdentifier)
-            {
-                return null;
-            }
-        }
+        public static Grpc.Core.Method<CancelAllRequestDto, EmptyRequest> CancelAllMethod = new Grpc.Core.Method<CancelAllRequestDto, EmptyRequest>(Grpc.Core.MethodType.Unary, @__ServiceName, "CancelAll", ProtobufMarshaller<CancelAllRequestDto>.Default, EmptyRequest.Marshaller);
     }
 }
 

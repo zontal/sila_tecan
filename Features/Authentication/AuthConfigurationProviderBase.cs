@@ -107,7 +107,7 @@ namespace Tecan.Sila2
 
             AuthorizationProviderUuid = serverUuid;
             AuthorizationProvider =
-                new AuthorizationProviderServiceProvider.Client(server.Channel, new DiscoveryExecutionManager());
+                new AuthorizationProviderServiceClient(server.Channel, new DiscoveryExecutionManager());
         }
 
         /// <summary>
@@ -138,7 +138,7 @@ namespace Tecan.Sila2
 
             AuthorizationProviderUuid = server.Config.Uuid.ToString();
             AuthorizationProvider =
-                new AuthorizationProviderServiceProvider.Client(server.Channel, new DiscoveryExecutionManager());
+                new AuthorizationProviderServiceClient(server.Channel, new DiscoveryExecutionManager());
         }
     }
 }

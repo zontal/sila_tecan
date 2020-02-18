@@ -19,596 +19,800 @@ namespace Tecan.Sila2.IntegrationTests
     
     
     ///  <summary>
+    /// A class that exposes the ITestServer interface via SiLA2
+    /// </summary>
+    [System.ComponentModel.Composition.ExportAttribute(typeof(IFeatureProvider))]
+    [System.ComponentModel.Composition.PartCreationPolicyAttribute(System.ComponentModel.Composition.CreationPolicy.Shared)]
+    public partial class TestServer : IFeatureProvider
+    {
+        
+        private ITestServer _implementation;
+        
+        private Tecan.Sila2.Server.ISiLAServer _server;
+        
+        private static Tecan.Sila2.Feature _feature = FeatureSerializer.LoadFromAssembly(typeof(TestServer).Assembly, "TestServer.sila.xml");
+        
+        ///  <summary>
+        /// Creates a new instance
+        /// </summary>
+        /// <param name="implementation">The implementation to exported through SiLA2</param>
+        /// <param name="server">The SiLA2 server instance through which the implementation shall be exported</param>
+        [System.ComponentModel.Composition.ImportingConstructorAttribute()]
+        public TestServer(ITestServer implementation, Tecan.Sila2.Server.ISiLAServer server)
+        {
+            _implementation = implementation;
+            _server = server;
+        }
+        
+        ///  <summary>
+        /// The feature that is exposed by this feature provider
+        /// </summary>
+        /// <returns>A feature object</returns>
+        public Tecan.Sila2.Feature FeatureDefinition
+        {
+            get
+            {
+                return _feature;
+            }
+        }
+        
+        ///  <summary>
+        /// Creates a service definition for this service provider
+        /// </summary>
+        /// <returns>An object that describes which services are offered by this instance</returns>
+        public Grpc.Core.ServerServiceDefinition CreateServiceDefinition()
+        {
+            Grpc.Core.ServerServiceDefinition.Builder builder = Grpc.Core.ServerServiceDefinition.CreateBuilder();
+            builder.AddMethod(TestServerProvider.PassBoolMethod, PassBool);
+            builder.AddMethod(TestServerProvider.PassDoubleMethod, PassDouble);
+            builder.AddMethod(TestServerProvider.PassLongMethod, PassLong);
+            builder.AddMethod(TestServerProvider.PassIntMethod, PassInt);
+            builder.AddMethod(TestServerProvider.PassTimestampMethod, PassTimestamp);
+            builder.AddMethod(TestServerProvider.PassTimeMethod, PassTime);
+            builder.AddMethod(TestServerProvider.PassStringMethod, PassString);
+            builder.AddMethod(TestServerProvider.PassStreamMethod, PassStream);
+            builder.AddMethod(TestServerProvider.PassFileMethod, PassFile);
+            builder.AddMethod(TestServerProvider.PassBytesMethod, PassBytes);
+            builder.AddMethod(TestServerProvider.PassCollectionMethod, PassCollection);
+            builder.AddMethod(TestServerProvider.PassStructureMethod, PassStructure);
+            builder.AddMethod(TestServerProvider.RunObservableMethod, RunObservable);
+            builder.AddMethod(TestServerProvider.RunObservableStateMethod, RunObservableState);
+            builder.AddMethod(TestServerProvider.RunObservableResponseMethod, RunObservableResponse);
+            builder.AddMethod(TestServerProvider.RunIntermediateObservableCommandMethod, RunIntermediateObservableCommand);
+            builder.AddMethod(TestServerProvider.RunIntermediateObservableCommandStateMethod, RunIntermediateObservableCommandState);
+            builder.AddMethod(TestServerProvider.RunIntermediateObservableCommandIntermediateMethod, RunIntermediateObservableCommandIntermediateResponse);
+            builder.AddMethod(TestServerProvider.RunIntermediateObservableCommandResponseMethod, RunIntermediateObservableCommandResponse);
+            builder.AddMethod(TestServerProvider.WaitForCancelOrThrowMethod, WaitForCancelOrThrow);
+            builder.AddMethod(TestServerProvider.WaitForCancelOrThrowStateMethod, WaitForCancelOrThrowState);
+            builder.AddMethod(TestServerProvider.WaitForCancelOrThrowResponseMethod, WaitForCancelOrThrowResponse);
+            builder.AddMethod(TestServerProvider.RunIntoFailureMethod, RunIntoFailure);
+            builder.AddMethod(TestServerProvider.RunIntoFailureObservablyMethod, RunIntoFailureObservably);
+            builder.AddMethod(TestServerProvider.RunIntoFailureObservablyStateMethod, RunIntoFailureObservablyState);
+            builder.AddMethod(TestServerProvider.RunIntoFailureObservablyResponseMethod, RunIntoFailureObservablyResponse);
+            return builder.Build();
+        }
+        
+        private PassBoolResponseDto PassBoolInternal(PassBoolRequestDto request)
+        {
+            try
+            {
+                return new PassBoolResponseDto(_implementation.PassBool(request.Data.Extract(_server)), _server);
+            } catch (System.ArgumentException ex)
+            {
+                if ((ex.ParamName == "data"))
+                {
+                    throw ErrorHandling.CreateValidationError("tecan.sila/integrationtests/TestServer/v1/Command/PassBool/Parameter/Data", ex.Message);
+                }
+                throw ErrorHandling.CreateUnknownValidationError(ex);
+            }
+        }
+        
+        ///  <summary>
+        /// Executes the Pass Bool command
+        /// </summary>
+        /// <param name="request">A data transfer object that contains the command parameters</param>
+        /// <param name="context">The context in which the command is issued</param>
+        /// <returns>The command response wrapped in a data transfer object</returns>
+        protected virtual System.Threading.Tasks.Task<PassBoolResponseDto> PassBool(PassBoolRequestDto request, Grpc.Core.ServerCallContext context)
+        {
+            return _server.InvokeCommand(PassBoolInternal, request, context);
+        }
+        
+        private PassDoubleResponseDto PassDoubleInternal(PassDoubleRequestDto request)
+        {
+            try
+            {
+                return new PassDoubleResponseDto(_implementation.PassDouble(request.Data.Extract(_server)), _server);
+            } catch (System.ArgumentException ex)
+            {
+                if ((ex.ParamName == "data"))
+                {
+                    throw ErrorHandling.CreateValidationError("tecan.sila/integrationtests/TestServer/v1/Command/PassDouble/Parameter/Data", ex.Message);
+                }
+                throw ErrorHandling.CreateUnknownValidationError(ex);
+            }
+        }
+        
+        ///  <summary>
+        /// Executes the Pass Double command
+        /// </summary>
+        /// <param name="request">A data transfer object that contains the command parameters</param>
+        /// <param name="context">The context in which the command is issued</param>
+        /// <returns>The command response wrapped in a data transfer object</returns>
+        protected virtual System.Threading.Tasks.Task<PassDoubleResponseDto> PassDouble(PassDoubleRequestDto request, Grpc.Core.ServerCallContext context)
+        {
+            return _server.InvokeCommand(PassDoubleInternal, request, context);
+        }
+        
+        private PassLongResponseDto PassLongInternal(PassLongRequestDto request)
+        {
+            try
+            {
+                return new PassLongResponseDto(_implementation.PassLong(request.Data.Extract(_server)), _server);
+            } catch (System.ArgumentException ex)
+            {
+                if ((ex.ParamName == "data"))
+                {
+                    throw ErrorHandling.CreateValidationError("tecan.sila/integrationtests/TestServer/v1/Command/PassLong/Parameter/Data", ex.Message);
+                }
+                throw ErrorHandling.CreateUnknownValidationError(ex);
+            }
+        }
+        
+        ///  <summary>
+        /// Executes the Pass Long command
+        /// </summary>
+        /// <param name="request">A data transfer object that contains the command parameters</param>
+        /// <param name="context">The context in which the command is issued</param>
+        /// <returns>The command response wrapped in a data transfer object</returns>
+        protected virtual System.Threading.Tasks.Task<PassLongResponseDto> PassLong(PassLongRequestDto request, Grpc.Core.ServerCallContext context)
+        {
+            return _server.InvokeCommand(PassLongInternal, request, context);
+        }
+        
+        private PassIntResponseDto PassIntInternal(PassIntRequestDto request)
+        {
+            try
+            {
+                return new PassIntResponseDto(_implementation.PassInt(((int)(request.Data.Extract(_server)))), _server);
+            } catch (System.ArgumentException ex)
+            {
+                if ((ex.ParamName == "data"))
+                {
+                    throw ErrorHandling.CreateValidationError("tecan.sila/integrationtests/TestServer/v1/Command/PassInt/Parameter/Data", ex.Message);
+                }
+                throw ErrorHandling.CreateUnknownValidationError(ex);
+            }
+        }
+        
+        ///  <summary>
+        /// Executes the Pass Int command
+        /// </summary>
+        /// <param name="request">A data transfer object that contains the command parameters</param>
+        /// <param name="context">The context in which the command is issued</param>
+        /// <returns>The command response wrapped in a data transfer object</returns>
+        protected virtual System.Threading.Tasks.Task<PassIntResponseDto> PassInt(PassIntRequestDto request, Grpc.Core.ServerCallContext context)
+        {
+            return _server.InvokeCommand(PassIntInternal, request, context);
+        }
+        
+        private PassTimestampResponseDto PassTimestampInternal(PassTimestampRequestDto request)
+        {
+            try
+            {
+                return new PassTimestampResponseDto(_implementation.PassTimestamp(request.Timestamp.Extract(_server)), _server);
+            } catch (System.ArgumentException ex)
+            {
+                if ((ex.ParamName == "timestamp"))
+                {
+                    throw ErrorHandling.CreateValidationError("tecan.sila/integrationtests/TestServer/v1/Command/PassTimestamp/Parameter/Timesta" +
+                            "mp", ex.Message);
+                }
+                throw ErrorHandling.CreateUnknownValidationError(ex);
+            }
+        }
+        
+        ///  <summary>
+        /// Executes the Pass Timestamp command
+        /// </summary>
+        /// <param name="request">A data transfer object that contains the command parameters</param>
+        /// <param name="context">The context in which the command is issued</param>
+        /// <returns>The command response wrapped in a data transfer object</returns>
+        protected virtual System.Threading.Tasks.Task<PassTimestampResponseDto> PassTimestamp(PassTimestampRequestDto request, Grpc.Core.ServerCallContext context)
+        {
+            return _server.InvokeCommand(PassTimestampInternal, request, context);
+        }
+        
+        private PassTimeResponseDto PassTimeInternal(PassTimeRequestDto request)
+        {
+            try
+            {
+                return new PassTimeResponseDto(_implementation.PassTime(request.Time.Extract(_server)), _server);
+            } catch (System.ArgumentException ex)
+            {
+                if ((ex.ParamName == "time"))
+                {
+                    throw ErrorHandling.CreateValidationError("tecan.sila/integrationtests/TestServer/v1/Command/PassTime/Parameter/Time", ex.Message);
+                }
+                throw ErrorHandling.CreateUnknownValidationError(ex);
+            }
+        }
+        
+        ///  <summary>
+        /// Executes the Pass Time command
+        /// </summary>
+        /// <param name="request">A data transfer object that contains the command parameters</param>
+        /// <param name="context">The context in which the command is issued</param>
+        /// <returns>The command response wrapped in a data transfer object</returns>
+        protected virtual System.Threading.Tasks.Task<PassTimeResponseDto> PassTime(PassTimeRequestDto request, Grpc.Core.ServerCallContext context)
+        {
+            return _server.InvokeCommand(PassTimeInternal, request, context);
+        }
+        
+        private PassStringResponseDto PassStringInternal(PassStringRequestDto request)
+        {
+            try
+            {
+                return new PassStringResponseDto(_implementation.PassString(request.Value.Extract(_server)), _server);
+            } catch (System.ArgumentException ex)
+            {
+                if ((ex.ParamName == "value"))
+                {
+                    throw ErrorHandling.CreateValidationError("tecan.sila/integrationtests/TestServer/v1/Command/PassString/Parameter/Value", ex.Message);
+                }
+                throw ErrorHandling.CreateUnknownValidationError(ex);
+            }
+        }
+        
+        ///  <summary>
+        /// Executes the Pass String command
+        /// </summary>
+        /// <param name="request">A data transfer object that contains the command parameters</param>
+        /// <param name="context">The context in which the command is issued</param>
+        /// <returns>The command response wrapped in a data transfer object</returns>
+        protected virtual System.Threading.Tasks.Task<PassStringResponseDto> PassString(PassStringRequestDto request, Grpc.Core.ServerCallContext context)
+        {
+            return _server.InvokeCommand(PassStringInternal, request, context);
+        }
+        
+        private PassStreamResponseDto PassStreamInternal(PassStreamRequestDto request)
+        {
+            try
+            {
+                return new PassStreamResponseDto(_implementation.PassStream(request.Value.Extract(_server)), _server);
+            } catch (System.ArgumentException ex)
+            {
+                if ((ex.ParamName == "value"))
+                {
+                    throw ErrorHandling.CreateValidationError("tecan.sila/integrationtests/TestServer/v1/Command/PassStream/Parameter/Value", ex.Message);
+                }
+                throw ErrorHandling.CreateUnknownValidationError(ex);
+            }
+        }
+        
+        ///  <summary>
+        /// Executes the Pass Stream command
+        /// </summary>
+        /// <param name="request">A data transfer object that contains the command parameters</param>
+        /// <param name="context">The context in which the command is issued</param>
+        /// <returns>The command response wrapped in a data transfer object</returns>
+        protected virtual System.Threading.Tasks.Task<PassStreamResponseDto> PassStream(PassStreamRequestDto request, Grpc.Core.ServerCallContext context)
+        {
+            return _server.InvokeCommand(PassStreamInternal, request, context);
+        }
+        
+        private PassFileResponseDto PassFileInternal(PassFileRequestDto request)
+        {
+            try
+            {
+                return new PassFileResponseDto(_implementation.PassFile(request.File.ExtractToFileInfo(_server)), _server);
+            } catch (System.ArgumentException ex)
+            {
+                if ((ex.ParamName == "file"))
+                {
+                    throw ErrorHandling.CreateValidationError("tecan.sila/integrationtests/TestServer/v1/Command/PassFile/Parameter/File", ex.Message);
+                }
+                throw ErrorHandling.CreateUnknownValidationError(ex);
+            }
+        }
+        
+        ///  <summary>
+        /// Executes the Pass File command
+        /// </summary>
+        /// <param name="request">A data transfer object that contains the command parameters</param>
+        /// <param name="context">The context in which the command is issued</param>
+        /// <returns>The command response wrapped in a data transfer object</returns>
+        protected virtual System.Threading.Tasks.Task<PassFileResponseDto> PassFile(PassFileRequestDto request, Grpc.Core.ServerCallContext context)
+        {
+            return _server.InvokeCommand(PassFileInternal, request, context);
+        }
+        
+        private PassBytesResponseDto PassBytesInternal(PassBytesRequestDto request)
+        {
+            try
+            {
+                return new PassBytesResponseDto(_implementation.PassBytes(request.Bytes.ExtractToBytes(_server)), _server);
+            } catch (System.ArgumentException ex)
+            {
+                if ((ex.ParamName == "bytes"))
+                {
+                    throw ErrorHandling.CreateValidationError("tecan.sila/integrationtests/TestServer/v1/Command/PassBytes/Parameter/Bytes", ex.Message);
+                }
+                throw ErrorHandling.CreateUnknownValidationError(ex);
+            }
+        }
+        
+        ///  <summary>
+        /// Executes the Pass Bytes command
+        /// </summary>
+        /// <param name="request">A data transfer object that contains the command parameters</param>
+        /// <param name="context">The context in which the command is issued</param>
+        /// <returns>The command response wrapped in a data transfer object</returns>
+        protected virtual System.Threading.Tasks.Task<PassBytesResponseDto> PassBytes(PassBytesRequestDto request, Grpc.Core.ServerCallContext context)
+        {
+            return _server.InvokeCommand(PassBytesInternal, request, context);
+        }
+        
+        private PassCollectionResponseDto PassCollectionInternal(PassCollectionRequestDto request)
+        {
+            try
+            {
+                return new PassCollectionResponseDto(_implementation.PassCollection(request.Strings.Extract(_server)), _server);
+            } catch (System.ArgumentException ex)
+            {
+                if ((ex.ParamName == "strings"))
+                {
+                    throw ErrorHandling.CreateValidationError("tecan.sila/integrationtests/TestServer/v1/Command/PassCollection/Parameter/String" +
+                            "s", ex.Message);
+                }
+                throw ErrorHandling.CreateUnknownValidationError(ex);
+            }
+        }
+        
+        ///  <summary>
+        /// Executes the Pass Collection command
+        /// </summary>
+        /// <param name="request">A data transfer object that contains the command parameters</param>
+        /// <param name="context">The context in which the command is issued</param>
+        /// <returns>The command response wrapped in a data transfer object</returns>
+        protected virtual System.Threading.Tasks.Task<PassCollectionResponseDto> PassCollection(PassCollectionRequestDto request, Grpc.Core.ServerCallContext context)
+        {
+            return _server.InvokeCommand(PassCollectionInternal, request, context);
+        }
+        
+        private PassStructureResponseDto PassStructureInternal(PassStructureRequestDto request)
+        {
+            try
+            {
+                return new PassStructureResponseDto(_implementation.PassStructure(request.Structure.Extract(_server)), _server);
+            } catch (System.ArgumentException ex)
+            {
+                if ((ex.ParamName == "structure"))
+                {
+                    throw ErrorHandling.CreateValidationError("tecan.sila/integrationtests/TestServer/v1/Command/PassStructure/Parameter/Structu" +
+                            "re", ex.Message);
+                }
+                throw ErrorHandling.CreateUnknownValidationError(ex);
+            }
+        }
+        
+        ///  <summary>
+        /// Executes the Pass Structure command
+        /// </summary>
+        /// <param name="request">A data transfer object that contains the command parameters</param>
+        /// <param name="context">The context in which the command is issued</param>
+        /// <returns>The command response wrapped in a data transfer object</returns>
+        protected virtual System.Threading.Tasks.Task<PassStructureResponseDto> PassStructure(PassStructureRequestDto request, Grpc.Core.ServerCallContext context)
+        {
+            return _server.InvokeCommand(PassStructureInternal, request, context);
+        }
+        
+        ///  <summary>
+        /// Obtains a stream of states for the given command execution id
+        /// </summary>
+        /// <param name="request">The request including the command execution id</param>
+        /// <param name="responseStream">The stream in which execution states should be written</param>
+        /// <param name="context">The context in which the request is made</param>
+        /// <returns>A stream of intermediate responses</returns>
+        private System.Threading.Tasks.Task RunObservableState(Tecan.Sila2.CommandExecutionUuid request, Grpc.Core.IServerStreamWriter<Tecan.Sila2.ExecutionState> responseStream, Grpc.Core.ServerCallContext context)
+        {
+            return ObservableCommandHelper.QueryCommandState(_server, request, responseStream, null, context);
+        }
+        
+        private RunObservableResponseDto ConvertRunObservableResponse(int result)
+        {
+            return new RunObservableResponseDto(result, _server);
+        }
+        
+        ///  <summary>
+        /// Waits for the completion of the given command execution id and returns the result
+        /// </summary>
+        /// <param name="request">The request including the command execution identifier</param>
+        /// <param name="context">The context in which the request is made</param>
+        /// <returns>A task with the command result data transfer object</returns>
+        private System.Threading.Tasks.Task<RunObservableResponseDto> RunObservableResponse(Tecan.Sila2.CommandExecutionUuid request, Grpc.Core.ServerCallContext context)
+        {
+            return ObservableCommandHelper.WaitCommandExecution<int, RunObservableResponseDto>(_server, request, null, context, ConvertRunObservableResponse);
+        }
+        
+        ///  <summary>
+        /// Executes the Run Observable command
+        /// </summary>
+        /// <param name="request">A data transfer object that contains the command parameters</param>
+        /// <param name="context">The context in which the command is issued</param>
+        /// <returns>The command response wrapped in a data transfer object</returns>
+        protected virtual System.Threading.Tasks.Task<Tecan.Sila2.CommandConfirmation> RunObservable(RunObservableRequestDto request, Grpc.Core.ServerCallContext context)
+        {
+            return ObservableCommandHelper.StartCommand(_server, "tecan.sila/integrationtests/TestServer/v1/Command/RunObservable", _implementation.RunObservable(), context);
+        }
+        
+        ///  <summary>
+        /// Obtains a stream of states for the given command execution id
+        /// </summary>
+        /// <param name="request">The request including the command execution id</param>
+        /// <param name="responseStream">The stream in which execution states should be written</param>
+        /// <param name="context">The context in which the request is made</param>
+        /// <returns>A stream of intermediate responses</returns>
+        private System.Threading.Tasks.Task RunIntermediateObservableCommandState(Tecan.Sila2.CommandExecutionUuid request, Grpc.Core.IServerStreamWriter<Tecan.Sila2.ExecutionState> responseStream, Grpc.Core.ServerCallContext context)
+        {
+            return ObservableCommandHelper.QueryCommandState(_server, request, responseStream, null, context);
+        }
+        
+        private RunIntermediateObservableCommandIntermediateDto ConvertRunIntermediateObservableCommandIntermediate(int intermediate)
+        {
+            return new RunIntermediateObservableCommandIntermediateDto(intermediate, _server);
+        }
+        
+        ///  <summary>
+        /// Obtains a stream of intermediate results for the given command execution id
+        /// </summary>
+        /// <param name="request">The request including the command execution id</param>
+        /// <param name="responseStream">The stream in which intermediate responses should be written</param>
+        /// <param name="context">The context in which the request is made</param>
+        /// <returns>A stream of intermediate responses</returns>
+        private System.Threading.Tasks.Task RunIntermediateObservableCommandIntermediateResponse(Tecan.Sila2.CommandExecutionUuid request, Grpc.Core.IServerStreamWriter<RunIntermediateObservableCommandIntermediateDto> responseStream, Grpc.Core.ServerCallContext context)
+        {
+            return ObservableCommandHelper.RetrieveIntermediateResults<int, RunIntermediateObservableCommandIntermediateDto>(_server, request, responseStream, null, ConvertRunIntermediateObservableCommandIntermediate, context);
+        }
+        
+        ///  <summary>
+        /// Waits for the completion of the given command execution id and returns the result
+        /// </summary>
+        /// <param name="request">The request including the command execution identifier</param>
+        /// <param name="context">The context in which the request is made</param>
+        /// <returns>A task with the command result data transfer object</returns>
+        private System.Threading.Tasks.Task<EmptyRequest> RunIntermediateObservableCommandResponse(Tecan.Sila2.CommandExecutionUuid request, Grpc.Core.ServerCallContext context)
+        {
+            return ObservableCommandHelper.WaitCommandExecution(_server, request, null, context);
+        }
+        
+        ///  <summary>
+        /// Executes the Run Intermediate Observable Command command
+        /// </summary>
+        /// <param name="request">A data transfer object that contains the command parameters</param>
+        /// <param name="context">The context in which the command is issued</param>
+        /// <returns>The command response wrapped in a data transfer object</returns>
+        protected virtual System.Threading.Tasks.Task<Tecan.Sila2.CommandConfirmation> RunIntermediateObservableCommand(RunIntermediateObservableCommandRequestDto request, Grpc.Core.ServerCallContext context)
+        {
+            return ObservableCommandHelper.StartCommand(_server, "tecan.sila/integrationtests/TestServer/v1/Command/RunIntermediateObservableComman" +
+                    "d", _implementation.RunIntermediateObservableCommand(), context);
+        }
+        
+        private static System.Exception ConvertWaitForCancelOrThrowExceptions(System.Exception exception)
+        {
+            try
+            {
+                throw exception;
+            } catch (System.ArgumentException ex)
+            {
+                if ((ex.ParamName == "duration"))
+                {
+                    throw ErrorHandling.CreateValidationError("tecan.sila/integrationtests/TestServer/v1/Command/WaitForCancelOrThrow/Parameter/" +
+                            "Duration", ex.Message);
+                }
+                throw ErrorHandling.CreateUnknownValidationError(ex);
+            } catch (ShouldHaveBeenCancelledException ex)
+            {
+                throw ErrorHandling.CreateExecutionError("tecan.sila/integrationtests/TestServer/v1/DefinedError/ShouldHaveBeenCancelled", "", ex.Message);
+            }
+        }
+        
+        ///  <summary>
+        /// Obtains a stream of states for the given command execution id
+        /// </summary>
+        /// <param name="request">The request including the command execution id</param>
+        /// <param name="responseStream">The stream in which execution states should be written</param>
+        /// <param name="context">The context in which the request is made</param>
+        /// <returns>A stream of intermediate responses</returns>
+        private System.Threading.Tasks.Task WaitForCancelOrThrowState(Tecan.Sila2.CommandExecutionUuid request, Grpc.Core.IServerStreamWriter<Tecan.Sila2.ExecutionState> responseStream, Grpc.Core.ServerCallContext context)
+        {
+            return ObservableCommandHelper.QueryCommandState(_server, request, responseStream, ConvertWaitForCancelOrThrowExceptions, context);
+        }
+        
+        ///  <summary>
+        /// Waits for the completion of the given command execution id and returns the result
+        /// </summary>
+        /// <param name="request">The request including the command execution identifier</param>
+        /// <param name="context">The context in which the request is made</param>
+        /// <returns>A task with the command result data transfer object</returns>
+        private System.Threading.Tasks.Task<EmptyRequest> WaitForCancelOrThrowResponse(Tecan.Sila2.CommandExecutionUuid request, Grpc.Core.ServerCallContext context)
+        {
+            return ObservableCommandHelper.WaitCommandExecution(_server, request, ConvertWaitForCancelOrThrowExceptions, context);
+        }
+        
+        ///  <summary>
+        /// Executes the Wait For Cancel Or Throw command
+        /// </summary>
+        /// <param name="request">A data transfer object that contains the command parameters</param>
+        /// <param name="context">The context in which the command is issued</param>
+        /// <returns>The command response wrapped in a data transfer object</returns>
+        protected virtual System.Threading.Tasks.Task<Tecan.Sila2.CommandConfirmation> WaitForCancelOrThrow(WaitForCancelOrThrowRequestDto request, Grpc.Core.ServerCallContext context)
+        {
+            return ObservableCommandHelper.StartCommand(_server, "tecan.sila/integrationtests/TestServer/v1/Command/WaitForCancelOrThrow", new WaitForCancelOrThrowCommand(this, request), context);
+        }
+        
+        private EmptyRequest RunIntoFailureInternal(RunIntoFailureRequestDto request)
+        {
+            try
+            {
+                _implementation.RunIntoFailure();
+                return EmptyRequest.Instance;
+            } catch (FakeException ex)
+            {
+                throw ErrorHandling.CreateExecutionError("tecan.sila/integrationtests/TestServer/v1/DefinedError/Fake", "", ex.Message);
+            }
+        }
+        
+        ///  <summary>
+        /// Executes the Run Into Failure command
+        /// </summary>
+        /// <param name="request">A data transfer object that contains the command parameters</param>
+        /// <param name="context">The context in which the command is issued</param>
+        /// <returns>The command response wrapped in a data transfer object</returns>
+        protected virtual System.Threading.Tasks.Task<EmptyRequest> RunIntoFailure(RunIntoFailureRequestDto request, Grpc.Core.ServerCallContext context)
+        {
+            return _server.InvokeCommand(RunIntoFailureInternal, request, context);
+        }
+        
+        private static System.Exception ConvertRunIntoFailureObservablyExceptions(System.Exception exception)
+        {
+            try
+            {
+                throw exception;
+            } catch (FakeException ex)
+            {
+                throw ErrorHandling.CreateExecutionError("tecan.sila/integrationtests/TestServer/v1/DefinedError/Fake", "", ex.Message);
+            }
+        }
+        
+        ///  <summary>
+        /// Obtains a stream of states for the given command execution id
+        /// </summary>
+        /// <param name="request">The request including the command execution id</param>
+        /// <param name="responseStream">The stream in which execution states should be written</param>
+        /// <param name="context">The context in which the request is made</param>
+        /// <returns>A stream of intermediate responses</returns>
+        private System.Threading.Tasks.Task RunIntoFailureObservablyState(Tecan.Sila2.CommandExecutionUuid request, Grpc.Core.IServerStreamWriter<Tecan.Sila2.ExecutionState> responseStream, Grpc.Core.ServerCallContext context)
+        {
+            return ObservableCommandHelper.QueryCommandState(_server, request, responseStream, ConvertRunIntoFailureObservablyExceptions, context);
+        }
+        
+        ///  <summary>
+        /// Waits for the completion of the given command execution id and returns the result
+        /// </summary>
+        /// <param name="request">The request including the command execution identifier</param>
+        /// <param name="context">The context in which the request is made</param>
+        /// <returns>A task with the command result data transfer object</returns>
+        private System.Threading.Tasks.Task<EmptyRequest> RunIntoFailureObservablyResponse(Tecan.Sila2.CommandExecutionUuid request, Grpc.Core.ServerCallContext context)
+        {
+            return ObservableCommandHelper.WaitCommandExecution(_server, request, ConvertRunIntoFailureObservablyExceptions, context);
+        }
+        
+        ///  <summary>
+        /// Executes the Run Into Failure Observably command
+        /// </summary>
+        /// <param name="request">A data transfer object that contains the command parameters</param>
+        /// <param name="context">The context in which the command is issued</param>
+        /// <returns>The command response wrapped in a data transfer object</returns>
+        protected virtual System.Threading.Tasks.Task<Tecan.Sila2.CommandConfirmation> RunIntoFailureObservably(RunIntoFailureObservablyRequestDto request, Grpc.Core.ServerCallContext context)
+        {
+            return ObservableCommandHelper.StartCommand(_server, "tecan.sila/integrationtests/TestServer/v1/Command/RunIntoFailureObservably", new RunIntoFailureObservablyCommand(this, request), context);
+        }
+        
+        ///  <summary>
+        /// Gets the command with the given identifier
+        /// </summary>
+        /// <param name="commandIdentifier">A fully qualified command identifier</param>
+        /// <returns>A method object or null, if the command is not supported</returns>
+        public System.Reflection.MethodInfo GetCommand(string commandIdentifier)
+        {
+            if ((commandIdentifier == "tecan.sila/integrationtests/TestServer/v1/Command/PassBool"))
+            {
+                return typeof(ITestServer).GetMethod("PassBool");
+            }
+            if ((commandIdentifier == "tecan.sila/integrationtests/TestServer/v1/Command/PassDouble"))
+            {
+                return typeof(ITestServer).GetMethod("PassDouble");
+            }
+            if ((commandIdentifier == "tecan.sila/integrationtests/TestServer/v1/Command/PassLong"))
+            {
+                return typeof(ITestServer).GetMethod("PassLong");
+            }
+            if ((commandIdentifier == "tecan.sila/integrationtests/TestServer/v1/Command/PassInt"))
+            {
+                return typeof(ITestServer).GetMethod("PassInt");
+            }
+            if ((commandIdentifier == "tecan.sila/integrationtests/TestServer/v1/Command/PassTimestamp"))
+            {
+                return typeof(ITestServer).GetMethod("PassTimestamp");
+            }
+            if ((commandIdentifier == "tecan.sila/integrationtests/TestServer/v1/Command/PassTime"))
+            {
+                return typeof(ITestServer).GetMethod("PassTime");
+            }
+            if ((commandIdentifier == "tecan.sila/integrationtests/TestServer/v1/Command/PassString"))
+            {
+                return typeof(ITestServer).GetMethod("PassString");
+            }
+            if ((commandIdentifier == "tecan.sila/integrationtests/TestServer/v1/Command/PassStream"))
+            {
+                return typeof(ITestServer).GetMethod("PassStream");
+            }
+            if ((commandIdentifier == "tecan.sila/integrationtests/TestServer/v1/Command/PassFile"))
+            {
+                return typeof(ITestServer).GetMethod("PassFile");
+            }
+            if ((commandIdentifier == "tecan.sila/integrationtests/TestServer/v1/Command/PassBytes"))
+            {
+                return typeof(ITestServer).GetMethod("PassBytes");
+            }
+            if ((commandIdentifier == "tecan.sila/integrationtests/TestServer/v1/Command/PassCollection"))
+            {
+                return typeof(ITestServer).GetMethod("PassCollection");
+            }
+            if ((commandIdentifier == "tecan.sila/integrationtests/TestServer/v1/Command/PassStructure"))
+            {
+                return typeof(ITestServer).GetMethod("PassStructure");
+            }
+            if ((commandIdentifier == "tecan.sila/integrationtests/TestServer/v1/Command/RunObservable"))
+            {
+                return typeof(ITestServer).GetMethod("RunObservable");
+            }
+            if ((commandIdentifier == "tecan.sila/integrationtests/TestServer/v1/Command/RunIntermediateObservableComman" +
+                "d"))
+            {
+                return typeof(ITestServer).GetMethod("RunIntermediateObservableCommand");
+            }
+            if ((commandIdentifier == "tecan.sila/integrationtests/TestServer/v1/Command/WaitForCancelOrThrow"))
+            {
+                return typeof(ITestServer).GetMethod("WaitForCancelOrThrow");
+            }
+            if ((commandIdentifier == "tecan.sila/integrationtests/TestServer/v1/Command/RunIntoFailure"))
+            {
+                return typeof(ITestServer).GetMethod("RunIntoFailure");
+            }
+            if ((commandIdentifier == "tecan.sila/integrationtests/TestServer/v1/Command/RunIntoFailureObservably"))
+            {
+                return typeof(ITestServer).GetMethod("RunIntoFailureObservably");
+            }
+            return null;
+        }
+        
+        ///  <summary>
+        /// Gets the property with the given identifier
+        /// </summary>
+        /// <param name="propertyIdentifier">A fully qualified property identifier</param>
+        /// <returns>A property object or null, if the property is not supported</returns>
+        public System.Reflection.PropertyInfo GetProperty(string propertyIdentifier)
+        {
+            return null;
+        }
+        
+        private class WaitForCancelOrThrowCommand : Tecan.Sila2.ObservableCommand
+        {
+            
+            private TestServer _parent;
+            
+            private WaitForCancelOrThrowRequestDto _request;
+            
+            public WaitForCancelOrThrowCommand(TestServer parent, WaitForCancelOrThrowRequestDto request) : 
+                    base(new System.Threading.CancellationTokenSource())
+            {
+                _parent = parent;
+                _request = request;
+            }
+            
+            public override System.Threading.Tasks.Task Run()
+            {
+                return _parent._implementation.WaitForCancelOrThrow(_request.Duration.Extract(_parent._server), CancellationToken);
+            }
+        }
+        
+        private class RunIntoFailureObservablyCommand : Tecan.Sila2.ObservableCommand
+        {
+            
+            private TestServer _parent;
+            
+            private RunIntoFailureObservablyRequestDto _request;
+            
+            public RunIntoFailureObservablyCommand(TestServer parent, RunIntoFailureObservablyRequestDto request) : 
+                    base(new System.Threading.CancellationTokenSource())
+            {
+                _parent = parent;
+                _request = request;
+            }
+            
+            public override System.Threading.Tasks.Task Run()
+            {
+                return System.Threading.Tasks.Task.Factory.StartNew(RunCore, CancellationToken);
+            }
+            
+            private void RunCore()
+            {
+                _parent._implementation.RunIntoFailureObservably(CancellationToken);
+            }
+        }
+    }
+    
+    ///  <summary>
     /// Encapsulates provider classes to expose the Test Server feature via SiLA2
     /// </summary>
-    public sealed partial class TestServerProvider
+    internal sealed partial class TestServerProvider
     {
         
         private static string @__ServiceName = "sila2.tecan.sila.integrationtests.testserver.v1.TestServer";
         
-        private static Grpc.Core.Method<PassBoolRequestDto, PassBoolResponseDto> PassBoolMethod = new Grpc.Core.Method<PassBoolRequestDto, PassBoolResponseDto>(Grpc.Core.MethodType.Unary, @__ServiceName, "PassBool", ProtobufMarshaller<PassBoolRequestDto>.Default, ProtobufMarshaller<PassBoolResponseDto>.Default);
+        public static Grpc.Core.Method<PassBoolRequestDto, PassBoolResponseDto> PassBoolMethod = new Grpc.Core.Method<PassBoolRequestDto, PassBoolResponseDto>(Grpc.Core.MethodType.Unary, @__ServiceName, "PassBool", ProtobufMarshaller<PassBoolRequestDto>.Default, ProtobufMarshaller<PassBoolResponseDto>.Default);
         
-        private static Grpc.Core.Method<PassDoubleRequestDto, PassDoubleResponseDto> PassDoubleMethod = new Grpc.Core.Method<PassDoubleRequestDto, PassDoubleResponseDto>(Grpc.Core.MethodType.Unary, @__ServiceName, "PassDouble", ProtobufMarshaller<PassDoubleRequestDto>.Default, ProtobufMarshaller<PassDoubleResponseDto>.Default);
+        public static Grpc.Core.Method<PassDoubleRequestDto, PassDoubleResponseDto> PassDoubleMethod = new Grpc.Core.Method<PassDoubleRequestDto, PassDoubleResponseDto>(Grpc.Core.MethodType.Unary, @__ServiceName, "PassDouble", ProtobufMarshaller<PassDoubleRequestDto>.Default, ProtobufMarshaller<PassDoubleResponseDto>.Default);
         
-        private static Grpc.Core.Method<PassLongRequestDto, PassLongResponseDto> PassLongMethod = new Grpc.Core.Method<PassLongRequestDto, PassLongResponseDto>(Grpc.Core.MethodType.Unary, @__ServiceName, "PassLong", ProtobufMarshaller<PassLongRequestDto>.Default, ProtobufMarshaller<PassLongResponseDto>.Default);
+        public static Grpc.Core.Method<PassLongRequestDto, PassLongResponseDto> PassLongMethod = new Grpc.Core.Method<PassLongRequestDto, PassLongResponseDto>(Grpc.Core.MethodType.Unary, @__ServiceName, "PassLong", ProtobufMarshaller<PassLongRequestDto>.Default, ProtobufMarshaller<PassLongResponseDto>.Default);
         
-        private static Grpc.Core.Method<PassIntRequestDto, PassIntResponseDto> PassIntMethod = new Grpc.Core.Method<PassIntRequestDto, PassIntResponseDto>(Grpc.Core.MethodType.Unary, @__ServiceName, "PassInt", ProtobufMarshaller<PassIntRequestDto>.Default, ProtobufMarshaller<PassIntResponseDto>.Default);
+        public static Grpc.Core.Method<PassIntRequestDto, PassIntResponseDto> PassIntMethod = new Grpc.Core.Method<PassIntRequestDto, PassIntResponseDto>(Grpc.Core.MethodType.Unary, @__ServiceName, "PassInt", ProtobufMarshaller<PassIntRequestDto>.Default, ProtobufMarshaller<PassIntResponseDto>.Default);
         
-        private static Grpc.Core.Method<PassTimestampRequestDto, PassTimestampResponseDto> PassTimestampMethod = new Grpc.Core.Method<PassTimestampRequestDto, PassTimestampResponseDto>(Grpc.Core.MethodType.Unary, @__ServiceName, "PassTimestamp", ProtobufMarshaller<PassTimestampRequestDto>.Default, ProtobufMarshaller<PassTimestampResponseDto>.Default);
+        public static Grpc.Core.Method<PassTimestampRequestDto, PassTimestampResponseDto> PassTimestampMethod = new Grpc.Core.Method<PassTimestampRequestDto, PassTimestampResponseDto>(Grpc.Core.MethodType.Unary, @__ServiceName, "PassTimestamp", ProtobufMarshaller<PassTimestampRequestDto>.Default, ProtobufMarshaller<PassTimestampResponseDto>.Default);
         
-        private static Grpc.Core.Method<PassTimeRequestDto, PassTimeResponseDto> PassTimeMethod = new Grpc.Core.Method<PassTimeRequestDto, PassTimeResponseDto>(Grpc.Core.MethodType.Unary, @__ServiceName, "PassTime", ProtobufMarshaller<PassTimeRequestDto>.Default, ProtobufMarshaller<PassTimeResponseDto>.Default);
+        public static Grpc.Core.Method<PassTimeRequestDto, PassTimeResponseDto> PassTimeMethod = new Grpc.Core.Method<PassTimeRequestDto, PassTimeResponseDto>(Grpc.Core.MethodType.Unary, @__ServiceName, "PassTime", ProtobufMarshaller<PassTimeRequestDto>.Default, ProtobufMarshaller<PassTimeResponseDto>.Default);
         
-        private static Grpc.Core.Method<PassStringRequestDto, PassStringResponseDto> PassStringMethod = new Grpc.Core.Method<PassStringRequestDto, PassStringResponseDto>(Grpc.Core.MethodType.Unary, @__ServiceName, "PassString", ProtobufMarshaller<PassStringRequestDto>.Default, ProtobufMarshaller<PassStringResponseDto>.Default);
+        public static Grpc.Core.Method<PassStringRequestDto, PassStringResponseDto> PassStringMethod = new Grpc.Core.Method<PassStringRequestDto, PassStringResponseDto>(Grpc.Core.MethodType.Unary, @__ServiceName, "PassString", ProtobufMarshaller<PassStringRequestDto>.Default, ProtobufMarshaller<PassStringResponseDto>.Default);
         
-        private static Grpc.Core.Method<PassStreamRequestDto, PassStreamResponseDto> PassStreamMethod = new Grpc.Core.Method<PassStreamRequestDto, PassStreamResponseDto>(Grpc.Core.MethodType.Unary, @__ServiceName, "PassStream", ProtobufMarshaller<PassStreamRequestDto>.Default, ProtobufMarshaller<PassStreamResponseDto>.Default);
+        public static Grpc.Core.Method<PassStreamRequestDto, PassStreamResponseDto> PassStreamMethod = new Grpc.Core.Method<PassStreamRequestDto, PassStreamResponseDto>(Grpc.Core.MethodType.Unary, @__ServiceName, "PassStream", ProtobufMarshaller<PassStreamRequestDto>.Default, ProtobufMarshaller<PassStreamResponseDto>.Default);
         
-        private static Grpc.Core.Method<PassFileRequestDto, PassFileResponseDto> PassFileMethod = new Grpc.Core.Method<PassFileRequestDto, PassFileResponseDto>(Grpc.Core.MethodType.Unary, @__ServiceName, "PassFile", ProtobufMarshaller<PassFileRequestDto>.Default, ProtobufMarshaller<PassFileResponseDto>.Default);
+        public static Grpc.Core.Method<PassFileRequestDto, PassFileResponseDto> PassFileMethod = new Grpc.Core.Method<PassFileRequestDto, PassFileResponseDto>(Grpc.Core.MethodType.Unary, @__ServiceName, "PassFile", ProtobufMarshaller<PassFileRequestDto>.Default, ProtobufMarshaller<PassFileResponseDto>.Default);
         
-        private static Grpc.Core.Method<PassBytesRequestDto, PassBytesResponseDto> PassBytesMethod = new Grpc.Core.Method<PassBytesRequestDto, PassBytesResponseDto>(Grpc.Core.MethodType.Unary, @__ServiceName, "PassBytes", ProtobufMarshaller<PassBytesRequestDto>.Default, ProtobufMarshaller<PassBytesResponseDto>.Default);
+        public static Grpc.Core.Method<PassBytesRequestDto, PassBytesResponseDto> PassBytesMethod = new Grpc.Core.Method<PassBytesRequestDto, PassBytesResponseDto>(Grpc.Core.MethodType.Unary, @__ServiceName, "PassBytes", ProtobufMarshaller<PassBytesRequestDto>.Default, ProtobufMarshaller<PassBytesResponseDto>.Default);
         
-        private static Grpc.Core.Method<PassCollectionRequestDto, PassCollectionResponseDto> PassCollectionMethod = new Grpc.Core.Method<PassCollectionRequestDto, PassCollectionResponseDto>(Grpc.Core.MethodType.Unary, @__ServiceName, "PassCollection", ProtobufMarshaller<PassCollectionRequestDto>.Default, ProtobufMarshaller<PassCollectionResponseDto>.Default);
+        public static Grpc.Core.Method<PassCollectionRequestDto, PassCollectionResponseDto> PassCollectionMethod = new Grpc.Core.Method<PassCollectionRequestDto, PassCollectionResponseDto>(Grpc.Core.MethodType.Unary, @__ServiceName, "PassCollection", ProtobufMarshaller<PassCollectionRequestDto>.Default, ProtobufMarshaller<PassCollectionResponseDto>.Default);
         
-        private static Grpc.Core.Method<PassStructureRequestDto, PassStructureResponseDto> PassStructureMethod = new Grpc.Core.Method<PassStructureRequestDto, PassStructureResponseDto>(Grpc.Core.MethodType.Unary, @__ServiceName, "PassStructure", ProtobufMarshaller<PassStructureRequestDto>.Default, ProtobufMarshaller<PassStructureResponseDto>.Default);
+        public static Grpc.Core.Method<PassStructureRequestDto, PassStructureResponseDto> PassStructureMethod = new Grpc.Core.Method<PassStructureRequestDto, PassStructureResponseDto>(Grpc.Core.MethodType.Unary, @__ServiceName, "PassStructure", ProtobufMarshaller<PassStructureRequestDto>.Default, ProtobufMarshaller<PassStructureResponseDto>.Default);
         
-        private static Grpc.Core.Method<RunObservableRequestDto, CommandConfirmation> RunObservableMethod = new Grpc.Core.Method<RunObservableRequestDto, CommandConfirmation>(Grpc.Core.MethodType.Unary, @__ServiceName, "RunObservable", ProtobufMarshaller<RunObservableRequestDto>.Default, ProtobufMarshaller<CommandConfirmation>.Default);
+        public static Grpc.Core.Method<RunObservableRequestDto, CommandConfirmation> RunObservableMethod = new Grpc.Core.Method<RunObservableRequestDto, CommandConfirmation>(Grpc.Core.MethodType.Unary, @__ServiceName, "RunObservable", ProtobufMarshaller<RunObservableRequestDto>.Default, ProtobufMarshaller<CommandConfirmation>.Default);
         
-        private static Grpc.Core.Method<CommandExecutionUuid, ExecutionState> RunObservableStateMethod = new Grpc.Core.Method<CommandExecutionUuid, ExecutionState>(Grpc.Core.MethodType.ServerStreaming, @__ServiceName, "RunObservable_Info", ProtobufMarshaller<CommandExecutionUuid>.Default, ProtobufMarshaller<ExecutionState>.Default);
+        public static Grpc.Core.Method<CommandExecutionUuid, ExecutionState> RunObservableStateMethod = new Grpc.Core.Method<CommandExecutionUuid, ExecutionState>(Grpc.Core.MethodType.ServerStreaming, @__ServiceName, "RunObservable_Info", ProtobufMarshaller<CommandExecutionUuid>.Default, ProtobufMarshaller<ExecutionState>.Default);
         
-        private static Grpc.Core.Method<CommandExecutionUuid, RunObservableResponseDto> RunObservableResponseMethod = new Grpc.Core.Method<CommandExecutionUuid, RunObservableResponseDto>(Grpc.Core.MethodType.Unary, @__ServiceName, "RunObservable_Result", ProtobufMarshaller<CommandExecutionUuid>.Default, ProtobufMarshaller<RunObservableResponseDto>.Default);
+        public static Grpc.Core.Method<CommandExecutionUuid, RunObservableResponseDto> RunObservableResponseMethod = new Grpc.Core.Method<CommandExecutionUuid, RunObservableResponseDto>(Grpc.Core.MethodType.Unary, @__ServiceName, "RunObservable_Result", ProtobufMarshaller<CommandExecutionUuid>.Default, ProtobufMarshaller<RunObservableResponseDto>.Default);
         
-        private static Grpc.Core.Method<RunIntermediateObservableCommandRequestDto, CommandConfirmation> RunIntermediateObservableCommandMethod = new Grpc.Core.Method<RunIntermediateObservableCommandRequestDto, CommandConfirmation>(Grpc.Core.MethodType.Unary, @__ServiceName, "RunIntermediateObservableCommand", ProtobufMarshaller<RunIntermediateObservableCommandRequestDto>.Default, ProtobufMarshaller<CommandConfirmation>.Default);
+        public static Grpc.Core.Method<RunIntermediateObservableCommandRequestDto, CommandConfirmation> RunIntermediateObservableCommandMethod = new Grpc.Core.Method<RunIntermediateObservableCommandRequestDto, CommandConfirmation>(Grpc.Core.MethodType.Unary, @__ServiceName, "RunIntermediateObservableCommand", ProtobufMarshaller<RunIntermediateObservableCommandRequestDto>.Default, ProtobufMarshaller<CommandConfirmation>.Default);
         
-        private static Grpc.Core.Method<CommandExecutionUuid, ExecutionState> RunIntermediateObservableCommandStateMethod = new Grpc.Core.Method<CommandExecutionUuid, ExecutionState>(Grpc.Core.MethodType.ServerStreaming, @__ServiceName, "RunIntermediateObservableCommand_Info", ProtobufMarshaller<CommandExecutionUuid>.Default, ProtobufMarshaller<ExecutionState>.Default);
+        public static Grpc.Core.Method<CommandExecutionUuid, ExecutionState> RunIntermediateObservableCommandStateMethod = new Grpc.Core.Method<CommandExecutionUuid, ExecutionState>(Grpc.Core.MethodType.ServerStreaming, @__ServiceName, "RunIntermediateObservableCommand_Info", ProtobufMarshaller<CommandExecutionUuid>.Default, ProtobufMarshaller<ExecutionState>.Default);
         
-        private static Grpc.Core.Method<CommandExecutionUuid, RunIntermediateObservableCommandIntermediateDto> RunIntermediateObservableCommandIntermediateMethod = new Grpc.Core.Method<CommandExecutionUuid, RunIntermediateObservableCommandIntermediateDto>(Grpc.Core.MethodType.Unary, @__ServiceName, "RunIntermediateObservableCommand_IntermediateResponses", ProtobufMarshaller<CommandExecutionUuid>.Default, ProtobufMarshaller<RunIntermediateObservableCommandIntermediateDto>.Default);
+        public static Grpc.Core.Method<CommandExecutionUuid, RunIntermediateObservableCommandIntermediateDto> RunIntermediateObservableCommandIntermediateMethod = new Grpc.Core.Method<CommandExecutionUuid, RunIntermediateObservableCommandIntermediateDto>(Grpc.Core.MethodType.Unary, @__ServiceName, "RunIntermediateObservableCommand_IntermediateResponses", ProtobufMarshaller<CommandExecutionUuid>.Default, ProtobufMarshaller<RunIntermediateObservableCommandIntermediateDto>.Default);
         
-        private static Grpc.Core.Method<CommandExecutionUuid, EmptyRequest> RunIntermediateObservableCommandResponseMethod = new Grpc.Core.Method<CommandExecutionUuid, EmptyRequest>(Grpc.Core.MethodType.Unary, @__ServiceName, "RunIntermediateObservableCommand_Result", ProtobufMarshaller<CommandExecutionUuid>.Default, EmptyRequest.Marshaller);
+        public static Grpc.Core.Method<CommandExecutionUuid, EmptyRequest> RunIntermediateObservableCommandResponseMethod = new Grpc.Core.Method<CommandExecutionUuid, EmptyRequest>(Grpc.Core.MethodType.Unary, @__ServiceName, "RunIntermediateObservableCommand_Result", ProtobufMarshaller<CommandExecutionUuid>.Default, EmptyRequest.Marshaller);
         
-        ///  <summary>
-        /// A class that exposes the ITestServer interface via SiLA2
-        /// </summary>
-        [System.ComponentModel.Composition.ExportAttribute(typeof(IFeatureProvider))]
-        [System.ComponentModel.Composition.PartCreationPolicyAttribute(System.ComponentModel.Composition.CreationPolicy.Shared)]
-        public partial class Server : IFeatureProvider
-        {
-            
-            private ITestServer _implementation;
-            
-            private Tecan.Sila2.Server.ISiLAServer _server;
-            
-            private static Tecan.Sila2.Feature _feature = FeatureSerializer.LoadFromAssembly(typeof(Server).Assembly, "TestServer.sila.xml");
-            
-            [System.ComponentModel.Composition.ImportingConstructorAttribute()]
-            public Server(ITestServer implementation, Tecan.Sila2.Server.ISiLAServer server)
-            {
-                _implementation = implementation;
-                _server = server;
-            }
-            
-            ///  <summary>
-            /// The feature that is exposed by this feature provider
-            /// </summary>
-            /// <returns>A feature object</returns>
-            public Tecan.Sila2.Feature FeatureDefinition
-            {
-                get
-                {
-                    return _feature;
-                }
-            }
-            
-            ///  <summary>
-            /// Creates a service definition for this service provider
-            /// </summary>
-            /// <returns>An object that describes which services are offered by this instance</returns>
-            public Grpc.Core.ServerServiceDefinition CreateServiceDefinition()
-            {
-                Grpc.Core.ServerServiceDefinition.Builder builder = Grpc.Core.ServerServiceDefinition.CreateBuilder();
-                builder.AddMethod(PassBoolMethod, PassBool);
-                builder.AddMethod(PassDoubleMethod, PassDouble);
-                builder.AddMethod(PassLongMethod, PassLong);
-                builder.AddMethod(PassIntMethod, PassInt);
-                builder.AddMethod(PassTimestampMethod, PassTimestamp);
-                builder.AddMethod(PassTimeMethod, PassTime);
-                builder.AddMethod(PassStringMethod, PassString);
-                builder.AddMethod(PassStreamMethod, PassStream);
-                builder.AddMethod(PassFileMethod, PassFile);
-                builder.AddMethod(PassBytesMethod, PassBytes);
-                builder.AddMethod(PassCollectionMethod, PassCollection);
-                builder.AddMethod(PassStructureMethod, PassStructure);
-                builder.AddMethod(RunObservableMethod, RunObservable);
-                builder.AddMethod(RunObservableStateMethod, RunObservableState);
-                builder.AddMethod(RunObservableResponseMethod, RunObservableResponse);
-                builder.AddMethod(RunIntermediateObservableCommandMethod, RunIntermediateObservableCommand);
-                builder.AddMethod(RunIntermediateObservableCommandStateMethod, RunIntermediateObservableCommandState);
-                builder.AddMethod(RunIntermediateObservableCommandIntermediateMethod, RunIntermediateObservableCommandIntermediateResponse);
-                builder.AddMethod(RunIntermediateObservableCommandResponseMethod, RunIntermediateObservableCommandResponse);
-                return builder.Build();
-            }
-            
-            private PassBoolResponseDto PassBoolInternal(PassBoolRequestDto request)
-            {
-                try
-                {
-                    return new PassBoolResponseDto(_implementation.PassBool(request.Data.Extract(_server)), _server);
-                } catch (System.ArgumentException ex)
-                {
-                    if ((ex.ParamName == "data"))
-                    {
-                        throw ErrorHandling.CreateValidationError("tecan.sila/integrationtests/TestServer/v1/Command/PassBool/Parameter/Data", ex.Message);
-                    }
-                    throw ErrorHandling.CreateUnknownValidationError(ex);
-                }
-            }
-            
-            ///  <summary>
-            /// Executes the Pass Bool command
-            /// </summary>
-            /// <param name="request">A data transfer object that contains the command parameters</param>
-            /// <param name="context">The context in which the command is issued</param>
-            /// <returns>The command response wrapped in a data transfer object</returns>
-            protected virtual System.Threading.Tasks.Task<PassBoolResponseDto> PassBool(PassBoolRequestDto request, Grpc.Core.ServerCallContext context)
-            {
-                return _server.InvokeCommand(PassBoolInternal, request, context);
-            }
-            
-            private PassDoubleResponseDto PassDoubleInternal(PassDoubleRequestDto request)
-            {
-                try
-                {
-                    return new PassDoubleResponseDto(_implementation.PassDouble(request.Data.Extract(_server)), _server);
-                } catch (System.ArgumentException ex)
-                {
-                    if ((ex.ParamName == "data"))
-                    {
-                        throw ErrorHandling.CreateValidationError("tecan.sila/integrationtests/TestServer/v1/Command/PassDouble/Parameter/Data", ex.Message);
-                    }
-                    throw ErrorHandling.CreateUnknownValidationError(ex);
-                }
-            }
-            
-            ///  <summary>
-            /// Executes the Pass Double command
-            /// </summary>
-            /// <param name="request">A data transfer object that contains the command parameters</param>
-            /// <param name="context">The context in which the command is issued</param>
-            /// <returns>The command response wrapped in a data transfer object</returns>
-            protected virtual System.Threading.Tasks.Task<PassDoubleResponseDto> PassDouble(PassDoubleRequestDto request, Grpc.Core.ServerCallContext context)
-            {
-                return _server.InvokeCommand(PassDoubleInternal, request, context);
-            }
-            
-            private PassLongResponseDto PassLongInternal(PassLongRequestDto request)
-            {
-                try
-                {
-                    return new PassLongResponseDto(_implementation.PassLong(request.Data.Extract(_server)), _server);
-                } catch (System.ArgumentException ex)
-                {
-                    if ((ex.ParamName == "data"))
-                    {
-                        throw ErrorHandling.CreateValidationError("tecan.sila/integrationtests/TestServer/v1/Command/PassLong/Parameter/Data", ex.Message);
-                    }
-                    throw ErrorHandling.CreateUnknownValidationError(ex);
-                }
-            }
-            
-            ///  <summary>
-            /// Executes the Pass Long command
-            /// </summary>
-            /// <param name="request">A data transfer object that contains the command parameters</param>
-            /// <param name="context">The context in which the command is issued</param>
-            /// <returns>The command response wrapped in a data transfer object</returns>
-            protected virtual System.Threading.Tasks.Task<PassLongResponseDto> PassLong(PassLongRequestDto request, Grpc.Core.ServerCallContext context)
-            {
-                return _server.InvokeCommand(PassLongInternal, request, context);
-            }
-            
-            private PassIntResponseDto PassIntInternal(PassIntRequestDto request)
-            {
-                try
-                {
-                    return new PassIntResponseDto(_implementation.PassInt(((int)(request.Data.Extract(_server)))), _server);
-                } catch (System.ArgumentException ex)
-                {
-                    if ((ex.ParamName == "data"))
-                    {
-                        throw ErrorHandling.CreateValidationError("tecan.sila/integrationtests/TestServer/v1/Command/PassInt/Parameter/Data", ex.Message);
-                    }
-                    throw ErrorHandling.CreateUnknownValidationError(ex);
-                }
-            }
-            
-            ///  <summary>
-            /// Executes the Pass Int command
-            /// </summary>
-            /// <param name="request">A data transfer object that contains the command parameters</param>
-            /// <param name="context">The context in which the command is issued</param>
-            /// <returns>The command response wrapped in a data transfer object</returns>
-            protected virtual System.Threading.Tasks.Task<PassIntResponseDto> PassInt(PassIntRequestDto request, Grpc.Core.ServerCallContext context)
-            {
-                return _server.InvokeCommand(PassIntInternal, request, context);
-            }
-            
-            private PassTimestampResponseDto PassTimestampInternal(PassTimestampRequestDto request)
-            {
-                try
-                {
-                    return new PassTimestampResponseDto(_implementation.PassTimestamp(request.Timestamp.Extract(_server)), _server);
-                } catch (System.ArgumentException ex)
-                {
-                    if ((ex.ParamName == "timestamp"))
-                    {
-                        throw ErrorHandling.CreateValidationError("tecan.sila/integrationtests/TestServer/v1/Command/PassTimestamp/Parameter/Timesta" +
-                                "mp", ex.Message);
-                    }
-                    throw ErrorHandling.CreateUnknownValidationError(ex);
-                }
-            }
-            
-            ///  <summary>
-            /// Executes the Pass Timestamp command
-            /// </summary>
-            /// <param name="request">A data transfer object that contains the command parameters</param>
-            /// <param name="context">The context in which the command is issued</param>
-            /// <returns>The command response wrapped in a data transfer object</returns>
-            protected virtual System.Threading.Tasks.Task<PassTimestampResponseDto> PassTimestamp(PassTimestampRequestDto request, Grpc.Core.ServerCallContext context)
-            {
-                return _server.InvokeCommand(PassTimestampInternal, request, context);
-            }
-            
-            private PassTimeResponseDto PassTimeInternal(PassTimeRequestDto request)
-            {
-                try
-                {
-                    return new PassTimeResponseDto(_implementation.PassTime(request.Time.Extract(_server)), _server);
-                } catch (System.ArgumentException ex)
-                {
-                    if ((ex.ParamName == "time"))
-                    {
-                        throw ErrorHandling.CreateValidationError("tecan.sila/integrationtests/TestServer/v1/Command/PassTime/Parameter/Time", ex.Message);
-                    }
-                    throw ErrorHandling.CreateUnknownValidationError(ex);
-                }
-            }
-            
-            ///  <summary>
-            /// Executes the Pass Time command
-            /// </summary>
-            /// <param name="request">A data transfer object that contains the command parameters</param>
-            /// <param name="context">The context in which the command is issued</param>
-            /// <returns>The command response wrapped in a data transfer object</returns>
-            protected virtual System.Threading.Tasks.Task<PassTimeResponseDto> PassTime(PassTimeRequestDto request, Grpc.Core.ServerCallContext context)
-            {
-                return _server.InvokeCommand(PassTimeInternal, request, context);
-            }
-            
-            private PassStringResponseDto PassStringInternal(PassStringRequestDto request)
-            {
-                try
-                {
-                    return new PassStringResponseDto(_implementation.PassString(request.Value.Extract(_server)), _server);
-                } catch (System.ArgumentException ex)
-                {
-                    if ((ex.ParamName == "value"))
-                    {
-                        throw ErrorHandling.CreateValidationError("tecan.sila/integrationtests/TestServer/v1/Command/PassString/Parameter/Value", ex.Message);
-                    }
-                    throw ErrorHandling.CreateUnknownValidationError(ex);
-                }
-            }
-            
-            ///  <summary>
-            /// Executes the Pass String command
-            /// </summary>
-            /// <param name="request">A data transfer object that contains the command parameters</param>
-            /// <param name="context">The context in which the command is issued</param>
-            /// <returns>The command response wrapped in a data transfer object</returns>
-            protected virtual System.Threading.Tasks.Task<PassStringResponseDto> PassString(PassStringRequestDto request, Grpc.Core.ServerCallContext context)
-            {
-                return _server.InvokeCommand(PassStringInternal, request, context);
-            }
-            
-            private PassStreamResponseDto PassStreamInternal(PassStreamRequestDto request)
-            {
-                try
-                {
-                    return new PassStreamResponseDto(_implementation.PassStream(request.Value.Extract(_server)), _server);
-                } catch (System.ArgumentException ex)
-                {
-                    if ((ex.ParamName == "value"))
-                    {
-                        throw ErrorHandling.CreateValidationError("tecan.sila/integrationtests/TestServer/v1/Command/PassStream/Parameter/Value", ex.Message);
-                    }
-                    throw ErrorHandling.CreateUnknownValidationError(ex);
-                }
-            }
-            
-            ///  <summary>
-            /// Executes the Pass Stream command
-            /// </summary>
-            /// <param name="request">A data transfer object that contains the command parameters</param>
-            /// <param name="context">The context in which the command is issued</param>
-            /// <returns>The command response wrapped in a data transfer object</returns>
-            protected virtual System.Threading.Tasks.Task<PassStreamResponseDto> PassStream(PassStreamRequestDto request, Grpc.Core.ServerCallContext context)
-            {
-                return _server.InvokeCommand(PassStreamInternal, request, context);
-            }
-            
-            private PassFileResponseDto PassFileInternal(PassFileRequestDto request)
-            {
-                try
-                {
-                    return new PassFileResponseDto(_implementation.PassFile(request.File.ExtractToFileInfo(_server)), _server);
-                } catch (System.ArgumentException ex)
-                {
-                    if ((ex.ParamName == "file"))
-                    {
-                        throw ErrorHandling.CreateValidationError("tecan.sila/integrationtests/TestServer/v1/Command/PassFile/Parameter/File", ex.Message);
-                    }
-                    throw ErrorHandling.CreateUnknownValidationError(ex);
-                }
-            }
-            
-            ///  <summary>
-            /// Executes the Pass File command
-            /// </summary>
-            /// <param name="request">A data transfer object that contains the command parameters</param>
-            /// <param name="context">The context in which the command is issued</param>
-            /// <returns>The command response wrapped in a data transfer object</returns>
-            protected virtual System.Threading.Tasks.Task<PassFileResponseDto> PassFile(PassFileRequestDto request, Grpc.Core.ServerCallContext context)
-            {
-                return _server.InvokeCommand(PassFileInternal, request, context);
-            }
-            
-            private PassBytesResponseDto PassBytesInternal(PassBytesRequestDto request)
-            {
-                try
-                {
-                    return new PassBytesResponseDto(_implementation.PassBytes(request.Bytes.ExtractToBytes(_server)), _server);
-                } catch (System.ArgumentException ex)
-                {
-                    if ((ex.ParamName == "bytes"))
-                    {
-                        throw ErrorHandling.CreateValidationError("tecan.sila/integrationtests/TestServer/v1/Command/PassBytes/Parameter/Bytes", ex.Message);
-                    }
-                    throw ErrorHandling.CreateUnknownValidationError(ex);
-                }
-            }
-            
-            ///  <summary>
-            /// Executes the Pass Bytes command
-            /// </summary>
-            /// <param name="request">A data transfer object that contains the command parameters</param>
-            /// <param name="context">The context in which the command is issued</param>
-            /// <returns>The command response wrapped in a data transfer object</returns>
-            protected virtual System.Threading.Tasks.Task<PassBytesResponseDto> PassBytes(PassBytesRequestDto request, Grpc.Core.ServerCallContext context)
-            {
-                return _server.InvokeCommand(PassBytesInternal, request, context);
-            }
-            
-            private PassCollectionResponseDto PassCollectionInternal(PassCollectionRequestDto request)
-            {
-                try
-                {
-                    return new PassCollectionResponseDto(_implementation.PassCollection(request.Strings.Extract(_server)), _server);
-                } catch (System.ArgumentException ex)
-                {
-                    if ((ex.ParamName == "strings"))
-                    {
-                        throw ErrorHandling.CreateValidationError("tecan.sila/integrationtests/TestServer/v1/Command/PassCollection/Parameter/String" +
-                                "s", ex.Message);
-                    }
-                    throw ErrorHandling.CreateUnknownValidationError(ex);
-                }
-            }
-            
-            ///  <summary>
-            /// Executes the Pass Collection command
-            /// </summary>
-            /// <param name="request">A data transfer object that contains the command parameters</param>
-            /// <param name="context">The context in which the command is issued</param>
-            /// <returns>The command response wrapped in a data transfer object</returns>
-            protected virtual System.Threading.Tasks.Task<PassCollectionResponseDto> PassCollection(PassCollectionRequestDto request, Grpc.Core.ServerCallContext context)
-            {
-                return _server.InvokeCommand(PassCollectionInternal, request, context);
-            }
-            
-            private PassStructureResponseDto PassStructureInternal(PassStructureRequestDto request)
-            {
-                try
-                {
-                    return new PassStructureResponseDto(_implementation.PassStructure(request.Structure.Extract(_server)), _server);
-                } catch (System.ArgumentException ex)
-                {
-                    if ((ex.ParamName == "structure"))
-                    {
-                        throw ErrorHandling.CreateValidationError("tecan.sila/integrationtests/TestServer/v1/Command/PassStructure/Parameter/Structu" +
-                                "re", ex.Message);
-                    }
-                    throw ErrorHandling.CreateUnknownValidationError(ex);
-                }
-            }
-            
-            ///  <summary>
-            /// Executes the Pass Structure command
-            /// </summary>
-            /// <param name="request">A data transfer object that contains the command parameters</param>
-            /// <param name="context">The context in which the command is issued</param>
-            /// <returns>The command response wrapped in a data transfer object</returns>
-            protected virtual System.Threading.Tasks.Task<PassStructureResponseDto> PassStructure(PassStructureRequestDto request, Grpc.Core.ServerCallContext context)
-            {
-                return _server.InvokeCommand(PassStructureInternal, request, context);
-            }
-            
-            ///  <summary>
-            /// Obtains a stream of states for the given command execution id
-            /// </summary>
-            /// <param name="request">The request including the command execution id</param>
-            /// <param name="responseStream">The stream in which execution states should be written</param>
-            /// <param name="context">The context in which the request is made</param>
-            /// <returns>A stream of intermediate responses</returns>
-            private System.Threading.Tasks.Task RunObservableState(Tecan.Sila2.CommandExecutionUuid request, Grpc.Core.IServerStreamWriter<Tecan.Sila2.ExecutionState> responseStream, Grpc.Core.ServerCallContext context)
-            {
-                return ObservableCommandHelper.QueryCommandState(_server, request, responseStream, context);
-            }
-            
-            private RunObservableResponseDto ConvertRunObservableResponse(int result)
-            {
-                return new RunObservableResponseDto(result, _server);
-            }
-            
-            ///  <summary>
-            /// Waits for the completion of the given command execution id and returns the result
-            /// </summary>
-            /// <param name="request">The request including the command execution identifier</param>
-            /// <param name="context">The context in which the request is made</param>
-            /// <returns>A task with the command result data transfer object</returns>
-            private System.Threading.Tasks.Task<RunObservableResponseDto> RunObservableResponse(Tecan.Sila2.CommandExecutionUuid request, Grpc.Core.ServerCallContext context)
-            {
-                return ObservableCommandHelper.WaitCommandExecution<int, RunObservableResponseDto>(_server, request, context, ConvertRunObservableResponse);
-            }
-            
-            ///  <summary>
-            /// Executes the Run Observable command
-            /// </summary>
-            /// <param name="request">A data transfer object that contains the command parameters</param>
-            /// <param name="context">The context in which the command is issued</param>
-            /// <returns>The command response wrapped in a data transfer object</returns>
-            protected virtual System.Threading.Tasks.Task<Tecan.Sila2.CommandConfirmation> RunObservable(RunObservableRequestDto request, Grpc.Core.ServerCallContext context)
-            {
-                return ObservableCommandHelper.StartCommand(_server, "tecan.sila/integrationtests/TestServer/v1/Command/RunObservable", _implementation.RunObservable(), context);
-            }
-            
-            ///  <summary>
-            /// Obtains a stream of states for the given command execution id
-            /// </summary>
-            /// <param name="request">The request including the command execution id</param>
-            /// <param name="responseStream">The stream in which execution states should be written</param>
-            /// <param name="context">The context in which the request is made</param>
-            /// <returns>A stream of intermediate responses</returns>
-            private System.Threading.Tasks.Task RunIntermediateObservableCommandState(Tecan.Sila2.CommandExecutionUuid request, Grpc.Core.IServerStreamWriter<Tecan.Sila2.ExecutionState> responseStream, Grpc.Core.ServerCallContext context)
-            {
-                return ObservableCommandHelper.QueryCommandState(_server, request, responseStream, context);
-            }
-            
-            private RunIntermediateObservableCommandIntermediateDto ConvertRunIntermediateObservableCommandIntermediate(int intermediate)
-            {
-                return new RunIntermediateObservableCommandIntermediateDto(intermediate, _server);
-            }
-            
-            ///  <summary>
-            /// Obtains a stream of intermediate results for the given command execution id
-            /// </summary>
-            /// <param name="request">The request including the command execution id</param>
-            /// <param name="responseStream">The stream in which intermediate responses should be written</param>
-            /// <param name="context">The context in which the request is made</param>
-            /// <returns>A stream of intermediate responses</returns>
-            private System.Threading.Tasks.Task RunIntermediateObservableCommandIntermediateResponse(Tecan.Sila2.CommandExecutionUuid request, Grpc.Core.IServerStreamWriter<RunIntermediateObservableCommandIntermediateDto> responseStream, Grpc.Core.ServerCallContext context)
-            {
-                return ObservableCommandHelper.RetrieveIntermediateResults<int, RunIntermediateObservableCommandIntermediateDto>(_server, request, responseStream, ConvertRunIntermediateObservableCommandIntermediate, context);
-            }
-            
-            ///  <summary>
-            /// Waits for the completion of the given command execution id and returns the result
-            /// </summary>
-            /// <param name="request">The request including the command execution identifier</param>
-            /// <param name="context">The context in which the request is made</param>
-            /// <returns>A task with the command result data transfer object</returns>
-            private System.Threading.Tasks.Task<EmptyRequest> RunIntermediateObservableCommandResponse(Tecan.Sila2.CommandExecutionUuid request, Grpc.Core.ServerCallContext context)
-            {
-                return ObservableCommandHelper.WaitCommandExecution(_server, request, context);
-            }
-            
-            ///  <summary>
-            /// Executes the Run Intermediate Observable Command command
-            /// </summary>
-            /// <param name="request">A data transfer object that contains the command parameters</param>
-            /// <param name="context">The context in which the command is issued</param>
-            /// <returns>The command response wrapped in a data transfer object</returns>
-            protected virtual System.Threading.Tasks.Task<Tecan.Sila2.CommandConfirmation> RunIntermediateObservableCommand(RunIntermediateObservableCommandRequestDto request, Grpc.Core.ServerCallContext context)
-            {
-                return ObservableCommandHelper.StartCommand(_server, "tecan.sila/integrationtests/TestServer/v1/Command/RunIntermediateObservableComman" +
-                        "d", _implementation.RunIntermediateObservableCommand(), context);
-            }
-            
-            ///  <summary>
-            /// Gets the command with the given identifier
-            /// </summary>
-            /// <param name="commandIdentifier">A fully qualified command identifier</param>
-            /// <returns>A method object or null, if the command is not supported</returns>
-            public System.Reflection.MethodInfo GetCommand(string commandIdentifier)
-            {
-                if ((commandIdentifier == "tecan.sila/integrationtests/TestServer/v1/Command/PassBool"))
-                {
-                    return typeof(ITestServer).GetMethod("PassBool");
-                }
-                if ((commandIdentifier == "tecan.sila/integrationtests/TestServer/v1/Command/PassDouble"))
-                {
-                    return typeof(ITestServer).GetMethod("PassDouble");
-                }
-                if ((commandIdentifier == "tecan.sila/integrationtests/TestServer/v1/Command/PassLong"))
-                {
-                    return typeof(ITestServer).GetMethod("PassLong");
-                }
-                if ((commandIdentifier == "tecan.sila/integrationtests/TestServer/v1/Command/PassInt"))
-                {
-                    return typeof(ITestServer).GetMethod("PassInt");
-                }
-                if ((commandIdentifier == "tecan.sila/integrationtests/TestServer/v1/Command/PassTimestamp"))
-                {
-                    return typeof(ITestServer).GetMethod("PassTimestamp");
-                }
-                if ((commandIdentifier == "tecan.sila/integrationtests/TestServer/v1/Command/PassTime"))
-                {
-                    return typeof(ITestServer).GetMethod("PassTime");
-                }
-                if ((commandIdentifier == "tecan.sila/integrationtests/TestServer/v1/Command/PassString"))
-                {
-                    return typeof(ITestServer).GetMethod("PassString");
-                }
-                if ((commandIdentifier == "tecan.sila/integrationtests/TestServer/v1/Command/PassStream"))
-                {
-                    return typeof(ITestServer).GetMethod("PassStream");
-                }
-                if ((commandIdentifier == "tecan.sila/integrationtests/TestServer/v1/Command/PassFile"))
-                {
-                    return typeof(ITestServer).GetMethod("PassFile");
-                }
-                if ((commandIdentifier == "tecan.sila/integrationtests/TestServer/v1/Command/PassBytes"))
-                {
-                    return typeof(ITestServer).GetMethod("PassBytes");
-                }
-                if ((commandIdentifier == "tecan.sila/integrationtests/TestServer/v1/Command/PassCollection"))
-                {
-                    return typeof(ITestServer).GetMethod("PassCollection");
-                }
-                if ((commandIdentifier == "tecan.sila/integrationtests/TestServer/v1/Command/PassStructure"))
-                {
-                    return typeof(ITestServer).GetMethod("PassStructure");
-                }
-                if ((commandIdentifier == "tecan.sila/integrationtests/TestServer/v1/Command/RunObservable"))
-                {
-                    return typeof(ITestServer).GetMethod("RunObservable");
-                }
-                if ((commandIdentifier == "tecan.sila/integrationtests/TestServer/v1/Command/RunIntermediateObservableComman" +
-                    "d"))
-                {
-                    return typeof(ITestServer).GetMethod("RunIntermediateObservableCommand");
-                }
-                return null;
-            }
-            
-            ///  <summary>
-            /// Gets the property with the given identifier
-            /// </summary>
-            /// <param name="propertyIdentifier">A fully qualified property identifier</param>
-            /// <returns>A property object or null, if the property is not supported</returns>
-            public System.Reflection.PropertyInfo GetProperty(string propertyIdentifier)
-            {
-                return null;
-            }
-        }
+        public static Grpc.Core.Method<WaitForCancelOrThrowRequestDto, CommandConfirmation> WaitForCancelOrThrowMethod = new Grpc.Core.Method<WaitForCancelOrThrowRequestDto, CommandConfirmation>(Grpc.Core.MethodType.Unary, @__ServiceName, "WaitForCancelOrThrow", ProtobufMarshaller<WaitForCancelOrThrowRequestDto>.Default, ProtobufMarshaller<CommandConfirmation>.Default);
+        
+        public static Grpc.Core.Method<CommandExecutionUuid, ExecutionState> WaitForCancelOrThrowStateMethod = new Grpc.Core.Method<CommandExecutionUuid, ExecutionState>(Grpc.Core.MethodType.ServerStreaming, @__ServiceName, "WaitForCancelOrThrow_Info", ProtobufMarshaller<CommandExecutionUuid>.Default, ProtobufMarshaller<ExecutionState>.Default);
+        
+        public static Grpc.Core.Method<CommandExecutionUuid, EmptyRequest> WaitForCancelOrThrowResponseMethod = new Grpc.Core.Method<CommandExecutionUuid, EmptyRequest>(Grpc.Core.MethodType.Unary, @__ServiceName, "WaitForCancelOrThrow_Result", ProtobufMarshaller<CommandExecutionUuid>.Default, EmptyRequest.Marshaller);
+        
+        public static Grpc.Core.Method<RunIntoFailureRequestDto, EmptyRequest> RunIntoFailureMethod = new Grpc.Core.Method<RunIntoFailureRequestDto, EmptyRequest>(Grpc.Core.MethodType.Unary, @__ServiceName, "RunIntoFailure", ProtobufMarshaller<RunIntoFailureRequestDto>.Default, EmptyRequest.Marshaller);
+        
+        public static Grpc.Core.Method<RunIntoFailureObservablyRequestDto, CommandConfirmation> RunIntoFailureObservablyMethod = new Grpc.Core.Method<RunIntoFailureObservablyRequestDto, CommandConfirmation>(Grpc.Core.MethodType.Unary, @__ServiceName, "RunIntoFailureObservably", ProtobufMarshaller<RunIntoFailureObservablyRequestDto>.Default, ProtobufMarshaller<CommandConfirmation>.Default);
+        
+        public static Grpc.Core.Method<CommandExecutionUuid, ExecutionState> RunIntoFailureObservablyStateMethod = new Grpc.Core.Method<CommandExecutionUuid, ExecutionState>(Grpc.Core.MethodType.ServerStreaming, @__ServiceName, "RunIntoFailureObservably_Info", ProtobufMarshaller<CommandExecutionUuid>.Default, ProtobufMarshaller<ExecutionState>.Default);
+        
+        public static Grpc.Core.Method<CommandExecutionUuid, EmptyRequest> RunIntoFailureObservablyResponseMethod = new Grpc.Core.Method<CommandExecutionUuid, EmptyRequest>(Grpc.Core.MethodType.Unary, @__ServiceName, "RunIntoFailureObservably_Result", ProtobufMarshaller<CommandExecutionUuid>.Default, EmptyRequest.Marshaller);
     }
 }
 
