@@ -30,8 +30,11 @@
     </ItemGroup>
 
     <ItemGroup>
+        <!-- include grpc as a project reference if it is available in parent folder (mechanism for changing grpc-implementation when necessary) -->
+        <ProjectReference Condition=" Exists('../../grpc/src/csharp/Grpc.Core/Grpc.Core.csproj')" Include="../../grpc/src/csharp/Grpc.Core/Grpc.Core.csproj" />
+        <PackageReference Condition="!Exists('../../grpc/src/csharp/Grpc.Core/Grpc.Core.csproj')" Include="Grpc.Core" Version="2.27.0" />
+
         <PackageReference Include="CommandLineParser" Version="2.6.0" />
-        <PackageReference Include="Grpc.Core" Version="2.27.0" />
         <PackageReference Include="System.Threading.Channels" Version="4.7.0" />
         <PackageReference Include="Tecan.MAP.Contracts.Services.Logging" Version="2.1.0.14695" />
     </ItemGroup>
