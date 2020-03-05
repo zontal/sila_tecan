@@ -8,7 +8,7 @@
     </PropertyGroup>
 
     <PropertyGroup>
-        <TargetFrameworks>net472;netcoreapp2.1</TargetFrameworks>
+        <TargetFrameworks>net472;netcoreapp3.1</TargetFrameworks>
         <RootNamespace>Tecan.Sila2.Generator.Test</RootNamespace>
         <AssemblyName>Tecan.Sila2Generator.Test</AssemblyName>
         <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
