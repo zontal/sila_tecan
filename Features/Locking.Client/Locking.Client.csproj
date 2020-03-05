@@ -15,6 +15,10 @@
       <DocumentationFile>..\..\Build\Features\Client\Tecan.Sila2.Locking.Client.xml</DocumentationFile>
     </PropertyGroup>
 
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+      <DocumentationFile>..\..\Build\Features\Client\Tecan.Sila2.Locking.Client.xml</DocumentationFile>
+    </PropertyGroup>
+
     <ItemGroup>
       <Compile Include="..\..\CommonAssemblyInfo.cs" Link="Properties\CommonAssemblyInfo.cs" />
     </ItemGroup>
