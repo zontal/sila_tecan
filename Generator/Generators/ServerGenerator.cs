@@ -47,7 +47,7 @@ namespace Tecan.Sila2.Generator.Generators
         /// <inheritdoc />
         public CodeTypeDeclaration GenerateServer( Feature feature )
         {
-            var server = new CodeTypeDeclaration( feature.Identifier )
+            var server = new CodeTypeDeclaration( feature.Identifier + "Provider" )
             {
                 Attributes = MemberAttributes.Public,
                 TypeAttributes = TypeAttributes.Public,
@@ -466,7 +466,7 @@ namespace Tecan.Sila2.Generator.Generators
                 Attributes = MemberAttributes.Public
             };
             commandClass.Members.Add( constructor );
-            var parentRef = commandClass.AddField( "parent", new CodeTypeReference(feature.Identifier), constructor );
+            var parentRef = commandClass.AddField( "parent", new CodeTypeReference(feature.Identifier + "Provider"), constructor );
             var commandRequest = commandClass.AddField( "request", _nameProvider.GenerateCommandRequestType( featureCommand ), constructor );
 
             var runMethod = new CodeMemberMethod
@@ -870,7 +870,7 @@ namespace Tecan.Sila2.Generator.Generators
             createServiceDefinition.Statements.Add( builderDeclaration );
             var builderRef = new CodeVariableReferenceExpression( builderDeclaration.Name );
 
-            var providerReference = new CodeTypeReferenceExpression(feature.Identifier + "Provider");
+            var providerReference = new CodeTypeReferenceExpression(feature.Identifier + "Methods");
 
             foreach( var featureCommand in feature.Items.OfType<FeatureCommand>() )
             {

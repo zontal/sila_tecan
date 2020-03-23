@@ -80,7 +80,7 @@ namespace Tecan.Sila2.ParameterConstraintsProvider.ParameterConstraintsProvider
             {
                 if ((_parametersConstraintsUpdateTask == null))
                 {
-                    _parametersConstraintsUpdateTask = ObservableCommandHelper.SubscribeTo(CallInvoker, ParameterConstraintsProviderProvider.SubscribeParametersConstraintsMethod, ReceiveNewParametersConstraints, _executionManager.CreateCallOptions("org.silastandard/core.commands/ParameterConstraintsProvider/v1/Property/Parameter" +
+                    _parametersConstraintsUpdateTask = ObservableCommandHelper.SubscribeTo(CallInvoker, ParameterConstraintsProviderMethods.SubscribeParametersConstraintsMethod, ReceiveNewParametersConstraints, _executionManager.CreateCallOptions("org.silastandard/core.commands/ParameterConstraintsProvider/v1/Property/Parameter" +
                                 "sConstraints"));
                 }
                 return _parametersConstraints;
@@ -122,7 +122,7 @@ namespace Tecan.Sila2.ParameterConstraintsProvider.ParameterConstraintsProvider
     ///  <summary>
     /// Encapsulates provider classes to expose the Parameter Constraints Provider feature via SiLA2
     /// </summary>
-    internal sealed partial class ParameterConstraintsProviderProvider
+    internal sealed partial class ParameterConstraintsProviderMethods
     {
         
         private static string @__ServiceName = "sila2.org.silastandard.core.commands.parameterconstraintsprovider.v1.ParameterCon" +

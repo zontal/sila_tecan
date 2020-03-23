@@ -82,7 +82,7 @@ namespace Tecan.Sila2.Cancellation.CancelController
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/core.commands/CancelController/v1/Command/CancelCommand");
             try
             {
-                CallInvoker.BlockingUnaryCall(CancelControllerProvider.CancelCommandMethod, null, callInfo.Options, request);
+                CallInvoker.BlockingUnaryCall(CancelControllerMethods.CancelCommandMethod, null, callInfo.Options, request);
                 callInfo.FinishSuccessful();
                 return;
             } catch (System.Exception ex)
@@ -124,7 +124,7 @@ namespace Tecan.Sila2.Cancellation.CancelController
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/core.commands/CancelController/v1/Command/CancelAll");
             try
             {
-                CallInvoker.BlockingUnaryCall(CancelControllerProvider.CancelAllMethod, null, callInfo.Options, request);
+                CallInvoker.BlockingUnaryCall(CancelControllerMethods.CancelAllMethod, null, callInfo.Options, request);
                 callInfo.FinishSuccessful();
                 return;
             } catch (System.Exception ex)
@@ -154,7 +154,7 @@ namespace Tecan.Sila2.Cancellation.CancelController
     ///  <summary>
     /// Encapsulates provider classes to expose the Cancel Controller feature via SiLA2
     /// </summary>
-    internal sealed partial class CancelControllerProvider
+    internal sealed partial class CancelControllerMethods
     {
         
         private static string @__ServiceName = "sila2.org.silastandard.core.commands.cancelcontroller.v1.CancelController";

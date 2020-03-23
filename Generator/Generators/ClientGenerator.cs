@@ -312,7 +312,7 @@ namespace Tecan.Sila2.Generator.Generators
             var callInfo = new CodeMethodInvokeExpression(new CodeFieldReferenceExpression(null, ExecutionManagerFieldName),
                 nameof(IClientExecutionManager.CreateCallOptions),
                 new CodePropertyReferenceExpression(requestRef, nameof(ISilaRequestObject.CommandIdentifier)));
-            var providerReference = new CodeTypeReferenceExpression( feature.Identifier + "Provider" );
+            var providerReference = new CodeTypeReferenceExpression( feature.Identifier + "Methods" );
             var actualCall = new CodeMethodInvokeExpression(
                 new CodeTypeReferenceExpression(nameof(ObservableClientCommands)),
                 intermediateType != null ? nameof(ObservableClientCommands.CreateIntermediate) : nameof(ObservableClientCommands.Create),
@@ -430,7 +430,7 @@ namespace Tecan.Sila2.Generator.Generators
                 if(featureCommand.Response.Length == 1)
                 {
                     var customType = _nameProvider.GetMemberType( featureCommand.Identifier + "." + featureCommand.Response[0].Identifier );
-                    return customType ?? _translationProvider.ExtractType( featureCommand.Response[0].DataType, featureCommand.Identifier );
+                    return customType ?? _translationProvider.ExtractType( featureCommand.Response[0].DataType, featureCommand.Identifier + featureCommand.Response[0].Identifier );
                 }
                 else
                 {
@@ -567,7 +567,7 @@ namespace Tecan.Sila2.Generator.Generators
         private CodeExpression GenerateClientGrpcInvoke(Feature feature, string methodName, CodeExpression request,
             DataTypeType responseType, string propertyName, CodeExpression callInfoRef, CodeTypeReference customResponseType)
         {
-            var providerReference = new CodeTypeReferenceExpression( feature.Identifier + "Provider" );
+            var providerReference = new CodeTypeReferenceExpression( feature.Identifier + "Methods" );
             CodeExpression response = new CodeMethodInvokeExpression(
                 new CodePropertyReferenceExpression(null, "CallInvoker"),
                 "BlockingUnaryCall",
@@ -691,7 +691,7 @@ namespace Tecan.Sila2.Generator.Generators
             var updateTask = new CodeFieldReferenceExpression(null, fieldName + "UpdateTask");
             client.Members.Add(new CodeMemberField(typeof(Task), updateTask.FieldName));
 
-            var providerReference = new CodeTypeReferenceExpression( feature.Identifier + "Provider" );
+            var providerReference = new CodeTypeReferenceExpression( feature.Identifier + "Methods" );
             var receiveValueMethod = GenerateClientReceiveValueMethod(featureProperty, fieldName, fieldRef, property);
             var subscription = new CodeMethodInvokeExpression(
                 new CodeTypeReferenceExpression(nameof(ObservableCommandHelper)),

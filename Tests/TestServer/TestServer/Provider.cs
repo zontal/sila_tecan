@@ -23,14 +23,14 @@ namespace Tecan.Sila2.IntegrationTests
     /// </summary>
     [System.ComponentModel.Composition.ExportAttribute(typeof(IFeatureProvider))]
     [System.ComponentModel.Composition.PartCreationPolicyAttribute(System.ComponentModel.Composition.CreationPolicy.Shared)]
-    public partial class TestServer : IFeatureProvider
+    public partial class TestServerProvider : IFeatureProvider
     {
         
         private ITestServer _implementation;
         
         private Tecan.Sila2.Server.ISiLAServer _server;
         
-        private static Tecan.Sila2.Feature _feature = FeatureSerializer.LoadFromAssembly(typeof(TestServer).Assembly, "TestServer.sila.xml");
+        private static Tecan.Sila2.Feature _feature = FeatureSerializer.LoadFromAssembly(typeof(TestServerProvider).Assembly, "TestServer.sila.xml");
         
         ///  <summary>
         /// Creates a new instance
@@ -38,7 +38,7 @@ namespace Tecan.Sila2.IntegrationTests
         /// <param name="implementation">The implementation to exported through SiLA2</param>
         /// <param name="server">The SiLA2 server instance through which the implementation shall be exported</param>
         [System.ComponentModel.Composition.ImportingConstructorAttribute()]
-        public TestServer(ITestServer implementation, Tecan.Sila2.Server.ISiLAServer server)
+        public TestServerProvider(ITestServer implementation, Tecan.Sila2.Server.ISiLAServer server)
         {
             _implementation = implementation;
             _server = server;
@@ -63,34 +63,34 @@ namespace Tecan.Sila2.IntegrationTests
         public Grpc.Core.ServerServiceDefinition CreateServiceDefinition()
         {
             Grpc.Core.ServerServiceDefinition.Builder builder = Grpc.Core.ServerServiceDefinition.CreateBuilder();
-            builder.AddMethod(TestServerProvider.PassBoolMethod, PassBool);
-            builder.AddMethod(TestServerProvider.PassDoubleMethod, PassDouble);
-            builder.AddMethod(TestServerProvider.PassLongMethod, PassLong);
-            builder.AddMethod(TestServerProvider.PassIntMethod, PassInt);
-            builder.AddMethod(TestServerProvider.PassTimestampMethod, PassTimestamp);
-            builder.AddMethod(TestServerProvider.PassTimeMethod, PassTime);
-            builder.AddMethod(TestServerProvider.PassStringMethod, PassString);
-            builder.AddMethod(TestServerProvider.PassStreamMethod, PassStream);
-            builder.AddMethod(TestServerProvider.PassFileMethod, PassFile);
-            builder.AddMethod(TestServerProvider.PassBytesMethod, PassBytes);
-            builder.AddMethod(TestServerProvider.PassCollectionMethod, PassCollection);
-            builder.AddMethod(TestServerProvider.PassStructureMethod, PassStructure);
-            builder.AddMethod(TestServerProvider.RunObservableMethod, RunObservable);
-            builder.AddMethod(TestServerProvider.RunObservableStateMethod, RunObservableState);
-            builder.AddMethod(TestServerProvider.RunObservableResponseMethod, RunObservableResponse);
-            builder.AddMethod(TestServerProvider.RunIntermediateObservableCommandMethod, RunIntermediateObservableCommand);
-            builder.AddMethod(TestServerProvider.RunIntermediateObservableCommandStateMethod, RunIntermediateObservableCommandState);
-            builder.AddMethod(TestServerProvider.RunIntermediateObservableCommandIntermediateMethod, RunIntermediateObservableCommandIntermediateResponse);
-            builder.AddMethod(TestServerProvider.RunIntermediateObservableCommandResponseMethod, RunIntermediateObservableCommandResponse);
-            builder.AddMethod(TestServerProvider.WaitForCancelOrThrowMethod, WaitForCancelOrThrow);
-            builder.AddMethod(TestServerProvider.WaitForCancelOrThrowStateMethod, WaitForCancelOrThrowState);
-            builder.AddMethod(TestServerProvider.WaitForCancelOrThrowResponseMethod, WaitForCancelOrThrowResponse);
-            builder.AddMethod(TestServerProvider.RunIntoFailureMethod, RunIntoFailure);
-            builder.AddMethod(TestServerProvider.RunIntoFailureObservablyMethod, RunIntoFailureObservably);
-            builder.AddMethod(TestServerProvider.RunIntoFailureObservablyStateMethod, RunIntoFailureObservablyState);
-            builder.AddMethod(TestServerProvider.RunIntoFailureObservablyResponseMethod, RunIntoFailureObservablyResponse);
-            builder.AddMethod(TestServerProvider.IsCancelledMethod, IsCancelled);
-            builder.AddMethod(TestServerProvider.ThrowRuntimeExceptionMethod, ThrowRuntimeException);
+            builder.AddMethod(TestServerMethods.PassBoolMethod, PassBool);
+            builder.AddMethod(TestServerMethods.PassDoubleMethod, PassDouble);
+            builder.AddMethod(TestServerMethods.PassLongMethod, PassLong);
+            builder.AddMethod(TestServerMethods.PassIntMethod, PassInt);
+            builder.AddMethod(TestServerMethods.PassTimestampMethod, PassTimestamp);
+            builder.AddMethod(TestServerMethods.PassTimeMethod, PassTime);
+            builder.AddMethod(TestServerMethods.PassStringMethod, PassString);
+            builder.AddMethod(TestServerMethods.PassStreamMethod, PassStream);
+            builder.AddMethod(TestServerMethods.PassFileMethod, PassFile);
+            builder.AddMethod(TestServerMethods.PassBytesMethod, PassBytes);
+            builder.AddMethod(TestServerMethods.PassCollectionMethod, PassCollection);
+            builder.AddMethod(TestServerMethods.PassStructureMethod, PassStructure);
+            builder.AddMethod(TestServerMethods.RunObservableMethod, RunObservable);
+            builder.AddMethod(TestServerMethods.RunObservableStateMethod, RunObservableState);
+            builder.AddMethod(TestServerMethods.RunObservableResponseMethod, RunObservableResponse);
+            builder.AddMethod(TestServerMethods.RunIntermediateObservableCommandMethod, RunIntermediateObservableCommand);
+            builder.AddMethod(TestServerMethods.RunIntermediateObservableCommandStateMethod, RunIntermediateObservableCommandState);
+            builder.AddMethod(TestServerMethods.RunIntermediateObservableCommandIntermediateMethod, RunIntermediateObservableCommandIntermediateResponse);
+            builder.AddMethod(TestServerMethods.RunIntermediateObservableCommandResponseMethod, RunIntermediateObservableCommandResponse);
+            builder.AddMethod(TestServerMethods.WaitForCancelOrThrowMethod, WaitForCancelOrThrow);
+            builder.AddMethod(TestServerMethods.WaitForCancelOrThrowStateMethod, WaitForCancelOrThrowState);
+            builder.AddMethod(TestServerMethods.WaitForCancelOrThrowResponseMethod, WaitForCancelOrThrowResponse);
+            builder.AddMethod(TestServerMethods.RunIntoFailureMethod, RunIntoFailure);
+            builder.AddMethod(TestServerMethods.RunIntoFailureObservablyMethod, RunIntoFailureObservably);
+            builder.AddMethod(TestServerMethods.RunIntoFailureObservablyStateMethod, RunIntoFailureObservablyState);
+            builder.AddMethod(TestServerMethods.RunIntoFailureObservablyResponseMethod, RunIntoFailureObservablyResponse);
+            builder.AddMethod(TestServerMethods.IsCancelledMethod, IsCancelled);
+            builder.AddMethod(TestServerMethods.ThrowRuntimeExceptionMethod, ThrowRuntimeException);
             return builder.Build();
         }
         
@@ -765,11 +765,11 @@ namespace Tecan.Sila2.IntegrationTests
         private class WaitForCancelOrThrowCommand : Tecan.Sila2.ObservableCommand
         {
             
-            private TestServer _parent;
+            private TestServerProvider _parent;
             
             private WaitForCancelOrThrowRequestDto _request;
             
-            public WaitForCancelOrThrowCommand(TestServer parent, WaitForCancelOrThrowRequestDto request) : 
+            public WaitForCancelOrThrowCommand( TestServerProvider parent, WaitForCancelOrThrowRequestDto request) : 
                     base(new System.Threading.CancellationTokenSource())
             {
                 _parent = parent;
@@ -785,11 +785,11 @@ namespace Tecan.Sila2.IntegrationTests
         private class RunIntoFailureObservablyCommand : Tecan.Sila2.ObservableCommand
         {
             
-            private TestServer _parent;
+            private TestServerProvider _parent;
             
             private RunIntoFailureObservablyRequestDto _request;
             
-            public RunIntoFailureObservablyCommand(TestServer parent, RunIntoFailureObservablyRequestDto request) : 
+            public RunIntoFailureObservablyCommand(TestServerProvider parent, RunIntoFailureObservablyRequestDto request) : 
                     base(new System.Threading.CancellationTokenSource())
             {
                 _parent = parent;
@@ -811,7 +811,7 @@ namespace Tecan.Sila2.IntegrationTests
     ///  <summary>
     /// Encapsulates provider classes to expose the Test Server feature via SiLA2
     /// </summary>
-    internal sealed partial class TestServerProvider
+    internal sealed partial class TestServerMethods
     {
         
         private static string @__ServiceName = "sila2.tecan.sila.integrationtests.testserver.v1.TestServer";

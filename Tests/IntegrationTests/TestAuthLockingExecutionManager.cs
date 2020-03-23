@@ -9,14 +9,14 @@ namespace Tecan.Sila2.IntegrationTests
 {
     internal class TestAuthLockingExecutionManager : IClientExecutionManager
     {
-        private string _lockingIdentifier;
-        private string _accessToken;
+        private readonly string _lockingIdentifier;
+        private readonly string _accessToken;
 
         public TestAuthLockingExecutionManager( string lockingIdentifier, string accessToken, Channel serverChannel )
         {
             _lockingIdentifier = lockingIdentifier;
             _accessToken = accessToken;
-            DownloadBinaryStore = new ClientBinaryStore(serverChannel);
+            DownloadBinaryStore = new ClientBinaryStore(null, serverChannel);
         }
 
         public IClientCallInfo CreateCallOptions( string commandIdentifier )

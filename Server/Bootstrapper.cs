@@ -249,7 +249,7 @@ namespace Tecan.Sila2.Server
         /// Handles errors at server startup
         /// </summary>
         /// <param name="obj"></param>
-        protected virtual void HandleError(IEnumerable<Error> obj)
+        public virtual void HandleError(IEnumerable<Error> obj)
         {
             Environment.Exit(1);
         }

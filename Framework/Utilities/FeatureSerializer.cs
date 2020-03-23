@@ -11,6 +11,7 @@ namespace Tecan.Sila2
     /// </summary>
     public class FeatureSerializer
     {
+        
         private static readonly XmlSerializer Serializer = new XmlSerializer(typeof(Feature));
 
         /// <summary>

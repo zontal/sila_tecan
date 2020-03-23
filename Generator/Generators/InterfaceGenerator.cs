@@ -37,14 +37,14 @@ namespace Tecan.Sila2.Generator.Generators
             var nSpace = new CodeNamespace( ns );
             unit.Namespaces.Add( nSpace );
 
-            var typeManagement = new TypeManagement( nSpace, this );
+            var structHelper = new TypeManagement(nSpace, this);
 
-            var interfaceType = GenerateInterface( feature, typeManagement );
+            var interfaceType = GenerateInterface( feature, structHelper );
             nSpace.Types.Add( interfaceType );
 
             foreach( var dataTypeDefinition in feature.Items.OfType<SiLAElement>() )
             {
-                var type = GenerateDataTypeDefinition( dataTypeDefinition, typeManagement.RegisterStruct );
+                var type = GenerateDataTypeDefinition( dataTypeDefinition, structHelper.RegisterAnonymousType );
                 if( type != null )
                 {
                     nSpace.Types.Add( type );
@@ -56,6 +56,11 @@ namespace Tecan.Sila2.Generator.Generators
                 nSpace.Types.Add( GenerateStandardExecutionError( error ) );
             }
 
+            foreach( var metadata in feature.Items.OfType<FeatureMetadata>() )
+            {
+                _translationProvider.ExtractType( metadata.DataType, metadata.Identifier, null, structHelper.RegisterStruct );
+            }
+
             if( Hooks != null )
             {
                 foreach( var generatorHook in Hooks )
@@ -64,10 +69,12 @@ namespace Tecan.Sila2.Generator.Generators
                 }
             }
 
+            structHelper.RegisterAllAnonymousTypes();
+
             return unit;
         }
 
-        private class TypeManagement
+        private class TypeManagement : AnonymousTypeHelper
         {
             private readonly CodeNamespace _namespace;
             private readonly InterfaceGenerator _parent;
@@ -95,6 +102,11 @@ namespace Tecan.Sila2.Generator.Generators
                     }
                 };
                 RegisterType( _parent.GenerateStruct( element, structure, false, RegisterStruct ) );
+            }
+
+            public void RegisterAllAnonymousTypes()
+            {
+                ProcessAll(RegisterStruct);
             }
         }
 
@@ -443,7 +455,7 @@ namespace Tecan.Sila2.Generator.Generators
                 }
                 else if( featureItem is FeatureProperty property )
                 {
-                    contract.Members.Add( GenerateProperty( property, typeManagement.RegisterStruct,
+                    contract.Members.Add( GenerateProperty( property, typeManagement.RegisterAnonymousType,
                         feature.Items.OfType<FeatureCommand>().Any( c => CodeGenerationHelper.IsSetterCommand( c, property ) ) ) );
                 }
             }
@@ -509,8 +521,8 @@ namespace Tecan.Sila2.Generator.Generators
             }
 
             var parameters = new Dictionary<string, string>();
-            GenerateCommandMethodParameters( command, method, parameters, typeManagement.RegisterStruct );
-            GenerateCommandMethodReturnType( command, method, typeManagement.RegisterType, typeManagement.RegisterStruct, out var returnDescription );
+            GenerateCommandMethodParameters( command, method, parameters, typeManagement.RegisterAnonymousType );
+            GenerateCommandMethodReturnType( command, method, typeManagement.RegisterType, typeManagement.RegisterAnonymousType, out var returnDescription );
 
             if( command.DefinedExecutionErrors != null )
             {
@@ -523,7 +535,7 @@ namespace Tecan.Sila2.Generator.Generators
 
             if( command.Observable == FeatureCommandObservable.Yes )
             {
-                TurnCommandMethodObservable( command, method, typeManagement.RegisterStruct );
+                TurnCommandMethodObservable( command, method, typeManagement.RegisterAnonymousType );
             }
 
             method.WriteDocumentation( command.Description, returnDescription, parameters );
@@ -570,8 +582,8 @@ namespace Tecan.Sila2.Generator.Generators
                             response.DisplayName );
                     }
 
-                    method.ReturnType = _translationProvider.ExtractType( response.DataType, command.Identifier,
-                        constraints => HandleConstraints( constraints, method.ReturnTypeCustomAttributes ) );
+                    method.ReturnType = _translationProvider.ExtractType( response.DataType, command.Identifier + command.Response[0].Identifier,
+                        constraints => HandleConstraints( constraints, method.ReturnTypeCustomAttributes ), structureHandler );
                     documentation = response.Description;
                 }
                 else

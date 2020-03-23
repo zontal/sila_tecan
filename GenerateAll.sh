@@ -53,3 +53,21 @@ $SILAGEN generate-client Features/Locking/LockController.sila.xml Features/Locki
 $SILAGEN generate-client Features/ParameterConstraintsProvider/ParameterConstraintsProvider.sila.xml Features/ParameterConstraintsProvider.Client/ParameterConstraintsProvider.Client.csproj -n Tecan.Sila2.ParameterConstraintsProvider
 $SILAGEN generate-client Features/WorktableIntegration/WorktableService.sila.xml Features/WorktableIntegration.Client/WorktableIntegration.Client.csproj -n Tecan.Sila2.WorktableIntegration
 $SILAGEN generate-client Features/Cancellation/CancelController.sila.xml Features/Cancellation.Client/Cancellation.Client.csproj -n Tecan.Sila2.Cancellation
+
+$SILAGEN generate-client Interoperability/InteropServer/ComplexDataTypeTest.sila.xml Interoperability/InteropClient/InteropClient.csproj -n Tecan.Sila2.Interop.Client
+$SILAGEN generate-client Interoperability/InteropServer/DataTypeTest.sila.xml Interoperability/InteropClient/InteropClient.csproj -n Tecan.Sila2.Interop.Client
+$SILAGEN generate-client Interoperability/InteropServer/ObservableCommandTest.sila.xml Interoperability/InteropClient/InteropClient.csproj -n Tecan.Sila2.Interop.Client
+$SILAGEN generate-client Interoperability/InteropServer/ObservablePropertyTest.sila.xml Interoperability/InteropClient/InteropClient.csproj -n Tecan.Sila2.Interop.Client
+$SILAGEN generate-client Interoperability/InteropServer/ParameterConstraintsTest.sila.xml Interoperability/InteropClient/InteropClient.csproj -n Tecan.Sila2.Interop.Client
+
+$SILAGEN generate-interface -n Tecan.Sila2.Interop.Server Interoperability/InteropServer/ComplexDataTypeTest.sila.xml Interoperability/InteropServer/ComplexDataTypeTest/Interface.cs
+$SILAGEN generate-interface -n Tecan.Sila2.Interop.Server Interoperability/InteropServer/DataTypeTest.sila.xml Interoperability/InteropServer/DataTypeTest/Interface.cs
+$SILAGEN generate-interface -n Tecan.Sila2.Interop.Server Interoperability/InteropServer/ObservableCommandTest.sila.xml Interoperability/InteropServer/ObservableCommandTest/Interface.cs
+$SILAGEN generate-interface -n Tecan.Sila2.Interop.Server Interoperability/InteropServer/ObservablePropertyTest.sila.xml Interoperability/InteropServer/ObservablePropertyTest/Interface.cs
+$SILAGEN generate-interface -n Tecan.Sila2.Interop.Server Interoperability/InteropServer/ParameterConstraintsTest.sila.xml Interoperability/InteropServer/ParameterConstraintsTest/Interface.cs
+
+$SILAGEN generate-provider -n Tecan.Sila2.Interop.Server Interoperability/InteropServer/ComplexDataTypeTest.sila.xml Interoperability/InteropServer/ComplexDataTypeTest/Dtos.cs Interoperability/InteropServer/ComplexDataTypeTest/Provider.cs -s
+$SILAGEN generate-provider -n Tecan.Sila2.Interop.Server Interoperability/InteropServer/DataTypeTest.sila.xml Interoperability/InteropServer/DataTypeTest/Dtos.cs Interoperability/InteropServer/DataTypeTest/Provider.cs -s
+$SILAGEN generate-provider -n Tecan.Sila2.Interop.Server Interoperability/InteropServer/ObservableCommandTest.sila.xml Interoperability/InteropServer/ObservableCommandTest/Dtos.cs Interoperability/InteropServer/ObservableCommandTest/Provider.cs -s
+$SILAGEN generate-provider -n Tecan.Sila2.Interop.Server Interoperability/InteropServer/ObservablePropertyTest.sila.xml Interoperability/InteropServer/ObservablePropertyTest/Dtos.cs Interoperability/InteropServer/ObservablePropertyTest/Provider.cs -s
+$SILAGEN generate-provider -n Tecan.Sila2.Interop.Server Interoperability/InteropServer/ParameterConstraintsTest.sila.xml Interoperability/InteropServer/ParameterConstraintsTest/Dtos.cs Interoperability/InteropServer/ParameterConstraintsTest/Provider.cs -s

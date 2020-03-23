@@ -85,7 +85,7 @@ namespace Tecan.Sila2.Server.Binary
 
         private async Task GetChunk(IAsyncStreamReader<GetChunkRequestDto> requestStream, IServerStreamWriter<GetChunkResponseDto> responseStream, ServerCallContext context)
         {
-            while (await requestStream.MoveNext())
+            while (await requestStream.MoveNext(default))
             {
                 await responseStream.WriteAsync(await GetChunkCore(requestStream.Current, context));
             }

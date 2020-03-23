@@ -22,14 +22,14 @@ namespace Tecan.Sila2.Generator.Test.TestReference
     /// </summary>
     [System.ComponentModel.Composition.ExportAttribute(typeof(IFeatureProvider))]
     [System.ComponentModel.Composition.PartCreationPolicyAttribute(System.ComponentModel.Composition.CreationPolicy.Shared)]
-    public partial class DictionaryService : IFeatureProvider
+    public partial class DictionaryServiceProvider : IFeatureProvider
     {
         
         private IDictionaryService _implementation;
         
         private Tecan.Sila2.Server.ISiLAServer _server;
         
-        private static Tecan.Sila2.Feature _feature = FeatureSerializer.LoadFromAssembly(typeof(DictionaryService).Assembly, "DictionaryService.sila.xml");
+        private static Tecan.Sila2.Feature _feature = FeatureSerializer.LoadFromAssembly(typeof(DictionaryServiceProvider).Assembly, "DictionaryService.sila.xml");
         
         ///  <summary>
         /// Creates a new instance
@@ -37,7 +37,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// <param name="implementation">The implementation to exported through SiLA2</param>
         /// <param name="server">The SiLA2 server instance through which the implementation shall be exported</param>
         [System.ComponentModel.Composition.ImportingConstructorAttribute()]
-        public DictionaryService(IDictionaryService implementation, Tecan.Sila2.Server.ISiLAServer server)
+        public DictionaryServiceProvider(IDictionaryService implementation, Tecan.Sila2.Server.ISiLAServer server)
         {
             _implementation = implementation;
             _server = server;
@@ -62,7 +62,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         public Grpc.Core.ServerServiceDefinition CreateServiceDefinition()
         {
             Grpc.Core.ServerServiceDefinition.Builder builder = Grpc.Core.ServerServiceDefinition.CreateBuilder();
-            builder.AddMethod(DictionaryServiceProvider.GetLookupMethod, GetLookup);
+            builder.AddMethod(DictionaryServiceMethods.GetLookupMethod, GetLookup);
             return builder.Build();
         }
         
@@ -173,7 +173,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("tecan.sila.generator/test/DictionaryService/v2/Property/Lookup");
             try
             {
-                System.Collections.Generic.IDictionary<long, string> response = Tecan.Sila2.DtoExtensions.Extract(CallInvoker.BlockingUnaryCall(DictionaryServiceProvider.GetLookupMethod, null, callInfo.Options, EmptyRequest.Instance).Value, _executionManager.DownloadBinaryStore);
+                System.Collections.Generic.IDictionary<long, string> response = Tecan.Sila2.DtoExtensions.Extract(CallInvoker.BlockingUnaryCall(DictionaryServiceMethods.GetLookupMethod, null, callInfo.Options, EmptyRequest.Instance).Value, _executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -211,7 +211,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
     ///  <summary>
     /// Encapsulates provider classes to expose the Dictionary Service feature via SiLA2
     /// </summary>
-    internal sealed partial class DictionaryServiceProvider
+    internal sealed partial class DictionaryServiceMethods
     {
         
         private static string @__ServiceName = "sila2.tecan.sila.generator.test.dictionaryservice.v2.DictionaryService";

@@ -26,7 +26,7 @@ namespace Tecan.Sila2.ParameterConstraintsProvider
             _server = server;
             _constraintsSource = new Lazy<Dictionary<string, KeyValuePair<ConstraintProviderAttribute, IParameterConstraintResolver>>>(InitializeConstraintsSource);
             _resolvers = resolvers.ToDictionary( r => r.ConstraintAttributeType );
-            _loggingChannel = loggingChannelFactory.CreateChannel( typeof(ParameterConstraintsProvider) );
+            _loggingChannel = loggingChannelFactory.CreateChannel( typeof(ParameterConstraintsProviderService) );
         }
 
         private Dictionary<string, KeyValuePair<ConstraintProviderAttribute, IParameterConstraintResolver>> InitializeConstraintsSource()

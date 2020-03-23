@@ -11,15 +11,21 @@ namespace Tecan.Sila2.Binary
     public class ClientBinaryStore : ClientBase<ClientBinaryStore>, IBinaryStore
     {
         private const int ChunkSize = 1024 * 1024 * 2;
+        private readonly string _commandIdentifier;
 
-        public ClientBinaryStore() { }
-
-        public ClientBinaryStore(Channel channel) : base(channel)
+        public ClientBinaryStore( string commandIdentifier )
         {
+            _commandIdentifier = commandIdentifier;
         }
 
-        protected ClientBinaryStore(ClientBaseConfiguration configuration) : base(configuration)
+        public ClientBinaryStore( string commandIdentifier, Channel channel) : base(channel)
         {
+            _commandIdentifier = commandIdentifier;
+        }
+
+        protected ClientBinaryStore(string commandIdentifier, ClientBaseConfiguration configuration) : base(configuration)
+        {
+            _commandIdentifier = commandIdentifier;
         }
 
         /// <inheritdoc />
@@ -80,7 +86,8 @@ namespace Tecan.Sila2.Binary
             var identifier = await CreateBinaryAsync(new CreateBinaryRequestDto()
             {
                 BinarySize = (ulong) file.Length,
-                ChunkCount = chunkCount
+                ChunkCount = chunkCount,
+                CommandIdentifier = _commandIdentifier
             }, CreateCallOptions());
             var uploadChannel = UploadChunk(CreateCallOptions());
             var bytes = new byte[ChunkSize];
@@ -152,7 +159,7 @@ namespace Tecan.Sila2.Binary
                     Length = ChunkSize,
                     Offset = i * ChunkSize
                 });
-                await getChunk.ResponseStream.MoveNext();
+                await getChunk.ResponseStream.MoveNext( default );
                 var chunk = getChunk.ResponseStream.Current;
                 await file.WriteAsync(chunk.Payload, 0, chunk.Payload.Length);
             }
@@ -177,7 +184,7 @@ namespace Tecan.Sila2.Binary
         /// <returns>A new instance of the binary store</returns>
         protected override ClientBinaryStore NewInstance(ClientBaseConfiguration configuration)
         {
-            return new ClientBinaryStore(configuration);
+            return new ClientBinaryStore(_commandIdentifier, configuration);
         }
 
         /// <summary>

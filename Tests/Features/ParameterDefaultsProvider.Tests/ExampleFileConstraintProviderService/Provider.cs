@@ -23,14 +23,14 @@ namespace Tecan.Sila2.ParameterDefaultsProvider.Tests
     /// </summary>
     [System.ComponentModel.Composition.ExportAttribute(typeof(IFeatureProvider))]
     [System.ComponentModel.Composition.PartCreationPolicyAttribute(System.ComponentModel.Composition.CreationPolicy.Shared)]
-    public partial class ExampleFileConstraintProviderService : IFeatureProvider
+    public partial class ExampleFileConstraintProviderServiceProvider : IFeatureProvider
     {
         
         private IExampleFileConstraintProviderService _implementation;
         
         private Tecan.Sila2.Server.ISiLAServer _server;
         
-        private static Tecan.Sila2.Feature _feature = FeatureSerializer.LoadFromAssembly(typeof(ExampleFileConstraintProviderService).Assembly, "ExampleFileConstraintProviderService.sila.xml");
+        private static Tecan.Sila2.Feature _feature = FeatureSerializer.LoadFromAssembly(typeof(ExampleFileConstraintProviderServiceProvider).Assembly, "ExampleFileConstraintProviderService.sila.xml");
         
         ///  <summary>
         /// Creates a new instance
@@ -38,7 +38,7 @@ namespace Tecan.Sila2.ParameterDefaultsProvider.Tests
         /// <param name="implementation">The implementation to exported through SiLA2</param>
         /// <param name="server">The SiLA2 server instance through which the implementation shall be exported</param>
         [System.ComponentModel.Composition.ImportingConstructorAttribute()]
-        public ExampleFileConstraintProviderService(IExampleFileConstraintProviderService implementation, Tecan.Sila2.Server.ISiLAServer server)
+        public ExampleFileConstraintProviderServiceProvider(IExampleFileConstraintProviderService implementation, Tecan.Sila2.Server.ISiLAServer server)
         {
             _implementation = implementation;
             _server = server;
@@ -63,7 +63,7 @@ namespace Tecan.Sila2.ParameterDefaultsProvider.Tests
         public Grpc.Core.ServerServiceDefinition CreateServiceDefinition()
         {
             Grpc.Core.ServerServiceDefinition.Builder builder = Grpc.Core.ServerServiceDefinition.CreateBuilder();
-            builder.AddMethod(ExampleFileConstraintProviderServiceProvider.FileExampleMethodMethod, FileExampleMethod);
+            builder.AddMethod(ExampleFileConstraintProviderServiceMethods.FileExampleMethodMethod, FileExampleMethod);
             return builder.Build();
         }
         
@@ -124,7 +124,7 @@ namespace Tecan.Sila2.ParameterDefaultsProvider.Tests
     ///  <summary>
     /// Encapsulates provider classes to expose the Example File Constraint Provider Service feature via SiLA2
     /// </summary>
-    internal sealed partial class ExampleFileConstraintProviderServiceProvider
+    internal sealed partial class ExampleFileConstraintProviderServiceMethods
     {
         
         private static string @__ServiceName = "sila2.tecan.sila.parameterdefaultsprovider.tests.examplefileconstraintproviderser" +

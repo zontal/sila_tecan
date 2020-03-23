@@ -22,14 +22,14 @@ namespace Tecan.Sila2.Generator.Test.TestReference
     /// </summary>
     [System.ComponentModel.Composition.ExportAttribute(typeof(IFeatureProvider))]
     [System.ComponentModel.Composition.PartCreationPolicyAttribute(System.ComponentModel.Composition.CreationPolicy.Shared)]
-    public partial class LoggingService : IFeatureProvider
+    public partial class LoggingServiceProvider : IFeatureProvider
     {
         
         private ILoggingService _implementation;
         
         private Tecan.Sila2.Server.ISiLAServer _server;
         
-        private static Tecan.Sila2.Feature _feature = FeatureSerializer.LoadFromAssembly(typeof(LoggingService).Assembly, "LoggingService.sila.xml");
+        private static Tecan.Sila2.Feature _feature = FeatureSerializer.LoadFromAssembly(typeof(LoggingServiceProvider).Assembly, "LoggingService.sila.xml");
         
         ///  <summary>
         /// Creates a new instance
@@ -37,7 +37,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// <param name="implementation">The implementation to exported through SiLA2</param>
         /// <param name="server">The SiLA2 server instance through which the implementation shall be exported</param>
         [System.ComponentModel.Composition.ImportingConstructorAttribute()]
-        public LoggingService(ILoggingService implementation, Tecan.Sila2.Server.ISiLAServer server)
+        public LoggingServiceProvider(ILoggingService implementation, Tecan.Sila2.Server.ISiLAServer server)
         {
             _implementation = implementation;
             _server = server;
@@ -62,11 +62,11 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         public Grpc.Core.ServerServiceDefinition CreateServiceDefinition()
         {
             Grpc.Core.ServerServiceDefinition.Builder builder = Grpc.Core.ServerServiceDefinition.CreateBuilder();
-            builder.AddMethod(LoggingServiceProvider.ListenForLogEntriesMethod, ListenForLogEntries);
-            builder.AddMethod(LoggingServiceProvider.ListenForLogEntriesStateMethod, ListenForLogEntriesState);
-            builder.AddMethod(LoggingServiceProvider.ListenForLogEntriesIntermediateMethod, ListenForLogEntriesIntermediateResponse);
-            builder.AddMethod(LoggingServiceProvider.ListenForLogEntriesResponseMethod, ListenForLogEntriesResponse);
-            builder.AddMethod(LoggingServiceProvider.GetAffectedByLoggingActivityMethod, GetAffectedByLoggingActivity);
+            builder.AddMethod(LoggingServiceMethods.ListenForLogEntriesMethod, ListenForLogEntries);
+            builder.AddMethod(LoggingServiceMethods.ListenForLogEntriesStateMethod, ListenForLogEntriesState);
+            builder.AddMethod(LoggingServiceMethods.ListenForLogEntriesIntermediateMethod, ListenForLogEntriesIntermediateResponse);
+            builder.AddMethod(LoggingServiceMethods.ListenForLogEntriesResponseMethod, ListenForLogEntriesResponse);
+            builder.AddMethod(LoggingServiceMethods.GetAffectedByLoggingActivityMethod, GetAffectedByLoggingActivity);
             return builder.Build();
         }
         
@@ -215,7 +215,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         public virtual Tecan.Sila2.IIntermediateObservableCommand<LogEntry> ListenForLogEntries()
         {
             ListenForLogEntriesRequestDto request = new ListenForLogEntriesRequestDto(null);
-            return ObservableClientCommands.CreateIntermediate(_executionManager.CreateCallOptions(request.CommandIdentifier), CallInvoker, request, LoggingServiceProvider.ListenForLogEntriesMethod, LoggingServiceProvider.ListenForLogEntriesStateMethod, LoggingServiceProvider.ListenForLogEntriesIntermediateMethod, ConvertListenForLogEntriesIntermediate, ConvertListenForLogEntriesException);
+            return ObservableClientCommands.CreateIntermediate(_executionManager.CreateCallOptions(request.CommandIdentifier), CallInvoker, request, LoggingServiceMethods.ListenForLogEntriesMethod, LoggingServiceMethods.ListenForLogEntriesStateMethod, LoggingServiceMethods.ListenForLogEntriesIntermediateMethod, ConvertListenForLogEntriesIntermediate, ConvertListenForLogEntriesException);
         }
         
         ///  <summary>
@@ -257,7 +257,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
     ///  <summary>
     /// Encapsulates provider classes to expose the Logging feature via SiLA2
     /// </summary>
-    internal sealed partial class LoggingServiceProvider
+    internal sealed partial class LoggingServiceMethods
     {
         
         private static string @__ServiceName = "sila2.tecan.sila.generator.test.logging.infrastructure.loggingservice.v2.LoggingS" +

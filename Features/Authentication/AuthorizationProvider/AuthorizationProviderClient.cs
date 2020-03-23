@@ -79,7 +79,7 @@ namespace Tecan.Sila2.AuthorizationProvider
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/core/AuthorizationProviderService/v1/Command/Verify");
             try
             {
-                long response = CallInvoker.BlockingUnaryCall(AuthorizationProviderServiceProvider.VerifyMethod, null, callInfo.Options, request).TokenLifetime.Extract(_executionManager.DownloadBinaryStore);
+                long response = CallInvoker.BlockingUnaryCall(AuthorizationProviderServiceMethods.VerifyMethod, null, callInfo.Options, request).TokenLifetime.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -129,7 +129,7 @@ namespace Tecan.Sila2.AuthorizationProvider
     ///  <summary>
     /// Encapsulates provider classes to expose the Authorization Provider Service feature via SiLA2
     /// </summary>
-    internal sealed partial class AuthorizationProviderServiceProvider
+    internal sealed partial class AuthorizationProviderServiceMethods
     {
         
         private static string @__ServiceName = "sila2.org.silastandard.core.authorizationproviderservice.v1.AuthorizationProvider" +

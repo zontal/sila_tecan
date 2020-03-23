@@ -22,14 +22,14 @@ namespace Tecan.Sila2.Authorization
     /// </summary>
     [System.ComponentModel.Composition.ExportAttribute(typeof(IFeatureProvider))]
     [System.ComponentModel.Composition.PartCreationPolicyAttribute(System.ComponentModel.Composition.CreationPolicy.Shared)]
-    public partial class AuthorizationConfigurationService : IFeatureProvider
+    public partial class AuthorizationConfigurationServiceProvider : IFeatureProvider
     {
         
         private IAuthorizationConfigurationService _implementation;
         
         private Tecan.Sila2.Server.ISiLAServer _server;
         
-        private static Tecan.Sila2.Feature _feature = FeatureSerializer.LoadFromAssembly(typeof(AuthorizationConfigurationService).Assembly, "AuthorizationConfigurationService.sila.xml");
+        private static Tecan.Sila2.Feature _feature = FeatureSerializer.LoadFromAssembly(typeof(AuthorizationConfigurationServiceProvider).Assembly, "AuthorizationConfigurationService.sila.xml");
         
         ///  <summary>
         /// Creates a new instance
@@ -37,7 +37,7 @@ namespace Tecan.Sila2.Authorization
         /// <param name="implementation">The implementation to exported through SiLA2</param>
         /// <param name="server">The SiLA2 server instance through which the implementation shall be exported</param>
         [System.ComponentModel.Composition.ImportingConstructorAttribute()]
-        public AuthorizationConfigurationService(IAuthorizationConfigurationService implementation, Tecan.Sila2.Server.ISiLAServer server)
+        public AuthorizationConfigurationServiceProvider(IAuthorizationConfigurationService implementation, Tecan.Sila2.Server.ISiLAServer server)
         {
             _implementation = implementation;
             _server = server;
@@ -62,8 +62,8 @@ namespace Tecan.Sila2.Authorization
         public Grpc.Core.ServerServiceDefinition CreateServiceDefinition()
         {
             Grpc.Core.ServerServiceDefinition.Builder builder = Grpc.Core.ServerServiceDefinition.CreateBuilder();
-            builder.AddMethod(AuthorizationConfigurationServiceProvider.SetAuthorizationProviderMethod, SetAuthorizationProvider);
-            builder.AddMethod(AuthorizationConfigurationServiceProvider.GetAuthorizationProviderMethod, GetAuthorizationProvider);
+            builder.AddMethod(AuthorizationConfigurationServiceMethods.SetAuthorizationProviderMethod, SetAuthorizationProvider);
+            builder.AddMethod(AuthorizationConfigurationServiceMethods.GetAuthorizationProviderMethod, GetAuthorizationProvider);
             return builder.Build();
         }
         
@@ -141,7 +141,7 @@ namespace Tecan.Sila2.Authorization
     ///  <summary>
     /// Encapsulates provider classes to expose the Authorization Configuration feature via SiLA2
     /// </summary>
-    internal sealed partial class AuthorizationConfigurationServiceProvider
+    internal sealed partial class AuthorizationConfigurationServiceMethods
     {
         
         private static string @__ServiceName = "sila2.org.silastandard.core.authorizationconfigurationservice.v1.AuthorizationCon" +

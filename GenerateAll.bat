@@ -49,3 +49,21 @@ Build\Generator\net472\SilaGen.exe generate-client Features\Locking\LockControll
 Build\Generator\net472\SilaGen.exe generate-client Features\ParameterConstraintsProvider\ParameterConstraintsProvider.sila.xml Features\ParameterConstraintsProvider.Client\ParameterConstraintsProvider.Client.csproj -n Tecan.Sila2.ParameterConstraintsProvider
 Build\Generator\net472\SilaGen.exe generate-client Features\WorktableIntegration\WorktableService.sila.xml Features\WorktableIntegration.Client\WorktableIntegration.Client.csproj -n Tecan.Sila2.WorktableIntegration
 Build\Generator\net472\SilaGen.exe generate-client Features\Cancellation\CancelController.sila.xml Features\Cancellation.Client\Cancellation.Client.csproj -n Tecan.Sila2.Cancellation
+
+Build\Generator\net472\SilaGen.exe generate-client Interoperability\InteropServer\ComplexDataTypeTest.sila.xml Interoperability\InteropClient\InteropClient.csproj -n Tecan.Sila2.Interop.Client
+Build\Generator\net472\SilaGen.exe generate-client Interoperability\InteropServer\DataTypeTest.sila.xml Interoperability\InteropClient\InteropClient.csproj -n Tecan.Sila2.Interop.Client
+Build\Generator\net472\SilaGen.exe generate-client Interoperability\InteropServer\ObservableCommandTest.sila.xml Interoperability\InteropClient\InteropClient.csproj -n Tecan.Sila2.Interop.Client
+Build\Generator\net472\SilaGen.exe generate-client Interoperability\InteropServer\ObservablePropertyTest.sila.xml Interoperability\InteropClient\InteropClient.csproj -n Tecan.Sila2.Interop.Client
+Build\Generator\net472\SilaGen.exe generate-client Interoperability\InteropServer\ParameterConstraintsTest.sila.xml Interoperability\InteropClient\InteropClient.csproj -n Tecan.Sila2.Interop.Client
+
+Build\Generator\net472\SilaGen.exe generate-interface -n Tecan.Sila2.Interop.Server Interoperability\InteropServer\ComplexDataTypeTest.sila.xml Interoperability\InteropServer\ComplexDataTypeTest\Interface.cs
+Build\Generator\net472\SilaGen.exe generate-interface -n Tecan.Sila2.Interop.Server Interoperability\InteropServer\DataTypeTest.sila.xml Interoperability\InteropServer\DataTypeTest\Interface.cs
+Build\Generator\net472\SilaGen.exe generate-interface -n Tecan.Sila2.Interop.Server Interoperability\InteropServer\ObservableCommandTest.sila.xml Interoperability\InteropServer\ObservableCommandTest\Interface.cs
+Build\Generator\net472\SilaGen.exe generate-interface -n Tecan.Sila2.Interop.Server Interoperability\InteropServer\ObservablePropertyTest.sila.xml Interoperability\InteropServer\ObservablePropertyTest\Interface.cs
+Build\Generator\net472\SilaGen.exe generate-interface -n Tecan.Sila2.Interop.Server Interoperability\InteropServer\ParameterConstraintsTest.sila.xml Interoperability\InteropServer\ParameterConstraintsTest\Interface.cs
+
+Build\Generator\net472\SilaGen.exe generate-provider -n Tecan.Sila2.Interop.Server Interoperability\InteropServer\ComplexDataTypeTest.sila.xml Interoperability\InteropServer\ComplexDataTypeTest\Dtos.cs Interoperability\InteropServer\ComplexDataTypeTest\Provider.cs -s
+Build\Generator\net472\SilaGen.exe generate-provider -n Tecan.Sila2.Interop.Server Interoperability\InteropServer\DataTypeTest.sila.xml Interoperability\InteropServer\DataTypeTest\Dtos.cs Interoperability\InteropServer\DataTypeTest\Provider.cs -s
+Build\Generator\net472\SilaGen.exe generate-provider -n Tecan.Sila2.Interop.Server Interoperability\InteropServer\ObservableCommandTest.sila.xml Interoperability\InteropServer\ObservableCommandTest\Dtos.cs Interoperability\InteropServer\ObservableCommandTest\Provider.cs -s
+Build\Generator\net472\SilaGen.exe generate-provider -n Tecan.Sila2.Interop.Server Interoperability\InteropServer\ObservablePropertyTest.sila.xml Interoperability\InteropServer\ObservablePropertyTest\Dtos.cs Interoperability\InteropServer\ObservablePropertyTest\Provider.cs -s
+Build\Generator\net472\SilaGen.exe generate-provider -n Tecan.Sila2.Interop.Server Interoperability\InteropServer\ParameterConstraintsTest.sila.xml Interoperability\InteropServer\ParameterConstraintsTest\Dtos.cs Interoperability\InteropServer\ParameterConstraintsTest\Provider.cs -s

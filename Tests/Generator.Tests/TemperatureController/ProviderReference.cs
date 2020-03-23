@@ -22,14 +22,14 @@ namespace Tecan.Sila2.Generator.Test.TestReference
     /// </summary>
     [System.ComponentModel.Composition.ExportAttribute(typeof(IFeatureProvider))]
     [System.ComponentModel.Composition.PartCreationPolicyAttribute(System.ComponentModel.Composition.CreationPolicy.Shared)]
-    public partial class TemperatureController : IFeatureProvider
+    public partial class TemperatureControllerProvider : IFeatureProvider
     {
         
         private ITemperatureController _implementation;
         
         private Tecan.Sila2.Server.ISiLAServer _server;
         
-        private static Tecan.Sila2.Feature _feature = FeatureSerializer.LoadFromAssembly(typeof(TemperatureController).Assembly, "TemperatureController.sila.xml");
+        private static Tecan.Sila2.Feature _feature = FeatureSerializer.LoadFromAssembly(typeof(TemperatureControllerProvider).Assembly, "TemperatureController.sila.xml");
         
         ///  <summary>
         /// Creates a new instance
@@ -37,7 +37,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// <param name="implementation">The implementation to exported through SiLA2</param>
         /// <param name="server">The SiLA2 server instance through which the implementation shall be exported</param>
         [System.ComponentModel.Composition.ImportingConstructorAttribute()]
-        public TemperatureController(ITemperatureController implementation, Tecan.Sila2.Server.ISiLAServer server)
+        public TemperatureControllerProvider(ITemperatureController implementation, Tecan.Sila2.Server.ISiLAServer server)
         {
             _implementation = implementation;
             _server = server;
@@ -62,10 +62,10 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         public Grpc.Core.ServerServiceDefinition CreateServiceDefinition()
         {
             Grpc.Core.ServerServiceDefinition.Builder builder = Grpc.Core.ServerServiceDefinition.CreateBuilder();
-            builder.AddMethod(TemperatureControllerProvider.ControlTemperatureMethod, ControlTemperature);
-            builder.AddMethod(TemperatureControllerProvider.ControlTemperatureStateMethod, ControlTemperatureState);
-            builder.AddMethod(TemperatureControllerProvider.ControlTemperatureResponseMethod, ControlTemperatureResponse);
-            builder.AddMethod(TemperatureControllerProvider.SubscribeCurrentTemperatureMethod, SubscribeCurrentTemperature);
+            builder.AddMethod(TemperatureControllerMethods.ControlTemperatureMethod, ControlTemperature);
+            builder.AddMethod(TemperatureControllerMethods.ControlTemperatureStateMethod, ControlTemperatureState);
+            builder.AddMethod(TemperatureControllerMethods.ControlTemperatureResponseMethod, ControlTemperatureResponse);
+            builder.AddMethod(TemperatureControllerMethods.SubscribeCurrentTemperatureMethod, SubscribeCurrentTemperature);
             return builder.Build();
         }
         
@@ -241,7 +241,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             {
                 if ((_currentTemperatureUpdateTask == null))
                 {
-                    _currentTemperatureUpdateTask = ObservableCommandHelper.SubscribeTo(CallInvoker, TemperatureControllerProvider.SubscribeCurrentTemperatureMethod, ReceiveNewCurrentTemperature, _executionManager.CreateCallOptions("tecan.sila.generator/test/TemperatureController/v2/Property/CurrentTemperature"));
+                    _currentTemperatureUpdateTask = ObservableCommandHelper.SubscribeTo(CallInvoker, TemperatureControllerMethods.SubscribeCurrentTemperatureMethod, ReceiveNewCurrentTemperature, _executionManager.CreateCallOptions("tecan.sila.generator/test/TemperatureController/v2/Property/CurrentTemperature"));
                 }
                 return _currentTemperature;
             }
@@ -271,7 +271,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         public virtual Tecan.Sila2.IObservableCommand ControlTemperature(double targetTemperature)
         {
             ControlTemperatureRequestDto request = new ControlTemperatureRequestDto(targetTemperature, null);
-            return ObservableClientCommands.Create(_executionManager.CreateCallOptions(request.CommandIdentifier), CallInvoker, request, TemperatureControllerProvider.ControlTemperatureMethod, TemperatureControllerProvider.ControlTemperatureStateMethod, ConvertControlTemperatureException);
+            return ObservableClientCommands.Create(_executionManager.CreateCallOptions(request.CommandIdentifier), CallInvoker, request, TemperatureControllerMethods.ControlTemperatureMethod, TemperatureControllerMethods.ControlTemperatureStateMethod, ConvertControlTemperatureException);
         }
         
         ///  <summary>
@@ -313,7 +313,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
     ///  <summary>
     /// Encapsulates provider classes to expose the Temperature Controller feature via SiLA2
     /// </summary>
-    internal sealed partial class TemperatureControllerProvider
+    internal sealed partial class TemperatureControllerMethods
     {
         
         private static string @__ServiceName = "sila2.tecan.sila.generator.test.temperaturecontroller.v2.TemperatureController";

@@ -91,7 +91,7 @@ namespace Tecan.Sila2.Locking.LockController
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/core/LockController/v1/Property/IsLocked");
             try
             {
-                bool response = CallInvoker.BlockingUnaryCall(LockControllerProvider.GetIsLockedMethod, null, callInfo.Options, EmptyRequest.Instance).Value.Extract(_executionManager.DownloadBinaryStore);
+                bool response = CallInvoker.BlockingUnaryCall(LockControllerMethods.GetIsLockedMethod, null, callInfo.Options, EmptyRequest.Instance).Value.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -129,7 +129,7 @@ namespace Tecan.Sila2.Locking.LockController
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/core/LockController/v1/Command/LockServer");
             try
             {
-                CallInvoker.BlockingUnaryCall(LockControllerProvider.LockServerMethod, null, callInfo.Options, request);
+                CallInvoker.BlockingUnaryCall(LockControllerMethods.LockServerMethod, null, callInfo.Options, request);
                 callInfo.FinishSuccessful();
                 return;
             } catch (System.Exception ex)
@@ -165,7 +165,7 @@ namespace Tecan.Sila2.Locking.LockController
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/core/LockController/v1/Command/UnlockServer");
             try
             {
-                CallInvoker.BlockingUnaryCall(LockControllerProvider.UnlockServerMethod, null, callInfo.Options, request);
+                CallInvoker.BlockingUnaryCall(LockControllerMethods.UnlockServerMethod, null, callInfo.Options, request);
                 callInfo.FinishSuccessful();
                 return;
             } catch (System.Exception ex)
@@ -213,7 +213,7 @@ namespace Tecan.Sila2.Locking.LockController
     ///  <summary>
     /// Encapsulates provider classes to expose the Lock Controller feature via SiLA2
     /// </summary>
-    internal sealed partial class LockControllerProvider
+    internal sealed partial class LockControllerMethods
     {
         
         private static string @__ServiceName = "sila2.org.silastandard.core.lockcontroller.v1.LockController";

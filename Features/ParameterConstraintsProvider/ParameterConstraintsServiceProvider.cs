@@ -22,14 +22,14 @@ namespace Tecan.Sila2.ParameterConstraintsProvider
     /// </summary>
     [System.ComponentModel.Composition.ExportAttribute(typeof(IFeatureProvider))]
     [System.ComponentModel.Composition.PartCreationPolicyAttribute(System.ComponentModel.Composition.CreationPolicy.Shared)]
-    public partial class ParameterConstraintsProvider : IFeatureProvider
+    public partial class ParameterConstraintsProviderProvider : IFeatureProvider
     {
         
         private IParameterConstraintsProvider _implementation;
         
         private Tecan.Sila2.Server.ISiLAServer _server;
         
-        private static Tecan.Sila2.Feature _feature = FeatureSerializer.LoadFromAssembly(typeof(ParameterConstraintsProvider).Assembly, "ParameterConstraintsProvider.sila.xml");
+        private static Tecan.Sila2.Feature _feature = FeatureSerializer.LoadFromAssembly(typeof(ParameterConstraintsProviderProvider).Assembly, "ParameterConstraintsProvider.sila.xml");
         
         ///  <summary>
         /// Creates a new instance
@@ -37,7 +37,7 @@ namespace Tecan.Sila2.ParameterConstraintsProvider
         /// <param name="implementation">The implementation to exported through SiLA2</param>
         /// <param name="server">The SiLA2 server instance through which the implementation shall be exported</param>
         [System.ComponentModel.Composition.ImportingConstructorAttribute()]
-        public ParameterConstraintsProvider(IParameterConstraintsProvider implementation, Tecan.Sila2.Server.ISiLAServer server)
+        public ParameterConstraintsProviderProvider(IParameterConstraintsProvider implementation, Tecan.Sila2.Server.ISiLAServer server)
         {
             _implementation = implementation;
             _server = server;
@@ -62,7 +62,7 @@ namespace Tecan.Sila2.ParameterConstraintsProvider
         public Grpc.Core.ServerServiceDefinition CreateServiceDefinition()
         {
             Grpc.Core.ServerServiceDefinition.Builder builder = Grpc.Core.ServerServiceDefinition.CreateBuilder();
-            builder.AddMethod(ParameterConstraintsProviderProvider.SubscribeParametersConstraintsMethod, SubscribeParametersConstraints);
+            builder.AddMethod(ParameterConstraintsProviderMethods.SubscribeParametersConstraintsMethod, SubscribeParametersConstraints);
             return builder.Build();
         }
         
@@ -117,7 +117,7 @@ namespace Tecan.Sila2.ParameterConstraintsProvider
     ///  <summary>
     /// Encapsulates provider classes to expose the Parameter Constraints Provider feature via SiLA2
     /// </summary>
-    internal sealed partial class ParameterConstraintsProviderProvider
+    internal sealed partial class ParameterConstraintsProviderMethods
     {
         
         private static string @__ServiceName = "sila2.org.silastandard.core.commands.parameterconstraintsprovider.v1.ParameterCon" +

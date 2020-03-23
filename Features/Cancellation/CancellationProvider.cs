@@ -22,14 +22,14 @@ namespace Tecan.Sila2.Cancellation
     /// </summary>
     [System.ComponentModel.Composition.ExportAttribute(typeof(IFeatureProvider))]
     [System.ComponentModel.Composition.PartCreationPolicyAttribute(System.ComponentModel.Composition.CreationPolicy.Shared)]
-    public partial class CancelController : IFeatureProvider
+    public partial class CancelControllerProvider : IFeatureProvider
     {
         
         private ICancelController _implementation;
         
         private Tecan.Sila2.Server.ISiLAServer _server;
         
-        private static Tecan.Sila2.Feature _feature = FeatureSerializer.LoadFromAssembly(typeof(CancelController).Assembly, "CancelController.sila.xml");
+        private static Tecan.Sila2.Feature _feature = FeatureSerializer.LoadFromAssembly(typeof(CancelControllerProvider).Assembly, "CancelController.sila.xml");
         
         ///  <summary>
         /// Creates a new instance
@@ -37,7 +37,7 @@ namespace Tecan.Sila2.Cancellation
         /// <param name="implementation">The implementation to exported through SiLA2</param>
         /// <param name="server">The SiLA2 server instance through which the implementation shall be exported</param>
         [System.ComponentModel.Composition.ImportingConstructorAttribute()]
-        public CancelController(ICancelController implementation, Tecan.Sila2.Server.ISiLAServer server)
+        public CancelControllerProvider(ICancelController implementation, Tecan.Sila2.Server.ISiLAServer server)
         {
             _implementation = implementation;
             _server = server;
@@ -62,8 +62,8 @@ namespace Tecan.Sila2.Cancellation
         public Grpc.Core.ServerServiceDefinition CreateServiceDefinition()
         {
             Grpc.Core.ServerServiceDefinition.Builder builder = Grpc.Core.ServerServiceDefinition.CreateBuilder();
-            builder.AddMethod(CancelControllerProvider.CancelCommandMethod, CancelCommand);
-            builder.AddMethod(CancelControllerProvider.CancelAllMethod, CancelAll);
+            builder.AddMethod(CancelControllerMethods.CancelCommandMethod, CancelCommand);
+            builder.AddMethod(CancelControllerMethods.CancelAllMethod, CancelAll);
             return builder.Build();
         }
         
@@ -154,7 +154,7 @@ namespace Tecan.Sila2.Cancellation
     ///  <summary>
     /// Encapsulates provider classes to expose the Cancel Controller feature via SiLA2
     /// </summary>
-    internal sealed partial class CancelControllerProvider
+    internal sealed partial class CancelControllerMethods
     {
         
         private static string @__ServiceName = "sila2.org.silastandard.core.commands.cancelcontroller.v1.CancelController";

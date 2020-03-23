@@ -79,7 +79,7 @@ namespace Tecan.Sila2.Generator.Generators
 
         private CodeTypeDeclaration GenerateProviderClass(Feature feature, bool generateServer, bool generateClient, CodeNamespace ns)
         {
-            var provider = new CodeTypeDeclaration(feature.Identifier + "Provider")
+            var provider = new CodeTypeDeclaration(feature.Identifier + "Methods")
             {
                 Attributes = MemberAttributes.Assembly | MemberAttributes.Static,
                 IsClass = true,

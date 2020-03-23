@@ -39,7 +39,7 @@ namespace Tecan.Sila2.ParameterDefaultsProvider.Tests
         public void GetParameterDefaults_IdentifiesStaticMethodParameterConstraint()
         {
             var exampleMock = new Mock<IExampleSetProviderService>();
-            var provider = new ExampleSetProviderService(exampleMock.Object, _serverMock.Object);
+            var provider = new ExampleSetProviderServiceProvider(exampleMock.Object, _serverMock.Object);
             _serverMock.Setup( s => s.Features ).Returns( new List<IFeatureProvider>() { provider } );
             var constraints = _constraintsProvider.ParametersConstraints;
             Assert.That(constraints, Is.Not.Empty);
@@ -63,7 +63,7 @@ namespace Tecan.Sila2.ParameterDefaultsProvider.Tests
         {
             Environment.CurrentDirectory = AppDomain.CurrentDomain.BaseDirectory;
             var exampleMock = new Mock<IExampleFileConstraintProviderService>();
-            var provider = new ExampleFileConstraintProviderService( exampleMock.Object, _serverMock.Object );
+            var provider = new ExampleFileConstraintProviderServiceProvider( exampleMock.Object, _serverMock.Object );
             _serverMock.Setup( s => s.Features ).Returns( new List<IFeatureProvider>() { provider } );
             var constraints = _constraintsProvider.ParametersConstraints;
             Assert.That( constraints, Is.Not.Empty );
@@ -86,7 +86,7 @@ namespace Tecan.Sila2.ParameterDefaultsProvider.Tests
         public void GetParameterDefaults_NoConstraints_NoConstraint()
         {
             var exampleMock = new Mock<ISiLAService>();
-            var provider = new SiLAService(exampleMock.Object, _serverMock.Object);
+            var provider = new SiLAServiceProvider(exampleMock.Object, _serverMock.Object);
             _serverMock.Setup( s => s.Features ).Returns( new List<IFeatureProvider>() { provider } );
             var constraints = _constraintsProvider.ParametersConstraints;
             Assert.That(constraints, Is.Null.Or.Empty);

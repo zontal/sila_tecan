@@ -282,7 +282,7 @@ namespace Tecan.Sila2.Server
             var asyncCall = callInvoker.AsyncServerStreamingCall( subscribeMethod, null,
                 callInfo.Options, EmptyRequest.Instance );
             var responseStream = asyncCall.ResponseStream;
-            if( responseStream.MoveNext().Result )
+            if( responseStream.MoveNext(default).Result )
             {
                 newValueReceived?.Invoke( responseStream.Current );
                 return ContinueReading( responseStream, newValueReceived, callInfo );
@@ -295,7 +295,7 @@ namespace Tecan.Sila2.Server
         {
             try
             {
-                while(await responseStream.MoveNext())
+                while(await responseStream.MoveNext(default))
                 {
                     newValueReceived?.Invoke( responseStream.Current );
                 }

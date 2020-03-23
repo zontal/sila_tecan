@@ -49,14 +49,8 @@ namespace Tecan.Sila2.Generator.Generators
             unit.Namespaces.Add(nSpace);
             nSpace.Imports.Add(new CodeNamespaceImport("Tecan.Sila2"));
 
-            var structures = new Dictionary<string, StructureType>();
-            var structHandler = new Action<string, StructureType>( ( name, structure ) =>
-            {
-                if( !structures.ContainsKey( name ) )
-                {
-                    structures.Add(name, structure);
-                }
-            } );
+            var structureHelper = new AnonymousTypeHelper();
+            var structHandler = new Action<string, StructureType>( structureHelper.RegisterAnonymousType );
 
             foreach (var featureCommand in feature.Items.OfType<FeatureCommand>())
             {
@@ -92,23 +86,28 @@ namespace Tecan.Sila2.Generator.Generators
                 }
             }
 
-            foreach( var structure in structures )
+            foreach( var metadata in feature.Items.OfType<FeatureMetadata>() )
+            {
+                _translationProvider.GetDtoTypeReference( metadata.DataType, metadata.Identifier, structHandler );
+            }
+
+            structureHelper.ProcessAll( ( name, anonymousType ) =>
             {
                 var element = new SiLAElement()
                 {
-                    Identifier = structure.Key,
+                    Identifier = name,
                     DataType = new DataTypeType()
                     {
-                        Item = structure.Value
+                        Item = anonymousType
                     },
-                    DisplayName = structure.Key
+                    DisplayName = name.ToDisplayName()
                 };
-                var type = GenerateDataTypeDefinition( element, null );
-                if( type != null )
+                var type = GenerateDataTypeDefinition( element, structHandler );
+                if(type != null)
                 {
                     nSpace.Types.Add( type );
                 }
-            }
+            } );
 
             return unit;
         }
@@ -270,7 +269,7 @@ namespace Tecan.Sila2.Generator.Generators
                 {
                     Item = BasicType.String
                 }
-            }, 1, dto, null);
+            }, 1, dto, null, null);
             constructor.Statements.Add(new CodeAssignStatement(valueRef, new CodeMethodInvokeExpression(innerRef, nameof(object.ToString))));
             var extractMethod = new CodeMemberMethod()
             {
@@ -307,9 +306,9 @@ namespace Tecan.Sila2.Generator.Generators
             };
             AddAttribute(dto.CustomAttributes, typeof(ProtoContractAttribute));
             var elementAction = isSilaTransferObject
-                ? ImplementTransferObjectDto(name, dto)
+                ? ImplementTransferObjectDto(name, dto, identifier)
                 : ImplementRequestResponseDto(identifier, dto);
-            ImplementDtoProperties(structureType, dto, elementAction, structHandler);
+            ImplementDtoProperties(structureType, dto, elementAction, structHandler, identifier);
             return dto;
         }
 
@@ -321,10 +320,10 @@ namespace Tecan.Sila2.Generator.Generators
 
             void ElementAction(SiLAElement element, CodePropertyReferenceExpression property)
             {
-                var type = NameProvider.GetMemberType( methodIdentifier + "." + element.Identifier ) ?? _translationProvider.ExtractType( element.DataType, element.Identifier );
+                var type = NameProvider.GetMemberType( methodIdentifier + "." + element.Identifier ) ?? _translationProvider.ExtractType( element.DataType, methodIdentifier + element.Identifier );
                 var parameter = new CodeParameterDeclarationExpression(type, element.Identifier.ToCamelCase());
                 constructor.Parameters.Insert(constructor.Parameters.Count - 1, parameter);
-                constructor.Statements.Add(new CodeAssignStatement(property, _translationProvider.EncapsulateAsDto(new CodeArgumentReferenceExpression(parameter.Name), element.DataType, storeRef, element.Identifier)));
+                constructor.Statements.Add(new CodeAssignStatement(property, _translationProvider.EncapsulateAsDto(new CodeArgumentReferenceExpression(parameter.Name), element.DataType, storeRef,methodIdentifier + element.Identifier)));
                 constructor.Comments.Add( new CodeCommentStatement( $@" <param name=""{parameter.Name}"">{element.Description}</param>", true ) );
             }
 
@@ -332,7 +331,7 @@ namespace Tecan.Sila2.Generator.Generators
         }
 
         private Action<SiLAElement, CodePropertyReferenceExpression> ImplementTransferObjectDto(string name,
-            CodeTypeDeclaration dto)
+            CodeTypeDeclaration dto, string identifier)
         {
             var innerType = _translationProvider.ExtractType( new DataTypeType() { Item = name }, null );
             dto.BaseTypes.Add(new CodeTypeReference(typeof(ISilaTransferObject<>).FullName, innerType));
@@ -351,7 +350,7 @@ namespace Tecan.Sila2.Generator.Generators
                 extracted.Add( _translationProvider.Extract(property, element.DataType, new CodeArgumentReferenceExpression( BinaryStoreParameterName ), customType) );
                 constructor.Statements.Add(new CodeAssignStatement(property,
                     _translationProvider.EncapsulateAsDto(new CodePropertyReferenceExpression(innerRef, correspondingPropertyName),
-                        element.DataType, storeRef, element.Identifier)));
+                        element.DataType, storeRef, identifier + element.Identifier)));
             }
 
             GenerateStaticCreateMethod(dto, innerType);
@@ -360,7 +359,7 @@ namespace Tecan.Sila2.Generator.Generators
 
 
         private void ImplementDtoProperties(StructureType structureType, CodeTypeDeclaration dto,
-            Action<SiLAElement, CodePropertyReferenceExpression> elementAction, Action<string, StructureType> structHandler)
+            Action<SiLAElement, CodePropertyReferenceExpression> elementAction, Action<string, StructureType> structHandler, string parentIdentifier)
         {
             var (validationMethod, errors) = GenerateGetValidationErrors();
             var index = 1;
@@ -368,7 +367,7 @@ namespace Tecan.Sila2.Generator.Generators
             {
                 foreach (var element in structureType.Element)
                 {
-                    var property = GenerateProperty(element, index, dto, structHandler);
+                    var property = GenerateProperty(element, index, dto, structHandler, parentIdentifier);
                     elementAction(element, property);
                     if (element.DataType.Item is ConstrainedType constraints)
                     {
@@ -499,7 +498,7 @@ namespace Tecan.Sila2.Generator.Generators
         }
 
         private CodePropertyReferenceExpression GenerateProperty(SiLAElement element, int index,
-            CodeTypeDeclaration dto, Action<string, StructureType> structHandler)
+            CodeTypeDeclaration dto, Action<string, StructureType> structHandler, string parentIdentifier)
         {
             var property = new CodeMemberProperty
             {
@@ -507,7 +506,7 @@ namespace Tecan.Sila2.Generator.Generators
                 Name = element.Identifier,
                 HasSet = true,
                 HasGet = true,
-                Type = _translationProvider.GetDtoTypeReference( element.DataType, element.Identifier, structHandler)
+                Type = _translationProvider.GetDtoTypeReference( element.DataType, parentIdentifier + element.Identifier, structHandler)
             };
             if( element.Identifier == nameof(ISilaRequestObject.CommandIdentifier) )
             {

@@ -80,7 +80,7 @@ namespace Tecan.Sila2.Authentication.AuthenticationService
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/core/AuthenticationService/v1/Command/Login");
             try
             {
-                LoginResponse response = CallInvoker.BlockingUnaryCall(AuthenticationServiceProvider.LoginMethod, null, callInfo.Options, request).Extract(_executionManager.DownloadBinaryStore);
+                LoginResponse response = CallInvoker.BlockingUnaryCall(AuthenticationServiceMethods.LoginMethod, null, callInfo.Options, request).Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -115,7 +115,7 @@ namespace Tecan.Sila2.Authentication.AuthenticationService
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/core/AuthenticationService/v1/Command/Logout");
             try
             {
-                CallInvoker.BlockingUnaryCall(AuthenticationServiceProvider.LogoutMethod, null, callInfo.Options, request);
+                CallInvoker.BlockingUnaryCall(AuthenticationServiceMethods.LogoutMethod, null, callInfo.Options, request);
                 callInfo.FinishSuccessful();
                 return;
             } catch (System.Exception ex)
@@ -159,7 +159,7 @@ namespace Tecan.Sila2.Authentication.AuthenticationService
     ///  <summary>
     /// Encapsulates provider classes to expose the Authentication Service feature via SiLA2
     /// </summary>
-    internal sealed partial class AuthenticationServiceProvider
+    internal sealed partial class AuthenticationServiceMethods
     {
         
         private static string @__ServiceName = "sila2.org.silastandard.core.authenticationservice.v1.AuthenticationService";

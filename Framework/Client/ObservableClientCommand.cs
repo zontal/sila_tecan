@@ -43,7 +43,7 @@ namespace Tecan.Sila2.Client
                 using( var streamingCall = CallInvoker.AsyncServerStreamingCall( StateMethod, null, CallOptions, CommandId ) )
                 {
                     var responseStream = streamingCall.ResponseStream;
-                    while( await responseStream.MoveNext() )
+                    while( await responseStream.MoveNext(default) )
                     {
                         var state = ConvertState( responseStream.Current.Status );
                         var estimated = responseStream.Current.EstimatedRemainingTime.Extract( null );
@@ -135,7 +135,7 @@ namespace Tecan.Sila2.Client
                 using(var streamingCall = CallInvoker.AsyncServerStreamingCall( StateMethod, null, CallOptions, CommandId ))
                 {
                     var responseStream = streamingCall.ResponseStream;
-                    while(await responseStream.MoveNext())
+                    while(await responseStream.MoveNext(default))
                     {
                         var state = ObservableClientCommand.ConvertState( responseStream.Current.Status );
                         var estimated = responseStream.Current.EstimatedRemainingTime.Extract( null );

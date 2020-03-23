@@ -1,0 +1,18 @@
+{
+    "server": {
+        "build": "dotnet publish Interoperability/InteropServer/InteropServer.csproj",
+        "variants": [{
+            "name": "default",
+            "run": "dotnet Build/Interop/Server/netcoreapp3.1/publish/InteropServer.dll",
+            "unsupportedTests": []
+        }]
+    },
+    "client": {
+        "build": "dotnet publish Interoperability/InteropClient/InteropClient.csproj",
+        "variants": [{
+            "name": "default",
+            "run":"dotnet Build/Interop/Client/netcoreapp3.1/publish/InteropClient.dll",
+            "unsupportedTests": []
+        }]
+    }
+}

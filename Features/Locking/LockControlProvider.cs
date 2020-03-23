@@ -22,14 +22,14 @@ namespace Tecan.Sila2.Locking
     /// </summary>
     [System.ComponentModel.Composition.ExportAttribute(typeof(IFeatureProvider))]
     [System.ComponentModel.Composition.PartCreationPolicyAttribute(System.ComponentModel.Composition.CreationPolicy.Shared)]
-    public partial class LockController : IFeatureProvider
+    public partial class LockControllerProvider : IFeatureProvider
     {
         
         private ILockController _implementation;
         
         private Tecan.Sila2.Server.ISiLAServer _server;
         
-        private static Tecan.Sila2.Feature _feature = FeatureSerializer.LoadFromAssembly(typeof(LockController).Assembly, "LockController.sila.xml");
+        private static Tecan.Sila2.Feature _feature = FeatureSerializer.LoadFromAssembly(typeof(LockControllerProvider).Assembly, "LockController.sila.xml");
         
         ///  <summary>
         /// Creates a new instance
@@ -37,7 +37,7 @@ namespace Tecan.Sila2.Locking
         /// <param name="implementation">The implementation to exported through SiLA2</param>
         /// <param name="server">The SiLA2 server instance through which the implementation shall be exported</param>
         [System.ComponentModel.Composition.ImportingConstructorAttribute()]
-        public LockController(ILockController implementation, Tecan.Sila2.Server.ISiLAServer server)
+        public LockControllerProvider(ILockController implementation, Tecan.Sila2.Server.ISiLAServer server)
         {
             _implementation = implementation;
             _server = server;
@@ -62,10 +62,10 @@ namespace Tecan.Sila2.Locking
         public Grpc.Core.ServerServiceDefinition CreateServiceDefinition()
         {
             Grpc.Core.ServerServiceDefinition.Builder builder = Grpc.Core.ServerServiceDefinition.CreateBuilder();
-            builder.AddMethod(LockControllerProvider.LockServerMethod, LockServer);
-            builder.AddMethod(LockControllerProvider.UnlockServerMethod, UnlockServer);
-            builder.AddMethod(LockControllerProvider.GetIsLockedMethod, GetIsLocked);
-            builder.AddMethod(LockControllerProvider.GetAffectedByLockIdentifierMethod, GetAffectedByLockIdentifier);
+            builder.AddMethod(LockControllerMethods.LockServerMethod, LockServer);
+            builder.AddMethod(LockControllerMethods.UnlockServerMethod, UnlockServer);
+            builder.AddMethod(LockControllerMethods.GetIsLockedMethod, GetIsLocked);
+            builder.AddMethod(LockControllerMethods.GetAffectedByLockIdentifierMethod, GetAffectedByLockIdentifier);
             return builder.Build();
         }
         
@@ -198,7 +198,7 @@ namespace Tecan.Sila2.Locking
     ///  <summary>
     /// Encapsulates provider classes to expose the Lock Controller feature via SiLA2
     /// </summary>
-    internal sealed partial class LockControllerProvider
+    internal sealed partial class LockControllerMethods
     {
         
         private static string @__ServiceName = "sila2.org.silastandard.core.lockcontroller.v1.LockController";

@@ -22,14 +22,14 @@ namespace Tecan.Sila2.Authentication
     /// </summary>
     [System.ComponentModel.Composition.ExportAttribute(typeof(IFeatureProvider))]
     [System.ComponentModel.Composition.PartCreationPolicyAttribute(System.ComponentModel.Composition.CreationPolicy.Shared)]
-    public partial class AuthenticationService : IFeatureProvider
+    public partial class AuthenticationServiceProvider : IFeatureProvider
     {
         
         private IAuthenticationService _implementation;
         
         private Tecan.Sila2.Server.ISiLAServer _server;
         
-        private static Tecan.Sila2.Feature _feature = FeatureSerializer.LoadFromAssembly(typeof(AuthenticationService).Assembly, "AuthenticationService.sila.xml");
+        private static Tecan.Sila2.Feature _feature = FeatureSerializer.LoadFromAssembly(typeof(AuthenticationServiceProvider).Assembly, "AuthenticationService.sila.xml");
         
         ///  <summary>
         /// Creates a new instance
@@ -37,7 +37,7 @@ namespace Tecan.Sila2.Authentication
         /// <param name="implementation">The implementation to exported through SiLA2</param>
         /// <param name="server">The SiLA2 server instance through which the implementation shall be exported</param>
         [System.ComponentModel.Composition.ImportingConstructorAttribute()]
-        public AuthenticationService(IAuthenticationService implementation, Tecan.Sila2.Server.ISiLAServer server)
+        public AuthenticationServiceProvider(IAuthenticationService implementation, Tecan.Sila2.Server.ISiLAServer server)
         {
             _implementation = implementation;
             _server = server;
@@ -62,8 +62,8 @@ namespace Tecan.Sila2.Authentication
         public Grpc.Core.ServerServiceDefinition CreateServiceDefinition()
         {
             Grpc.Core.ServerServiceDefinition.Builder builder = Grpc.Core.ServerServiceDefinition.CreateBuilder();
-            builder.AddMethod(AuthenticationServiceProvider.LoginMethod, Login);
-            builder.AddMethod(AuthenticationServiceProvider.LogoutMethod, Logout);
+            builder.AddMethod(AuthenticationServiceMethods.LoginMethod, Login);
+            builder.AddMethod(AuthenticationServiceMethods.LogoutMethod, Logout);
             return builder.Build();
         }
         
@@ -174,7 +174,7 @@ namespace Tecan.Sila2.Authentication
     ///  <summary>
     /// Encapsulates provider classes to expose the Authentication Service feature via SiLA2
     /// </summary>
-    internal sealed partial class AuthenticationServiceProvider
+    internal sealed partial class AuthenticationServiceMethods
     {
         
         private static string @__ServiceName = "sila2.org.silastandard.core.authenticationservice.v1.AuthenticationService";
