@@ -22,14 +22,14 @@ namespace Tecan.Sila2.Generator.Test.TestReference
     /// </summary>
     [System.ComponentModel.Composition.ExportAttribute( typeof( IFeatureProvider ) )]
     [System.ComponentModel.Composition.PartCreationPolicyAttribute( System.ComponentModel.Composition.CreationPolicy.Shared )]
-    public partial class InlineObservableService : IFeatureProvider
+    public partial class InlineObservableServiceProvider : IFeatureProvider
     {
 
         private IInlineObservableService _implementation;
 
         private Tecan.Sila2.Server.ISiLAServer _server;
 
-        private static Tecan.Sila2.Feature _feature = FeatureSerializer.LoadFromAssembly( typeof( InlineObservableService ).Assembly, "InlineObservableService.sila.xml" );
+        private static Tecan.Sila2.Feature _feature = FeatureSerializer.LoadFromAssembly( typeof( InlineObservableServiceProvider ).Assembly, "InlineObservableService.sila.xml" );
 
         ///  <summary>
         /// Creates a new instance
@@ -37,7 +37,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// <param name="implementation">The implementation to exported through SiLA2</param>
         /// <param name="server">The SiLA2 server instance through which the implementation shall be exported</param>
         [System.ComponentModel.Composition.ImportingConstructorAttribute()]
-        public InlineObservableService( IInlineObservableService implementation, Tecan.Sila2.Server.ISiLAServer server )
+        public InlineObservableServiceProvider( IInlineObservableService implementation, Tecan.Sila2.Server.ISiLAServer server )
         {
             _implementation = implementation;
             _server = server;
@@ -62,9 +62,9 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         public Grpc.Core.ServerServiceDefinition CreateServiceDefinition()
         {
             Grpc.Core.ServerServiceDefinition.Builder builder = Grpc.Core.ServerServiceDefinition.CreateBuilder();
-            builder.AddMethod( InlineObservableServiceProvider.TestInlineObservableMethod, TestInlineObservable );
-            builder.AddMethod( InlineObservableServiceProvider.TestInlineObservableStateMethod, TestInlineObservableState );
-            builder.AddMethod( InlineObservableServiceProvider.TestInlineObservableResponseMethod, TestInlineObservableResponse );
+            builder.AddMethod( InlineObservableServiceMethods.TestInlineObservableMethod, TestInlineObservable );
+            builder.AddMethod( InlineObservableServiceMethods.TestInlineObservableStateMethod, TestInlineObservableState );
+            builder.AddMethod( InlineObservableServiceMethods.TestInlineObservableResponseMethod, TestInlineObservableResponse );
             return builder.Build();
         }
 
@@ -136,11 +136,11 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         private class TestInlineObservableCommand : Tecan.Sila2.ObservableCommand<bool>
         {
 
-            private InlineObservableService _parent;
+            private InlineObservableServiceProvider _parent;
 
             private TestInlineObservableRequestDto _request;
 
-            public TestInlineObservableCommand( InlineObservableService parent, TestInlineObservableRequestDto request ) :
+            public TestInlineObservableCommand( InlineObservableServiceProvider parent, TestInlineObservableRequestDto request ) :
                     base( new System.Threading.CancellationTokenSource() )
             {
                 _parent = parent;
@@ -213,7 +213,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         public virtual bool TestInlineObservable( string parameter, System.Threading.CancellationToken cancellationToken )
         {
             TestInlineObservableRequestDto request = new TestInlineObservableRequestDto( parameter, null );
-            Tecan.Sila2.IObservableCommand<bool> command = ObservableClientCommands.Create( _executionManager.CreateCallOptions( request.CommandIdentifier ), CallInvoker, request, InlineObservableServiceProvider.TestInlineObservableMethod, InlineObservableServiceProvider.TestInlineObservableStateMethod, InlineObservableServiceProvider.TestInlineObservableResponseMethod, ConvertTestInlineObservableResponse, ConvertTestInlineObservableException );
+            Tecan.Sila2.IObservableCommand<bool> command = ObservableClientCommands.Create( _executionManager.CreateCallOptions( request.CommandIdentifier ), CallInvoker, request, InlineObservableServiceMethods.TestInlineObservableMethod, InlineObservableServiceMethods.TestInlineObservableStateMethod, InlineObservableServiceMethods.TestInlineObservableResponseMethod, ConvertTestInlineObservableResponse, ConvertTestInlineObservableException );
             Tecan.Sila2.Cancellation.CancellationHelper.RegisterCancellation( ((Tecan.Sila2.Client.IClientCommand)(command)), _executionManager, cancellationToken );
             command.Start();
             command.Response.Wait( cancellationToken );
@@ -259,7 +259,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
     ///  <summary>
     /// Encapsulates provider classes to expose the Inline Observable Service feature via SiLA2
     /// </summary>
-    internal sealed partial class InlineObservableServiceProvider
+    internal sealed partial class InlineObservableServiceMethods
     {
 
         private static string @__ServiceName = "sila2.tecan.sila.generator.test.testreference.inlineobservableservice.v2.InlineOb" +

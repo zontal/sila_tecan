@@ -6,3 +6,4 @@ Build/
 **/launchSettings.json
 **/*.nupkg
 /Tests/Generator.Tests/Properties/PublishProfiles
+*.user
