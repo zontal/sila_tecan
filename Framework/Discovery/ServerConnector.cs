@@ -39,7 +39,7 @@ namespace Tecan.Sila2.Discovery
         }
 
         /// <inheritdoc />
-        public ServerData Connect( IPAddress host, int port )
+        public virtual ServerData Connect( IPAddress host, int port )
         {
             return Connect( $"{host}:{port}" );
         }
@@ -60,7 +60,7 @@ namespace Tecan.Sila2.Discovery
         }
 
         /// <inheritdoc />
-        public ServerData Connect( string host, int port )
+        public virtual ServerData Connect( string host, int port )
         {
             return Connect( $"{host}:{port}" );
         }
