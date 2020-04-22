@@ -129,14 +129,14 @@ namespace Tecan.Sila2.Server
         {
             try
             {
-                _server.ShutdownServer();
+                _server?.ShutdownServer();
             }
             catch( Exception exception )
             {
                 _channel?.LogException( "Error shutting down server".ToString, exception );
             }
 
-            _container.Dispose();
+            _container?.Dispose();
         }
 
         private static NetworkInterface FindNetworkInterface(string interfaceNameOrCidr, ILoggingChannelFactory logging)

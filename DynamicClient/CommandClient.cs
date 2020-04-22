@@ -74,7 +74,7 @@ namespace Tecan.Sila2.DynamicClient
                 case BasicType basicType:
                     return basicType == BasicType.Binary;
                 case StructureType structureType:
-                    return structureType.Element.Any( e => IsBinaryType( e.DataType, resolveType ) );
+                    return structureType.Element != null && structureType.Element.Any( e => IsBinaryType( e.DataType, resolveType ) );
                 case ListType listType:
                     return IsBinaryType( listType.DataType, resolveType );
                 case ConstrainedType constrained:

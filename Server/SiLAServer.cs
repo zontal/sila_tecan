@@ -145,10 +145,12 @@ namespace Tecan.Sila2.Server
                 var servercert = File.ReadAllText(@"server.crt");
                 var serverkey = File.ReadAllText(@"server.key");
                 var keypair = new KeyCertificatePair(servercert, serverkey);
+                _logger.Log("Found certificates, starting server with TLS.".ToString, Severity.Info);
                 credentials = new SslServerCredentials(new List<KeyCertificatePair>() { keypair }, cacert, SslClientCertificateRequestType.DontRequest);
             }
             else
             {
+                _logger.Log($"No certificates found in folder {Environment.CurrentDirectory}. Server will start with plain-text communication".ToString, Severity.Warning);
                 credentials = ServerCredentials.Insecure;
             }
 
