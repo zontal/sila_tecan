@@ -51,7 +51,7 @@ namespace Tecan.Sila2.Generator.Generators
             unit.Namespaces.Add(nSpace);
             nSpace.Types.Add(GenerateProviderClass(feature, generateServer, generateClient, nSpace));
 
-            if (generateServer)
+            if (generateServer && feature.Items != null)
             {
                 foreach (var metadata in feature.Items.OfType<FeatureMetadata>())
                 {
@@ -86,23 +86,27 @@ namespace Tecan.Sila2.Generator.Generators
                 IsPartial = true,
                 TypeAttributes = TypeAttributes.Sealed | TypeAttributes.NestedAssembly
             };
-            var serviceNameRef = GenerateServiceNameField(feature, provider);
 
-            foreach (var featureCommand in feature.Items.OfType<FeatureCommand>())
+            if( feature.Items != null )
             {
-                GenerateCommandMethod(featureCommand, provider, serviceNameRef);
+                var serviceNameRef = GenerateServiceNameField( feature, provider );
+
+                foreach( var featureCommand in feature.Items.OfType<FeatureCommand>() )
+                {
+                    GenerateCommandMethod( featureCommand, provider, serviceNameRef );
+                }
+
+                foreach( var featureProperty in feature.Items.OfType<FeatureProperty>() )
+                {
+                    GeneratePropertyMethod( featureProperty, provider, serviceNameRef );
+                }
+
+                foreach( var metadata in feature.Items.OfType<FeatureMetadata>() )
+                {
+                    GenerateMetadataMethod( metadata, provider, serviceNameRef );
+                }
             }
 
-            foreach (var featureProperty in feature.Items.OfType<FeatureProperty>())
-            {
-                GeneratePropertyMethod(featureProperty, provider, serviceNameRef);
-            }
-
-            foreach (var metadata in feature.Items.OfType<FeatureMetadata>())
-            {
-                GenerateMetadataMethod(metadata, provider, serviceNameRef);
-            }
-            
 
             if (generateServer && _serverGenerator != null)
             {

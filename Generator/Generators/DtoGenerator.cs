@@ -33,7 +33,8 @@ namespace Tecan.Sila2.Generator.Generators
         /// <summary>
         /// Creates a new Dto generator for the given name provider
         /// </summary>
-        /// <param name="nameProvider"></param>
+        /// <param name="translationProvider">The translation provider</param>
+        /// <param name="nameProvider">A name provider</param>
         [ImportingConstructor]
         public DtoGenerator(ITypeTranslationProvider translationProvider, ICodeNameProvider nameProvider)
         {
@@ -52,43 +53,47 @@ namespace Tecan.Sila2.Generator.Generators
             var structureHelper = new AnonymousTypeHelper();
             var structHandler = new Action<string, StructureType>( structureHelper.RegisterAnonymousType );
 
-            foreach (var featureCommand in feature.Items.OfType<FeatureCommand>())
+            if(feature.Items != null)
             {
-                nSpace.Types.Add(GenerateCommandRequestType(feature, featureCommand, structHandler ) );
 
-                if (featureCommand.IntermediateResponse != null && featureCommand.IntermediateResponse.Length > 0)
+                foreach(var featureCommand in feature.Items.OfType<FeatureCommand>())
                 {
-                    nSpace.Types.Add(GenerateCommandIntermediateType(featureCommand, structHandler ) );
+                    nSpace.Types.Add( GenerateCommandRequestType( feature, featureCommand, structHandler ) );
+
+                    if(featureCommand.IntermediateResponse != null && featureCommand.IntermediateResponse.Length > 0)
+                    {
+                        nSpace.Types.Add( GenerateCommandIntermediateType( featureCommand, structHandler ) );
+                    }
+
+                    if(featureCommand.Response != null && featureCommand.Response.Length > 0)
+                    {
+                        nSpace.Types.Add( GenerateCommandResponseType( featureCommand, structHandler ) );
+                    }
                 }
 
-                if (featureCommand.Response != null && featureCommand.Response.Length > 0)
+                foreach(var featureProperty in feature.Items.OfType<FeatureProperty>())
                 {
-                    nSpace.Types.Add(GenerateCommandResponseType(featureCommand, structHandler ) );
+                    // ensure dto type can be resolved
+                    _translationProvider.GetDtoTypeReference( featureProperty.DataType, featureProperty.Identifier, structHandler );
+                    if(featureProperty.DataType.Item is ConstrainedType)
+                    {
+                        nSpace.Types.Add( GeneratePropertyResponse( featureProperty, structHandler ) );
+                    }
                 }
-            }
 
-            foreach (var featureProperty in feature.Items.OfType<FeatureProperty>())
-            {
-                // ensure dto type can be resolved
-                _translationProvider.GetDtoTypeReference( featureProperty.DataType, featureProperty.Identifier, structHandler );
-                if (featureProperty.DataType.Item is ConstrainedType)
+                foreach(var dataTypeDefinition in feature.Items.OfType<SiLAElement>())
                 {
-                    nSpace.Types.Add(GeneratePropertyResponse(featureProperty, structHandler ) );
+                    var type = GenerateDataTypeDefinition( dataTypeDefinition, structHandler );
+                    if(type != null)
+                    {
+                        nSpace.Types.Add( type );
+                    }
                 }
-            }
 
-            foreach (var dataTypeDefinition in feature.Items.OfType<SiLAElement>())
-            {
-                var type = GenerateDataTypeDefinition(dataTypeDefinition, structHandler );
-                if (type != null)
+                foreach(var metadata in feature.Items.OfType<FeatureMetadata>())
                 {
-                    nSpace.Types.Add(type);
+                    _translationProvider.GetDtoTypeReference( metadata.DataType, metadata.Identifier, structHandler );
                 }
-            }
-
-            foreach( var metadata in feature.Items.OfType<FeatureMetadata>() )
-            {
-                _translationProvider.GetDtoTypeReference( metadata.DataType, metadata.Identifier, structHandler );
             }
 
             structureHelper.ProcessAll( ( name, anonymousType ) =>

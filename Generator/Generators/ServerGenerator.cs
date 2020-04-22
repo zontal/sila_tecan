@@ -66,26 +66,30 @@ namespace Tecan.Sila2.Generator.Generators
             GenerateServerConstructor( feature, server, implementation, serverRef );
             GenerateServerCreateServiceDefinition( feature, server );
 
-            foreach( var featureCommand in feature.Items.OfType<FeatureCommand>() )
+            if( feature.Items != null )
             {
-                GenerateServerCommand( feature, featureCommand, server, implementation, serverRef );
-            }
 
-            foreach( var featureProperty in feature.Items.OfType<FeatureProperty>() )
-            {
-                if( featureProperty.Observable == FeaturePropertyObservable.No )
+                foreach( var featureCommand in feature.Items.OfType<FeatureCommand>() )
                 {
-                    GenerateServerStaticProperty( feature, featureProperty, server, implementation, id => FindError( feature, id ) );
+                    GenerateServerCommand( feature, featureCommand, server, implementation, serverRef );
                 }
-                else
-                {
-                    GenerateServerDynamicProperty( feature, featureProperty, server, implementation, id => FindError( feature, id ) );
-                }
-            }
 
-            foreach( var featureMetadata in feature.Items.OfType<FeatureMetadata>() )
-            {
-                GenerateServerMetadata( featureMetadata, server, implementation );
+                foreach( var featureProperty in feature.Items.OfType<FeatureProperty>() )
+                {
+                    if( featureProperty.Observable == FeaturePropertyObservable.No )
+                    {
+                        GenerateServerStaticProperty( feature, featureProperty, server, implementation, id => FindError( feature, id ) );
+                    }
+                    else
+                    {
+                        GenerateServerDynamicProperty( feature, featureProperty, server, implementation, id => FindError( feature, id ) );
+                    }
+                }
+
+                foreach( var featureMetadata in feature.Items.OfType<FeatureMetadata>() )
+                {
+                    GenerateServerMetadata( featureMetadata, server, implementation );
+                }
             }
 
             GenerateServerFeatureProperty( server, feature );
@@ -116,13 +120,18 @@ namespace Tecan.Sila2.Generator.Generators
             getCommandMethod.Parameters.Add( new CodeParameterDeclarationExpression( typeof(string), commandIdentifier.ParameterName ) );
             var typeExpression = new CodeTypeOfExpression( _nameProvider.CreateFeatureInterfaceReference( feature ) );
 
-            foreach( var command in feature.Items.OfType<FeatureCommand>() )
+            if( feature.Items != null )
             {
-                var ifStmt = new CodeConditionStatement();
-                ifStmt.Condition = new CodeBinaryOperatorExpression(commandIdentifier, CodeBinaryOperatorType.ValueEquality, new CodePrimitiveExpression(feature.GetFullyQualifiedIdentifier(command)));
-                ifStmt.TrueStatements.Add( new CodeMethodReturnStatement( new CodeMethodInvokeExpression( typeExpression, nameof(Type.GetMethod),
-                    new CodePrimitiveExpression( _nameProvider.GetCommandName( command ) ) ) ) );
-                getCommandMethod.Statements.Add( ifStmt );
+
+                foreach( var command in feature.Items.OfType<FeatureCommand>() )
+                {
+                    var ifStmt = new CodeConditionStatement();
+                    ifStmt.Condition = new CodeBinaryOperatorExpression( commandIdentifier, CodeBinaryOperatorType.ValueEquality,
+                        new CodePrimitiveExpression( feature.GetFullyQualifiedIdentifier( command ) ) );
+                    ifStmt.TrueStatements.Add( new CodeMethodReturnStatement( new CodeMethodInvokeExpression( typeExpression, nameof(Type.GetMethod),
+                        new CodePrimitiveExpression( _nameProvider.GetCommandName( command ) ) ) ) );
+                    getCommandMethod.Statements.Add( ifStmt );
+                }
             }
 
             getCommandMethod.WriteDocumentation( "Gets the command with the given identifier", "A method object or null, if the command is not supported",
@@ -147,13 +156,17 @@ namespace Tecan.Sila2.Generator.Generators
             getPropertyMethod.Parameters.Add( new CodeParameterDeclarationExpression( typeof( string ), commandIdentifier.ParameterName ) );
             var typeExpression = new CodeTypeOfExpression( _nameProvider.CreateFeatureInterfaceReference( feature ) );
 
-            foreach(var property in feature.Items.OfType<FeatureProperty>())
+            if( feature.Items != null )
             {
-                var ifStmt = new CodeConditionStatement();
-                ifStmt.Condition = new CodeBinaryOperatorExpression( commandIdentifier, CodeBinaryOperatorType.ValueEquality, new CodePrimitiveExpression( feature.GetFullyQualifiedIdentifier( property ) ) );
-                ifStmt.TrueStatements.Add( new CodeMethodReturnStatement( new CodeMethodInvokeExpression( typeExpression, nameof( Type.GetProperty ),
-                    new CodePrimitiveExpression( _nameProvider.GetPropertyName( property ) ) ) ) );
-                getPropertyMethod.Statements.Add( ifStmt );
+                foreach( var property in feature.Items.OfType<FeatureProperty>() )
+                {
+                    var ifStmt = new CodeConditionStatement();
+                    ifStmt.Condition = new CodeBinaryOperatorExpression( commandIdentifier, CodeBinaryOperatorType.ValueEquality,
+                        new CodePrimitiveExpression( feature.GetFullyQualifiedIdentifier( property ) ) );
+                    ifStmt.TrueStatements.Add( new CodeMethodReturnStatement( new CodeMethodInvokeExpression( typeExpression, nameof(Type.GetProperty),
+                        new CodePrimitiveExpression( _nameProvider.GetPropertyName( property ) ) ) ) );
+                    getPropertyMethod.Statements.Add( ifStmt );
+                }
             }
 
             getPropertyMethod.WriteDocumentation( "Gets the property with the given identifier", "A property object or null, if the property is not supported",
@@ -872,64 +885,68 @@ namespace Tecan.Sila2.Generator.Generators
 
             var providerReference = new CodeTypeReferenceExpression(feature.Identifier + "Methods");
 
-            foreach( var featureCommand in feature.Items.OfType<FeatureCommand>() )
+            if( feature.Items != null )
             {
-                if( featureCommand.Observable == FeatureCommandObservable.No )
+
+                foreach( var featureCommand in feature.Items.OfType<FeatureCommand>() )
                 {
-                    createServiceDefinition.Statements.Add( new CodeMethodInvokeExpression(
-                        builderRef, "AddMethod",
-                        new CodeFieldReferenceExpression( providerReference, featureCommand.Identifier + "Method" ),
-                        new CodeMethodReferenceExpression( null, featureCommand.Identifier ) ) );
-                }
-                else
-                {
-                    createServiceDefinition.Statements.Add( new CodeMethodInvokeExpression(
-                        builderRef, "AddMethod",
-                        new CodeFieldReferenceExpression( providerReference, featureCommand.Identifier + "Method" ),
-                        new CodeMethodReferenceExpression( null, featureCommand.Identifier ) ) );
-                    createServiceDefinition.Statements.Add( new CodeMethodInvokeExpression(
-                        builderRef, "AddMethod",
-                        new CodeFieldReferenceExpression( providerReference, featureCommand.Identifier + "StateMethod" ),
-                        new CodeMethodReferenceExpression( null, featureCommand.Identifier + "State" ) ) );
-                    if( featureCommand.IntermediateResponse != null && featureCommand.IntermediateResponse.Length > 0 )
+                    if( featureCommand.Observable == FeatureCommandObservable.No )
                     {
                         createServiceDefinition.Statements.Add( new CodeMethodInvokeExpression(
                             builderRef, "AddMethod",
-                            new CodeFieldReferenceExpression( providerReference, featureCommand.Identifier + "IntermediateMethod" ),
-                            new CodeMethodReferenceExpression( null, featureCommand.Identifier + "IntermediateResponse" ) ) );
+                            new CodeFieldReferenceExpression( providerReference, featureCommand.Identifier + "Method" ),
+                            new CodeMethodReferenceExpression( null, featureCommand.Identifier ) ) );
                     }
+                    else
+                    {
+                        createServiceDefinition.Statements.Add( new CodeMethodInvokeExpression(
+                            builderRef, "AddMethod",
+                            new CodeFieldReferenceExpression( providerReference, featureCommand.Identifier + "Method" ),
+                            new CodeMethodReferenceExpression( null, featureCommand.Identifier ) ) );
+                        createServiceDefinition.Statements.Add( new CodeMethodInvokeExpression(
+                            builderRef, "AddMethod",
+                            new CodeFieldReferenceExpression( providerReference, featureCommand.Identifier + "StateMethod" ),
+                            new CodeMethodReferenceExpression( null, featureCommand.Identifier + "State" ) ) );
+                        if( featureCommand.IntermediateResponse != null && featureCommand.IntermediateResponse.Length > 0 )
+                        {
+                            createServiceDefinition.Statements.Add( new CodeMethodInvokeExpression(
+                                builderRef, "AddMethod",
+                                new CodeFieldReferenceExpression( providerReference, featureCommand.Identifier + "IntermediateMethod" ),
+                                new CodeMethodReferenceExpression( null, featureCommand.Identifier + "IntermediateResponse" ) ) );
+                        }
 
-                    createServiceDefinition.Statements.Add( new CodeMethodInvokeExpression(
-                        builderRef, "AddMethod",
-                        new CodeFieldReferenceExpression( providerReference, featureCommand.Identifier + "ResponseMethod" ),
-                        new CodeMethodReferenceExpression( null, featureCommand.Identifier + "Response" ) ) );
+                        createServiceDefinition.Statements.Add( new CodeMethodInvokeExpression(
+                            builderRef, "AddMethod",
+                            new CodeFieldReferenceExpression( providerReference, featureCommand.Identifier + "ResponseMethod" ),
+                            new CodeMethodReferenceExpression( null, featureCommand.Identifier + "Response" ) ) );
+                    }
                 }
-            }
 
-            foreach( var featureProperty in feature.Items.OfType<FeatureProperty>() )
-            {
-                if( featureProperty.Observable == FeaturePropertyObservable.No )
+                foreach( var featureProperty in feature.Items.OfType<FeatureProperty>() )
+                {
+                    if( featureProperty.Observable == FeaturePropertyObservable.No )
+                    {
+                        createServiceDefinition.Statements.Add( new CodeMethodInvokeExpression(
+                            builderRef, "AddMethod",
+                            new CodeFieldReferenceExpression( providerReference, "Get" + featureProperty.Identifier + "Method" ),
+                            new CodeMethodReferenceExpression( null, "Get" + featureProperty.Identifier ) ) );
+                    }
+                    else
+                    {
+                        createServiceDefinition.Statements.Add( new CodeMethodInvokeExpression(
+                            builderRef, "AddMethod",
+                            new CodeFieldReferenceExpression( providerReference, "Subscribe" + featureProperty.Identifier + "Method" ),
+                            new CodeMethodReferenceExpression( null, "Subscribe" + featureProperty.Identifier ) ) );
+                    }
+                }
+
+                foreach( var featureMetadata in feature.Items.OfType<FeatureMetadata>() )
                 {
                     createServiceDefinition.Statements.Add( new CodeMethodInvokeExpression(
                         builderRef, "AddMethod",
-                        new CodeFieldReferenceExpression( providerReference, "Get" + featureProperty.Identifier + "Method" ),
-                        new CodeMethodReferenceExpression( null, "Get" + featureProperty.Identifier ) ) );
+                        new CodeFieldReferenceExpression( providerReference, "GetAffectedBy" + featureMetadata.Identifier + "Method" ),
+                        new CodeMethodReferenceExpression( null, "GetAffectedBy" + featureMetadata.Identifier ) ) );
                 }
-                else
-                {
-                    createServiceDefinition.Statements.Add( new CodeMethodInvokeExpression(
-                        builderRef, "AddMethod",
-                        new CodeFieldReferenceExpression( providerReference, "Subscribe" + featureProperty.Identifier + "Method" ),
-                        new CodeMethodReferenceExpression( null, "Subscribe" + featureProperty.Identifier ) ) );
-                }
-            }
-
-            foreach( var featureMetadata in feature.Items.OfType<FeatureMetadata>() )
-            {
-                createServiceDefinition.Statements.Add( new CodeMethodInvokeExpression(
-                    builderRef, "AddMethod",
-                    new CodeFieldReferenceExpression( providerReference, "GetAffectedBy" + featureMetadata.Identifier + "Method" ),
-                    new CodeMethodReferenceExpression( null, "GetAffectedBy" + featureMetadata.Identifier ) ) );
             }
 
             createServiceDefinition.Statements.Add(
