@@ -61,7 +61,7 @@ namespace Tecan.Sila2.Server
         {
             Console.ForegroundColor = ConsoleColor.Red;
             Console.Error.WriteLine(messageProvider());
-            Console.Error.WriteLine(exception.StackTrace);
+            Console.Error.WriteLine(exception);
             Console.ResetColor();
         }
     }
