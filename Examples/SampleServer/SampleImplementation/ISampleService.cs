@@ -24,11 +24,9 @@ namespace SampleContracts
         [SilaIdentifier("ToUppercase")]
         [SilaDisplayName("To Uppercase")]
         [SilaDescription("Converts a string to uppercase")]
-
         [return: SilaIdentifier("Uppercase")]
         [return: SilaDisplayName("Uppercase")]
         [return: SilaDescription("Input converted to Uppercase")]
-
         string ToUppercase
         (
             [SilaIdentifier("Input")]
@@ -45,7 +43,6 @@ namespace SampleContracts
         [SilaIdentifier("Version")]
         [SilaDisplayName("Version")]
         [SilaDescription("Version string in format major.minor")]
-
         string Version { get; }
 
         // ------------------------------------------------------
@@ -56,8 +53,7 @@ namespace SampleContracts
         [SilaIdentifier("CurrentTime")]
         [SilaDisplayName("Current Time")]
         [SilaDescription("Get the current time")]
-        [Dynamic(500)]
-
+        [Observable]
         string CurrentTime { get; }
 
         // ------------------------------------------------------
@@ -68,13 +64,12 @@ namespace SampleContracts
         [SilaIdentifier("CountTo")]
         [SilaDisplayName("Count To")]
         [SilaDescription("Counts up to a given number")]
-
+        [Observable]
+        [Throws(typeof(InvalidNumberException))]
         [return: SilaIdentifier("CountToResponses")]
         [return: SilaDisplayName("Count To Responses")]
         [return: SilaDescription("Responses from CountTo command")]
-        
-        [Throws(typeof(InvalidNumberException))]
-
+    
         IIntermediateObservableCommand<CountToIntermediates, CountToResponses> CountTo
         (
             [SilaIdentifier("Target")]
