@@ -833,9 +833,9 @@ namespace Tecan.Sila2.Generator.Generators
             var returnType = commandMethod.ReturnType;
             if(returnType.IsGenericType)
             {
-                if( !isObservable && (typeof(IObservableCommand).IsAssignableFrom(returnType) || typeof(Task).IsAssignableFrom(returnType) ))
+                if(typeof(IObservableCommand).IsAssignableFrom(returnType) || typeof(Task).IsAssignableFrom(returnType) )
                 {
-                    throw new InvalidOperationException( $"The method {commandMethod.Name} seems observable but is not marked observable." );
+                    AssertObservable(commandMethod, isObservable);
                 }
                 var typeDefinition = returnType.GetGenericTypeDefinition();
                 if(typeDefinition == typeof( IObservableCommand<> ))
@@ -863,10 +863,12 @@ namespace Tecan.Sila2.Generator.Generators
             }
             else if(returnType == typeof( IObservableCommand ))
             {
+                AssertObservable( commandMethod, isObservable );
                 return (typeof(void), null, true);
             }
             else if( returnType == typeof(Task) )
             {
+                AssertObservable( commandMethod, isObservable );
                 _nameRegistry?.RegisterMethod( identifier, commandMethod );
                 return (typeof(void), null, true);
             }
@@ -877,6 +879,15 @@ namespace Tecan.Sila2.Generator.Generators
             }
 
             return (returnType, null, isObservable);
+        }
+
+        private static void AssertObservable(MethodInfo commandMethod, bool isObservable)
+        {
+            if (!isObservable)
+            {
+                Console.Error.WriteLine(
+                    $"Warning: The method {commandMethod.Name} seems observable but is not marked observable.");
+            }
         }
     }
 }

@@ -46,15 +46,13 @@ namespace Tecan.Sila2.Generator.Generators
 
         /// <inheritdoc />
         public Feature GenerateFeature( Type interfaceType, string originator = null, string category = null,
-            string version = null, ICollection<string> namespaceCollector = null, IReadOnlyDictionary<string, Constraints> predefinedConstraints = null )
+            string version = null, ICollection<string> namespaceCollector = null, IReadOnlyDictionary<string, Constraints> predefinedConstraints = null, bool isDraftDefault = true )
         {
             if(interfaceType == null) throw new ArgumentNullException( nameof( interfaceType ) );
             var annotation = interfaceType.GetCustomAttribute<SilaFeatureAttribute>();
-            if(annotation == null)
-                throw new ArgumentException( "Interface must be annotated as SiLA feature", nameof( interfaceType ) );
 
             var versionV = version == null ? interfaceType.Assembly.GetName().Version : Version.Parse( version );
-            category ??= annotation.Category;
+            category ??= annotation?.Category;
             AssignDefaultOriginatorAndUseCase( interfaceType, versionV, ref originator, ref category );
 
             Func<string, Constraints> constraintResolver = null;
@@ -88,7 +86,7 @@ namespace Tecan.Sila2.Generator.Generators
                 Items = items.ToArray(),
                 SiLA2Version = "1.0",
                 FeatureVersion = versionV.ToString( 2 ),
-                MaturityLevel = annotation.IsDraft ? FeatureMaturityLevel.Draft : FeatureMaturityLevel.Verified,
+                MaturityLevel = (annotation?.IsDraft ?? isDraftDefault) ? FeatureMaturityLevel.Draft : FeatureMaturityLevel.Verified,
                 Category = category.ToLowerInvariant(),
                 Originator = originator.ToLowerInvariant()
             };

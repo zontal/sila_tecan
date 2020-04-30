@@ -17,12 +17,14 @@ namespace Tecan.Sila2.Generator.Contracts
         /// <param name="version">The version of the feature</param>
         /// <param name="namespaceCollector">A component to which accesses to namespace are persisted</param>
         /// <param name="constraints">A dictionary of predefined constraints, keyed by fully origin identifiers</param>
+        /// <param name="isDraftDefault">A default value whether a feature is draft</param>
         /// <returns>The generated feature</returns>
         Feature GenerateFeature(Type interfaceType,
             string originator = null,
             string category = null,
             string version = null,
             ICollection<string> namespaceCollector = null,
-            IReadOnlyDictionary<string, Constraints> constraints = null);
+            IReadOnlyDictionary<string, Constraints> constraints = null,
+            bool isDraftDefault = true );
     }
 }

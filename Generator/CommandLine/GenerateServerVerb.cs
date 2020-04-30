@@ -107,6 +107,13 @@ namespace Tecan.Sila2.Generator.CommandLine
         [Option( "constraints-file", Required = false, HelpText = "Path to a file that contains additional constraints" )]
         public string ConstraintsFile { get; set; }
 
+        [Option("draft", Required = false, HelpText = "If specified, features that do not specify whether they are draft or not will be set to draft.")]
+        public bool IsDraft
+        {
+            get;
+            set;
+        }
+
         public void Execute(CompositionContainer container)
         {
             var rootNamespace = RootNamespace;
@@ -125,7 +132,12 @@ namespace Tecan.Sila2.Generator.CommandLine
             var directory = Path.GetDirectoryName(Path.GetFullPath(ProviderProject));
             var assembly = Assembly.LoadFrom(Path.GetFullPath(AssemblyPath));
             var featureTypes = assembly.ExportedTypes.Where(t =>
-                t.IsInterface && !t.IsGenericType && t.GetCustomAttribute<SilaFeatureAttribute>() != null);
+                t.IsInterface && !t.IsGenericType);
+
+            if( string.IsNullOrEmpty( InterfaceName ) )
+            {
+                featureTypes = featureTypes.Where( t => t.GetCustomAttribute<SilaFeatureAttribute>() != null );
+            }
 
             var featureGenerator = container.GetExportedValue<IFeatureDefinitionGenerator>();
             var constraintsProvider = GenerateFeatureVerb.LoadConstraintMappingFile( ConstraintsFile );

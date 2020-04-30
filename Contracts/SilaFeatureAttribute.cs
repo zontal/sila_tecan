@@ -11,7 +11,7 @@ namespace Tecan.Sila2
         /// <summary>
         /// Gets whether the given feature is a draft specification
         /// </summary>
-        public bool IsDraft { get; }
+        public bool? IsDraft { get; }
 
         /// <summary>
         /// Gets the use case name for the feature representing the annotated interface
@@ -41,6 +41,23 @@ namespace Tecan.Sila2
         /// <param name="isDraft">indicates whether the feature is draft</param>
         /// <param name="category">the use case of the feature</param>
         public SilaFeatureAttribute(bool isDraft, string category)
+        {
+            IsDraft = isDraft;
+            Category = category;
+        }
+
+        /// <summary>
+        /// Creates a feature annotation
+        /// </summary>
+        /// <param name="isDraft">indicates whether the feature is draft</param>
+        public SilaFeatureAttribute( bool? isDraft ) : this( isDraft, null ) { }
+
+        /// <summary>
+        /// Creates a feature annotation
+        /// </summary>
+        /// <param name="isDraft">indicates whether the feature is draft</param>
+        /// <param name="category">the use case of the feature</param>
+        public SilaFeatureAttribute( bool? isDraft, string category )
         {
             IsDraft = isDraft;
             Category = category;
