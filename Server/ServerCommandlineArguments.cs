@@ -26,5 +26,15 @@ namespace Tecan.Sila2.Server
         /// </summary>
         [Option('u', "uuid", HelpText = "The server UUID to be used ", Required = false)]
         public Guid ServerUuid { get; set; } = Guid.NewGuid();
+
+        /// <summary>
+        /// The initial name of the server. If omitted, this defaults to the server type.
+        /// </summary>
+        [Option('n', "name", Required = false, HelpText = "The initial name of the server. If omitted, this defaults to the server type.")]
+        public string Name
+        {
+            get;
+            set;
+        }
     }
 }

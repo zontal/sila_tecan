@@ -59,7 +59,7 @@ namespace Tecan.Sila2.Server
 
                 _channel = logging.CreateChannel( typeof(Bootstrapper) );
                 var networkInterface = FindNetworkInterface( args.InterfaceNameOrCIDR, logging );
-                var startup = new ServerStartInformation( selfInfo, args.Port, networkInterface, args.ServerUuid );
+                var startup = new ServerStartInformation( selfInfo, args.Port, networkInterface, args.ServerUuid, args.Name );
                 _container.ComposeExportedValue( startup );
                 _server = _container.GetExportedValue<ISiLAServer>();
 

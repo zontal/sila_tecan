@@ -132,7 +132,7 @@ namespace Tecan.Sila2.Server
             ServerVendorURL = startupInfo.Info.VendorURI;
             ServerVersion = startupInfo.Info.Version;
             ServerUUID = startupInfo.ServerUuid.ToString();
-            ServerName = ServerType;
+            ServerName = startupInfo.Name ?? ServerType;
             _implementedFeatures = new List<IFeatureProvider>();
             _loggingInterceptor = new LoggingInterceptor( _logger );
 
