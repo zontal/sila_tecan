@@ -529,7 +529,7 @@ namespace Tecan.Sila2.Generator.Generators
             return (from prop in DetermineStructureProperties( type )
                     select new SiLAElement
                     {
-                        DataType = GenerateTypeReference( prop.PropertyType, identifier + "." + prop.Name, new MemberAttributeReader( prop ),
+                        DataType = GenerateTypeReference( (prop as PropertyInfo)?.PropertyType ?? (prop as FieldInfo)?.FieldType , identifier + "." + prop.Name, new MemberAttributeReader( prop ),
                             true, typeFoundAction ),
                         Identifier = prop.GetCustomAttribute<SilaIdentifierAttribute>()?.Identifier ?? prop.Name,
                         DisplayName = prop.GetCustomAttribute<SilaDisplayNameAttribute>()?.DisplayName ??
@@ -540,7 +540,7 @@ namespace Tecan.Sila2.Generator.Generators
                     }).ToArray();
         }
 
-        private IEnumerable<PropertyInfo> DetermineStructureProperties( Type type )
+        private IEnumerable<MemberInfo> DetermineStructureProperties( Type type )
         {
             var constructor = (from cons in type.GetConstructors()
                                orderby cons.GetParameters().Length descending
@@ -548,7 +548,8 @@ namespace Tecan.Sila2.Generator.Generators
             if(constructor != null)
             {
                 return from par in constructor.GetParameters()
-                       select type.GetProperty( par.Name.ToPascalCase() ) ??
+                       select type.GetProperty( par.Name.ToPascalCase() ) as MemberInfo ??
+                              type.GetField(par.Name.ToPascalCase()) ??
                               throw new InvalidOperationException(
                                   $"Could not find matching property for constructor parameter {par.Name} of type {type.Name}" );
             }
