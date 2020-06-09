@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netcoreapp2.1;net461;net472</TargetFrameworks>
+    <TargetFrameworks>netcoreapp3.1;net461;net472</TargetFrameworks>
     <AssemblyName>Tecan.Sila2.Locking.Tests</AssemblyName>
     <RootNamespace>Tecan.Sila2.Locking.Tests</RootNamespace>
   </PropertyGroup>

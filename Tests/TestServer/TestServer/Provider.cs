@@ -769,7 +769,7 @@ namespace Tecan.Sila2.IntegrationTests
             
             private WaitForCancelOrThrowRequestDto _request;
             
-            public WaitForCancelOrThrowCommand( TestServerProvider parent, WaitForCancelOrThrowRequestDto request) : 
+            public WaitForCancelOrThrowCommand(TestServerProvider parent, WaitForCancelOrThrowRequestDto request) : 
                     base(new System.Threading.CancellationTokenSource())
             {
                 _parent = parent;
