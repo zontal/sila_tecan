@@ -1287,7 +1287,7 @@ namespace Tecan.Sila2
         /// <param name="source">A collection with data transfer objects</param>
         /// <param name="resolver">A component that resolves binary storage identifiers</param>
         /// <returns>A collection with the underlying data</returns>
-        public static ICollection<T> Extract<T>(this IEnumerable<ISilaTransferObject<T>> source, IBinaryStore resolver)
+        public static List<T> Extract<T>(this IEnumerable<ISilaTransferObject<T>> source, IBinaryStore resolver)
         {
             return source?.Select(it => it.Extract(resolver)).ToList();
         }
@@ -1302,7 +1302,7 @@ namespace Tecan.Sila2
         /// <param name="source">A collection with data transfer objects</param>
         /// <param name="resolver">A component that resolves binary storage identifiers</param>
         /// <returns>A dictionary with the underlying data</returns>
-        public static IDictionary<TKey, TValue> Extract<TKey, TKeyDto, TValue, TValueDto>( this IEnumerable<KeyValuePairDto<TKey, TKeyDto, TValue, TValueDto>> source,
+        public static Dictionary<TKey, TValue> Extract<TKey, TKeyDto, TValue, TValueDto>( this IEnumerable<KeyValuePairDto<TKey, TKeyDto, TValue, TValueDto>> source,
             IBinaryStore resolver )
             where TKeyDto : ISilaTransferObject<TKey>
             where TValueDto : ISilaTransferObject<TValue>
@@ -1311,10 +1311,11 @@ namespace Tecan.Sila2
             {
                 return null;
             }
-            IDictionary<TKey, TValue> dict = new Dictionary<TKey, TValue>();
+            var dict = new Dictionary<TKey, TValue>();
             foreach( var keyValuePairDto in source )
             {
-                dict.Add( keyValuePairDto.Extract( resolver ) );
+                var pair = keyValuePairDto.Extract( resolver );
+                dict.Add( pair.Key, pair.Value );
             }
 
             return dict;
