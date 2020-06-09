@@ -677,11 +677,22 @@ namespace Tecan.Sila2.Generator.Generators
                 case FieldInfo field:
                     return $"F:{field.DeclaringType.FullName}.{field.Name}";
                 case MethodInfo method:
-                    var parameterString = string.Join( ",", method.GetParameters().Select( p => p.ParameterType.FullName ) );
+                    var parameterString = string.Join( ",", method.GetParameters().Select( p => GetDocTypeIdentifier(p.ParameterType) ) );
                     return $"M:{method.DeclaringType.FullName}.{method.Name}({parameterString})";
                 default:
                     return string.Empty;
             }
+        }
+
+        private string GetDocTypeIdentifier( Type type )
+        {
+            if( !type.IsGenericType )
+            {
+                return type.FullName;
+            }
+
+            var parameterString = string.Join(",", type.GetGenericArguments().Select( GetDocTypeIdentifier ));
+            return type.GetGenericTypeDefinition().FullName + "{" + parameterString + "}";
         }
 
         private static string GetSuggestedMemberIdentifier( MemberInfo member, string prefix, string suffix )
