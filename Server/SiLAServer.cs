@@ -394,6 +394,15 @@ namespace Tecan.Sila2.Server
                     }
                 }
 
+                if(exception is OperationCanceledException)
+                {
+                    throw ErrorHandling.CreateCancellationError( exception.Message );
+                }
+                else if(!(exception is RpcException))
+                {
+                    throw ErrorHandling.CreateUndefinedExecutionError( exception );
+                }
+
                 throw;
             }
         }
@@ -422,6 +431,16 @@ namespace Tecan.Sila2.Server
                         interceptions.Pop()?.ReportException(exception);
                     }
                 }
+
+                if(exception is OperationCanceledException)
+                {
+                    throw ErrorHandling.CreateCancellationError( exception.Message );
+                }
+                else if(!(exception is RpcException))
+                {
+                    throw ErrorHandling.CreateUndefinedExecutionError( exception );
+                }
+
                 throw;
             }
 
