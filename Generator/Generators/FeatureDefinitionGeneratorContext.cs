@@ -692,7 +692,9 @@ namespace Tecan.Sila2.Generator.Generators
             }
 
             var parameterString = string.Join(",", type.GetGenericArguments().Select( GetDocTypeIdentifier ));
-            return type.GetGenericTypeDefinition().FullName + "{" + parameterString + "}";
+            var typeDefinition = type.GetGenericTypeDefinition();
+            var suffixLength = typeDefinition.GetGenericArguments().Length + 1;
+            return typeDefinition.FullName.Substring(0, typeDefinition.FullName.Length - suffixLength) + "{" + parameterString + "}";
         }
 
         private static string GetSuggestedMemberIdentifier( MemberInfo member, string prefix, string suffix )
