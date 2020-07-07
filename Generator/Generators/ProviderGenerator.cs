@@ -4,6 +4,7 @@ using System.ComponentModel.Composition;
 using System.Linq;
 using System.Reflection;
 using Grpc.Core;
+using Tecan.MAP.Contracts.Services.Logging;
 using Tecan.Sila2.Generator.Contracts;
 using Tecan.Sila2.Generator.Helper;
 
@@ -21,6 +22,7 @@ namespace Tecan.Sila2.Generator.Generators
         private readonly IServerGenerator _serverGenerator;
         private readonly ITypeTranslationProvider _translationProvider;
         private readonly IEnumerable<IGeneratorHook> _hooks;
+        private readonly ILoggingChannel _loggingChannel;
 
 
         /// <summary>
@@ -30,22 +32,25 @@ namespace Tecan.Sila2.Generator.Generators
         /// <param name="clientGenerator">The generator for the client class</param>
         /// <param name="serverGenerator">The generator for the server class</param>
         /// <param name="translationProvider">A component that translates types between SiLA2 and .NET</param>
+        /// <param name="loggingChannelFactory">The logging component</param>
         /// <param name="hooks">Code generator hooks</param>
         [ImportingConstructor]
         public ProviderGenerator(ICodeNameProvider nameProvider, IClientGenerator clientGenerator,
-            IServerGenerator serverGenerator, ITypeTranslationProvider translationProvider, [ImportMany] IEnumerable<IGeneratorHook> hooks)
+            IServerGenerator serverGenerator, ITypeTranslationProvider translationProvider, ILoggingChannelFactory loggingChannelFactory, [ImportMany] IEnumerable<IGeneratorHook> hooks)
         {
             _nameProvider = nameProvider;
             _clientGenerator = clientGenerator;
             _serverGenerator = serverGenerator;
             _hooks = hooks?.ToList();
             _translationProvider = translationProvider;
+            _loggingChannel = loggingChannelFactory.CreateChannel( typeof(ProviderGenerator) );
         }
 
         /// <inheritdoc />
         public CodeCompileUnit GenerateInterfaceUnit(Feature feature, string ns, bool generateServer,
             bool generateClient)
         {
+            _loggingChannel.Log($"Generating methods container for {feature.FullyQualifiedIdentifier}".ToString, Severity.Info);
             var unit = new CodeCompileUnit();
             var nSpace = new CodeNamespace(ns);
             unit.Namespaces.Add(nSpace);
@@ -70,6 +75,7 @@ namespace Tecan.Sila2.Generator.Generators
             {
                 foreach( var generatorHook in _hooks )
                 {
+                    _loggingChannel.Log($"Executing hook {generatorHook} after code generation completed".ToString);
                     generatorHook?.OnCodeGenerationComplete(feature, unit);
                 }
             }

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
 using System.Reflection;
+using Tecan.MAP.Contracts.Services.Logging;
 using Tecan.Sila2.Generator.Contracts;
 using Tecan.Sila2.Generator.Helper;
 
@@ -22,17 +23,20 @@ namespace Tecan.Sila2.Generator.Generators
         }
 
         private readonly ITypeTranslationProvider _translationProvider;
+        private readonly ILoggingChannel _loggingChannel;
 
         [ImportingConstructor]
-        public InterfaceGenerator( ITypeTranslationProvider translationProvider, [ImportMany] IEnumerable<IGeneratorHook> hooks )
+        public InterfaceGenerator( ITypeTranslationProvider translationProvider, ILoggingChannelFactory loggingChannelFactory, [ImportMany] IEnumerable<IGeneratorHook> hooks )
         {
             Hooks = hooks;
             _translationProvider = translationProvider;
+            _loggingChannel = loggingChannelFactory.CreateChannel( typeof(InterfaceGenerator) );
         }
 
         /// <inheritdoc />
         public CodeCompileUnit GenerateInterfaceUnit( Feature feature, string ns )
         {
+            _loggingChannel.Log($"Generating interface for feature {feature.FullyQualifiedIdentifier}".ToString, Severity.Info);
             var unit = new CodeCompileUnit();
             var nSpace = new CodeNamespace( ns );
             unit.Namespaces.Add( nSpace );
@@ -44,6 +48,7 @@ namespace Tecan.Sila2.Generator.Generators
 
             foreach( var dataTypeDefinition in feature.Items.OfType<SiLAElement>() )
             {
+                _loggingChannel.Log($"Generate domain structure for {dataTypeDefinition.Identifier}".ToString);
                 var type = GenerateDataTypeDefinition( dataTypeDefinition, structHelper.RegisterAnonymousType );
                 if( type != null )
                 {
@@ -53,6 +58,7 @@ namespace Tecan.Sila2.Generator.Generators
 
             foreach( var error in feature.Items.OfType<FeatureDefinedExecutionError>() )
             {
+                _loggingChannel.Log( $"Generate exception class for {error.Identifier}".ToString );
                 nSpace.Types.Add( GenerateStandardExecutionError( error ) );
             }
 
@@ -65,6 +71,7 @@ namespace Tecan.Sila2.Generator.Generators
             {
                 foreach( var generatorHook in Hooks )
                 {
+                    _loggingChannel.Log( $"Executing hook {generatorHook} after generating interface".ToString );
                     generatorHook?.OnInterfaceGenerated( feature, interfaceType );
                 }
             }
@@ -451,10 +458,12 @@ namespace Tecan.Sila2.Generator.Generators
             {
                 if( featureItem is FeatureCommand command && !CodeGenerationHelper.IsSetterCommand( command, feature.Items.OfType<FeatureProperty>()) )
                 {
+                    _loggingChannel.Log($"Generating method for command {command.Identifier}".ToString);
                     contract.Members.Add( GenerateCommandMethod( command, typeManagement ) );
                 }
                 else if( featureItem is FeatureProperty property )
                 {
+                    _loggingChannel.Log( $"Generating property for property {property.Identifier}".ToString );
                     contract.Members.Add( GenerateProperty( property, typeManagement.RegisterAnonymousType,
                         feature.Items.OfType<FeatureCommand>().Any( c => CodeGenerationHelper.IsSetterCommand( c, property ) ) ) );
                 }

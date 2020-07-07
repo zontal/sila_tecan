@@ -8,6 +8,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Xml.Linq;
+using Tecan.MAP.Contracts.Services.Logging;
 using Tecan.Sila2.Generator.Contracts;
 using Tecan.Sila2.Generator.Helper;
 using Tecan.Sila2.Server;
@@ -29,6 +30,7 @@ namespace Tecan.Sila2.Generator.Generators
 
         private IEnumerable<IGeneratorHook> Hooks { get; }
         private readonly ITypeTranslationProvider _translationProvider;
+        private readonly ILoggingChannel _loggingChannel;
 
         /// <summary>
         /// Creates a new feature definition generator for the provided registry
@@ -37,11 +39,12 @@ namespace Tecan.Sila2.Generator.Generators
         /// <param name="translationProvider">A component that translates types between SiLA2 and .NET</param>
         /// <param name="hooks">Generator hooks</param>
         [ImportingConstructor]
-        public FeatureDefinitionGenerator( ICodeNameRegistry nameRegistry, ITypeTranslationProvider translationProvider, [ImportMany] IEnumerable<IGeneratorHook> hooks )
+        public FeatureDefinitionGenerator( ICodeNameRegistry nameRegistry, ITypeTranslationProvider translationProvider, ILoggingChannelFactory loggingChannelFactory, [ImportMany] IEnumerable<IGeneratorHook> hooks )
         {
             NameRegistry = nameRegistry;
             Hooks = hooks;
             _translationProvider = translationProvider;
+            _loggingChannel = loggingChannelFactory.CreateChannel( typeof(FeatureDefinitionGenerator) );
         }
 
         /// <inheritdoc />
@@ -49,11 +52,13 @@ namespace Tecan.Sila2.Generator.Generators
             string version = null, ICollection<string> namespaceCollector = null, IReadOnlyDictionary<string, Constraints> predefinedConstraints = null, bool isDraftDefault = true )
         {
             if(interfaceType == null) throw new ArgumentNullException( nameof( interfaceType ) );
+
+            _loggingChannel.Log($"Generating feature definition for type {interfaceType.FullName}".ToString, Severity.Info);
             var annotation = interfaceType.GetCustomAttribute<SilaFeatureAttribute>();
 
             var versionV = version == null ? interfaceType.Assembly.GetName().Version : Version.Parse( version );
             category ??= annotation?.Category;
-            AssignDefaultOriginatorAndUseCase( interfaceType, versionV, ref originator, ref category );
+            AssignDefaultOriginatorAndCategory( interfaceType, versionV, ref originator, ref category );
 
             Func<string, Constraints> constraintResolver = null;
             if( predefinedConstraints != null )
@@ -66,13 +71,13 @@ namespace Tecan.Sila2.Generator.Generators
                     }
                     else
                     {
-                        Console.WriteLine($"No constraint for element {origin} found, creating only constraints based on annotations.");
+                        _loggingChannel.Log($"No constraint for element {origin} found, creating only constraints based on annotations.".ToString, Severity.Warning);
                         return null;
                     }
                 };
             }
 
-            var context = new FeatureDefinitionGeneratorContext(NameRegistry, constraintResolver, _translationProvider);
+            var context = new FeatureDefinitionGeneratorContext(_loggingChannel, NameRegistry, constraintResolver, _translationProvider);
             context.TryLoadDocumentation( interfaceType.Assembly );
 
             var (identifier, displayName, description) = context.ParseElementData( interfaceType, prefix: "I" );
@@ -95,6 +100,7 @@ namespace Tecan.Sila2.Generator.Generators
             {
                 foreach(var hook in Hooks)
                 {
+                    _loggingChannel.Log($"Executing hook {hook} after generating feature".ToString);
                     hook?.OnFeatureGenerated( interfaceType, feature );
                 }
             }
@@ -103,15 +109,15 @@ namespace Tecan.Sila2.Generator.Generators
         }
 
 
-        private static void AssignDefaultOriginatorAndUseCase( Type interfaceType, Version version,
+        private void AssignDefaultOriginatorAndCategory( Type interfaceType, Version version,
             ref string originator,
-            ref string useCase )
+            ref string category )
         {
-            if(originator == null || useCase == null)
+            if(originator == null || category == null)
             {
                 var ns = interfaceType.FullName.Substring( 0,
                     interfaceType.FullName.Length - interfaceType.Name.Length - 1 );
-                var useCaseStartIndex = 0;
+                int useCaseStartIndex;
                 var endIndex = ns.Length;
                 var versionSuffix = "v" + version.Major.ToString();
                 if(ns.EndsWith( versionSuffix ))
@@ -119,9 +125,9 @@ namespace Tecan.Sila2.Generator.Generators
                     endIndex -= versionSuffix.Length + 1;
                 }
 
-                if(useCase != null)
+                if(category != null)
                 {
-                    useCaseStartIndex = ns.IndexOf( useCase, StringComparison.OrdinalIgnoreCase );
+                    useCaseStartIndex = ns.IndexOf( category, StringComparison.OrdinalIgnoreCase );
                     if(useCaseStartIndex == -1) originator = ns;
                 }
                 else if(originator != null)
@@ -134,12 +140,21 @@ namespace Tecan.Sila2.Generator.Generators
                     useCaseStartIndex = ns.LastIndexOf( ".", StringComparison.Ordinal ) + 1;
                 }
 
-                if(originator == null) originator = ns.Substring( 0, useCaseStartIndex - 1 );
-                if(useCase == null) useCase = ns.Substring( useCaseStartIndex, endIndex - useCaseStartIndex );
+                if( originator == null )
+                {
+                    _loggingChannel.Log("Assign originator based on the namespace because no originator has been provided.".ToString);
+                    originator = ns.Substring( 0, useCaseStartIndex - 1 );
+                }
+
+                if( category == null )
+                {
+                    _loggingChannel.Log("Assign category based on namespace because no category has been provided.".ToString);
+                    category = ns.Substring( useCaseStartIndex, endIndex - useCaseStartIndex );
+                }
             }
 
             originator = AsStandardLower( originator );
-            useCase = AsStandardLower( useCase );
+            category = AsStandardLower( category );
         }
 
         private static string AsStandardLower( string parameter )

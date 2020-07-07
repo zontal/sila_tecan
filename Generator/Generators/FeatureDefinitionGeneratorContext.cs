@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using Tecan.MAP.Contracts.Services.Logging;
 using Tecan.Sila2.DynamicClient;
 using Tecan.Sila2.Generator.Contracts;
 using Tecan.Sila2.Generator.Helper;
@@ -24,12 +25,14 @@ namespace Tecan.Sila2.Generator.Generators
         private readonly Dictionary<string, Dictionary<string, XElement>> _loadedDocumentation = new Dictionary<string, Dictionary<string, XElement>>();
         private readonly Func<string, Constraints> _constraintResolver;
         private readonly ITypeTranslationProvider _translationProvider;
+        private readonly ILoggingChannel _loggingChannel;
 
-        public FeatureDefinitionGeneratorContext( ICodeNameRegistry nameRegistry, Func<string, Constraints> constraintResolver, ITypeTranslationProvider translationProvider )
+        public FeatureDefinitionGeneratorContext( ILoggingChannel loggingChannel, ICodeNameRegistry nameRegistry, Func<string, Constraints> constraintResolver, ITypeTranslationProvider translationProvider )
         {
             _nameRegistry = nameRegistry;
             _constraintResolver = constraintResolver;
             _translationProvider = translationProvider;
+            _loggingChannel = loggingChannel;
         }
 
         public object[] GenerateFeature(Type interfaceType, ICollection<string> namespaceCollector )
@@ -66,7 +69,7 @@ namespace Tecan.Sila2.Generator.Generators
                 }
                 catch(Exception e)
                 {
-                    Console.Error.WriteLine( $"Loading documentation for assembly {assembly.FullName} failed: {e.Message}." );
+                    _loggingChannel.Log( $"Loading documentation for assembly {assembly.FullName} failed: {e.Message}.".ToString, Severity.Warning );
                 }
             }
         }
@@ -895,12 +898,11 @@ namespace Tecan.Sila2.Generator.Generators
             return (returnType, null, isObservable);
         }
 
-        private static void AssertObservable(MethodInfo commandMethod, bool isObservable)
+        private void AssertObservable(MethodInfo commandMethod, bool isObservable)
         {
             if (!isObservable)
             {
-                Console.Error.WriteLine(
-                    $"Warning: The method {commandMethod.Name} seems observable but is not marked observable.");
+                _loggingChannel.Log( $"Warning: The method {commandMethod.Name} seems observable but is not marked observable.".ToString, Severity.Warning);
             }
         }
     }

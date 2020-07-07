@@ -8,6 +8,7 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 using Grpc.Core;
+using Tecan.MAP.Contracts.Services.Logging;
 using Tecan.Sila2.Generator.Contracts;
 using Tecan.Sila2.Generator.Helper;
 using Tecan.Sila2.Server;
@@ -28,25 +29,31 @@ namespace Tecan.Sila2.Generator.Generators
         private readonly ICodeNameProvider _nameProvider;
         private readonly IEnumerable<IGeneratorHook> _hooks;
         private readonly ITypeTranslationProvider _translationProvider;
+        private readonly ILoggingChannel _loggingChannel;
+        private readonly IDependencyInjectionGenerator _diGenerator;
 
         /// <summary>
         /// Creates a new server generator
         /// </summary>
         /// <param name="translationProvider">A component that translates types between SiLA2 and .NET</param>
         /// <param name="nameProvider">The name provider used to generate feature names</param>
+        /// <param name="loggingChannelFactory">The logging implementation</param>
         /// <param name="hooks">Generator hooks</param>
         [ImportingConstructor]
-        public ServerGenerator( ITypeTranslationProvider translationProvider, ICodeNameProvider nameProvider, [ImportMany] IEnumerable<IGeneratorHook> hooks )
+        public ServerGenerator( ITypeTranslationProvider translationProvider, ICodeNameProvider nameProvider, ILoggingChannelFactory loggingChannelFactory, IDependencyInjectionGenerator diGenerator, [ImportMany] IEnumerable<IGeneratorHook> hooks )
         {
             _translationProvider = translationProvider;
             _nameProvider = nameProvider;
             _hooks = hooks;
+            _loggingChannel = loggingChannelFactory.CreateChannel( typeof(ServerGenerator) );
+            _diGenerator = diGenerator;
         }
 
 
         /// <inheritdoc />
         public CodeTypeDeclaration GenerateServer( Feature feature )
         {
+            _loggingChannel.Log( $"Generating feature provider for {feature.FullyQualifiedIdentifier}".ToString, Severity.Info );
             var server = new CodeTypeDeclaration( feature.Identifier + "Provider" )
             {
                 Attributes = MemberAttributes.Public,
@@ -55,11 +62,6 @@ namespace Tecan.Sila2.Generator.Generators
                 IsClass = true
             };
             server.BaseTypes.Add( nameof(IFeatureProvider) );
-            server.CustomAttributes.Add( new CodeAttributeDeclaration( new CodeTypeReference( typeof(ExportAttribute) ),
-                new CodeAttributeArgument( new CodeTypeOfExpression( nameof(IFeatureProvider) ) ) ) );
-            server.CustomAttributes.Add( new CodeAttributeDeclaration( typeof(PartCreationPolicyAttribute).FullName,
-                new CodeAttributeArgument( new CodeFieldReferenceExpression(
-                    new CodeTypeReferenceExpression( typeof(CreationPolicy) ), nameof(CreationPolicy.Shared) ) ) ) );
             var implementation = GenerateServerImplementationField( feature, server );
             server.WriteDocumentation( $"A class that exposes the {_nameProvider.CreateFeatureInterfaceReference( feature ).BaseType} interface via SiLA2" );
             var serverRef = GenerateServerGrpcServerField( server );
@@ -71,6 +73,7 @@ namespace Tecan.Sila2.Generator.Generators
 
                 foreach( var featureCommand in feature.Items.OfType<FeatureCommand>() )
                 {
+                    _loggingChannel.Log($"Generating provider for command {featureCommand.Identifier}".ToString);
                     GenerateServerCommand( feature, featureCommand, server, implementation, serverRef );
                 }
 
@@ -78,29 +81,37 @@ namespace Tecan.Sila2.Generator.Generators
                 {
                     if( featureProperty.Observable == FeaturePropertyObservable.No )
                     {
+                        _loggingChannel.Log( $"Generating unobservable property for {featureProperty.Identifier}".ToString );
                         GenerateServerStaticProperty( feature, featureProperty, server, implementation, id => FindError( feature, id ) );
                     }
                     else
                     {
+                        _loggingChannel.Log( $"Generating observable property for {featureProperty.Identifier}".ToString );
                         GenerateServerDynamicProperty( feature, featureProperty, server, implementation, id => FindError( feature, id ) );
                     }
                 }
 
                 foreach( var featureMetadata in feature.Items.OfType<FeatureMetadata>() )
                 {
+                    _loggingChannel.Log( $"Generating interceptor for {featureMetadata.Identifier}".ToString );
                     GenerateServerMetadata( featureMetadata, server, implementation );
                 }
             }
 
+
+            _loggingChannel.Log( "Generating provider shared code".ToString );
             GenerateServerFeatureProperty( server, feature );
 
             GenerateServerGetCommand( server, feature );
             GenerateServerGetProperty( server, feature );
 
+            _diGenerator.AddDependencyInjectionRegistrations(server);
+
             if( _hooks != null )
             {
                 foreach( var hook in _hooks )
                 {
+                    _loggingChannel.Log($"Executing hook {hook} after provider code generation is complete.".ToString);
                     hook?.OnServerGenerated( feature, server );
                 }
             }
@@ -979,8 +990,6 @@ namespace Tecan.Sila2.Generator.Generators
                 { nameof(implementation), "The implementation to exported through SiLA2" },
                 { nameof(server), "The SiLA2 server instance through which the implementation shall be exported" }
             } );
-            constructor.CustomAttributes.Add(
-                new CodeAttributeDeclaration( new CodeTypeReference( typeof(ImportingConstructorAttribute) ) ) );
             server.Members.Add( constructor );
         }
 

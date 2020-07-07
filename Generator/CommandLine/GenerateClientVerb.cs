@@ -20,7 +20,7 @@ namespace Tecan.Sila2.Generator.CommandLine
     [Export( typeof( ICommandLineVerb ) )]
     [PartCreationPolicy( CreationPolicy.NonShared )]
     [Verb( "generate-client", HelpText = "Generates a client for the given SiLA feature" )]
-    internal class GenerateClientVerb : ICommandLineVerb
+    internal class GenerateClientVerb : VerbBase
     {
         /// <summary>
         /// The path to the assembly that should be scanned for interfaces
@@ -47,8 +47,9 @@ namespace Tecan.Sila2.Generator.CommandLine
         public string AdjustToInterface { get; set; }
 
         /// <inheritdoc />
-        public void Execute( CompositionContainer container )
+        public override void Execute( CompositionContainer container )
         {
+            var channel = SetupLogging( container );
             var feature = FeatureSerializer.Load( Path.GetFullPath( FeaturePath ) );
             var directory = Path.GetDirectoryName( ProviderProject );
             if( string.IsNullOrEmpty( AdjustToInterface ) )
@@ -58,6 +59,7 @@ namespace Tecan.Sila2.Generator.CommandLine
 #if !NETCOREAPP2_1
                 if( Namespace == null )
                 {
+                    channel.Log("Finding root namespace in project file".ToString);
                     var project = new Project( ProviderProject );
                     Namespace = project.GetPropertyValue( "RootNamespace" );
                 }
@@ -69,6 +71,7 @@ namespace Tecan.Sila2.Generator.CommandLine
 #if !NETCOREAPP2_1
                 if( type == null )
                 {
+                    channel.Log( "Finding output path and assembly name in project file".ToString );
                     var project = new Project( ProviderProject );
                     var target = project.GetPropertyValue( "OutputPath" );
                     var fileName = project.GetPropertyValue( "AssemblyName" );

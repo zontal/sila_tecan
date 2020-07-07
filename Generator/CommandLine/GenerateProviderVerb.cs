@@ -5,6 +5,7 @@ using System.ComponentModel.Composition.Hosting;
 using System.IO;
 using System.Linq;
 using CommandLine;
+using Tecan.MAP.Contracts.Services.Logging;
 using Tecan.Sila2.Generator.Contracts;
 using Tecan.Sila2.Generator.Helper;
 
@@ -16,7 +17,7 @@ namespace Tecan.Sila2.Generator.CommandLine
     [Export(typeof(ICommandLineVerb))]
     [PartCreationPolicy(CreationPolicy.NonShared)]
     [Verb("generate-provider", HelpText ="Generates the provider for a given SiLA feature")]
-    internal class GenerateProviderVerb : ICommandLineVerb
+    internal class GenerateProviderVerb : VerbBase
     {
         /// <summary>
         /// The path to the feature from which the provider shall be generated
@@ -79,8 +80,10 @@ namespace Tecan.Sila2.Generator.CommandLine
         /// </summary>
         public bool GenerateServer { get; private set; } = true;
 
-        public void Execute(CompositionContainer container)
+        public override void Execute(CompositionContainer container)
         {
+            var channel = SetupLogging( container );
+            channel.Log("Loading feature".ToString);
             var feature = FeatureSerializer.Load(FeaturePath);
             var ns = Namespace ?? feature.Namespace;
 
@@ -93,9 +96,12 @@ namespace Tecan.Sila2.Generator.CommandLine
             var imports = ImportedNamespaces == null
                 ? new string[0]
                 : ImportedNamespaces.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
+            channel.Log("Adding additional import statements".ToString);
             AddUsingStatements(dtoUnit, imports);
             AddUsingStatements(providerUnit, imports);
+            channel.Log("Generating code for data transfer objects".ToString, Severity.Info );
             CodeGenerationHelper.GenerateCSharp(dtoUnit, Path.GetFullPath(DtoPath));
+            channel.Log( "Generating code for provider".ToString, Severity.Info );
             CodeGenerationHelper.GenerateCSharp(providerUnit, Path.GetFullPath(ProviderPath));
         }
 

@@ -3,6 +3,7 @@ using System.CodeDom;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
+using Tecan.MAP.Contracts.Services.Logging;
 using Tecan.Sila2.Generator.Contracts;
 using Tecan.Sila2.Generator.Helper;
 
@@ -13,11 +14,13 @@ namespace Tecan.Sila2.Generator.TypeTranslation
     internal class TypeTranslationProvider : ITypeTranslationProvider
     {
         private readonly IReadOnlyList<ITypeTranslator> _translators;
+        private readonly ILoggingChannel _loggingChannel;
 
         [ImportingConstructor]
-        public TypeTranslationProvider( [ImportMany] IEnumerable<ITypeTranslator> translators )
+        public TypeTranslationProvider( ILoggingChannelFactory loggingChannelFactory, [ImportMany] IEnumerable<ITypeTranslator> translators )
         {
             _translators = translators.OrderByDescending(t => t.Priority).ToList();
+            _loggingChannel = loggingChannelFactory.CreateChannel( typeof(TypeTranslationProvider) );
         }
 
         public CodeExpression EncapsulateAsDto( CodeExpression argument, DataTypeType dataType, CodeExpression binaryStoreArgument, string suggestedName )
@@ -63,6 +66,7 @@ namespace Tecan.Sila2.Generator.TypeTranslation
             {
                 if( typeTranslator.TryTranslate( this, interfaceType, origin, out silaType ) )
                 {
+                    _loggingChannel.Log( $"Type {interfaceType.FullName} translated using {typeTranslator}".ToString );
                     return true;
                 }
             }
@@ -77,6 +81,7 @@ namespace Tecan.Sila2.Generator.TypeTranslation
             {
                 if( typeTranslator.TryTranslate( this, dataType, suggestedName, out translationInfo, constraintHandler, structHandler ) && translationInfo != null )
                 {
+                    _loggingChannel.Log($"SiLA2 Type {dataType.Item} translated using {typeTranslator}".ToString);
                     return true;
                 }
             }

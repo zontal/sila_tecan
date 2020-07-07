@@ -27,7 +27,7 @@ namespace Tecan.Sila2.Generator.Test
         public void SetCurrentDirectory()
         {
             Environment.CurrentDirectory = Path.GetDirectoryName( Assembly.GetExecutingAssembly().Location );
-            _typeTranslationProvider = new TypeTranslationProvider( new ITypeTranslator[]
+            _typeTranslationProvider = new TypeTranslationProvider( new TestLoggingFactory(),  new ITypeTranslator[]
             {
                 new BasicTypeTranslator( null ),
                 new CollectionTranslator( null ),
@@ -56,7 +56,7 @@ namespace Tecan.Sila2.Generator.Test
         [Test]
         public void Test_GenerateFeature_SilaFeature()
         {
-            var generator = new FeatureDefinitionGenerator( null, _typeTranslationProvider, null );
+            var generator = new FeatureDefinitionGenerator( null, _typeTranslationProvider, new TestLoggingFactory(), null );
 
             var feature = generator.GenerateFeature( Interface );
             var xmlCode = FeatureSerializer.SaveToString( feature );
@@ -87,7 +87,7 @@ namespace Tecan.Sila2.Generator.Test
         public void Test_GenerateInterface_SilaFeature()
         {
             var feature = FeatureSerializer.Load( FeatureDefinitionFile );
-            var interfaceGenerator = new InterfaceGenerator( _typeTranslationProvider, null );
+            var interfaceGenerator = new InterfaceGenerator( _typeTranslationProvider, new TestLoggingFactory(), null );
             var unit = interfaceGenerator.GenerateInterfaceUnit( feature,
                 "Tecan.Sila2.Generator.Test.TestReference" );
 
@@ -98,7 +98,7 @@ namespace Tecan.Sila2.Generator.Test
         public void Test_GenerateDto_SilaFeature()
         {
             var feature = FeatureSerializer.Load( FeatureDefinitionFile );
-            var dtoGenerator = new DtoGenerator( _typeTranslationProvider, CreateNameProvider() );
+            var dtoGenerator = new DtoGenerator( _typeTranslationProvider, CreateNameProvider(), new TestLoggingFactory() );
             var unit = dtoGenerator.GenerateInterfaceUnit( feature,
                 "Tecan.Sila2.Generator.Test.TestReference" );
 
@@ -115,8 +115,8 @@ namespace Tecan.Sila2.Generator.Test
         {
             var feature = FeatureSerializer.Load( FeatureDefinitionFile );
             var nameProvider = CreateNameProvider();
-            var providerGenerator = new ProviderGenerator( nameProvider, new ClientGenerator( nameProvider, _typeTranslationProvider, null ),
-                new ServerGenerator( _typeTranslationProvider, nameProvider, null ), _typeTranslationProvider, null );
+            var providerGenerator = new ProviderGenerator( nameProvider, new ClientGenerator( nameProvider, _typeTranslationProvider, new TestLoggingFactory(), null ),
+                new ServerGenerator( _typeTranslationProvider, nameProvider, new TestLoggingFactory(), new MefGenerator(), null ), _typeTranslationProvider, new TestLoggingFactory(), null );
             var unit = providerGenerator.GenerateInterfaceUnit( feature,
                 "Tecan.Sila2.Generator.Test.TestReference",
                 generateServer: true,

@@ -2,12 +2,25 @@
 using System.ComponentModel.Composition.Hosting;
 using System.Linq;
 using CommandLine;
+using Tecan.MAP.Contracts.Services.Logging;
 using Tecan.Sila2.Generator.Contracts;
 
 namespace Tecan.Sila2.Generator
 {
-    internal class Program
+    /// <summary>
+    /// The main class of the code generator
+    /// </summary>
+    public class Program
     {
+        /// <summary>
+        /// Sets the minimum severity of the log level. Allowed values are Debug, Info, Warning, Error.
+        /// </summary>
+        public static Severity MinimumSeverity
+        {
+            get;
+            internal set;
+        }
+
         private static CompositionContainer _container;
 
         private static void CreateCompositionContainer()

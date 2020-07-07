@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using CommandLine;
+using Tecan.MAP.Contracts.Services.Logging;
 using Tecan.Sila2.Generator.Contracts;
 
 #if NET472
@@ -20,7 +21,7 @@ namespace Tecan.Sila2.Generator.CommandLine
     [Export(typeof(ICommandLineVerb))]
     [PartCreationPolicy(CreationPolicy.NonShared)]
     [Verb("generate-server", HelpText = "Generates the complete server that exposes a given interface as a SiLA feature")]
-    internal class GenerateServerVerb : ICommandLineVerb
+    internal class GenerateServerVerb : VerbBase
     {
         /// <summary>
         /// The path to the assembly that should be scanned for interfaces
@@ -114,12 +115,14 @@ namespace Tecan.Sila2.Generator.CommandLine
             set;
         }
 
-        public void Execute(CompositionContainer container)
+        public override void Execute(CompositionContainer container)
         {
+            var channel = SetupLogging( container );
             var rootNamespace = RootNamespace;
 #if NET472
             if( Namespace == null && rootNamespace == null )
             {
+                channel.Log("Finding namespace from project file".ToString);
                 var project = new Project( ProviderProject );
                 rootNamespace = project.Properties.FirstOrDefault( p => p.Name == "RootNamespace" )?.EvaluatedValue;
             }
@@ -140,21 +143,25 @@ namespace Tecan.Sila2.Generator.CommandLine
             }
 
             var featureGenerator = container.GetExportedValue<IFeatureDefinitionGenerator>();
-            var constraintsProvider = GenerateFeatureVerb.LoadConstraintMappingFile( ConstraintsFile );
+            var constraintsProvider = GenerateFeatureVerb.LoadConstraintMappingFile( channel, ConstraintsFile );
+            bool foundFeature = false;
             foreach (var featureType in featureTypes)
             {
-                if (InterfaceName != null && !string.Equals(InterfaceName, featureType.Name, StringComparison.OrdinalIgnoreCase))
+                channel.Log($"Processing interface {featureType.FullName}".ToString, Severity.Info);
+                if (InterfaceName != null && !string.Equals(InterfaceName, featureType.Name, StringComparison.OrdinalIgnoreCase) && !string.Equals(InterfaceName, featureType.FullName, StringComparison.OrdinalIgnoreCase))
                 {
                     continue;
                 }
+
+                foundFeature = true;
                 // First, generate the feature definition
                 var importNamespaces = new HashSet<string>();
-
                 var feature = featureGenerator.GenerateFeature(featureType, Originator,
                     UseCase,
                     Version, importNamespaces, constraintsProvider);
                 // ReSharper disable once AssignNullToNotNullAttribute
                 var featurePath = Path.Combine(directory, FeaturePath ?? feature.Identifier + ".sila.xml");
+                channel.Log("Saving feature".ToString);
                 FeatureSerializer.Save(feature, featurePath);
                 // Second, generate the provider (server only)
                 var generateProvider = new GenerateProviderVerb
@@ -166,7 +173,20 @@ namespace Tecan.Sila2.Generator.CommandLine
                     ProviderPath = Path.Combine(directory, feature.Identifier, ProviderPath),
                     ServerOnly = !Client
                 };
+                channel.Log("Generate provider".ToString);
                 generateProvider.Execute(container);
+            }
+
+            if( !foundFeature )
+            {
+                if( InterfaceName != null )
+                {
+                    channel.Log( $"No interface with the name {InterfaceName} could be found.".ToString, Severity.Error );
+                }
+                else
+                {
+                    channel.Log( "No interface with SilaFeature attribute has been found.".ToString, Severity.Warning );
+                }
             }
         }
 

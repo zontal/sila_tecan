@@ -8,6 +8,7 @@ using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using Grpc.Core;
+using Tecan.MAP.Contracts.Services.Logging;
 using Tecan.Sila2.Cancellation;
 using Tecan.Sila2.Client;
 using Tecan.Sila2.Generator.Contracts;
@@ -28,6 +29,7 @@ namespace Tecan.Sila2.Generator.Generators
         private readonly ICodeNameProvider _nameProvider;
         private readonly IEnumerable<IGeneratorHook> _hooks;
         private readonly ITypeTranslationProvider _translationProvider;
+        private readonly ILoggingChannel _loggingChannel;
 
         /// <summary>
         /// Creates a new client generator
@@ -36,17 +38,19 @@ namespace Tecan.Sila2.Generator.Generators
         /// <param name="translationProvider">A component used to translate types between SiLA2 and .NET</param>
         /// <param name="hooks">Generator hooks</param>
         [ImportingConstructor]
-        public ClientGenerator(ICodeNameProvider nameProvider, ITypeTranslationProvider translationProvider, [ImportMany] IEnumerable<IGeneratorHook> hooks)
+        public ClientGenerator(ICodeNameProvider nameProvider, ITypeTranslationProvider translationProvider, ILoggingChannelFactory loggingChannelFactory, [ImportMany] IEnumerable<IGeneratorHook> hooks)
         {
             _nameProvider = nameProvider;
             _hooks = hooks;
             _translationProvider = translationProvider;
+            _loggingChannel = loggingChannelFactory.CreateChannel( typeof(ClientGenerator) );
         }
 
 
         /// <inheritdoc />
         public CodeTypeDeclaration GenerateClient(Feature feature)
         {
+            _loggingChannel.Log($"Generating client for feature {feature.FullyQualifiedIdentifier}".ToString, Severity.Info);
             var client = new CodeTypeDeclaration( feature.Identifier + "Client")
             {
                 Attributes = MemberAttributes.Public,
@@ -62,7 +66,12 @@ namespace Tecan.Sila2.Generator.Generators
             {
                 if( !CodeGenerationHelper.IsSetterCommand( featureCommand, feature.Items.OfType<FeatureProperty>() ) )
                 {
+                    _loggingChannel.Log($"Generate client command for {featureCommand.Identifier}".ToString);
                     GenerateClientCommand( feature, featureCommand, client );
+                }
+                else
+                {
+                    _loggingChannel.Log($"Skipping {featureCommand.Identifier} because it is a property setter".ToString);
                 }
             }
 
@@ -72,6 +81,7 @@ namespace Tecan.Sila2.Generator.Generators
             {
                 foreach (var hook in _hooks)
                 {
+                    _loggingChannel.Log($"Executing client generation hook {hook}".ToString);
                     hook?.OnClientGenerated(feature, client);
                 }
             }
@@ -92,6 +102,7 @@ namespace Tecan.Sila2.Generator.Generators
             var anyDynamic = false;
             foreach (var featureProperty in feature.Items.OfType<FeatureProperty>())
             {
+                _loggingChannel.Log($"Generate property {featureProperty.Identifier}".ToString);
                 var setterCommand = feature.Items.OfType<FeatureCommand>().FirstOrDefault( c => CodeGenerationHelper.IsSetterCommand( c, featureProperty ) );
                 anyLazy |= featureProperty.Observable == FeaturePropertyObservable.No && setterCommand == null;
                 anyDynamic |= featureProperty.Observable == FeaturePropertyObservable.Yes && setterCommand == null;
@@ -100,6 +111,7 @@ namespace Tecan.Sila2.Generator.Generators
 
             if (anyDynamic)
             {
+                _loggingChannel.Log("Client contains dynamic properties. Implementing INotifyPropertyChanged.".ToString);
                 client.BaseTypes.Add(typeof(INotifyPropertyChanged));
                 client.Members.Add(new CodeMemberEvent()
                 {
@@ -758,6 +770,7 @@ namespace Tecan.Sila2.Generator.Generators
 
         private void GenerateClientConstructors(CodeTypeDeclaration client, bool initLazyRequests)
         {
+            _loggingChannel.Log("Generate constructors".ToString);
             var callInitLazyRequests = new CodeMethodInvokeExpression(null, "InitLazyRequests");
             var defaultConstructor = new CodeConstructor() { Attributes = MemberAttributes.Public };
             var callInvokerConstructor = new CodeConstructor() { Attributes = MemberAttributes.Public };

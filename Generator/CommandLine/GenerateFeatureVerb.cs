@@ -7,6 +7,7 @@ using System.Linq;
 using System.Reflection;
 using System.Xml.Serialization;
 using CommandLine;
+using Tecan.MAP.Contracts.Services.Logging;
 using Tecan.Sila2.Generator.Contracts;
 // ReSharper disable PossibleMultipleEnumeration
 
@@ -18,7 +19,7 @@ namespace Tecan.Sila2.Generator.CommandLine
     [Export(typeof(ICommandLineVerb))]
     [PartCreationPolicy(CreationPolicy.NonShared)]
     [Verb("generate-feature", HelpText = "Generates an XML file in the feature description language that contains the contents of a given interface")]
-    internal class GenerateFeatureVerb : ICommandLineVerb
+    internal class GenerateFeatureVerb : VerbBase
     {
         /// <summary>
         /// The path to the assembly that should be scanned for interfaces
@@ -62,24 +63,36 @@ namespace Tecan.Sila2.Generator.CommandLine
         [Option('c', "constraints-file", Required = false, HelpText = "Path to a file that contains additional constraints")]
         public string ConstraintsFile { get; set; }
 
-        public void Execute(CompositionContainer container)
+        public override void Execute(CompositionContainer container)
         {
+            var channel = SetupLogging( container );
             var namespaces = new HashSet<string>();
             var fullPath = Path.GetFullPath(AssemblyPath);
             var assembly = Assembly.LoadFrom(fullPath);
             var featureTypes = assembly.ExportedTypes.Where(t =>
                 t.IsInterface && !t.IsGenericType && t.GetCustomAttribute<SilaFeatureAttribute>() != null);
-            var featureType = InterfaceName != null
-                ? featureTypes.FirstOrDefault(t => string.Equals(t.FullName, InterfaceName, StringComparison.Ordinal)) ?? featureTypes.Single(t => string.Equals( t.Name, InterfaceName, StringComparison.Ordinal ) )
-                : featureTypes.Single();
+            Type featureType;
+            try
+            {
+                featureType = InterfaceName != null
+                    ? featureTypes.FirstOrDefault( t => string.Equals( t.FullName, InterfaceName, StringComparison.Ordinal ) )
+                      ?? featureTypes.Single( t => string.Equals( t.Name, InterfaceName, StringComparison.Ordinal ) )
+                    : featureTypes.Single();
+            }
+            catch( InvalidOperationException )
+            {
+                channel.Log($"Could not find interface {InterfaceName}".ToString, Severity.Error);
+                return;
+            }
             var featureGenerator = container.GetExportedValue<IFeatureDefinitionGenerator>();
-            var predefinedConstraints = LoadConstraintMappingFile(ConstraintsFile);
+            var predefinedConstraints = LoadConstraintMappingFile(channel, ConstraintsFile);
             var feature = featureGenerator.GenerateFeature(featureType, Originator, UseCase,
                 Version, namespaces, predefinedConstraints);
+            channel.Log( $"Saving generated feature to {OutputPath}".ToString, Severity.Info );
             FeatureSerializer.Save(feature, Path.GetFullPath(OutputPath));
         }
 
-        internal static IReadOnlyDictionary<string, Constraints> LoadConstraintMappingFile(string constraintsFile)
+        internal static IReadOnlyDictionary<string, Constraints> LoadConstraintMappingFile(ILoggingChannel channel, string constraintsFile)
         {
             IReadOnlyDictionary<string, Constraints> predefinedConstraints = null;
             if (constraintsFile != null)
@@ -95,7 +108,7 @@ namespace Tecan.Sila2.Generator.CommandLine
                 }
                 else
                 {
-                    Console.Error.WriteLine($"Constraints file {constraintsFile} could not be found.");
+                    channel.Log($"Constraints file {constraintsFile} could not be found.".ToString, Severity.Warning);
                 }
             }
 

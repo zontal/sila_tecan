@@ -9,13 +9,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CommandLine;
+using Tecan.MAP.Contracts.Services.Logging;
 using Tecan.Sila2.Generator.Contracts;
 
 namespace Tecan.Sila2.Generator.CommandLine
 {
     [Export(typeof(ICommandLineVerb))]
     [Verb("generate-certificate", HelpText = "Helper command to generate self-signed certificates")]
-    internal class GenerateCertificatesVerb : ICommandLineVerb
+    internal class GenerateCertificatesVerb : VerbBase
     {
         [Option('a', "ca-path", Required = true, HelpText = "The path to the certificate authority key file")]
         public string CAPath { get; set; }
@@ -45,40 +46,55 @@ namespace Tecan.Sila2.Generator.CommandLine
         [Value(0, HelpText = "The target name for which the certificate is issued.", Required = true)]
         public string TargetName { get; set; }
 
-        public void Execute(CompositionContainer container)
+        public override void Execute(CompositionContainer container)
         {
+            var channel = SetupLogging( container );
             if (Country == null)
             {
+                channel.Log( "No country provided, using current region".ToString );
                 Country = RegionInfo.CurrentRegion.TwoLetterISORegionName;
             }
             Environment.CurrentDirectory = Path.GetFullPath(OutputPath);
-            EnsureCaExists();
+            EnsureCaExists(channel);
             // force create new server key
             var serverTempPassword = "pass:1111";
-            OpenSsl($"genrsa -passout {serverTempPassword} -des3 -out server.key", "Generate server key");
+            OpenSsl(channel, $"genrsa -passout {serverTempPassword} -des3 -out server.key", "Generate server key");
             var subject = CreateSubject(TargetName);
-            OpenSsl($"req -passin {serverTempPassword} -new -key server.key -out server.csr -subj {subject}", "Create server signing request");
-            OpenSsl($"x509 -req -passin {CAPassword} -days {Duration} -in server.csr -CA ca.crt -CAkey \"{CAPath}\" -set_serial 01 -out server.crt", "Create server certificate");
-            OpenSsl($"rsa -passin {serverTempPassword} -in server.key -out server.key", "Remove passphrase from server key");
+            OpenSsl( channel, $"req -passin {serverTempPassword} -new -key server.key -out server.csr -subj {subject}", "Create server signing request");
+            OpenSsl( channel, $"x509 -req -passin {CAPassword} -days {Duration} -in server.csr -CA ca.crt -CAkey \"{CAPath}\" -set_serial 01 -out server.crt", "Create server certificate");
+            OpenSsl( channel, $"rsa -passin {serverTempPassword} -in server.key -out server.key", "Remove passphrase from server key");
         }
 
-        private void EnsureCaExists()
+        private void EnsureCaExists(ILoggingChannel channel)
         {
             if (!File.Exists(CAPath))
             {
-                OpenSsl($"genrsa -passout {CAPassword} -des3 -out \"{CAPath}\" 4096", "Creating CA key");
+                OpenSsl( channel, $"genrsa -passout {CAPassword} -des3 -out \"{CAPath}\" 4096", "Creating CA key");
+            }
+            else
+            {
+                channel.Log("CA found".ToString);
             }
             var caCrt = Path.ChangeExtension(CAPath, ".crt");
             if (!File.Exists(caCrt))
             {
                 var subject = CreateSubject("CA");
 
-                OpenSsl($"req -passin {CAPassword} -new -x509 -days {Duration} -key \"{CAPath}\" -out \"{caCrt}\" -subj \"{subject}\"", "Create CA certificate");
+                OpenSsl( channel, $"req -passin {CAPassword} -new -x509 -days {Duration} -key \"{CAPath}\" -out \"{caCrt}\" -subj \"{subject}\"", "Create CA certificate");
+            }
+            else
+            {
+                channel.Log("CA crt found".ToString);
             }
 
             if (Path.GetDirectoryName(Path.GetFullPath(caCrt)) != Path.GetFullPath(OutputPath) || Path.GetFileName(caCrt) != "ca.crt")
             {
+                channel.Log("Copy CA.crt".ToString);
                 File.Copy(caCrt, Path.Combine(OutputPath, "ca.crt"));
+            }
+            else
+            {
+                channel.Log($"CA.crt is already located at {OutputPath}".ToString);
             }
         }
 
@@ -113,19 +129,24 @@ namespace Tecan.Sila2.Generator.CommandLine
             return subject.ToString();
         }
 
-        private void OpenSsl(string arguments, string actionDescription)
+        private void OpenSsl(ILoggingChannel channel, string arguments, string actionDescription)
         {
+            channel.Log(actionDescription.ToString, Severity.Info);
             var startInfo = new ProcessStartInfo("openssl", arguments);
             startInfo.RedirectStandardOutput = true;
             startInfo.RedirectStandardError = true;
             startInfo.UseShellExecute = false;
             var process = Process.Start(startInfo);
             process.WaitForExit();
-            Console.WriteLine(process.StandardOutput.ReadToEnd());
-            Console.Error.WriteLine(process.StandardError.ReadToEnd());
+            channel.Log(process.StandardOutput.ReadToEnd);
+            var error = process.StandardError.ReadToEnd();
+            if( !string.IsNullOrEmpty( error ) )
+            {
+                channel.Log(error.ToString, Severity.Error);
+            }
             if (process.ExitCode != 0)
             {
-                throw new Exception($"{actionDescription} failed, aborting certificate generation.");
+                channel.Log($"{actionDescription} failed.".ToString, Severity.Warning);
             }
         }
     }

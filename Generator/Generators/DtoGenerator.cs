@@ -7,6 +7,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using ProtoBuf;
+using Tecan.MAP.Contracts.Services.Logging;
 using Tecan.Sila2.Binary;
 using Tecan.Sila2.DynamicClient;
 using Tecan.Sila2.Generator.Contracts;
@@ -29,6 +30,7 @@ namespace Tecan.Sila2.Generator.Generators
         public ICodeNameProvider NameProvider { get; }
 
         private readonly ITypeTranslationProvider _translationProvider;
+        private readonly ILoggingChannel _loggingChannel;
 
         /// <summary>
         /// Creates a new Dto generator for the given name provider
@@ -36,15 +38,17 @@ namespace Tecan.Sila2.Generator.Generators
         /// <param name="translationProvider">The translation provider</param>
         /// <param name="nameProvider">A name provider</param>
         [ImportingConstructor]
-        public DtoGenerator(ITypeTranslationProvider translationProvider, ICodeNameProvider nameProvider)
+        public DtoGenerator(ITypeTranslationProvider translationProvider, ICodeNameProvider nameProvider, ILoggingChannelFactory loggingChannelFactory)
         {
             _translationProvider = translationProvider;
+            _loggingChannel = loggingChannelFactory.CreateChannel( typeof(DtoGenerator) );
             NameProvider = nameProvider;
         }
 
         /// <inheritdoc />
         public CodeCompileUnit GenerateInterfaceUnit(Feature feature, string ns)
         {
+            _loggingChannel.Log( $"Generating data transfer objects for feature {feature.FullyQualifiedIdentifier}".ToString, Severity.Info );
             var unit = new CodeCompileUnit();
             var nSpace = new CodeNamespace(ns);
             unit.Namespaces.Add(nSpace);
@@ -58,6 +62,7 @@ namespace Tecan.Sila2.Generator.Generators
 
                 foreach(var featureCommand in feature.Items.OfType<FeatureCommand>())
                 {
+                    _loggingChannel.Log( $"Generating request/response classes for {featureCommand.Identifier}".ToString );
                     nSpace.Types.Add( GenerateCommandRequestType( feature, featureCommand, structHandler ) );
 
                     if(featureCommand.IntermediateResponse != null && featureCommand.IntermediateResponse.Length > 0)
@@ -77,12 +82,14 @@ namespace Tecan.Sila2.Generator.Generators
                     _translationProvider.GetDtoTypeReference( featureProperty.DataType, featureProperty.Identifier, structHandler );
                     if(featureProperty.DataType.Item is ConstrainedType)
                     {
+                        _loggingChannel.Log( $"Generating constrained DTO type for property {featureProperty.Identifier}".ToString );
                         nSpace.Types.Add( GeneratePropertyResponse( featureProperty, structHandler ) );
                     }
                 }
 
                 foreach(var dataTypeDefinition in feature.Items.OfType<SiLAElement>())
                 {
+                    _loggingChannel.Log( $"Generating data transfer type for {dataTypeDefinition.Identifier}".ToString );
                     var type = GenerateDataTypeDefinition( dataTypeDefinition, structHandler );
                     if(type != null)
                     {
@@ -98,6 +105,7 @@ namespace Tecan.Sila2.Generator.Generators
 
             structureHelper.ProcessAll( ( name, anonymousType ) =>
             {
+                _loggingChannel.Log( $"Generating data transfer type for anonymous type {name}".ToString );
                 var element = new SiLAElement()
                 {
                     Identifier = name,

@@ -18,7 +18,7 @@
             <dependency id="protobuf-net" version="2.4" />
             <dependency id="System.ComponentModel.Composition" version="4.5" />
             <dependency id="System.Threading.Channels" version="4.7.0" />
-            <dependency id="Tecan.MAP.Contracts.Services.Logging" version="[2.1,5.0)" />
+            <dependency id="Tecan.MAP.Contracts.Services.Logging" version="[2.1,6.0)" />
             <dependency id="IPNetwork2" version="2.1.2" />
             <dependency id="Makaretu.Dns.Multicast" version="0.25.0" />
         </dependencies>

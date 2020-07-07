@@ -325,39 +325,43 @@ namespace Tecan.Sila2.Server
             ServerCallContext context )
             where TRequest : ISilaRequestObject
         {
-            var interceptions = RequestInterceptions( request.CommandIdentifier, context );
-            try
+            using( new ActivityBlock( "Request of " + request.CommandIdentifier ) )
             {
-                var result = command( request );
-                if(interceptions != null)
+                var interceptions = RequestInterceptions( request.CommandIdentifier, context );
+                try
                 {
-                    foreach(var interception in interceptions)
+                    var result = command( request );
+                    if( interceptions != null )
                     {
-                        interception.ReportSuccess();
+                        foreach( var interception in interceptions )
+                        {
+                            interception.ReportSuccess();
+                        }
                     }
-                }
-                return result;
-            }
-            catch(Exception exception)
-            {
-                if(interceptions != null)
-                {
-                    foreach(var interception in interceptions)
-                    {
-                        interception.ReportException( exception );
-                    }
-                }
-                
-                if( exception is OperationCanceledException )
-                {
-                    throw ErrorHandling.CreateCancellationError( exception.Message );
-                }
-                else if (!(exception is RpcException))
-                {
-                    throw ErrorHandling.CreateUndefinedExecutionError( exception );
-                }
 
-                throw;
+                    return result;
+                }
+                catch( Exception exception )
+                {
+                    if( interceptions != null )
+                    {
+                        foreach( var interception in interceptions )
+                        {
+                            interception.ReportException( exception );
+                        }
+                    }
+
+                    if( exception is OperationCanceledException )
+                    {
+                        throw ErrorHandling.CreateCancellationError( exception.Message );
+                    }
+                    else if( !(exception is RpcException) )
+                    {
+                        throw ErrorHandling.CreateUndefinedExecutionError( exception );
+                    }
+
+                    throw;
+                }
             }
         }
 
@@ -371,39 +375,43 @@ namespace Tecan.Sila2.Server
         /// <returns>An awaitable task with the command response</returns>
         public async Task<TResponse> InvokeCommand<TResponse>(Func<Task<TResponse>> command, string commandIdentifier, ServerCallContext context)
         {
-            var interceptions = RequestInterceptions(commandIdentifier, context);
-            try
+            using( new ActivityBlock( "Request of " + commandIdentifier ) )
             {
-                var result = await command();
-                if (interceptions != null)
+                var interceptions = RequestInterceptions( commandIdentifier, context );
+                try
                 {
-                    foreach (var interception in interceptions)
+                    var result = await command();
+                    if( interceptions != null )
                     {
-                        interception.ReportSuccess();
+                        foreach( var interception in interceptions )
+                        {
+                            interception.ReportSuccess();
+                        }
                     }
+
+                    return result;
                 }
-                return result;
-            }
-            catch (Exception exception)
-            {
-                if (interceptions != null)
+                catch( Exception exception )
                 {
-                    foreach (var interception in interceptions)
+                    if( interceptions != null )
                     {
-                        interception.ReportException(exception);
+                        foreach( var interception in interceptions )
+                        {
+                            interception.ReportException( exception );
+                        }
                     }
-                }
 
-                if(exception is OperationCanceledException)
-                {
-                    throw ErrorHandling.CreateCancellationError( exception.Message );
-                }
-                else if(!(exception is RpcException))
-                {
-                    throw ErrorHandling.CreateUndefinedExecutionError( exception );
-                }
+                    if( exception is OperationCanceledException )
+                    {
+                        throw ErrorHandling.CreateCancellationError( exception.Message );
+                    }
+                    else if( !(exception is RpcException) )
+                    {
+                        throw ErrorHandling.CreateUndefinedExecutionError( exception );
+                    }
 
-                throw;
+                    throw;
+                }
             }
         }
 
