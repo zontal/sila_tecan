@@ -42,8 +42,8 @@ namespace Tecan.Sila2.Generator.CommandLine
         /// <summary>
         /// The use case. If omitted, the use case is inferred from the namespace.
         /// </summary>
-        [Option('u', "usecase", HelpText = "The use case. If omitted, the use case is inferred from the namespace.")]
-        public string UseCase { get; set; }
+        [Option('u', "category", HelpText = "The category of the feature. If omitted, the category is inferred from the namespace.")]
+        public string Category { get; set; }
 
         /// <summary>
         /// The originator of the feature. If this is omitted, it is inferred from the namespace.
@@ -90,7 +90,7 @@ namespace Tecan.Sila2.Generator.CommandLine
             }
             var featureGenerator = container.GetExportedValue<IFeatureDefinitionGenerator>();
             var predefinedConstraints = LoadConstraintMappingFile(channel, ConstraintsFile);
-            var feature = featureGenerator.GenerateFeature(featureType, Originator, UseCase,
+            var feature = featureGenerator.GenerateFeature(featureType, Originator, Category,
                 Version, namespaces, predefinedConstraints);
             channel.Log( $"Saving generated feature to {OutputPath}".ToString, Severity.Info );
             FeatureSerializer.Save(feature, Path.GetFullPath(OutputPath));

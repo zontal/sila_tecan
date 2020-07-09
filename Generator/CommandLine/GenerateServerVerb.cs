@@ -50,8 +50,8 @@ namespace Tecan.Sila2.Generator.CommandLine
         /// <summary>
         /// The use case. If omitted, the use case is inferred from the namespace.
         /// </summary>
-        [Option('u', "usecase", HelpText = "The use case. If omitted, the use case is inferred from the namespace.")]
-        public string UseCase { get; set; }
+        [Option('u', "category", HelpText = "The category of the feature. If omitted, the category is inferred from the namespace.")]
+        public string Category { get; set; }
 
         /// <summary>
         /// The originator of the feature. If this is omitted, it is inferred from the namespace.
@@ -157,7 +157,7 @@ namespace Tecan.Sila2.Generator.CommandLine
                 // First, generate the feature definition
                 var importNamespaces = new HashSet<string>();
                 var feature = featureGenerator.GenerateFeature(featureType, Originator,
-                    UseCase,
+                    Category,
                     Version, importNamespaces, constraintsProvider);
                 // ReSharper disable once AssignNullToNotNullAttribute
                 var featurePath = Path.Combine(directory, FeaturePath ?? feature.Identifier + ".sila.xml");
