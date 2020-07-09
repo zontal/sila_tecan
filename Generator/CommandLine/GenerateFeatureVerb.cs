@@ -70,7 +70,11 @@ namespace Tecan.Sila2.Generator.CommandLine
             var fullPath = Path.GetFullPath(AssemblyPath);
             var assembly = Assembly.LoadFrom(fullPath);
             var featureTypes = assembly.ExportedTypes.Where(t =>
-                t.IsInterface && !t.IsGenericType && t.GetCustomAttribute<SilaFeatureAttribute>() != null);
+                t.IsInterface && !t.IsGenericType);
+            if( InterfaceName == null )
+            {
+                featureTypes = featureTypes.Where( t => t.GetCustomAttribute<SilaFeatureAttribute>() != null );
+            }
             Type featureType;
             try
             {
