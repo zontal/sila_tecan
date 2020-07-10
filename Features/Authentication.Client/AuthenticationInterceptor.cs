@@ -13,10 +13,14 @@ using Exception = System.Exception;
 
 namespace Tecan.Sila2.Authentication
 {
+    /// <summary>
+    /// Create interceptor for authentication
+    /// </summary>
     [Export(typeof(IRequestInterceptor))]
     [PartCreationPolicy(CreationPolicy.Shared)]
-    internal class AuthenticationInterceptor : IRequestInterceptor
+    public class AuthenticationInterceptor : IRequestInterceptor
     {
+        /// <inheritdoc />
         public string MetadataIdentifier => "org.silastandard/core/AuthorizationService/v1/Metadata/AccessToken";
         private readonly IAuthenticationHandler _authenticationHandler;
         private readonly ILoggingChannel _loggingChannel;
@@ -27,6 +31,13 @@ namespace Tecan.Sila2.Authentication
         private const string AuthenticationServiceIdentifier = "org.silastandard/core/AuthenticationService/v1";
         private const string AuthorizationConfigurationServiceIdentifier = "org.silastandard/core/AuthorizationConfigurationService/v1";
 
+        /// <summary>
+        /// Create new instance
+        /// </summary>
+        /// <param name="authenticationHandler">An object that handles the authentication internally</param>
+        /// <param name="loggingChannelFactory">A logging channel factory</param>
+        /// <param name="connectionManager">A connection manager</param>
+        /// <param name="executionManagerFactory">A factory to create client execution managers</param>
         public AuthenticationInterceptor( IAuthenticationHandler authenticationHandler, ILoggingChannelFactory loggingChannelFactory, IConnectionManager connectionManager, Lazy<IExecutionManagerFactory> executionManagerFactory )
         {
             _loggingChannel = loggingChannelFactory.CreateChannel( typeof(AuthenticationInterceptor) );
@@ -35,6 +46,7 @@ namespace Tecan.Sila2.Authentication
             _executionManagerFactory = executionManagerFactory;
         }
 
+        /// <inheritdoc />
         public IRequestInterception Intercept( ServerData server, IClientExecutionManager executionManager, Metadata metadata )
         {
             var token = _cachedTokens.GetValue( server, s => CreateCachedToken( s, executionManager ) );

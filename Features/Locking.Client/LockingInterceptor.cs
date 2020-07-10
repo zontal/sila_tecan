@@ -9,13 +9,19 @@ using Tecan.Sila2.Locking.LockController;
 
 namespace Tecan.Sila2.Locking
 {
+    /// <summary>
+    /// Denotes an interceptor that handles locking of a server
+    /// </summary>
     [Export( typeof( IRequestInterceptor ) )]
     [PartCreationPolicy( CreationPolicy.Shared )]
-    internal class LockingInterceptor : IRequestInterceptor
+    public class LockingInterceptor : IRequestInterceptor
     {
         private readonly ConditionalWeakTable<ServerData, ServerLockInformation> _serverLockData = new ConditionalWeakTable<ServerData, ServerLockInformation>();
+
+        /// <inheritdoc />
         public string MetadataIdentifier => "org.silastandard/core/LockController/v1/Metadata/LockIdentifier";
 
+        /// <inheritdoc />
         public IRequestInterception Intercept( ServerData server, IClientExecutionManager executionManager, Grpc.Core.Metadata metadata )
         {
             if(!_serverLockData.TryGetValue( server, out var lockData ))
