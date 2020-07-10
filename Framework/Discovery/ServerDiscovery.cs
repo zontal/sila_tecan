@@ -36,27 +36,21 @@ namespace Tecan.Sila2.Discovery
         /// <inheritdoc />
         public ServerData Connect( Guid serverUuid, TimeSpan timeout, CancellationToken cancellationToken = default )
         {
-            ServerData connection = null;
-            using( var cts = new CancellationTokenSource() )
+            var cts = new TaskCompletionSource<ServerData>();
+            cancellationToken.Register( cts.SetCanceled );
+
+            DiscoverServers( channel =>
             {
-                if( cancellationToken.CanBeCanceled )
+                if( channel.Config.Uuid == serverUuid )
                 {
-                    cancellationToken.Register( cts.Cancel );
+                    cts.SetResult(channel);
                 }
+            }, timeout, cancellationToken );
 
-                DiscoverServers( channel =>
-                {
-                    if( channel.Config.Uuid == serverUuid )
-                    {
-                        connection = channel;
-                        cts.Cancel();
-                    }
-                }, timeout, cts.Token);
-            }
-
-            return connection;
+            return cts.Task.Result;
         }
 
+        /// <inheritdoc />
         public void DiscoverServers( Action<ServerData> serverFoundCallback, TimeSpan timeout = default, CancellationToken cancellationToken = default )
         {
             using( var mdns = new MulticastService( _networking.CreateFilterFunc() ) )

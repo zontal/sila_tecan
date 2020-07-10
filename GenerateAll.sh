@@ -49,6 +49,8 @@ $SILAGEN generate-server Build/Test/TestServer/netcoreapp2.1/TestServer.exe Test
 $SILAGEN generate-client Tests/TestServer/TestServer.sila.xml Tests/IntegrationTests/IntegrationTests.csproj -n Tecan.Sila2.IntegrationTests
 
 $SILAGEN generate-client Features/Authentication/AuthenticationService.sila.xml Features/Authentication.Client/Authentication.Client.csproj -n Tecan.Sila2.Authentication
+$SILAGEN generate-client Features/Authentication/AuthorizationConfigurationService.sila.xml Features/Authentication.Client/Authentication.Client.csproj -n Tecan.Sila2.Authorization
+$SILAGEN generate-client Features/Authentication/AuthorizationProviderService.sila.xml Features/Authentication.Client/Authentication.Client.csproj -n Tecan.Sila2.Authorization
 $SILAGEN generate-client Features/Locking/LockController.sila.xml Features/Locking.Client/Locking.Client.csproj -n Tecan.Sila2.Locking
 $SILAGEN generate-client Features/ParameterConstraintsProvider/ParameterConstraintsProvider.sila.xml Features/ParameterConstraintsProvider.Client/ParameterConstraintsProvider.Client.csproj -n Tecan.Sila2.ParameterConstraintsProvider
 $SILAGEN generate-client Features/WorktableIntegration/WorktableService.sila.xml Features/WorktableIntegration.Client/WorktableIntegration.Client.csproj -n Tecan.Sila2.WorktableIntegration

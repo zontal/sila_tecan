@@ -14,6 +14,7 @@
         <dependencies>
             <dependency id="Tecan.Sila2.Contracts" version="[2.0,3.0)" />
             <dependency id="Tecan.Sila2" version="[2.0,3.0)" />
+            <dependency id="Tecan.Sila2.Client" version="[2.0,3.0)" />
         </dependencies>
     </metadata>
     <files>

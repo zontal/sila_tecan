@@ -37,7 +37,7 @@ namespace Tecan.Sila2.IntegrationTests
             var dir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "TestServer");
             var serverId = Guid.NewGuid();
             var payloadArguments = $"-u {serverId} -i 127.0.0.1";
-            var attachDebugger = false; // Debugger.IsAttached;
+            var attachDebugger = Debugger.IsAttached;
             if( attachDebugger )
             {
                 payloadArguments = "debug " + payloadArguments;

@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <RootNamespace>Tecan.Sila2.Client</RootNamespace>
+        <AssemblyName>Tecan.Sila2.Client</AssemblyName>
+        <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+        <LangVersion>latest</LangVersion>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <OutputPath>..\Build\</OutputPath>
+        <DocumentationFile>..\Build\Tecan.Sila2.Client.xml</DocumentationFile>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <Compile Include="..\CommonAssemblyInfo.cs" Link="Properties\CommonAssemblyInfo.cs" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\Contracts\Contracts.csproj" />
+        <ProjectReference Include="..\Framework\Framework.csproj" />
+    </ItemGroup>
+
+</Project>
