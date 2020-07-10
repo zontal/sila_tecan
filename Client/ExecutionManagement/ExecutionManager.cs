@@ -2,7 +2,6 @@
 using System.Linq;
 using Grpc.Core;
 using Tecan.Sila2.Binary;
-using Tecan.Sila2.DynamicClient;
 
 namespace Tecan.Sila2.Client.ExecutionManagement
 {

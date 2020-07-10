@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Grpc.Core;
-using ProtoBuf;
 
-namespace Tecan.Sila2.DynamicClient
+namespace Tecan.Sila2.Client
 {
     /// <summary>
     /// Denotes a class that reads metadata
@@ -63,12 +62,5 @@ namespace Tecan.Sila2.DynamicClient
         {
             return new MetadataReader(configuration);
         }
-    }
-
-    [ProtoContract]
-    internal class MetadataAffectedResponse
-    {
-        [ProtoMember(1)]
-        public List<StringDto> Affected { get; } = new List<StringDto>();
     }
 }
