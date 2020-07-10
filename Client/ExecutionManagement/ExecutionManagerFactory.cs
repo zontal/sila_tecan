@@ -4,19 +4,27 @@ using Tecan.Sila2.Discovery;
 
 namespace Tecan.Sila2.Client.ExecutionManagement
 {
+    /// <summary>
+    /// Denotes a default implementation of an execution manager factory
+    /// </summary>
     [Export( typeof( IExecutionManagerFactory ) )]
     [PartCreationPolicy( CreationPolicy.Shared )]
-    internal class ExecutionManagerFactory : IExecutionManagerFactory
+    public class ExecutionManagerFactory : IExecutionManagerFactory
     {
         private readonly IEnumerable<IRequestInterceptor> _interceptors;
         private readonly Dictionary<ServerData, IClientExecutionManager> _cachedExecutionManagers = new Dictionary<ServerData, IClientExecutionManager>();
 
+        /// <summary>
+        /// Creates a new instance
+        /// </summary>
+        /// <param name="interceptors">The interceptors used for this factory</param>
         [ImportingConstructor]
         public ExecutionManagerFactory( [ImportMany] IEnumerable<IRequestInterceptor> interceptors )
         {
             _interceptors = interceptors;
         }
 
+        /// <inheritdoc />
         public IClientExecutionManager CreateExecutionManager( ServerData server )
         {
             if(server == null)
