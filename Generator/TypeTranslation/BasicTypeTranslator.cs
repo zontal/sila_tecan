@@ -40,7 +40,18 @@ namespace Tecan.Sila2.Generator.TypeTranslation
             { typeof(TimeSpan), (BasicType.Time, false) },
             { typeof(FileInfo), (BasicType.Binary, true) },
             { typeof(Stream), (BasicType.Binary, false) },
-            { typeof(DynamicObjectProperty), (BasicType.Any, false) }
+            { typeof(DynamicObjectProperty), (BasicType.Any, false) },
+            { typeof(byte?), (BasicType.Integer, true) },
+            { typeof(sbyte?), (BasicType.Integer, true) },
+            { typeof(ushort?), (BasicType.Integer, true) },
+            { typeof(short?), (BasicType.Integer, true) },
+            { typeof(uint?), (BasicType.Integer, true) },
+            { typeof(int?), (BasicType.Integer, true) },
+            { typeof(ulong?), (BasicType.Integer, true) },
+            { typeof(long?), (BasicType.Integer, true) },
+            { typeof(float?), (BasicType.Real, true) },
+            { typeof(double?), (BasicType.Real, true) },
+            { typeof(bool?), (BasicType.Boolean, true) },
         };
 
         public int Priority => 1;
