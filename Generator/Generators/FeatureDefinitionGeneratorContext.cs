@@ -742,6 +742,11 @@ namespace Tecan.Sila2.Generator.Generators
         private static string GetSuggestedMemberIdentifier( MemberInfo member, string prefix, string suffix )
         {
             var identifier = member.Name;
+            if (identifier.Contains( '`' ))
+            {
+                var indexOfBacktick = identifier.LastIndexOf( '`' );
+                identifier = identifier.Substring( 0, indexOfBacktick );
+            }
             if(suffix != null && identifier.EndsWith( suffix ))
             {
                 identifier = identifier.Substring( 0, identifier.Length - suffix.Length );
