@@ -99,6 +99,36 @@ namespace Tecan.Sila2
         }
 
         /// <summary>
+        /// Creates a transfer object for the given inner value
+        /// </summary>
+        /// <param name="value">The inner value</param>
+        /// <param name="store">A binary store to resolve binary data</param>
+        public IntegerDto( long? value, IBinaryStore store = null )
+        {
+            Value = value.GetValueOrDefault(0);
+        }
+
+        /// <summary>
+        /// Creates a transfer object for the given inner value
+        /// </summary>
+        /// <param name="value">The inner value</param>
+        /// <param name="store">A binary store to resolve binary data</param>
+        public IntegerDto( ulong value, IBinaryStore store = null )
+        {
+            Value = (long)value;
+        }
+
+        /// <summary>
+        /// Creates a transfer object for the given inner value
+        /// </summary>
+        /// <param name="value">The inner value</param>
+        /// <param name="store">A binary store to resolve binary data</param>
+        public IntegerDto( ulong? value, IBinaryStore store = null )
+        {
+            Value = (long)value.GetValueOrDefault( 0 );
+        }
+
+        /// <summary>
         /// The actual value for this dto
         /// </summary>
         [ProtoMember(1, Name = @"value")]
@@ -140,7 +170,84 @@ namespace Tecan.Sila2
         /// <returns>The encapsulated value</returns>
         public static IntegerDto Create(long value, IBinaryStore store = null)
         {
-            return value;
+            return new IntegerDto(value);
+        }
+
+        /// <summary>
+        /// Creates a new dto for the given value
+        /// </summary>
+        /// <param name="value">The actual value</param>
+        /// <param name="store">A binary store</param>
+        /// <returns>The encapsulated value</returns>
+        public static IntegerDto Create( int value, IBinaryStore store = null )
+        {
+            return new IntegerDto( value );
+        }
+
+        /// <summary>
+        /// Creates a new dto for the given value
+        /// </summary>
+        /// <param name="value">The actual value</param>
+        /// <param name="store">A binary store</param>
+        /// <returns>The encapsulated value</returns>
+        public static IntegerDto Create( long? value, IBinaryStore store = null )
+        {
+            return new IntegerDto( value );
+        }
+
+        /// <summary>
+        /// Creates a new dto for the given value
+        /// </summary>
+        /// <param name="value">The actual value</param>
+        /// <param name="store">A binary store</param>
+        /// <returns>The encapsulated value</returns>
+        public static IntegerDto Create( int? value, IBinaryStore store = null )
+        {
+            return new IntegerDto( value );
+        }
+
+        /// <summary>
+        /// Creates a new dto for the given value
+        /// </summary>
+        /// <param name="value">The actual value</param>
+        /// <param name="store">A binary store</param>
+        /// <returns>The encapsulated value</returns>
+        public static IntegerDto Create( ulong value, IBinaryStore store = null )
+        {
+            return new IntegerDto( value );
+        }
+
+        /// <summary>
+        /// Creates a new dto for the given value
+        /// </summary>
+        /// <param name="value">The actual value</param>
+        /// <param name="store">A binary store</param>
+        /// <returns>The encapsulated value</returns>
+        public static IntegerDto Create( uint value, IBinaryStore store = null )
+        {
+            return new IntegerDto( (long)value );
+        }
+
+        /// <summary>
+        /// Creates a new dto for the given value
+        /// </summary>
+        /// <param name="value">The actual value</param>
+        /// <param name="store">A binary store</param>
+        /// <returns>The encapsulated value</returns>
+        public static IntegerDto Create( ulong? value, IBinaryStore store = null )
+        {
+            return new IntegerDto( value );
+        }
+
+        /// <summary>
+        /// Creates a new dto for the given value
+        /// </summary>
+        /// <param name="value">The actual value</param>
+        /// <param name="store">A binary store</param>
+        /// <returns>The encapsulated value</returns>
+        public static IntegerDto Create( uint? value, IBinaryStore store = null )
+        {
+            return new IntegerDto( (long?)value );
         }
     }
 
@@ -163,6 +270,16 @@ namespace Tecan.Sila2
         public RealDto(double value, IBinaryStore store = null)
         {
             Value = value;
+        }
+
+        /// <summary>
+        /// Creates a transfer object for the given inner value
+        /// </summary>
+        /// <param name="value">The inner value</param>
+        /// <param name="store">A binary store to resolve binary data</param>
+        public RealDto( double? value, IBinaryStore store = null )
+        {
+            Value = value.GetValueOrDefault(double.NaN);
         }
 
         /// <summary>
@@ -207,7 +324,40 @@ namespace Tecan.Sila2
         /// <returns>The encapsulated value</returns>
         public static RealDto Create(double value, IBinaryStore store = null)
         {
-            return value;
+            return new RealDto(value);
+        }
+
+        /// <summary>
+        /// Encapsulates the given floating point into a dto
+        /// </summary>
+        /// <param name="value">The inner value</param>
+        /// <param name="store">A binary store</param>
+        /// <returns>The encapsulated value</returns>
+        public static RealDto Create( double? value, IBinaryStore store = null )
+        {
+            return new RealDto( value );
+        }
+
+        /// <summary>
+        /// Encapsulates the given floating point into a dto
+        /// </summary>
+        /// <param name="value">The inner value</param>
+        /// <param name="store">A binary store</param>
+        /// <returns>The encapsulated value</returns>
+        public static RealDto Create( float value, IBinaryStore store = null )
+        {
+            return new RealDto( value );
+        }
+
+        /// <summary>
+        /// Encapsulates the given floating point into a dto
+        /// </summary>
+        /// <param name="value">The inner value</param>
+        /// <param name="store">A binary store</param>
+        /// <returns>The encapsulated value</returns>
+        public static RealDto Create( float? value, IBinaryStore store = null )
+        {
+            return new RealDto( value );
         }
     }
 
@@ -230,6 +380,16 @@ namespace Tecan.Sila2
         public BooleanDto(bool value, IBinaryStore store = null)
         {
             Value = value;
+        }
+
+        /// <summary>
+        /// Creates a transfer object for the given inner value
+        /// </summary>
+        /// <param name="value">The inner value</param>
+        /// <param name="store">A binary store to resolve binary data</param>
+        public BooleanDto( bool? value, IBinaryStore store = null )
+        {
+            Value = value.GetValueOrDefault(false);
         }
 
         /// <summary>
