@@ -244,18 +244,32 @@ namespace Tecan.Sila2.Generator.Generators
             {
                 _loggingChannel.Log($"Found documentation for {member.Name}, extracting exceptions.".ToString);
                 var assembly = member.DeclaringType.Assembly;
+
                 foreach(var exceptionElement in docEntry.Elements( XName.Get( "exception" ) ))
                 {
                     var typeName = exceptionElement.Attribute( XName.Get( "cref" ) )?.Value?.Substring( 2 );
                     if(typeName != null)
                     {
-                        if( ArgumentExceptionTypeNames.Contains( typeName ) )
+                        if( ArgumentExceptionTypeNames.Contains( typeName ) || typeof(Exception).FullName.Equals(typeName))
                         {
                             _loggingChannel.Log($"Ignoring exception {typeName} because it is covered by SiLA2 validation errors.".ToString);
                             continue;
                         }
                         var exceptionType = assembly.GetType( typeName, false );
-                        if(exceptionType != null)
+                        if (exceptionType == null)
+                        {
+                            var assemblyNames = assembly.GetReferencedAssemblies();
+                            foreach (var assemblyName in assemblyNames)
+                            {
+                                Assembly referenceAssembly = Assembly.Load(assemblyName.FullName);
+                                exceptionType = referenceAssembly.GetType(typeName, false);
+                                if (exceptionType != null)
+                                {
+                                    break;
+                                }
+                            }
+                        }
+                        if (exceptionType != null)
                         {
                             _loggingChannel.Log($"Found exception type {exceptionType.Name}".ToString);
                             AddError( exceptions, exceptionType, errors );
@@ -563,6 +577,46 @@ namespace Tecan.Sila2.Generator.Generators
                     }).ToArray();
         }
 
+        private MemberInfo GetMemberInfo(MemberInfo[] memberInfos, ParameterInfo parameter)
+        {
+            if (memberInfos.FirstOrDefault(x => x.Name.StartsWith(parameter.Name, StringComparison.OrdinalIgnoreCase)) is var member && member != null)
+            {
+                return member;
+            }
+            if (memberInfos.Length == 1)
+            {
+                return memberInfos[0];
+            }
+
+            return null;
+        }
+
+        private MemberInfo GetMemberInfo(Type type, ParameterInfo parameter)
+        {
+            if (type.GetProperty(parameter.Name.ToPascalCase()) is var property && property!= null)
+            {
+                return property;
+            }
+
+            if (type.GetField(parameter.Name.ToPascalCase()) is var field && field != null)
+            {
+                return field;
+            }
+
+            if(GetMemberInfo(type.GetProperties(),parameter) is var memberProperty && memberProperty!= null)
+            {
+                return memberProperty;
+            }
+
+            if (GetMemberInfo(type.GetFields(),parameter) is var memberField && memberField != null)
+            {
+                return memberField;
+            }
+
+            throw new InvalidOperationException(
+                                  $"Could not find matching property for constructor parameter {parameter.Name} of type {type.Name}");
+        }
+
         private IEnumerable<MemberInfo> DetermineStructureProperties( Type type )
         {
             var constructor = (from cons in type.GetConstructors()
@@ -571,11 +625,9 @@ namespace Tecan.Sila2.Generator.Generators
             if(constructor != null)
             {
                 _loggingChannel.Log("Found constructor that can be used to create the domain object.".ToString);
+
                 return from par in constructor.GetParameters()
-                       select type.GetProperty( par.Name.ToPascalCase() ) as MemberInfo ??
-                              type.GetField(par.Name.ToPascalCase()) ??
-                              throw new InvalidOperationException(
-                                  $"Could not find matching property for constructor parameter {par.Name} of type {type.Name}" );
+                       select GetMemberInfo(type, par); 
             }
 
             var createMethod = (from staticMethod in type.GetMethods( BindingFlags.Static | BindingFlags.Public )
