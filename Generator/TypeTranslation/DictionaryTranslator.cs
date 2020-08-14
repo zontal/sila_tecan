@@ -150,17 +150,36 @@ namespace Tecan.Sila2.Generator.TypeTranslation
 
             public CodeTypeReference InterfaceType => new CodeTypeReference(typeof(IDictionary<,>).FullName, _keyTranslation.InterfaceType, _valueTranslation.InterfaceType);
 
-            public CodeTypeReference DataTransferType => new CodeTypeReference(typeof(List<>).FullName, new CodeTypeReference(typeof(KeyValuePairDto<,,,>).FullName, 
-                _keyTranslation.InterfaceType, _keyTranslation.DataTransferType, _valueTranslation.InterfaceType, _valueTranslation.DataTransferType));
+            public CodeTypeReference DataTransferType
+            {
+                get
+                {
+                    if(_valueTranslation.InterfaceType.TypeArguments.Count == 1 && _valueTranslation.DataTransferType.TypeArguments.Count == 1)
+                    {
+                        return new CodeTypeReference( typeof( List<> ).FullName, new CodeTypeReference( typeof( LookupEntryDto<,,,> ).FullName,
+                            _keyTranslation.InterfaceType, _keyTranslation.DataTransferType, _valueTranslation.InterfaceType.TypeArguments[0], _valueTranslation.DataTransferType.TypeArguments[0] ) );
+                    }
+                    else
+                    {
+                        return new CodeTypeReference( typeof( List<> ).FullName, new CodeTypeReference( typeof( KeyValuePairDto<,,,> ).FullName,
+                            _keyTranslation.InterfaceType, _keyTranslation.DataTransferType, _valueTranslation.InterfaceType, _valueTranslation.DataTransferType ) );
+                    }
+                }
+            }
 
             public CodeExpression Encapsulate( CodeExpression expression, CodeExpression binaryStorageArgument )
             {
+                var valueType = _valueTranslation.DataTransferType;
+                if (valueType.TypeArguments.Count == 1)
+                {
+                    valueType = valueType.TypeArguments[0];
+                }
                 return new CodeMethodInvokeExpression(
                     new CodeTypeReferenceExpression( typeof(DtoExtensions) ),
                     nameof(DtoExtensions.Encapsulate),
                     expression,
                     new CodeMethodReferenceExpression( new CodeTypeReferenceExpression( _keyTranslation.DataTransferType ), "Create" ),
-                    new CodeMethodReferenceExpression( new CodeTypeReferenceExpression( _valueTranslation.DataTransferType ), "Create" ),
+                    new CodeMethodReferenceExpression( new CodeTypeReferenceExpression( valueType ), "Create" ),
                     binaryStorageArgument);
             }
 
