@@ -56,7 +56,7 @@ namespace Tecan.Sila2.Generator.Test
         [Test]
         public void Test_GenerateFeature_SilaFeature()
         {
-            var generator = new FeatureDefinitionGenerator( null, _typeTranslationProvider, new TestLoggingFactory(), null );
+            var generator = new FeatureDefinitionGenerator( null, _typeTranslationProvider, new TestLoggingFactory(), null, null );
 
             var feature = generator.GenerateFeature( Interface );
             var xmlCode = FeatureSerializer.SaveToString( feature );

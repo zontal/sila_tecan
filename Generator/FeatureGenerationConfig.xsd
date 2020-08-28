@@ -4,10 +4,11 @@
            xmlns:tns="http://www.sila-standard.org"
            targetNamespace="http://www.sila-standard.org">
     <xs:include schemaLocation="../Framework/Models/Constraints.xsd"/>
-    <xs:element name="ConstraintProvider">
+    <xs:element name="FeatureGenerationConfig">
         <xs:complexType>
             <xs:sequence>
-                <xs:element name="Mapping" minOccurs="0" maxOccurs="unbounded" type="tns:ConstraintMapping" />
+				<xs:element name="Property" minOccurs="0" maxOccurs="unbounded" type="tns:PropertyMapping" />
+                <xs:element name="Constraint" minOccurs="0" maxOccurs="unbounded" type="tns:ConstraintMapping" />
             </xs:sequence>
         </xs:complexType>
     </xs:element>
@@ -17,4 +18,11 @@
         </xs:sequence>
         <xs:attribute name="Element" type="xs:string" use="required" />
     </xs:complexType>
+	<xs:complexType name="PropertyMapping">
+		<xs:simpleContent>
+			<xs:extension base="xs:string">
+			    <xs:attribute name="Key" type="xs:string" use="required" />				
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
 </xs:schema>

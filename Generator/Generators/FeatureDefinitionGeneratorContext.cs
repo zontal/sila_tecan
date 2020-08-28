@@ -22,6 +22,8 @@ namespace Tecan.Sila2.Generator.Generators
         private readonly Func<string, Constraints> _constraintResolver;
         private readonly ITypeTranslationProvider _translationProvider;
         private readonly ILoggingChannel _loggingChannel;
+        private readonly IAmbiguityResolver _ambiguityResolver;
+        private readonly PredefinedFeatureGenerationConfigModel _predefinedFeatureGenerationConfigModel;
 
         private static readonly string[] ArgumentExceptionTypeNames =
         {
@@ -30,12 +32,16 @@ namespace Tecan.Sila2.Generator.Generators
             typeof(ArgumentOutOfRangeException).FullName
         };
 
-        public FeatureDefinitionGeneratorContext( ILoggingChannel loggingChannel, ICodeNameRegistry nameRegistry, Func<string, Constraints> constraintResolver, ITypeTranslationProvider translationProvider )
+        public FeatureDefinitionGeneratorContext( ILoggingChannel loggingChannel, ICodeNameRegistry nameRegistry, Func<string, Constraints> constraintResolver, 
+            ITypeTranslationProvider translationProvider, IAmbiguityResolver ambiguityResolver, 
+            PredefinedFeatureGenerationConfigModel predefinedFeatureGenerationConfigModel)
         {
             _nameRegistry = nameRegistry;
             _constraintResolver = constraintResolver;
             _translationProvider = translationProvider;
             _loggingChannel = loggingChannel;
+            _ambiguityResolver = ambiguityResolver;
+            _predefinedFeatureGenerationConfigModel = predefinedFeatureGenerationConfigModel;
         }
 
         public object[] GenerateFeature(Type interfaceType, ICollection<string> namespaceCollector )
@@ -574,9 +580,9 @@ namespace Tecan.Sila2.Generator.Generators
                     }).ToArray();
         }
 
-        private MemberInfo GetMemberInfo(MemberInfo[] memberInfos, ParameterInfo parameter)
+        private MemberInfo GetMemberInfo(MemberInfo[] memberInfos, string parameterName)
         {
-            if (memberInfos.FirstOrDefault(x => x.Name.StartsWith(parameter.Name, StringComparison.OrdinalIgnoreCase)) is var member && member != null)
+            if (memberInfos.FirstOrDefault(x => x.Name.StartsWith(parameterName, StringComparison.OrdinalIgnoreCase)) is var member && member != null)
             {
                 return member;
             }
@@ -588,30 +594,40 @@ namespace Tecan.Sila2.Generator.Generators
             return null;
         }
 
-        private MemberInfo GetMemberInfo(Type type, ParameterInfo parameter)
+        private MemberInfo GetMemberInfo(Type type, string parameterName)
         {
-            if (type.GetProperty(parameter.Name.ToPascalCase()) is var property && property!= null)
+            if (type.GetProperty(parameterName.ToPascalCase()) is var property && property!= null)
             {
                 return property;
             }
-
-            if (type.GetField(parameter.Name.ToPascalCase()) is var field && field != null)
+            if (type.GetField(parameterName.ToPascalCase()) is var field && field != null)
             {
                 return field;
             }
-
-            if(GetMemberInfo(type.GetProperties(),parameter) is var memberProperty && memberProperty!= null)
+            if(GetMemberInfo(type.GetProperties(), parameterName) is var memberProperty && memberProperty!= null)
             {
                 return memberProperty;
             }
-
-            if (GetMemberInfo(type.GetFields(),parameter) is var memberField && memberField != null)
+            if (GetMemberInfo(type.GetFields(), parameterName) is var memberField && memberField != null)
             {
                 return memberField;
             }
 
+            string id = $"{type.Name}.{parameterName}";
+            if (_predefinedFeatureGenerationConfigModel?.PredefinedAmbiguousProperties!=null && _predefinedFeatureGenerationConfigModel.PredefinedAmbiguousProperties.ContainsKey(id))
+            {
+                return GetMemberInfo(type, _predefinedFeatureGenerationConfigModel.PredefinedAmbiguousProperties[id]);
+            }
+
+            List<MemberInfo> allowedProperties = new List<MemberInfo>(type.GetProperties());
+            allowedProperties.AddRange(type.GetFields());
+            var questionforUser = $"Property {id} does not matched. Enter property name for this from allowed options:";
+            if (_ambiguityResolver?.GetUserDefinedProperty(questionforUser, allowedProperties) is var userDefinedProperty && !string.IsNullOrEmpty(userDefinedProperty))
+            {
+                return GetMemberInfo(type, userDefinedProperty);
+            }
             throw new InvalidOperationException(
-                                  $"Could not find matching property for constructor parameter {parameter.Name} of type {type.Name}");
+                                  $"Could not find matching property for constructor parameter {parameterName} of type {type.Name}");
         }
 
         private IEnumerable<MemberInfo> DetermineStructureProperties( Type type )
@@ -624,7 +640,7 @@ namespace Tecan.Sila2.Generator.Generators
                 _loggingChannel.Log("Found constructor that can be used to create the domain object.".ToString);
 
                 return from par in constructor.GetParameters()
-                       select GetMemberInfo(type, par); 
+                       select GetMemberInfo(type, par.Name); 
             }
 
             var createMethod = (from staticMethod in type.GetMethods( BindingFlags.Static | BindingFlags.Public )

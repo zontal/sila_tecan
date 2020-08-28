@@ -62,7 +62,6 @@ namespace Tecan.Sila2.Generator.CommandLine
         /// </summary>
         [Option('c', "constraints-file", Required = false, HelpText = "Path to a file that contains additional constraints")]
         public string ConstraintsFile { get; set; }
-
         public override void Execute(CompositionContainer container)
         {
             var channel = SetupLogging( container );
@@ -89,34 +88,37 @@ namespace Tecan.Sila2.Generator.CommandLine
                 return;
             }
             var featureGenerator = container.GetExportedValue<IFeatureDefinitionGenerator>();
-            var predefinedConstraints = LoadConstraintMappingFile(channel, ConstraintsFile);
+            var preDefinedFeatureGenerationConfigModel = LoadConstraintMappingFile(channel, ConstraintsFile);
             var feature = featureGenerator.GenerateFeature(featureType, Originator, Category,
-                Version, namespaces, predefinedConstraints);
+                Version, namespaces, preDefinedFeatureGenerationConfigModel);
             channel.Log( $"Saving generated feature to {OutputPath}".ToString, Severity.Info );
             FeatureSerializer.Save(feature, Path.GetFullPath(OutputPath));
         }
 
-        internal static IReadOnlyDictionary<string, Constraints> LoadConstraintMappingFile(ILoggingChannel channel, string constraintsFile)
+        internal static PredefinedFeatureGenerationConfigModel LoadConstraintMappingFile(ILoggingChannel channel, string constraintsFile)
         {
-            IReadOnlyDictionary<string, Constraints> predefinedConstraints = null;
             if (constraintsFile != null)
             {
                 if (File.Exists(constraintsFile))
                 {
-                    var serializer = new XmlSerializer(typeof(ConstraintProvider));
+                    var serializer = new XmlSerializer(typeof(FeatureGenerationConfig));
                     using (var stream = File.OpenRead(constraintsFile))
                     {
-                        var constraints = (ConstraintProvider) serializer.Deserialize(stream);
-                        predefinedConstraints = constraints.Mapping?.ToDictionary(m => m.Element, m => m.Constraint);
+                        var constraints = (FeatureGenerationConfig) serializer.Deserialize(stream);
+                        var predefinedConstraints = constraints.Constraint?.ToDictionary(m => m.Element, m => m.Constraint);
+                        var predefinedAmbiguousProperties = constraints.Property?.ToDictionary(m => m.Key, m => m.Value);
+                        return new PredefinedFeatureGenerationConfigModel(predefinedConstraints, predefinedAmbiguousProperties);
                     }
                 }
                 else
                 {
                     channel.Log($"Constraints file {constraintsFile} could not be found.".ToString, Severity.Warning);
+                    
                 }
             }
-
-            return predefinedConstraints;
+            return null;
         }
+
+
     }
 }
