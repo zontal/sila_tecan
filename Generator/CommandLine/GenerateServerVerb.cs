@@ -8,6 +8,7 @@ using System.Reflection;
 using CommandLine;
 using Tecan.MAP.Contracts.Services.Logging;
 using Tecan.Sila2.Generator.Contracts;
+using Tecan.Sila2.Generator.Helper;
 
 #if NET472
 using Microsoft.Build.Evaluation;
@@ -105,8 +106,8 @@ namespace Tecan.Sila2.Generator.CommandLine
         /// <summary>
         /// Path to a file that contains additional constraints
         /// </summary>
-        [Option( "constraints-file", Required = false, HelpText = "Path to a file that contains additional constraints" )]
-        public string ConstraintsFile { get; set; }
+        [Option( "config-file", Required = false, HelpText = "Path to a file that contains additional constraints" )]
+        public string ConfigFile { get; set; }
 
         /// <summary>
         /// If specified, features that do not specify whether they are draft or not will be set to draft.
@@ -146,7 +147,11 @@ namespace Tecan.Sila2.Generator.CommandLine
             }
 
             var featureGenerator = container.GetExportedValue<IFeatureDefinitionGenerator>();
-            var constraintsProvider = GenerateFeatureVerb.LoadConstraintMappingFile( channel, ConstraintsFile );
+            var configProvider = FeatureDefinitionConfigHelper.LoadConfigMappingFile( ConfigFile );
+            if(!string.IsNullOrEmpty( ConfigFile ) && configProvider != null)
+            {
+                channel.Log( "Feature definition config file could not be loaded.".ToString, Severity.Warning );
+            }
             bool foundFeature = false;
             foreach (var featureType in featureTypes)
             {
@@ -161,7 +166,7 @@ namespace Tecan.Sila2.Generator.CommandLine
                 var importNamespaces = new HashSet<string>();
                 var feature = featureGenerator.GenerateFeature(featureType, Originator,
                     Category,
-                    Version, importNamespaces, constraintsProvider);
+                    Version, importNamespaces, configProvider);
                 // ReSharper disable once AssignNullToNotNullAttribute
                 var featurePath = Path.Combine(directory, FeaturePath ?? feature.Identifier + ".sila.xml");
                 channel.Log("Saving feature".ToString);

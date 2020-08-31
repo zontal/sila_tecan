@@ -17,7 +17,7 @@ namespace Tecan.Sila2.Generator.Contracts
         /// <param name="predefinedConstraints">A dictionary of predefined constraints</param>
         /// <param name="predefinedAmbiguousProperties">A dictionary of predefined ambiguous properties</param>
         public PredefinedFeatureGenerationConfigModel(IReadOnlyDictionary<string, Constraints> predefinedConstraints,
-            IDictionary<string, string> predefinedAmbiguousProperties)
+            IReadOnlyDictionary<string, string> predefinedAmbiguousProperties)
         {
             PredefinedConstraints = predefinedConstraints;
             PredefinedAmbiguousProperties = predefinedAmbiguousProperties;
@@ -30,7 +30,7 @@ namespace Tecan.Sila2.Generator.Contracts
         /// <summary>
         /// A dictionary of predefined ambiguous properties, keyed by type name and parameter name
         /// </summary>
-        public IDictionary<string, string> PredefinedAmbiguousProperties { get; }
+        public IReadOnlyDictionary<string, string> PredefinedAmbiguousProperties { get; }
     }
 }
 

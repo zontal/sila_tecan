@@ -1,0 +1,3 @@
+<FeatureGenerationConfig xmlns="http://www.sila-standard.org">
+  <Property Key="AmbiguousClass.channel">AmbiguousChannel</Property>
+</FeatureGenerationConfig>

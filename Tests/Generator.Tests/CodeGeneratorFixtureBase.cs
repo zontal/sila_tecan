@@ -21,6 +21,7 @@ namespace Tecan.Sila2.Generator.Test
         private static readonly SHA1Managed Sha = new SHA1Managed();
 
         private ITypeTranslationProvider _typeTranslationProvider;
+        private IAmbiguityResolver _ambiguityResolver;
 
         [SetUp]
         public void SetCurrentDirectory()
@@ -34,6 +35,7 @@ namespace Tecan.Sila2.Generator.Test
                 new ConstraintsTranslator(),
                 new GeneratedTypeTranslator()
             } );
+            _ambiguityResolver = new Generators.AmbiguityResolver();
         }
 
         protected abstract string Name
@@ -53,12 +55,14 @@ namespace Tecan.Sila2.Generator.Test
         protected string ProviderReference => Path.Combine( Name, "ProviderReference.cs" );
         protected string ClientReference => Path.Combine( Name, "ClientReference.cs" );
 
+        protected virtual PredefinedFeatureGenerationConfigModel FeatureGeneratorConfig => null;
+
         [Test]
         public void Test_GenerateFeature_SilaFeature()
         {
-            var generator = new FeatureDefinitionGenerator( null, _typeTranslationProvider, new TestLoggingFactory(), null, null );
+            var generator = new FeatureDefinitionGenerator( null, _typeTranslationProvider, new TestLoggingFactory(), null, _ambiguityResolver );
 
-            var feature = generator.GenerateFeature( Interface );
+            var feature = generator.GenerateFeature( Interface, featureGeneratorConfig: FeatureGeneratorConfig );
             var xmlCode = FeatureSerializer.SaveToString( feature );
             var path = Path.GetTempFileName();
             File.WriteAllText( path, xmlCode );

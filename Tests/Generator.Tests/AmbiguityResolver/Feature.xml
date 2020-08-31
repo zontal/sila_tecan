@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Feature xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" SiLA2Version="1.0" FeatureVersion="3.0" Originator="tecan.sila.generator.test" Category="ambiguityresolver" xmlns="http://www.sila-standard.org">
+  <Identifier>AmbiguityResolverService</Identifier>
+  <DisplayName>Ambiguity Resolver Service</DisplayName>
+  <Description />
+  <Command>
+    <Identifier>CheckAmbiguousEntries</Identifier>
+    <DisplayName>Check Ambiguous Entries</DisplayName>
+    <Description />
+    <Observable>Yes</Observable>
+    <Response>
+      <Identifier>ReturnValue</Identifier>
+      <DisplayName>Return Value</DisplayName>
+      <Description />
+      <DataType>
+        <DataTypeIdentifier>AmbiguousClass</DataTypeIdentifier>
+      </DataType>
+    </Response>
+  </Command>
+  <DataTypeDefinition>
+    <Identifier>AmbiguousClass</Identifier>
+    <DisplayName>Ambiguous Class</DisplayName>
+    <Description>Describes a class which has ambiguous parameter</Description>
+    <DataType>
+      <Structure>
+        <Element>
+          <Identifier>Message</Identifier>
+          <DisplayName>Message</DisplayName>
+          <Description />
+          <DataType>
+            <Basic>String</Basic>
+          </DataType>
+        </Element>
+        <Element>
+          <Identifier>AmbiguousChannel</Identifier>
+          <DisplayName>AmbiguousChannel</DisplayName>
+          <Description />
+          <DataType>
+            <Basic>String</Basic>
+          </DataType>
+        </Element>
+      </Structure>
+    </DataType>
+  </DataTypeDefinition>
+</Feature>

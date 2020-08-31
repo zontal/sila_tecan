@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace Tecan.Sila2.Generator.Contracts
 {
     /// <summary>
-    /// Denotes an inteface for Resolving ambiguity
+    /// Denotes an inteface for resolving ambiguity
     /// </summary>
     public interface IAmbiguityResolver
     {
@@ -16,6 +16,6 @@ namespace Tecan.Sila2.Generator.Contracts
         /// Get property name for ambiguous parameter and type
         /// </summary>
         /// <returns>Property name for ambiguous parameter and type, if null wrong input from user</returns>
-        public string GetUserDefinedProperty(string questionForUser, IReadOnlyList<MemberInfo> allowedPropertyOptions);
+        public MemberInfo GetUserDefinedProperty(Type type, string parameterName, IReadOnlyList<MemberInfo> allowedPropertyOptions);
     }
 }

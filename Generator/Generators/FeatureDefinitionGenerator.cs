@@ -25,7 +25,7 @@ namespace Tecan.Sila2.Generator.Generators
         private IEnumerable<IGeneratorHook> Hooks { get; }
         private readonly ITypeTranslationProvider _translationProvider;
         private readonly ILoggingChannel _loggingChannel;
-        private readonly IAmbiguityResolver _propertyReader;
+        private readonly IAmbiguityResolver _ambiguityResolver;
         /// <summary>
         /// Creates a new feature definition generator for the provided registry
         /// </summary>
@@ -33,21 +33,21 @@ namespace Tecan.Sila2.Generator.Generators
         /// <param name="translationProvider">A component that translates types between SiLA2 and .NET</param>
         /// <param name="loggingChannelFactory">A factory for logging channels</param>
         /// <param name="hooks">Generator hooks</param>
-        /// <param name="propertyReader"></param>
+        /// <param name="ambiguityResolver">A component that resolves ambiguous properties</param>
         [ImportingConstructor]
         public FeatureDefinitionGenerator( ICodeNameRegistry nameRegistry, ITypeTranslationProvider translationProvider, ILoggingChannelFactory loggingChannelFactory, 
-            [ImportMany] IEnumerable<IGeneratorHook> hooks , IAmbiguityResolver propertyReader)
+            [ImportMany] IEnumerable<IGeneratorHook> hooks , IAmbiguityResolver ambiguityResolver)
         {
             NameRegistry = nameRegistry;
             Hooks = hooks;
             _translationProvider = translationProvider;
             _loggingChannel = loggingChannelFactory.CreateChannel( typeof(FeatureDefinitionGenerator) );
-            _propertyReader = propertyReader;
+            _ambiguityResolver = ambiguityResolver;
         }
 
         /// <inheritdoc />
         public Feature GenerateFeature( Type interfaceType, string originator = null, string category = null,
-            string version = null, ICollection<string> namespaceCollector = null, PredefinedFeatureGenerationConfigModel predefinedFeatureGenerationConfigModel = null, bool isDraftDefault = true )
+            string version = null, ICollection<string> namespaceCollector = null, PredefinedFeatureGenerationConfigModel featureGeneratorConfig = null, bool isDraftDefault = true )
         {
             if(interfaceType == null) throw new ArgumentNullException( nameof( interfaceType ) );
 
@@ -59,11 +59,11 @@ namespace Tecan.Sila2.Generator.Generators
             AssignDefaultOriginatorAndCategory( interfaceType, versionV, ref originator, ref category );
 
             Func<string, Constraints> constraintResolver = null;
-            if (predefinedFeatureGenerationConfigModel?.PredefinedConstraints != null )
+            if (featureGeneratorConfig?.PredefinedConstraints != null )
             {
                 constraintResolver = origin =>
                 {
-                    if(predefinedFeatureGenerationConfigModel.PredefinedConstraints.TryGetValue( origin, out var constraint ) )
+                    if(featureGeneratorConfig.PredefinedConstraints.TryGetValue( origin, out var constraint ) )
                     {
                         return constraint;
                     }
@@ -75,7 +75,7 @@ namespace Tecan.Sila2.Generator.Generators
                 };
             }
 
-            var context = new FeatureDefinitionGeneratorContext(_loggingChannel, NameRegistry, constraintResolver, _translationProvider, _propertyReader, predefinedFeatureGenerationConfigModel);
+            var context = new FeatureDefinitionGeneratorContext(_loggingChannel, NameRegistry, constraintResolver, _translationProvider, _ambiguityResolver, featureGeneratorConfig);
             context.TryLoadDocumentation( interfaceType.Assembly );
 
             var (identifier, displayName, description) = context.ParseElementData( interfaceType, prefix: "I" );

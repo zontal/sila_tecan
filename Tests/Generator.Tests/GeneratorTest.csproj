@@ -43,8 +43,20 @@
         <ProjectReference Include="..\..\Framework\Framework.csproj" />
     </ItemGroup>
     <ItemGroup>
-        <Compile Update="Dictionary\ClientReference.cs">
+        <Compile Update="AmbiguityResolver\ClientReference.cs">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Compile>
+        <Compile Update="AmbiguityResolver\DtoReference.cs">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Compile>
+        <Compile Update="AmbiguityResolver\ProviderReference.cs">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Compile>
+        <Compile Update="AmbiguityResolver\ServiceReference.cs">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Compile>
+        <Compile Update="Dictionary\ClientReference.cs">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Compile>
         <Compile Update="Dictionary\DtoReference.cs">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -113,6 +125,12 @@
       </None>
     </ItemGroup>
     <ItemGroup>
+        <None Update="AmbiguityResolver\AmbiguityResolver.xml">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="AmbiguityResolver\Feature.xml">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
         <None Update="Dictionary\Feature.xml">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>

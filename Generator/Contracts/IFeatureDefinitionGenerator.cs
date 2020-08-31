@@ -16,7 +16,7 @@ namespace Tecan.Sila2.Generator.Contracts
         /// <param name="category">The use case for the generated feature. If null, a use case is inferred from the namespace</param>
         /// <param name="version">The version of the feature</param>
         /// <param name="namespaceCollector">A component to which accesses to namespace are persisted</param>
-        /// <param name="predefinedFeatureGenerationConfigModel">An object containing dictionary of predefined constraints, keyed by fully origin identifiers and dictionary of predefined ambiguous properties, keyed by type name and parameter name</param>
+        /// <param name="featureGenerationConfig">An object containing dictionary of predefined constraints, keyed by fully origin identifiers and dictionary of predefined ambiguous properties, keyed by type name and parameter name</param>
         /// <param name="isDraftDefault">A default value whether a feature is draft</param>
         /// <returns>The generated feature</returns>
         Feature GenerateFeature(Type interfaceType,
@@ -24,7 +24,7 @@ namespace Tecan.Sila2.Generator.Contracts
             string category = null,
             string version = null,
             ICollection<string> namespaceCollector = null,
-            PredefinedFeatureGenerationConfigModel predefinedFeatureGenerationConfigModel= null, 
+            PredefinedFeatureGenerationConfigModel featureGenerationConfig= null, 
             bool isDraftDefault = true );
     }
 }

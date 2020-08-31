@@ -14,25 +14,35 @@ namespace Tecan.Sila2.Generator.Generators
     /// Generate object for ambiguity resolving
     /// </summary>
     [Export(typeof(IAmbiguityResolver))]
+    [PartCreationPolicy(CreationPolicy.Shared)]
     public class AmbiguityResolver : IAmbiguityResolver
     {
         /// <summary>
         /// Get property name for ambiguous parameter and type
         /// </summary>
-        /// <param name="QuestionForUser">Questions to show in console</param>
+        /// <param name="type"></param>
+        /// <param name="parameterName"></param>
         /// <param name="AllowedPropertyOptions">Allowed options for user input</param>
         /// <returns>Property name for ambiguous parameter and type, if null wrong input from user</returns>
-        public string GetUserDefinedProperty(string QuestionForUser, IReadOnlyList<MemberInfo> AllowedPropertyOptions)
+        public MemberInfo GetUserDefinedProperty( Type type, string parameterName, IReadOnlyList<MemberInfo> AllowedPropertyOptions )
         {
-            string allowedOptions = string.Join(",", AllowedPropertyOptions.Select(x=>x.Name));
-            Console.WriteLine(QuestionForUser);
-            Console.WriteLine(allowedOptions);
+            string allowedOptions = string.Join( "\n", AllowedPropertyOptions.Select( ( x, index ) => $"{index} - {x.Name} ({x.MemberType}))" ) );
+            Console.WriteLine( $"Parameter name '{parameterName}' cannot be resolved to a property or field name of type '{type.Name}'. Please select one of the fields below." );
+            Console.WriteLine( allowedOptions );
             var userDefinedProperty = Console.ReadLine();
-            if (AllowedPropertyOptions.Count(x => userDefinedProperty.Equals(x.Name, StringComparison.OrdinalIgnoreCase)) > 0)
+            MemberInfo selection = null;
+            while(selection == null)
             {
-                return userDefinedProperty;
+                if(int.TryParse( userDefinedProperty, out int index ))
+                {
+                    if(AllowedPropertyOptions.Count > index && index >= 0)
+                    {
+                        return AllowedPropertyOptions.ElementAt( index );
+                    }
+                }
+                selection = AllowedPropertyOptions.FirstOrDefault( x => userDefinedProperty.Equals( x.Name, StringComparison.OrdinalIgnoreCase ) );
             }
-            return null;
+            return selection;
         }
     }
 }

@@ -621,10 +621,9 @@ namespace Tecan.Sila2.Generator.Generators
 
             List<MemberInfo> allowedProperties = new List<MemberInfo>(type.GetProperties());
             allowedProperties.AddRange(type.GetFields());
-            var questionforUser = $"Property {id} does not matched. Enter property name for this from allowed options:";
-            if (_ambiguityResolver?.GetUserDefinedProperty(questionforUser, allowedProperties) is var userDefinedProperty && !string.IsNullOrEmpty(userDefinedProperty))
+            if (_ambiguityResolver?.GetUserDefinedProperty(type, parameterName, allowedProperties) is var userDefinedProperty && userDefinedProperty != null)
             {
-                return GetMemberInfo(type, userDefinedProperty);
+                return userDefinedProperty;
             }
             throw new InvalidOperationException(
                                   $"Could not find matching property for constructor parameter {parameterName} of type {type.Name}");

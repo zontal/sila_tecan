@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CommandLine;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
@@ -6,9 +7,9 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Xml.Serialization;
-using CommandLine;
 using Tecan.MAP.Contracts.Services.Logging;
 using Tecan.Sila2.Generator.Contracts;
+using Tecan.Sila2.Generator.Helper;
 // ReSharper disable PossibleMultipleEnumeration
 
 namespace Tecan.Sila2.Generator.CommandLine
@@ -60,8 +61,9 @@ namespace Tecan.Sila2.Generator.CommandLine
         /// <summary>
         /// Path to a file that contains additional constraints
         /// </summary>
-        [Option('c', "constraints-file", Required = false, HelpText = "Path to a file that contains additional constraints")]
-        public string ConstraintsFile { get; set; }
+        [Option('c', "config-file", Required = false, HelpText = "Path to a file that contains additional constraints")]
+        public string ConfigFile { get; set; }
+
         public override void Execute(CompositionContainer container)
         {
             var channel = SetupLogging( container );
@@ -88,35 +90,15 @@ namespace Tecan.Sila2.Generator.CommandLine
                 return;
             }
             var featureGenerator = container.GetExportedValue<IFeatureDefinitionGenerator>();
-            var preDefinedFeatureGenerationConfigModel = LoadConstraintMappingFile(channel, ConstraintsFile);
+            var preDefinedFeatureGenerationConfigModel = FeatureDefinitionConfigHelper.LoadConfigMappingFile(ConfigFile);
+            if (!string.IsNullOrEmpty(ConfigFile) && preDefinedFeatureGenerationConfigModel != null)
+            {
+                channel.Log( "Feature definition config file could not be loaded.".ToString, Severity.Warning );
+            }
             var feature = featureGenerator.GenerateFeature(featureType, Originator, Category,
                 Version, namespaces, preDefinedFeatureGenerationConfigModel);
             channel.Log( $"Saving generated feature to {OutputPath}".ToString, Severity.Info );
             FeatureSerializer.Save(feature, Path.GetFullPath(OutputPath));
-        }
-
-        internal static PredefinedFeatureGenerationConfigModel LoadConstraintMappingFile(ILoggingChannel channel, string constraintsFile)
-        {
-            if (constraintsFile != null)
-            {
-                if (File.Exists(constraintsFile))
-                {
-                    var serializer = new XmlSerializer(typeof(FeatureGenerationConfig));
-                    using (var stream = File.OpenRead(constraintsFile))
-                    {
-                        var constraints = (FeatureGenerationConfig) serializer.Deserialize(stream);
-                        var predefinedConstraints = constraints.Constraint?.ToDictionary(m => m.Element, m => m.Constraint);
-                        var predefinedAmbiguousProperties = constraints.Property?.ToDictionary(m => m.Key, m => m.Value);
-                        return new PredefinedFeatureGenerationConfigModel(predefinedConstraints, predefinedAmbiguousProperties);
-                    }
-                }
-                else
-                {
-                    channel.Log($"Constraints file {constraintsFile} could not be found.".ToString, Severity.Warning);
-                    
-                }
-            }
-            return null;
         }
 
 
