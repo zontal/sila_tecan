@@ -4,28 +4,58 @@ using Tecan.Sila2;
 
 namespace Contracts
 {
-    [SilaFeature("demo")]
-    [SilaDisplayName("Greeting service")]
-    [SilaDescription("Service to greet people")]
+    /// <summary>
+    /// This is an example interfae for a service to greet people
+    /// </summary>
+    [SilaFeature]
     public interface IGreetingService
     {
-        [SilaDescription("Says hello to people")]
-        [return: SilaDescription("A greeting")]
-        [Throws(typeof(UnfriendlyNameException))]
-        string SayHello( [SilaDescription("The name of the person greeted")] string name );
+        /// <summary>
+        /// Says hello to the provided name
+        /// </summary>
+        /// <param name="name">The name of the person greeted</param>
+        /// <exception cref="UnfriendlyNameException">Thrown if the name contains digits</exception>
+        /// <returns>A greeting</returns>
+        string SayHello( [MaximalLength(20)] string name);
 
-        [SilaDescription("Gets the name of the last person that was greeted")]
-        string LastGreeted
-        {
-            get;
-        }
+        /// <summary>
+        /// Echos a custom data structure
+        /// </summary>
+        /// <param name="structure">the data structure to echo</param>
+        /// <returns>the echoed data structure</returns>
+        DemoStructure EchoStructure(DemoStructure structure);
+
+        /// <summary>
+        /// Simply echoes the stream that is passed into it
+        /// </summary>
+        /// <param name="stream">the stream to echo</param>
+        /// <returns>the echoed stream</returns>
+        Stream EchoStream(Stream stream);
     }
 
-    [SilaDescription("This exception is thrown if a name is considered an attempted attack")]
+    /// <summary>
+    /// This structure is just to demo creating structured objects
+    /// </summary>
+    public struct DemoStructure
+    {
+        public DemoStructure(long x, long y) : this()
+        {
+            X = x;
+            Y = y;
+        }
+
+        public long X { get; }
+        public long Y { get; }
+    }
+
+    /// <summary>
+    /// Thrown if the name contains digits
+    /// </summary>
     public class UnfriendlyNameException : Exception
     {
-        public UnfriendlyNameException( string message ) : base(message)
+        public UnfriendlyNameException(string message) : base(message)
         {
+
         }
     }
 }

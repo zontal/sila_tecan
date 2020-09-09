@@ -1,0 +1,27 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="GreetingService.sila.xml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="GreetingService.sila.xml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Tecan.Sila2" Version="2.2.0-master.111" />
+    <PackageReference Include="Tecan.Sila2.Server" Version="2.2.0-master.111" />
+    <PackageReference Include="Tecan.Sila2.Features.Locking" Version="2.2.0-master.111" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Contracts\Contracts.csproj" />
+    <ProjectReference Include="..\Implementation\Implementation.csproj" />
+  </ItemGroup>
+
+</Project>

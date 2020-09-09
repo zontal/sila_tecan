@@ -1,11 +1,16 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>..\Build\netstandard2.0\Contracts.xml</DocumentationFile>
+    <OutputPath>..\Build</OutputPath>
+  </PropertyGroup>
+
   <ItemGroup>
-    <PackageReference Include="Tecan.Sila2.Contracts" Version="1.0.35" />
+    <PackageReference Include="Tecan.Sila2.Contracts" Version="2.2.0-master.111" />
   </ItemGroup>
 
 </Project>

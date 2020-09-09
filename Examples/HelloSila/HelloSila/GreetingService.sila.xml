@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Feature xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" SiLA2Version="1.0" FeatureVersion="1.0" Originator="sila.hackathon" Category="demo" xmlns="http://www.sila-standard.org">
+  <Identifier>GreetingService</Identifier>
+  <DisplayName>Greeting Service</DisplayName>
+  <Description>This is an example interfae for a service to greet people</Description>
+  <Command>
+    <Identifier>SayHello</Identifier>
+    <DisplayName>Say Hello</DisplayName>
+    <Description>Says hello to the provided name</Description>
+    <Observable>No</Observable>
+    <Parameter>
+      <Identifier>Name</Identifier>
+      <DisplayName>Name</DisplayName>
+      <Description>The name of the person greeted</Description>
+      <DataType>
+        <Constrained>
+          <DataType>
+            <Basic>String</Basic>
+          </DataType>
+          <Constraints>
+            <MaximalLength>20</MaximalLength>
+          </Constraints>
+        </Constrained>
+      </DataType>
+    </Parameter>
+    <Response>
+      <Identifier>ReturnValue</Identifier>
+      <DisplayName>Return Value</DisplayName>
+      <Description>A greeting</Description>
+      <DataType>
+        <Basic>String</Basic>
+      </DataType>
+    </Response>
+    <DefinedExecutionErrors>
+      <Identifier>UnfriendlyName</Identifier>
+    </DefinedExecutionErrors>
+  </Command>
+  <Command>
+    <Identifier>EchoStructure</Identifier>
+    <DisplayName>Echo Structure</DisplayName>
+    <Description>Echos a custom data structure</Description>
+    <Observable>No</Observable>
+    <Parameter>
+      <Identifier>Structure</Identifier>
+      <DisplayName>Structure</DisplayName>
+      <Description>the data structure to echo</Description>
+      <DataType>
+        <DataTypeIdentifier>DemoStructure</DataTypeIdentifier>
+      </DataType>
+    </Parameter>
+    <Response>
+      <Identifier>ReturnValue</Identifier>
+      <DisplayName>Return Value</DisplayName>
+      <Description>the echoed data structure</Description>
+      <DataType>
+        <DataTypeIdentifier>DemoStructure</DataTypeIdentifier>
+      </DataType>
+    </Response>
+  </Command>
+  <Command>
+    <Identifier>EchoStream</Identifier>
+    <DisplayName>Echo Stream</DisplayName>
+    <Description>Simply echoes the stream that is passed into it</Description>
+    <Observable>No</Observable>
+    <Parameter>
+      <Identifier>Stream</Identifier>
+      <DisplayName>Stream</DisplayName>
+      <Description>the stream to echo</Description>
+      <DataType>
+        <Basic>Binary</Basic>
+      </DataType>
+    </Parameter>
+    <Response>
+      <Identifier>ReturnValue</Identifier>
+      <DisplayName>Return Value</DisplayName>
+      <Description>the echoed stream</Description>
+      <DataType>
+        <Basic>Binary</Basic>
+      </DataType>
+    </Response>
+  </Command>
+  <DefinedExecutionError>
+    <Identifier>UnfriendlyName</Identifier>
+    <DisplayName>Unfriendly Name</DisplayName>
+    <Description>Thrown if the name contains digits</Description>
+  </DefinedExecutionError>
+  <DataTypeDefinition>
+    <Identifier>DemoStructure</Identifier>
+    <DisplayName>Demo Structure</DisplayName>
+    <Description>This structure is just to demo creating structured objects</Description>
+    <DataType>
+      <Structure>
+        <Element>
+          <Identifier>X</Identifier>
+          <DisplayName>X</DisplayName>
+          <Description />
+          <DataType>
+            <Basic>Integer</Basic>
+          </DataType>
+        </Element>
+        <Element>
+          <Identifier>Y</Identifier>
+          <DisplayName>Y</DisplayName>
+          <Description />
+          <DataType>
+            <Basic>Integer</Basic>
+          </DataType>
+        </Element>
+      </Structure>
+    </DataType>
+  </DataTypeDefinition>
+</Feature>

@@ -1,29 +1,34 @@
 ﻿using Contracts;
 using System;
-using System.ComponentModel.Composition;
+using System.IO;
 using System.Linq;
+using Tecan.Sila2;
 
 namespace Implementation
 {
-    [Export(typeof( IGreetingService ) )]
-    [PartCreationPolicy(CreationPolicy.Shared)]
+
+    [System.ComponentModel.Composition.ExportAttribute(typeof(IGreetingService))]
+    [System.ComponentModel.Composition.PartCreationPolicyAttribute(System.ComponentModel.Composition.CreationPolicy.Shared)]
     public class GreetingService : IGreetingService
     {
-        public string SayHello( string name )
+        public DemoStructure EchoStructure(DemoStructure structure)
         {
-            if( name != null && name.Any( char.IsDigit ) )
-            {
-                throw new UnfriendlyNameException("The name contains digits");
-            }
-
-            LastGreeted = name;
-            return $"Hello, {name}!";
+            return structure;
         }
 
-        public string LastGreeted
+        public Stream EchoStream(Stream stream)
         {
-            get;
-            private set;
+            return stream;
+        }
+
+        public string SayHello(string name)
+        {
+            if (!string.IsNullOrEmpty(name) && name.Any(char.IsDigit))
+            {
+                throw new UnfriendlyNameException("Name must not contain digits");
+            }
+
+            return $"Hello, {name}!";
         }
     }
 }
