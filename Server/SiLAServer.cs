@@ -485,6 +485,7 @@ namespace Tecan.Sila2.Server
         /// <inheritdoc />
         public Stream ResolveStoredBinary(string identifier)
         {
+            _upload.WaitUploadComplete( identifier );
             return _fileManagement.OpenRead(identifier);
         }
 
@@ -521,6 +522,7 @@ namespace Tecan.Sila2.Server
         /// <inheritdoc />
         public FileInfo ResolveStoredBinaryFile( string identifier )
         {
+            _upload.WaitUploadComplete( identifier );
             return _fileManagement.Locate( identifier );
         }
 

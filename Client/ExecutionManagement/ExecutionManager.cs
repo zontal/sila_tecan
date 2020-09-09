@@ -5,24 +5,26 @@ using Tecan.Sila2.Binary;
 
 namespace Tecan.Sila2.Client.ExecutionManagement
 {
-    internal class ExecutionManager : ClientBinaryStore, IClientExecutionManager
+    internal class ExecutionManager : IClientExecutionManager
     {
         private readonly InterceptionRepository _interceptionRepository;
         private readonly ServerData _serverData;
 
-        public IBinaryStore DownloadBinaryStore => this;
+        public IBinaryStore DownloadBinaryStore { get; }
 
-        public ExecutionManager( ServerData serverData, IEnumerable<IRequestInterceptor> interceptors ) : base( "", serverData.Channel )
+        public ExecutionManager( ServerData serverData, IEnumerable<IRequestInterceptor> interceptors )
         {
             _interceptionRepository = new InterceptionRepository( interceptors );
             _serverData = serverData;
 
             FindAllMetadata();
+
+            DownloadBinaryStore = new ClientBinaryStore( string.Empty, serverData.Channel, this );
         }
 
         private void FindAllMetadata()
         {
-            var reader = new MetadataReader( CallInvoker );
+            var reader = new MetadataReader( _serverData.Channel );
             foreach(var feature in _serverData.Features)
             {
                 foreach(var metadata in feature.Items.OfType<FeatureMetadata>())
@@ -30,12 +32,6 @@ namespace Tecan.Sila2.Client.ExecutionManagement
                     _interceptionRepository.RegisterAffected( feature.GetFullyQualifiedIdentifier( metadata ), reader.GetAffected( feature, metadata ) );
                 }
             }
-        }
-
-        protected ExecutionManager( ClientBaseConfiguration configuration, InterceptionRepository interceptionRepository, ServerData server ) : base( "", configuration )
-        {
-            _interceptionRepository = interceptionRepository;
-            _serverData = server;
         }
 
         public IClientCallInfo CreateCallOptions( string commandIdentifier )
@@ -59,14 +55,9 @@ namespace Tecan.Sila2.Client.ExecutionManagement
             return new CallInfo( new CallOptions( headers: metadata ), interceptions );
         }
 
-        protected override ClientBinaryStore NewInstance( ClientBaseConfiguration configuration )
-        {
-            return new ExecutionManager( configuration, _interceptionRepository, _serverData );
-        }
-
         public IBinaryStore CreateBinaryStore( string commandParameterIdentifier )
         {
-            return this;
+            return new ClientBinaryStore( commandParameterIdentifier, _serverData.Channel, this );
         }
     }
 }

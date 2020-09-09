@@ -2,6 +2,7 @@
 using System.IO;
 using System.Threading.Tasks;
 using Grpc.Core;
+using Tecan.Sila2.Client;
 
 namespace Tecan.Sila2.Binary
 {
@@ -11,21 +12,42 @@ namespace Tecan.Sila2.Binary
     public class ClientBinaryStore : ClientBase<ClientBinaryStore>, IBinaryStore
     {
         private const int ChunkSize = 1024 * 1024 * 2;
-        private readonly string _commandIdentifier;
+        private readonly string _commandParameterIdentifier;
+        private readonly IClientExecutionManager _executionManager;
 
-        public ClientBinaryStore( string commandIdentifier )
+        /// <summary>
+        /// Creates a new client binary store for the given command parameter identifier
+        /// </summary>
+        /// <param name="commandParameterIdentifier">A globally unique identifier for the command parameter or null, if the store is not associated to a command parameter</param>
+        /// <param name="executionManager">The execution manager to handle requests to the given server</param>
+        public ClientBinaryStore( string commandParameterIdentifier, IClientExecutionManager executionManager )
         {
-            _commandIdentifier = commandIdentifier;
+            _commandParameterIdentifier = commandParameterIdentifier;
+            _executionManager = executionManager;
         }
 
-        public ClientBinaryStore( string commandIdentifier, Channel channel) : base(channel)
+        /// <summary>
+        /// Creates a new client binary store for the given command parameter identifier
+        /// </summary>
+        /// <param name="commandParameterIdentifier">A globally unique identifier for the command parameter or null, if the store is not associated to a command parameter</param>
+        /// <param name="channel">The underlying channel</param>
+        /// <param name="executionManager">The execution manager to handle requests to the given server</param>
+        public ClientBinaryStore( string commandParameterIdentifier, Channel channel, IClientExecutionManager executionManager ) : base(channel)
         {
-            _commandIdentifier = commandIdentifier;
+            _commandParameterIdentifier = commandParameterIdentifier;
+            _executionManager = executionManager;
         }
 
-        protected ClientBinaryStore(string commandIdentifier, ClientBaseConfiguration configuration) : base(configuration)
+        /// <summary>
+        /// Creates a new client binary store for the given command parameter identifier
+        /// </summary>
+        /// <param name="commandParameterIdentifier">A globally unique identifier for the command parameter or null, if the store is not associated to a command parameter</param>
+        /// <param name="configuration">The updated configuration</param>
+        /// <param name="executionManager">The execution manager to handle requests to the given server</param>
+        protected ClientBinaryStore(string commandParameterIdentifier, ClientBaseConfiguration configuration, IClientExecutionManager executionManager ) : base(configuration)
         {
-            _commandIdentifier = commandIdentifier;
+            _commandParameterIdentifier = commandParameterIdentifier;
+            _executionManager = executionManager;
         }
 
         /// <inheritdoc />
@@ -83,13 +105,14 @@ namespace Tecan.Sila2.Binary
         public async Task<string> Upload(Stream file)
         {
             var chunkCount = (uint) ((file.Length + ChunkSize - 1) / ChunkSize);
+            var options = CreateCallOptions( true );
             var identifier = await CreateBinaryAsync(new CreateBinaryRequestDto()
             {
                 BinarySize = (ulong) file.Length,
                 ChunkCount = chunkCount,
-                CommandIdentifier = _commandIdentifier
-            }, CreateCallOptions());
-            var uploadChannel = UploadChunk(CreateCallOptions());
+                CommandIdentifier = _commandParameterIdentifier
+            }, options);
+            var uploadChannel = UploadChunk(new CallOptions());
             var bytes = new byte[ChunkSize];
             for (uint i = 0; i < chunkCount; i++)
             {
@@ -117,9 +140,17 @@ namespace Tecan.Sila2.Binary
             return identifier.BinaryTransferUUID;
         }
 
-        private CallOptions CreateCallOptions()
+        private CallOptions CreateCallOptions(bool useExecutionManager)
         {
-            return new CallOptions();
+            if (useExecutionManager && _commandParameterIdentifier != null)
+            {
+                var parameterIndex = _commandParameterIdentifier.LastIndexOf( "/Parameter/" );
+                return _executionManager.CreateCallOptions( _commandParameterIdentifier.Substring( 0, parameterIndex ) ).Options;
+            }
+            else
+            {
+                return new CallOptions();
+            }
         }
 
         private AsyncUnaryCall<GetBinaryInfoResponseDto> GetBinaryInfoAsync(GetBinaryInfoRequestDto request, CallOptions options)
@@ -148,8 +179,8 @@ namespace Tecan.Sila2.Binary
             var data = await GetBinaryInfoAsync(new GetBinaryInfoRequestDto()
             {
                 BinaryTransferUUID = binaryIdentifier
-            }, CreateCallOptions());
-            var getChunk = GetChunk(CreateCallOptions());
+            }, CreateCallOptions(false));
+            var getChunk = GetChunk(CreateCallOptions(false));
             var chunkCount = (uint) (data.BinarySize + ChunkSize - 1) / ChunkSize;
             for (ulong i = 0; i < chunkCount; i++)
             {
@@ -174,7 +205,7 @@ namespace Tecan.Sila2.Binary
         /// <returns>An awaitable task that completes when the deletion is finished</returns>
         public async Task DeleteUpload(string binaryIdentifier)
         {
-            await DeleteBinaryUploadAsync(new DeleteBinaryRequestDto() { BinaryTransferUUID = binaryIdentifier }, CreateCallOptions());
+            await DeleteBinaryUploadAsync(new DeleteBinaryRequestDto() { BinaryTransferUUID = binaryIdentifier }, CreateCallOptions(true));
         }
 
         /// <summary>
@@ -184,7 +215,7 @@ namespace Tecan.Sila2.Binary
         /// <returns>A new instance of the binary store</returns>
         protected override ClientBinaryStore NewInstance(ClientBaseConfiguration configuration)
         {
-            return new ClientBinaryStore(_commandIdentifier, configuration);
+            return new ClientBinaryStore( _commandParameterIdentifier, configuration, _executionManager);
         }
 
         /// <summary>

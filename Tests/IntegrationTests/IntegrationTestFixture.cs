@@ -37,7 +37,7 @@ namespace Tecan.Sila2.IntegrationTests
             var dir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "TestServer");
             var serverId = Guid.NewGuid();
             var payloadArguments = $"-u {serverId} -i 127.0.0.1";
-            var attachDebugger = Debugger.IsAttached;
+            var attachDebugger = false; // Debugger.IsAttached;
             if( attachDebugger )
             {
                 payloadArguments = "debug " + payloadArguments;
@@ -414,6 +414,14 @@ namespace Tecan.Sila2.IntegrationTests
             Logout( token );
         }
 
+        private static byte[] CreateLargeByteArray()
+        {
+            var result = new byte[1024 * 1024];
+            var random = new Random();
+            random.NextBytes( result );
+            return result;
+        }
+
         [Test]
         public void PassBytes_TransmittedSuccessfully()
         {
@@ -423,6 +431,7 @@ namespace Tecan.Sila2.IntegrationTests
             var testClient = new TestServerClient( _server.Channel, executionManager );
 
             PassDataToClientAndTest(testClient, 0, 8, 15);
+            PassDataToClientAndTest( testClient, CreateLargeByteArray() );
 
             Unlock( lockId, token );
             Logout( token );
@@ -465,7 +474,6 @@ namespace Tecan.Sila2.IntegrationTests
 
             var value = new byte[] {0, 8, 15};
             var response = PassBytesThrough(commandClient, value);
-
             Assert.That(response, Is.EquivalentTo( value ) );
 
             Unlock( lockId, token );

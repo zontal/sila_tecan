@@ -107,6 +107,7 @@ namespace Tecan.Sila2.Server.Binary
                     {
                         uploadData.FileStream.Close();
                         uploadData.FileStream.Dispose();
+                        uploadData.Completion.Set();
                         _openStreams.TryRemove(request.BinaryTransferUUID, out _);
                     }
                 }
@@ -144,6 +145,18 @@ namespace Tecan.Sila2.Server.Binary
         public bool CheckUploadComplete(string binaryIdentifier)
         {
             return !_openStreams.ContainsKey(binaryIdentifier) && _fileManagement.Exists(binaryIdentifier);
+        }
+
+        /// <summary>
+        /// Waits until the upload of the file with the given binary identifier is complete
+        /// </summary>
+        /// <param name="binaryIdentifier"></param>
+        public void WaitUploadComplete(string binaryIdentifier)
+        {
+            if (_openStreams.TryGetValue(binaryIdentifier, out var uploadData))
+            {
+                uploadData.Completion.Wait();
+            }
         }
 
         /// <summary>

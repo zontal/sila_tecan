@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading;
 
 namespace Tecan.Sila2.Server.Binary
 {
@@ -20,6 +21,12 @@ namespace Tecan.Sila2.Server.Binary
         {
             FileStream = stream;
             ChunkCount = chunkCount;
+            Completion = new ManualResetEventSlim( false );
+        }
+
+        public ManualResetEventSlim Completion
+        {
+            get;
         }
     }
 

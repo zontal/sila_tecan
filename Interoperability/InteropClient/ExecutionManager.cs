@@ -14,7 +14,7 @@ namespace Tecan.Sila2.Interop.Client
 
         public ExecutionManager( Channel serverChannel )
         {
-            DownloadBinaryStore = new ClientBinaryStore(null, serverChannel);
+            DownloadBinaryStore = new ClientBinaryStore(null, serverChannel, this);
             _serverChannel = serverChannel;
         }
 
@@ -36,7 +36,7 @@ namespace Tecan.Sila2.Interop.Client
 
         public IBinaryStore CreateBinaryStore( string commandParameterIdentifier )
         {
-            return new ClientBinaryStore(commandParameterIdentifier, _serverChannel);
+            return new ClientBinaryStore(commandParameterIdentifier, _serverChannel, this);
         }
 
         private class CallInfo : IClientCallInfo
