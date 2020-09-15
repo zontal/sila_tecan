@@ -104,7 +104,7 @@ namespace Tecan.Sila2.DynamicClient
                     }
                     else if (IsInField(reader, 2))
                     {
-                        setProperty( binaryStore.ResolveStoredBinary( reader.ReadString() ) );
+                        setProperty( new LazyBinaryStream(binaryStore, reader.ReadString()) );
                     }
                     break;
                 case BasicType.Date:

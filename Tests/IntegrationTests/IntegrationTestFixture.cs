@@ -472,15 +472,23 @@ namespace Tecan.Sila2.IntegrationTests
             var featureContext = new FeatureContext( feature, _server, executionManager );
             var commandClient = new NonObservableCommandClient( feature.Items.OfType<FeatureCommand>().Single( c => c.Identifier == "PassBytes" ), featureContext );
 
-            var value = new byte[] {0, 8, 15};
-            var response = PassBytesThrough(commandClient, value);
-            Assert.That(response, Is.EquivalentTo( value ) );
+            PassBytesThroughAndAssert(commandClient, new byte[] {0, 8, 15});
+            PassBytesThroughAndAssert(commandClient, CreateLargeByteArray());
 
             Unlock( lockId, token );
             Logout( token );
         }
 
-        private static byte[] PassBytesThrough(NonObservableCommandClient commandClient, byte[] value)
+        private static void AssertArraysEqual(byte[] response, byte[] value)
+        {
+            Assert.That(response.Length, Is.EqualTo(value.Length));
+            for (int i = 0; i < response.Length; i++)
+            {
+                Assert.That(response[i], Is.EqualTo(value[i]));
+            }
+        }
+
+        private static void PassBytesThroughAndAssert(NonObservableCommandClient commandClient, byte[] value)
         {
             var request = commandClient.CreateRequest();
             request.Value = new DynamicObject()
@@ -499,7 +507,10 @@ namespace Tecan.Sila2.IntegrationTests
             using (var responseStream = new MemoryStream())
             {
                 ((Stream) returnStream).CopyTo(responseStream);
-                return responseStream.ToArray();
+                var responseArray = responseStream.ToArray();
+
+                // we cannot use Is.EquivalentTo for larger byte arrays because it is super-slow, rather check sequence equality explicitly
+                AssertArraysEqual( responseArray, value );
             }
         }
 
