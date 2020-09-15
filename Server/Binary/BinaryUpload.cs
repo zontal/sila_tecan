@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Grpc.Core;
 using Tecan.Sila2.Binary;
@@ -12,11 +13,12 @@ namespace Tecan.Sila2.Server.Binary
     /// <summary>
     /// Helper class to implement upload of binary data
     /// </summary>
-    public class BinaryUpload
+    public class BinaryUpload : IDisposable
     {
         private readonly IFileManagement _fileManagement;
         private readonly ISiLAServer _server;
         private readonly ConcurrentDictionary<string, FileUploadData> _openStreams = new ConcurrentDictionary<string, FileUploadData>();
+        private readonly Timer _cleanupTimer;
 
         /// <summary>
         /// Create a binary upload for the given file management
@@ -27,6 +29,45 @@ namespace Tecan.Sila2.Server.Binary
         {
             _fileManagement = fileManagement;
             _server = server;
+            _cleanupTimer = new Timer(Cleanup, null, TimeSpan.FromMinutes(5), TimeSpan.FromMinutes(5));
+        }
+
+        private void Cleanup( object state )
+        {
+            Cleanup();
+        }
+
+        /// <summary>
+        /// Closes all expired value streams
+        /// </summary>
+        public void Cleanup()
+        {
+            foreach( var fileUploadData in _openStreams )
+            {
+                if( fileUploadData.Value.ExpirationTime <= DateTimeOffset.Now )
+                {
+                    fileUploadData.Value.Completion.SetCanceled();
+                    _fileManagement.Delete(fileUploadData.Key, true);
+                    _openStreams.TryRemove( fileUploadData.Key, out _ );
+                }
+            }
+        }
+
+        /// <summary>
+        /// Pauses the cleanup thread
+        /// </summary>
+        public void PauseCleanups()
+        {
+            _cleanupTimer.Change( Timeout.Infinite, Timeout.Infinite );
+        }
+
+        /// <summary>
+        /// Resumes the cleanup thread
+        /// </summary>
+        /// <param name="interval"></param>
+        public void ResumeCleanup(TimeSpan interval)
+        {
+            _cleanupTimer.Change( interval, interval );
         }
 
         private Task<CreateBinaryResponseDto> CreateBinary(CreateBinaryRequestDto request, ServerCallContext context)
@@ -107,7 +148,7 @@ namespace Tecan.Sila2.Server.Binary
                     {
                         uploadData.FileStream.Close();
                         uploadData.FileStream.Dispose();
-                        uploadData.Completion.Set();
+                        uploadData.Completion.SetResult(null);
                         _openStreams.TryRemove(request.BinaryTransferUUID, out _);
                     }
                 }
@@ -138,16 +179,6 @@ namespace Tecan.Sila2.Server.Binary
         }
 
         /// <summary>
-        /// Checks whether the upload of the given identifier is complete
-        /// </summary>
-        /// <param name="binaryIdentifier">The binary storage identifier</param>
-        /// <returns>True, if the upload of the file with the given identifier has been completed, otherwise false.</returns>
-        public bool CheckUploadComplete(string binaryIdentifier)
-        {
-            return !_openStreams.ContainsKey(binaryIdentifier) && _fileManagement.Exists(binaryIdentifier);
-        }
-
-        /// <summary>
         /// Waits until the upload of the file with the given binary identifier is complete
         /// </summary>
         /// <param name="binaryIdentifier"></param>
@@ -155,7 +186,7 @@ namespace Tecan.Sila2.Server.Binary
         {
             if (_openStreams.TryGetValue(binaryIdentifier, out var uploadData))
             {
-                uploadData.Completion.Wait();
+                uploadData.Completion.Task.Wait();
             }
         }
 
@@ -194,6 +225,18 @@ namespace Tecan.Sila2.Server.Binary
             {
                 get;
             }
+        }
+
+        /// <inheritdoc />
+        public void Dispose()
+        {
+            _cleanupTimer?.Dispose();
+        }
+
+        public void DeleteUpload( string binaryStorageIdentifier )
+        {
+            _openStreams.TryRemove( binaryStorageIdentifier, out _ );
+            _fileManagement.Delete(binaryStorageIdentifier, true);
         }
     }
 

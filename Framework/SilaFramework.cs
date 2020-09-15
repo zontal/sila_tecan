@@ -559,7 +559,7 @@ namespace Tecan.Sila2
             }
             else
             {
-                return resolver.ResolveStoredBinary(BinaryTransferUUID);
+                return new LazyBinaryStream(resolver, BinaryTransferUUID);
             }
         }
 
@@ -578,8 +578,11 @@ namespace Tecan.Sila2
             {
                 using( var ms = new MemoryStream() )
                 {
-                    resolver.ResolveStoredBinary(BinaryTransferUUID).CopyTo(ms);
-                    return ms.ToArray();
+                    using( var resolvedStream = new LazyBinaryStream( resolver, BinaryTransferUUID ) )
+                    {
+                        resolvedStream.CopyTo( ms );
+                        return ms.ToArray();
+                    }
                 }
             }
         }

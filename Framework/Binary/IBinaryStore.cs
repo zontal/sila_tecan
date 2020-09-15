@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Threading.Tasks;
 
 namespace Tecan.Sila2.Binary
 {
@@ -43,10 +44,9 @@ namespace Tecan.Sila2.Binary
         string StoreBinary(FileInfo file);
 
         /// <summary>
-        /// Gets a value indicating whether the given binary is completely downloaded
+        /// Deletes the binary after usage
         /// </summary>
         /// <param name="identifier">The binary storage identifier</param>
-        /// <returns>True, if the download is complete, otherwise false</returns>
-        bool IsComplete(string identifier);
+        void Delete( string identifier );
     }
 }

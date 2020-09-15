@@ -203,9 +203,9 @@ namespace Tecan.Sila2.Binary
         /// </summary>
         /// <param name="binaryIdentifier">The binary storage identifier</param>
         /// <returns>An awaitable task that completes when the deletion is finished</returns>
-        public async Task DeleteUpload(string binaryIdentifier)
+        public async Task DeleteDownload(string binaryIdentifier)
         {
-            await DeleteBinaryUploadAsync(new DeleteBinaryRequestDto() { BinaryTransferUUID = binaryIdentifier }, CreateCallOptions(true));
+            await DeleteBinaryDownloadAsync(new DeleteBinaryRequestDto() { BinaryTransferUUID = binaryIdentifier }, CreateCallOptions(true));
         }
 
         /// <summary>
@@ -218,16 +218,6 @@ namespace Tecan.Sila2.Binary
             return new ClientBinaryStore( _commandParameterIdentifier, configuration, _executionManager);
         }
 
-        /// <summary>
-        /// Gets a value indicating whether the download of the given binary storage identifier is complete
-        /// </summary>
-        /// <param name="identifier">The binary storage identifier</param>
-        /// <returns>True, if the download is complete, otherwise false</returns>
-        public bool IsComplete(string identifier)
-        {
-            return true;
-        }
-
         /// <inheritdoc />
         public FileInfo ResolveStoredBinaryFile( string identifier )
         {
@@ -237,6 +227,12 @@ namespace Tecan.Sila2.Binary
                 Download( identifier, stream ).Wait();
             }
             return new FileInfo(tempPath);
+        }
+
+        /// <inheritdoc />
+        public void Delete( string identifier )
+        {
+            DeleteDownload( identifier ).Wait();
         }
     }
 }

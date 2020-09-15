@@ -514,9 +514,9 @@ namespace Tecan.Sila2.Server
         }
 
         /// <inheritdoc />
-        public bool IsComplete(string identifier)
+        public void Delete( string identifier )
         {
-            return _upload.CheckUploadComplete(identifier);
+            _upload.DeleteUpload( identifier );
         }
 
         /// <inheritdoc />
