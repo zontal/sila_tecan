@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.Composition.Hosting;
+using System.ComponentModel.Composition.Primitives;
+using System.IO;
 using System.Linq;
 using CommandLine;
 using Tecan.MAP.Contracts.Services.Logging;
@@ -25,10 +28,22 @@ namespace Tecan.Sila2.Generator
 
         private static void CreateCompositionContainer()
         {
-            var directory = new DirectoryCatalog(AppDomain.CurrentDomain.BaseDirectory, "SilaGen.*.dll");
-            _container = new CompositionContainer( new AggregateCatalog( directory, new AssemblyCatalog( typeof(Program).Assembly ) ) );
+            var catalogs = new List<ComposablePartCatalog>();
+            var directory = new DirectoryCatalog( AppDomain.CurrentDomain.BaseDirectory, "SilaGen.*.dll" );
+            var silaGenExtensions = Path.Combine( Environment.GetFolderPath( Environment.SpecialFolder.CommonApplicationData ), "Tecan", "SilaGen" );
+            catalogs.Add(directory);
+            catalogs.Add(new AssemblyCatalog(typeof(Program).Assembly));
+            if( Directory.Exists( silaGenExtensions ) )
+            {
+                catalogs.Add( new DirectoryCatalog( silaGenExtensions, "SilaGen.*.dll" ) );
+            }
+            _container = new CompositionContainer( new AggregateCatalog(catalogs) );
         }
 
+        /// <summary>
+        /// The entry point for SilaGen
+        /// </summary>
+        /// <param name="args">The commandline parameters</param>
         public static void Main(string[] args)
         {
             CreateCompositionContainer();
