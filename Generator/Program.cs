@@ -5,6 +5,7 @@ using System.ComponentModel.Composition.Primitives;
 using System.IO;
 using System.Linq;
 using CommandLine;
+using Microsoft.Build.Locator;
 using Tecan.MAP.Contracts.Services.Logging;
 using Tecan.Sila2.Generator.Contracts;
 
@@ -46,6 +47,8 @@ namespace Tecan.Sila2.Generator
         /// <param name="args">The commandline parameters</param>
         public static void Main(string[] args)
         {
+            MSBuildLocator.RegisterDefaults();
+
             CreateCompositionContainer();
 
             var verbTypes = _container.GetExportedValues<ICommandLineVerb>()

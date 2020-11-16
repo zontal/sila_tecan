@@ -40,7 +40,7 @@ namespace Tecan.Sila2.Generator.CommandLine
         [Option('o', "organization", HelpText = "The company name as in the certificate.")]
         public string Company { get; set; }
 
-        [Option('u', "The organizational unit where the certificate comes from.")]
+        [Option('u', "unit", HelpText = "The organizational unit where the certificate comes from.")]
         public string OrganizationUnit { get; set; }
 
         [Value(0, HelpText = "The target name for which the certificate is issued.", Required = true)]

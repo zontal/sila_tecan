@@ -17,9 +17,10 @@
             <dependency id="Tecan.Sila2.Server" version="[2.0,3.0)" />
             <dependency id="Tecan.Sila2.DynamicClient" version="[2.0,3.0)" />
             <dependency id="CommandLineParser" version="2.6.0" />
-            <dependency id="Microsoft.Build" version="16.0.461" />
-            <dependency id="Microsoft.Build.Framework" version="16.0.461" />
-            <dependency id="Microsoft.Build.Utilities.Core" version="16.0.461" />
+            <dependency id="Microsoft.Build" version="16.3.0" />
+            <dependency id="Microsoft.Build.Locator" version="1.2.6" />
+            <dependency id="Microsoft.Build.Framework" version="16.3.0" />
+            <dependency id="Microsoft.Build.Utilities.Core" version="16.3.0" />
             <dependency id="System.CodeDOM" version="4.5.0" />
         </dependencies>
     </metadata>

@@ -108,6 +108,9 @@ namespace Tecan.Sila2.Generator.CommandLine
         [Option( "constraints-file", Required = false, HelpText = "Path to a file that contains additional constraints" )]
         public string ConstraintsFile { get; set; }
 
+        /// <summary>
+        /// If specified, features that do not specify whether they are draft or not will be set to draft.
+        /// </summary>
         [Option("draft", Required = false, HelpText = "If specified, features that do not specify whether they are draft or not will be set to draft.")]
         public bool IsDraft
         {
