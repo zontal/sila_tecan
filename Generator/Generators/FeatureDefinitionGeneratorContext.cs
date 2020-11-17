@@ -573,7 +573,8 @@ namespace Tecan.Sila2.Generator.Generators
                                       prop.GetCustomAttribute<DisplayNameAttribute>()?.DisplayName ??
                                       prop.Name,
                         Description = prop.GetCustomAttribute<SilaDescriptionAttribute>()?.Description ??
-                                      prop.GetCustomAttribute<DescriptionAttribute>()?.Description ?? string.Empty
+                                      prop.GetCustomAttribute<DescriptionAttribute>()?.Description ??
+                                      GetDocumentationSummary(prop) ?? string.Empty
                     }).ToArray();
         }
 
