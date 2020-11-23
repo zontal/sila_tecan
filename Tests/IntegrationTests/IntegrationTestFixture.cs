@@ -28,7 +28,7 @@ namespace Tecan.Sila2.IntegrationTests
     [TestFixture( Category = "IntegrationTests" )]
     public class IntegrationTestFixture
     {
-        private ServerData _server;
+        private GrpcServerData _server;
         private Process _serverProcess;
 
         [SetUp]
@@ -76,7 +76,7 @@ namespace Tecan.Sila2.IntegrationTests
             var testLogging = new TestLoggingFactory();
             var connector = new ServerConnector( new DiscoveryExecutionManager(), testLogging );
             
-            _server = connector.Connect( IPAddress.Loopback, 50052 );
+            _server = connector.Connect( IPAddress.Loopback, 50052 ) as GrpcServerData;
             Assert.That( _server, Is.Not.Null );
         }
 

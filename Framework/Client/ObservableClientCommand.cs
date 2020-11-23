@@ -22,7 +22,7 @@ namespace Tecan.Sila2.Client
 
         public Func<DefinedExecutionErrorDto, Exception> ErrorConverter { get; }
 
-        public CallOptions CallOptions => CallInfo.Options.WithCancellationToken( CancellationToken );
+        public CallOptions CreateCallOptions() => CallInfo.ToCallOptions().WithCancellationToken( CancellationToken );
 
         protected override bool SendLastUpdate => false;
 
@@ -40,7 +40,7 @@ namespace Tecan.Sila2.Client
         {
             try
             {
-                using( var streamingCall = CallInvoker.AsyncServerStreamingCall( StateMethod, null, CallOptions, CommandId ) )
+                using( var streamingCall = CallInvoker.AsyncServerStreamingCall( StateMethod, null, CreateCallOptions(), CommandId ) )
                 {
                     var responseStream = streamingCall.ResponseStream;
                     while( await responseStream.MoveNext(default) )
@@ -97,7 +97,7 @@ namespace Tecan.Sila2.Client
 
         protected override bool SendLastUpdate => false;
 
-        public CallOptions CallOptions => CallInfo.Options.WithCancellationToken( CancellationToken );
+        public CallOptions CreateCallOptions() => CallInfo.ToCallOptions().WithCancellationToken( CancellationToken );
 
         /// <summary>
         /// Create a new observable command
@@ -132,7 +132,7 @@ namespace Tecan.Sila2.Client
         {
             try
             {
-                using(var streamingCall = CallInvoker.AsyncServerStreamingCall( StateMethod, null, CallOptions, CommandId ))
+                using(var streamingCall = CallInvoker.AsyncServerStreamingCall( StateMethod, null, CreateCallOptions(), CommandId ))
                 {
                     var responseStream = streamingCall.ResponseStream;
                     while(await responseStream.MoveNext(default))

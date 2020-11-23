@@ -94,7 +94,7 @@ namespace Tecan.Sila2.DynamicClient
                     result = Context.CallInvoker.BlockingUnaryCall(
                         _method,
                         host,
-                        callInfo.Options,
+                        callInfo.ToCallOptions(),
                         EmptyRequest.Instance);
                 }
                 callInfo.FinishSuccessful();

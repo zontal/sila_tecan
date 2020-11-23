@@ -26,7 +26,7 @@ namespace Tecan.Sila2.Authentication
         private readonly ILoggingChannel _loggingChannel;
         private readonly Lazy<IConnectionManager> _connectionManager;
         private readonly Lazy<IExecutionManagerFactory> _executionManagerFactory;
-        private readonly ConditionalWeakTable<ServerData, AuthTokenHandle> _cachedTokens = new ConditionalWeakTable<ServerData, AuthTokenHandle>();
+        private readonly ConditionalWeakTable<GrpcServerData, AuthTokenHandle> _cachedTokens = new ConditionalWeakTable<GrpcServerData, AuthTokenHandle>();
 
         private const string AuthenticationServiceIdentifier = "org.silastandard/core/AuthenticationService/v1";
         private const string AuthorizationConfigurationServiceIdentifier = "org.silastandard/core/AuthorizationConfigurationService/v1";
@@ -47,18 +47,23 @@ namespace Tecan.Sila2.Authentication
         }
 
         /// <inheritdoc />
-        public IRequestInterception Intercept( ServerData server, IClientExecutionManager executionManager, Metadata metadata )
+        public IRequestInterception Intercept( ServerData server, IClientExecutionManager executionManager, IDictionary<string, byte[]> metadata )
         {
-            var token = _cachedTokens.GetValue( server, s => CreateCachedToken( s, executionManager ) );
+            var grpcServer = server as GrpcServerData;
+            if( grpcServer == null )
+            {
+                return null;
+            }
+            var token = _cachedTokens.GetValue( grpcServer, s => CreateCachedToken( s, executionManager ) );
             if (token.Expiry < DateTime.Now)
             {
-                token = Renew( server, token, executionManager );
+                token = Renew( grpcServer, token, executionManager );
             }
-            metadata.Add( ClientMetadata.GetHeaderName( MetadataIdentifier ), ProtobufMarshaller<StringDto>.ToByteArray( token.Token ) );
+            metadata.Add( MetadataIdentifier, ProtobufMarshaller<StringDto>.ToByteArray( token.Token ) );
             return null;
         }
 
-        private AuthTokenHandle Renew( ServerData server, AuthTokenHandle authTokenHandle, IClientExecutionManager executionManager )
+        private AuthTokenHandle Renew( GrpcServerData server, AuthTokenHandle authTokenHandle, IClientExecutionManager executionManager )
         {
             lock( authTokenHandle )
             {
@@ -82,7 +87,7 @@ namespace Tecan.Sila2.Authentication
             return DateTime.Now + TimeSpan.FromSeconds( tokenLifetime );
         }
 
-        private AuthTokenHandle CreateCachedToken( ServerData server, IClientExecutionManager executionManager )
+        private AuthTokenHandle CreateCachedToken( GrpcServerData server, IClientExecutionManager executionManager )
         {
             if( server.Features.Any( f => f.FullyQualifiedIdentifier == AuthorizationConfigurationServiceIdentifier ) )
             {
@@ -150,9 +155,14 @@ namespace Tecan.Sila2.Authentication
             return false;
         }
 
-        private bool TryAuthenticateWithProvider(ServerData server, Guid providerUuid, out AuthTokenHandle authenticationTokenHandle)
+        private bool TryAuthenticateWithProvider(GrpcServerData server, Guid providerUuid, out AuthTokenHandle authenticationTokenHandle)
         {
-            var provider = _connectionManager.Value.Connect(providerUuid, TimeSpan.FromSeconds(10));
+            var provider = _connectionManager.Value.Connect(providerUuid, TimeSpan.FromSeconds(10)) as GrpcServerData;
+            if( provider == null )
+            {
+                authenticationTokenHandle = null;
+                return false;
+            }
             if (provider.Features.Any(f => f.FullyQualifiedIdentifier == AuthenticationServiceIdentifier))
             {
                 var credentials = _authenticationHandler.GetCredentials(server);
@@ -182,7 +192,7 @@ namespace Tecan.Sila2.Authentication
             return false;
         }
 
-        private bool TryAuthenticateUserNamePassword(ServerData server, IClientExecutionManager executionManager, out AuthTokenHandle tokenHandle)
+        private bool TryAuthenticateUserNamePassword( GrpcServerData server, IClientExecutionManager executionManager, out AuthTokenHandle tokenHandle)
         {
             var credentials = _authenticationHandler.GetCredentials(server);
             if (credentials != null)

@@ -94,7 +94,7 @@ namespace Tecan.Sila2
             }
 
             var servers = _discovery.GetServers(TimeSpan.FromSeconds(1));
-            var server = servers?.FirstOrDefault(s => s.Config.Uuid == serverId);
+            var server = servers?.FirstOrDefault(s => s.Config.Uuid == serverId) as GrpcServerData;
             if (server == null)
             {
                 throw new ArgumentException($"The server with id {serverUuid} could not be found.", nameof(serverUuid));
@@ -130,7 +130,7 @@ namespace Tecan.Sila2
 
         private void SetAuthorizationProviderCore(string host, int port)
         {
-            var server = _serverConnector.Connect( host, port );
+            var server = _serverConnector.Connect( host, port ) as GrpcServerData;
             if (server == null || server.Features.All( f => f.FullyQualifiedIdentifier != ProviderFeatureId ) )
             {
                 throw new ArgumentException("The server is not an authorization provider.", nameof(host));

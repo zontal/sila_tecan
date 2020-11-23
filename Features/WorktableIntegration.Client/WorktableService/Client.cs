@@ -116,7 +116,7 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
                     "ingBox");
             try
             {
-                BoundingBox response = CallInvoker.BlockingUnaryCall(WorktableServiceMethods.GetBoundingBoxMethod, null, callInfo.Options, EmptyRequest.Instance).Value.Extract(_executionManager.DownloadBinaryStore);
+                BoundingBox response = CallInvoker.BlockingUnaryCall(WorktableServiceMethods.GetBoundingBoxMethod, null, callInfo.ToCallOptions(), EmptyRequest.Instance).Value.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -133,7 +133,7 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
                     "emplates");
             try
             {
-                System.Collections.Generic.ICollection<SiteTemplate> response = CallInvoker.BlockingUnaryCall(WorktableServiceMethods.GetSiteTemplatesMethod, null, callInfo.Options, EmptyRequest.Instance).Value.Extract(_executionManager.DownloadBinaryStore);
+                System.Collections.Generic.ICollection<SiteTemplate> response = CallInvoker.BlockingUnaryCall(WorktableServiceMethods.GetSiteTemplatesMethod, null, callInfo.ToCallOptions(), EmptyRequest.Instance).Value.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -150,7 +150,7 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
                     "");
             try
             {
-                System.Collections.Generic.ICollection<Site> response = CallInvoker.BlockingUnaryCall(WorktableServiceMethods.GetSitesMethod, null, callInfo.Options, EmptyRequest.Instance).Value.Extract(_executionManager.DownloadBinaryStore);
+                System.Collections.Generic.ICollection<Site> response = CallInvoker.BlockingUnaryCall(WorktableServiceMethods.GetSitesMethod, null, callInfo.ToCallOptions(), EmptyRequest.Instance).Value.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)

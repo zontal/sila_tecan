@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using Grpc.Core;
 
 namespace Tecan.Sila2
 {
@@ -8,11 +7,6 @@ namespace Tecan.Sila2
     /// </summary>
     public class ServerData
     {
-        /// <summary>
-        /// The channel to the server
-        /// </summary>
-        public Channel Channel { get;  }
-
         /// <summary>
         /// The configuration of the server
         /// </summary>
@@ -31,16 +25,14 @@ namespace Tecan.Sila2
         /// <summary>
         /// Server model constructor (immutable object)
         /// </summary>
-        /// <param name="channel">gRPC channel to connect to server</param>
         /// <param name="serverConfig">Server configuration data</param>
         /// <param name="serverInformation">Server information</param>
         /// <param name="features">Server features</param>
-        public ServerData(Channel channel, ServerConfig serverConfig, ServerInformation serverInformation, IEnumerable<Feature> features)
+        public ServerData(ServerConfig serverConfig, ServerInformation serverInformation, IEnumerable<Feature> features)
         {
             Config = serverConfig;
             Info = serverInformation;
             Features = features;
-            Channel = channel;
         }
     }
 }

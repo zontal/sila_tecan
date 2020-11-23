@@ -13,6 +13,7 @@ using Grpc.Core.Interceptors;
 using Tecan.MAP.Contracts.Services.Logging;
 using Tecan.Sila2.Discovery;
 using Tecan.Sila2.Server.Binary;
+using Tecan.Sila2.Server.ServiceDefinition;
 
 namespace Tecan.Sila2.Server
 {
@@ -256,7 +257,9 @@ namespace Tecan.Sila2.Server
         public void AddFeature(IFeatureProvider feature)
         {
             _implementedFeatures.Add(feature);
-            GrpcServer.Services.Add( feature.CreateServiceDefinition().Intercept(_loggingInterceptor) );
+            var builder = new ServerBuilder( this, feature.FeatureDefinition );
+            feature.Register( builder );
+            GrpcServer.Services.Add( builder.CreateServiceDefinition().Intercept(_loggingInterceptor) );
             _logger.Log( $"Exposing feature {feature.FeatureDefinition.FullyQualifiedIdentifier}".ToString, Severity.Info );
         }
 
@@ -420,9 +423,10 @@ namespace Tecan.Sila2.Server
             Stack<IRequestInterception> interceptions = null;
             try
             {
+                var metadataRepository = new MetadataRepository( context );
                 foreach( var interceptor in GetInterceptors( commandIdentifier ) )
                 {
-                    var interception = interceptor.Intercept( commandIdentifier, this, context );
+                    var interception = interceptor.Intercept( commandIdentifier, this, metadataRepository );
                     if( interception != null )
                     {
                         if( interceptions == null ) interceptions = new Stack<IRequestInterception>();

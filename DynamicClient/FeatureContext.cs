@@ -28,7 +28,7 @@ namespace Tecan.Sila2.DynamicClient
         /// <summary>
         /// The server in the context of which the call is made
         /// </summary>
-        public ServerData ServerData
+        public GrpcServerData ServerData
         {
             get;
         }
@@ -39,7 +39,7 @@ namespace Tecan.Sila2.DynamicClient
         /// <param name="feature">The feature</param>
         /// <param name="serverData">The server in the context of which the call is made</param>
         /// <param name="executionManager">The execution manager that handles requests in the context of this feature</param>
-        public FeatureContext(Feature feature, ServerData serverData, IClientExecutionManager executionManager) : base(serverData.Channel)
+        public FeatureContext(Feature feature, GrpcServerData serverData, IClientExecutionManager executionManager) : base(serverData.Channel)
         {
             Feature = feature;
             ExecutionManager = executionManager;
@@ -55,7 +55,7 @@ namespace Tecan.Sila2.DynamicClient
         /// <param name="serverData">The server in the context of which the call is made</param>
         /// <param name="serializer">The serializer that should be used</param>
         /// <param name="executionManager">The execution manager that handles requests in the context of this feature</param>
-        protected FeatureContext(Feature feature, ServerData serverData, DynamicObjectSerializer serializer, IClientExecutionManager executionManager,
+        protected FeatureContext(Feature feature, GrpcServerData serverData, DynamicObjectSerializer serializer, IClientExecutionManager executionManager,
             ClientBaseConfiguration configuration) : base(configuration)
         {
             Feature = feature;

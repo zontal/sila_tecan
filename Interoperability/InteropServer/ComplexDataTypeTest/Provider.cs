@@ -56,31 +56,34 @@ namespace Tecan.Sila2.Interop.Server
         }
         
         ///  <summary>
-        /// Creates a service definition for this service provider
+        /// Registers the feature in the provided feature registration
         /// </summary>
-        /// <returns>An object that describes which services are offered by this instance</returns>
-        public Grpc.Core.ServerServiceDefinition CreateServiceDefinition()
+        /// <param name="registration">The registration component to which the feature should be registered</param>
+        public void Register(IServerBuilder registration)
         {
-            Grpc.Core.ServerServiceDefinition.Builder builder = Grpc.Core.ServerServiceDefinition.CreateBuilder();
-            builder.AddMethod(ComplexDataTypeTestMethods.ListProviderMethod, ListProvider);
-            builder.AddMethod(ComplexDataTypeTestMethods.ThreeDimensionalStructMethod, ThreeDimensionalStruct);
-            builder.AddMethod(ComplexDataTypeTestMethods.ThreeDimensionalListMethod, ThreeDimensionalList);
-            builder.AddMethod(ComplexDataTypeTestMethods.WhyMakeItSimpleWhenYouCanMakeItComplicatedMethod, WhyMakeItSimpleWhenYouCanMakeItComplicated);
-            builder.AddMethod(ComplexDataTypeTestMethods.XOREncipherMethod, XOREncipher);
-            builder.AddMethod(ComplexDataTypeTestMethods.ValueForTypeProviderMethod, ValueForTypeProvider);
-            builder.AddMethod(ComplexDataTypeTestMethods.GetHugeListMethod, GetHugeList);
-            builder.AddMethod(ComplexDataTypeTestMethods.GetBooleanMethod, GetBoolean);
-            builder.AddMethod(ComplexDataTypeTestMethods.GetListStringMethod, GetListString);
-            builder.AddMethod(ComplexDataTypeTestMethods.GetRandomChangingListStringMethod, GetRandomChangingListString);
-            builder.AddMethod(ComplexDataTypeTestMethods.GetListStructPairStringMethod, GetListStructPairString);
-            builder.AddMethod(ComplexDataTypeTestMethods.GetStructPairStringMethod, GetStructPairString);
-            builder.AddMethod(ComplexDataTypeTestMethods.GetDataTypeMethod, GetDataType);
-            builder.AddMethod(ComplexDataTypeTestMethods.GetThrowExceptionMethod, GetThrowException);
-            builder.AddMethod(ComplexDataTypeTestMethods.GetAffectedByUserMethod, GetAffectedByUser);
-            return builder.Build();
+            registration.RegisterUnobservableCommand<ListProviderRequestDto, ListProviderResponseDto>("ListProvider", ListProvider);
+            registration.RegisterUnobservableCommand<ThreeDimensionalStructRequestDto, ThreeDimensionalStructResponseDto>("ThreeDimensionalStruct", ThreeDimensionalStruct);
+            registration.RegisterUnobservableCommand<ThreeDimensionalListRequestDto, ThreeDimensionalListResponseDto>("ThreeDimensionalList", ThreeDimensionalList);
+            registration.RegisterUnobservableCommand<WhyMakeItSimpleWhenYouCanMakeItComplicatedRequestDto, WhyMakeItSimpleWhenYouCanMakeItComplicatedResponseDto>("WhyMakeItSimpleWhenYouCanMakeItComplicated", WhyMakeItSimpleWhenYouCanMakeItComplicated);
+            registration.RegisterUnobservableCommand<XOREncipherRequestDto, XOREncipherResponseDto>("XOREncipher", XOREncipher);
+            registration.RegisterUnobservableCommand<ValueForTypeProviderRequestDto, ValueForTypeProviderResponseDto>("ValueForTypeProvider", ValueForTypeProvider);
+            registration.RegisterUnobservableProperty("HugeList", GetHugeList);
+            registration.RegisterUnobservableProperty("Boolean", GetBoolean);
+            registration.RegisterUnobservableProperty("ListString", GetListString);
+            registration.RegisterUnobservableProperty("RandomChangingListString", GetRandomChangingListString);
+            registration.RegisterUnobservableProperty("ListStructPairString", GetListStructPairString);
+            registration.RegisterUnobservableProperty("StructPairString", GetStructPairString);
+            registration.RegisterUnobservableProperty("DataType", GetDataType);
+            registration.RegisterUnobservableProperty("ThrowException", GetThrowException);
+            registration.RegisterMetadata("User", _implementation.User);
         }
         
-        private ListProviderResponseDto ListProviderInternal(ListProviderRequestDto request)
+        ///  <summary>
+        /// Executes the List Provider command
+        /// </summary>
+        /// <param name="request">A data transfer object that contains the command parameters</param>
+        /// <returns>The command response wrapped in a data transfer object</returns>
+        protected virtual ListProviderResponseDto ListProvider(ListProviderRequestDto request)
         {
             try
             {
@@ -102,17 +105,11 @@ namespace Tecan.Sila2.Interop.Server
         }
         
         ///  <summary>
-        /// Executes the List Provider command
+        /// Executes the Three dimensional structure command
         /// </summary>
         /// <param name="request">A data transfer object that contains the command parameters</param>
-        /// <param name="context">The context in which the command is issued</param>
         /// <returns>The command response wrapped in a data transfer object</returns>
-        protected virtual System.Threading.Tasks.Task<ListProviderResponseDto> ListProvider(ListProviderRequestDto request, Grpc.Core.ServerCallContext context)
-        {
-            return _server.InvokeCommand(ListProviderInternal, request, context);
-        }
-        
-        private ThreeDimensionalStructResponseDto ThreeDimensionalStructInternal(ThreeDimensionalStructRequestDto request)
+        protected virtual ThreeDimensionalStructResponseDto ThreeDimensionalStruct(ThreeDimensionalStructRequestDto request)
         {
             try
             {
@@ -129,17 +126,11 @@ namespace Tecan.Sila2.Interop.Server
         }
         
         ///  <summary>
-        /// Executes the Three dimensional structure command
+        /// Executes the Three dimensional list command
         /// </summary>
         /// <param name="request">A data transfer object that contains the command parameters</param>
-        /// <param name="context">The context in which the command is issued</param>
         /// <returns>The command response wrapped in a data transfer object</returns>
-        protected virtual System.Threading.Tasks.Task<ThreeDimensionalStructResponseDto> ThreeDimensionalStruct(ThreeDimensionalStructRequestDto request, Grpc.Core.ServerCallContext context)
-        {
-            return _server.InvokeCommand(ThreeDimensionalStructInternal, request, context);
-        }
-        
-        private ThreeDimensionalListResponseDto ThreeDimensionalListInternal(ThreeDimensionalListRequestDto request)
+        protected virtual ThreeDimensionalListResponseDto ThreeDimensionalList(ThreeDimensionalListRequestDto request)
         {
             try
             {
@@ -156,17 +147,11 @@ namespace Tecan.Sila2.Interop.Server
         }
         
         ///  <summary>
-        /// Executes the Three dimensional list command
+        /// Executes the Why make it simple when you can make it complicated command
         /// </summary>
         /// <param name="request">A data transfer object that contains the command parameters</param>
-        /// <param name="context">The context in which the command is issued</param>
         /// <returns>The command response wrapped in a data transfer object</returns>
-        protected virtual System.Threading.Tasks.Task<ThreeDimensionalListResponseDto> ThreeDimensionalList(ThreeDimensionalListRequestDto request, Grpc.Core.ServerCallContext context)
-        {
-            return _server.InvokeCommand(ThreeDimensionalListInternal, request, context);
-        }
-        
-        private WhyMakeItSimpleWhenYouCanMakeItComplicatedResponseDto WhyMakeItSimpleWhenYouCanMakeItComplicatedInternal(WhyMakeItSimpleWhenYouCanMakeItComplicatedRequestDto request)
+        protected virtual WhyMakeItSimpleWhenYouCanMakeItComplicatedResponseDto WhyMakeItSimpleWhenYouCanMakeItComplicated(WhyMakeItSimpleWhenYouCanMakeItComplicatedRequestDto request)
         {
             try
             {
@@ -188,17 +173,11 @@ namespace Tecan.Sila2.Interop.Server
         }
         
         ///  <summary>
-        /// Executes the Why make it simple when you can make it complicated command
+        /// Executes the XOREncipher command
         /// </summary>
         /// <param name="request">A data transfer object that contains the command parameters</param>
-        /// <param name="context">The context in which the command is issued</param>
         /// <returns>The command response wrapped in a data transfer object</returns>
-        protected virtual System.Threading.Tasks.Task<WhyMakeItSimpleWhenYouCanMakeItComplicatedResponseDto> WhyMakeItSimpleWhenYouCanMakeItComplicated(WhyMakeItSimpleWhenYouCanMakeItComplicatedRequestDto request, Grpc.Core.ServerCallContext context)
-        {
-            return _server.InvokeCommand(WhyMakeItSimpleWhenYouCanMakeItComplicatedInternal, request, context);
-        }
-        
-        private XOREncipherResponseDto XOREncipherInternal(XOREncipherRequestDto request)
+        protected virtual XOREncipherResponseDto XOREncipher(XOREncipherRequestDto request)
         {
             try
             {
@@ -219,17 +198,11 @@ namespace Tecan.Sila2.Interop.Server
         }
         
         ///  <summary>
-        /// Executes the XOREncipher command
+        /// Executes the Value For Type Provider command
         /// </summary>
         /// <param name="request">A data transfer object that contains the command parameters</param>
-        /// <param name="context">The context in which the command is issued</param>
         /// <returns>The command response wrapped in a data transfer object</returns>
-        protected virtual System.Threading.Tasks.Task<XOREncipherResponseDto> XOREncipher(XOREncipherRequestDto request, Grpc.Core.ServerCallContext context)
-        {
-            return _server.InvokeCommand(XOREncipherInternal, request, context);
-        }
-        
-        private ValueForTypeProviderResponseDto ValueForTypeProviderInternal(ValueForTypeProviderRequestDto request)
+        protected virtual ValueForTypeProviderResponseDto ValueForTypeProvider(ValueForTypeProviderRequestDto request)
         {
             try
             {
@@ -246,113 +219,75 @@ namespace Tecan.Sila2.Interop.Server
         }
         
         ///  <summary>
-        /// Executes the Value For Type Provider command
-        /// </summary>
-        /// <param name="request">A data transfer object that contains the command parameters</param>
-        /// <param name="context">The context in which the command is issued</param>
-        /// <returns>The command response wrapped in a data transfer object</returns>
-        protected virtual System.Threading.Tasks.Task<ValueForTypeProviderResponseDto> ValueForTypeProvider(ValueForTypeProviderRequestDto request, Grpc.Core.ServerCallContext context)
-        {
-            return _server.InvokeCommand(ValueForTypeProviderInternal, request, context);
-        }
-        
-        ///  <summary>
         /// Gets the current value of the A Huge List property
         /// </summary>
-        /// <param name="request">The request object</param>
-        /// <param name="context">The context in which the request is made</param>
         /// <returns>The current value wrapped in a data transfer object</returns>
-        protected virtual System.Threading.Tasks.Task<PropertyResponse<System.Collections.Generic.List<Tecan.Sila2.StringDto>>> GetHugeList(EmptyRequest request, Grpc.Core.ServerCallContext context)
+        protected virtual PropertyResponse<System.Collections.Generic.List<Tecan.Sila2.StringDto>> GetHugeList()
         {
-            return _server.CreatePropertyTask("org.silastandard/test/ComplexDataTypeTest/v1/Property/HugeList", new PropertyResponse<System.Collections.Generic.List<Tecan.Sila2.StringDto>>(Tecan.Sila2.DtoExtensions.Encapsulate(_implementation.HugeList, Tecan.Sila2.StringDto.Create, _server)), context);
+            return new PropertyResponse<System.Collections.Generic.List<Tecan.Sila2.StringDto>>(Tecan.Sila2.DtoExtensions.Encapsulate(_implementation.HugeList, Tecan.Sila2.StringDto.Create, _server));
         }
         
         ///  <summary>
         /// Gets the current value of the Boolean property property
         /// </summary>
-        /// <param name="request">The request object</param>
-        /// <param name="context">The context in which the request is made</param>
         /// <returns>The current value wrapped in a data transfer object</returns>
-        protected virtual System.Threading.Tasks.Task<PropertyResponse<Tecan.Sila2.BooleanDto>> GetBoolean(EmptyRequest request, Grpc.Core.ServerCallContext context)
+        protected virtual PropertyResponse<Tecan.Sila2.BooleanDto> GetBoolean()
         {
-            return _server.CreatePropertyTask("org.silastandard/test/ComplexDataTypeTest/v1/Property/Boolean", new PropertyResponse<Tecan.Sila2.BooleanDto>(new Tecan.Sila2.BooleanDto(_implementation.Boolean, _server)), context);
+            return new PropertyResponse<Tecan.Sila2.BooleanDto>(new Tecan.Sila2.BooleanDto(_implementation.Boolean, _server));
         }
         
         ///  <summary>
         /// Gets the current value of the A list of string property
         /// </summary>
-        /// <param name="request">The request object</param>
-        /// <param name="context">The context in which the request is made</param>
         /// <returns>The current value wrapped in a data transfer object</returns>
-        protected virtual System.Threading.Tasks.Task<PropertyResponse<System.Collections.Generic.List<Tecan.Sila2.StringDto>>> GetListString(EmptyRequest request, Grpc.Core.ServerCallContext context)
+        protected virtual PropertyResponse<System.Collections.Generic.List<Tecan.Sila2.StringDto>> GetListString()
         {
-            return _server.CreatePropertyTask("org.silastandard/test/ComplexDataTypeTest/v1/Property/ListString", new PropertyResponse<System.Collections.Generic.List<Tecan.Sila2.StringDto>>(Tecan.Sila2.DtoExtensions.Encapsulate(_implementation.ListString, Tecan.Sila2.StringDto.Create, _server)), context);
+            return new PropertyResponse<System.Collections.Generic.List<Tecan.Sila2.StringDto>>(Tecan.Sila2.DtoExtensions.Encapsulate(_implementation.ListString, Tecan.Sila2.StringDto.Create, _server));
         }
         
         ///  <summary>
         /// Gets the current value of the A randomly changing list of strings property
         /// </summary>
-        /// <param name="request">The request object</param>
-        /// <param name="context">The context in which the request is made</param>
         /// <returns>The current value wrapped in a data transfer object</returns>
-        protected virtual System.Threading.Tasks.Task<PropertyResponse<System.Collections.Generic.List<Tecan.Sila2.StringDto>>> GetRandomChangingListString(EmptyRequest request, Grpc.Core.ServerCallContext context)
+        protected virtual PropertyResponse<System.Collections.Generic.List<Tecan.Sila2.StringDto>> GetRandomChangingListString()
         {
-            return _server.CreatePropertyTask("org.silastandard/test/ComplexDataTypeTest/v1/Property/RandomChangingListString", new PropertyResponse<System.Collections.Generic.List<Tecan.Sila2.StringDto>>(Tecan.Sila2.DtoExtensions.Encapsulate(_implementation.RandomChangingListString, Tecan.Sila2.StringDto.Create, _server)), context);
+            return new PropertyResponse<System.Collections.Generic.List<Tecan.Sila2.StringDto>>(Tecan.Sila2.DtoExtensions.Encapsulate(_implementation.RandomChangingListString, Tecan.Sila2.StringDto.Create, _server));
         }
         
         ///  <summary>
         /// Gets the current value of the A list of structure with a pair of string property
         /// </summary>
-        /// <param name="request">The request object</param>
-        /// <param name="context">The context in which the request is made</param>
         /// <returns>The current value wrapped in a data transfer object</returns>
-        protected virtual System.Threading.Tasks.Task<PropertyResponse<System.Collections.Generic.List<Tecan.Sila2.KeyValuePairDto<string, Tecan.Sila2.StringDto, string, Tecan.Sila2.StringDto>>>> GetListStructPairString(EmptyRequest request, Grpc.Core.ServerCallContext context)
+        protected virtual PropertyResponse<System.Collections.Generic.List<Tecan.Sila2.KeyValuePairDto<string, Tecan.Sila2.StringDto, string, Tecan.Sila2.StringDto>>> GetListStructPairString()
         {
-            return _server.CreatePropertyTask("org.silastandard/test/ComplexDataTypeTest/v1/Property/ListStructPairString", new PropertyResponse<System.Collections.Generic.List<Tecan.Sila2.KeyValuePairDto<string, Tecan.Sila2.StringDto, string, Tecan.Sila2.StringDto>>>(Tecan.Sila2.DtoExtensions.Encapsulate(_implementation.ListStructPairString, Tecan.Sila2.StringDto.Create, Tecan.Sila2.StringDto.Create, _server)), context);
+            return new PropertyResponse<System.Collections.Generic.List<Tecan.Sila2.KeyValuePairDto<string, Tecan.Sila2.StringDto, string, Tecan.Sila2.StringDto>>>(Tecan.Sila2.DtoExtensions.Encapsulate(_implementation.ListStructPairString, Tecan.Sila2.StringDto.Create, Tecan.Sila2.StringDto.Create, _server));
         }
         
         ///  <summary>
         /// Gets the current value of the A structure with a pair of string property
         /// </summary>
-        /// <param name="request">The request object</param>
-        /// <param name="context">The context in which the request is made</param>
         /// <returns>The current value wrapped in a data transfer object</returns>
-        protected virtual System.Threading.Tasks.Task<PropertyResponse<StructPairStringDto>> GetStructPairString(EmptyRequest request, Grpc.Core.ServerCallContext context)
+        protected virtual PropertyResponse<StructPairStringDto> GetStructPairString()
         {
-            return _server.CreatePropertyTask("org.silastandard/test/ComplexDataTypeTest/v1/Property/StructPairString", new PropertyResponse<StructPairStringDto>(new StructPairStringDto(_implementation.StructPairString, _server)), context);
+            return new PropertyResponse<StructPairStringDto>(new StructPairStringDto(_implementation.StructPairString, _server));
         }
         
         ///  <summary>
         /// Gets the current value of the A Datatype property
         /// </summary>
-        /// <param name="request">The request object</param>
-        /// <param name="context">The context in which the request is made</param>
         /// <returns>The current value wrapped in a data transfer object</returns>
-        protected virtual System.Threading.Tasks.Task<PropertyResponse<DataTypeStringDto>> GetDataType(EmptyRequest request, Grpc.Core.ServerCallContext context)
+        protected virtual PropertyResponse<DataTypeStringDto> GetDataType()
         {
-            return _server.CreatePropertyTask("org.silastandard/test/ComplexDataTypeTest/v1/Property/DataType", new PropertyResponse<DataTypeStringDto>(new DataTypeStringDto(_implementation.DataType, _server)), context);
+            return new PropertyResponse<DataTypeStringDto>(new DataTypeStringDto(_implementation.DataType, _server));
         }
         
         ///  <summary>
         /// Gets the current value of the Throw a test exception property
         /// </summary>
-        /// <param name="request">The request object</param>
-        /// <param name="context">The context in which the request is made</param>
         /// <returns>The current value wrapped in a data transfer object</returns>
-        protected virtual System.Threading.Tasks.Task<PropertyResponse<Tecan.Sila2.StringDto>> GetThrowException(EmptyRequest request, Grpc.Core.ServerCallContext context)
+        protected virtual PropertyResponse<Tecan.Sila2.StringDto> GetThrowException()
         {
-            return _server.CreatePropertyTask("org.silastandard/test/ComplexDataTypeTest/v1/Property/ThrowException", new PropertyResponse<Tecan.Sila2.StringDto>(new Tecan.Sila2.StringDto(_implementation.ThrowException, _server)), context);
-        }
-        
-        ///  <summary>
-        /// Gets the features/commands/properties affected by the metadata User information
-        /// </summary>
-        /// <param name="request">The request object (not used)</param>
-        /// <param name="context">The request context</param>
-        /// <returns>A list of fully qualified identifiers</returns>
-        protected virtual System.Threading.Tasks.Task<System.Collections.Generic.List<Tecan.Sila2.StringDto>> GetAffectedByUser(EmptyRequest request, Grpc.Core.ServerCallContext context)
-        {
-            return Tecan.Sila2.Server.Metadata.GetAffectedIdentifiers(_server, _implementation.User);
+            return new PropertyResponse<Tecan.Sila2.StringDto>(new Tecan.Sila2.StringDto(_implementation.ThrowException, _server));
         }
         
         ///  <summary>
@@ -526,11 +461,11 @@ namespace Tecan.Sila2.Interop.Server
         /// </summary>
         /// <param name="commandIdentifier">The fully qualified identifier of the command or property in question</param>
         /// <param name="server">The server that should execute the request</param>
-        /// <param name="context">The context in which the request is made</param>
+        /// <param name="metadata">The metadata attached to the request</param>
         /// <returns>A request interception or null, if this is not necessary</returns>
-        public Tecan.Sila2.Server.IRequestInterception Intercept(string commandIdentifier, Tecan.Sila2.Server.ISiLAServer server, Grpc.Core.ServerCallContext context)
+        public Tecan.Sila2.Server.IRequestInterception Intercept(string commandIdentifier, Tecan.Sila2.Server.ISiLAServer server, Tecan.Sila2.Server.IMetadataRepository metadata)
         {
-            return Intercept(commandIdentifier, Tecan.Sila2.Server.Metadata.Extract<UserDto>(context, "org.silastandard/test/ComplexDataTypeTest/v1/Metadata/User").Extract(server));
+            return Intercept(commandIdentifier, Tecan.Sila2.Server.Metadata.Extract<UserDto>(metadata, "org.silastandard/test/ComplexDataTypeTest/v1/Metadata/User").Extract(server));
         }
     }
 }

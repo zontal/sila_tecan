@@ -5,7 +5,7 @@ namespace Tecan.Sila2.Client
     /// <summary>
     /// Denotes an interception of a call
     /// </summary>
-    public interface IRequestInterception
+    public interface IClientRequestInterception
     {
         /// <summary>
         /// Reports that the call has been completed successfully

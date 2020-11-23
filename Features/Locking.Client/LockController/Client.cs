@@ -91,7 +91,7 @@ namespace Tecan.Sila2.Locking.LockController
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/core/LockController/v1/Property/IsLocked");
             try
             {
-                bool response = CallInvoker.BlockingUnaryCall(LockControllerMethods.GetIsLockedMethod, null, callInfo.Options, EmptyRequest.Instance).Value.Extract(_executionManager.DownloadBinaryStore);
+                bool response = CallInvoker.BlockingUnaryCall(LockControllerMethods.GetIsLockedMethod, null, callInfo.ToCallOptions(), EmptyRequest.Instance).Value.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -129,7 +129,7 @@ namespace Tecan.Sila2.Locking.LockController
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/core/LockController/v1/Command/LockServer");
             try
             {
-                CallInvoker.BlockingUnaryCall(LockControllerMethods.LockServerMethod, null, callInfo.Options, request);
+                CallInvoker.BlockingUnaryCall(LockControllerMethods.LockServerMethod, null, callInfo.ToCallOptions(), request);
                 callInfo.FinishSuccessful();
                 return;
             } catch (System.Exception ex)
@@ -165,7 +165,7 @@ namespace Tecan.Sila2.Locking.LockController
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/core/LockController/v1/Command/UnlockServer");
             try
             {
-                CallInvoker.BlockingUnaryCall(LockControllerMethods.UnlockServerMethod, null, callInfo.Options, request);
+                CallInvoker.BlockingUnaryCall(LockControllerMethods.UnlockServerMethod, null, callInfo.ToCallOptions(), request);
                 callInfo.FinishSuccessful();
                 return;
             } catch (System.Exception ex)

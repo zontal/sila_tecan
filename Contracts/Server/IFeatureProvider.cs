@@ -1,5 +1,4 @@
 ﻿using System.Reflection;
-using Grpc.Core;
 
 namespace Tecan.Sila2.Server
 {
@@ -28,9 +27,9 @@ namespace Tecan.Sila2.Server
         PropertyInfo GetProperty( string propertyIdentifier );
 
         /// <summary>
-        /// Creates a server definition for gRPC
+        /// Registers the feature in the provided feature registration
         /// </summary>
-        /// <returns>A gRPC server definition</returns>
-        ServerServiceDefinition CreateServiceDefinition();
+        /// <param name="registration">The registration component to which the feature should be registered</param>
+        void Register( IServerBuilder registration );
     }
 }

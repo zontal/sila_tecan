@@ -56,25 +56,28 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         }
         
         ///  <summary>
-        /// Creates a service definition for this service provider
+        /// Registers the feature in the provided feature registration
         /// </summary>
-        /// <returns>An object that describes which services are offered by this instance</returns>
-        public Grpc.Core.ServerServiceDefinition CreateServiceDefinition()
+        /// <param name="registration">The registration component to which the feature should be registered</param>
+        public void Register(IServerBuilder registration)
         {
-            Grpc.Core.ServerServiceDefinition.Builder builder = Grpc.Core.ServerServiceDefinition.CreateBuilder();
-            builder.AddMethod(SiLAServiceMethods.GetFeatureDefinitionMethod, GetFeatureDefinition);
-            builder.AddMethod(SiLAServiceMethods.SetServerNameMethod, SetServerName);
-            builder.AddMethod(SiLAServiceMethods.GetServerNameMethod, GetServerName);
-            builder.AddMethod(SiLAServiceMethods.GetServerTypeMethod, GetServerType);
-            builder.AddMethod(SiLAServiceMethods.GetServerUUIDMethod, GetServerUUID);
-            builder.AddMethod(SiLAServiceMethods.GetServerDescriptionMethod, GetServerDescription);
-            builder.AddMethod(SiLAServiceMethods.GetServerVersionMethod, GetServerVersion);
-            builder.AddMethod(SiLAServiceMethods.GetServerVendorURLMethod, GetServerVendorURL);
-            builder.AddMethod(SiLAServiceMethods.GetImplementedFeaturesMethod, GetImplementedFeatures);
-            return builder.Build();
+            registration.RegisterUnobservableCommand<GetFeatureDefinitionRequestDto, GetFeatureDefinitionResponseDto>("GetFeatureDefinition", GetFeatureDefinition);
+            registration.RegisterUnobservableCommand<SetServerNameRequestDto, EmptyRequest>("SetServerName", SetServerName);
+            registration.RegisterUnobservableProperty("ServerName", GetServerName);
+            registration.RegisterUnobservableProperty("ServerType", GetServerType);
+            registration.RegisterUnobservableProperty("ServerUUID", GetServerUUID);
+            registration.RegisterUnobservableProperty("ServerDescription", GetServerDescription);
+            registration.RegisterUnobservableProperty("ServerVersion", GetServerVersion);
+            registration.RegisterUnobservableProperty("ServerVendorURL", GetServerVendorURL);
+            registration.RegisterUnobservableProperty("ImplementedFeatures", GetImplementedFeatures);
         }
         
-        private GetFeatureDefinitionResponseDto GetFeatureDefinitionInternal(GetFeatureDefinitionRequestDto request)
+        ///  <summary>
+        /// Executes the Get Feature Definition command
+        /// </summary>
+        /// <param name="request">A data transfer object that contains the command parameters</param>
+        /// <returns>The command response wrapped in a data transfer object</returns>
+        protected virtual GetFeatureDefinitionResponseDto GetFeatureDefinition(GetFeatureDefinitionRequestDto request)
         {
             try
             {
@@ -96,17 +99,11 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         }
         
         ///  <summary>
-        /// Executes the Get Feature Definition command
+        /// Executes the Set Server Name command
         /// </summary>
         /// <param name="request">A data transfer object that contains the command parameters</param>
-        /// <param name="context">The context in which the command is issued</param>
         /// <returns>The command response wrapped in a data transfer object</returns>
-        protected virtual System.Threading.Tasks.Task<GetFeatureDefinitionResponseDto> GetFeatureDefinition(GetFeatureDefinitionRequestDto request, Grpc.Core.ServerCallContext context)
-        {
-            return _server.InvokeCommand(GetFeatureDefinitionInternal, request, context);
-        }
-        
-        private EmptyRequest SetServerNameInternal(SetServerNameRequestDto request)
+        protected virtual EmptyRequest SetServerName(SetServerNameRequestDto request)
         {
             try
             {
@@ -124,92 +121,66 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         }
         
         ///  <summary>
-        /// Executes the Set Server Name command
-        /// </summary>
-        /// <param name="request">A data transfer object that contains the command parameters</param>
-        /// <param name="context">The context in which the command is issued</param>
-        /// <returns>The command response wrapped in a data transfer object</returns>
-        protected virtual System.Threading.Tasks.Task<EmptyRequest> SetServerName(SetServerNameRequestDto request, Grpc.Core.ServerCallContext context)
-        {
-            return _server.InvokeCommand(SetServerNameInternal, request, context);
-        }
-        
-        ///  <summary>
         /// Gets the current value of the Server Name property
         /// </summary>
-        /// <param name="request">The request object</param>
-        /// <param name="context">The context in which the request is made</param>
         /// <returns>The current value wrapped in a data transfer object</returns>
-        protected virtual System.Threading.Tasks.Task<PropertyResponse<Tecan.Sila2.StringDto>> GetServerName(EmptyRequest request, Grpc.Core.ServerCallContext context)
+        protected virtual PropertyResponse<Tecan.Sila2.StringDto> GetServerName()
         {
-            return _server.CreatePropertyTask("tecan.sila.generator.test/silaservice/SiLAService/v2/Property/ServerName", new PropertyResponse<Tecan.Sila2.StringDto>(new Tecan.Sila2.StringDto(_implementation.ServerName, _server)), context);
+            return new PropertyResponse<Tecan.Sila2.StringDto>(new Tecan.Sila2.StringDto(_implementation.ServerName, _server));
         }
         
         ///  <summary>
         /// Gets the current value of the Server Type property
         /// </summary>
-        /// <param name="request">The request object</param>
-        /// <param name="context">The context in which the request is made</param>
         /// <returns>The current value wrapped in a data transfer object</returns>
-        protected virtual System.Threading.Tasks.Task<PropertyResponse<Tecan.Sila2.StringDto>> GetServerType(EmptyRequest request, Grpc.Core.ServerCallContext context)
+        protected virtual PropertyResponse<Tecan.Sila2.StringDto> GetServerType()
         {
-            return _server.CreatePropertyTask("tecan.sila.generator.test/silaservice/SiLAService/v2/Property/ServerType", new PropertyResponse<Tecan.Sila2.StringDto>(new Tecan.Sila2.StringDto(_implementation.ServerType, _server)), context);
+            return new PropertyResponse<Tecan.Sila2.StringDto>(new Tecan.Sila2.StringDto(_implementation.ServerType, _server));
         }
         
         ///  <summary>
         /// Gets the current value of the Server UUID property
         /// </summary>
-        /// <param name="request">The request object</param>
-        /// <param name="context">The context in which the request is made</param>
         /// <returns>The current value wrapped in a data transfer object</returns>
-        protected virtual System.Threading.Tasks.Task<ServerUUIDResponseDto> GetServerUUID(EmptyRequest request, Grpc.Core.ServerCallContext context)
+        protected virtual ServerUUIDResponseDto GetServerUUID()
         {
-            return _server.CreatePropertyTask("tecan.sila.generator.test/silaservice/SiLAService/v2/Property/ServerUUID", new ServerUUIDResponseDto(_implementation.ServerUUID, _server), context);
+            return new ServerUUIDResponseDto(_implementation.ServerUUID, _server);
         }
         
         ///  <summary>
         /// Gets the current value of the Server Description property
         /// </summary>
-        /// <param name="request">The request object</param>
-        /// <param name="context">The context in which the request is made</param>
         /// <returns>The current value wrapped in a data transfer object</returns>
-        protected virtual System.Threading.Tasks.Task<PropertyResponse<Tecan.Sila2.StringDto>> GetServerDescription(EmptyRequest request, Grpc.Core.ServerCallContext context)
+        protected virtual PropertyResponse<Tecan.Sila2.StringDto> GetServerDescription()
         {
-            return _server.CreatePropertyTask("tecan.sila.generator.test/silaservice/SiLAService/v2/Property/ServerDescription", new PropertyResponse<Tecan.Sila2.StringDto>(new Tecan.Sila2.StringDto(_implementation.ServerDescription, _server)), context);
+            return new PropertyResponse<Tecan.Sila2.StringDto>(new Tecan.Sila2.StringDto(_implementation.ServerDescription, _server));
         }
         
         ///  <summary>
         /// Gets the current value of the Server Version property
         /// </summary>
-        /// <param name="request">The request object</param>
-        /// <param name="context">The context in which the request is made</param>
         /// <returns>The current value wrapped in a data transfer object</returns>
-        protected virtual System.Threading.Tasks.Task<ServerVersionResponseDto> GetServerVersion(EmptyRequest request, Grpc.Core.ServerCallContext context)
+        protected virtual ServerVersionResponseDto GetServerVersion()
         {
-            return _server.CreatePropertyTask("tecan.sila.generator.test/silaservice/SiLAService/v2/Property/ServerVersion", new ServerVersionResponseDto(_implementation.ServerVersion, _server), context);
+            return new ServerVersionResponseDto(_implementation.ServerVersion, _server);
         }
         
         ///  <summary>
         /// Gets the current value of the Server Vendor URL property
         /// </summary>
-        /// <param name="request">The request object</param>
-        /// <param name="context">The context in which the request is made</param>
         /// <returns>The current value wrapped in a data transfer object</returns>
-        protected virtual System.Threading.Tasks.Task<PropertyResponse<UrlDto>> GetServerVendorURL(EmptyRequest request, Grpc.Core.ServerCallContext context)
+        protected virtual PropertyResponse<UrlDto> GetServerVendorURL()
         {
-            return _server.CreatePropertyTask("tecan.sila.generator.test/silaservice/SiLAService/v2/Property/ServerVendorURL", new PropertyResponse<UrlDto>(new UrlDto(_implementation.ServerVendorURL, _server)), context);
+            return new PropertyResponse<UrlDto>(new UrlDto(_implementation.ServerVendorURL, _server));
         }
         
         ///  <summary>
         /// Gets the current value of the Implemented Features property
         /// </summary>
-        /// <param name="request">The request object</param>
-        /// <param name="context">The context in which the request is made</param>
         /// <returns>The current value wrapped in a data transfer object</returns>
-        protected virtual System.Threading.Tasks.Task<PropertyResponse<System.Collections.Generic.List<FeatureIdentifierDto>>> GetImplementedFeatures(EmptyRequest request, Grpc.Core.ServerCallContext context)
+        protected virtual PropertyResponse<System.Collections.Generic.List<FeatureIdentifierDto>> GetImplementedFeatures()
         {
-            return _server.CreatePropertyTask("tecan.sila.generator.test/silaservice/SiLAService/v2/Property/ImplementedFeatures" +
-                    "", new PropertyResponse<System.Collections.Generic.List<FeatureIdentifierDto>>(Tecan.Sila2.DtoExtensions.Encapsulate(_implementation.ImplementedFeatures, FeatureIdentifierDto.Create, _server)), context);
+            return new PropertyResponse<System.Collections.Generic.List<FeatureIdentifierDto>>(Tecan.Sila2.DtoExtensions.Encapsulate(_implementation.ImplementedFeatures, FeatureIdentifierDto.Create, _server));
         }
         
         ///  <summary>
@@ -274,9 +245,10 @@ namespace Tecan.Sila2.Generator.Test.TestReference
     ///  <summary>
     /// Class that implements the ISiLAService interface through SiLA2
     /// </summary>
-    public partial class SiLAServiceClient : Grpc.Core.ClientBase<SiLAServiceClient>, ISiLAService
+    public partial class SiLAServiceClient : ISiLAService
     {
-        
+        private static string @__ServiceName = "sila2.tecan.sila.generator.test.silaservice.silaservice.v2.SiLAService";
+
         private System.Lazy<string> _serverType;
         
         private System.Lazy<string> _serverUUID;
@@ -290,51 +262,17 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         private System.Lazy<System.Collections.Generic.ICollection<FeatureIdentifier>> _implementedFeatures;
         
         private IClientExecutionManager _executionManager;
+        private IClientChannel _channel;
         
         ///  <summary>
         /// Creates a new instance
         /// </summary>
         /// <param name="executionManager">A component that attaches metadata to SiLA2 calls</param>
-        public SiLAServiceClient(IClientExecutionManager executionManager)
+        public SiLAServiceClient(IClientExecutionManager executionManager, IClientChannel channel)
         {
             InitLazyRequests();
             _executionManager = executionManager;
-        }
-        
-        ///  <summary>
-        /// Creates a new instance
-        /// </summary>
-        /// <param name="configuration">The underlying configuration</param>
-        /// <param name="executionManager">A component that attaches metadata to SiLA2 calls</param>
-        protected SiLAServiceClient(ClientBaseConfiguration configuration, IClientExecutionManager executionManager) : 
-                base(configuration)
-        {
-            InitLazyRequests();
-            _executionManager = executionManager;
-        }
-        
-        ///  <summary>
-        /// Creates a new instance
-        /// </summary>
-        /// <param name="channel">The underlying channel</param>
-        /// <param name="executionManager">A component that attaches metadata to SiLA2 calls</param>
-        public SiLAServiceClient(Grpc.Core.Channel channel, IClientExecutionManager executionManager) : 
-                base(channel)
-        {
-            InitLazyRequests();
-            _executionManager = executionManager;
-        }
-        
-        ///  <summary>
-        /// Creates a new instance
-        /// </summary>
-        /// <param name="invoker">The underlying invoker</param>
-        /// <param name="executionManager">A component that attaches metadata to SiLA2 calls</param>
-        public SiLAServiceClient(Grpc.Core.CallInvoker invoker, IClientExecutionManager executionManager) : 
-                base(invoker)
-        {
-            InitLazyRequests();
-            _executionManager = executionManager;
+            _channel = channel;
         }
         
         ///  <summary>
@@ -347,7 +285,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
                 Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("tecan.sila.generator.test/silaservice/SiLAService/v2/Property/ServerName");
                 try
                 {
-                    string response = CallInvoker.BlockingUnaryCall(SiLAServiceMethods.GetServerNameMethod, null, callInfo.Options, EmptyRequest.Instance).Value.Extract(_executionManager.DownloadBinaryStore);
+                    string response = _channel.ReadProperty<PropertyResponse<StringDto>>(__ServiceName, "ServerName", callInfo).Value.Extract(_executionManager.DownloadBinaryStore);
                     callInfo.FinishSuccessful();
                     return response;
                 } catch (System.Exception ex)
@@ -363,7 +301,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
                 Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("tecan.sila.generator.test/silaservice/SiLAService/v2/Command/SetServerName");
                 try
                 {
-                    CallInvoker.BlockingUnaryCall(SiLAServiceMethods.SetServerNameMethod, null, callInfo.Options, request);
+                    _channel.ExecuteUnobservableCommand<SetServerNameRequestDto>( __ServiceName, "SetServerName", request, callInfo );
                     callInfo.FinishSuccessful();
                     return;
                 } catch (System.Exception ex)
@@ -450,7 +388,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("tecan.sila.generator.test/silaservice/SiLAService/v2/Property/ServerType");
             try
             {
-                string response = CallInvoker.BlockingUnaryCall(SiLAServiceMethods.GetServerTypeMethod, null, callInfo.Options, EmptyRequest.Instance).Value.Extract(_executionManager.DownloadBinaryStore);
+                string response = _channel.ReadProperty<PropertyResponse<StringDto>>( __ServiceName, "ServerType", callInfo ).Value.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -466,7 +404,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("tecan.sila.generator.test/silaservice/SiLAService/v2/Property/ServerUUID");
             try
             {
-                string response = CallInvoker.BlockingUnaryCall(SiLAServiceMethods.GetServerUUIDMethod, null, callInfo.Options, EmptyRequest.Instance).Value.Extract(_executionManager.DownloadBinaryStore);
+                string response = _channel.ReadProperty<ServerUUIDResponseDto>( __ServiceName, "ServerUUID", callInfo ).Value.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -482,7 +420,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("tecan.sila.generator.test/silaservice/SiLAService/v2/Property/ServerDescription");
             try
             {
-                string response = CallInvoker.BlockingUnaryCall(SiLAServiceMethods.GetServerDescriptionMethod, null, callInfo.Options, EmptyRequest.Instance).Value.Extract(_executionManager.DownloadBinaryStore);
+                string response = _channel.ReadProperty<PropertyResponse<StringDto>>( __ServiceName, "ServerDescription", callInfo ).Value.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -498,7 +436,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("tecan.sila.generator.test/silaservice/SiLAService/v2/Property/ServerVersion");
             try
             {
-                string response = CallInvoker.BlockingUnaryCall(SiLAServiceMethods.GetServerVersionMethod, null, callInfo.Options, EmptyRequest.Instance).Value.Extract(_executionManager.DownloadBinaryStore);
+                string response = _channel.ReadProperty<ServerVersionResponseDto>( __ServiceName, "ServerVersion", callInfo ).Value.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -514,7 +452,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("tecan.sila.generator.test/silaservice/SiLAService/v2/Property/ServerVendorURL");
             try
             {
-                Url response = CallInvoker.BlockingUnaryCall(SiLAServiceMethods.GetServerVendorURLMethod, null, callInfo.Options, EmptyRequest.Instance).Value.Extract(_executionManager.DownloadBinaryStore);
+                Url response = _channel.ReadProperty<PropertyResponse<UrlDto>>( __ServiceName, "ServerVendorURL", callInfo ).Value.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -531,7 +469,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
                     "");
             try
             {
-                System.Collections.Generic.ICollection<FeatureIdentifier> response = CallInvoker.BlockingUnaryCall(SiLAServiceMethods.GetImplementedFeaturesMethod, null, callInfo.Options, EmptyRequest.Instance).Value.Extract(_executionManager.DownloadBinaryStore);
+                System.Collections.Generic.ICollection<FeatureIdentifier> response = _channel.ReadProperty<PropertyResponse<System.Collections.Generic.List<FeatureIdentifierDto>>>( __ServiceName, "ImplementedFeatures", callInfo ).Value.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -566,7 +504,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
                     "");
             try
             {
-                FeatureDefinition response = CallInvoker.BlockingUnaryCall(SiLAServiceMethods.GetFeatureDefinitionMethod, null, callInfo.Options, request).FeatureDefinition.Extract(_executionManager.DownloadBinaryStore);
+                FeatureDefinition response = _channel.ExecuteUnobservableCommand<GetFeatureDefinitionRequestDto, GetFeatureDefinitionResponseDto>( __ServiceName, "FeatureDefinition", request, callInfo ).FeatureDefinition.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -592,47 +530,11 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             return null;
         }
         
-        ///  <summary>
-        /// Creates a new instance
-        /// </summary>
-        /// <param name="configuration">The new client configuration</param>
-        protected override SiLAServiceClient NewInstance(ClientBaseConfiguration configuration)
-        {
-            return new SiLAServiceClient(configuration, _executionManager);
-        }
-        
         private T Extract<T>(Tecan.Sila2.ISilaTransferObject<T> dto)
         
         {
             return dto.Extract(_executionManager.DownloadBinaryStore);
         }
-    }
-    
-    ///  <summary>
-    /// Encapsulates provider classes to expose the SiLA Service feature via SiLA2
-    /// </summary>
-    internal sealed partial class SiLAServiceMethods
-    {
-        
-        private static string @__ServiceName = "sila2.tecan.sila.generator.test.silaservice.silaservice.v2.SiLAService";
-        
-        public static Grpc.Core.Method<GetFeatureDefinitionRequestDto, GetFeatureDefinitionResponseDto> GetFeatureDefinitionMethod = new Grpc.Core.Method<GetFeatureDefinitionRequestDto, GetFeatureDefinitionResponseDto>(Grpc.Core.MethodType.Unary, @__ServiceName, "GetFeatureDefinition", ProtobufMarshaller<GetFeatureDefinitionRequestDto>.Default, ProtobufMarshaller<GetFeatureDefinitionResponseDto>.Default);
-        
-        public static Grpc.Core.Method<SetServerNameRequestDto, EmptyRequest> SetServerNameMethod = new Grpc.Core.Method<SetServerNameRequestDto, EmptyRequest>(Grpc.Core.MethodType.Unary, @__ServiceName, "SetServerName", ProtobufMarshaller<SetServerNameRequestDto>.Default, EmptyRequest.Marshaller);
-        
-        public static Grpc.Core.Method<EmptyRequest, PropertyResponse<Tecan.Sila2.StringDto>> GetServerNameMethod = new Grpc.Core.Method<EmptyRequest, PropertyResponse<Tecan.Sila2.StringDto>>(Grpc.Core.MethodType.Unary, @__ServiceName, "Get_ServerName", EmptyRequest.Marshaller, ProtobufMarshaller<PropertyResponse<Tecan.Sila2.StringDto>>.Default);
-        
-        public static Grpc.Core.Method<EmptyRequest, PropertyResponse<Tecan.Sila2.StringDto>> GetServerTypeMethod = new Grpc.Core.Method<EmptyRequest, PropertyResponse<Tecan.Sila2.StringDto>>(Grpc.Core.MethodType.Unary, @__ServiceName, "Get_ServerType", EmptyRequest.Marshaller, ProtobufMarshaller<PropertyResponse<Tecan.Sila2.StringDto>>.Default);
-        
-        public static Grpc.Core.Method<EmptyRequest, ServerUUIDResponseDto> GetServerUUIDMethod = new Grpc.Core.Method<EmptyRequest, ServerUUIDResponseDto>(Grpc.Core.MethodType.Unary, @__ServiceName, "Get_ServerUUID", EmptyRequest.Marshaller, ProtobufMarshaller<ServerUUIDResponseDto>.Default);
-        
-        public static Grpc.Core.Method<EmptyRequest, PropertyResponse<Tecan.Sila2.StringDto>> GetServerDescriptionMethod = new Grpc.Core.Method<EmptyRequest, PropertyResponse<Tecan.Sila2.StringDto>>(Grpc.Core.MethodType.Unary, @__ServiceName, "Get_ServerDescription", EmptyRequest.Marshaller, ProtobufMarshaller<PropertyResponse<Tecan.Sila2.StringDto>>.Default);
-        
-        public static Grpc.Core.Method<EmptyRequest, ServerVersionResponseDto> GetServerVersionMethod = new Grpc.Core.Method<EmptyRequest, ServerVersionResponseDto>(Grpc.Core.MethodType.Unary, @__ServiceName, "Get_ServerVersion", EmptyRequest.Marshaller, ProtobufMarshaller<ServerVersionResponseDto>.Default);
-        
-        public static Grpc.Core.Method<EmptyRequest, PropertyResponse<UrlDto>> GetServerVendorURLMethod = new Grpc.Core.Method<EmptyRequest, PropertyResponse<UrlDto>>(Grpc.Core.MethodType.Unary, @__ServiceName, "Get_ServerVendorURL", EmptyRequest.Marshaller, ProtobufMarshaller<PropertyResponse<UrlDto>>.Default);
-        
-        public static Grpc.Core.Method<EmptyRequest, PropertyResponse<System.Collections.Generic.List<FeatureIdentifierDto>>> GetImplementedFeaturesMethod = new Grpc.Core.Method<EmptyRequest, PropertyResponse<System.Collections.Generic.List<FeatureIdentifierDto>>>(Grpc.Core.MethodType.Unary, @__ServiceName, "Get_ImplementedFeatures", EmptyRequest.Marshaller, ProtobufMarshaller<PropertyResponse<System.Collections.Generic.List<FeatureIdentifierDto>>>.Default);
     }
 }
 

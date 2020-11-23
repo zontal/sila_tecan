@@ -56,34 +56,19 @@ namespace Tecan.Sila2.ParameterConstraintsProvider
         }
         
         ///  <summary>
-        /// Creates a service definition for this service provider
+        /// Registers the feature in the provided feature registration
         /// </summary>
-        /// <returns>An object that describes which services are offered by this instance</returns>
-        public Grpc.Core.ServerServiceDefinition CreateServiceDefinition()
+        /// <param name="registration">The registration component to which the feature should be registered</param>
+        public void Register(IServerBuilder registration)
         {
-            Grpc.Core.ServerServiceDefinition.Builder builder = Grpc.Core.ServerServiceDefinition.CreateBuilder();
-            builder.AddMethod(ParameterConstraintsProviderMethods.SubscribeParametersConstraintsMethod, SubscribeParametersConstraints);
-            return builder.Build();
+            registration.RegisterObservableProperty("ParametersConstraints", GetParametersConstraints);
         }
         
         ///  <summary>
-        /// Subscribes to the Parameters Constraints property
+        /// Gets the current value of the Parameters Constraints property
         /// </summary>
-        /// <param name="request">The request in which the call was made</param>
-        /// <param name="responseStream">The stream in which to write new property values</param>
-        /// <param name="context">The context in which the request is made</param>
-        /// <returns>A task that ends when the subscription ends</returns>
-        protected virtual System.Threading.Tasks.Task SubscribeParametersConstraints(EmptyRequest request, Grpc.Core.IServerStreamWriter<PropertyResponse<System.Collections.Generic.List<ParametersConstraintDto>>> responseStream, Grpc.Core.ServerCallContext context)
-        {
-            return ObservableCommandHelper.ContinuouslySendValue(_server, "org.silastandard/core.commands/ParameterConstraintsProvider/v1/Property/Parameter" +
-                    "sConstraints", responseStream, CreateParametersConstraintsResponse, 1000, context);
-        }
-        
-        ///  <summary>
-        /// Wrap the current value of Parameters Constraints into a data transfer object
-        /// </summary>
-        /// <returns>A data transfer object with the current value</returns>
-        private PropertyResponse<System.Collections.Generic.List<ParametersConstraintDto>> CreateParametersConstraintsResponse()
+        /// <returns>The current value wrapped in a data transfer object</returns>
+        protected virtual PropertyResponse<System.Collections.Generic.List<ParametersConstraintDto>> GetParametersConstraints()
         {
             return new PropertyResponse<System.Collections.Generic.List<ParametersConstraintDto>>(Tecan.Sila2.DtoExtensions.Encapsulate(_implementation.ParametersConstraints, ParametersConstraintDto.Create, _server));
         }

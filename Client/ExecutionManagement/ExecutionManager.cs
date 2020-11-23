@@ -2,17 +2,18 @@
 using System.Linq;
 using Grpc.Core;
 using Tecan.Sila2.Binary;
+using Tecan.Sila2.Discovery;
 
 namespace Tecan.Sila2.Client.ExecutionManagement
 {
     internal class ExecutionManager : IClientExecutionManager
     {
         private readonly InterceptionRepository _interceptionRepository;
-        private readonly ServerData _serverData;
+        private readonly GrpcServerData _serverData;
 
         public IBinaryStore DownloadBinaryStore { get; }
 
-        public ExecutionManager( ServerData serverData, IEnumerable<IRequestInterceptor> interceptors )
+        public ExecutionManager( GrpcServerData serverData, IEnumerable<IClientRequestInterceptor> interceptors )
         {
             _interceptionRepository = new InterceptionRepository( interceptors );
             _serverData = serverData;
@@ -39,11 +40,11 @@ namespace Tecan.Sila2.Client.ExecutionManagement
             var interceptors = _interceptionRepository.GetInterceptorsForCommand( commandIdentifier );
             if(!interceptors.Any())
             {
-                return CallInfo.NoMetadata;
+                return DiscoveryExecutionManager.EmptyCallInfoInstance;
             }
 
-            var metadata = new Metadata();
-            var interceptions = new List<IRequestInterception>();
+            var metadata = new Dictionary<string, byte[]>();
+            var interceptions = new List<IClientRequestInterception>();
             foreach(var interceptor in interceptors)
             {
                 var intercept = interceptor.Intercept( _serverData, this, metadata );
@@ -52,7 +53,7 @@ namespace Tecan.Sila2.Client.ExecutionManagement
                     interceptions.Add( intercept );
                 }
             }
-            return new CallInfo( new CallOptions( headers: metadata ), interceptions );
+            return new CallInfo( metadata, interceptions );
         }
 
         public IBinaryStore CreateBinaryStore( string commandParameterIdentifier )

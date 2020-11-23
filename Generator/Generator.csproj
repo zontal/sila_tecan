@@ -48,6 +48,7 @@
         <PackageReference Include="System.CodeDom" Version="4.6.0" />
     </ItemGroup>
     <ItemGroup>
+        <ProjectReference Include="..\Annotations\Annotations.csproj" />
         <ProjectReference Include="..\Contracts\Contracts.csproj" />
         <ProjectReference Include="..\DynamicClient\DynamicClient.csproj" />
         <ProjectReference Include="..\Features\Cancellation.Client\Cancellation.Client.csproj" />

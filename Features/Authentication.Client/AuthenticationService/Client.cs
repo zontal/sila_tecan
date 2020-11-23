@@ -80,7 +80,7 @@ namespace Tecan.Sila2.Authentication.AuthenticationService
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/core/AuthenticationService/v1/Command/Login");
             try
             {
-                LoginResponse response = CallInvoker.BlockingUnaryCall(AuthenticationServiceMethods.LoginMethod, null, callInfo.Options, request).Extract(_executionManager.DownloadBinaryStore);
+                LoginResponse response = CallInvoker.BlockingUnaryCall(AuthenticationServiceMethods.LoginMethod, null, callInfo.ToCallOptions(), request).Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -115,7 +115,7 @@ namespace Tecan.Sila2.Authentication.AuthenticationService
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/core/AuthenticationService/v1/Command/Logout");
             try
             {
-                CallInvoker.BlockingUnaryCall(AuthenticationServiceMethods.LogoutMethod, null, callInfo.Options, request);
+                CallInvoker.BlockingUnaryCall(AuthenticationServiceMethods.LogoutMethod, null, callInfo.ToCallOptions(), request);
                 callInfo.FinishSuccessful();
                 return;
             } catch (System.Exception ex)

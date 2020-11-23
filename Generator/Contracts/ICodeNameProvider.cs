@@ -80,6 +80,22 @@ namespace Tecan.Sila2.Generator.Contracts
         CodeTypeReference GetPropertyResponseType( FeatureProperty featureProperty, ITypeTranslationProvider typeTranslationProvider );
 
         /// <summary>
+        /// Gets the observable command return type of the given command
+        /// </summary>
+        /// <param name="featureCommand">The feature command that shall be generated</param>
+        /// <param name="typeTranslationProvider">The type translation provider in which context the property type is resolved</param>
+        /// <returns>A code type reference for the interface type for the given command</returns>
+        CodeTypeReference GetObservableCommandReturnType( FeatureCommand featureCommand, ITypeTranslationProvider typeTranslationProvider );
+
+        /// <summary>
+        /// Gets the intermediate type for the given feature command
+        /// </summary>
+        /// <param name="featureCommand">The feature command that shall be generated</param>
+        /// <param name="typeTranslationProvider">The type translation provider in which context the property type is resolved</param>
+        /// <returns>A code type reference for the intermediate type for the given command</returns>
+        CodeTypeReference GetIntermediateType( FeatureCommand featureCommand, ITypeTranslationProvider typeTranslationProvider );
+
+        /// <summary>
         /// Gets a non-standard method description, if registered
         /// </summary>
         /// <param name="command">The command for which the method is requested</param>

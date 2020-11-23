@@ -76,7 +76,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("tecan.sila/integrationtests/TestServer/v1/Command/PassBool");
             try
             {
-                bool response = CallInvoker.BlockingUnaryCall(TestServerMethods.PassBoolMethod, null, callInfo.Options, request).ReturnValue.Extract(_executionManager.DownloadBinaryStore);
+                bool response = CallInvoker.BlockingUnaryCall(TestServerMethods.PassBoolMethod, null, callInfo.ToCallOptions(), request).ReturnValue.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -96,7 +96,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("tecan.sila/integrationtests/TestServer/v1/Command/PassDouble");
             try
             {
-                double response = CallInvoker.BlockingUnaryCall(TestServerMethods.PassDoubleMethod, null, callInfo.Options, request).ReturnValue.Extract(_executionManager.DownloadBinaryStore);
+                double response = CallInvoker.BlockingUnaryCall(TestServerMethods.PassDoubleMethod, null, callInfo.ToCallOptions(), request).ReturnValue.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -116,7 +116,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("tecan.sila/integrationtests/TestServer/v1/Command/PassLong");
             try
             {
-                long response = CallInvoker.BlockingUnaryCall(TestServerMethods.PassLongMethod, null, callInfo.Options, request).ReturnValue.Extract(_executionManager.DownloadBinaryStore);
+                long response = CallInvoker.BlockingUnaryCall(TestServerMethods.PassLongMethod, null, callInfo.ToCallOptions(), request).ReturnValue.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -136,7 +136,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("tecan.sila/integrationtests/TestServer/v1/Command/PassInt");
             try
             {
-                long response = CallInvoker.BlockingUnaryCall(TestServerMethods.PassIntMethod, null, callInfo.Options, request).ReturnValue.Extract(_executionManager.DownloadBinaryStore);
+                long response = CallInvoker.BlockingUnaryCall(TestServerMethods.PassIntMethod, null, callInfo.ToCallOptions(), request).ReturnValue.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -156,7 +156,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("tecan.sila/integrationtests/TestServer/v1/Command/PassTimestamp");
             try
             {
-                System.DateTimeOffset response = CallInvoker.BlockingUnaryCall(TestServerMethods.PassTimestampMethod, null, callInfo.Options, request).ReturnValue.Extract(_executionManager.DownloadBinaryStore);
+                System.DateTimeOffset response = CallInvoker.BlockingUnaryCall(TestServerMethods.PassTimestampMethod, null, callInfo.ToCallOptions(), request).ReturnValue.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -176,7 +176,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("tecan.sila/integrationtests/TestServer/v1/Command/PassTime");
             try
             {
-                System.TimeSpan response = CallInvoker.BlockingUnaryCall(TestServerMethods.PassTimeMethod, null, callInfo.Options, request).ReturnValue.Extract(_executionManager.DownloadBinaryStore);
+                System.TimeSpan response = CallInvoker.BlockingUnaryCall(TestServerMethods.PassTimeMethod, null, callInfo.ToCallOptions(), request).ReturnValue.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -196,7 +196,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("tecan.sila/integrationtests/TestServer/v1/Command/PassString");
             try
             {
-                string response = CallInvoker.BlockingUnaryCall(TestServerMethods.PassStringMethod, null, callInfo.Options, request).ReturnValue.Extract(_executionManager.DownloadBinaryStore);
+                string response = CallInvoker.BlockingUnaryCall(TestServerMethods.PassStringMethod, null, callInfo.ToCallOptions(), request).ReturnValue.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -216,7 +216,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("tecan.sila/integrationtests/TestServer/v1/Command/PassStream");
             try
             {
-                System.IO.Stream response = CallInvoker.BlockingUnaryCall(TestServerMethods.PassStreamMethod, null, callInfo.Options, request).ReturnValue.Extract(_executionManager.DownloadBinaryStore);
+                System.IO.Stream response = CallInvoker.BlockingUnaryCall(TestServerMethods.PassStreamMethod, null, callInfo.ToCallOptions(), request).ReturnValue.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -236,7 +236,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("tecan.sila/integrationtests/TestServer/v1/Command/PassFile");
             try
             {
-                System.IO.Stream response = CallInvoker.BlockingUnaryCall(TestServerMethods.PassFileMethod, null, callInfo.Options, request).ReturnValue.Extract(_executionManager.DownloadBinaryStore);
+                System.IO.Stream response = CallInvoker.BlockingUnaryCall(TestServerMethods.PassFileMethod, null, callInfo.ToCallOptions(), request).ReturnValue.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -256,7 +256,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("tecan.sila/integrationtests/TestServer/v1/Command/PassBytes");
             try
             {
-                System.IO.Stream response = CallInvoker.BlockingUnaryCall(TestServerMethods.PassBytesMethod, null, callInfo.Options, request).ReturnValue.Extract(_executionManager.DownloadBinaryStore);
+                System.IO.Stream response = CallInvoker.BlockingUnaryCall(TestServerMethods.PassBytesMethod, null, callInfo.ToCallOptions(), request).ReturnValue.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -276,7 +276,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("tecan.sila/integrationtests/TestServer/v1/Command/PassCollection");
             try
             {
-                System.Collections.Generic.ICollection<string> response = CallInvoker.BlockingUnaryCall(TestServerMethods.PassCollectionMethod, null, callInfo.Options, request).ReturnValue.Extract(_executionManager.DownloadBinaryStore);
+                System.Collections.Generic.ICollection<string> response = CallInvoker.BlockingUnaryCall(TestServerMethods.PassCollectionMethod, null, callInfo.ToCallOptions(), request).ReturnValue.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -296,7 +296,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("tecan.sila/integrationtests/TestServer/v1/Command/PassStructure");
             try
             {
-                SomeStructure response = CallInvoker.BlockingUnaryCall(TestServerMethods.PassStructureMethod, null, callInfo.Options, request).ReturnValue.Extract(_executionManager.DownloadBinaryStore);
+                SomeStructure response = CallInvoker.BlockingUnaryCall(TestServerMethods.PassStructureMethod, null, callInfo.ToCallOptions(), request).ReturnValue.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -394,7 +394,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("tecan.sila/integrationtests/TestServer/v1/Command/RunIntoFailure");
             try
             {
-                CallInvoker.BlockingUnaryCall(TestServerMethods.RunIntoFailureMethod, null, callInfo.Options, request);
+                CallInvoker.BlockingUnaryCall(TestServerMethods.RunIntoFailureMethod, null, callInfo.ToCallOptions(), request);
                 callInfo.FinishSuccessful();
                 return;
             } catch (System.Exception ex)
@@ -450,7 +450,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("tecan.sila/integrationtests/TestServer/v1/Command/IsCancelled");
             try
             {
-                bool response = CallInvoker.BlockingUnaryCall(TestServerMethods.IsCancelledMethod, null, callInfo.Options, request).ReturnValue.Extract(_executionManager.DownloadBinaryStore);
+                bool response = CallInvoker.BlockingUnaryCall(TestServerMethods.IsCancelledMethod, null, callInfo.ToCallOptions(), request).ReturnValue.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -469,7 +469,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("tecan.sila/integrationtests/TestServer/v1/Command/ThrowRuntimeException");
             try
             {
-                CallInvoker.BlockingUnaryCall(TestServerMethods.ThrowRuntimeExceptionMethod, null, callInfo.Options, request);
+                CallInvoker.BlockingUnaryCall(TestServerMethods.ThrowRuntimeExceptionMethod, null, callInfo.ToCallOptions(), request);
                 callInfo.FinishSuccessful();
                 return;
             } catch (System.Exception ex)

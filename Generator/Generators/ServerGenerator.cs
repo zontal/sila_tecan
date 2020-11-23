@@ -24,7 +24,6 @@ namespace Tecan.Sila2.Generator.Generators
     internal class ServerGenerator : IServerGenerator
     {
         private const string ServerFieldName = "_server";
-        private const string ContextParameterName = "context";
 
         private readonly ICodeNameProvider _nameProvider;
         private readonly IEnumerable<IGeneratorHook> _hooks;
@@ -66,7 +65,7 @@ namespace Tecan.Sila2.Generator.Generators
             server.WriteDocumentation( $"A class that exposes the {_nameProvider.CreateFeatureInterfaceReference( feature ).BaseType} interface via SiLA2" );
             var serverRef = GenerateServerGrpcServerField( server );
             GenerateServerConstructor( feature, server, implementation, serverRef );
-            GenerateServerCreateServiceDefinition( feature, server );
+            GenerateServerRegister( feature, server, implementation );
 
             if( feature.Items != null )
             {
@@ -79,22 +78,8 @@ namespace Tecan.Sila2.Generator.Generators
 
                 foreach( var featureProperty in feature.Items.OfType<FeatureProperty>() )
                 {
-                    if( featureProperty.Observable == FeaturePropertyObservable.No )
-                    {
-                        _loggingChannel.Log( $"Generating unobservable property for {featureProperty.Identifier}".ToString );
-                        GenerateServerStaticProperty( feature, featureProperty, server, implementation, id => FindError( feature, id ) );
-                    }
-                    else
-                    {
-                        _loggingChannel.Log( $"Generating observable property for {featureProperty.Identifier}".ToString );
-                        GenerateServerDynamicProperty( feature, featureProperty, server, implementation, id => FindError( feature, id ) );
-                    }
-                }
-
-                foreach( var featureMetadata in feature.Items.OfType<FeatureMetadata>() )
-                {
-                    _loggingChannel.Log( $"Generating interceptor for {featureMetadata.Identifier}".ToString );
-                    GenerateServerMetadata( featureMetadata, server, implementation );
+                    _loggingChannel.Log( $"Generating property for {featureProperty.Identifier}".ToString );
+                    GenerateServerProperty( feature, featureProperty, server, implementation, id => FindError( feature, id ) );
                 }
             }
 
@@ -196,99 +181,6 @@ namespace Tecan.Sila2.Generator.Generators
                 .FirstOrDefault( e => e.Identifier == id );
         }
 
-        private void GenerateServerMetadata( FeatureMetadata featureMetadata, CodeTypeDeclaration server, CodeFieldReferenceExpression implementation )
-        {
-            var implementationMethod = new CodeMemberMethod
-            {
-                Name = "GetAffectedBy" + featureMetadata.Identifier,
-                Attributes = MemberAttributes.Family,
-                ReturnType = new CodeTypeReference( typeof(Task<List<StringDto>>) )
-            };
-            implementationMethod.WriteDocumentation( $"Gets the features/commands/properties affected by the metadata {featureMetadata.Description}",
-                "A list of fully qualified identifiers",
-                new Dictionary<string, string>()
-                {
-                    { "request", "The request object (not used)" },
-                    { ContextParameterName, "The request context" }
-                } );
-            implementationMethod.Parameters.Add(
-                new CodeParameterDeclarationExpression( nameof(EmptyRequest), "request" ) );
-            implementationMethod.Parameters.Add(
-                new CodeParameterDeclarationExpression( typeof(ServerCallContext), ContextParameterName ) );
-            var result = new CodeMethodInvokeExpression( new CodeTypeReferenceExpression( typeof(Metadata) ),
-                nameof(Metadata.GetAffectedIdentifiers),
-                new CodeFieldReferenceExpression( null, ServerFieldName ),
-                new CodePropertyReferenceExpression( implementation, featureMetadata.Identifier ) );
-            implementationMethod.Statements.Add( new CodeMethodReturnStatement( result ) );
-            server.Members.Add( implementationMethod );
-        }
-
-        private void GenerateServerDynamicProperty( Feature feature, FeatureProperty featureProperty, CodeTypeDeclaration server,
-            CodeFieldReferenceExpression implementation, Func<string, FeatureDefinedExecutionError> errorFinder )
-        {
-            var implementationMethod = new CodeMemberMethod
-            {
-                Name = "Subscribe" + featureProperty.Identifier,
-                Attributes = MemberAttributes.Family,
-                ReturnType = new CodeTypeReference( typeof(Task) )
-            };
-            var responseType = _nameProvider.GetPropertyResponseType( featureProperty, _translationProvider );
-            implementationMethod.Parameters.Add(
-                new CodeParameterDeclarationExpression( nameof(EmptyRequest), "request" ) );
-            implementationMethod.Parameters.Add( new CodeParameterDeclarationExpression(
-                new CodeTypeReference( typeof(IServerStreamWriter<>).FullName, responseType ), "responseStream" ) );
-            implementationMethod.Parameters.Add(
-                new CodeParameterDeclarationExpression( typeof(ServerCallContext), ContextParameterName ) );
-            implementationMethod.WriteDocumentation( $"Subscribes to the {featureProperty.DisplayName} property", "A task that ends when the subscription ends",
-                new Dictionary<string, string>()
-                {
-                    { "request", "The request in which the call was made" },
-                    { "responseStream", "The stream in which to write new property values" },
-                    { ContextParameterName, "The context in which the request is made" }
-                } );
-            var createResultMethod = new CodeMemberMethod
-            {
-                Name = "Create" + featureProperty.Identifier + "Response",
-                Attributes = MemberAttributes.Private,
-                ReturnType = responseType
-            };
-            createResultMethod.WriteDocumentation( $"Wrap the current value of {featureProperty.DisplayName} into a data transfer object",
-                "A data transfer object with the current value" );
-
-            CodeExpression actualImplementation =
-                new CodePropertyReferenceExpression( implementation, _nameProvider.GetPropertyName( featureProperty ) );
-
-            var serverRef = new CodeFieldReferenceExpression( null, ServerFieldName );
-            var result = new CodeObjectCreateExpression( responseType );
-            if( !(featureProperty.DataType.Item is ConstrainedType) )
-            {
-                result.Parameters.Add( _translationProvider.EncapsulateAsDto( actualImplementation, featureProperty.DataType, serverRef, featureProperty.Identifier ) );
-            }
-            else
-            {
-                result.Parameters.Add( actualImplementation );
-                result.Parameters.Add( serverRef );
-            }
-
-            var ret = new CodeMethodReturnStatement( result );
-            var statements = GenerateExceptionHandling( feature, null, featureProperty.DefinedExecutionErrors, errorFinder, createResultMethod.Statements );
-            statements.Add( ret );
-
-            var resultCall = new CodeMethodInvokeExpression(
-                new CodeTypeReferenceExpression( nameof(ObservableCommandHelper) ),
-                "ContinuouslySendValue",
-                serverRef,
-                new CodePrimitiveExpression( feature.GetFullyQualifiedIdentifier( featureProperty ) ),
-                new CodeArgumentReferenceExpression( "responseStream" ),
-                new CodeMethodReferenceExpression( null, createResultMethod.Name ),
-                new CodePrimitiveExpression( 1000 ),
-                new CodeArgumentReferenceExpression( ContextParameterName ) );
-            implementationMethod.Statements.Add( new CodeMethodReturnStatement( resultCall ) );
-
-            server.Members.Add( implementationMethod );
-            server.Members.Add( createResultMethod );
-        }
-
         private CodeFieldReferenceExpression GenerateServerGrpcServerField( CodeTypeDeclaration server )
         {
             var field = new CodeMemberField( typeof(ISiLAServer), ServerFieldName );
@@ -321,7 +213,7 @@ namespace Tecan.Sila2.Generator.Generators
             server.Members.Add( property );
         }
 
-        private void GenerateServerStaticProperty( Feature feature, FeatureProperty featureProperty, CodeTypeDeclaration server,
+        private void GenerateServerProperty( Feature feature, FeatureProperty featureProperty, CodeTypeDeclaration server,
             CodeFieldReferenceExpression implementation, Func<string, FeatureDefinedExecutionError> errorFinder )
         {
             var implementationMethod = new CodeMemberMethod
@@ -329,23 +221,14 @@ namespace Tecan.Sila2.Generator.Generators
                 Name = "Get" + featureProperty.Identifier,
                 Attributes = MemberAttributes.Family
             };
-            var responseType = _nameProvider.GetPropertyResponseType( featureProperty, _translationProvider );
-            implementationMethod.ReturnType = new CodeTypeReference( typeof(Task<>).FullName, responseType );
-            implementationMethod.Parameters.Add(
-                new CodeParameterDeclarationExpression( nameof(EmptyRequest), "request" ) );
-            implementationMethod.Parameters.Add(
-                new CodeParameterDeclarationExpression( typeof(ServerCallContext), ContextParameterName ) );
+            implementationMethod.ReturnType = _nameProvider.GetPropertyResponseType( featureProperty, _translationProvider );
             CodeExpression actualImplementation =
                 new CodePropertyReferenceExpression( implementation, _nameProvider.GetPropertyName( featureProperty ) );
 
             implementationMethod.WriteDocumentation( $"Gets the current value of the {featureProperty.DisplayName} property",
-                "The current value wrapped in a data transfer object", new Dictionary<string, string>()
-                {
-                    { "request", "The request object" },
-                    { ContextParameterName, "The context in which the request is made" }
-                } );
+                "The current value wrapped in a data transfer object");
 
-            var result = new CodeObjectCreateExpression( responseType );
+            var result = new CodeObjectCreateExpression( implementationMethod.ReturnType );
             var serverRef = new CodeFieldReferenceExpression( null, ServerFieldName );
             if( !(featureProperty.DataType.Item is ConstrainedType) )
             {
@@ -357,12 +240,7 @@ namespace Tecan.Sila2.Generator.Generators
                 result.Parameters.Add( serverRef );
             }
 
-            var ret = new CodeMethodReturnStatement( new CodeMethodInvokeExpression(
-                serverRef,
-                nameof(ISiLAServer.CreatePropertyTask),
-                new CodePrimitiveExpression( feature.GetFullyQualifiedIdentifier( featureProperty ) ),
-                result,
-                new CodeArgumentReferenceExpression( ContextParameterName ) ) );
+            var ret = new CodeMethodReturnStatement( result );
 
             var statements = GenerateExceptionHandling( feature, null, featureProperty.DefinedExecutionErrors, errorFinder, implementationMethod.Statements );
             statements.Add( ret );
@@ -376,20 +254,17 @@ namespace Tecan.Sila2.Generator.Generators
                 new CodeParameterDeclarationExpression( _nameProvider.GenerateCommandRequestType( featureCommand ),
                     "request" );
             var requestRef = new CodeArgumentReferenceExpression( request.Name );
-            var context = new CodeParameterDeclarationExpression( typeof( ServerCallContext ), ContextParameterName );
             var commandMethod = new CodeMemberMethod
             {
                 Name = featureCommand.Identifier,
                 Attributes = MemberAttributes.Family
             };
             commandMethod.Parameters.Add( request );
-            commandMethod.Parameters.Add( context );
             commandMethod.WriteDocumentation( $"Executes the {featureCommand.DisplayName} command",
                 "The command response wrapped in a data transfer object",
                 new Dictionary<string, string>()
                 {
-                    { request.Name, "A data transfer object that contains the command parameters" },
-                    { context.Name, "The context in which the command is issued" }
+                    { request.Name, "A data transfer object that contains the command parameters" }
                 } );
             if( featureCommand.Observable == FeatureCommandObservable.No )
             {
@@ -398,7 +273,7 @@ namespace Tecan.Sila2.Generator.Generators
             else
             {
                 GenerateServerObservableCommand( feature, featureCommand, server, implementationRef, serverRef,
-                    commandMethod, requestRef, request );
+                    commandMethod, requestRef );
             }
 
             server.Members.Add( commandMethod );
@@ -406,43 +281,34 @@ namespace Tecan.Sila2.Generator.Generators
 
         private void GenerateServerObservableCommand( Feature feature, FeatureCommand featureCommand, CodeTypeDeclaration server,
             CodeFieldReferenceExpression implementationRef, CodeFieldReferenceExpression serverRef, CodeMemberMethod commandMethod,
-            CodeArgumentReferenceExpression requestRef, CodeParameterDeclarationExpression request )
+            CodeArgumentReferenceExpression requestRef )
         {
-            var context = new CodeParameterDeclarationExpression( typeof( ServerCallContext ), ContextParameterName );
-            var contextRef = new CodeArgumentReferenceExpression( context.Name );
-            commandMethod.ReturnType = new CodeTypeReference( typeof(Task<CommandConfirmation>) );
-            var startServerCall =
-                new CodeMethodInvokeExpression( new CodeTypeReferenceExpression( nameof(ObservableCommandHelper) ),
-                    "StartCommand" );
-            startServerCall.Parameters.Add( serverRef );
-            startServerCall.Parameters.Add( new CodePrimitiveExpression( feature.GetFullyQualifiedIdentifier( featureCommand ) ) );
+            commandMethod.ReturnType = _nameProvider.GetObservableCommandReturnType( featureCommand, _translationProvider );
+            
             var method = _nameProvider.GetNonstandardMethod( featureCommand );
+            CodeExpression actualCall;
             if( method == null )
             {
-                startServerCall.Parameters.Add( GenerateCommandImplementationCall( featureCommand, implementationRef, requestRef, serverRef ) );
+                actualCall = GenerateCommandImplementationCall( featureCommand, implementationRef, requestRef, serverRef );
             }
             else
             {
-                startServerCall.Parameters.Add( GenerateCreateCommand( feature, featureCommand, method, server, implementationRef, serverRef, requestRef ) );
+                actualCall = GenerateCreateCommand( feature, featureCommand, method, server, implementationRef, serverRef, requestRef );
             }
 
-            startServerCall.Parameters.Add( contextRef );
-            commandMethod.Statements.Add( new CodeMethodReturnStatement( startServerCall ) );
+            commandMethod.Statements.Add( new CodeMethodReturnStatement( actualCall ) );
 
-            CodeExpression errorConverterRef = new CodePrimitiveExpression();
-            if( featureCommand.DefinedExecutionErrors != null && featureCommand.DefinedExecutionErrors.Length > 0 )
+            if (featureCommand.IntermediateResponse != null && featureCommand.IntermediateResponse.Length > 0)
             {
-                errorConverterRef = GenerateErrorConversionMethod( feature, featureCommand, server );
+                var convertIntermediateMethod = GenerateServerConvertIntermediateResponseMethod( featureCommand );
+                server.Members.Add( convertIntermediateMethod );
             }
 
-            server.Members.Add( GenerateServerCommandStateMethod( featureCommand, serverRef, requestRef, errorConverterRef) );
-
-            if( featureCommand.IntermediateResponse != null && featureCommand.IntermediateResponse.Length > 0 )
+            if (featureCommand.Response != null && featureCommand.Response.Length > 0)
             {
-                GenerateServerCommandIntermediateMethod( featureCommand, server, serverRef, requestRef, errorConverterRef );
+                var convertResponse = GenerateServerConvertResponseMethod( featureCommand );
+                server.Members.Add( convertResponse );
             }
-
-            GenerateServerCommandResultMethod( featureCommand, server, serverRef, requestRef, errorConverterRef );
         }
 
         private CodeMethodReferenceExpression GenerateErrorConversionMethod( Feature feature, FeatureCommand featureCommand, CodeTypeDeclaration server )
@@ -585,97 +451,6 @@ namespace Tecan.Sila2.Generator.Generators
             return conversionMethod;
         }
 
-        private void GenerateServerCommandIntermediateMethod( FeatureCommand featureCommand, CodeTypeDeclaration server,
-            CodeFieldReferenceExpression serverRef, CodeArgumentReferenceExpression requestRef, CodeExpression errorConverterRef )
-        {
-            var context = new CodeParameterDeclarationExpression( typeof( ServerCallContext ), ContextParameterName );
-            var contextRef = new CodeArgumentReferenceExpression( context.Name );
-            var conversionMethod = GenerateServerConvertIntermediateResponseMethod( featureCommand );
-            server.Members.Add( conversionMethod );
-
-            var commandRequest = new CodeParameterDeclarationExpression( typeof(CommandExecutionUuid), requestRef.ParameterName );
-            var responseMethod = new CodeMemberMethod
-            {
-                Name = featureCommand.Identifier + "IntermediateResponse",
-                Attributes = MemberAttributes.Private,
-                ReturnType = new CodeTypeReference( typeof(Task) )
-            };
-            responseMethod.Parameters.Add( commandRequest );
-            responseMethod.Parameters.Add(
-                new CodeParameterDeclarationExpression(
-                    new CodeTypeReference( typeof(IServerStreamWriter<>).FullName, _nameProvider.GenerateCommandIntermediateType( featureCommand ) ), "responseStream" ) );
-            responseMethod.Parameters.Add( context );
-            responseMethod.WriteDocumentation( "Obtains a stream of intermediate results for the given command execution id",
-                "A stream of intermediate responses", new Dictionary<string, string>()
-                {
-                    { commandRequest.Name, "The request including the command execution id" },
-                    { "responseStream", "The stream in which intermediate responses should be written" },
-                    { ContextParameterName, "The context in which the request is made" }
-                } );
-            var retrieveIntermediateMethod =
-                new CodeMethodReferenceExpression( new CodeTypeReferenceExpression( nameof(ObservableCommandHelper) ),
-                    nameof(ObservableCommandHelper.RetrieveIntermediateResults) );
-            retrieveIntermediateMethod.TypeArguments.Add( conversionMethod.Parameters[0].Type );
-            retrieveIntermediateMethod.TypeArguments.Add( conversionMethod.ReturnType );
-
-            var waitCommandExecution =
-                new CodeMethodInvokeExpression( retrieveIntermediateMethod,
-                    serverRef,
-                    requestRef,
-                    new CodeArgumentReferenceExpression( "responseStream" ), 
-                    errorConverterRef,
-                    new CodeMethodReferenceExpression(null, conversionMethod.Name),
-                    contextRef );
-            responseMethod.Statements.Add( new CodeMethodReturnStatement( waitCommandExecution ) );
-            server.Members.Add( responseMethod );
-        }
-
-        private void GenerateServerCommandResultMethod( FeatureCommand featureCommand, CodeTypeDeclaration server,
-            CodeFieldReferenceExpression serverRef, CodeArgumentReferenceExpression requestRef, CodeExpression errorConverterRef )
-        {
-            var context = new CodeParameterDeclarationExpression( typeof( ServerCallContext ), ContextParameterName );
-            var contextRef = new CodeArgumentReferenceExpression( context.Name );
-
-            var commandRequest = new CodeParameterDeclarationExpression( typeof(CommandExecutionUuid), requestRef.ParameterName );
-            var responseMethod = new CodeMemberMethod
-            {
-                Name = featureCommand.Identifier + "Response",
-                Attributes = MemberAttributes.Private,
-                ReturnType = new CodeTypeReference( typeof(Task<>).FullName,
-                    _nameProvider.GenerateCommandResponseType( featureCommand ) )
-            };
-            responseMethod.Parameters.Add( commandRequest );
-            responseMethod.Parameters.Add( context );
-            responseMethod.WriteDocumentation( "Waits for the completion of the given command execution id and returns the result",
-                "A task with the command result data transfer object", new Dictionary<string, string>()
-                {
-                    { commandRequest.Name, "The request including the command execution identifier" },
-                    { context.Name, "The context in which the request is made" }
-                } );
-            var waitCommandMethod =
-                new CodeMethodReferenceExpression( new CodeTypeReferenceExpression( nameof(ObservableCommandHelper) ),
-                    nameof(ObservableCommandHelper.WaitCommandExecution) );
-
-            var waitCommandExecution =
-                new CodeMethodInvokeExpression( waitCommandMethod,
-                    serverRef,
-                    requestRef,
-                    errorConverterRef,
-                    contextRef);
-
-            if( featureCommand.Response != null && featureCommand.Response.Length > 0 )
-            {
-                var conversionMethod = GenerateServerConvertResponseMethod( featureCommand );
-                server.Members.Add( conversionMethod );
-
-                waitCommandMethod.TypeArguments.Add( GetServerCommandResponseType( featureCommand ) );
-                waitCommandMethod.TypeArguments.Add( _nameProvider.GenerateCommandResponseType( featureCommand ) );
-                waitCommandExecution.Parameters.Add( new CodeMethodReferenceExpression( null, conversionMethod.Name ) );
-            }
-            responseMethod.Statements.Add( new CodeMethodReturnStatement( waitCommandExecution ) );
-            server.Members.Add( responseMethod );
-        }
-
         private CodeTypeReference GetServerCommandResponseType( FeatureCommand featureCommand )
         {
             if(featureCommand.Response.Length == 1)
@@ -689,78 +464,17 @@ namespace Tecan.Sila2.Generator.Generators
             }
         }
 
-        private static CodeMemberMethod GenerateServerCommandStateMethod( FeatureCommand featureCommand, CodeFieldReferenceExpression serverRef, CodeArgumentReferenceExpression requestRef, CodeExpression errorConverterRef )
-        {
-            var context = new CodeParameterDeclarationExpression( typeof( ServerCallContext ), ContextParameterName );
-            var contextRef = new CodeArgumentReferenceExpression( context.Name );
-            var stateMethod = new CodeMemberMethod()
-            {
-                Name = featureCommand.Identifier + "State",
-                Attributes = MemberAttributes.Private,
-                ReturnType = new CodeTypeReference( typeof(Task) )
-            };
-            var commandRequest = new CodeParameterDeclarationExpression( typeof(CommandExecutionUuid), requestRef.ParameterName );
-            stateMethod.Parameters.Add( commandRequest );
-            stateMethod.Parameters.Add(
-                new CodeParameterDeclarationExpression( typeof(IServerStreamWriter<ExecutionState>), "responseStream" ) );
-            stateMethod.Parameters.Add( context );
-            stateMethod.WriteDocumentation( "Obtains a stream of states for the given command execution id",
-                "A stream of intermediate responses", new Dictionary<string, string>()
-                {
-                    { commandRequest.Name, "The request including the command execution id" },
-                    { "responseStream", "The stream in which execution states should be written" },
-                    { ContextParameterName, "The context in which the request is made" }
-                } );
-            var queryState = new CodeMethodInvokeExpression( new CodeTypeReferenceExpression( nameof(ObservableCommandHelper) ),
-                nameof(ObservableCommandHelper.QueryCommandState),
-                serverRef,
-                requestRef,
-                new CodeArgumentReferenceExpression( "responseStream" ),
-                errorConverterRef,
-                contextRef );
-            stateMethod.Statements.Add( new CodeMethodReturnStatement( queryState ) );
-            return stateMethod;
-        }
-
         private void GenerateServerNonObservableCommand( Feature feature, FeatureCommand featureCommand,
             CodeTypeDeclaration server, CodeFieldReferenceExpression implementationRef,
             CodeMemberMethod commandMethod,
             CodeArgumentReferenceExpression requestRef, CodeFieldReferenceExpression serverRef )
         {
-            var implementationMethod =
-                GenerateServerCommandInternalImplementationMethod( feature, featureCommand, implementationRef );
-            server.Members.Add( implementationMethod );
-
-            commandMethod.ReturnType =
-                new CodeTypeReference( typeof(Task<>).FullName, implementationMethod.ReturnType );
-            commandMethod.Statements.Add( new CodeMethodReturnStatement( new CodeMethodInvokeExpression(
-                serverRef,
-                nameof(ISiLAServer.InvokeCommand),
-                new CodeMethodReferenceExpression( null, implementationMethod.Name ),
-                requestRef,
-                new CodeArgumentReferenceExpression( ContextParameterName ) ) ) );
-        }
-
-        private CodeMemberMethod GenerateServerCommandInternalImplementationMethod(
-            Feature feature, FeatureCommand featureCommand,
-            CodeFieldReferenceExpression implementation )
-        {
-            var request =
-                new CodeParameterDeclarationExpression( _nameProvider.GenerateCommandRequestType( featureCommand ),
-                    "request" );
-            var requestRef = new CodeArgumentReferenceExpression( request.Name );
-            var implementationMethod = new CodeMemberMethod
+            commandMethod.ReturnType = _nameProvider.GenerateCommandResponseType( featureCommand );
+            CodeStatementCollection statements = GenerateExceptionHandling( feature, featureCommand, commandMethod );
+            var actualImplementation = GenerateCommandImplementationCall( featureCommand, implementationRef, requestRef, new CodeFieldReferenceExpression( null, ServerFieldName ) );
+            if(CodeGenerationHelper.IsSetterCommand( featureCommand, feature.Items.OfType<FeatureProperty>() ))
             {
-                Name = featureCommand.Identifier + "Internal",
-                Attributes = MemberAttributes.Private | MemberAttributes.Final
-            };
-            implementationMethod.ReturnType = _nameProvider.GenerateCommandResponseType( featureCommand );
-            implementationMethod.Parameters.Add( request );
-            CodeStatementCollection statements = GenerateExceptionHandling(feature, featureCommand, implementationMethod);
-            var actualImplementation = GenerateCommandImplementationCall( featureCommand, implementation, requestRef, new CodeFieldReferenceExpression(null, ServerFieldName) );
-            if( CodeGenerationHelper.IsSetterCommand( featureCommand, feature.Items.OfType<FeatureProperty>() ) )
-            {
-                statements.Add( new CodeAssignStatement( new CodePropertyReferenceExpression( implementation, featureCommand.Identifier.Substring( 3 ) ),
+                statements.Add( new CodeAssignStatement( new CodePropertyReferenceExpression( implementationRef, featureCommand.Identifier.Substring( 3 ) ),
                     actualImplementation.Parameters[0] ) );
                 statements.Add( new CodeMethodReturnStatement( new CodeFieldReferenceExpression(
                     new CodeTypeReferenceExpression( nameof( EmptyRequest ) ), "Instance" ) ) );
@@ -768,21 +482,19 @@ namespace Tecan.Sila2.Generator.Generators
             else
             {
 
-                if( featureCommand.Response != null && featureCommand.Response.Length > 0 )
+                if(featureCommand.Response != null && featureCommand.Response.Length > 0)
                 {
                     var result = GenerateClientResultConversionExpression( featureCommand.Response[0].DataType,
-                        actualImplementation, implementationMethod.ReturnType );
+                        actualImplementation, commandMethod.ReturnType );
                     statements.Add( new CodeMethodReturnStatement( result ) );
                 }
                 else
                 {
                     statements.Add( new CodeExpressionStatement( actualImplementation ) );
                     statements.Add( new CodeMethodReturnStatement( new CodeFieldReferenceExpression(
-                        new CodeTypeReferenceExpression( nameof(EmptyRequest) ), "Instance" ) ) );
+                        new CodeTypeReferenceExpression( nameof( EmptyRequest ) ), "Instance" ) ) );
                 }
             }
-
-            return implementationMethod;
         }
 
         private CodeStatementCollection GenerateExceptionHandling(Feature feature, FeatureCommand featureCommand, CodeMemberMethod implementationMethod)
@@ -873,28 +585,21 @@ namespace Tecan.Sila2.Generator.Generators
             return actualImplementation;
         }
 
-        private void GenerateServerCreateServiceDefinition( Feature feature, CodeTypeDeclaration server )
+        private void GenerateServerRegister( Feature feature, CodeTypeDeclaration server, CodeExpression implementation )
         {
-            var createServiceDefinition = new CodeMemberMethod
+            var registerMethod = new CodeMemberMethod
             {
-                Name = "CreateServiceDefinition",
+                Name = "Register",
                 Attributes = MemberAttributes.Public | MemberAttributes.Final,
-                ReturnType = new CodeTypeReference( typeof(ServerServiceDefinition) ),
+                ReturnType = new CodeTypeReference( typeof(void) ),
             };
-            createServiceDefinition.WriteDocumentation( "Creates a service definition for this service provider",
-                "An object that describes which services are offered by this instance" );
-            var builderDeclaration = new CodeVariableDeclarationStatement()
-            {
-                Name = "builder",
-                Type = new CodeTypeReference( typeof(ServerServiceDefinition.Builder) ),
-                InitExpression =
-                    new CodeMethodInvokeExpression( new CodeTypeReferenceExpression( typeof(ServerServiceDefinition) ),
-                        "CreateBuilder" )
-            };
-            createServiceDefinition.Statements.Add( builderDeclaration );
-            var builderRef = new CodeVariableReferenceExpression( builderDeclaration.Name );
-
-            var providerReference = new CodeTypeReferenceExpression(feature.Identifier + "Methods");
+            var registration = new CodeArgumentReferenceExpression( "registration" );
+            registerMethod.WriteDocumentation( "Registers the feature in the provided feature registration",
+               parameters: new Dictionary<string, string>()
+               {
+                   { registration.ParameterName, "The registration component to which the feature should be registered" }
+               } );
+            registerMethod.Parameters.Add( new CodeParameterDeclarationExpression( typeof( IServerBuilder ).Name, registration.ParameterName ) );
 
             if( feature.Items != null )
             {
@@ -903,33 +608,52 @@ namespace Tecan.Sila2.Generator.Generators
                 {
                     if( featureCommand.Observable == FeatureCommandObservable.No )
                     {
-                        createServiceDefinition.Statements.Add( new CodeMethodInvokeExpression(
-                            builderRef, "AddMethod",
-                            new CodeFieldReferenceExpression( providerReference, featureCommand.Identifier + "Method" ),
+                        registerMethod.Statements.Add( new CodeMethodInvokeExpression(
+                            new CodeMethodReferenceExpression(
+                                registration, nameof(IServerBuilder.RegisterUnobservableCommand),
+                                _nameProvider.GenerateCommandRequestType(featureCommand),
+                                _nameProvider.GenerateCommandResponseType(featureCommand)),
+                            new CodePrimitiveExpression( featureCommand.Identifier ),
                             new CodeMethodReferenceExpression( null, featureCommand.Identifier ) ) );
                     }
                     else
                     {
-                        createServiceDefinition.Statements.Add( new CodeMethodInvokeExpression(
-                            builderRef, "AddMethod",
-                            new CodeFieldReferenceExpression( providerReference, featureCommand.Identifier + "Method" ),
-                            new CodeMethodReferenceExpression( null, featureCommand.Identifier ) ) );
-                        createServiceDefinition.Statements.Add( new CodeMethodInvokeExpression(
-                            builderRef, "AddMethod",
-                            new CodeFieldReferenceExpression( providerReference, featureCommand.Identifier + "StateMethod" ),
-                            new CodeMethodReferenceExpression( null, featureCommand.Identifier + "State" ) ) );
-                        if( featureCommand.IntermediateResponse != null && featureCommand.IntermediateResponse.Length > 0 )
+                        var typeArguments = new List<CodeTypeReference>();
+                        typeArguments.Add( _nameProvider.GenerateCommandRequestType( featureCommand ) );
+                        var hasIntermediates = false;
+                        var arguments = new List<CodeExpression>
                         {
-                            createServiceDefinition.Statements.Add( new CodeMethodInvokeExpression(
-                                builderRef, "AddMethod",
-                                new CodeFieldReferenceExpression( providerReference, featureCommand.Identifier + "IntermediateMethod" ),
-                                new CodeMethodReferenceExpression( null, featureCommand.Identifier + "IntermediateResponse" ) ) );
+                            new CodePrimitiveExpression(featureCommand.Identifier),
+                            new CodeMethodReferenceExpression( null, featureCommand.Identifier )
+                        };
+                        if (featureCommand.IntermediateResponse != null && featureCommand.IntermediateResponse.Length > 0)
+                        {
+                            hasIntermediates = true;
+                            typeArguments.Add( _nameProvider.GetIntermediateType(featureCommand, _translationProvider) );
+                            typeArguments.Add( _nameProvider.GenerateCommandIntermediateType( featureCommand ) );
+                            arguments.Add( new CodeMethodReferenceExpression( null, "Convert" + featureCommand.Identifier + "Intermediate" ) );
+                        }
+                        if (featureCommand.Response != null && featureCommand.Response.Length > 0)
+                        {
+                            typeArguments.Add( _nameProvider.GetMemberType( featureCommand.Identifier + "." + featureCommand.Response[0].Identifier )
+                                   ?? _translationProvider.ExtractType( featureCommand.Response[0].DataType, featureCommand.Identifier ) );
+                            typeArguments.Add( _nameProvider.GenerateCommandResponseType( featureCommand ) );
+                            arguments.Add( new CodeMethodReferenceExpression( null, "Convert" + featureCommand.Identifier + "Response" ) );
+                        }
+                        if (featureCommand.DefinedExecutionErrors != null && featureCommand.DefinedExecutionErrors.Length > 0)
+                        {
+                            arguments.Add( GenerateErrorConversionMethod( feature, featureCommand, server ) );
+                        }
+                        else
+                        {
+                            arguments.Add( new CodePrimitiveExpression( null ) );
                         }
 
-                        createServiceDefinition.Statements.Add( new CodeMethodInvokeExpression(
-                            builderRef, "AddMethod",
-                            new CodeFieldReferenceExpression( providerReference, featureCommand.Identifier + "ResponseMethod" ),
-                            new CodeMethodReferenceExpression( null, featureCommand.Identifier + "Response" ) ) );
+                        registerMethod.Statements.Add( new CodeMethodInvokeExpression(
+                            new CodeMethodReferenceExpression(
+                                registration, hasIntermediates ? nameof(IServerBuilder.RegisterCommandWithIntermediates) : nameof( IServerBuilder.RegisterObservableCommand ),
+                                typeArguments.ToArray() ),
+                            arguments.ToArray()));
                     }
                 }
 
@@ -937,33 +661,34 @@ namespace Tecan.Sila2.Generator.Generators
                 {
                     if( featureProperty.Observable == FeaturePropertyObservable.No )
                     {
-                        createServiceDefinition.Statements.Add( new CodeMethodInvokeExpression(
-                            builderRef, "AddMethod",
-                            new CodeFieldReferenceExpression( providerReference, "Get" + featureProperty.Identifier + "Method" ),
+                        registerMethod.Statements.Add( new CodeMethodInvokeExpression(
+                            registration, 
+                            nameof( IServerBuilder.RegisterUnobservableProperty ),
+                            new CodePrimitiveExpression( featureProperty.Identifier ),
                             new CodeMethodReferenceExpression( null, "Get" + featureProperty.Identifier ) ) );
                     }
                     else
                     {
-                        createServiceDefinition.Statements.Add( new CodeMethodInvokeExpression(
-                            builderRef, "AddMethod",
-                            new CodeFieldReferenceExpression( providerReference, "Subscribe" + featureProperty.Identifier + "Method" ),
-                            new CodeMethodReferenceExpression( null, "Subscribe" + featureProperty.Identifier ) ) );
+                        registerMethod.Statements.Add( new CodeMethodInvokeExpression(
+                            registration,
+                            nameof( IServerBuilder.RegisterObservableProperty ),
+                            new CodePrimitiveExpression( featureProperty.Identifier ),
+                            new CodeMethodReferenceExpression( null, "Get" + featureProperty.Identifier ) ) );
                     }
                 }
 
                 foreach( var featureMetadata in feature.Items.OfType<FeatureMetadata>() )
                 {
-                    createServiceDefinition.Statements.Add( new CodeMethodInvokeExpression(
-                        builderRef, "AddMethod",
-                        new CodeFieldReferenceExpression( providerReference, "GetAffectedBy" + featureMetadata.Identifier + "Method" ),
-                        new CodeMethodReferenceExpression( null, "GetAffectedBy" + featureMetadata.Identifier ) ) );
+                    registerMethod.Statements.Add( new CodeMethodInvokeExpression(
+                        registration,
+                        nameof( IServerBuilder.RegisterMetadata ),
+                        new CodePrimitiveExpression( featureMetadata.Identifier ),
+                        new CodePropertyReferenceExpression( implementation, featureMetadata.Identifier) ) );
                 }
             }
-
-            createServiceDefinition.Statements.Add(
-                new CodeMethodReturnStatement( new CodeMethodInvokeExpression( builderRef, "Build" ) ) );
-            server.Members.Add( createServiceDefinition );
+            server.Members.Add( registerMethod );
         }
+
 
         private void GenerateServerConstructor( Feature feature, CodeTypeDeclaration server,
             CodeFieldReferenceExpression implementation, CodeFieldReferenceExpression innerServer )
@@ -1067,13 +792,13 @@ namespace Tecan.Sila2.Generator.Generators
                 {
                     new CodeParameterDeclarationExpression( typeof(string), "commandIdentifier" ),
                     new CodeParameterDeclarationExpression( typeof(ISiLAServer), "server" ),
-                    new CodeParameterDeclarationExpression( typeof(ServerCallContext), ContextParameterName )
+                    new CodeParameterDeclarationExpression( typeof(IMetadataRepository), "metadata" )
                 }
             };
             var extractMetadata = new CodeMethodInvokeExpression(
                 new CodeMethodReferenceExpression( new CodeTypeReferenceExpression( typeof(Metadata) ), nameof(Metadata.Extract),
                     _translationProvider.GetDtoTypeReference( metadata.DataType, metadata.Identifier, structHandler ) ),
-                new CodeArgumentReferenceExpression( ContextParameterName ),
+                new CodeArgumentReferenceExpression( "metadata" ),
                 new CodePrimitiveExpression( feature.GetFullyQualifiedIdentifier( metadata ) ) );
             var statements = GenerateExceptionHandling( feature, null, metadata.DefinedExecutionErrors, id => FindError( feature, id ), interceptMethod.Statements );
             statements.Add( new CodeMethodReturnStatement(
@@ -1090,7 +815,7 @@ namespace Tecan.Sila2.Generator.Generators
                 {
                     { "commandIdentifier", "The fully qualified identifier of the command or property in question" },
                     { "server", "The server that should execute the request" },
-                    { ContextParameterName, "The context in which the request is made" }
+                    { "metadata", "The metadata attached to the request" }
                 } );
             return interceptMethod;
         }

@@ -1,5 +1,5 @@
 ﻿using System;
-using Grpc.Core;
+using System.Collections.Generic;
 using Tecan.Sila2.Binary;
 
 namespace Tecan.Sila2.Client
@@ -40,7 +40,7 @@ namespace Tecan.Sila2.Client
         /// <summary>
         /// The gRPC options for the call
         /// </summary>
-        CallOptions Options { get; }
+        IDictionary<string, byte[]> Metadata { get; }
 
         /// <summary>
         /// Notifies that the call has finished successfully

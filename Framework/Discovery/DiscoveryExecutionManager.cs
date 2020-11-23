@@ -13,10 +13,15 @@ namespace Tecan.Sila2.Discovery
     /// <remarks>By the standard, the SiLA service must not require any metadata and also does not use any binaries.</remarks>
     public class DiscoveryExecutionManager : IClientExecutionManager
     {
+        /// <summary>
+        /// Denotes an empty call info object that does not have any metadata
+        /// </summary>
+        public static readonly IClientCallInfo EmptyCallInfoInstance = new EmptyCallInfo();
+
         /// <inheritdoc />
         public IClientCallInfo CreateCallOptions( string commandIdentifier )
         {
-            return new EmptyCallInfo();
+            return EmptyCallInfoInstance;
         }
 
         /// <inheritdoc />
@@ -30,15 +35,7 @@ namespace Tecan.Sila2.Discovery
 
         private class EmptyCallInfo : IClientCallInfo
         {
-            public EmptyCallInfo()
-            {
-                Options = new CallOptions();
-            }
-
-            public CallOptions Options
-            {
-                get;
-            }
+            public IDictionary<string, byte[]> Metadata => null;
 
             public void FinishSuccessful() { }
 

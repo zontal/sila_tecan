@@ -79,7 +79,7 @@ namespace Tecan.Sila2.AuthorizationProvider
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/core/AuthorizationProviderService/v1/Command/Verify");
             try
             {
-                long response = CallInvoker.BlockingUnaryCall(AuthorizationProviderServiceMethods.VerifyMethod, null, callInfo.Options, request).TokenLifetime.Extract(_executionManager.DownloadBinaryStore);
+                long response = CallInvoker.BlockingUnaryCall(AuthorizationProviderServiceMethods.VerifyMethod, null, callInfo.ToCallOptions(), request).TokenLifetime.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)

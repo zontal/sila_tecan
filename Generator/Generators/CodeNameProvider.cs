@@ -151,5 +151,39 @@ namespace Tecan.Sila2.Generator.Generators
 
             return null;
         }
+
+        public CodeTypeReference GetObservableCommandReturnType( FeatureCommand featureCommand, ITypeTranslationProvider translationProvider )
+        {
+            CodeTypeReference intermediateType = GetIntermediateType( featureCommand, translationProvider );
+            if(featureCommand.Response != null && featureCommand.Response.Length > 0)
+            {
+                var responseType = GetMemberType( featureCommand.Identifier + "." + featureCommand.Response[0].Identifier )
+                                   ?? translationProvider.ExtractType( featureCommand.Response[0].DataType, featureCommand.Identifier );
+                if(intermediateType != null)
+                {
+                    return new CodeTypeReference( typeof( IIntermediateObservableCommand<,> ).FullName, intermediateType, responseType );
+                }
+
+                return new CodeTypeReference( typeof( IObservableCommand<> ).FullName, responseType );
+            }
+
+            if(intermediateType != null)
+            {
+                return new CodeTypeReference( typeof( IIntermediateObservableCommand<> ).FullName, intermediateType );
+            }
+
+            return new CodeTypeReference( typeof( IObservableCommand ) );
+        }
+
+
+        public CodeTypeReference GetIntermediateType( FeatureCommand featureCommand, ITypeTranslationProvider translationProvider )
+        {
+            if(featureCommand.IntermediateResponse != null && featureCommand.IntermediateResponse.Length > 0)
+            {
+                return GetMemberType( featureCommand.Identifier + "." + featureCommand.IntermediateResponse[0].Identifier )
+                                ?? translationProvider.ExtractType( featureCommand.IntermediateResponse[0].DataType, featureCommand.Identifier + "Intermediate" );
+            }
+            return null;
+        }
     }
 }

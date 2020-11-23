@@ -29,7 +29,7 @@ namespace Tecan.Sila2.Client
             where TRequest : class, ISilaRequestObject
         {
             var confirmation = callInvoker.BlockingUnaryCall( method, null,
-                callInfo.Options, request );
+                callInfo.ToCallOptions(), request );
             var command = new ObservableClientCommand( callInfo, callInvoker, confirmation.CommandId, stateMethod, errorConverter );
             command.Start();
             return command;
@@ -63,7 +63,7 @@ namespace Tecan.Sila2.Client
             where TResponse : class
         {
             var confirmation = callInvoker.BlockingUnaryCall( method, null,
-                callInfo.Options, request );
+                callInfo.ToCallOptions(), request );
             var command = new ObservableClientCommand<TResponse, TResult>( callInfo, callInvoker, confirmation.CommandId, stateMethod, resultMethod, resultConverter,
                 errorConverter );
             command.Start();
@@ -98,7 +98,7 @@ namespace Tecan.Sila2.Client
             where TIntermediateResponse : class
         {
             var confirmation = callInvoker.BlockingUnaryCall( method, null,
-                callInfo.Options, request );
+                callInfo.ToCallOptions(), request );
             var command = new ObservableIntermediateClientCommand<TIntermediateResponse, TIntermediate>( callInfo, callInvoker, confirmation.CommandId, stateMethod, intermediateMethod, intermediateConverter, errorConverter );
             command.Start();
             return command;
@@ -139,7 +139,7 @@ namespace Tecan.Sila2.Client
             where TResponse : class
         {
             var confirmation = callInvoker.BlockingUnaryCall( method, null,
-                callInfo.Options, request );
+                callInfo.ToCallOptions(), request );
             var command = new ObservableIntermediateClientCommand<TIntermediateResponse, TIntermediate, TResponse, TResult>( callInfo, callInvoker, confirmation.CommandId, stateMethod, intermediateMethod, resultMethod, intermediateConverter, resultConverter, errorConverter );
             command.Start();
             return command;

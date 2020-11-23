@@ -56,30 +56,13 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         }
         
         ///  <summary>
-        /// Creates a service definition for this service provider
+        /// Registers the feature in the provided feature registration
         /// </summary>
-        /// <returns>An object that describes which services are offered by this instance</returns>
-        public Grpc.Core.ServerServiceDefinition CreateServiceDefinition()
+        /// <param name="registration">The registration component to which the feature should be registered</param>
+        public void Register(IServerBuilder registration)
         {
-            Grpc.Core.ServerServiceDefinition.Builder builder = Grpc.Core.ServerServiceDefinition.CreateBuilder();
-            builder.AddMethod(LoggingServiceMethods.ListenForLogEntriesMethod, ListenForLogEntries);
-            builder.AddMethod(LoggingServiceMethods.ListenForLogEntriesStateMethod, ListenForLogEntriesState);
-            builder.AddMethod(LoggingServiceMethods.ListenForLogEntriesIntermediateMethod, ListenForLogEntriesIntermediateResponse);
-            builder.AddMethod(LoggingServiceMethods.ListenForLogEntriesResponseMethod, ListenForLogEntriesResponse);
-            builder.AddMethod(LoggingServiceMethods.GetAffectedByLoggingActivityMethod, GetAffectedByLoggingActivity);
-            return builder.Build();
-        }
-        
-        ///  <summary>
-        /// Obtains a stream of states for the given command execution id
-        /// </summary>
-        /// <param name="request">The request including the command execution id</param>
-        /// <param name="responseStream">The stream in which execution states should be written</param>
-        /// <param name="context">The context in which the request is made</param>
-        /// <returns>A stream of intermediate responses</returns>
-        private System.Threading.Tasks.Task ListenForLogEntriesState(Tecan.Sila2.CommandExecutionUuid request, Grpc.Core.IServerStreamWriter<Tecan.Sila2.ExecutionState> responseStream, Grpc.Core.ServerCallContext context)
-        {
-            return ObservableCommandHelper.QueryCommandState(_server, request, responseStream, null, context);
+            registration.RegisterCommandWithIntermediates<ListenForLogEntriesRequestDto, LogEntry, ListenForLogEntriesIntermediateDto>("ListenForLogEntries", ListenForLogEntries, ConvertListenForLogEntriesIntermediate, null);
+            registration.RegisterMetadata("LoggingActivity", _implementation.LoggingActivity);
         }
         
         private ListenForLogEntriesIntermediateDto ConvertListenForLogEntriesIntermediate(LogEntry intermediate)
@@ -88,49 +71,13 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         }
         
         ///  <summary>
-        /// Obtains a stream of intermediate results for the given command execution id
-        /// </summary>
-        /// <param name="request">The request including the command execution id</param>
-        /// <param name="responseStream">The stream in which intermediate responses should be written</param>
-        /// <param name="context">The context in which the request is made</param>
-        /// <returns>A stream of intermediate responses</returns>
-        private System.Threading.Tasks.Task ListenForLogEntriesIntermediateResponse(Tecan.Sila2.CommandExecutionUuid request, Grpc.Core.IServerStreamWriter<ListenForLogEntriesIntermediateDto> responseStream, Grpc.Core.ServerCallContext context)
-        {
-            return ObservableCommandHelper.RetrieveIntermediateResults<LogEntry, ListenForLogEntriesIntermediateDto>(_server, request, responseStream, null, ConvertListenForLogEntriesIntermediate, context);
-        }
-        
-        ///  <summary>
-        /// Waits for the completion of the given command execution id and returns the result
-        /// </summary>
-        /// <param name="request">The request including the command execution identifier</param>
-        /// <param name="context">The context in which the request is made</param>
-        /// <returns>A task with the command result data transfer object</returns>
-        private System.Threading.Tasks.Task<EmptyRequest> ListenForLogEntriesResponse(Tecan.Sila2.CommandExecutionUuid request, Grpc.Core.ServerCallContext context)
-        {
-            return ObservableCommandHelper.WaitCommandExecution(_server, request, null, context);
-        }
-        
-        ///  <summary>
         /// Executes the Listen for log entries command
         /// </summary>
         /// <param name="request">A data transfer object that contains the command parameters</param>
-        /// <param name="context">The context in which the command is issued</param>
         /// <returns>The command response wrapped in a data transfer object</returns>
-        protected virtual System.Threading.Tasks.Task<Tecan.Sila2.CommandConfirmation> ListenForLogEntries(ListenForLogEntriesRequestDto request, Grpc.Core.ServerCallContext context)
+        protected virtual Tecan.Sila2.IIntermediateObservableCommand<LogEntry> ListenForLogEntries(ListenForLogEntriesRequestDto request)
         {
-            return ObservableCommandHelper.StartCommand(_server, "tecan.sila.generator.test.logging/infrastructure/LoggingService/v2/Command/Listen" +
-                    "ForLogEntries", _implementation.ListenForLogEntries(), context);
-        }
-        
-        ///  <summary>
-        /// Gets the features/commands/properties affected by the metadata
-        /// </summary>
-        /// <param name="request">The request object (not used)</param>
-        /// <param name="context">The request context</param>
-        /// <returns>A list of fully qualified identifiers</returns>
-        protected virtual System.Threading.Tasks.Task<System.Collections.Generic.List<Tecan.Sila2.StringDto>> GetAffectedByLoggingActivity(EmptyRequest request, Grpc.Core.ServerCallContext context)
-        {
-            return Tecan.Sila2.Server.Metadata.GetAffectedIdentifiers(_server, _implementation.LoggingActivity);
+            return _implementation.ListenForLogEntries();
         }
         
         ///  <summary>
@@ -328,11 +275,11 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// </summary>
         /// <param name="commandIdentifier">The fully qualified identifier of the command or property in question</param>
         /// <param name="server">The server that should execute the request</param>
-        /// <param name="context">The context in which the request is made</param>
+        /// <param name="metadata">The metadata attached to the request</param>
         /// <returns>A request interception or null, if this is not necessary</returns>
-        public Tecan.Sila2.Server.IRequestInterception Intercept(string commandIdentifier, Tecan.Sila2.Server.ISiLAServer server, Grpc.Core.ServerCallContext context)
+        public Tecan.Sila2.Server.IRequestInterception Intercept(string commandIdentifier, Tecan.Sila2.Server.ISiLAServer server, Tecan.Sila2.Server.IMetadataRepository metadata)
         {
-            return Intercept(commandIdentifier, Tecan.Sila2.Server.Metadata.Extract<Tecan.Sila2.StringDto>(context, "tecan.sila.generator.test.logging/infrastructure/LoggingService/v2/Metadata/Loggi" +
+            return Intercept(commandIdentifier, Tecan.Sila2.Server.Metadata.Extract<Tecan.Sila2.StringDto>(metadata, "tecan.sila.generator.test.logging/infrastructure/LoggingService/v2/Metadata/Loggi" +
                         "ngActivity").Extract(server));
         }
     }

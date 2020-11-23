@@ -56,32 +56,13 @@ namespace Tecan.Sila2.Interop.Server
         }
         
         ///  <summary>
-        /// Creates a service definition for this service provider
+        /// Registers the feature in the provided feature registration
         /// </summary>
-        /// <returns>An object that describes which services are offered by this instance</returns>
-        public Grpc.Core.ServerServiceDefinition CreateServiceDefinition()
+        /// <param name="registration">The registration component to which the feature should be registered</param>
+        public void Register(IServerBuilder registration)
         {
-            Grpc.Core.ServerServiceDefinition.Builder builder = Grpc.Core.ServerServiceDefinition.CreateBuilder();
-            builder.AddMethod(ObservableCommandTestMethods.ObservableIterationMethod, ObservableIteration);
-            builder.AddMethod(ObservableCommandTestMethods.ObservableIterationStateMethod, ObservableIterationState);
-            builder.AddMethod(ObservableCommandTestMethods.ObservableIterationIntermediateMethod, ObservableIterationIntermediateResponse);
-            builder.AddMethod(ObservableCommandTestMethods.ObservableIterationResponseMethod, ObservableIterationResponse);
-            builder.AddMethod(ObservableCommandTestMethods.EchoValueAsyncMethod, EchoValueAsync);
-            builder.AddMethod(ObservableCommandTestMethods.EchoValueAsyncStateMethod, EchoValueAsyncState);
-            builder.AddMethod(ObservableCommandTestMethods.EchoValueAsyncResponseMethod, EchoValueAsyncResponse);
-            return builder.Build();
-        }
-        
-        ///  <summary>
-        /// Obtains a stream of states for the given command execution id
-        /// </summary>
-        /// <param name="request">The request including the command execution id</param>
-        /// <param name="responseStream">The stream in which execution states should be written</param>
-        /// <param name="context">The context in which the request is made</param>
-        /// <returns>A stream of intermediate responses</returns>
-        private System.Threading.Tasks.Task ObservableIterationState(Tecan.Sila2.CommandExecutionUuid request, Grpc.Core.IServerStreamWriter<Tecan.Sila2.ExecutionState> responseStream, Grpc.Core.ServerCallContext context)
-        {
-            return ObservableCommandHelper.QueryCommandState(_server, request, responseStream, null, context);
+            registration.RegisterCommandWithIntermediates<ObservableIterationRequestDto, long, ObservableIterationIntermediateDto, long, ObservableIterationResponseDto>("ObservableIteration", ObservableIteration, ConvertObservableIterationIntermediate, null);
+            registration.RegisterObservableCommand<EchoValueAsyncRequestDto, long, EchoValueAsyncResponseDto>("EchoValueAsync", EchoValueAsync, null);
         }
         
         private ObservableIterationIntermediateDto ConvertObservableIterationIntermediate(long intermediate)
@@ -90,81 +71,23 @@ namespace Tecan.Sila2.Interop.Server
         }
         
         ///  <summary>
-        /// Obtains a stream of intermediate results for the given command execution id
-        /// </summary>
-        /// <param name="request">The request including the command execution id</param>
-        /// <param name="responseStream">The stream in which intermediate responses should be written</param>
-        /// <param name="context">The context in which the request is made</param>
-        /// <returns>A stream of intermediate responses</returns>
-        private System.Threading.Tasks.Task ObservableIterationIntermediateResponse(Tecan.Sila2.CommandExecutionUuid request, Grpc.Core.IServerStreamWriter<ObservableIterationIntermediateDto> responseStream, Grpc.Core.ServerCallContext context)
-        {
-            return ObservableCommandHelper.RetrieveIntermediateResults<long, ObservableIterationIntermediateDto>(_server, request, responseStream, null, ConvertObservableIterationIntermediate, context);
-        }
-        
-        private ObservableIterationResponseDto ConvertObservableIterationResponse(long result)
-        {
-            return new ObservableIterationResponseDto(result, _server);
-        }
-        
-        ///  <summary>
-        /// Waits for the completion of the given command execution id and returns the result
-        /// </summary>
-        /// <param name="request">The request including the command execution identifier</param>
-        /// <param name="context">The context in which the request is made</param>
-        /// <returns>A task with the command result data transfer object</returns>
-        private System.Threading.Tasks.Task<ObservableIterationResponseDto> ObservableIterationResponse(Tecan.Sila2.CommandExecutionUuid request, Grpc.Core.ServerCallContext context)
-        {
-            return ObservableCommandHelper.WaitCommandExecution<long, ObservableIterationResponseDto>(_server, request, null, context, ConvertObservableIterationResponse);
-        }
-        
-        ///  <summary>
         /// Executes the Observable iteration command
         /// </summary>
         /// <param name="request">A data transfer object that contains the command parameters</param>
-        /// <param name="context">The context in which the command is issued</param>
         /// <returns>The command response wrapped in a data transfer object</returns>
-        protected virtual System.Threading.Tasks.Task<Tecan.Sila2.CommandConfirmation> ObservableIteration(ObservableIterationRequestDto request, Grpc.Core.ServerCallContext context)
+        protected virtual Tecan.Sila2.IIntermediateObservableCommand<long, long> ObservableIteration(ObservableIterationRequestDto request)
         {
-            return ObservableCommandHelper.StartCommand(_server, "org.silastandard/test/ObservableCommandTest/v1/Command/ObservableIteration", _implementation.ObservableIteration(request.NumberIterations.Extract(_server)), context);
-        }
-        
-        ///  <summary>
-        /// Obtains a stream of states for the given command execution id
-        /// </summary>
-        /// <param name="request">The request including the command execution id</param>
-        /// <param name="responseStream">The stream in which execution states should be written</param>
-        /// <param name="context">The context in which the request is made</param>
-        /// <returns>A stream of intermediate responses</returns>
-        private System.Threading.Tasks.Task EchoValueAsyncState(Tecan.Sila2.CommandExecutionUuid request, Grpc.Core.IServerStreamWriter<Tecan.Sila2.ExecutionState> responseStream, Grpc.Core.ServerCallContext context)
-        {
-            return ObservableCommandHelper.QueryCommandState(_server, request, responseStream, null, context);
-        }
-        
-        private EchoValueAsyncResponseDto ConvertEchoValueAsyncResponse(long result)
-        {
-            return new EchoValueAsyncResponseDto(result, _server);
-        }
-        
-        ///  <summary>
-        /// Waits for the completion of the given command execution id and returns the result
-        /// </summary>
-        /// <param name="request">The request including the command execution identifier</param>
-        /// <param name="context">The context in which the request is made</param>
-        /// <returns>A task with the command result data transfer object</returns>
-        private System.Threading.Tasks.Task<EchoValueAsyncResponseDto> EchoValueAsyncResponse(Tecan.Sila2.CommandExecutionUuid request, Grpc.Core.ServerCallContext context)
-        {
-            return ObservableCommandHelper.WaitCommandExecution<long, EchoValueAsyncResponseDto>(_server, request, null, context, ConvertEchoValueAsyncResponse);
+            return _implementation.ObservableIteration(request.NumberIterations.Extract(_server));
         }
         
         ///  <summary>
         /// Executes the Echo Value Async command
         /// </summary>
         /// <param name="request">A data transfer object that contains the command parameters</param>
-        /// <param name="context">The context in which the command is issued</param>
         /// <returns>The command response wrapped in a data transfer object</returns>
-        protected virtual System.Threading.Tasks.Task<Tecan.Sila2.CommandConfirmation> EchoValueAsync(EchoValueAsyncRequestDto request, Grpc.Core.ServerCallContext context)
+        protected virtual Tecan.Sila2.IObservableCommand<long> EchoValueAsync(EchoValueAsyncRequestDto request)
         {
-            return ObservableCommandHelper.StartCommand(_server, "org.silastandard/test/ObservableCommandTest/v1/Command/EchoValueAsync", _implementation.EchoValueAsync(request.Value.Extract(_server), request.DelayInMs.Extract(_server)), context);
+            return _implementation.EchoValueAsync(request.Value.Extract(_server), request.DelayInMs.Extract(_server));
         }
         
         ///  <summary>

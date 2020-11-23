@@ -11,7 +11,7 @@ namespace Tecan.Sila2.Client.ExecutionManagement
     [PartCreationPolicy( CreationPolicy.Shared )]
     public class ExecutionManagerFactory : IExecutionManagerFactory
     {
-        private readonly IEnumerable<IRequestInterceptor> _interceptors;
+        private readonly IEnumerable<IClientRequestInterceptor> _interceptors;
         private readonly Dictionary<ServerData, IClientExecutionManager> _cachedExecutionManagers = new Dictionary<ServerData, IClientExecutionManager>();
 
         /// <summary>
@@ -19,7 +19,7 @@ namespace Tecan.Sila2.Client.ExecutionManagement
         /// </summary>
         /// <param name="interceptors">The interceptors used for this factory</param>
         [ImportingConstructor]
-        public ExecutionManagerFactory( [ImportMany] IEnumerable<IRequestInterceptor> interceptors )
+        public ExecutionManagerFactory( [ImportMany] IEnumerable<IClientRequestInterceptor> interceptors )
         {
             _interceptors = interceptors;
         }
@@ -27,14 +27,15 @@ namespace Tecan.Sila2.Client.ExecutionManagement
         /// <inheritdoc />
         public IClientExecutionManager CreateExecutionManager( ServerData server )
         {
-            if(server == null)
+            var grpcServer = server as GrpcServerData;
+            if(grpcServer == null)
             {
                 return new DiscoveryExecutionManager();
             }
 
             if(!_cachedExecutionManagers.TryGetValue( server, out var executionManager ))
             {
-                executionManager = new ExecutionManager( server, _interceptors );
+                executionManager = new ExecutionManager( grpcServer, _interceptors );
                 _cachedExecutionManagers.Add( server, executionManager );
             }
 

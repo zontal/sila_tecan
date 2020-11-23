@@ -22,17 +22,18 @@ namespace Tecan.Sila2.Locking
         public string MetadataIdentifier => "org.silastandard/core/LockController/v1/Metadata/LockIdentifier";
 
         /// <inheritdoc />
-        public IRequestInterception Intercept( ServerData server, IClientExecutionManager executionManager, Grpc.Core.Metadata metadata )
+        public IRequestInterception Intercept( ServerData server, IClientExecutionManager executionManager, IDictionary<string, byte[]> metadata )
         {
+            var grpcServer = server as GrpcServerData;
             if(!_serverLockData.TryGetValue( server, out var lockData ))
             {
-                var lockingClient = new LockControllerClient( server.Channel, executionManager );
+                var lockingClient = new LockControllerClient( grpcServer.Channel, executionManager );
                 var lockingIdentifier = Guid.NewGuid().ToString();
                 lockData = new ServerLockInformation( lockingClient, lockingIdentifier );
                 _serverLockData.Add( server, lockData );
             }
             lockData.RegisterCall();
-            metadata.Add( ClientMetadata.GetHeaderName( MetadataIdentifier ), ProtobufMarshaller<StringDto>.ToByteArray( lockData.LockIdentifier ) );
+            metadata.Add( MetadataIdentifier, ProtobufMarshaller<StringDto>.ToByteArray( lockData.LockIdentifier ) );
             return lockData;
         }
 

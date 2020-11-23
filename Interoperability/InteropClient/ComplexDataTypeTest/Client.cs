@@ -180,7 +180,7 @@ namespace Tecan.Sila2.Interop.Client.ComplexDataTypeTest
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/ComplexDataTypeTest/v1/Property/HugeList");
             try
             {
-                System.Collections.Generic.ICollection<string> response = CallInvoker.BlockingUnaryCall(ComplexDataTypeTestMethods.GetHugeListMethod, null, callInfo.Options, EmptyRequest.Instance).Value.Extract(_executionManager.DownloadBinaryStore);
+                System.Collections.Generic.ICollection<string> response = CallInvoker.BlockingUnaryCall(ComplexDataTypeTestMethods.GetHugeListMethod, null, callInfo.ToCallOptions(), EmptyRequest.Instance).Value.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -196,7 +196,7 @@ namespace Tecan.Sila2.Interop.Client.ComplexDataTypeTest
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/ComplexDataTypeTest/v1/Property/Boolean");
             try
             {
-                bool response = CallInvoker.BlockingUnaryCall(ComplexDataTypeTestMethods.GetBooleanMethod, null, callInfo.Options, EmptyRequest.Instance).Value.Extract(_executionManager.DownloadBinaryStore);
+                bool response = CallInvoker.BlockingUnaryCall(ComplexDataTypeTestMethods.GetBooleanMethod, null, callInfo.ToCallOptions(), EmptyRequest.Instance).Value.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -212,7 +212,7 @@ namespace Tecan.Sila2.Interop.Client.ComplexDataTypeTest
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/ComplexDataTypeTest/v1/Property/ListString");
             try
             {
-                System.Collections.Generic.ICollection<string> response = CallInvoker.BlockingUnaryCall(ComplexDataTypeTestMethods.GetListStringMethod, null, callInfo.Options, EmptyRequest.Instance).Value.Extract(_executionManager.DownloadBinaryStore);
+                System.Collections.Generic.ICollection<string> response = CallInvoker.BlockingUnaryCall(ComplexDataTypeTestMethods.GetListStringMethod, null, callInfo.ToCallOptions(), EmptyRequest.Instance).Value.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -228,7 +228,7 @@ namespace Tecan.Sila2.Interop.Client.ComplexDataTypeTest
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/ComplexDataTypeTest/v1/Property/RandomChangingListString");
             try
             {
-                System.Collections.Generic.ICollection<string> response = CallInvoker.BlockingUnaryCall(ComplexDataTypeTestMethods.GetRandomChangingListStringMethod, null, callInfo.Options, EmptyRequest.Instance).Value.Extract(_executionManager.DownloadBinaryStore);
+                System.Collections.Generic.ICollection<string> response = CallInvoker.BlockingUnaryCall(ComplexDataTypeTestMethods.GetRandomChangingListStringMethod, null, callInfo.ToCallOptions(), EmptyRequest.Instance).Value.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -244,7 +244,7 @@ namespace Tecan.Sila2.Interop.Client.ComplexDataTypeTest
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/ComplexDataTypeTest/v1/Property/ListStructPairString");
             try
             {
-                System.Collections.Generic.IDictionary<string, string> response = Tecan.Sila2.DtoExtensions.Extract(CallInvoker.BlockingUnaryCall(ComplexDataTypeTestMethods.GetListStructPairStringMethod, null, callInfo.Options, EmptyRequest.Instance).Value, _executionManager.DownloadBinaryStore);
+                System.Collections.Generic.IDictionary<string, string> response = Tecan.Sila2.DtoExtensions.Extract(CallInvoker.BlockingUnaryCall(ComplexDataTypeTestMethods.GetListStructPairStringMethod, null, callInfo.ToCallOptions(), EmptyRequest.Instance).Value, _executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -260,7 +260,7 @@ namespace Tecan.Sila2.Interop.Client.ComplexDataTypeTest
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/ComplexDataTypeTest/v1/Property/StructPairString");
             try
             {
-                StructPairString response = CallInvoker.BlockingUnaryCall(ComplexDataTypeTestMethods.GetStructPairStringMethod, null, callInfo.Options, EmptyRequest.Instance).Value.Extract(_executionManager.DownloadBinaryStore);
+                StructPairString response = CallInvoker.BlockingUnaryCall(ComplexDataTypeTestMethods.GetStructPairStringMethod, null, callInfo.ToCallOptions(), EmptyRequest.Instance).Value.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -276,7 +276,7 @@ namespace Tecan.Sila2.Interop.Client.ComplexDataTypeTest
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/ComplexDataTypeTest/v1/Property/DataType");
             try
             {
-                DataTypeString response = CallInvoker.BlockingUnaryCall(ComplexDataTypeTestMethods.GetDataTypeMethod, null, callInfo.Options, EmptyRequest.Instance).Value.Extract(_executionManager.DownloadBinaryStore);
+                DataTypeString response = CallInvoker.BlockingUnaryCall(ComplexDataTypeTestMethods.GetDataTypeMethod, null, callInfo.ToCallOptions(), EmptyRequest.Instance).Value.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -292,7 +292,7 @@ namespace Tecan.Sila2.Interop.Client.ComplexDataTypeTest
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/ComplexDataTypeTest/v1/Property/ThrowException");
             try
             {
-                string response = CallInvoker.BlockingUnaryCall(ComplexDataTypeTestMethods.GetThrowExceptionMethod, null, callInfo.Options, EmptyRequest.Instance).Value.Extract(_executionManager.DownloadBinaryStore);
+                string response = CallInvoker.BlockingUnaryCall(ComplexDataTypeTestMethods.GetThrowExceptionMethod, null, callInfo.ToCallOptions(), EmptyRequest.Instance).Value.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -329,7 +329,7 @@ namespace Tecan.Sila2.Interop.Client.ComplexDataTypeTest
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/ComplexDataTypeTest/v1/Command/ListProvider");
             try
             {
-                System.Collections.Generic.ICollection<string> response = CallInvoker.BlockingUnaryCall(ComplexDataTypeTestMethods.ListProviderMethod, null, callInfo.Options, request).List.Extract(_executionManager.DownloadBinaryStore);
+                System.Collections.Generic.ICollection<string> response = CallInvoker.BlockingUnaryCall(ComplexDataTypeTestMethods.ListProviderMethod, null, callInfo.ToCallOptions(), request).List.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -350,7 +350,7 @@ namespace Tecan.Sila2.Interop.Client.ComplexDataTypeTest
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/ComplexDataTypeTest/v1/Command/ThreeDimensionalStruct");
             try
             {
-                ThreeDimensionalString response = CallInvoker.BlockingUnaryCall(ComplexDataTypeTestMethods.ThreeDimensionalStructMethod, null, callInfo.Options, request).ThreeDimensionalListResult.Extract(_executionManager.DownloadBinaryStore);
+                ThreeDimensionalString response = CallInvoker.BlockingUnaryCall(ComplexDataTypeTestMethods.ThreeDimensionalStructMethod, null, callInfo.ToCallOptions(), request).ThreeDimensionalListResult.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -371,7 +371,7 @@ namespace Tecan.Sila2.Interop.Client.ComplexDataTypeTest
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/ComplexDataTypeTest/v1/Command/ThreeDimensionalList");
             try
             {
-                ThreeDimensionalListThreeDimensionalStructResult response = CallInvoker.BlockingUnaryCall(ComplexDataTypeTestMethods.ThreeDimensionalListMethod, null, callInfo.Options, request).ThreeDimensionalStructResult.Extract(_executionManager.DownloadBinaryStore);
+                ThreeDimensionalListThreeDimensionalStructResult response = CallInvoker.BlockingUnaryCall(ComplexDataTypeTestMethods.ThreeDimensionalListMethod, null, callInfo.ToCallOptions(), request).ThreeDimensionalStructResult.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -394,7 +394,7 @@ namespace Tecan.Sila2.Interop.Client.ComplexDataTypeTest
                     "eItComplicated");
             try
             {
-                WhyMakeItSimpleWhenYouCanMakeItComplicatedResponse response = CallInvoker.BlockingUnaryCall(ComplexDataTypeTestMethods.WhyMakeItSimpleWhenYouCanMakeItComplicatedMethod, null, callInfo.Options, request).Extract(_executionManager.DownloadBinaryStore);
+                WhyMakeItSimpleWhenYouCanMakeItComplicatedResponse response = CallInvoker.BlockingUnaryCall(ComplexDataTypeTestMethods.WhyMakeItSimpleWhenYouCanMakeItComplicatedMethod, null, callInfo.ToCallOptions(), request).Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -416,7 +416,7 @@ namespace Tecan.Sila2.Interop.Client.ComplexDataTypeTest
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/ComplexDataTypeTest/v1/Command/XOREncipher");
             try
             {
-                System.IO.Stream response = CallInvoker.BlockingUnaryCall(ComplexDataTypeTestMethods.XOREncipherMethod, null, callInfo.Options, request).Data.Extract(_executionManager.DownloadBinaryStore);
+                System.IO.Stream response = CallInvoker.BlockingUnaryCall(ComplexDataTypeTestMethods.XOREncipherMethod, null, callInfo.ToCallOptions(), request).Data.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -437,7 +437,7 @@ namespace Tecan.Sila2.Interop.Client.ComplexDataTypeTest
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/ComplexDataTypeTest/v1/Command/ValueForTypeProvider");
             try
             {
-                Tecan.Sila2.DynamicClient.DynamicObjectProperty response = CallInvoker.BlockingUnaryCall(ComplexDataTypeTestMethods.ValueForTypeProviderMethod, null, callInfo.Options, request).Any.Extract(_executionManager.DownloadBinaryStore);
+                Tecan.Sila2.DynamicClient.DynamicObjectProperty response = CallInvoker.BlockingUnaryCall(ComplexDataTypeTestMethods.ValueForTypeProviderMethod, null, callInfo.ToCallOptions(), request).Any.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)

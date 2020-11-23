@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Threading.Channels;
 using System.Threading.Tasks;
-using Grpc.Core;
 using Tecan.Sila2.Binary;
 
 namespace Tecan.Sila2.Server
@@ -33,48 +32,6 @@ namespace Tecan.Sila2.Server
         /// </summary>
         /// <param name="feature">A provider of a feature</param>
         void AddFeature(IFeatureProvider feature);
-
-        /// <summary>
-        /// Create a task to read the given property
-        /// </summary>
-        /// <typeparam name="T">The type of the property</typeparam>
-        /// <param name="propertyIdentifier">The fully qualified identifier of the property</param>
-        /// <param name="value">The current property value</param>
-        /// <param name="context">The context in which the call is made</param>
-        /// <returns>A task that returns the property value</returns>
-        Task<T> CreatePropertyTask<T>(string propertyIdentifier, T value, ServerCallContext context);
-
-        /// <summary>
-        /// Create a task to invoke a command
-        /// </summary>
-        /// <typeparam name="TResponse">The response type of the command</typeparam>
-        /// <param name="command">The actual command</param>
-        /// <param name="commandIdentifier">The fully qualified command identifier</param>
-        /// <param name="context">The context in which the call is made</param>
-        /// <returns>A task that returns the command result</returns>
-        Task<TResponse> InvokeCommand<TResponse>(Func<Task<TResponse>> command, string commandIdentifier,
-            ServerCallContext context);
-
-        /// <summary>
-        /// Create a task to invoke a command
-        /// </summary>
-        /// <typeparam name="TRequest">The request type</typeparam>
-        /// <typeparam name="TResponse">The response type of the command</typeparam>
-        /// <param name="command">The actual command</param>
-        /// <param name="request">The request object</param>
-        /// <param name="context">The context in which the call is made</param>
-        /// <returns>A task that returns the command result</returns>
-        Task<TResponse> InvokeCommand<TRequest, TResponse>(Func<TRequest, TResponse> command, TRequest request, ServerCallContext context)
-            where TRequest : ISilaRequestObject;
-
-        /// <summary>
-        /// Adds an observable command execution
-        /// </summary>
-        /// <param name="command">The command that should be executed</param>
-        /// <param name="commandIdentifier">The fully qualified command identifier</param>
-        /// <param name="context">The context in which the call is made</param>
-        /// <returns>The current state of the execution</returns>
-        string AddObservableCommandExecution(string commandIdentifier, IObservableCommand command, ServerCallContext context);
 
         /// <summary>
         /// Gets the command execution registered for the given command execution id

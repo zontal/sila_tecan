@@ -56,18 +56,21 @@ namespace Tecan.Sila2.Authorization
         }
         
         ///  <summary>
-        /// Creates a service definition for this service provider
+        /// Registers the feature in the provided feature registration
         /// </summary>
-        /// <returns>An object that describes which services are offered by this instance</returns>
-        public Grpc.Core.ServerServiceDefinition CreateServiceDefinition()
+        /// <param name="registration">The registration component to which the feature should be registered</param>
+        public void Register(IServerBuilder registration)
         {
-            Grpc.Core.ServerServiceDefinition.Builder builder = Grpc.Core.ServerServiceDefinition.CreateBuilder();
-            builder.AddMethod(AuthorizationConfigurationServiceMethods.SetAuthorizationProviderMethod, SetAuthorizationProvider);
-            builder.AddMethod(AuthorizationConfigurationServiceMethods.GetAuthorizationProviderMethod, GetAuthorizationProvider);
-            return builder.Build();
+            registration.RegisterUnobservableCommand<SetAuthorizationProviderRequestDto, EmptyRequest>("SetAuthorizationProvider", SetAuthorizationProvider);
+            registration.RegisterUnobservableProperty("AuthorizationProvider", GetAuthorizationProvider);
         }
         
-        private EmptyRequest SetAuthorizationProviderInternal(SetAuthorizationProviderRequestDto request)
+        ///  <summary>
+        /// Executes the Set Authorization Provider command
+        /// </summary>
+        /// <param name="request">A data transfer object that contains the command parameters</param>
+        /// <returns>The command response wrapped in a data transfer object</returns>
+        protected virtual EmptyRequest SetAuthorizationProvider(SetAuthorizationProviderRequestDto request)
         {
             try
             {
@@ -85,26 +88,12 @@ namespace Tecan.Sila2.Authorization
         }
         
         ///  <summary>
-        /// Executes the Set Authorization Provider command
-        /// </summary>
-        /// <param name="request">A data transfer object that contains the command parameters</param>
-        /// <param name="context">The context in which the command is issued</param>
-        /// <returns>The command response wrapped in a data transfer object</returns>
-        protected virtual System.Threading.Tasks.Task<EmptyRequest> SetAuthorizationProvider(SetAuthorizationProviderRequestDto request, Grpc.Core.ServerCallContext context)
-        {
-            return _server.InvokeCommand(SetAuthorizationProviderInternal, request, context);
-        }
-        
-        ///  <summary>
         /// Gets the current value of the Authorization Provider property
         /// </summary>
-        /// <param name="request">The request object</param>
-        /// <param name="context">The context in which the request is made</param>
         /// <returns>The current value wrapped in a data transfer object</returns>
-        protected virtual System.Threading.Tasks.Task<AuthorizationProviderResponseDto> GetAuthorizationProvider(EmptyRequest request, Grpc.Core.ServerCallContext context)
+        protected virtual AuthorizationProviderResponseDto GetAuthorizationProvider()
         {
-            return _server.CreatePropertyTask("org.silastandard/core/AuthorizationConfigurationService/v1/Property/Authorization" +
-                    "Provider", new AuthorizationProviderResponseDto(_implementation.AuthorizationProvider, _server), context);
+            return new AuthorizationProviderResponseDto(_implementation.AuthorizationProvider, _server);
         }
         
         ///  <summary>

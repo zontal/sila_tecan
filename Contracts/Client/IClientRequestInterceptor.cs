@@ -1,13 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Text;
-using Grpc.Core;
 
 namespace Tecan.Sila2.Client
 {
     /// <summary>
     /// Denotes a component that intercepts calls on the client side
     /// </summary>
-    public interface IRequestInterceptor
+    public interface IClientRequestInterceptor
     {
         /// <summary>
         /// The fully qualified identifier for the metadata that is intercepted or null, if all requests should be intercepted
@@ -21,6 +20,6 @@ namespace Tecan.Sila2.Client
         /// <param name="executionManager">The execution manager that handles the calls to this server</param>
         /// <param name="metadata">The metadata that should be filled</param>
         /// <returns></returns>
-        IRequestInterception Intercept( ServerData server, IClientExecutionManager executionManager, Metadata metadata );
+        IClientRequestInterception Intercept( ServerData server, IClientExecutionManager executionManager, IDictionary<string, byte[]> metadata );
     }
 }

@@ -29,9 +29,6 @@ namespace Tecan.Sila2.Client
         /// <summary>
         /// Gets the call options for the command
         /// </summary>
-        CallOptions CallOptions
-        {
-            get;
-        }
+        CallOptions CreateCallOptions();
     }
 }

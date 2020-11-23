@@ -96,7 +96,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InteropServer", "Interopera
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InteropClient", "Interoperability\InteropClient\InteropClient.csproj", "{49D79FD5-9721-4396-8534-77E215415DE5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Client", "Client\Client.csproj", "{48D20D86-70FC-4B14-A568-A8924DCD4E3A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Client", "Client\Client.csproj", "{48D20D86-70FC-4B14-A568-A8924DCD4E3A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Annotations", "Annotations\Annotations.csproj", "{6A09F4DB-1F15-4EA8-9DBD-32CC60F776F7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -204,6 +206,10 @@ Global
 		{48D20D86-70FC-4B14-A568-A8924DCD4E3A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{48D20D86-70FC-4B14-A568-A8924DCD4E3A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{48D20D86-70FC-4B14-A568-A8924DCD4E3A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6A09F4DB-1F15-4EA8-9DBD-32CC60F776F7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6A09F4DB-1F15-4EA8-9DBD-32CC60F776F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6A09F4DB-1F15-4EA8-9DBD-32CC60F776F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6A09F4DB-1F15-4EA8-9DBD-32CC60F776F7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

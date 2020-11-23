@@ -23,17 +23,17 @@ namespace Tecan.Sila2.IntegrationTests
 
         public IClientCallInfo CreateCallOptions( string commandIdentifier )
         {
-            var metadata = new Metadata();
+            var metadata = new Dictionary<string, byte[]>();
             AddIfNotNull( _lockingIdentifier, "org.silastandard/core/LockController/v1/Metadata/LockIdentifier", metadata );
             AddIfNotNull(_accessToken, "org.silastandard/core/AuthorizationService/v1/Metadata/AccessToken", metadata);
-            return new CallInfo(new CallOptions(headers: metadata));
+            return new CallInfo(metadata);
         }
 
-        private void AddIfNotNull( string content, string identifier, Metadata metadata )
+        private void AddIfNotNull( string content, string identifier, IDictionary<string, byte[]> metadata )
         {
             if( content != null )
             {
-                metadata.Add(ClientMetadata.GetHeaderName(identifier), ProtobufMarshaller<StringDto>.Default.Serializer( content ));
+                metadata.Add(identifier, ProtobufMarshaller<StringDto>.Default.Serializer( content ));
             }
         }
 
@@ -49,12 +49,12 @@ namespace Tecan.Sila2.IntegrationTests
 
         private class CallInfo : IClientCallInfo
         {
-            public CallInfo( CallOptions options )
+            public CallInfo( IDictionary<string, byte[]> metadata )
             {
-                Options = options;
+                Metadata = metadata;
             }
 
-            public CallOptions Options
+            public IDictionary<string, byte[]> Metadata
             {
                 get;
             }

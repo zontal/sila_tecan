@@ -16,7 +16,7 @@ namespace Tecan.Sila2.Server.Binary
     public class BinaryUpload : IDisposable
     {
         private readonly IFileManagement _fileManagement;
-        private readonly ISiLAServer _server;
+        private readonly SiLAServer _server;
         private readonly ConcurrentDictionary<string, FileUploadData> _openStreams = new ConcurrentDictionary<string, FileUploadData>();
         private readonly Timer _cleanupTimer;
 
@@ -25,7 +25,7 @@ namespace Tecan.Sila2.Server.Binary
         /// </summary>
         /// <param name="fileManagement">An object that handles the files locally</param>
         /// <param name="server">The parent server to validate requests</param>
-        public BinaryUpload(IFileManagement fileManagement, ISiLAServer server)
+        public BinaryUpload(IFileManagement fileManagement, SiLAServer server)
         {
             _fileManagement = fileManagement;
             _server = server;

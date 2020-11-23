@@ -6,16 +6,15 @@ namespace Tecan.Sila2.Client.ExecutionManagement
 {
     internal class CallInfo : IClientCallInfo
     {
-        private readonly IEnumerable<IRequestInterception> _interceptions;
-        public static readonly CallInfo NoMetadata = new CallInfo( new CallOptions(), new IRequestInterception[0] );
+        private readonly IEnumerable<IClientRequestInterception> _interceptions;
 
-        public CallInfo( CallOptions options, IEnumerable<IRequestInterception> interceptions )
+        public CallInfo( IDictionary<string, byte[]> metadata, IEnumerable<IClientRequestInterception> interceptions )
         {
             _interceptions = interceptions;
-            Options = options;
+            Metadata = metadata;
         }
 
-        public CallOptions Options { get; }
+        public IDictionary<string, byte[]> Metadata { get; }
 
         public void FinishSuccessful()
         {

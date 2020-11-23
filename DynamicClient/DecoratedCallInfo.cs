@@ -19,6 +19,8 @@ namespace Tecan.Sila2.DynamicClient
 
         public CallOptions Options => MetadataHelper.TakeInMetadata( _innerCallInfo, _additionalMetadata );
 
+        public IDictionary<string, byte[]> Metadata => throw new NotImplementedException();
+
         public void FinishSuccessful()
         {
             _innerCallInfo.FinishSuccessful();

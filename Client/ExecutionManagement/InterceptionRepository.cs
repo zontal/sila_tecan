@@ -5,15 +5,15 @@ namespace Tecan.Sila2.Client.ExecutionManagement
 {
     internal class InterceptionRepository
     {
-        private readonly IEnumerable<IRequestInterceptor> _interceptors;
-        private readonly IEnumerable<IRequestInterceptor> _ubiquitousInterceptors;
+        private readonly IEnumerable<IClientRequestInterceptor> _interceptors;
+        private readonly IEnumerable<IClientRequestInterceptor> _ubiquitousInterceptors;
 
-        private readonly Dictionary<string, List<IRequestInterceptor>> _cachedInterceptors = new Dictionary<string, List<IRequestInterceptor>>();
+        private readonly Dictionary<string, List<IClientRequestInterceptor>> _cachedInterceptors = new Dictionary<string, List<IClientRequestInterceptor>>();
 
-        public InterceptionRepository( IEnumerable<IRequestInterceptor> interceptors )
+        public InterceptionRepository( IEnumerable<IClientRequestInterceptor> interceptors )
         {
             _interceptors = interceptors;
-            _ubiquitousInterceptors = interceptors?.Where( i => i.MetadataIdentifier == null ).ToList() ?? Enumerable.Empty<IRequestInterceptor>();
+            _ubiquitousInterceptors = interceptors?.Where( i => i.MetadataIdentifier == null ).ToList() ?? Enumerable.Empty<IClientRequestInterceptor>();
         }
 
         public void RegisterAffected( string metadataIdentifier, IEnumerable<string> affected )
@@ -25,7 +25,7 @@ namespace Tecan.Sila2.Client.ExecutionManagement
                 {
                     if(!_cachedInterceptors.TryGetValue( affectedCommand, out var interceptors ))
                     {
-                        interceptors = new List<IRequestInterceptor>();
+                        interceptors = new List<IClientRequestInterceptor>();
                         _cachedInterceptors.Add( affectedCommand, interceptors );
                     }
 
@@ -34,7 +34,7 @@ namespace Tecan.Sila2.Client.ExecutionManagement
             }
         }
 
-        public IEnumerable<IRequestInterceptor> GetInterceptorsForCommand( string commandIdentifier )
+        public IEnumerable<IClientRequestInterceptor> GetInterceptorsForCommand( string commandIdentifier )
         {
             if(!_cachedInterceptors.TryGetValue( commandIdentifier, out var interceptors ))
             {

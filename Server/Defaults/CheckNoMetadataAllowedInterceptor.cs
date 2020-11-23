@@ -19,9 +19,9 @@ namespace Tecan.Sila2.Server
             return feature.FullyQualifiedIdentifier == "sila2/org/silastandard/core/silaservice/v1/SiLAService";
         }
 
-        public IRequestInterception Intercept(string commandIdentifier, ISiLAServer server, ServerCallContext context)
+        public IRequestInterception Intercept(string commandIdentifier, ISiLAServer server, IMetadataRepository metadata)
         {
-            if (context.RequestHeaders.Any(m => m.Key.StartsWith("sila")))
+            if (metadata.Count > 0)
             {
                 throw ErrorHandling.CreateFrameworkError(FrameworkErrorType.NoMetadataAllowed);
             }

@@ -82,7 +82,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/ParameterConstraintsTest/v1/Command/ExactStringLength");
             try
             {
-                CallInvoker.BlockingUnaryCall(ParameterConstraintsTestMethods.ExactStringLengthMethod, null, callInfo.Options, request);
+                CallInvoker.BlockingUnaryCall(ParameterConstraintsTestMethods.ExactStringLengthMethod, null, callInfo.ToCallOptions(), request);
                 callInfo.FinishSuccessful();
                 return;
             } catch (System.Exception ex)
@@ -111,7 +111,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest
                     "eters");
             try
             {
-                CallInvoker.BlockingUnaryCall(ParameterConstraintsTestMethods.ConstrainedNumericParametersMethod, null, callInfo.Options, request);
+                CallInvoker.BlockingUnaryCall(ParameterConstraintsTestMethods.ConstrainedNumericParametersMethod, null, callInfo.ToCallOptions(), request);
                 callInfo.FinishSuccessful();
                 return;
             } catch (System.Exception ex)
@@ -139,7 +139,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest
                     "meters");
             try
             {
-                CallInvoker.BlockingUnaryCall(ParameterConstraintsTestMethods.ConstrainedDateTimeParametersMethod, null, callInfo.Options, request);
+                CallInvoker.BlockingUnaryCall(ParameterConstraintsTestMethods.ConstrainedDateTimeParametersMethod, null, callInfo.ToCallOptions(), request);
                 callInfo.FinishSuccessful();
                 return;
             } catch (System.Exception ex)
@@ -164,7 +164,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest
                     "rs");
             try
             {
-                CallInvoker.BlockingUnaryCall(ParameterConstraintsTestMethods.ConstrainedListParametersMethod, null, callInfo.Options, request);
+                CallInvoker.BlockingUnaryCall(ParameterConstraintsTestMethods.ConstrainedListParametersMethod, null, callInfo.ToCallOptions(), request);
                 callInfo.FinishSuccessful();
                 return;
             } catch (System.Exception ex)

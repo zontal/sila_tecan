@@ -10,7 +10,7 @@ namespace Tecan.Sila2.DynamicClient
     {
         public static CallOptions TakeInMetadata( IClientCallInfo callInfo, IDictionary<string, byte[]> additionalMetadata )
         {
-            var options = callInfo.Options;
+            var options = callInfo.ToCallOptions();
             if(additionalMetadata != null)
             {
                 var metadata = options.Headers;

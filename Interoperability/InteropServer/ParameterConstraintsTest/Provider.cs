@@ -56,20 +56,23 @@ namespace Tecan.Sila2.Interop.Server
         }
         
         ///  <summary>
-        /// Creates a service definition for this service provider
+        /// Registers the feature in the provided feature registration
         /// </summary>
-        /// <returns>An object that describes which services are offered by this instance</returns>
-        public Grpc.Core.ServerServiceDefinition CreateServiceDefinition()
+        /// <param name="registration">The registration component to which the feature should be registered</param>
+        public void Register(IServerBuilder registration)
         {
-            Grpc.Core.ServerServiceDefinition.Builder builder = Grpc.Core.ServerServiceDefinition.CreateBuilder();
-            builder.AddMethod(ParameterConstraintsTestMethods.ExactStringLengthMethod, ExactStringLength);
-            builder.AddMethod(ParameterConstraintsTestMethods.ConstrainedNumericParametersMethod, ConstrainedNumericParameters);
-            builder.AddMethod(ParameterConstraintsTestMethods.ConstrainedDateTimeParametersMethod, ConstrainedDateTimeParameters);
-            builder.AddMethod(ParameterConstraintsTestMethods.ConstrainedListParametersMethod, ConstrainedListParameters);
-            return builder.Build();
+            registration.RegisterUnobservableCommand<ExactStringLengthRequestDto, EmptyRequest>("ExactStringLength", ExactStringLength);
+            registration.RegisterUnobservableCommand<ConstrainedNumericParametersRequestDto, EmptyRequest>("ConstrainedNumericParameters", ConstrainedNumericParameters);
+            registration.RegisterUnobservableCommand<ConstrainedDateTimeParametersRequestDto, EmptyRequest>("ConstrainedDateTimeParameters", ConstrainedDateTimeParameters);
+            registration.RegisterUnobservableCommand<ConstrainedListParametersRequestDto, EmptyRequest>("ConstrainedListParameters", ConstrainedListParameters);
         }
         
-        private EmptyRequest ExactStringLengthInternal(ExactStringLengthRequestDto request)
+        ///  <summary>
+        /// Executes the Exact String Length command
+        /// </summary>
+        /// <param name="request">A data transfer object that contains the command parameters</param>
+        /// <returns>The command response wrapped in a data transfer object</returns>
+        protected virtual EmptyRequest ExactStringLength(ExactStringLengthRequestDto request)
         {
             try
             {
@@ -112,17 +115,11 @@ namespace Tecan.Sila2.Interop.Server
         }
         
         ///  <summary>
-        /// Executes the Exact String Length command
+        /// Executes the Constrained Numeric Parameters command
         /// </summary>
         /// <param name="request">A data transfer object that contains the command parameters</param>
-        /// <param name="context">The context in which the command is issued</param>
         /// <returns>The command response wrapped in a data transfer object</returns>
-        protected virtual System.Threading.Tasks.Task<EmptyRequest> ExactStringLength(ExactStringLengthRequestDto request, Grpc.Core.ServerCallContext context)
-        {
-            return _server.InvokeCommand(ExactStringLengthInternal, request, context);
-        }
-        
-        private EmptyRequest ConstrainedNumericParametersInternal(ConstrainedNumericParametersRequestDto request)
+        protected virtual EmptyRequest ConstrainedNumericParameters(ConstrainedNumericParametersRequestDto request)
         {
             try
             {
@@ -175,17 +172,11 @@ namespace Tecan.Sila2.Interop.Server
         }
         
         ///  <summary>
-        /// Executes the Constrained Numeric Parameters command
+        /// Executes the Constrained Date and Time Parameters command
         /// </summary>
         /// <param name="request">A data transfer object that contains the command parameters</param>
-        /// <param name="context">The context in which the command is issued</param>
         /// <returns>The command response wrapped in a data transfer object</returns>
-        protected virtual System.Threading.Tasks.Task<EmptyRequest> ConstrainedNumericParameters(ConstrainedNumericParametersRequestDto request, Grpc.Core.ServerCallContext context)
-        {
-            return _server.InvokeCommand(ConstrainedNumericParametersInternal, request, context);
-        }
-        
-        private EmptyRequest ConstrainedDateTimeParametersInternal(ConstrainedDateTimeParametersRequestDto request)
+        protected virtual EmptyRequest ConstrainedDateTimeParameters(ConstrainedDateTimeParametersRequestDto request)
         {
             try
             {
@@ -233,17 +224,11 @@ namespace Tecan.Sila2.Interop.Server
         }
         
         ///  <summary>
-        /// Executes the Constrained Date and Time Parameters command
+        /// Executes the Constrained List Parameters command
         /// </summary>
         /// <param name="request">A data transfer object that contains the command parameters</param>
-        /// <param name="context">The context in which the command is issued</param>
         /// <returns>The command response wrapped in a data transfer object</returns>
-        protected virtual System.Threading.Tasks.Task<EmptyRequest> ConstrainedDateTimeParameters(ConstrainedDateTimeParametersRequestDto request, Grpc.Core.ServerCallContext context)
-        {
-            return _server.InvokeCommand(ConstrainedDateTimeParametersInternal, request, context);
-        }
-        
-        private EmptyRequest ConstrainedListParametersInternal(ConstrainedListParametersRequestDto request)
+        protected virtual EmptyRequest ConstrainedListParameters(ConstrainedListParametersRequestDto request)
         {
             try
             {
@@ -273,17 +258,6 @@ namespace Tecan.Sila2.Interop.Server
                 }
                 throw ErrorHandling.CreateUnknownValidationError(ex);
             }
-        }
-        
-        ///  <summary>
-        /// Executes the Constrained List Parameters command
-        /// </summary>
-        /// <param name="request">A data transfer object that contains the command parameters</param>
-        /// <param name="context">The context in which the command is issued</param>
-        /// <returns>The command response wrapped in a data transfer object</returns>
-        protected virtual System.Threading.Tasks.Task<EmptyRequest> ConstrainedListParameters(ConstrainedListParametersRequestDto request, Grpc.Core.ServerCallContext context)
-        {
-            return _server.InvokeCommand(ConstrainedListParametersInternal, request, context);
         }
         
         ///  <summary>

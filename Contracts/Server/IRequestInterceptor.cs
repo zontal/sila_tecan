@@ -1,4 +1,4 @@
-﻿using Grpc.Core;
+﻿using System.Collections.Generic;
 
 namespace Tecan.Sila2.Server
 {
@@ -36,8 +36,8 @@ namespace Tecan.Sila2.Server
         /// </summary>
         /// <param name="commandIdentifier">The identifier of the command</param>
         /// <param name="server">The server that executes the request</param>
-        /// <param name="context">The context in which the request was made</param>
+        /// <param name="metadata">The metadata that was used with this request</param>
         /// <returns>An interception instance</returns>
-        IRequestInterception Intercept(string commandIdentifier, ISiLAServer server, ServerCallContext context);
+        IRequestInterception Intercept(string commandIdentifier, ISiLAServer server, IMetadataRepository metadata );
     }
 }

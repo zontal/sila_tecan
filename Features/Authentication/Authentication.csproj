@@ -46,6 +46,7 @@
     <PackageReference Include="protobuf-net" Version="2.4.0" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Annotations\Annotations.csproj" />
     <ProjectReference Include="..\..\Contracts\Contracts.csproj" />
     <ProjectReference Include="..\..\Server\Server.csproj" />
     <ProjectReference Include="..\..\Framework\Framework.csproj" />

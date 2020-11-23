@@ -219,7 +219,7 @@ namespace Tecan.Sila2.Interop.Client.DataTypeProvider
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/DataTypeProvider/v1/Property/StringValue");
             try
             {
-                string response = CallInvoker.BlockingUnaryCall(DataTypeProviderMethods.GetStringValueMethod, null, callInfo.Options, EmptyRequest.Instance).Value.Extract(_executionManager.DownloadBinaryStore);
+                string response = CallInvoker.BlockingUnaryCall(DataTypeProviderMethods.GetStringValueMethod, null, callInfo.ToCallOptions(), EmptyRequest.Instance).Value.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -235,7 +235,7 @@ namespace Tecan.Sila2.Interop.Client.DataTypeProvider
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/DataTypeProvider/v1/Property/IntegerValue");
             try
             {
-                long response = CallInvoker.BlockingUnaryCall(DataTypeProviderMethods.GetIntegerValueMethod, null, callInfo.Options, EmptyRequest.Instance).Value.Extract(_executionManager.DownloadBinaryStore);
+                long response = CallInvoker.BlockingUnaryCall(DataTypeProviderMethods.GetIntegerValueMethod, null, callInfo.ToCallOptions(), EmptyRequest.Instance).Value.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -251,7 +251,7 @@ namespace Tecan.Sila2.Interop.Client.DataTypeProvider
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/DataTypeProvider/v1/Property/RealValue");
             try
             {
-                double response = CallInvoker.BlockingUnaryCall(DataTypeProviderMethods.GetRealValueMethod, null, callInfo.Options, EmptyRequest.Instance).Value.Extract(_executionManager.DownloadBinaryStore);
+                double response = CallInvoker.BlockingUnaryCall(DataTypeProviderMethods.GetRealValueMethod, null, callInfo.ToCallOptions(), EmptyRequest.Instance).Value.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -267,7 +267,7 @@ namespace Tecan.Sila2.Interop.Client.DataTypeProvider
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/DataTypeProvider/v1/Property/BooleanValue");
             try
             {
-                bool response = CallInvoker.BlockingUnaryCall(DataTypeProviderMethods.GetBooleanValueMethod, null, callInfo.Options, EmptyRequest.Instance).Value.Extract(_executionManager.DownloadBinaryStore);
+                bool response = CallInvoker.BlockingUnaryCall(DataTypeProviderMethods.GetBooleanValueMethod, null, callInfo.ToCallOptions(), EmptyRequest.Instance).Value.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -283,7 +283,7 @@ namespace Tecan.Sila2.Interop.Client.DataTypeProvider
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/DataTypeProvider/v1/Property/BinaryValue");
             try
             {
-                System.IO.Stream response = CallInvoker.BlockingUnaryCall(DataTypeProviderMethods.GetBinaryValueMethod, null, callInfo.Options, EmptyRequest.Instance).Value.Extract(_executionManager.DownloadBinaryStore);
+                System.IO.Stream response = CallInvoker.BlockingUnaryCall(DataTypeProviderMethods.GetBinaryValueMethod, null, callInfo.ToCallOptions(), EmptyRequest.Instance).Value.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -299,7 +299,7 @@ namespace Tecan.Sila2.Interop.Client.DataTypeProvider
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/DataTypeProvider/v1/Property/DateValue");
             try
             {
-                System.DateTimeOffset response = CallInvoker.BlockingUnaryCall(DataTypeProviderMethods.GetDateValueMethod, null, callInfo.Options, EmptyRequest.Instance).Value.Extract(_executionManager.DownloadBinaryStore);
+                System.DateTimeOffset response = CallInvoker.BlockingUnaryCall(DataTypeProviderMethods.GetDateValueMethod, null, callInfo.ToCallOptions(), EmptyRequest.Instance).Value.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -315,7 +315,7 @@ namespace Tecan.Sila2.Interop.Client.DataTypeProvider
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/DataTypeProvider/v1/Property/TimeValue");
             try
             {
-                System.TimeSpan response = CallInvoker.BlockingUnaryCall(DataTypeProviderMethods.GetTimeValueMethod, null, callInfo.Options, EmptyRequest.Instance).Value.Extract(_executionManager.DownloadBinaryStore);
+                System.TimeSpan response = CallInvoker.BlockingUnaryCall(DataTypeProviderMethods.GetTimeValueMethod, null, callInfo.ToCallOptions(), EmptyRequest.Instance).Value.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -331,7 +331,7 @@ namespace Tecan.Sila2.Interop.Client.DataTypeProvider
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/DataTypeProvider/v1/Property/TimeStampValue");
             try
             {
-                System.DateTimeOffset response = CallInvoker.BlockingUnaryCall(DataTypeProviderMethods.GetTimeStampValueMethod, null, callInfo.Options, EmptyRequest.Instance).Value.Extract(_executionManager.DownloadBinaryStore);
+                System.DateTimeOffset response = CallInvoker.BlockingUnaryCall(DataTypeProviderMethods.GetTimeStampValueMethod, null, callInfo.ToCallOptions(), EmptyRequest.Instance).Value.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -347,7 +347,7 @@ namespace Tecan.Sila2.Interop.Client.DataTypeProvider
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/DataTypeProvider/v1/Property/StringList");
             try
             {
-                System.Collections.Generic.ICollection<string> response = CallInvoker.BlockingUnaryCall(DataTypeProviderMethods.GetStringListMethod, null, callInfo.Options, EmptyRequest.Instance).Value.Extract(_executionManager.DownloadBinaryStore);
+                System.Collections.Generic.ICollection<string> response = CallInvoker.BlockingUnaryCall(DataTypeProviderMethods.GetStringListMethod, null, callInfo.ToCallOptions(), EmptyRequest.Instance).Value.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -363,7 +363,7 @@ namespace Tecan.Sila2.Interop.Client.DataTypeProvider
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/DataTypeProvider/v1/Property/IntegerList");
             try
             {
-                System.Collections.Generic.ICollection<long> response = CallInvoker.BlockingUnaryCall(DataTypeProviderMethods.GetIntegerListMethod, null, callInfo.Options, EmptyRequest.Instance).Value.Extract(_executionManager.DownloadBinaryStore);
+                System.Collections.Generic.ICollection<long> response = CallInvoker.BlockingUnaryCall(DataTypeProviderMethods.GetIntegerListMethod, null, callInfo.ToCallOptions(), EmptyRequest.Instance).Value.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -379,7 +379,7 @@ namespace Tecan.Sila2.Interop.Client.DataTypeProvider
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/DataTypeProvider/v1/Property/StructureValues");
             try
             {
-                AllDatatypeStructure response = CallInvoker.BlockingUnaryCall(DataTypeProviderMethods.GetStructureValuesMethod, null, callInfo.Options, EmptyRequest.Instance).Value.Extract(_executionManager.DownloadBinaryStore);
+                AllDatatypeStructure response = CallInvoker.BlockingUnaryCall(DataTypeProviderMethods.GetStructureValuesMethod, null, callInfo.ToCallOptions(), EmptyRequest.Instance).Value.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -418,7 +418,7 @@ namespace Tecan.Sila2.Interop.Client.DataTypeProvider
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/DataTypeProvider/v1/Command/EchoStringValue");
             try
             {
-                string response = CallInvoker.BlockingUnaryCall(DataTypeProviderMethods.EchoStringValueMethod, null, callInfo.Options, request).ReceivedStringValue.Extract(_executionManager.DownloadBinaryStore);
+                string response = CallInvoker.BlockingUnaryCall(DataTypeProviderMethods.EchoStringValueMethod, null, callInfo.ToCallOptions(), request).ReceivedStringValue.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -439,7 +439,7 @@ namespace Tecan.Sila2.Interop.Client.DataTypeProvider
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/DataTypeProvider/v1/Command/EchoIntegerValue");
             try
             {
-                long response = CallInvoker.BlockingUnaryCall(DataTypeProviderMethods.EchoIntegerValueMethod, null, callInfo.Options, request).ReceivedIntegerValue.Extract(_executionManager.DownloadBinaryStore);
+                long response = CallInvoker.BlockingUnaryCall(DataTypeProviderMethods.EchoIntegerValueMethod, null, callInfo.ToCallOptions(), request).ReceivedIntegerValue.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -460,7 +460,7 @@ namespace Tecan.Sila2.Interop.Client.DataTypeProvider
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/DataTypeProvider/v1/Command/EchoRealValue");
             try
             {
-                double response = CallInvoker.BlockingUnaryCall(DataTypeProviderMethods.EchoRealValueMethod, null, callInfo.Options, request).ReceivedRealValue.Extract(_executionManager.DownloadBinaryStore);
+                double response = CallInvoker.BlockingUnaryCall(DataTypeProviderMethods.EchoRealValueMethod, null, callInfo.ToCallOptions(), request).ReceivedRealValue.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -481,7 +481,7 @@ namespace Tecan.Sila2.Interop.Client.DataTypeProvider
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/DataTypeProvider/v1/Command/EchoBooleanValue");
             try
             {
-                bool response = CallInvoker.BlockingUnaryCall(DataTypeProviderMethods.EchoBooleanValueMethod, null, callInfo.Options, request).ReceivedBooleanValue.Extract(_executionManager.DownloadBinaryStore);
+                bool response = CallInvoker.BlockingUnaryCall(DataTypeProviderMethods.EchoBooleanValueMethod, null, callInfo.ToCallOptions(), request).ReceivedBooleanValue.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -503,7 +503,7 @@ namespace Tecan.Sila2.Interop.Client.DataTypeProvider
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/DataTypeProvider/v1/Command/EchoBinaryValue");
             try
             {
-                System.IO.Stream response = CallInvoker.BlockingUnaryCall(DataTypeProviderMethods.EchoBinaryValueMethod, null, callInfo.Options, request).ReceivedBinaryValue.Extract(_executionManager.DownloadBinaryStore);
+                System.IO.Stream response = CallInvoker.BlockingUnaryCall(DataTypeProviderMethods.EchoBinaryValueMethod, null, callInfo.ToCallOptions(), request).ReceivedBinaryValue.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -524,7 +524,7 @@ namespace Tecan.Sila2.Interop.Client.DataTypeProvider
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/DataTypeProvider/v1/Command/EchoDateValue");
             try
             {
-                System.DateTimeOffset response = CallInvoker.BlockingUnaryCall(DataTypeProviderMethods.EchoDateValueMethod, null, callInfo.Options, request).ReceivedDateValue.Extract(_executionManager.DownloadBinaryStore);
+                System.DateTimeOffset response = CallInvoker.BlockingUnaryCall(DataTypeProviderMethods.EchoDateValueMethod, null, callInfo.ToCallOptions(), request).ReceivedDateValue.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -545,7 +545,7 @@ namespace Tecan.Sila2.Interop.Client.DataTypeProvider
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/DataTypeProvider/v1/Command/EchoTimeValue");
             try
             {
-                System.TimeSpan response = CallInvoker.BlockingUnaryCall(DataTypeProviderMethods.EchoTimeValueMethod, null, callInfo.Options, request).ReceivedTimeValue.Extract(_executionManager.DownloadBinaryStore);
+                System.TimeSpan response = CallInvoker.BlockingUnaryCall(DataTypeProviderMethods.EchoTimeValueMethod, null, callInfo.ToCallOptions(), request).ReceivedTimeValue.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -566,7 +566,7 @@ namespace Tecan.Sila2.Interop.Client.DataTypeProvider
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/DataTypeProvider/v1/Command/EchoTimeStampValue");
             try
             {
-                System.DateTimeOffset response = CallInvoker.BlockingUnaryCall(DataTypeProviderMethods.EchoTimeStampValueMethod, null, callInfo.Options, request).ReceivedValue.Extract(_executionManager.DownloadBinaryStore);
+                System.DateTimeOffset response = CallInvoker.BlockingUnaryCall(DataTypeProviderMethods.EchoTimeStampValueMethod, null, callInfo.ToCallOptions(), request).ReceivedValue.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -587,7 +587,7 @@ namespace Tecan.Sila2.Interop.Client.DataTypeProvider
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/DataTypeProvider/v1/Command/EchoStringList");
             try
             {
-                System.Collections.Generic.ICollection<string> response = CallInvoker.BlockingUnaryCall(DataTypeProviderMethods.EchoStringListMethod, null, callInfo.Options, request).ReceivedValues.Extract(_executionManager.DownloadBinaryStore);
+                System.Collections.Generic.ICollection<string> response = CallInvoker.BlockingUnaryCall(DataTypeProviderMethods.EchoStringListMethod, null, callInfo.ToCallOptions(), request).ReceivedValues.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -608,7 +608,7 @@ namespace Tecan.Sila2.Interop.Client.DataTypeProvider
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/DataTypeProvider/v1/Command/EchoIntegerList");
             try
             {
-                long response = CallInvoker.BlockingUnaryCall(DataTypeProviderMethods.EchoIntegerListMethod, null, callInfo.Options, request).ReceivedValues.Extract(_executionManager.DownloadBinaryStore);
+                long response = CallInvoker.BlockingUnaryCall(DataTypeProviderMethods.EchoIntegerListMethod, null, callInfo.ToCallOptions(), request).ReceivedValues.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -630,7 +630,7 @@ namespace Tecan.Sila2.Interop.Client.DataTypeProvider
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/DataTypeProvider/v1/Command/EchoStructureValues");
             try
             {
-                CallInvoker.BlockingUnaryCall(DataTypeProviderMethods.EchoStructureValuesMethod, null, callInfo.Options, request);
+                CallInvoker.BlockingUnaryCall(DataTypeProviderMethods.EchoStructureValuesMethod, null, callInfo.ToCallOptions(), request);
                 callInfo.FinishSuccessful();
                 return;
             } catch (System.Exception ex)
@@ -657,7 +657,7 @@ namespace Tecan.Sila2.Interop.Client.DataTypeProvider
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/DataTypeProvider/v1/Command/EchoMultipleMixedValues");
             try
             {
-                string response = CallInvoker.BlockingUnaryCall(DataTypeProviderMethods.EchoMultipleMixedValuesMethod, null, callInfo.Options, request).ReceivedValues.Extract(_executionManager.DownloadBinaryStore);
+                string response = CallInvoker.BlockingUnaryCall(DataTypeProviderMethods.EchoMultipleMixedValuesMethod, null, callInfo.ToCallOptions(), request).ReceivedValues.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -677,7 +677,7 @@ namespace Tecan.Sila2.Interop.Client.DataTypeProvider
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/DataTypeProvider/v1/Command/GetMultipleMixedValues");
             try
             {
-                GetMultipleMixedValuesResponse response = CallInvoker.BlockingUnaryCall(DataTypeProviderMethods.GetMultipleMixedValuesMethod, null, callInfo.Options, request).Extract(_executionManager.DownloadBinaryStore);
+                GetMultipleMixedValuesResponse response = CallInvoker.BlockingUnaryCall(DataTypeProviderMethods.GetMultipleMixedValuesMethod, null, callInfo.ToCallOptions(), request).Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)

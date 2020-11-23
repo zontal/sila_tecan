@@ -20,13 +20,13 @@ namespace Tecan.Sila2.Interop.Client
 
         public IClientCallInfo CreateCallOptions( string commandIdentifier )
         {
-            var metadata = new Metadata();
+            var metadata = new Dictionary<string, byte[]>();
             if( commandIdentifier.StartsWith( "org.silastandard/test/ComplexDataTypeTest/v1" ) )
             {
-                metadata.Add( ClientMetadata.GetHeaderName( "org.silastandard/test/ComplexDataTypeTest/v1/Metadata/User" ),
+                metadata.Add( "org.silastandard/test/ComplexDataTypeTest/v1/Metadata/User" ,
                     ProtobufMarshaller<UserDto>.ToByteArray( new UserDto( new User( Environment.UserName ), DownloadBinaryStore ) ) );
             }
-            return new CallInfo(new CallOptions(metadata));
+            return new CallInfo(metadata);
         }
 
         public IBinaryStore DownloadBinaryStore
@@ -41,12 +41,12 @@ namespace Tecan.Sila2.Interop.Client
 
         private class CallInfo : IClientCallInfo
         {
-            public CallInfo( CallOptions options )
+            public CallInfo( IDictionary<string, byte[]> metadata )
             {
-                Options = options;
+                Metadata = metadata;
             }
 
-            public CallOptions Options
+            public IDictionary<string, byte[]> Metadata
             {
                 get;
             }

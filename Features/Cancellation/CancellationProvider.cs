@@ -56,18 +56,21 @@ namespace Tecan.Sila2.Cancellation
         }
         
         ///  <summary>
-        /// Creates a service definition for this service provider
+        /// Registers the feature in the provided feature registration
         /// </summary>
-        /// <returns>An object that describes which services are offered by this instance</returns>
-        public Grpc.Core.ServerServiceDefinition CreateServiceDefinition()
+        /// <param name="registration">The registration component to which the feature should be registered</param>
+        public void Register(IServerBuilder registration)
         {
-            Grpc.Core.ServerServiceDefinition.Builder builder = Grpc.Core.ServerServiceDefinition.CreateBuilder();
-            builder.AddMethod(CancelControllerMethods.CancelCommandMethod, CancelCommand);
-            builder.AddMethod(CancelControllerMethods.CancelAllMethod, CancelAll);
-            return builder.Build();
+            registration.RegisterUnobservableCommand<CancelCommandRequestDto, EmptyRequest>("CancelCommand", CancelCommand);
+            registration.RegisterUnobservableCommand<CancelAllRequestDto, EmptyRequest>("CancelAll", CancelAll);
         }
         
-        private EmptyRequest CancelCommandInternal(CancelCommandRequestDto request)
+        ///  <summary>
+        /// Executes the Cancel Command command
+        /// </summary>
+        /// <param name="request">A data transfer object that contains the command parameters</param>
+        /// <returns>The command response wrapped in a data transfer object</returns>
+        protected virtual EmptyRequest CancelCommand(CancelCommandRequestDto request)
         {
             try
             {
@@ -95,31 +98,14 @@ namespace Tecan.Sila2.Cancellation
         }
         
         ///  <summary>
-        /// Executes the Cancel Command command
-        /// </summary>
-        /// <param name="request">A data transfer object that contains the command parameters</param>
-        /// <param name="context">The context in which the command is issued</param>
-        /// <returns>The command response wrapped in a data transfer object</returns>
-        protected virtual System.Threading.Tasks.Task<EmptyRequest> CancelCommand(CancelCommandRequestDto request, Grpc.Core.ServerCallContext context)
-        {
-            return _server.InvokeCommand(CancelCommandInternal, request, context);
-        }
-        
-        private EmptyRequest CancelAllInternal(CancelAllRequestDto request)
-        {
-            _implementation.CancelAll();
-            return EmptyRequest.Instance;
-        }
-        
-        ///  <summary>
         /// Executes the Cancel All command
         /// </summary>
         /// <param name="request">A data transfer object that contains the command parameters</param>
-        /// <param name="context">The context in which the command is issued</param>
         /// <returns>The command response wrapped in a data transfer object</returns>
-        protected virtual System.Threading.Tasks.Task<EmptyRequest> CancelAll(CancelAllRequestDto request, Grpc.Core.ServerCallContext context)
+        protected virtual EmptyRequest CancelAll(CancelAllRequestDto request)
         {
-            return _server.InvokeCommand(CancelAllInternal, request, context);
+            _implementation.CancelAll();
+            return EmptyRequest.Instance;
         }
         
         ///  <summary>

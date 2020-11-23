@@ -55,29 +55,14 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             }
         }
 
-        ///  <summary>
-        /// Creates a service definition for this service provider
-        /// </summary>
-        /// <returns>An object that describes which services are offered by this instance</returns>
-        public Grpc.Core.ServerServiceDefinition CreateServiceDefinition()
-        {
-            Grpc.Core.ServerServiceDefinition.Builder builder = Grpc.Core.ServerServiceDefinition.CreateBuilder();
-            builder.AddMethod( InlineObservableServiceMethods.TestInlineObservableMethod, TestInlineObservable );
-            builder.AddMethod( InlineObservableServiceMethods.TestInlineObservableStateMethod, TestInlineObservableState );
-            builder.AddMethod( InlineObservableServiceMethods.TestInlineObservableResponseMethod, TestInlineObservableResponse );
-            return builder.Build();
-        }
 
         ///  <summary>
-        /// Obtains a stream of states for the given command execution id
+        /// Registers the feature in the provided feature registration
         /// </summary>
-        /// <param name="request">The request including the command execution id</param>
-        /// <param name="responseStream">The stream in which execution states should be written</param>
-        /// <param name="context">The context in which the request is made</param>
-        /// <returns>A stream of intermediate responses</returns>
-        private System.Threading.Tasks.Task TestInlineObservableState( Tecan.Sila2.CommandExecutionUuid request, Grpc.Core.IServerStreamWriter<Tecan.Sila2.ExecutionState> responseStream, Grpc.Core.ServerCallContext context )
+        /// <param name="registration">The registration component to which the feature should be registered</param>
+        public void Register( IServerBuilder registration )
         {
-            return ObservableCommandHelper.QueryCommandState( _server, request, responseStream, null, context );
+            registration.RegisterObservableCommand<TestInlineObservableRequestDto, bool, TestInlineObservableResponseDto>("TestInlineObservable", TestInlineObservable, ConvertTestInlineObservableResponse, null);
         }
 
         private TestInlineObservableResponseDto ConvertTestInlineObservableResponse( bool result )
@@ -86,26 +71,13 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         }
 
         ///  <summary>
-        /// Waits for the completion of the given command execution id and returns the result
-        /// </summary>
-        /// <param name="request">The request including the command execution identifier</param>
-        /// <param name="context">The context in which the request is made</param>
-        /// <returns>A task with the command result data transfer object</returns>
-        private System.Threading.Tasks.Task<TestInlineObservableResponseDto> TestInlineObservableResponse( Tecan.Sila2.CommandExecutionUuid request, Grpc.Core.ServerCallContext context )
-        {
-            return ObservableCommandHelper.WaitCommandExecution<bool, TestInlineObservableResponseDto>( _server, request, null, context, ConvertTestInlineObservableResponse );
-        }
-
-        ///  <summary>
         /// Executes the Test Inline Observable command
         /// </summary>
         /// <param name="request">A data transfer object that contains the command parameters</param>
-        /// <param name="context">The context in which the command is issued</param>
         /// <returns>The command response wrapped in a data transfer object</returns>
-        protected virtual System.Threading.Tasks.Task<Tecan.Sila2.CommandConfirmation> TestInlineObservable( TestInlineObservableRequestDto request, Grpc.Core.ServerCallContext context )
+        protected virtual Tecan.Sila2.IObservableCommand<bool> TestInlineObservable( TestInlineObservableRequestDto request )
         {
-            return ObservableCommandHelper.StartCommand( _server, "tecan.sila.generator.test/testreference/InlineObservableService/v2/Command/TestIn" +
-                    "lineObservable", new TestInlineObservableCommand( this, request ), context );
+            return new TestInlineObservableCommand( this, request );
         }
 
         ///  <summary>

@@ -75,7 +75,7 @@ namespace Tecan.Sila2.Discovery
             var config = GetServerConfig( silaService );
             var info = GetServerInfo( silaService );
             var features = GetImplementedFeatures( silaService );
-            var server = new ServerData( channel, config, info, features );
+            var server = new GrpcServerData( channel, config, info, features );
             return server;
         }
 

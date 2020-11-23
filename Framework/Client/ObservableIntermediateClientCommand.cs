@@ -48,7 +48,7 @@ namespace Tecan.Sila2.Client
             try
             {
                 using( var streamingCall =
-                    CallInvoker.AsyncServerStreamingCall( IntermediateMethod, null, CallInfo.Options.WithCancellationToken( CancellationToken ), CommandId ) )
+                    CallInvoker.AsyncServerStreamingCall( IntermediateMethod, null, CallInfo.ToCallOptions().WithCancellationToken( CancellationToken ), CommandId ) )
                 {
                     var responseStream = streamingCall.ResponseStream;
                     while( await responseStream.MoveNext(default) )
@@ -126,7 +126,7 @@ namespace Tecan.Sila2.Client
             try
             {
                 using(var streamingCall =
-                    CallInvoker.AsyncServerStreamingCall( IntermediateMethod, null, CallInfo.Options.WithCancellationToken( CancellationToken ), CommandId ))
+                    CallInvoker.AsyncServerStreamingCall( IntermediateMethod, null, CallInfo.ToCallOptions().WithCancellationToken( CancellationToken ), CommandId ))
                 {
                     var responseStream = streamingCall.ResponseStream;
                     while(await responseStream.MoveNext(default))

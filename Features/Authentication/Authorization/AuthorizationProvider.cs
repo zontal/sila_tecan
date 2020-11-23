@@ -56,25 +56,12 @@ namespace Tecan.Sila2.Authorization
         }
         
         ///  <summary>
-        /// Creates a service definition for this service provider
+        /// Registers the feature in the provided feature registration
         /// </summary>
-        /// <returns>An object that describes which services are offered by this instance</returns>
-        public Grpc.Core.ServerServiceDefinition CreateServiceDefinition()
+        /// <param name="registration">The registration component to which the feature should be registered</param>
+        public void Register(IServerBuilder registration)
         {
-            Grpc.Core.ServerServiceDefinition.Builder builder = Grpc.Core.ServerServiceDefinition.CreateBuilder();
-            builder.AddMethod(AuthorizationServiceMethods.GetAffectedByAccessTokenMethod, GetAffectedByAccessToken);
-            return builder.Build();
-        }
-        
-        ///  <summary>
-        /// Gets the features/commands/properties affected by the metadata Token to be sent with every call in order to get access to the SiLA Server functionality.
-        /// </summary>
-        /// <param name="request">The request object (not used)</param>
-        /// <param name="context">The request context</param>
-        /// <returns>A list of fully qualified identifiers</returns>
-        protected virtual System.Threading.Tasks.Task<System.Collections.Generic.List<Tecan.Sila2.StringDto>> GetAffectedByAccessToken(EmptyRequest request, Grpc.Core.ServerCallContext context)
-        {
-            return Tecan.Sila2.Server.Metadata.GetAffectedIdentifiers(_server, _implementation.AccessToken);
+            registration.RegisterMetadata("AccessToken", _implementation.AccessToken);
         }
         
         ///  <summary>
@@ -163,13 +150,13 @@ namespace Tecan.Sila2.Authorization
         /// </summary>
         /// <param name="commandIdentifier">The fully qualified identifier of the command or property in question</param>
         /// <param name="server">The server that should execute the request</param>
-        /// <param name="context">The context in which the request is made</param>
+        /// <param name="metadata">The metadata attached to the request</param>
         /// <returns>A request interception or null, if this is not necessary</returns>
-        public Tecan.Sila2.Server.IRequestInterception Intercept(string commandIdentifier, Tecan.Sila2.Server.ISiLAServer server, Grpc.Core.ServerCallContext context)
+        public Tecan.Sila2.Server.IRequestInterception Intercept(string commandIdentifier, Tecan.Sila2.Server.ISiLAServer server, Tecan.Sila2.Server.IMetadataRepository metadata)
         {
             try
             {
-                return Intercept(commandIdentifier, Tecan.Sila2.Server.Metadata.Extract<Tecan.Sila2.StringDto>(context, "org.silastandard/core/AuthorizationService/v1/Metadata/AccessToken").Extract(server));
+                return Intercept(commandIdentifier, Tecan.Sila2.Server.Metadata.Extract<Tecan.Sila2.StringDto>(metadata, "org.silastandard/core/AuthorizationService/v1/Metadata/AccessToken").Extract(server));
             } catch (InvalidAccessTokenException ex)
             {
                 throw ErrorHandling.CreateExecutionError("org.silastandard/core/AuthorizationService/v1/DefinedError/InvalidAccessToken", "The sent access token is not valid.", ex.Message);

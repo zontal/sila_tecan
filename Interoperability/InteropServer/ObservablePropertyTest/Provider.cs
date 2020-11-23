@@ -56,33 +56,19 @@ namespace Tecan.Sila2.Interop.Server
         }
         
         ///  <summary>
-        /// Creates a service definition for this service provider
+        /// Registers the feature in the provided feature registration
         /// </summary>
-        /// <returns>An object that describes which services are offered by this instance</returns>
-        public Grpc.Core.ServerServiceDefinition CreateServiceDefinition()
+        /// <param name="registration">The registration component to which the feature should be registered</param>
+        public void Register(IServerBuilder registration)
         {
-            Grpc.Core.ServerServiceDefinition.Builder builder = Grpc.Core.ServerServiceDefinition.CreateBuilder();
-            builder.AddMethod(ObservablePropertyTestMethods.SubscribeUpTimeMethod, SubscribeUpTime);
-            return builder.Build();
+            registration.RegisterObservableProperty("UpTime", GetUpTime);
         }
         
         ///  <summary>
-        /// Subscribes to the Up Time property
+        /// Gets the current value of the Up Time property
         /// </summary>
-        /// <param name="request">The request in which the call was made</param>
-        /// <param name="responseStream">The stream in which to write new property values</param>
-        /// <param name="context">The context in which the request is made</param>
-        /// <returns>A task that ends when the subscription ends</returns>
-        protected virtual System.Threading.Tasks.Task SubscribeUpTime(EmptyRequest request, Grpc.Core.IServerStreamWriter<PropertyResponse<Tecan.Sila2.IntegerDto>> responseStream, Grpc.Core.ServerCallContext context)
-        {
-            return ObservableCommandHelper.ContinuouslySendValue(_server, "org.silastandard/test/ObservablePropertyTest/v1/Property/UpTime", responseStream, CreateUpTimeResponse, 1000, context);
-        }
-        
-        ///  <summary>
-        /// Wrap the current value of Up Time into a data transfer object
-        /// </summary>
-        /// <returns>A data transfer object with the current value</returns>
-        private PropertyResponse<Tecan.Sila2.IntegerDto> CreateUpTimeResponse()
+        /// <returns>The current value wrapped in a data transfer object</returns>
+        protected virtual PropertyResponse<Tecan.Sila2.IntegerDto> GetUpTime()
         {
             return new PropertyResponse<Tecan.Sila2.IntegerDto>(new Tecan.Sila2.IntegerDto(_implementation.UpTime, _server));
         }

@@ -56,25 +56,21 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         }
         
         ///  <summary>
-        /// Creates a service definition for this service provider
+        /// Registers the feature in the provided feature registration
         /// </summary>
-        /// <returns>An object that describes which services are offered by this instance</returns>
-        public Grpc.Core.ServerServiceDefinition CreateServiceDefinition()
+        /// <param name="registration">The registration component to which the feature should be registered</param>
+        public void Register(IServerBuilder registration)
         {
-            Grpc.Core.ServerServiceDefinition.Builder builder = Grpc.Core.ServerServiceDefinition.CreateBuilder();
-            builder.AddMethod(DictionaryServiceMethods.GetLookupMethod, GetLookup);
-            return builder.Build();
+            registration.RegisterUnobservableProperty("Lookup", GetLookup);
         }
         
         ///  <summary>
         /// Gets the current value of the Lookup property
         /// </summary>
-        /// <param name="request">The request object</param>
-        /// <param name="context">The context in which the request is made</param>
         /// <returns>The current value wrapped in a data transfer object</returns>
-        protected virtual System.Threading.Tasks.Task<PropertyResponse<System.Collections.Generic.List<Tecan.Sila2.KeyValuePairDto<long, Tecan.Sila2.IntegerDto, string, Tecan.Sila2.StringDto>>>> GetLookup(EmptyRequest request, Grpc.Core.ServerCallContext context)
+        protected virtual PropertyResponse<System.Collections.Generic.List<Tecan.Sila2.KeyValuePairDto<long, Tecan.Sila2.IntegerDto, string, Tecan.Sila2.StringDto>>> GetLookup()
         {
-            return _server.CreatePropertyTask("tecan.sila.generator/test/DictionaryService/v2/Property/Lookup", new PropertyResponse<System.Collections.Generic.List<Tecan.Sila2.KeyValuePairDto<long, Tecan.Sila2.IntegerDto, string, Tecan.Sila2.StringDto>>>(Tecan.Sila2.DtoExtensions.Encapsulate(_implementation.Lookup, Tecan.Sila2.IntegerDto.Create, Tecan.Sila2.StringDto.Create, _server)), context);
+            return new PropertyResponse<System.Collections.Generic.List<Tecan.Sila2.KeyValuePairDto<long, Tecan.Sila2.IntegerDto, string, Tecan.Sila2.StringDto>>>(Tecan.Sila2.DtoExtensions.Encapsulate(_implementation.Lookup, Tecan.Sila2.IntegerDto.Create, Tecan.Sila2.StringDto.Create, _server));
         }
         
         ///  <summary>
@@ -173,7 +169,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("tecan.sila.generator/test/DictionaryService/v2/Property/Lookup");
             try
             {
-                System.Collections.Generic.IDictionary<long, string> response = Tecan.Sila2.DtoExtensions.Extract(CallInvoker.BlockingUnaryCall(DictionaryServiceMethods.GetLookupMethod, null, callInfo.Options, EmptyRequest.Instance).Value, _executionManager.DownloadBinaryStore);
+                System.Collections.Generic.IDictionary<long, string> response = Tecan.Sila2.DtoExtensions.Extract(CallInvoker.BlockingUnaryCall(DictionaryServiceMethods.GetLookupMethod, null, callInfo.ToCallOptions(), EmptyRequest.Instance).Value, _executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)

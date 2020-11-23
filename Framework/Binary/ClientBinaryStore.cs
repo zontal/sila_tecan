@@ -145,7 +145,7 @@ namespace Tecan.Sila2.Binary
             if (useExecutionManager && _commandParameterIdentifier != null)
             {
                 var parameterIndex = _commandParameterIdentifier.LastIndexOf( "/Parameter/" );
-                return _executionManager.CreateCallOptions( _commandParameterIdentifier.Substring( 0, parameterIndex ) ).Options;
+                return _executionManager.CreateCallOptions( _commandParameterIdentifier.Substring( 0, parameterIndex ) ).ToCallOptions();
             }
             else
             {

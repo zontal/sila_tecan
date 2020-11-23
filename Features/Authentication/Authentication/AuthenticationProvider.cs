@@ -56,18 +56,21 @@ namespace Tecan.Sila2.Authentication
         }
         
         ///  <summary>
-        /// Creates a service definition for this service provider
+        /// Registers the feature in the provided feature registration
         /// </summary>
-        /// <returns>An object that describes which services are offered by this instance</returns>
-        public Grpc.Core.ServerServiceDefinition CreateServiceDefinition()
+        /// <param name="registration">The registration component to which the feature should be registered</param>
+        public void Register(IServerBuilder registration)
         {
-            Grpc.Core.ServerServiceDefinition.Builder builder = Grpc.Core.ServerServiceDefinition.CreateBuilder();
-            builder.AddMethod(AuthenticationServiceMethods.LoginMethod, Login);
-            builder.AddMethod(AuthenticationServiceMethods.LogoutMethod, Logout);
-            return builder.Build();
+            registration.RegisterUnobservableCommand<LoginRequestDto, LoginResponseDto>("Login", Login);
+            registration.RegisterUnobservableCommand<LogoutRequestDto, EmptyRequest>("Logout", Logout);
         }
         
-        private LoginResponseDto LoginInternal(LoginRequestDto request)
+        ///  <summary>
+        /// Executes the Login command
+        /// </summary>
+        /// <param name="request">A data transfer object that contains the command parameters</param>
+        /// <returns>The command response wrapped in a data transfer object</returns>
+        protected virtual LoginResponseDto Login(LoginRequestDto request)
         {
             try
             {
@@ -101,17 +104,11 @@ namespace Tecan.Sila2.Authentication
         }
         
         ///  <summary>
-        /// Executes the Login command
+        /// Executes the Logout command
         /// </summary>
         /// <param name="request">A data transfer object that contains the command parameters</param>
-        /// <param name="context">The context in which the command is issued</param>
         /// <returns>The command response wrapped in a data transfer object</returns>
-        protected virtual System.Threading.Tasks.Task<LoginResponseDto> Login(LoginRequestDto request, Grpc.Core.ServerCallContext context)
-        {
-            return _server.InvokeCommand(LoginInternal, request, context);
-        }
-        
-        private EmptyRequest LogoutInternal(LogoutRequestDto request)
+        protected virtual EmptyRequest Logout(LogoutRequestDto request)
         {
             try
             {
@@ -129,17 +126,6 @@ namespace Tecan.Sila2.Authentication
             {
                 throw ErrorHandling.CreateExecutionError("org.silastandard/core/AuthenticationService/v1/DefinedError/InvalidAccessToken", "The sent access token is not valid.", ex.Message);
             }
-        }
-        
-        ///  <summary>
-        /// Executes the Logout command
-        /// </summary>
-        /// <param name="request">A data transfer object that contains the command parameters</param>
-        /// <param name="context">The context in which the command is issued</param>
-        /// <returns>The command response wrapped in a data transfer object</returns>
-        protected virtual System.Threading.Tasks.Task<EmptyRequest> Logout(LogoutRequestDto request, Grpc.Core.ServerCallContext context)
-        {
-            return _server.InvokeCommand(LogoutInternal, request, context);
         }
         
         ///  <summary>

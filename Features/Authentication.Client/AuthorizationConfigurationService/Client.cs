@@ -90,7 +90,7 @@ namespace Tecan.Sila2.Authorization.AuthorizationConfigurationService
                     "Provider");
             try
             {
-                string response = CallInvoker.BlockingUnaryCall(AuthorizationConfigurationServiceMethods.GetAuthorizationProviderMethod, null, callInfo.Options, EmptyRequest.Instance).Value.Extract(_executionManager.DownloadBinaryStore);
+                string response = CallInvoker.BlockingUnaryCall(AuthorizationConfigurationServiceMethods.GetAuthorizationProviderMethod, null, callInfo.ToCallOptions(), EmptyRequest.Instance).Value.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -120,7 +120,7 @@ namespace Tecan.Sila2.Authorization.AuthorizationConfigurationService
                     "onProvider");
             try
             {
-                CallInvoker.BlockingUnaryCall(AuthorizationConfigurationServiceMethods.SetAuthorizationProviderMethod, null, callInfo.Options, request);
+                CallInvoker.BlockingUnaryCall(AuthorizationConfigurationServiceMethods.SetAuthorizationProviderMethod, null, callInfo.ToCallOptions(), request);
                 callInfo.FinishSuccessful();
                 return;
             } catch (System.Exception ex)
