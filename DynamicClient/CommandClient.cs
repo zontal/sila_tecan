@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Tecan.Sila2.Binary;
+using Tecan.Sila2.Client;
 
 namespace Tecan.Sila2.DynamicClient
 {
@@ -18,6 +19,16 @@ namespace Tecan.Sila2.DynamicClient
         /// The command model for the command
         /// </summary>
         protected readonly FeatureCommand Command;
+
+        /// <summary>
+        /// Gets the byte serializer for the request
+        /// </summary>
+        protected readonly ByteSerializer<DynamicRequest> RequestSerializer;
+
+        /// <summary>
+        /// Gets the byte serializer for the response
+        /// </summary>
+        protected readonly ByteSerializer<DynamicObjectProperty> ResponseSerializer;
 
         /// <summary>
         /// Gets the command identifier that this client is used for
@@ -65,6 +76,11 @@ namespace Tecan.Sila2.DynamicClient
             {
                 _parameterWithBinary = context.Feature.GetFullyQualifiedParameterIdentifier( command, parameterWithBinary.Identifier );
             }
+
+            RequestSerializer =
+                new ByteSerializer<DynamicRequest>( SerializeRequest, DeserializeRequest );
+            ResponseSerializer =
+                new ByteSerializer<DynamicObjectProperty>( SerializeResponse, DeserializeResponse );
         }
 
         private bool IsBinaryType( DataTypeType type, Func<string, DataTypeType> resolveType )

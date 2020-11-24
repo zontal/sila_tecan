@@ -8,7 +8,7 @@ namespace Tecan.Sila2.DynamicClient
     /// <summary>
     /// Represents a property of a dynamic object
     /// </summary>
-    public class DynamicObjectProperty : INotifyPropertyChanged
+    public class DynamicObjectProperty : INotifyPropertyChanged, ISilaTransferObject
     {
         /// <summary>
         /// Creates a dynamic property
@@ -103,6 +103,12 @@ namespace Tecan.Sila2.DynamicClient
         public override string ToString()
         {
             return $"{DisplayName} = {DynamicObject.Print(Value)}";
+        }
+
+        /// <inheritdoc />
+        public string GetValidationErrors()
+        {
+            return null;
         }
     }
 }

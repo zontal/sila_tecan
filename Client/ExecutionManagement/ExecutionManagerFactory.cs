@@ -27,15 +27,14 @@ namespace Tecan.Sila2.Client.ExecutionManagement
         /// <inheritdoc />
         public IClientExecutionManager CreateExecutionManager( ServerData server )
         {
-            var grpcServer = server as GrpcServerData;
-            if(grpcServer == null)
+            if(server == null)
             {
                 return new DiscoveryExecutionManager();
             }
 
             if(!_cachedExecutionManagers.TryGetValue( server, out var executionManager ))
             {
-                executionManager = new ExecutionManager( grpcServer, _interceptors );
+                executionManager = new ExecutionManager( server, _interceptors );
                 _cachedExecutionManagers.Add( server, executionManager );
             }
 

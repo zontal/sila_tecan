@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using Grpc.Core;
 using Tecan.Sila2.Client;
@@ -26,7 +27,7 @@ namespace Tecan.Sila2.DynamicClient
         /// </summary>
         public string PropertyIdentifier => Context.Feature.GetFullyQualifiedIdentifier(Property);
 
-        private readonly Method<EmptyRequest, DynamicObjectProperty> _method;
+        private readonly ByteSerializer<DynamicObjectProperty> _responseSerializer;
 
         /// <summary>
         /// Creates a new client for the given property
@@ -37,38 +38,13 @@ namespace Tecan.Sila2.DynamicClient
         {
             Property = property;
             Context = context;
-            var responseMarshaller =
-                new Marshaller<DynamicObjectProperty>(SerializeRequest, DeserializeResponse);
-            if (property.Observable == FeaturePropertyObservable.Yes)
-            {
-                _method = new Method<EmptyRequest, DynamicObjectProperty>(MethodType.ServerStreaming,
-                    context.ServiceName,
-                    "Subscribe_" + property.Identifier, EmptyRequest.Marshaller, responseMarshaller);
-            }
-            else
-            {
-                _method = new Method<EmptyRequest, DynamicObjectProperty>(MethodType.Unary, context.ServiceName,
-                    "Get_" + property.Identifier, EmptyRequest.Marshaller, responseMarshaller);
-
-            }
+            _responseSerializer =
+                new ByteSerializer<DynamicObjectProperty>(SerializeRequest, DeserializeResponse);
         }
 
         private byte[] SerializeRequest( DynamicObjectProperty value )
         {
             return Context.Serializer.Serialize( value, null );
-        }
-
-        private async Task<DynamicObjectProperty> RequestDynamic( CallOptions callOptions )
-        {
-            var asyncCall =
-                Context.CallInvoker.AsyncServerStreamingCall( _method, null, callOptions, EmptyRequest.Instance );
-            var responseStream = asyncCall.ResponseStream;
-            if( await responseStream.MoveNext() )
-            {
-                return responseStream.Current;
-            }
-
-            throw new InvalidOperationException("Property could not be read.");
         }
 
         /// <summary>
@@ -79,23 +55,25 @@ namespace Tecan.Sila2.DynamicClient
         /// <returns>A dynamic property with the property value</returns>
         public DynamicObjectProperty RequestValue(string host = null, IDictionary<string, byte[]> additionalMetadata = null )
         {
-            var callInfo = Context.ExecutionManager.CreateCallOptions(PropertyIdentifier);
+            var callInfo = MetadataHelper.TakeInMetadata( Context.ExecutionManager.CreateCallOptions(PropertyIdentifier), additionalMetadata );
             try
             {
-                DynamicObjectProperty result;
+                DynamicObjectProperty result = null;
                 if (Property.Observable == FeaturePropertyObservable.Yes)
                 {
-                    var task = RequestDynamic( MetadataHelper.TakeInMetadata( callInfo, additionalMetadata ) );
-                    task.Wait();
-                    result = task.Result;
+                    var cts = new CancellationTokenSource();
+
+                    void SetResult( DynamicObjectProperty res )
+                    {
+                        result = res;
+                        cts.Cancel();
+                    }
+
+                    Context.Channel.SubscribeProperty( Context.ServiceName, Property.Identifier, SetResult, callInfo, _responseSerializer, cts.Token ).Wait();
                 }
                 else
                 {
-                    result = Context.CallInvoker.BlockingUnaryCall(
-                        _method,
-                        host,
-                        callInfo.ToCallOptions(),
-                        EmptyRequest.Instance);
+                    result = Context.Channel.ReadProperty( Context.ServiceName, Property.Identifier, callInfo, _responseSerializer );
                 }
                 callInfo.FinishSuccessful();
                 return result;

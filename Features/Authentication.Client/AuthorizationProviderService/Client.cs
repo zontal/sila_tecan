@@ -25,46 +25,20 @@ namespace Tecan.Sila2.Authorization.AuthorizationProviderService
         
         private IClientExecutionManager _executionManager;
         
+        private IClientChannel _channel;
+        
+        private string _serviceName = "sila2.org.silastandard.core.authorizationproviderservice.v1.AuthorizationProvider" +
+            "Service";
+        
         ///  <summary>
         /// Creates a new instance
         /// </summary>
-        /// <param name="executionManager">A component that attaches metadata to SiLA2 calls</param>
+        /// <param name="executionManager">A component to determine metadata to attach to any requests</param>
+        /// <param name="channel">The channel through which calls should be executed</param>
         public AuthorizationProviderServiceClient(IClientExecutionManager executionManager)
         {
             _executionManager = executionManager;
-        }
-        
-        ///  <summary>
-        /// Creates a new instance
-        /// </summary>
-        /// <param name="configuration">The underlying configuration</param>
-        /// <param name="executionManager">A component that attaches metadata to SiLA2 calls</param>
-        protected AuthorizationProviderServiceClient(ClientBaseConfiguration configuration, IClientExecutionManager executionManager) : 
-                base(configuration)
-        {
-            _executionManager = executionManager;
-        }
-        
-        ///  <summary>
-        /// Creates a new instance
-        /// </summary>
-        /// <param name="channel">The underlying channel</param>
-        /// <param name="executionManager">A component that attaches metadata to SiLA2 calls</param>
-        public AuthorizationProviderServiceClient(Grpc.Core.Channel channel, IClientExecutionManager executionManager) : 
-                base(channel)
-        {
-            _executionManager = executionManager;
-        }
-        
-        ///  <summary>
-        /// Creates a new instance
-        /// </summary>
-        /// <param name="invoker">The underlying invoker</param>
-        /// <param name="executionManager">A component that attaches metadata to SiLA2 calls</param>
-        public AuthorizationProviderServiceClient(Grpc.Core.CallInvoker invoker, IClientExecutionManager executionManager) : 
-                base(invoker)
-        {
-            _executionManager = executionManager;
+            _channel = channel;
         }
         
         ///  <summary>
@@ -79,7 +53,7 @@ namespace Tecan.Sila2.Authorization.AuthorizationProviderService
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/core/AuthorizationProviderService/v1/Command/Verify");
             try
             {
-                long response = CallInvoker.BlockingUnaryCall(AuthorizationProviderServiceMethods.VerifyMethod, null, callInfo.ToCallOptions(), request).TokenLifetime.Extract(_executionManager.DownloadBinaryStore);
+                long response = _channel.ExecuteUnobservableCommand<VerifyRequestDto, VerifyResponseDto>(_serviceName, "Verify", request, callInfo).TokenLifetime.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -93,30 +67,22 @@ namespace Tecan.Sila2.Authorization.AuthorizationProviderService
         ///  <summary>
         /// Converts the error ocurred during execution of Verify to a proper exception
         /// </summary>
-        /// <param name="error">The SiLA2 execution error</param>
+        /// <param name="errorIdentifier">The identifier of the error that has happened</param>
+        /// <param name="errorMessage">The original error message from the server</param>
         /// <returns>The converted exception or null, if the error is not understood</returns>
-        private static System.Exception ConvertVerifyException(Tecan.Sila2.DefinedExecutionErrorDto error)
+        private static System.Exception ConvertVerifyException(string errorIdentifier, string errorMessage)
         {
-            if ((error.ErrorIdentifier == "org.silastandard/core/AuthorizationProviderService/v1/DefinedError/AuthorizationF" +
+            if ((errorIdentifier == "org.silastandard/core/AuthorizationProviderService/v1/DefinedError/AuthorizationF" +
                 "ailed"))
             {
-                return new AuthorizationFailedException(error.Message);
+                return new AuthorizationFailedException(errorMessage);
             }
-            if ((error.ErrorIdentifier == "org.silastandard/core/AuthorizationProviderService/v1/DefinedError/InvalidAccessT" +
+            if ((errorIdentifier == "org.silastandard/core/AuthorizationProviderService/v1/DefinedError/InvalidAccessT" +
                 "oken"))
             {
-                return new InvalidAccessTokenException(error.Message);
+                return new InvalidAccessTokenException(errorMessage);
             }
             return null;
-        }
-        
-        ///  <summary>
-        /// Creates a new instance
-        /// </summary>
-        /// <param name="configuration">The new client configuration</param>
-        protected override AuthorizationProviderServiceClient NewInstance(ClientBaseConfiguration configuration)
-        {
-            return new AuthorizationProviderServiceClient(configuration, _executionManager);
         }
         
         private T Extract<T>(Tecan.Sila2.ISilaTransferObject<T> dto)

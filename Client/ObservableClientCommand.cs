@@ -20,13 +20,13 @@ namespace Tecan.Sila2.Client
 
         public Method<CommandExecutionUuid, ExecutionState> StateMethod { get; }
 
-        public Func<DefinedExecutionErrorDto, Exception> ErrorConverter { get; }
+        public Func<string, string, Exception> ErrorConverter { get; }
 
         public CallOptions CreateCallOptions() => CallInfo.ToCallOptions().WithCancellationToken( CancellationToken );
 
         protected override bool SendLastUpdate => false;
 
-        public ObservableClientCommand(IClientCallInfo callInfo, CallInvoker callInvoker, CommandExecutionUuid commandId, Method<CommandExecutionUuid, ExecutionState> stateMethod, Func<DefinedExecutionErrorDto, Exception> errorConverter) : base(new CancellationTokenSource())
+        public ObservableClientCommand(IClientCallInfo callInfo, CallInvoker callInvoker, CommandExecutionUuid commandId, Method<CommandExecutionUuid, ExecutionState> stateMethod, Func<string, string, Exception> errorConverter) : base(new CancellationTokenSource())
         {
             CallInfo = callInfo;
             CallInvoker = callInvoker;
@@ -90,7 +90,7 @@ namespace Tecan.Sila2.Client
 
         public Method<CommandExecutionUuid, ExecutionState> StateMethod { get; }
 
-        public Func<DefinedExecutionErrorDto, Exception> ErrorConverter { get; }
+        public Func<string, string, Exception> ErrorConverter { get; }
 
         internal Method<CommandExecutionUuid, TResponse> ResultMethod { get; }
         internal Func<TResponse, TResult> ResultConverter { get; }
@@ -116,7 +116,7 @@ namespace Tecan.Sila2.Client
             Method<CommandExecutionUuid, ExecutionState> stateMethod,
             Method<CommandExecutionUuid, TResponse> resultMethod,
             Func<TResponse, TResult> resultConverter,
-            Func<DefinedExecutionErrorDto, Exception> errorConverter)
+            Func<string, string, Exception> errorConverter)
             : base(new CancellationTokenSource())
         {
             CallInfo = callInfo;

@@ -25,46 +25,19 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest
         
         private IClientExecutionManager _executionManager;
         
+        private IClientChannel _channel;
+        
+        private string _serviceName = "sila2.org.silastandard.test.parameterconstraintstest.v1.ParameterConstraintsTest";
+        
         ///  <summary>
         /// Creates a new instance
         /// </summary>
-        /// <param name="executionManager">A component that attaches metadata to SiLA2 calls</param>
+        /// <param name="executionManager">A component to determine metadata to attach to any requests</param>
+        /// <param name="channel">The channel through which calls should be executed</param>
         public ParameterConstraintsTestClient(IClientExecutionManager executionManager)
         {
             _executionManager = executionManager;
-        }
-        
-        ///  <summary>
-        /// Creates a new instance
-        /// </summary>
-        /// <param name="configuration">The underlying configuration</param>
-        /// <param name="executionManager">A component that attaches metadata to SiLA2 calls</param>
-        protected ParameterConstraintsTestClient(ClientBaseConfiguration configuration, IClientExecutionManager executionManager) : 
-                base(configuration)
-        {
-            _executionManager = executionManager;
-        }
-        
-        ///  <summary>
-        /// Creates a new instance
-        /// </summary>
-        /// <param name="channel">The underlying channel</param>
-        /// <param name="executionManager">A component that attaches metadata to SiLA2 calls</param>
-        public ParameterConstraintsTestClient(Grpc.Core.Channel channel, IClientExecutionManager executionManager) : 
-                base(channel)
-        {
-            _executionManager = executionManager;
-        }
-        
-        ///  <summary>
-        /// Creates a new instance
-        /// </summary>
-        /// <param name="invoker">The underlying invoker</param>
-        /// <param name="executionManager">A component that attaches metadata to SiLA2 calls</param>
-        public ParameterConstraintsTestClient(Grpc.Core.CallInvoker invoker, IClientExecutionManager executionManager) : 
-                base(invoker)
-        {
-            _executionManager = executionManager;
+            _channel = channel;
         }
         
         ///  <summary>
@@ -82,7 +55,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/ParameterConstraintsTest/v1/Command/ExactStringLength");
             try
             {
-                CallInvoker.BlockingUnaryCall(ParameterConstraintsTestMethods.ExactStringLengthMethod, null, callInfo.ToCallOptions(), request);
+                _channel.ExecuteUnobservableCommand<ExactStringLengthRequestDto>(_serviceName, "ExactStringLength", request, callInfo);
                 callInfo.FinishSuccessful();
                 return;
             } catch (System.Exception ex)
@@ -111,7 +84,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest
                     "eters");
             try
             {
-                CallInvoker.BlockingUnaryCall(ParameterConstraintsTestMethods.ConstrainedNumericParametersMethod, null, callInfo.ToCallOptions(), request);
+                _channel.ExecuteUnobservableCommand<ConstrainedNumericParametersRequestDto>(_serviceName, "ConstrainedNumericParameters", request, callInfo);
                 callInfo.FinishSuccessful();
                 return;
             } catch (System.Exception ex)
@@ -139,7 +112,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest
                     "meters");
             try
             {
-                CallInvoker.BlockingUnaryCall(ParameterConstraintsTestMethods.ConstrainedDateTimeParametersMethod, null, callInfo.ToCallOptions(), request);
+                _channel.ExecuteUnobservableCommand<ConstrainedDateTimeParametersRequestDto>(_serviceName, "ConstrainedDateTimeParameters", request, callInfo);
                 callInfo.FinishSuccessful();
                 return;
             } catch (System.Exception ex)
@@ -164,7 +137,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest
                     "rs");
             try
             {
-                CallInvoker.BlockingUnaryCall(ParameterConstraintsTestMethods.ConstrainedListParametersMethod, null, callInfo.ToCallOptions(), request);
+                _channel.ExecuteUnobservableCommand<ConstrainedListParametersRequestDto>(_serviceName, "ConstrainedListParameters", request, callInfo);
                 callInfo.FinishSuccessful();
                 return;
             } catch (System.Exception ex)
@@ -173,15 +146,6 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest
                 callInfo.FinishWithErrors(exception);
                 throw exception;
             }
-        }
-        
-        ///  <summary>
-        /// Creates a new instance
-        /// </summary>
-        /// <param name="configuration">The new client configuration</param>
-        protected override ParameterConstraintsTestClient NewInstance(ClientBaseConfiguration configuration)
-        {
-            return new ParameterConstraintsTestClient(configuration, _executionManager);
         }
         
         private T Extract<T>(Tecan.Sila2.ISilaTransferObject<T> dto)

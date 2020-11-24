@@ -134,59 +134,32 @@ namespace Tecan.Sila2.Generator.Test.TestReference
     ///  <summary>
     /// Class that implements the IInlineObservableService interface through SiLA2
     /// </summary>
-    public partial class InlineObservableServiceClient : Grpc.Core.ClientBase<InlineObservableServiceClient>, IInlineObservableService
+    public partial class InlineObservableServiceClient : IInlineObservableService
     {
 
         private IClientExecutionManager _executionManager;
 
-        ///  <summary>
-        /// Creates a new instance
-        /// </summary>
-        /// <param name="executionManager">A component that attaches metadata to SiLA2 calls</param>
-        public InlineObservableServiceClient( IClientExecutionManager executionManager )
-        {
-            _executionManager = executionManager;
-        }
+        private IClientChannel _channel;
+
+        private static string @__ServiceName = "sila2.tecan.sila.generator.test.testreference.inlineobservableservice.v2.InlineOb" +
+            "servableService";
 
         ///  <summary>
         /// Creates a new instance
         /// </summary>
-        /// <param name="configuration">The underlying configuration</param>
         /// <param name="executionManager">A component that attaches metadata to SiLA2 calls</param>
-        protected InlineObservableServiceClient( ClientBaseConfiguration configuration, IClientExecutionManager executionManager ) :
-                base( configuration )
+        public InlineObservableServiceClient( IClientExecutionManager executionManager, IClientChannel channel )
         {
             _executionManager = executionManager;
-        }
-
-        ///  <summary>
-        /// Creates a new instance
-        /// </summary>
-        /// <param name="channel">The underlying channel</param>
-        /// <param name="executionManager">A component that attaches metadata to SiLA2 calls</param>
-        public InlineObservableServiceClient( Grpc.Core.Channel channel, IClientExecutionManager executionManager ) :
-                base( channel )
-        {
-            _executionManager = executionManager;
-        }
-
-        ///  <summary>
-        /// Creates a new instance
-        /// </summary>
-        /// <param name="invoker">The underlying invoker</param>
-        /// <param name="executionManager">A component that attaches metadata to SiLA2 calls</param>
-        public InlineObservableServiceClient( Grpc.Core.CallInvoker invoker, IClientExecutionManager executionManager ) :
-                base( invoker )
-        {
-            _executionManager = executionManager;
+            _channel = channel;
         }
 
         ///  <inheritdoc />
         public virtual bool TestInlineObservable( string parameter, System.Threading.CancellationToken cancellationToken )
         {
             TestInlineObservableRequestDto request = new TestInlineObservableRequestDto( parameter, null );
-            Tecan.Sila2.IObservableCommand<bool> command = ObservableClientCommands.Create( _executionManager.CreateCallOptions( request.CommandIdentifier ), CallInvoker, request, InlineObservableServiceMethods.TestInlineObservableMethod, InlineObservableServiceMethods.TestInlineObservableStateMethod, InlineObservableServiceMethods.TestInlineObservableResponseMethod, ConvertTestInlineObservableResponse, ConvertTestInlineObservableException );
-            Tecan.Sila2.Cancellation.CancellationHelper.RegisterCancellation( ((Tecan.Sila2.Client.IClientCommand)(command)), _executionManager, cancellationToken );
+            Tecan.Sila2.IObservableCommand<bool> command = _channel.ExecuteObservableCommand<TestInlineObservableRequestDto, bool, TestInlineObservableResponseDto>( __ServiceName, "TestInlineObservable", request, ConvertTestInlineObservableResponse, ConvertTestInlineObservableException, _executionManager.CreateCallOptions( request.CommandIdentifier ) );
+            Tecan.Sila2.Cancellation.CancellationHelper.RegisterCancellation( ((Tecan.Sila2.Client.IClientCommand)(command)), _executionManager, _channel, cancellationToken );
             command.Start();
             command.Response.Wait( cancellationToken );
             return command.Response.Result;
@@ -197,7 +170,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// </summary>
         /// <param name="error">The SiLA2 execution error</param>
         /// <returns>The converted exception or null, if the error is not understood</returns>
-        private static System.Exception ConvertTestInlineObservableException( Tecan.Sila2.DefinedExecutionErrorDto error )
+        private static System.Exception ConvertTestInlineObservableException( string errorIdentifier, string errorMessage )
         {
             return null;
         }
@@ -210,15 +183,6 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         private bool ConvertTestInlineObservableResponse( TestInlineObservableResponseDto value )
         {
             return value.ReturnValue.Extract( _executionManager.DownloadBinaryStore );
-        }
-
-        ///  <summary>
-        /// Creates a new instance
-        /// </summary>
-        /// <param name="configuration">The new client configuration</param>
-        protected override InlineObservableServiceClient NewInstance( ClientBaseConfiguration configuration )
-        {
-            return new InlineObservableServiceClient( configuration, _executionManager );
         }
 
         private T Extract<T>( Tecan.Sila2.ISilaTransferObject<T> dto )

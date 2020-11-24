@@ -11,7 +11,6 @@ namespace Tecan.Sila2.DynamicClient
     /// </summary>
     public class NonObservableCommandClient : CommandClient
     {
-        private readonly Method<DynamicRequest, DynamicObjectProperty> _method;
 
         /// <summary>
         /// Creates a client for an unobservable command
@@ -23,33 +22,20 @@ namespace Tecan.Sila2.DynamicClient
             if (command == null) throw new ArgumentNullException(nameof(command));
             if (context == null) throw new ArgumentNullException(nameof(context));
             if (command.Observable == FeatureCommandObservable.Yes) throw new ArgumentException("The command is observable.", nameof(command));
-
-            var requestMarshaller =
-                new Marshaller<DynamicRequest>(SerializeRequest, DeserializeRequest);
-            var responseMarshaller =
-                new Marshaller<DynamicObjectProperty>(SerializeResponse, DeserializeResponse);
-
-            _method = new Method<DynamicRequest, DynamicObjectProperty>(
-                MethodType.Unary,
-                context.ServiceName,
-                command.Identifier,
-                requestMarshaller,
-                responseMarshaller);
         }
 
         /// <summary>
         /// Invokes the command and returns a dynamic property that contains the response value
         /// </summary>
         /// <param name="args">The command request parameters</param>
-        /// <param name="host">The host to target or null</param>
         /// <param name="additionalMetadata">A dictionary with additional request metadata</param>
         /// <returns>A dynamic property with the response value</returns>
-        public DynamicObjectProperty Invoke(DynamicRequest args, string host = null, IDictionary<string, byte[]> additionalMetadata = null)
+        public DynamicObjectProperty Invoke(DynamicRequest args, IDictionary<string, byte[]> additionalMetadata = null)
         {
             var callInfo = Context.ExecutionManager.CreateCallOptions(args.CommandIdentifier);
             try
             {
-                var result = Context.CallInvoker.BlockingUnaryCall(_method, host, MetadataHelper.TakeInMetadata( callInfo, additionalMetadata ), args);
+                var result = Context.ServerData.Channel.ExecuteUnobservableCommand( Context.ServiceName, Command.Identifier, args, MetadataHelper.TakeInMetadata(callInfo, additionalMetadata), RequestSerializer, ResponseSerializer );
                 callInfo.FinishSuccessful();
                 return result;
             }
@@ -73,7 +59,6 @@ namespace Tecan.Sila2.DynamicClient
         /// Invokes the command and returns a dynamic property that contains the response value
         /// </summary>
         /// <param name="args">The command request parameters</param>
-        /// <param name="host">The host to target or null</param>
         /// <param name="additionalMetadata">A dictionary with additional request metadata</param>
         /// <returns>A dynamic property with the response value</returns>
         public async Task<DynamicObjectProperty> InvokeAsync(DynamicRequest args, string host = null, IDictionary<string, byte[]> additionalMetadata = null )
@@ -81,7 +66,7 @@ namespace Tecan.Sila2.DynamicClient
             var callInfo = Context.ExecutionManager.CreateCallOptions(args.CommandIdentifier);
             try
             {
-                var result = await Context.CallInvoker.AsyncUnaryCall(_method, host, MetadataHelper.TakeInMetadata( callInfo, additionalMetadata ), args);
+                var result = await Context.ServerData.Channel.ExecuteUnobservableCommandAsync( Context.ServiceName, CommandIdentifier, args, MetadataHelper.TakeInMetadata( callInfo, additionalMetadata ), RequestSerializer, ResponseSerializer );
                 callInfo.FinishSuccessful();
                 return result;
             }

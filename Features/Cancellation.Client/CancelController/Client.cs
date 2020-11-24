@@ -20,51 +20,24 @@ namespace Tecan.Sila2.Cancellation.CancelController
     ///  <summary>
     /// Class that implements the ICancelController interface through SiLA2
     /// </summary>
-    public partial class CancelControllerClient : Grpc.Core.ClientBase<CancelControllerClient>, ICancelController
+    public partial class CancelControllerClient : ICancelController
     {
         
         private IClientExecutionManager _executionManager;
         
-        ///  <summary>
-        /// Creates a new instance
-        /// </summary>
-        /// <param name="executionManager">A component that attaches metadata to SiLA2 calls</param>
-        public CancelControllerClient(IClientExecutionManager executionManager)
-        {
-            _executionManager = executionManager;
-        }
+        private IClientChannel _channel;
+        
+        private string _serviceName = "sila2.org.silastandard.core.commands.cancelcontroller.v1.CancelController";
         
         ///  <summary>
         /// Creates a new instance
         /// </summary>
-        /// <param name="configuration">The underlying configuration</param>
-        /// <param name="executionManager">A component that attaches metadata to SiLA2 calls</param>
-        protected CancelControllerClient(ClientBaseConfiguration configuration, IClientExecutionManager executionManager) : 
-                base(configuration)
+        /// <param name="executionManager">A component to determine metadata to attach to any requests</param>
+        /// <param name="channel">The channel through which calls should be executed</param>
+        public CancelControllerClient(IClientExecutionManager executionManager, IClientChannel channel)
         {
             _executionManager = executionManager;
-        }
-        
-        ///  <summary>
-        /// Creates a new instance
-        /// </summary>
-        /// <param name="channel">The underlying channel</param>
-        /// <param name="executionManager">A component that attaches metadata to SiLA2 calls</param>
-        public CancelControllerClient(Grpc.Core.Channel channel, IClientExecutionManager executionManager) : 
-                base(channel)
-        {
-            _executionManager = executionManager;
-        }
-        
-        ///  <summary>
-        /// Creates a new instance
-        /// </summary>
-        /// <param name="invoker">The underlying invoker</param>
-        /// <param name="executionManager">A component that attaches metadata to SiLA2 calls</param>
-        public CancelControllerClient(Grpc.Core.CallInvoker invoker, IClientExecutionManager executionManager) : 
-                base(invoker)
-        {
-            _executionManager = executionManager;
+            _channel = channel;
         }
         
         ///  <summary>
@@ -82,7 +55,7 @@ namespace Tecan.Sila2.Cancellation.CancelController
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/core.commands/CancelController/v1/Command/CancelCommand");
             try
             {
-                CallInvoker.BlockingUnaryCall(CancelControllerMethods.CancelCommandMethod, null, callInfo.ToCallOptions(), request);
+                _channel.ExecuteUnobservableCommand<CancelCommandRequestDto>(_serviceName, "CancelCommand", request, callInfo);
                 callInfo.FinishSuccessful();
                 return;
             } catch (System.Exception ex)
@@ -96,19 +69,20 @@ namespace Tecan.Sila2.Cancellation.CancelController
         ///  <summary>
         /// Converts the error ocurred during execution of CancelCommand to a proper exception
         /// </summary>
-        /// <param name="error">The SiLA2 execution error</param>
+        /// <param name="errorIdentifier">The identifier of the error that has happened</param>
+        /// <param name="errorMessage">The original error message from the server</param>
         /// <returns>The converted exception or null, if the error is not understood</returns>
-        private static System.Exception ConvertCancelCommandException(Tecan.Sila2.DefinedExecutionErrorDto error)
+        private static System.Exception ConvertCancelCommandException(string errorIdentifier, string errorMessage)
         {
-            if ((error.ErrorIdentifier == "org.silastandard/core.commands/CancelController/v1/DefinedError/InvalidCommandExe" +
+            if ((errorIdentifier == "org.silastandard/core.commands/CancelController/v1/DefinedError/InvalidCommandExe" +
                 "cutionUUID"))
             {
-                return new InvalidCommandExecutionUUIDException(error.Message);
+                return new InvalidCommandExecutionUUIDException(errorMessage);
             }
-            if ((error.ErrorIdentifier == "org.silastandard/core.commands/CancelController/v1/DefinedError/OperationNotSuppo" +
+            if ((errorIdentifier == "org.silastandard/core.commands/CancelController/v1/DefinedError/OperationNotSuppo" +
                 "rted"))
             {
-                return new OperationNotSupportedException(error.Message);
+                return new OperationNotSupportedException(errorMessage);
             }
             return null;
         }
@@ -124,7 +98,7 @@ namespace Tecan.Sila2.Cancellation.CancelController
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/core.commands/CancelController/v1/Command/CancelAll");
             try
             {
-                CallInvoker.BlockingUnaryCall(CancelControllerMethods.CancelAllMethod, null, callInfo.ToCallOptions(), request);
+                _channel.ExecuteUnobservableCommand<CancelAllRequestDto>(_serviceName, "CancelAll", request, callInfo);
                 callInfo.FinishSuccessful();
                 return;
             } catch (System.Exception ex)
@@ -133,15 +107,6 @@ namespace Tecan.Sila2.Cancellation.CancelController
                 callInfo.FinishWithErrors(exception);
                 throw exception;
             }
-        }
-        
-        ///  <summary>
-        /// Creates a new instance
-        /// </summary>
-        /// <param name="configuration">The new client configuration</param>
-        protected override CancelControllerClient NewInstance(ClientBaseConfiguration configuration)
-        {
-            return new CancelControllerClient(configuration, _executionManager);
         }
         
         private T Extract<T>(Tecan.Sila2.ISilaTransferObject<T> dto)

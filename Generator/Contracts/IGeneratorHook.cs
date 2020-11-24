@@ -12,15 +12,17 @@ namespace Tecan.Sila2.Generator.Contracts
         /// Called when a server class is generated for a feature
         /// </summary>
         /// <param name="feature">The feature</param>
+        /// <param name="compileUnit">The generated code</param>
         /// <param name="generatedType">A declaration of the server class</param>
-        void OnServerGenerated(Feature feature, CodeTypeDeclaration generatedType);
+        void OnServerGenerated(Feature feature, CodeTypeDeclaration generatedType, CodeCompileUnit compileUnit );
 
         /// <summary>
         /// Called when a client class is generated for a feature
         /// </summary>
         /// <param name="feature">The feature</param>
+        /// <param name="compileUnit">The generated code</param>
         /// <param name="generatedType">A declaration of the server class</param>
-        void OnClientGenerated(Feature feature, CodeTypeDeclaration generatedType);
+        void OnClientGenerated(Feature feature, CodeTypeDeclaration generatedType, CodeCompileUnit compileUnit );
 
         /// <summary>
         /// Called when a feature is generated for the given type
@@ -34,13 +36,7 @@ namespace Tecan.Sila2.Generator.Contracts
         /// </summary>
         /// <param name="feature">The feature</param>
         /// <param name="generatedType">A declaration of the interface</param>
-        void OnInterfaceGenerated( Feature feature, CodeTypeDeclaration generatedType );
-
-        /// <summary>
-        /// Called when the code generation for the given interface has completed
-        /// </summary>
-        /// <param name="feature">The feature</param>
         /// <param name="compileUnit">The generated code</param>
-        void OnCodeGenerationComplete( Feature feature, CodeCompileUnit compileUnit );
+        void OnInterfaceGenerated( Feature feature, CodeTypeDeclaration generatedType, CodeCompileUnit compileUnit );
     }
 }

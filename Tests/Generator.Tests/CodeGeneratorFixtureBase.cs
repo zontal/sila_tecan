@@ -52,6 +52,7 @@ namespace Tecan.Sila2.Generator.Test
         protected string InterfaceReference => Path.Combine( Name, "ServiceReference.cs" );
         protected string DtoReference => Path.Combine( Name, "DtoReference.cs" );
         protected string ProviderReference => Path.Combine( Name, "ProviderReference.cs" );
+        protected string ClientReference => Path.Combine( Name, "ClientReference.cs" );
 
         [Test]
         public void Test_GenerateFeature_SilaFeature()
@@ -84,7 +85,7 @@ namespace Tecan.Sila2.Generator.Test
         }
 
         [Test]
-        public void Test_GenerateInterface_SilaFeature()
+        public void Test_GenerateInterface()
         {
             var feature = FeatureSerializer.Load( FeatureDefinitionFile );
             var interfaceGenerator = new InterfaceGenerator( _typeTranslationProvider, new TestLoggingFactory(), null );
@@ -95,7 +96,7 @@ namespace Tecan.Sila2.Generator.Test
         }
 
         [Test]
-        public void Test_GenerateDto_SilaFeature()
+        public void Test_GenerateDto()
         {
             var feature = FeatureSerializer.Load( FeatureDefinitionFile );
             var dtoGenerator = new DtoGenerator( _typeTranslationProvider, CreateNameProvider(), new TestLoggingFactory() );
@@ -111,18 +112,27 @@ namespace Tecan.Sila2.Generator.Test
         }
 
         [Test]
-        public void Test_GenerateProvider_SilaFeature()
+        public void Test_GenerateProvider()
         {
             var feature = FeatureSerializer.Load( FeatureDefinitionFile );
             var nameProvider = CreateNameProvider();
-            var providerGenerator = new ProviderGenerator( nameProvider, new ClientGenerator( nameProvider, _typeTranslationProvider, new TestLoggingFactory(), null ),
-                new ServerGenerator( _typeTranslationProvider, nameProvider, new TestLoggingFactory(), new MefGenerator(), null ), _typeTranslationProvider, new TestLoggingFactory(), null );
-            var unit = providerGenerator.GenerateInterfaceUnit( feature,
-                "Tecan.Sila2.Generator.Test.TestReference",
-                generateServer: true,
-                generateClient: true );
+            var providerGenerator = new ServerGenerator( _typeTranslationProvider, nameProvider, new TestLoggingFactory(), new MefGenerator(), null );
+            var unit = providerGenerator.GenerateServer( feature,
+                "Tecan.Sila2.Generator.Test.TestReference");
 
             GenerateAndCompare( unit, ProviderReference );
+        }
+
+        [Test]
+        public void Test_GenerateClient()
+        {
+            var feature = FeatureSerializer.Load( FeatureDefinitionFile );
+            var nameProvider = CreateNameProvider();
+            var providerGenerator = new ClientGenerator( nameProvider, _typeTranslationProvider, new TestLoggingFactory(), null );
+            var unit = providerGenerator.GenerateClient( feature,
+                "Tecan.Sila2.Generator.Test.TestReference" );
+
+            GenerateAndCompare( unit, ClientReference );
         }
 
         private static void GenerateAndCompare( CodeCompileUnit unit, string referenceFile )

@@ -9,28 +9,28 @@ namespace Tecan.Sila2.Client.ExecutionManagement
     internal class ExecutionManager : IClientExecutionManager
     {
         private readonly InterceptionRepository _interceptionRepository;
-        private readonly GrpcServerData _serverData;
+        private readonly ServerData _serverData;
 
         public IBinaryStore DownloadBinaryStore { get; }
 
-        public ExecutionManager( GrpcServerData serverData, IEnumerable<IClientRequestInterceptor> interceptors )
+        public ExecutionManager( ServerData serverData, IEnumerable<IClientRequestInterceptor> interceptors )
         {
             _interceptionRepository = new InterceptionRepository( interceptors );
             _serverData = serverData;
 
             FindAllMetadata();
 
-            DownloadBinaryStore = new ClientBinaryStore( string.Empty, serverData.Channel, this );
+            DownloadBinaryStore = serverData.Channel.CreateBinaryStore( null, this );
         }
 
         private void FindAllMetadata()
         {
-            var reader = new MetadataReader( _serverData.Channel );
             foreach(var feature in _serverData.Features)
             {
+                var serviceName = feature.Namespace + "." + feature.Identifier;
                 foreach(var metadata in feature.Items.OfType<FeatureMetadata>())
                 {
-                    _interceptionRepository.RegisterAffected( feature.GetFullyQualifiedIdentifier( metadata ), reader.GetAffected( feature, metadata ) );
+                    _interceptionRepository.RegisterAffected( feature.GetFullyQualifiedIdentifier( metadata ), _serverData.Channel.GetAffected( serviceName, feature.GetFullyQualifiedIdentifier(metadata) ) );
                 }
             }
         }
@@ -58,7 +58,7 @@ namespace Tecan.Sila2.Client.ExecutionManagement
 
         public IBinaryStore CreateBinaryStore( string commandParameterIdentifier )
         {
-            return new ClientBinaryStore( commandParameterIdentifier, _serverData.Channel, this );
+            return _serverData.Channel.CreateBinaryStore( commandParameterIdentifier, this );
         }
     }
 }

@@ -49,8 +49,45 @@ namespace Tecan.Sila2.Generator.Generators
         }
 
 
+
         /// <inheritdoc />
-        public CodeTypeDeclaration GenerateServer( Feature feature )
+        public CodeCompileUnit GenerateServer( Feature feature, string ns )
+        {
+            _loggingChannel.Log( $"Generating server for {feature.FullyQualifiedIdentifier}".ToString, Severity.Info );
+            var unit = new CodeCompileUnit();
+            var nSpace = new CodeNamespace( ns );
+            unit.Namespaces.Add( nSpace );
+
+            var serverClass = GenerateServerClass( feature );
+            nSpace.Types.Add( serverClass );
+
+            foreach(var metadata in feature.Items.OfType<FeatureMetadata>())
+            {
+                nSpace.Types.Add( GenerateMetadataInterceptorBase( feature, metadata ) );
+            }
+
+            var usingNs = new CodeNamespace();
+            usingNs.Imports.Add( new CodeNamespaceImport( "System.Linq" ) );
+            usingNs.Imports.Add( new CodeNamespaceImport( "Tecan.Sila2" ) );
+            usingNs.Imports.Add( new CodeNamespaceImport( "Tecan.Sila2.Client" ) );
+            usingNs.Imports.Add( new CodeNamespaceImport( "Tecan.Sila2.Server" ) );
+            unit.Namespaces.Add( usingNs );
+
+            if(_hooks != null)
+            {
+                foreach(var generatorHook in _hooks)
+                {
+                    _loggingChannel.Log( $"Executing hook {generatorHook} after code generation completed".ToString );
+                    generatorHook?.OnServerGenerated( feature, serverClass, unit );
+                }
+            }
+
+            return unit;
+        }
+
+
+        /// <inheritdoc />
+        public CodeTypeDeclaration GenerateServerClass( Feature feature )
         {
             _loggingChannel.Log( $"Generating feature provider for {feature.FullyQualifiedIdentifier}".ToString, Severity.Info );
             var server = new CodeTypeDeclaration( feature.Identifier + "Provider" )
@@ -91,15 +128,6 @@ namespace Tecan.Sila2.Generator.Generators
             GenerateServerGetProperty( server, feature );
 
             _diGenerator.AddDependencyInjectionRegistrations(server);
-
-            if( _hooks != null )
-            {
-                foreach( var hook in _hooks )
-                {
-                    _loggingChannel.Log($"Executing hook {hook} after provider code generation is complete.".ToString);
-                    hook?.OnServerGenerated( feature, server );
-                }
-            }
 
             return server;
         }

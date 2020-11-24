@@ -48,9 +48,39 @@ namespace Tecan.Sila2.Generator.Generators
             _loggingChannel = loggingChannelFactory.CreateChannel( typeof(ClientGenerator) );
         }
 
+        /// <inheritdoc />
+        public CodeCompileUnit GenerateClient( Feature feature, string ns )
+        {
+            _loggingChannel.Log( $"Generating clients for {feature.FullyQualifiedIdentifier}".ToString, Severity.Info );
+            var unit = new CodeCompileUnit();
+            var nSpace = new CodeNamespace( ns );
+            unit.Namespaces.Add( nSpace );
+
+            var client = GenerateClientClass( feature );
+            nSpace.Types.Add( client );
+
+            var usingNs = new CodeNamespace();
+            usingNs.Imports.Add( new CodeNamespaceImport( "System.Linq" ) );
+            usingNs.Imports.Add( new CodeNamespaceImport( "Tecan.Sila2" ) );
+            usingNs.Imports.Add( new CodeNamespaceImport( "Tecan.Sila2.Client" ) );
+            usingNs.Imports.Add( new CodeNamespaceImport( "Tecan.Sila2.Server" ) );
+            unit.Namespaces.Add( usingNs );
+
+            if(_hooks != null)
+            {
+                foreach(var generatorHook in _hooks)
+                {
+                    _loggingChannel.Log( $"Executing hook {generatorHook} after code generation completed".ToString );
+                    generatorHook?.OnClientGenerated( feature, client, unit );
+                }
+            }
+
+            return unit;
+        }
+
 
         /// <inheritdoc />
-        public CodeTypeDeclaration GenerateClient(Feature feature)
+        public CodeTypeDeclaration GenerateClientClass(Feature feature)
         {
             _loggingChannel.Log($"Generating client for feature {feature.FullyQualifiedIdentifier}".ToString, Severity.Info);
             var client = new CodeTypeDeclaration( feature.Identifier + "Client")
@@ -60,8 +90,6 @@ namespace Tecan.Sila2.Generator.Generators
                 IsClass = true,
                 IsPartial = true
             };
-            client.BaseTypes.Add(new CodeTypeReference(typeof(ClientBase<>).FullName,
-                new CodeTypeReference(client.Name)));
             client.BaseTypes.Add(_nameProvider.CreateFeatureInterfaceReference(feature));
             GenerateClientBaseImplementation(feature, client);
             foreach (var featureCommand in feature.Items.OfType<FeatureCommand>())
@@ -78,14 +106,6 @@ namespace Tecan.Sila2.Generator.Generators
             }
             GenerateClientServiceNameField( feature, client );
             GenerateClientExtractMethod(client);
-            if (_hooks != null)
-            {
-                foreach (var hook in _hooks)
-                {
-                    _loggingChannel.Log($"Executing client generation hook {hook}".ToString);
-                    hook?.OnClientGenerated(feature, client);
-                }
-            }
 
             client.WriteDocumentation($"Class that implements the {_nameProvider.CreateFeatureInterfaceReference(feature).BaseType} interface through SiLA2");
             return client;
@@ -745,20 +765,21 @@ namespace Tecan.Sila2.Generator.Generators
                 {resolverParameter.Name, "A component to determine metadata to attach to any requests" },
                 {channelParameter.Name, "The channel through which calls should be executed" },
             };
-            parameterDocumentation.Add( resolverParameter.Name, "A component that attaches metadata to SiLA2 calls" );
             constructor.WriteDocumentation( "Creates a new instance", parameters: parameterDocumentation );
 
             constructor.Parameters.Add( resolverParameter );
-            if(initLazyRequests)
-            {
-                constructor.Statements.Add( callInitLazyRequests );
-            }
+            constructor.Parameters.Add( channelParameter );
             constructor.Statements.Add( new CodeAssignStatement(
                 new CodeFieldReferenceExpression( null, resolverField.Name ),
                 new CodeArgumentReferenceExpression( resolverParameter.Name ) ) );
             constructor.Statements.Add( new CodeAssignStatement(
                 new CodeFieldReferenceExpression( null, ChannelFieldName ),
                 new CodeArgumentReferenceExpression( channelParameter.Name ) ) );
+            if(initLazyRequests)
+            {
+                constructor.Statements.Add( callInitLazyRequests );
+            }
+
             client.Members.Add( constructor );
         }
     }

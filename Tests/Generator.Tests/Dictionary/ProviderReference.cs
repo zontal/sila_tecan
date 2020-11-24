@@ -101,57 +101,27 @@ namespace Tecan.Sila2.Generator.Test.TestReference
     ///  <summary>
     /// Class that implements the IDictionaryService interface through SiLA2
     /// </summary>
-    public partial class DictionaryServiceClient : Grpc.Core.ClientBase<DictionaryServiceClient>, IDictionaryService
+    public partial class DictionaryServiceClient : IDictionaryService
     {
         
         private System.Lazy<System.Collections.Generic.IDictionary<long, string>> _lookup;
         
         private IClientExecutionManager _executionManager;
         
-        ///  <summary>
-        /// Creates a new instance
-        /// </summary>
-        /// <param name="executionManager">A component that attaches metadata to SiLA2 calls</param>
-        public DictionaryServiceClient(IClientExecutionManager executionManager)
-        {
-            InitLazyRequests();
-            _executionManager = executionManager;
-        }
+        private IClientChannel _channel;
+        
+        private string _serviceName = "sila2.tecan.sila.generator.test.dictionaryservice.v2.DictionaryService";
         
         ///  <summary>
         /// Creates a new instance
         /// </summary>
-        /// <param name="configuration">The underlying configuration</param>
-        /// <param name="executionManager">A component that attaches metadata to SiLA2 calls</param>
-        protected DictionaryServiceClient(ClientBaseConfiguration configuration, IClientExecutionManager executionManager) : 
-                base(configuration)
+        /// <param name="executionManager">A component to determine metadata to attach to any requests</param>
+        /// <param name="channel">The channel through which calls should be executed</param>
+        public DictionaryServiceClient(IClientExecutionManager executionManager, IClientChannel channel)
         {
             InitLazyRequests();
             _executionManager = executionManager;
-        }
-        
-        ///  <summary>
-        /// Creates a new instance
-        /// </summary>
-        /// <param name="channel">The underlying channel</param>
-        /// <param name="executionManager">A component that attaches metadata to SiLA2 calls</param>
-        public DictionaryServiceClient(Grpc.Core.Channel channel, IClientExecutionManager executionManager) : 
-                base(channel)
-        {
-            InitLazyRequests();
-            _executionManager = executionManager;
-        }
-        
-        ///  <summary>
-        /// Creates a new instance
-        /// </summary>
-        /// <param name="invoker">The underlying invoker</param>
-        /// <param name="executionManager">A component that attaches metadata to SiLA2 calls</param>
-        public DictionaryServiceClient(Grpc.Core.CallInvoker invoker, IClientExecutionManager executionManager) : 
-                base(invoker)
-        {
-            InitLazyRequests();
-            _executionManager = executionManager;
+            _channel = channel;
         }
         
         ///  <summary>
@@ -169,7 +139,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("tecan.sila.generator/test/DictionaryService/v2/Property/Lookup");
             try
             {
-                System.Collections.Generic.IDictionary<long, string> response = Tecan.Sila2.DtoExtensions.Extract(CallInvoker.BlockingUnaryCall(DictionaryServiceMethods.GetLookupMethod, null, callInfo.ToCallOptions(), EmptyRequest.Instance).Value, _executionManager.DownloadBinaryStore);
+                System.Collections.Generic.IDictionary<long, string> response = Tecan.Sila2.DtoExtensions.Extract(_channel.ReadProperty<PropertyResponse<System.Collections.Generic.List<Tecan.Sila2.KeyValuePairDto<long, Tecan.Sila2.IntegerDto, string, Tecan.Sila2.StringDto>>>>(_serviceName, "Lookup", callInfo).Value, _executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -186,15 +156,6 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         private void InitLazyRequests()
         {
             _lookup = new System.Lazy<System.Collections.Generic.IDictionary<long, string>>(RequestLookup);
-        }
-        
-        ///  <summary>
-        /// Creates a new instance
-        /// </summary>
-        /// <param name="configuration">The new client configuration</param>
-        protected override DictionaryServiceClient NewInstance(ClientBaseConfiguration configuration)
-        {
-            return new DictionaryServiceClient(configuration, _executionManager);
         }
         
         private T Extract<T>(Tecan.Sila2.ISilaTransferObject<T> dto)

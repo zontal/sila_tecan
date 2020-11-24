@@ -44,10 +44,16 @@ namespace Tecan.Sila2.Generator.CommandLine
         public string DtoPath { get; set; }
 
         /// <summary>
-        /// The path where the provider should be generated to
+        /// The path where the provider should be generated to. If no provider shall be generated, path to the client
         /// </summary>
-        [Value(2, Required = true, HelpText = "The path where the provider should be generated to")]
+        [Value(2, Required = true, HelpText = "The path where the provider should be generated to. If no provider shall be generated, path to the client")]
         public string ProviderPath { get; set; }
+
+        /// <summary>
+        /// The path to the client in case both server and client are generated
+        /// </summary>
+        [Value(3, Required = false, HelpText = "The path to the client in case both server and client are generated")]
+        public string ClientPath { get; set; }
 
         /// <summary>
         /// If set, only the client code will be generated
@@ -80,29 +86,38 @@ namespace Tecan.Sila2.Generator.CommandLine
         /// </summary>
         public bool GenerateServer { get; private set; } = true;
 
-        public override void Execute(CompositionContainer container)
+        public override void Execute( CompositionContainer container )
         {
             var channel = SetupLogging( container );
-            channel.Log("Loading feature".ToString);
-            var feature = FeatureSerializer.Load(FeaturePath);
+            channel.Log( "Loading feature".ToString );
+            var feature = FeatureSerializer.Load( FeaturePath );
             var ns = Namespace ?? feature.Namespace;
 
             var dtoGenerator = container.GetExportedValue<IDtoGenerator>();
-            var providerGenerator = container.GetExportedValue<IProviderGenerator>();
+            var providerGenerator = container.GetExportedValue<IServerGenerator>();
+            var clientGenerator = container.GetExportedValue<IClientGenerator>();
 
-            var dtoUnit = dtoGenerator.GenerateInterfaceUnit(feature, ns);
-            var providerUnit = providerGenerator.GenerateInterfaceUnit(feature, ns,
-                GenerateServer, GenerateClient);
+            var dtoUnit = dtoGenerator.GenerateInterfaceUnit( feature, ns );
+            var providerUnit = GenerateServer ? providerGenerator.GenerateServer( feature, ns ) : null;
+            var clientUnit = GenerateClient ? clientGenerator.GenerateClient( feature, ns ) : null;
             var imports = ImportedNamespaces == null
                 ? new string[0]
-                : ImportedNamespaces.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
-            channel.Log("Adding additional import statements".ToString);
-            AddUsingStatements(dtoUnit, imports);
-            AddUsingStatements(providerUnit, imports);
-            channel.Log("Generating code for data transfer objects".ToString, Severity.Info );
-            CodeGenerationHelper.GenerateCSharp(dtoUnit, Path.GetFullPath(DtoPath));
+                : ImportedNamespaces.Split( new[] { ';' }, StringSplitOptions.RemoveEmptyEntries );
+            channel.Log( "Adding additional import statements".ToString );
+            AddUsingStatements( dtoUnit, imports );
+            AddUsingStatements( providerUnit, imports );
+            AddUsingStatements( clientUnit, imports );
+            channel.Log( "Generating code for data transfer objects".ToString, Severity.Info );
+            CodeGenerationHelper.GenerateCSharp( dtoUnit, Path.GetFullPath( DtoPath ) );
             channel.Log( "Generating code for provider".ToString, Severity.Info );
-            CodeGenerationHelper.GenerateCSharp(providerUnit, Path.GetFullPath(ProviderPath));
+            if(GenerateServer)
+            {
+                CodeGenerationHelper.GenerateCSharp( providerUnit, Path.GetFullPath( ProviderPath ) );
+            }
+            if(GenerateClient)
+            {
+                CodeGenerationHelper.GenerateCSharp( clientUnit, Path.GetFullPath( ClientPath ) );
+            }
         }
 
         private static void AddUsingStatements(CodeCompileUnit unit, string[] imports)

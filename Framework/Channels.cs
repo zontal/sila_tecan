@@ -5,7 +5,7 @@ using System.Threading.Channels;
 
 namespace Tecan.Sila2
 {
-    internal class Channels
+    public class Channels
     {
         public static readonly UnboundedChannelOptions DefaultOptions = new UnboundedChannelOptions()
         {

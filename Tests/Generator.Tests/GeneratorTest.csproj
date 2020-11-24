@@ -43,6 +43,9 @@
         <ProjectReference Include="..\..\Framework\Framework.csproj" />
     </ItemGroup>
     <ItemGroup>
+        <Compile Update="Dictionary\ClientReference.cs">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Compile>
         <Compile Update="Dictionary\DtoReference.cs">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Compile>
@@ -52,10 +55,16 @@
         <Compile Update="Dictionary\ServiceReference.cs">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Compile>
+        <Compile Update="InlineObservable\ClientReference.cs">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Compile>
         <Compile Update="InlineObservable\DtoReference.cs">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Compile>
         <Compile Update="InlineObservable\ProviderReference.cs">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Compile>
+        <Compile Update="Logging\ClientReference.cs">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Compile>
         <Compile Update="Logging\DtoReference.cs">
@@ -70,6 +79,9 @@
         <Compile Update="Logging\ServiceReference.cs">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Compile>
+        <Compile Update="SilaService\ClientReference.cs">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Compile>
         <Compile Update="SilaService\DtoReference.cs">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Compile>
@@ -78,6 +90,9 @@
         </Compile>
         <Compile Update="SilaService\ServiceReference.cs">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Compile>
+        <Compile Update="TemperatureController\ClientReference.cs">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Compile>
         <Compile Update="TemperatureController\DtoReference.cs">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

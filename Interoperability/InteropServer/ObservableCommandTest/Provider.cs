@@ -61,13 +61,18 @@ namespace Tecan.Sila2.Interop.Server
         /// <param name="registration">The registration component to which the feature should be registered</param>
         public void Register(IServerBuilder registration)
         {
-            registration.RegisterCommandWithIntermediates<ObservableIterationRequestDto, long, ObservableIterationIntermediateDto, long, ObservableIterationResponseDto>("ObservableIteration", ObservableIteration, ConvertObservableIterationIntermediate, null);
-            registration.RegisterObservableCommand<EchoValueAsyncRequestDto, long, EchoValueAsyncResponseDto>("EchoValueAsync", EchoValueAsync, null);
+            registration.RegisterCommandWithIntermediates<ObservableIterationRequestDto, long, ObservableIterationIntermediateDto, long, ObservableIterationResponseDto>("ObservableIteration", ObservableIteration, ConvertObservableIterationIntermediate, ConvertObservableIterationResponse, null);
+            registration.RegisterObservableCommand<EchoValueAsyncRequestDto, long, EchoValueAsyncResponseDto>("EchoValueAsync", EchoValueAsync, ConvertEchoValueAsyncResponse, null);
         }
         
         private ObservableIterationIntermediateDto ConvertObservableIterationIntermediate(long intermediate)
         {
             return new ObservableIterationIntermediateDto(intermediate, _server);
+        }
+        
+        private ObservableIterationResponseDto ConvertObservableIterationResponse(long result)
+        {
+            return new ObservableIterationResponseDto(result, _server);
         }
         
         ///  <summary>
@@ -78,6 +83,11 @@ namespace Tecan.Sila2.Interop.Server
         protected virtual Tecan.Sila2.IIntermediateObservableCommand<long, long> ObservableIteration(ObservableIterationRequestDto request)
         {
             return _implementation.ObservableIteration(request.NumberIterations.Extract(_server));
+        }
+        
+        private EchoValueAsyncResponseDto ConvertEchoValueAsyncResponse(long result)
+        {
+            return new EchoValueAsyncResponseDto(result, _server);
         }
         
         ///  <summary>

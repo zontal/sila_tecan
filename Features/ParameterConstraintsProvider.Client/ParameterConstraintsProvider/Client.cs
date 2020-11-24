@@ -29,46 +29,20 @@ namespace Tecan.Sila2.ParameterConstraintsProvider.ParameterConstraintsProvider
         
         private IClientExecutionManager _executionManager;
         
+        private IClientChannel _channel;
+        
+        private string _serviceName = "sila2.org.silastandard.core.commands.parameterconstraintsprovider.v1.ParameterCon" +
+            "straintsProvider";
+        
         ///  <summary>
         /// Creates a new instance
         /// </summary>
-        /// <param name="executionManager">A component that attaches metadata to SiLA2 calls</param>
+        /// <param name="executionManager">A component to determine metadata to attach to any requests</param>
+        /// <param name="channel">The channel through which calls should be executed</param>
         public ParameterConstraintsProviderClient(IClientExecutionManager executionManager)
         {
             _executionManager = executionManager;
-        }
-        
-        ///  <summary>
-        /// Creates a new instance
-        /// </summary>
-        /// <param name="configuration">The underlying configuration</param>
-        /// <param name="executionManager">A component that attaches metadata to SiLA2 calls</param>
-        protected ParameterConstraintsProviderClient(ClientBaseConfiguration configuration, IClientExecutionManager executionManager) : 
-                base(configuration)
-        {
-            _executionManager = executionManager;
-        }
-        
-        ///  <summary>
-        /// Creates a new instance
-        /// </summary>
-        /// <param name="channel">The underlying channel</param>
-        /// <param name="executionManager">A component that attaches metadata to SiLA2 calls</param>
-        public ParameterConstraintsProviderClient(Grpc.Core.Channel channel, IClientExecutionManager executionManager) : 
-                base(channel)
-        {
-            _executionManager = executionManager;
-        }
-        
-        ///  <summary>
-        /// Creates a new instance
-        /// </summary>
-        /// <param name="invoker">The underlying invoker</param>
-        /// <param name="executionManager">A component that attaches metadata to SiLA2 calls</param>
-        public ParameterConstraintsProviderClient(Grpc.Core.CallInvoker invoker, IClientExecutionManager executionManager) : 
-                base(invoker)
-        {
-            _executionManager = executionManager;
+            _channel = channel;
         }
         
         ///  <summary>
@@ -80,7 +54,7 @@ namespace Tecan.Sila2.ParameterConstraintsProvider.ParameterConstraintsProvider
             {
                 if ((_parametersConstraintsUpdateTask == null))
                 {
-                    _parametersConstraintsUpdateTask = ObservableCommandHelper.SubscribeTo(CallInvoker, ParameterConstraintsProviderMethods.SubscribeParametersConstraintsMethod, ReceiveNewParametersConstraints, _executionManager.CreateCallOptions("org.silastandard/core.commands/ParameterConstraintsProvider/v1/Property/Parameter" +
+                    _parametersConstraintsUpdateTask = _channel.SubscribeProperty<PropertyResponse<System.Collections.Generic.List<ParametersConstraintDto>>>(_serviceName, "ParametersConstraints", ReceiveNewParametersConstraints, _executionManager.CreateCallOptions("org.silastandard/core.commands/ParameterConstraintsProvider/v1/Property/Parameter" +
                                 "sConstraints"));
                 }
                 return _parametersConstraints;
@@ -101,15 +75,6 @@ namespace Tecan.Sila2.ParameterConstraintsProvider.ParameterConstraintsProvider
                     handler.Invoke(this, new System.ComponentModel.PropertyChangedEventArgs("ParametersConstraints"));
                 }
             }
-        }
-        
-        ///  <summary>
-        /// Creates a new instance
-        /// </summary>
-        /// <param name="configuration">The new client configuration</param>
-        protected override ParameterConstraintsProviderClient NewInstance(ClientBaseConfiguration configuration)
-        {
-            return new ParameterConstraintsProviderClient(configuration, _executionManager);
         }
         
         private T Extract<T>(Tecan.Sila2.ISilaTransferObject<T> dto)

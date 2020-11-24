@@ -109,51 +109,25 @@ namespace Tecan.Sila2.Generator.Test.TestReference
     ///  <summary>
     /// Class that implements the ILoggingService interface through SiLA2
     /// </summary>
-    public partial class LoggingServiceClient : Grpc.Core.ClientBase<LoggingServiceClient>, ILoggingService
+    public partial class LoggingServiceClient : ILoggingService
     {
         
         private IClientExecutionManager _executionManager;
         
-        ///  <summary>
-        /// Creates a new instance
-        /// </summary>
-        /// <param name="executionManager">A component that attaches metadata to SiLA2 calls</param>
-        public LoggingServiceClient(IClientExecutionManager executionManager)
-        {
-            _executionManager = executionManager;
-        }
+        private IClientChannel _channel;
+        
+        private string _serviceName = "sila2.tecan.sila.generator.test.logging.infrastructure.loggingservice.v2.LoggingS" +
+            "ervice";
         
         ///  <summary>
         /// Creates a new instance
         /// </summary>
-        /// <param name="configuration">The underlying configuration</param>
-        /// <param name="executionManager">A component that attaches metadata to SiLA2 calls</param>
-        protected LoggingServiceClient(ClientBaseConfiguration configuration, IClientExecutionManager executionManager) : 
-                base(configuration)
+        /// <param name="executionManager">A component to determine metadata to attach to any requests</param>
+        /// <param name="channel">The channel through which calls should be executed</param>
+        public LoggingServiceClient(IClientExecutionManager executionManager, IClientChannel channel)
         {
             _executionManager = executionManager;
-        }
-        
-        ///  <summary>
-        /// Creates a new instance
-        /// </summary>
-        /// <param name="channel">The underlying channel</param>
-        /// <param name="executionManager">A component that attaches metadata to SiLA2 calls</param>
-        public LoggingServiceClient(Grpc.Core.Channel channel, IClientExecutionManager executionManager) : 
-                base(channel)
-        {
-            _executionManager = executionManager;
-        }
-        
-        ///  <summary>
-        /// Creates a new instance
-        /// </summary>
-        /// <param name="invoker">The underlying invoker</param>
-        /// <param name="executionManager">A component that attaches metadata to SiLA2 calls</param>
-        public LoggingServiceClient(Grpc.Core.CallInvoker invoker, IClientExecutionManager executionManager) : 
-                base(invoker)
-        {
-            _executionManager = executionManager;
+            _channel = channel;
         }
         
         ///  <summary>
@@ -162,15 +136,16 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         public virtual Tecan.Sila2.IIntermediateObservableCommand<LogEntry> ListenForLogEntries()
         {
             ListenForLogEntriesRequestDto request = new ListenForLogEntriesRequestDto(null);
-            return ObservableClientCommands.CreateIntermediate(_executionManager.CreateCallOptions(request.CommandIdentifier), CallInvoker, request, LoggingServiceMethods.ListenForLogEntriesMethod, LoggingServiceMethods.ListenForLogEntriesStateMethod, LoggingServiceMethods.ListenForLogEntriesIntermediateMethod, ConvertListenForLogEntriesIntermediate, ConvertListenForLogEntriesException);
+            return _channel.ExecuteIntermediatesCommand<ListenForLogEntriesRequestDto, LogEntry, ListenForLogEntriesIntermediateDto>(_serviceName, "ListenForLogEntries", request, ConvertListenForLogEntriesIntermediate, ConvertListenForLogEntriesException, _executionManager.CreateCallOptions(request.CommandIdentifier));
         }
         
         ///  <summary>
         /// Converts the error ocurred during execution of ListenForLogEntries to a proper exception
         /// </summary>
-        /// <param name="error">The SiLA2 execution error</param>
+        /// <param name="errorIdentifier">The identifier of the error that has happened</param>
+        /// <param name="errorMessage">The original error message from the server</param>
         /// <returns>The converted exception or null, if the error is not understood</returns>
-        private static System.Exception ConvertListenForLogEntriesException(Tecan.Sila2.DefinedExecutionErrorDto error)
+        private static System.Exception ConvertListenForLogEntriesException(string errorIdentifier, string errorMessage)
         {
             return null;
         }
@@ -183,15 +158,6 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         private LogEntry ConvertListenForLogEntriesIntermediate(ListenForLogEntriesIntermediateDto value)
         {
             return value.Intermediate.Extract(_executionManager.DownloadBinaryStore);
-        }
-        
-        ///  <summary>
-        /// Creates a new instance
-        /// </summary>
-        /// <param name="configuration">The new client configuration</param>
-        protected override LoggingServiceClient NewInstance(ClientBaseConfiguration configuration)
-        {
-            return new LoggingServiceClient(configuration, _executionManager);
         }
         
         private T Extract<T>(Tecan.Sila2.ISilaTransferObject<T> dto)

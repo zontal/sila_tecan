@@ -19,8 +19,9 @@ namespace Tecan.Sila2.Binary
         /// Creates a new client binary store for the given command parameter identifier
         /// </summary>
         /// <param name="commandParameterIdentifier">A globally unique identifier for the command parameter or null, if the store is not associated to a command parameter</param>
+        /// <param name="channel">The underlying channel</param>
         /// <param name="executionManager">The execution manager to handle requests to the given server</param>
-        public ClientBinaryStore( string commandParameterIdentifier, IClientExecutionManager executionManager )
+        public ClientBinaryStore( string commandParameterIdentifier, Channel channel, IClientExecutionManager executionManager ) : base(channel)
         {
             _commandParameterIdentifier = commandParameterIdentifier;
             _executionManager = executionManager;
@@ -30,9 +31,9 @@ namespace Tecan.Sila2.Binary
         /// Creates a new client binary store for the given command parameter identifier
         /// </summary>
         /// <param name="commandParameterIdentifier">A globally unique identifier for the command parameter or null, if the store is not associated to a command parameter</param>
-        /// <param name="channel">The underlying channel</param>
+        /// <param name="callInvoker">The underlying channel</param>
         /// <param name="executionManager">The execution manager to handle requests to the given server</param>
-        public ClientBinaryStore( string commandParameterIdentifier, Channel channel, IClientExecutionManager executionManager ) : base(channel)
+        public ClientBinaryStore( string commandParameterIdentifier, CallInvoker callInvoker, IClientExecutionManager executionManager ) : base( callInvoker )
         {
             _commandParameterIdentifier = commandParameterIdentifier;
             _executionManager = executionManager;

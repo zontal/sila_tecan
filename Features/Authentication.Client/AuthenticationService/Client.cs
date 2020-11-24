@@ -25,46 +25,19 @@ namespace Tecan.Sila2.Authentication.AuthenticationService
         
         private IClientExecutionManager _executionManager;
         
+        private IClientChannel _channel;
+        
+        private string _serviceName = "sila2.org.silastandard.core.authenticationservice.v1.AuthenticationService";
+        
         ///  <summary>
         /// Creates a new instance
         /// </summary>
-        /// <param name="executionManager">A component that attaches metadata to SiLA2 calls</param>
+        /// <param name="executionManager">A component to determine metadata to attach to any requests</param>
+        /// <param name="channel">The channel through which calls should be executed</param>
         public AuthenticationServiceClient(IClientExecutionManager executionManager)
         {
             _executionManager = executionManager;
-        }
-        
-        ///  <summary>
-        /// Creates a new instance
-        /// </summary>
-        /// <param name="configuration">The underlying configuration</param>
-        /// <param name="executionManager">A component that attaches metadata to SiLA2 calls</param>
-        protected AuthenticationServiceClient(ClientBaseConfiguration configuration, IClientExecutionManager executionManager) : 
-                base(configuration)
-        {
-            _executionManager = executionManager;
-        }
-        
-        ///  <summary>
-        /// Creates a new instance
-        /// </summary>
-        /// <param name="channel">The underlying channel</param>
-        /// <param name="executionManager">A component that attaches metadata to SiLA2 calls</param>
-        public AuthenticationServiceClient(Grpc.Core.Channel channel, IClientExecutionManager executionManager) : 
-                base(channel)
-        {
-            _executionManager = executionManager;
-        }
-        
-        ///  <summary>
-        /// Creates a new instance
-        /// </summary>
-        /// <param name="invoker">The underlying invoker</param>
-        /// <param name="executionManager">A component that attaches metadata to SiLA2 calls</param>
-        public AuthenticationServiceClient(Grpc.Core.CallInvoker invoker, IClientExecutionManager executionManager) : 
-                base(invoker)
-        {
-            _executionManager = executionManager;
+            _channel = channel;
         }
         
         ///  <summary>
@@ -80,7 +53,7 @@ namespace Tecan.Sila2.Authentication.AuthenticationService
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/core/AuthenticationService/v1/Command/Login");
             try
             {
-                LoginResponse response = CallInvoker.BlockingUnaryCall(AuthenticationServiceMethods.LoginMethod, null, callInfo.ToCallOptions(), request).Extract(_executionManager.DownloadBinaryStore);
+                LoginResponse response = _channel.ExecuteUnobservableCommand<LoginRequestDto, LoginResponseDto>(_serviceName, "Login", request, callInfo).Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -94,13 +67,14 @@ namespace Tecan.Sila2.Authentication.AuthenticationService
         ///  <summary>
         /// Converts the error ocurred during execution of Login to a proper exception
         /// </summary>
-        /// <param name="error">The SiLA2 execution error</param>
+        /// <param name="errorIdentifier">The identifier of the error that has happened</param>
+        /// <param name="errorMessage">The original error message from the server</param>
         /// <returns>The converted exception or null, if the error is not understood</returns>
-        private static System.Exception ConvertLoginException(Tecan.Sila2.DefinedExecutionErrorDto error)
+        private static System.Exception ConvertLoginException(string errorIdentifier, string errorMessage)
         {
-            if ((error.ErrorIdentifier == "org.silastandard/core/AuthenticationService/v1/DefinedError/AuthenticationFailed"))
+            if ((errorIdentifier == "org.silastandard/core/AuthenticationService/v1/DefinedError/AuthenticationFailed"))
             {
-                return new AuthenticationFailedException(error.Message);
+                return new AuthenticationFailedException(errorMessage);
             }
             return null;
         }
@@ -115,7 +89,7 @@ namespace Tecan.Sila2.Authentication.AuthenticationService
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/core/AuthenticationService/v1/Command/Logout");
             try
             {
-                CallInvoker.BlockingUnaryCall(AuthenticationServiceMethods.LogoutMethod, null, callInfo.ToCallOptions(), request);
+                _channel.ExecuteUnobservableCommand<LogoutRequestDto>(_serviceName, "Logout", request, callInfo);
                 callInfo.FinishSuccessful();
                 return;
             } catch (System.Exception ex)
@@ -129,24 +103,16 @@ namespace Tecan.Sila2.Authentication.AuthenticationService
         ///  <summary>
         /// Converts the error ocurred during execution of Logout to a proper exception
         /// </summary>
-        /// <param name="error">The SiLA2 execution error</param>
+        /// <param name="errorIdentifier">The identifier of the error that has happened</param>
+        /// <param name="errorMessage">The original error message from the server</param>
         /// <returns>The converted exception or null, if the error is not understood</returns>
-        private static System.Exception ConvertLogoutException(Tecan.Sila2.DefinedExecutionErrorDto error)
+        private static System.Exception ConvertLogoutException(string errorIdentifier, string errorMessage)
         {
-            if ((error.ErrorIdentifier == "org.silastandard/core/AuthenticationService/v1/DefinedError/InvalidAccessToken"))
+            if ((errorIdentifier == "org.silastandard/core/AuthenticationService/v1/DefinedError/InvalidAccessToken"))
             {
-                return new InvalidAccessTokenException(error.Message);
+                return new InvalidAccessTokenException(errorMessage);
             }
             return null;
-        }
-        
-        ///  <summary>
-        /// Creates a new instance
-        /// </summary>
-        /// <param name="configuration">The new client configuration</param>
-        protected override AuthenticationServiceClient NewInstance(ClientBaseConfiguration configuration)
-        {
-            return new AuthenticationServiceClient(configuration, _executionManager);
         }
         
         private T Extract<T>(Tecan.Sila2.ISilaTransferObject<T> dto)

@@ -21,7 +21,7 @@ namespace Tecan.Sila2.Client
             Method<CommandExecutionUuid, ExecutionState> stateMethod,
             Method<CommandExecutionUuid, TIntermediateResponse> intermediateMethod,
             Func<TIntermediateResponse, TIntermediate> intermediateConverter,
-            Func<DefinedExecutionErrorDto, Exception> errorConverter)
+            Func<string, string, Exception> errorConverter)
             : base(executionManager, callInvoker, commandId, stateMethod, errorConverter)
         {
             IntermediateConverter = intermediateConverter;
@@ -99,7 +99,7 @@ namespace Tecan.Sila2.Client
             Method<CommandExecutionUuid, TResultResponse> resultMethod,
             Func<TIntermediateResponse, TIntermediate> intermediateConverter,
             Func<TResultResponse, TResult> resultConverter,
-            Func<DefinedExecutionErrorDto, Exception> errorConverter )
+            Func<string, string, Exception> errorConverter )
             : base( callInfo, callInvoker, commandId, stateMethod, resultMethod, resultConverter, errorConverter )
         {
             IntermediateConverter = intermediateConverter;

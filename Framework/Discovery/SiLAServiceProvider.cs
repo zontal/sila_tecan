@@ -545,11 +545,11 @@ namespace Tecan.Sila2.Discovery
         /// </summary>
         /// <param name="error">The SiLA2 execution error</param>
         /// <returns>The converted exception or null, if the error is not understood</returns>
-        private static System.Exception ConvertGetFeatureDefinitionException(Tecan.Sila2.DefinedExecutionErrorDto error)
+        private static System.Exception ConvertGetFeatureDefinitionException(string errorIdentifier, string errorMessage)
         {
-            if ((error.ErrorIdentifier == "org.silastandard/core/SiLAService/v1/DefinedError/UnimplementedFeature"))
+            if ((errorIdentifier == "org.silastandard/core/SiLAService/v1/DefinedError/UnimplementedFeature"))
             {
-                return new UnimplementedFeatureException(error.Message);
+                return new UnimplementedFeatureException(errorMessage);
             }
             return null;
         }

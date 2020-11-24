@@ -167,23 +167,6 @@ namespace Tecan.Sila2.Locking
     }
     
     ///  <summary>
-    /// Encapsulates provider classes to expose the Lock Controller feature via SiLA2
-    /// </summary>
-    internal sealed partial class LockControllerMethods
-    {
-        
-        private static string @__ServiceName = "sila2.org.silastandard.core.lockcontroller.v1.LockController";
-        
-        public static Grpc.Core.Method<LockServerRequestDto, EmptyRequest> LockServerMethod = new Grpc.Core.Method<LockServerRequestDto, EmptyRequest>(Grpc.Core.MethodType.Unary, @__ServiceName, "LockServer", ProtobufMarshaller<LockServerRequestDto>.Default, EmptyRequest.Marshaller);
-        
-        public static Grpc.Core.Method<UnlockServerRequestDto, EmptyRequest> UnlockServerMethod = new Grpc.Core.Method<UnlockServerRequestDto, EmptyRequest>(Grpc.Core.MethodType.Unary, @__ServiceName, "UnlockServer", ProtobufMarshaller<UnlockServerRequestDto>.Default, EmptyRequest.Marshaller);
-        
-        public static Grpc.Core.Method<EmptyRequest, PropertyResponse<Tecan.Sila2.BooleanDto>> GetIsLockedMethod = new Grpc.Core.Method<EmptyRequest, PropertyResponse<Tecan.Sila2.BooleanDto>>(Grpc.Core.MethodType.Unary, @__ServiceName, "Get_IsLocked", EmptyRequest.Marshaller, ProtobufMarshaller<PropertyResponse<Tecan.Sila2.BooleanDto>>.Default);
-        
-        public static Grpc.Core.Method<EmptyRequest, System.Collections.Generic.List<Tecan.Sila2.StringDto>> GetAffectedByLockIdentifierMethod = new Grpc.Core.Method<EmptyRequest, System.Collections.Generic.List<Tecan.Sila2.StringDto>>(Grpc.Core.MethodType.Unary, @__ServiceName, "Get_FCPAffectedByMetadata_LockIdentifier", EmptyRequest.Marshaller, ProtobufMarshaller<System.Collections.Generic.List<Tecan.Sila2.StringDto>>.Default);
-    }
-    
-    ///  <summary>
     /// An abstract base class to support the Lock Identifier metadata
     /// </summary>
     public abstract partial class LockIdentifierInterceptorBase : Tecan.Sila2.Server.IRequestInterceptor

@@ -11,24 +11,11 @@ namespace Tecan.Sila2.Client
     public interface IClientCommand : IObservableCommand
     {
         /// <summary>
-        /// Gets the call invoker for the command
-        /// </summary>
-        CallInvoker CallInvoker
-        {
-            get;
-        }
-
-        /// <summary>
         /// Gets the command identifier
         /// </summary>
         CommandExecutionUuid CommandId
         {
             get;
         }
-
-        /// <summary>
-        /// Gets the call options for the command
-        /// </summary>
-        CallOptions CreateCallOptions();
     }
 }

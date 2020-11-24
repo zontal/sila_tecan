@@ -11,8 +11,9 @@ namespace Tecan.Sila2.Generator.Contracts
         /// Generate a server implementation for the given feature
         /// </summary>
         /// <param name="feature">The feature</param>
+        /// <param name="ns">The namespace to which the code should be generated</param>
         /// <returns>A declaration of the server class</returns>
-        CodeTypeDeclaration GenerateServer(Feature feature);
+        CodeCompileUnit GenerateServer(Feature feature, string ns);
 
         /// <summary>
         /// Generates an abstract base class for a metadata interceptor for the given metadata

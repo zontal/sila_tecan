@@ -29,46 +29,19 @@ namespace Tecan.Sila2.Interop.Client.ObservablePropertyTest
         
         private IClientExecutionManager _executionManager;
         
+        private IClientChannel _channel;
+        
+        private string _serviceName = "sila2.org.silastandard.test.observablepropertytest.v1.ObservablePropertyTest";
+        
         ///  <summary>
         /// Creates a new instance
         /// </summary>
-        /// <param name="executionManager">A component that attaches metadata to SiLA2 calls</param>
+        /// <param name="executionManager">A component to determine metadata to attach to any requests</param>
+        /// <param name="channel">The channel through which calls should be executed</param>
         public ObservablePropertyTestClient(IClientExecutionManager executionManager)
         {
             _executionManager = executionManager;
-        }
-        
-        ///  <summary>
-        /// Creates a new instance
-        /// </summary>
-        /// <param name="configuration">The underlying configuration</param>
-        /// <param name="executionManager">A component that attaches metadata to SiLA2 calls</param>
-        protected ObservablePropertyTestClient(ClientBaseConfiguration configuration, IClientExecutionManager executionManager) : 
-                base(configuration)
-        {
-            _executionManager = executionManager;
-        }
-        
-        ///  <summary>
-        /// Creates a new instance
-        /// </summary>
-        /// <param name="channel">The underlying channel</param>
-        /// <param name="executionManager">A component that attaches metadata to SiLA2 calls</param>
-        public ObservablePropertyTestClient(Grpc.Core.Channel channel, IClientExecutionManager executionManager) : 
-                base(channel)
-        {
-            _executionManager = executionManager;
-        }
-        
-        ///  <summary>
-        /// Creates a new instance
-        /// </summary>
-        /// <param name="invoker">The underlying invoker</param>
-        /// <param name="executionManager">A component that attaches metadata to SiLA2 calls</param>
-        public ObservablePropertyTestClient(Grpc.Core.CallInvoker invoker, IClientExecutionManager executionManager) : 
-                base(invoker)
-        {
-            _executionManager = executionManager;
+            _channel = channel;
         }
         
         ///  <summary>
@@ -80,7 +53,7 @@ namespace Tecan.Sila2.Interop.Client.ObservablePropertyTest
             {
                 if ((_upTimeUpdateTask == null))
                 {
-                    _upTimeUpdateTask = ObservableCommandHelper.SubscribeTo(CallInvoker, ObservablePropertyTestMethods.SubscribeUpTimeMethod, ReceiveNewUpTime, _executionManager.CreateCallOptions("org.silastandard/test/ObservablePropertyTest/v1/Property/UpTime"));
+                    _upTimeUpdateTask = _channel.SubscribeProperty<PropertyResponse<Tecan.Sila2.IntegerDto>>(_serviceName, "UpTime", ReceiveNewUpTime, _executionManager.CreateCallOptions("org.silastandard/test/ObservablePropertyTest/v1/Property/UpTime"));
                 }
                 return _upTime;
             }
@@ -100,15 +73,6 @@ namespace Tecan.Sila2.Interop.Client.ObservablePropertyTest
                     handler.Invoke(this, new System.ComponentModel.PropertyChangedEventArgs("UpTime"));
                 }
             }
-        }
-        
-        ///  <summary>
-        /// Creates a new instance
-        /// </summary>
-        /// <param name="configuration">The new client configuration</param>
-        protected override ObservablePropertyTestClient NewInstance(ClientBaseConfiguration configuration)
-        {
-            return new ObservablePropertyTestClient(configuration, _executionManager);
         }
         
         private T Extract<T>(Tecan.Sila2.ISilaTransferObject<T> dto)

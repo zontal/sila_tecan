@@ -11,7 +11,8 @@ namespace Tecan.Sila2.Generator.Contracts
         /// Generates the client for the given feature
         /// </summary>
         /// <param name="feature">The feature</param>
+        /// <param name="ns">The namespace to which the code should be generated</param>
         /// <returns>A type declaration with the client implementation</returns>
-        CodeTypeDeclaration GenerateClient(Feature feature);
+        CodeCompileUnit GenerateClient(Feature feature, string ns);
     }
 }

@@ -25,46 +25,19 @@ namespace Tecan.Sila2.Interop.Client.ObservableCommandTest
         
         private IClientExecutionManager _executionManager;
         
+        private IClientChannel _channel;
+        
+        private string _serviceName = "sila2.org.silastandard.test.observablecommandtest.v1.ObservableCommandTest";
+        
         ///  <summary>
         /// Creates a new instance
         /// </summary>
-        /// <param name="executionManager">A component that attaches metadata to SiLA2 calls</param>
+        /// <param name="executionManager">A component to determine metadata to attach to any requests</param>
+        /// <param name="channel">The channel through which calls should be executed</param>
         public ObservableCommandTestClient(IClientExecutionManager executionManager)
         {
             _executionManager = executionManager;
-        }
-        
-        ///  <summary>
-        /// Creates a new instance
-        /// </summary>
-        /// <param name="configuration">The underlying configuration</param>
-        /// <param name="executionManager">A component that attaches metadata to SiLA2 calls</param>
-        protected ObservableCommandTestClient(ClientBaseConfiguration configuration, IClientExecutionManager executionManager) : 
-                base(configuration)
-        {
-            _executionManager = executionManager;
-        }
-        
-        ///  <summary>
-        /// Creates a new instance
-        /// </summary>
-        /// <param name="channel">The underlying channel</param>
-        /// <param name="executionManager">A component that attaches metadata to SiLA2 calls</param>
-        public ObservableCommandTestClient(Grpc.Core.Channel channel, IClientExecutionManager executionManager) : 
-                base(channel)
-        {
-            _executionManager = executionManager;
-        }
-        
-        ///  <summary>
-        /// Creates a new instance
-        /// </summary>
-        /// <param name="invoker">The underlying invoker</param>
-        /// <param name="executionManager">A component that attaches metadata to SiLA2 calls</param>
-        public ObservableCommandTestClient(Grpc.Core.CallInvoker invoker, IClientExecutionManager executionManager) : 
-                base(invoker)
-        {
-            _executionManager = executionManager;
+            _channel = channel;
         }
         
         ///  <summary>
@@ -74,27 +47,18 @@ namespace Tecan.Sila2.Interop.Client.ObservableCommandTest
         public virtual Tecan.Sila2.IIntermediateObservableCommand<long, long> ObservableIteration(long numberIterations)
         {
             ObservableIterationRequestDto request = new ObservableIterationRequestDto(numberIterations, null);
-            return ObservableClientCommands.CreateIntermediate(_executionManager.CreateCallOptions(request.CommandIdentifier), CallInvoker, request, ObservableCommandTestMethods.ObservableIterationMethod, ObservableCommandTestMethods.ObservableIterationStateMethod, ObservableCommandTestMethods.ObservableIterationIntermediateMethod, ObservableCommandTestMethods.ObservableIterationResponseMethod, ConvertObservableIterationIntermediate, ConvertObservableIterationResponse, ConvertObservableIterationException);
+            return _channel.ExecuteIntermediatesCommand<ObservableIterationRequestDto, long, ObservableIterationIntermediateDto>(_serviceName, "ObservableIteration", request, ConvertObservableIterationException, ConvertObservableIterationIntermediate, ConvertObservableIterationResponse, _executionManager.CreateCallOptions(request.CommandIdentifier));
         }
         
         ///  <summary>
         /// Converts the error ocurred during execution of ObservableIteration to a proper exception
         /// </summary>
-        /// <param name="error">The SiLA2 execution error</param>
+        /// <param name="errorIdentifier">The identifier of the error that has happened</param>
+        /// <param name="errorMessage">The original error message from the server</param>
         /// <returns>The converted exception or null, if the error is not understood</returns>
-        private static System.Exception ConvertObservableIterationException(Tecan.Sila2.DefinedExecutionErrorDto error)
+        private static System.Exception ConvertObservableIterationException(string errorIdentifier, string errorMessage)
         {
             return null;
-        }
-        
-        ///  <summary>
-        /// Unwraps the response of the ObservableIterationResponse command
-        /// </summary>
-        /// <param name="value">The response data transfer object</param>
-        /// <returns>The actual response</returns>
-        private long ConvertObservableIterationResponse(ObservableIterationResponseDto value)
-        {
-            return value.IterationResponse.Extract(_executionManager.DownloadBinaryStore);
         }
         
         ///  <summary>
@@ -108,6 +72,16 @@ namespace Tecan.Sila2.Interop.Client.ObservableCommandTest
         }
         
         ///  <summary>
+        /// Unwraps the response of the ObservableIterationResponse command
+        /// </summary>
+        /// <param name="value">The response data transfer object</param>
+        /// <returns>The actual response</returns>
+        private long ConvertObservableIterationResponse(ObservableIterationResponseDto value)
+        {
+            return value.IterationResponse.Extract(_executionManager.DownloadBinaryStore);
+        }
+        
+        ///  <summary>
         /// Echo the given value asynchronously after the specified delay
         /// </summary>
         /// <param name="value">The value to echo</param>
@@ -115,15 +89,16 @@ namespace Tecan.Sila2.Interop.Client.ObservableCommandTest
         public virtual Tecan.Sila2.IObservableCommand<long> EchoValueAsync(long value, long delayInMs)
         {
             EchoValueAsyncRequestDto request = new EchoValueAsyncRequestDto(value, delayInMs, null);
-            return ObservableClientCommands.Create(_executionManager.CreateCallOptions(request.CommandIdentifier), CallInvoker, request, ObservableCommandTestMethods.EchoValueAsyncMethod, ObservableCommandTestMethods.EchoValueAsyncStateMethod, ObservableCommandTestMethods.EchoValueAsyncResponseMethod, ConvertEchoValueAsyncResponse, ConvertEchoValueAsyncException);
+            return _channel.ExecuteObservableCommand<EchoValueAsyncRequestDto>(_serviceName, "EchoValueAsync", request, ConvertEchoValueAsyncException, ConvertEchoValueAsyncResponse, _executionManager.CreateCallOptions(request.CommandIdentifier));
         }
         
         ///  <summary>
         /// Converts the error ocurred during execution of EchoValueAsync to a proper exception
         /// </summary>
-        /// <param name="error">The SiLA2 execution error</param>
+        /// <param name="errorIdentifier">The identifier of the error that has happened</param>
+        /// <param name="errorMessage">The original error message from the server</param>
         /// <returns>The converted exception or null, if the error is not understood</returns>
-        private static System.Exception ConvertEchoValueAsyncException(Tecan.Sila2.DefinedExecutionErrorDto error)
+        private static System.Exception ConvertEchoValueAsyncException(string errorIdentifier, string errorMessage)
         {
             return null;
         }
@@ -136,15 +111,6 @@ namespace Tecan.Sila2.Interop.Client.ObservableCommandTest
         private long ConvertEchoValueAsyncResponse(EchoValueAsyncResponseDto value)
         {
             return value.ReceivedValue.Extract(_executionManager.DownloadBinaryStore);
-        }
-        
-        ///  <summary>
-        /// Creates a new instance
-        /// </summary>
-        /// <param name="configuration">The new client configuration</param>
-        protected override ObservableCommandTestClient NewInstance(ClientBaseConfiguration configuration)
-        {
-            return new ObservableCommandTestClient(configuration, _executionManager);
         }
         
         private T Extract<T>(Tecan.Sila2.ISilaTransferObject<T> dto)

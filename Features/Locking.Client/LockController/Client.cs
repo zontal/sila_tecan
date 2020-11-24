@@ -27,50 +27,20 @@ namespace Tecan.Sila2.Locking.LockController
         
         private IClientExecutionManager _executionManager;
         
+        private IClientChannel _channel;
+        
+        private string _serviceName = "sila2.org.silastandard.core.lockcontroller.v1.LockController";
+        
         ///  <summary>
         /// Creates a new instance
         /// </summary>
-        /// <param name="executionManager">A component that attaches metadata to SiLA2 calls</param>
+        /// <param name="executionManager">A component to determine metadata to attach to any requests</param>
+        /// <param name="channel">The channel through which calls should be executed</param>
         public LockControllerClient(IClientExecutionManager executionManager)
         {
             InitLazyRequests();
             _executionManager = executionManager;
-        }
-        
-        ///  <summary>
-        /// Creates a new instance
-        /// </summary>
-        /// <param name="configuration">The underlying configuration</param>
-        /// <param name="executionManager">A component that attaches metadata to SiLA2 calls</param>
-        protected LockControllerClient(ClientBaseConfiguration configuration, IClientExecutionManager executionManager) : 
-                base(configuration)
-        {
-            InitLazyRequests();
-            _executionManager = executionManager;
-        }
-        
-        ///  <summary>
-        /// Creates a new instance
-        /// </summary>
-        /// <param name="channel">The underlying channel</param>
-        /// <param name="executionManager">A component that attaches metadata to SiLA2 calls</param>
-        public LockControllerClient(Grpc.Core.Channel channel, IClientExecutionManager executionManager) : 
-                base(channel)
-        {
-            InitLazyRequests();
-            _executionManager = executionManager;
-        }
-        
-        ///  <summary>
-        /// Creates a new instance
-        /// </summary>
-        /// <param name="invoker">The underlying invoker</param>
-        /// <param name="executionManager">A component that attaches metadata to SiLA2 calls</param>
-        public LockControllerClient(Grpc.Core.CallInvoker invoker, IClientExecutionManager executionManager) : 
-                base(invoker)
-        {
-            InitLazyRequests();
-            _executionManager = executionManager;
+            _channel = channel;
         }
         
         ///  <summary>
@@ -91,7 +61,7 @@ namespace Tecan.Sila2.Locking.LockController
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/core/LockController/v1/Property/IsLocked");
             try
             {
-                bool response = CallInvoker.BlockingUnaryCall(LockControllerMethods.GetIsLockedMethod, null, callInfo.ToCallOptions(), EmptyRequest.Instance).Value.Extract(_executionManager.DownloadBinaryStore);
+                bool response = _channel.ReadProperty<PropertyResponse<Tecan.Sila2.BooleanDto>>(_serviceName, "IsLocked", callInfo).Value.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -129,7 +99,7 @@ namespace Tecan.Sila2.Locking.LockController
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/core/LockController/v1/Command/LockServer");
             try
             {
-                CallInvoker.BlockingUnaryCall(LockControllerMethods.LockServerMethod, null, callInfo.ToCallOptions(), request);
+                _channel.ExecuteUnobservableCommand<LockServerRequestDto>(_serviceName, "LockServer", request, callInfo);
                 callInfo.FinishSuccessful();
                 return;
             } catch (System.Exception ex)
@@ -143,13 +113,14 @@ namespace Tecan.Sila2.Locking.LockController
         ///  <summary>
         /// Converts the error ocurred during execution of LockServer to a proper exception
         /// </summary>
-        /// <param name="error">The SiLA2 execution error</param>
+        /// <param name="errorIdentifier">The identifier of the error that has happened</param>
+        /// <param name="errorMessage">The original error message from the server</param>
         /// <returns>The converted exception or null, if the error is not understood</returns>
-        private static System.Exception ConvertLockServerException(Tecan.Sila2.DefinedExecutionErrorDto error)
+        private static System.Exception ConvertLockServerException(string errorIdentifier, string errorMessage)
         {
-            if ((error.ErrorIdentifier == "org.silastandard/core/LockController/v1/DefinedError/ServerAlreadyLocked"))
+            if ((errorIdentifier == "org.silastandard/core/LockController/v1/DefinedError/ServerAlreadyLocked"))
             {
-                return new ServerAlreadyLockedException(error.Message);
+                return new ServerAlreadyLockedException(errorMessage);
             }
             return null;
         }
@@ -165,7 +136,7 @@ namespace Tecan.Sila2.Locking.LockController
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/core/LockController/v1/Command/UnlockServer");
             try
             {
-                CallInvoker.BlockingUnaryCall(LockControllerMethods.UnlockServerMethod, null, callInfo.ToCallOptions(), request);
+                _channel.ExecuteUnobservableCommand<UnlockServerRequestDto>(_serviceName, "UnlockServer", request, callInfo);
                 callInfo.FinishSuccessful();
                 return;
             } catch (System.Exception ex)
@@ -179,28 +150,20 @@ namespace Tecan.Sila2.Locking.LockController
         ///  <summary>
         /// Converts the error ocurred during execution of UnlockServer to a proper exception
         /// </summary>
-        /// <param name="error">The SiLA2 execution error</param>
+        /// <param name="errorIdentifier">The identifier of the error that has happened</param>
+        /// <param name="errorMessage">The original error message from the server</param>
         /// <returns>The converted exception or null, if the error is not understood</returns>
-        private static System.Exception ConvertUnlockServerException(Tecan.Sila2.DefinedExecutionErrorDto error)
+        private static System.Exception ConvertUnlockServerException(string errorIdentifier, string errorMessage)
         {
-            if ((error.ErrorIdentifier == "org.silastandard/core/LockController/v1/DefinedError/ServerNotLocked"))
+            if ((errorIdentifier == "org.silastandard/core/LockController/v1/DefinedError/ServerNotLocked"))
             {
-                return new ServerNotLockedException(error.Message);
+                return new ServerNotLockedException(errorMessage);
             }
-            if ((error.ErrorIdentifier == "org.silastandard/core/LockController/v1/DefinedError/InvalidLockIdentifier"))
+            if ((errorIdentifier == "org.silastandard/core/LockController/v1/DefinedError/InvalidLockIdentifier"))
             {
-                return new InvalidLockIdentifierException(error.Message);
+                return new InvalidLockIdentifierException(errorMessage);
             }
             return null;
-        }
-        
-        ///  <summary>
-        /// Creates a new instance
-        /// </summary>
-        /// <param name="configuration">The new client configuration</param>
-        protected override LockControllerClient NewInstance(ClientBaseConfiguration configuration)
-        {
-            return new LockControllerClient(configuration, _executionManager);
         }
         
         private T Extract<T>(Tecan.Sila2.ISilaTransferObject<T> dto)

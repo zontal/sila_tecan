@@ -149,15 +149,16 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         private System.Threading.Tasks.Task _currentTemperatureUpdateTask;
         
         private IClientExecutionManager _executionManager;
-
+        
         private IClientChannel _channel;
-
-        private static string @__ServiceName = "sila2.tecan.sila.generator.test.temperaturecontroller.v2.TemperatureController";
-
+        
+        private string _serviceName = "sila2.tecan.sila.generator.test.temperaturecontroller.v2.TemperatureController";
+        
         ///  <summary>
         /// Creates a new instance
         /// </summary>
-        /// <param name="executionManager">A component that attaches metadata to SiLA2 calls</param>
+        /// <param name="executionManager">A component to determine metadata to attach to any requests</param>
+        /// <param name="channel">The channel through which calls should be executed</param>
         public TemperatureControllerClient(IClientExecutionManager executionManager, IClientChannel channel)
         {
             _executionManager = executionManager;
@@ -173,7 +174,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             {
                 if ((_currentTemperatureUpdateTask == null))
                 {
-                    _currentTemperatureUpdateTask = _channel.SubscribeProperty<CurrentTemperatureResponseDto>( __ServiceName, "CurrentTemperature", ReceiveNewCurrentTemperature, _executionManager.CreateCallOptions("tecan.sila.generator/test/TemperatureController/v2/Property/CurrentTemperature"));
+                    _currentTemperatureUpdateTask = _channel.SubscribeProperty<CurrentTemperatureResponseDto>(_serviceName, "CurrentTemperature", ReceiveNewCurrentTemperature, _executionManager.CreateCallOptions("tecan.sila.generator/test/TemperatureController/v2/Property/CurrentTemperature"));
                 }
                 return _currentTemperature;
             }
@@ -203,25 +204,26 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         public virtual Tecan.Sila2.IObservableCommand ControlTemperature(double targetTemperature)
         {
             ControlTemperatureRequestDto request = new ControlTemperatureRequestDto(targetTemperature, null);
-            return _channel.ExecuteObservableCommand( __ServiceName, "ControlTemperature", request, ConvertControlTemperatureException, _executionManager.CreateCallOptions( request.CommandIdentifier ) );
+            return _channel.ExecuteObservableCommand<ControlTemperatureRequestDto>(_serviceName, "ControlTemperature", request, ConvertControlTemperatureException, _executionManager.CreateCallOptions(request.CommandIdentifier));
         }
         
         ///  <summary>
         /// Converts the error ocurred during execution of ControlTemperature to a proper exception
         /// </summary>
-        /// <param name="error">The SiLA2 execution error</param>
+        /// <param name="errorIdentifier">The identifier of the error that has happened</param>
+        /// <param name="errorMessage">The original error message from the server</param>
         /// <returns>The converted exception or null, if the error is not understood</returns>
-        private static System.Exception ConvertControlTemperatureException(string errorIdentifier, string message)
+        private static System.Exception ConvertControlTemperatureException(string errorIdentifier, string errorMessage)
         {
             if ((errorIdentifier == "tecan.sila.generator/test/TemperatureController/v2/DefinedError/TemperatureNotRea" +
                 "chable"))
             {
-                return new TemperatureNotReachableException(message);
+                return new TemperatureNotReachableException(errorMessage);
             }
             if ((errorIdentifier == "tecan.sila.generator/test/TemperatureController/v2/DefinedError/ControlInterrupte" +
                 "d"))
             {
-                return new ControlInterruptedException(message);
+                return new ControlInterruptedException(errorMessage);
             }
             return null;
         }
@@ -231,6 +233,23 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         {
             return dto.Extract(_executionManager.DownloadBinaryStore);
         }
+    }
+    
+    ///  <summary>
+    /// Encapsulates provider classes to expose the Temperature Controller feature via SiLA2
+    /// </summary>
+    internal sealed partial class TemperatureControllerMethods
+    {
+        
+        private static string @__ServiceName = "sila2.tecan.sila.generator.test.temperaturecontroller.v2.TemperatureController";
+        
+        public static Grpc.Core.Method<ControlTemperatureRequestDto, CommandConfirmation> ControlTemperatureMethod = new Grpc.Core.Method<ControlTemperatureRequestDto, CommandConfirmation>(Grpc.Core.MethodType.Unary, @__ServiceName, "ControlTemperature", ProtobufMarshaller<ControlTemperatureRequestDto>.Default, ProtobufMarshaller<CommandConfirmation>.Default);
+        
+        public static Grpc.Core.Method<CommandExecutionUuid, ExecutionState> ControlTemperatureStateMethod = new Grpc.Core.Method<CommandExecutionUuid, ExecutionState>(Grpc.Core.MethodType.ServerStreaming, @__ServiceName, "ControlTemperature_Info", ProtobufMarshaller<CommandExecutionUuid>.Default, ProtobufMarshaller<ExecutionState>.Default);
+        
+        public static Grpc.Core.Method<CommandExecutionUuid, EmptyRequest> ControlTemperatureResponseMethod = new Grpc.Core.Method<CommandExecutionUuid, EmptyRequest>(Grpc.Core.MethodType.Unary, @__ServiceName, "ControlTemperature_Result", ProtobufMarshaller<CommandExecutionUuid>.Default, EmptyRequest.Marshaller);
+        
+        public static Grpc.Core.Method<EmptyRequest, CurrentTemperatureResponseDto> SubscribeCurrentTemperatureMethod = new Grpc.Core.Method<EmptyRequest, CurrentTemperatureResponseDto>(Grpc.Core.MethodType.ServerStreaming, @__ServiceName, "Subscribe_CurrentTemperature", EmptyRequest.Marshaller, ProtobufMarshaller<CurrentTemperatureResponseDto>.Default);
     }
 }
 

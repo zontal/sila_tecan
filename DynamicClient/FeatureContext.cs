@@ -8,7 +8,7 @@ namespace Tecan.Sila2.DynamicClient
     /// <summary>
     /// Denotes a context of a feature in which requests are made
     /// </summary>
-    public class FeatureContext : ClientBase<FeatureContext>
+    public class FeatureContext
     {
         /// <summary>
         /// The feature that this context is about
@@ -26,9 +26,14 @@ namespace Tecan.Sila2.DynamicClient
         public IClientExecutionManager ExecutionManager { get; }
 
         /// <summary>
+        /// Gets the channel to the server
+        /// </summary>
+        public IClientChannel Channel => ServerData.Channel;
+
+        /// <summary>
         /// The server in the context of which the call is made
         /// </summary>
-        public GrpcServerData ServerData
+        public ServerData ServerData
         {
             get;
         }
@@ -39,32 +44,13 @@ namespace Tecan.Sila2.DynamicClient
         /// <param name="feature">The feature</param>
         /// <param name="serverData">The server in the context of which the call is made</param>
         /// <param name="executionManager">The execution manager that handles requests in the context of this feature</param>
-        public FeatureContext(Feature feature, GrpcServerData serverData, IClientExecutionManager executionManager) : base(serverData.Channel)
+        public FeatureContext(Feature feature, ServerData serverData, IClientExecutionManager executionManager)
         {
             Feature = feature;
             ExecutionManager = executionManager;
             Serializer = new DynamicObjectSerializer(ResolveType);
             ServerData = serverData;
         }
-
-        /// <summary>
-        /// Creates a new feature context
-        /// </summary>
-        /// <param name="feature">The feature</param>
-        /// <param name="configuration">The client configuration</param>
-        /// <param name="serverData">The server in the context of which the call is made</param>
-        /// <param name="serializer">The serializer that should be used</param>
-        /// <param name="executionManager">The execution manager that handles requests in the context of this feature</param>
-        protected FeatureContext(Feature feature, GrpcServerData serverData, DynamicObjectSerializer serializer, IClientExecutionManager executionManager,
-            ClientBaseConfiguration configuration) : base(configuration)
-        {
-            Feature = feature;
-            Serializer = serializer;
-            ExecutionManager = executionManager;
-            ServerData = serverData;
-        }
-
-        internal new CallInvoker CallInvoker => base.CallInvoker;
 
         /// <summary>
         /// Resolves the given type name in the context of this feature
@@ -90,22 +76,17 @@ namespace Tecan.Sila2.DynamicClient
         /// <summary>
         /// Converts the given exception
         /// </summary>
-        /// <param name="error">The SiLA2 defined error message</param>
+        /// <param name="errorIdentifier">The SiLA2 defined error identifier</param>
+        /// <param name="errorMessage">The actual error message</param>
         /// <returns>An exception with the actual error message</returns>
-        public Exception ConvertException(DefinedExecutionErrorDto error)
+        public Exception ConvertException(string errorIdentifier, string errorMessage)
         {
-            return new DefinedErrorException( error.ErrorIdentifier, error.Message );
+            return new DefinedErrorException( errorIdentifier, errorMessage );
         }
 
         /// <summary>
         /// Gets the name of the service that handles this feature
         /// </summary>
         public string ServiceName => Feature.Namespace + "." + Feature.Identifier;
-
-        /// <inheritdoc />
-        protected override FeatureContext NewInstance(ClientBaseConfiguration configuration)
-        {
-            return new FeatureContext(Feature, ServerData, Serializer, ExecutionManager, configuration);
-        }
     }
 }

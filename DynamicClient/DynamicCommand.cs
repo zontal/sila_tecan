@@ -78,7 +78,7 @@ namespace Tecan.Sila2.DynamicClient
         {
             if( IsCancellationSupported )
             {
-                var client = new CancelControllerClient( Context.ServerData.Channel, Context.ExecutionManager );
+                var client = new CancelControllerClient( Context.ExecutionManager, Context.ServerData.Channel );
                 client.CancelCommand( ((IClientCommand)InnerCommand).CommandId );
             }
             InnerCommand.Cancel();

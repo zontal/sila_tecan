@@ -72,7 +72,7 @@ namespace Tecan.Sila2.Generator.Generators
                 foreach( var generatorHook in Hooks )
                 {
                     _loggingChannel.Log( $"Executing hook {generatorHook} after generating interface".ToString );
-                    generatorHook?.OnInterfaceGenerated( feature, interfaceType );
+                    generatorHook?.OnInterfaceGenerated( feature, interfaceType, unit );
                 }
             }
 

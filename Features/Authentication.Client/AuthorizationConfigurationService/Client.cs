@@ -27,50 +27,21 @@ namespace Tecan.Sila2.Authorization.AuthorizationConfigurationService
         
         private IClientExecutionManager _executionManager;
         
+        private IClientChannel _channel;
+        
+        private string _serviceName = "sila2.org.silastandard.core.authorizationconfigurationservice.v1.AuthorizationCon" +
+            "figurationService";
+        
         ///  <summary>
         /// Creates a new instance
         /// </summary>
-        /// <param name="executionManager">A component that attaches metadata to SiLA2 calls</param>
+        /// <param name="executionManager">A component to determine metadata to attach to any requests</param>
+        /// <param name="channel">The channel through which calls should be executed</param>
         public AuthorizationConfigurationServiceClient(IClientExecutionManager executionManager)
         {
             InitLazyRequests();
             _executionManager = executionManager;
-        }
-        
-        ///  <summary>
-        /// Creates a new instance
-        /// </summary>
-        /// <param name="configuration">The underlying configuration</param>
-        /// <param name="executionManager">A component that attaches metadata to SiLA2 calls</param>
-        protected AuthorizationConfigurationServiceClient(ClientBaseConfiguration configuration, IClientExecutionManager executionManager) : 
-                base(configuration)
-        {
-            InitLazyRequests();
-            _executionManager = executionManager;
-        }
-        
-        ///  <summary>
-        /// Creates a new instance
-        /// </summary>
-        /// <param name="channel">The underlying channel</param>
-        /// <param name="executionManager">A component that attaches metadata to SiLA2 calls</param>
-        public AuthorizationConfigurationServiceClient(Grpc.Core.Channel channel, IClientExecutionManager executionManager) : 
-                base(channel)
-        {
-            InitLazyRequests();
-            _executionManager = executionManager;
-        }
-        
-        ///  <summary>
-        /// Creates a new instance
-        /// </summary>
-        /// <param name="invoker">The underlying invoker</param>
-        /// <param name="executionManager">A component that attaches metadata to SiLA2 calls</param>
-        public AuthorizationConfigurationServiceClient(Grpc.Core.CallInvoker invoker, IClientExecutionManager executionManager) : 
-                base(invoker)
-        {
-            InitLazyRequests();
-            _executionManager = executionManager;
+            _channel = channel;
         }
         
         ///  <summary>
@@ -90,7 +61,7 @@ namespace Tecan.Sila2.Authorization.AuthorizationConfigurationService
                     "Provider");
             try
             {
-                string response = CallInvoker.BlockingUnaryCall(AuthorizationConfigurationServiceMethods.GetAuthorizationProviderMethod, null, callInfo.ToCallOptions(), EmptyRequest.Instance).Value.Extract(_executionManager.DownloadBinaryStore);
+                string response = _channel.ReadProperty<AuthorizationProviderResponseDto>(_serviceName, "AuthorizationProvider", callInfo).Value.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -120,7 +91,7 @@ namespace Tecan.Sila2.Authorization.AuthorizationConfigurationService
                     "onProvider");
             try
             {
-                CallInvoker.BlockingUnaryCall(AuthorizationConfigurationServiceMethods.SetAuthorizationProviderMethod, null, callInfo.ToCallOptions(), request);
+                _channel.ExecuteUnobservableCommand<SetAuthorizationProviderRequestDto>(_serviceName, "SetAuthorizationProvider", request, callInfo);
                 callInfo.FinishSuccessful();
                 return;
             } catch (System.Exception ex)
@@ -129,15 +100,6 @@ namespace Tecan.Sila2.Authorization.AuthorizationConfigurationService
                 callInfo.FinishWithErrors(exception);
                 throw exception;
             }
-        }
-        
-        ///  <summary>
-        /// Creates a new instance
-        /// </summary>
-        /// <param name="configuration">The new client configuration</param>
-        protected override AuthorizationConfigurationServiceClient NewInstance(ClientBaseConfiguration configuration)
-        {
-            return new AuthorizationConfigurationServiceClient(configuration, _executionManager);
         }
         
         private T Extract<T>(Tecan.Sila2.ISilaTransferObject<T> dto)

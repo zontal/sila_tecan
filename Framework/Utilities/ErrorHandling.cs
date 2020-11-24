@@ -119,7 +119,7 @@ namespace Tecan.Sila2
         /// <param name="executionErrorConversion">A function to convert defined errors</param>
         /// <returns>The converted exception</returns>
         public static Exception ConvertException(Exception ex,
-            Func<DefinedExecutionErrorDto, Exception> executionErrorConversion = null)
+            Func<string, string, Exception> executionErrorConversion = null)
         {
             RpcException rpcEx = ex is RpcException exception ? exception : ex.InnerException as RpcException;
             if (rpcEx != null)
@@ -137,7 +137,7 @@ namespace Tecan.Sila2
                             {
                                 return new OperationCanceledException( error.DefinedExecutionError.Message );
                             }
-                            if( executionErrorConversion?.Invoke( error.DefinedExecutionError ) is var definedException && definedException != null )
+                            if( executionErrorConversion?.Invoke( error.DefinedExecutionError.ErrorIdentifier, error.DefinedExecutionError.Message ) is var definedException && definedException != null )
                             {
                                 return definedException;
                             }

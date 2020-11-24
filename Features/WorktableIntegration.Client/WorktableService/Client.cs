@@ -31,50 +31,21 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
         
         private IClientExecutionManager _executionManager;
         
+        private IClientChannel _channel;
+        
+        private string _serviceName = "sila2.tecan.sila.worktableintegration.infrastructure.worktableservice.v1.Worktabl" +
+            "eService";
+        
         ///  <summary>
         /// Creates a new instance
         /// </summary>
-        /// <param name="executionManager">A component that attaches metadata to SiLA2 calls</param>
+        /// <param name="executionManager">A component to determine metadata to attach to any requests</param>
+        /// <param name="channel">The channel through which calls should be executed</param>
         public WorktableServiceClient(IClientExecutionManager executionManager)
         {
             InitLazyRequests();
             _executionManager = executionManager;
-        }
-        
-        ///  <summary>
-        /// Creates a new instance
-        /// </summary>
-        /// <param name="configuration">The underlying configuration</param>
-        /// <param name="executionManager">A component that attaches metadata to SiLA2 calls</param>
-        protected WorktableServiceClient(ClientBaseConfiguration configuration, IClientExecutionManager executionManager) : 
-                base(configuration)
-        {
-            InitLazyRequests();
-            _executionManager = executionManager;
-        }
-        
-        ///  <summary>
-        /// Creates a new instance
-        /// </summary>
-        /// <param name="channel">The underlying channel</param>
-        /// <param name="executionManager">A component that attaches metadata to SiLA2 calls</param>
-        public WorktableServiceClient(Grpc.Core.Channel channel, IClientExecutionManager executionManager) : 
-                base(channel)
-        {
-            InitLazyRequests();
-            _executionManager = executionManager;
-        }
-        
-        ///  <summary>
-        /// Creates a new instance
-        /// </summary>
-        /// <param name="invoker">The underlying invoker</param>
-        /// <param name="executionManager">A component that attaches metadata to SiLA2 calls</param>
-        public WorktableServiceClient(Grpc.Core.CallInvoker invoker, IClientExecutionManager executionManager) : 
-                base(invoker)
-        {
-            InitLazyRequests();
-            _executionManager = executionManager;
+            _channel = channel;
         }
         
         ///  <summary>
@@ -116,7 +87,7 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
                     "ingBox");
             try
             {
-                BoundingBox response = CallInvoker.BlockingUnaryCall(WorktableServiceMethods.GetBoundingBoxMethod, null, callInfo.ToCallOptions(), EmptyRequest.Instance).Value.Extract(_executionManager.DownloadBinaryStore);
+                BoundingBox response = _channel.ReadProperty<PropertyResponse<BoundingBoxDto>>(_serviceName, "BoundingBox", callInfo).Value.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -133,7 +104,7 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
                     "emplates");
             try
             {
-                System.Collections.Generic.ICollection<SiteTemplate> response = CallInvoker.BlockingUnaryCall(WorktableServiceMethods.GetSiteTemplatesMethod, null, callInfo.ToCallOptions(), EmptyRequest.Instance).Value.Extract(_executionManager.DownloadBinaryStore);
+                System.Collections.Generic.ICollection<SiteTemplate> response = _channel.ReadProperty<PropertyResponse<System.Collections.Generic.List<SiteTemplateDto>>>(_serviceName, "SiteTemplates", callInfo).Value.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -150,7 +121,7 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
                     "");
             try
             {
-                System.Collections.Generic.ICollection<Site> response = CallInvoker.BlockingUnaryCall(WorktableServiceMethods.GetSitesMethod, null, callInfo.ToCallOptions(), EmptyRequest.Instance).Value.Extract(_executionManager.DownloadBinaryStore);
+                System.Collections.Generic.ICollection<Site> response = _channel.ReadProperty<PropertyResponse<System.Collections.Generic.List<SiteDto>>>(_serviceName, "Sites", callInfo).Value.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -169,15 +140,6 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
             _boundingBox = new System.Lazy<BoundingBox>(RequestBoundingBox);
             _siteTemplates = new System.Lazy<System.Collections.Generic.ICollection<SiteTemplate>>(RequestSiteTemplates);
             _sites = new System.Lazy<System.Collections.Generic.ICollection<Site>>(RequestSites);
-        }
-        
-        ///  <summary>
-        /// Creates a new instance
-        /// </summary>
-        /// <param name="configuration">The new client configuration</param>
-        protected override WorktableServiceClient NewInstance(ClientBaseConfiguration configuration)
-        {
-            return new WorktableServiceClient(configuration, _executionManager);
         }
         
         private T Extract<T>(Tecan.Sila2.ISilaTransferObject<T> dto)

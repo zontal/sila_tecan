@@ -23,14 +23,5 @@ namespace Tecan.Sila2.DynamicClient
         /// Gets the fully qualified command identifier
         /// </summary>
         public string CommandIdentifier { get; }
-
-        /// <summary>
-        /// Gets any validation errors
-        /// </summary>
-        /// <returns></returns>
-        public string GetValidationErrors()
-        {
-            return null;
-        }
     }
 }

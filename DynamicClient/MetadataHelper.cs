@@ -8,25 +8,50 @@ namespace Tecan.Sila2.DynamicClient
 {
     internal static class MetadataHelper
     {
-        public static CallOptions TakeInMetadata( IClientCallInfo callInfo, IDictionary<string, byte[]> additionalMetadata )
+        public static IClientCallInfo TakeInMetadata( IClientCallInfo callInfo, IDictionary<string, byte[]> additionalMetadata )
         {
-            var options = callInfo.ToCallOptions();
-            if(additionalMetadata != null)
+            if (additionalMetadata == null || additionalMetadata.Count == 0)
             {
-                var metadata = options.Headers;
-                if(metadata == null)
-                {
-                    metadata = new Metadata();
-                    options = options.WithHeaders( metadata );
-                }
+                return callInfo;
+            }
+            return new AnnotatedCallInfo( callInfo, additionalMetadata );
+        }
 
-                foreach(var metadataEntry in additionalMetadata)
-                {
-                    metadata.Add( metadataEntry.Key, metadataEntry.Value );
-                }
+        private class AnnotatedCallInfo : IClientCallInfo
+        {
+            private readonly IClientCallInfo _inner;
+
+            public IDictionary<string, byte[]> Metadata
+            {
+                get;
             }
 
-            return options;
+            public AnnotatedCallInfo(IClientCallInfo inner, IDictionary<string, byte[]> additionalMetadata)
+            {
+                if(inner.Metadata != null)
+                {
+                    Metadata = new Dictionary<string, byte[]>( inner.Metadata );
+                    foreach(var item in additionalMetadata)
+                    {
+                        Metadata[item.Key] = item.Value;
+                    }
+                }
+                else
+                {
+                    Metadata = additionalMetadata;
+                }
+                _inner = inner;
+            }
+
+            public void FinishSuccessful()
+            {
+                _inner.FinishSuccessful();
+            }
+
+            public void FinishWithErrors( Exception exception )
+            {
+                _inner.FinishWithErrors( exception );
+            }
         }
     }
 }
