@@ -116,7 +116,7 @@ namespace Tecan.Sila2.Generator.CommandLine
             }
             if(GenerateClient)
             {
-                CodeGenerationHelper.GenerateCSharp( clientUnit, Path.GetFullPath( ClientPath ) );
+                CodeGenerationHelper.GenerateCSharp( clientUnit, Path.GetFullPath( GenerateServer ? ClientPath : ProviderPath ) );
             }
         }
 
