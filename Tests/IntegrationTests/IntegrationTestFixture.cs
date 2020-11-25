@@ -778,9 +778,8 @@ namespace Tecan.Sila2.IntegrationTests
             var feature = _server.Features.Single( f => f.Identifier == "TestServer" );
             var featureContext = new FeatureContext( feature, _server, executionManager );
             var commandClient = new NonObservableCommandClient( feature.Items.OfType<FeatureCommand>().Single( c => c.Identifier == nameof(ITestServer.RunIntoFailure) ), featureContext );
-            var command = commandClient.InvokeAsync( commandClient.CreateRequest() );
-
-            var exception = Assert.ThrowsAsync<DefinedErrorException>( () => command );
+            
+            var exception = Assert.ThrowsAsync<DefinedErrorException>( () => commandClient.InvokeAsync( commandClient.CreateRequest() ) );
             var fake = feature.Items.OfType<FeatureDefinedExecutionError>().Single( e => e.Identifier == "Fake" );
             Assert.That(exception.ErrorIdentifier, Is.EqualTo(feature.GetFullyQualifiedIdentifier(fake)));
 

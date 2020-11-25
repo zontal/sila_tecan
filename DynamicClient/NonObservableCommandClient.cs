@@ -60,12 +60,12 @@ namespace Tecan.Sila2.DynamicClient
         /// <param name="args">The command request parameters</param>
         /// <param name="additionalMetadata">A dictionary with additional request metadata</param>
         /// <returns>A dynamic property with the response value</returns>
-        public async Task<DynamicObjectProperty> InvokeAsync(DynamicRequest args, string host = null, IDictionary<string, byte[]> additionalMetadata = null )
+        public async Task<DynamicObjectProperty> InvokeAsync(DynamicRequest args, IDictionary<string, byte[]> additionalMetadata = null )
         {
             var callInfo = Context.ExecutionManager.CreateCallOptions(args.CommandIdentifier);
             try
             {
-                var result = await Context.ServerData.Channel.ExecuteUnobservableCommandAsync( Context.ServiceName, CommandIdentifier, args, MetadataHelper.TakeInMetadata( callInfo, additionalMetadata ), RequestSerializer, ResponseSerializer );
+                var result = await Context.ServerData.Channel.ExecuteUnobservableCommandAsync( Context.ServiceName, Command.Identifier, args, MetadataHelper.TakeInMetadata( callInfo, additionalMetadata ), RequestSerializer, ResponseSerializer );
                 callInfo.FinishSuccessful();
                 return result;
             }

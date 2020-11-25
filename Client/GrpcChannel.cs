@@ -209,7 +209,7 @@ namespace Tecan.Sila2.Discovery
             where TRequest : class, ISilaRequestObject
         {
             var commandMethod = new Method<TRequest, CommandConfirmation>( MethodType.Unary, serviceName, commandName, requestSerializer, ProtobufMarshaller<CommandConfirmation>.Default );
-            var commandStateMethod = new Method<CommandExecutionUuid, ExecutionState>( MethodType.ServerStreaming, serviceName, commandName + "_State", ProtobufMarshaller<CommandExecutionUuid>.Default, ProtobufMarshaller<ExecutionState>.Default );
+            var commandStateMethod = new Method<CommandExecutionUuid, ExecutionState>( MethodType.ServerStreaming, serviceName, commandName + "_Info", ProtobufMarshaller<CommandExecutionUuid>.Default, ProtobufMarshaller<ExecutionState>.Default );
             
             var confirmation = CallInvoker.BlockingUnaryCall( commandMethod, null,
                 callInfo.ToCallOptions(), request );
@@ -265,8 +265,8 @@ namespace Tecan.Sila2.Discovery
             where TResponseDto : class, ISilaTransferObject
         {
             var commandMethod = new Method<TRequest, CommandConfirmation>( MethodType.Unary, serviceName, commandName, requestSerializer, ProtobufMarshaller<CommandConfirmation>.Default );
-            var commandStateMethod = new Method<CommandExecutionUuid, ExecutionState>( MethodType.ServerStreaming, serviceName, commandName + "_State", ProtobufMarshaller<CommandExecutionUuid>.Default, ProtobufMarshaller<ExecutionState>.Default );
-            var resultMethod = new Method<CommandExecutionUuid, TResponseDto>( MethodType.Unary, serviceName, commandName, ProtobufMarshaller<CommandExecutionUuid>.Default, responseSerializer );
+            var commandStateMethod = new Method<CommandExecutionUuid, ExecutionState>( MethodType.ServerStreaming, serviceName, commandName + "_Info", ProtobufMarshaller<CommandExecutionUuid>.Default, ProtobufMarshaller<ExecutionState>.Default );
+            var resultMethod = new Method<CommandExecutionUuid, TResponseDto>( MethodType.Unary, serviceName, commandName + "_Result", ProtobufMarshaller<CommandExecutionUuid>.Default, responseSerializer );
 
             var confirmation = CallInvoker.BlockingUnaryCall( commandMethod, null,
                 callInfo.ToCallOptions(), request );
@@ -324,7 +324,7 @@ namespace Tecan.Sila2.Discovery
             where TIntermediateDto : class, ISilaTransferObject
         {
             var commandMethod = new Method<TRequest, CommandConfirmation>( MethodType.Unary, serviceName, commandName, requestSerializer, ProtobufMarshaller<CommandConfirmation>.Default );
-            var commandStateMethod = new Method<CommandExecutionUuid, ExecutionState>( MethodType.ServerStreaming, serviceName, commandName + "_State", ProtobufMarshaller<CommandExecutionUuid>.Default, ProtobufMarshaller<ExecutionState>.Default );
+            var commandStateMethod = new Method<CommandExecutionUuid, ExecutionState>( MethodType.ServerStreaming, serviceName, commandName + "_Info", ProtobufMarshaller<CommandExecutionUuid>.Default, ProtobufMarshaller<ExecutionState>.Default );
             var commandIntermediatesMethod = new Method<CommandExecutionUuid, TIntermediateDto>( MethodType.ServerStreaming, serviceName, commandName + "_IntermediateResults", ProtobufMarshaller<CommandExecutionUuid>.Default, intermediateSerializer );
             
             var confirmation = CallInvoker.BlockingUnaryCall( commandMethod, null,
@@ -393,9 +393,9 @@ namespace Tecan.Sila2.Discovery
             where TResponseDto : class, ISilaTransferObject
         {
             var commandMethod = new Method<TRequest, CommandConfirmation>( MethodType.Unary, serviceName, commandName, requestSerializer, ProtobufMarshaller<CommandConfirmation>.Default );
-            var commandStateMethod = new Method<CommandExecutionUuid, ExecutionState>( MethodType.ServerStreaming, serviceName, commandName + "_State", ProtobufMarshaller<CommandExecutionUuid>.Default, ProtobufMarshaller<ExecutionState>.Default );
+            var commandStateMethod = new Method<CommandExecutionUuid, ExecutionState>( MethodType.ServerStreaming, serviceName, commandName + "_Info", ProtobufMarshaller<CommandExecutionUuid>.Default, ProtobufMarshaller<ExecutionState>.Default );
             var commandIntermediatesMethod = new Method<CommandExecutionUuid, TIntermediateDto>( MethodType.ServerStreaming, serviceName, commandName + "_IntermediateResults", ProtobufMarshaller<CommandExecutionUuid>.Default, intermediateSerializer );
-            var resultMethod = new Method<CommandExecutionUuid, TResponseDto>( MethodType.Unary, serviceName, commandName, ProtobufMarshaller<CommandExecutionUuid>.Default, responseSerializer );
+            var resultMethod = new Method<CommandExecutionUuid, TResponseDto>( MethodType.Unary, serviceName, commandName + "_Result", ProtobufMarshaller<CommandExecutionUuid>.Default, responseSerializer );
 
             var confirmation = CallInvoker.BlockingUnaryCall( commandMethod, null,
                 callInfo.ToCallOptions(), request );
