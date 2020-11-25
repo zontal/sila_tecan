@@ -7,7 +7,6 @@ using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
-using Grpc.Core;
 using Tecan.MAP.Contracts.Services.Logging;
 using Tecan.Sila2.Cancellation;
 using Tecan.Sila2.Client;

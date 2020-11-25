@@ -7,7 +7,6 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
-using Grpc.Core;
 using Tecan.MAP.Contracts.Services.Logging;
 using Tecan.Sila2.Generator.Contracts;
 using Tecan.Sila2.Generator.Helper;
@@ -552,7 +551,7 @@ namespace Tecan.Sila2.Generator.Generators
                     var parameterName = new CodePropertyReferenceExpression( message.TargetObject, nameof(ArgumentException.ParamName) );
                     foreach( var parameter in parameters )
                     {
-                        var exception = new CodeMethodInvokeExpression( errorHandlingRef, nameof( ServerErrorHandling.CreateValidationError),
+                        var exception = new CodeMethodInvokeExpression( errorHandlingRef, nameof( IServerErrorHandling.CreateValidationError),
                             new CodePrimitiveExpression( parameter.Value ),
                             message );
                         argException.Statements.Add( new CodeConditionStatement(
@@ -560,7 +559,7 @@ namespace Tecan.Sila2.Generator.Generators
                             new CodeThrowExceptionStatement( exception ) ) );
                     }
 
-                    argException.Statements.Add( new CodeThrowExceptionStatement(new CodeMethodInvokeExpression(errorHandlingRef, nameof( ServerErrorHandling.CreateUnknownValidationError), message.TargetObject)) );
+                    argException.Statements.Add( new CodeThrowExceptionStatement(new CodeMethodInvokeExpression(errorHandlingRef, nameof( IServerErrorHandling.CreateUnknownValidationError), message.TargetObject)) );
                 }
                 if( executionErrors != null )
                 {
@@ -569,7 +568,7 @@ namespace Tecan.Sila2.Generator.Generators
                         var error = errorFinder( executionError );
                         var clause = new CodeCatchClause( "ex", _nameProvider.CreateExceptionReference( executionError ) );
                         var exception = new CodeMethodInvokeExpression(
-                            errorHandlingRef, nameof( ServerErrorHandling.CreateExecutionError),
+                            errorHandlingRef, nameof( IServerErrorHandling.CreateExecutionError),
                             new CodePrimitiveExpression( feature.GetFullyQualifiedIdentifier( error ) ),
                             new CodePrimitiveExpression( error.Description ),
                             new CodePropertyReferenceExpression( new CodeArgumentReferenceExpression( clause.LocalName ), nameof(Exception.Message) ) );

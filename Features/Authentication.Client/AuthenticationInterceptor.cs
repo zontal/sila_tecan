@@ -4,7 +4,6 @@ using System.ComponentModel.Composition;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
-using Grpc.Core;
 using Tecan.MAP.Contracts.Services.Logging;
 using Tecan.Sila2.Authentication.AuthenticationService;
 using Tecan.Sila2.Authorization.AuthorizationConfigurationService;
@@ -58,7 +57,7 @@ namespace Tecan.Sila2.Authentication
             {
                 token = Renew( server, token, executionManager );
             }
-            metadata.Add( MetadataIdentifier, ProtobufMarshaller<StringDto>.ToByteArray( token.Token ) );
+            metadata.Add( MetadataIdentifier, ByteSerializer.ToByteArray<StringDto>( token.Token ) );
             return null;
         }
 

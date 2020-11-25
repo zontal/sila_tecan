@@ -33,6 +33,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\Features\ParameterConstraintsProvider\ParameterConstraintsProvider.csproj" />
+    <ProjectReference Include="..\..\..\Server\Server.csproj" />
   </ItemGroup>
 
   <ItemGroup>

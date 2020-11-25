@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using Grpc.Core;
+﻿using System.IO;
 using ProtoBuf;
-using Tecan.Sila2.Client;
 
 namespace Tecan.Sila2.Server
 {
@@ -26,7 +20,7 @@ namespace Tecan.Sila2.Server
         {
             if (metadata != null && metadata.TryGetMetadata(metadataIdentifier, out var metadataValue))
             {
-                return ProtobufMarshaller<TMetadata>.FromByteArray( metadataValue );
+                return ByteSerializer.FromByteArray<TMetadata>( metadataValue );
             }
 
             return new TMetadata();

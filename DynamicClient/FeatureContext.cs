@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using Grpc.Core;
 using Tecan.Sila2.Client;
 
 namespace Tecan.Sila2.DynamicClient

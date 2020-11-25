@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+
+<package>
+    <metadata>
+        <id>Tecan.Sila2.Grpc</id>
+        <description>The common gRPC implementation of the Tecan SiLA2 SDK</description>
+        <version>3.0.0-local</version>
+        <authors>Tecan Trading Ltd., Switzerland</authors>
+        <owners>Tecan Trading Ltd., Switzerland</owners>
+        <copyright>Copyright 2019 by Tecan Trading Ltd., Switzerland</copyright>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <license type="expression">BSD-3-Clause</license>
+        <projectUrl>https://gitlab.com/SiLA2/vendors/sila_tecan</projectUrl>
+        <repository type="git" url="https://gitlab.com/SiLA2/vendors/sila_tecan.git" />
+        <dependencies>
+            <dependency id="Tecan.Sila2.Contracts" version="[3.0,4.0)" />
+            <dependency id="Grpc.Core" version="2.27" />
+            <dependency id="IPNetwork2" version="2.1.2" />
+            <dependency id="Makaretu.Dns.Multicast" version="0.25.0" />
+        </dependencies>
+    </metadata>
+    <files>
+        <file src="..\Build\netstandard2.0\Tecan.Sila2.Grpc.dll" target="lib\netstandard2.0\" />
+        <file src="..\Build\netstandard2.0\Tecan.Sila2.Grpc.pdb" target="lib\netstandard2.0\" />
+        <file src="..\Build\Tecan.Sila2.Grpc.xml" target="lib\netstandard2.0\" />
+        <file src="..\Build\Generator\net472\*.dll" target="tools" />
+        <file src="..\Build\Generator\net472\*.exe" target="tools" />
+    </files>
+</package>

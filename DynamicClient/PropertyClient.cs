@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using Grpc.Core;
 using Tecan.Sila2.Client;
 
 namespace Tecan.Sila2.DynamicClient

@@ -13,8 +13,8 @@ namespace Tecan.Sila2
         private const string ConfigName = "Auth.config";
         private readonly XmlSerializer _serializer = new XmlSerializer( typeof( AuthConfiguration ) );
 
-        public DefaultConfigurationProvider(ILoggingChannelFactory loggingChannelFactory, IServerConnector serverConnector)
-            : base(loggingChannelFactory, new ServerDiscovery(loggingChannelFactory, serverConnector), serverConnector)
+        public DefaultConfigurationProvider(ILoggingChannelFactory loggingChannelFactory, IServerConnector serverConnector, IServerDiscovery discovery)
+            : base(loggingChannelFactory, discovery, serverConnector)
         {
         }
 

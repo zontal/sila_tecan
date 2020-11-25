@@ -24,10 +24,10 @@ namespace Tecan.Sila2
         private readonly Lazy<ISiLAService> _silaService;
 
         [ImportingConstructor]
-        public AuthenticationAuthorizationService( ILoggingChannelFactory loggingChannelFactory, Lazy<ISiLAService> silaService, [Import(AllowDefault = true)] IAuthConfigurationProvider configurationProvider, IServerConnector serverConnector)
+        public AuthenticationAuthorizationService( ILoggingChannelFactory loggingChannelFactory, Lazy<ISiLAService> silaService, IAuthConfigurationProvider configurationProvider, IServerConnector serverConnector)
         {
             _silaService = silaService;
-            _configurationProvider = configurationProvider ?? new DefaultConfigurationProvider( loggingChannelFactory, serverConnector );
+            _configurationProvider = configurationProvider;
         }
 
         private readonly ConcurrentDictionary<string, AuthToken> _currentAuthorizations = new ConcurrentDictionary<string, AuthToken>();

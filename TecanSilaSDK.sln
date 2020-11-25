@@ -28,6 +28,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DynamicClient", "DynamicCli
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NuSpec", "NuSpec", "{B34C24C7-1092-4634-BB86-EA4FABB6F5B2}"
 	ProjectSection(SolutionItems) = preProject
+		NuSpec\Tecan.Sila2.Annotations.nuspec = NuSpec\Tecan.Sila2.Annotations.nuspec
 		NuSpec\Tecan.Sila2.Client.nuspec = NuSpec\Tecan.Sila2.Client.nuspec
 		NuSpec\Tecan.Sila2.CommonLogging.nuspec = NuSpec\Tecan.Sila2.CommonLogging.nuspec
 		NuSpec\Tecan.Sila2.Contracts.nuspec = NuSpec\Tecan.Sila2.Contracts.nuspec
@@ -43,6 +44,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NuSpec", "NuSpec", "{B34C24
 		NuSpec\Tecan.Sila2.Features.WorktableIntegration.Client.nuspec = NuSpec\Tecan.Sila2.Features.WorktableIntegration.Client.nuspec
 		NuSpec\Tecan.Sila2.Features.WorktableIntegration.nuspec = NuSpec\Tecan.Sila2.Features.WorktableIntegration.nuspec
 		NuSpec\Tecan.Sila2.Generator.nuspec = NuSpec\Tecan.Sila2.Generator.nuspec
+		NuSpec\Tecan.Sila2.Grpc.nuspec = NuSpec\Tecan.Sila2.Grpc.nuspec
 		NuSpec\Tecan.Sila2.nuspec = NuSpec\Tecan.Sila2.nuspec
 		NuSpec\Tecan.Sila2.Server.nuspec = NuSpec\Tecan.Sila2.Server.nuspec
 	EndProjectSection
@@ -100,7 +102,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Client", "Client\Client.csp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Annotations", "Annotations\Annotations.csproj", "{6A09F4DB-1F15-4EA8-9DBD-32CC60F776F7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Framework.Grpc", "Framework.Grpc\Framework.Grpc.csproj", "{F5BDB9CA-BF8A-4BFC-A821-764EDFA8CE31}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Framework.Grpc", "Framework.Grpc\Framework.Grpc.csproj", "{F5BDB9CA-BF8A-4BFC-A821-764EDFA8CE31}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

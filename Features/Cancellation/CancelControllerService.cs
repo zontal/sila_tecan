@@ -1,5 +1,5 @@
-﻿using System.ComponentModel.Composition;
-using Grpc.Core;
+﻿using System;
+using System.ComponentModel.Composition;
 using Tecan.Sila2.Server;
 
 namespace Tecan.Sila2.Cancellation
@@ -23,7 +23,7 @@ namespace Tecan.Sila2.Cancellation
             {
                 command = _server.GetCommandExecution( commandExecutionUuid.Value );
             }
-            catch( RpcException ex )
+            catch( Exception ex )
             {
                 throw new InvalidCommandExecutionUUIDException( ex.Message );
             }

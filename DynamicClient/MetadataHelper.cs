@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Grpc.Core;
 using Tecan.Sila2.Client;
 
 namespace Tecan.Sila2.DynamicClient

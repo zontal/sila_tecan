@@ -3,7 +3,7 @@
     <metadata>
         <id>Tecan.Sila2.Features.Auth.Client</id>
         <description>Authentication/authorization client for SiLA2</description>
-        <version>2.0.0-local</version>
+        <version>3.0.0-local</version>
         <authors>Tecan Trading Ltd., Switzerland</authors>
         <owners>Tecan Trading Ltd., Switzerland</owners>
         <copyright>Copyright 2019 by Tecan Trading Ltd., Switzerland</copyright>
@@ -12,9 +12,7 @@
         <projectUrl>https://gitlab.com/SiLA2/vendors/sila_tecan</projectUrl>
         <repository type="git" url="https://gitlab.com/SiLA2/vendors/sila_tecan.git" />
         <dependencies>
-            <dependency id="Tecan.Sila2.Contracts" version="[2.0,3.0)" />
-            <dependency id="Tecan.Sila2" version="[2.0,3.0)" />
-            <dependency id="Tecan.Sila2.Client" version="[2.0,3.0)" />
+            <dependency id="Tecan.Sila2" version="[3.0,4.0)" />
         </dependencies>
     </metadata>
     <files>

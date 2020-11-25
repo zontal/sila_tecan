@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Grpc.Core;
 using Tecan.Sila2.Client;
 
 namespace Tecan.Sila2.DynamicClient
@@ -10,20 +9,6 @@ namespace Tecan.Sila2.DynamicClient
     /// </summary>
     public class ObservableCommandClient : CommandClient
     {
-        /// <summary>
-        /// Remote method for the SiLA-Command
-        /// </summary>
-        protected readonly Method<DynamicRequest, CommandConfirmation> Method;
-
-        /// <summary>
-        /// Remote method for the SiLA-Command's State/Info stream
-        /// </summary>
-        protected readonly Method<CommandExecutionUuid, ExecutionState> StateMethod;
-
-        /// <summary>
-        /// Remote method for the SiLA-Command's Results
-        /// </summary>
-        protected readonly Method<CommandExecutionUuid, DynamicObjectProperty> ResultMethod;
 
         /// <summary>
         /// Creates a new client for an observable command

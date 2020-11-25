@@ -24,10 +24,7 @@ namespace Tecan.Sila2
         /// <returns>A data transfer object instance</returns>
         public static T FromByteArray(byte[] data)
         {
-            using (var ms = new MemoryStream(data))
-            {
-                return Serializer.Deserialize<T>(ms);
-            }
+            return ByteSerializer.FromByteArray<T>( data );
         }
 
         /// <summary>
@@ -37,12 +34,7 @@ namespace Tecan.Sila2
         /// <returns>A byte array</returns>
         public static byte[] ToByteArray(T instance)
         {
-            using (var ms = new MemoryStream())
-            {
-                Serializer.Serialize(ms, instance);
-                var data = ms.ToArray();
-                return data;
-            }
+            return ByteSerializer.ToByteArray( instance );
         }
     }
 }
