@@ -87,7 +87,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// <returns>A method object or null, if the command is not supported</returns>
         public System.Reflection.MethodInfo GetCommand( string commandIdentifier )
         {
-            if((commandIdentifier == "tecan.sila.generator.test/testreference/InlineObservableService/v2/Command/TestIn" +
+            if((commandIdentifier == "tecan.sila.generator.test/testreference/InlineObservableService/v3/Command/TestIn" +
                 "lineObservable"))
             {
                 return typeof( IInlineObservableService ).GetMethod( "TestInlineObservable" );

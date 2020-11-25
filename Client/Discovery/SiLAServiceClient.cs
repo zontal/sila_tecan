@@ -41,7 +41,7 @@ namespace Tecan.Sila2.Discovery
         
         private IClientChannel _channel;
         
-        private string _serviceName = "sila2.org.silastandard.core.silaservice.v1.SiLAService";
+        private const string _serviceName = "sila2.org.silastandard.core.silaservice.v1.SiLAService";
         
         ///  <summary>
         /// Creates a new instance

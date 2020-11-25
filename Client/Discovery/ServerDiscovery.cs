@@ -15,6 +15,8 @@ namespace Tecan.Sila2.Discovery
     /// Utility class to be used to discover and find SiLA Servers using the 
     /// ServiceFinder class.
     /// </summary>
+    [Export(typeof(IServerDiscovery))]
+    [PartCreationPolicy(CreationPolicy.Shared)]
     public class ServerDiscovery : IServerDiscovery
     {
         private readonly ILoggingChannel _loggingChannel;
@@ -26,6 +28,7 @@ namespace Tecan.Sila2.Discovery
         /// </summary>
         /// <param name="factory">A logging factory</param>
         /// <param name="serverConnector">A component that creates channels</param>
+        [ImportingConstructor]
         public ServerDiscovery( ILoggingChannelFactory factory, IServerConnector serverConnector )
         {
             _loggingChannel = factory.CreateChannel( typeof(ServerDiscovery) );

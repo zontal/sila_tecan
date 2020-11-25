@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.Composition;
 using System.IO;
 using System.Text;
 using System.Xml.Serialization;
@@ -8,11 +9,13 @@ using Tecan.Sila2.Discovery;
 
 namespace Tecan.Sila2
 {
+    [Export]
     internal class DefaultConfigurationProvider : AuthConfigurationProviderBase
     {
         private const string ConfigName = "Auth.config";
         private readonly XmlSerializer _serializer = new XmlSerializer( typeof( AuthConfiguration ) );
 
+        [ImportingConstructor]
         public DefaultConfigurationProvider(ILoggingChannelFactory loggingChannelFactory, IServerConnector serverConnector, IServerDiscovery discovery)
             : base(loggingChannelFactory, discovery, serverConnector)
         {

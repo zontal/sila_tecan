@@ -17,6 +17,118 @@ using Tecan.Sila2.WorktableIntegration;
 namespace Tecan.Sila2.WorktableIntegration
 {
     
+    
+    ///  <summary>
+    /// A class that exposes the IWorktableService interface via SiLA2
+    /// </summary>
+    [System.ComponentModel.Composition.ExportAttribute(typeof(IFeatureProvider))]
+    [System.ComponentModel.Composition.PartCreationPolicyAttribute(System.ComponentModel.Composition.CreationPolicy.Shared)]
+    public partial class WorktableServiceProvider : IFeatureProvider
+    {
+        
+        private IWorktableService _implementation;
+        
+        private Tecan.Sila2.Server.ISiLAServer _server;
+        
+        private static Tecan.Sila2.Feature _feature = FeatureSerializer.LoadFromAssembly(typeof(WorktableServiceProvider).Assembly, "WorktableService.sila.xml");
+        
+        ///  <summary>
+        /// Creates a new instance
+        /// </summary>
+        /// <param name="implementation">The implementation to exported through SiLA2</param>
+        /// <param name="server">The SiLA2 server instance through which the implementation shall be exported</param>
+        [System.ComponentModel.Composition.ImportingConstructorAttribute()]
+        public WorktableServiceProvider(IWorktableService implementation, Tecan.Sila2.Server.ISiLAServer server)
+        {
+            _implementation = implementation;
+            _server = server;
+        }
+        
+        ///  <summary>
+        /// The feature that is exposed by this feature provider
+        /// </summary>
+        /// <returns>A feature object</returns>
+        public Tecan.Sila2.Feature FeatureDefinition
+        {
+            get
+            {
+                return _feature;
+            }
+        }
+        
+        ///  <summary>
+        /// Registers the feature in the provided feature registration
+        /// </summary>
+        /// <param name="registration">The registration component to which the feature should be registered</param>
+        public void Register(IServerBuilder registration)
+        {
+            registration.RegisterUnobservableProperty("BoundingBox", GetBoundingBox);
+            registration.RegisterUnobservableProperty("SiteTemplates", GetSiteTemplates);
+            registration.RegisterUnobservableProperty("Sites", GetSites);
+        }
+        
+        ///  <summary>
+        /// Gets the current value of the Bounding Box property
+        /// </summary>
+        /// <returns>The current value wrapped in a data transfer object</returns>
+        protected virtual PropertyResponse<BoundingBoxDto> GetBoundingBox()
+        {
+            return new PropertyResponse<BoundingBoxDto>(new BoundingBoxDto(_implementation.BoundingBox, _server));
+        }
+        
+        ///  <summary>
+        /// Gets the current value of the Site Templates property
+        /// </summary>
+        /// <returns>The current value wrapped in a data transfer object</returns>
+        protected virtual PropertyResponse<System.Collections.Generic.List<SiteTemplateDto>> GetSiteTemplates()
+        {
+            return new PropertyResponse<System.Collections.Generic.List<SiteTemplateDto>>(Tecan.Sila2.DtoExtensions.Encapsulate(_implementation.SiteTemplates, SiteTemplateDto.Create, _server));
+        }
+        
+        ///  <summary>
+        /// Gets the current value of the Sites property
+        /// </summary>
+        /// <returns>The current value wrapped in a data transfer object</returns>
+        protected virtual PropertyResponse<System.Collections.Generic.List<SiteDto>> GetSites()
+        {
+            return new PropertyResponse<System.Collections.Generic.List<SiteDto>>(Tecan.Sila2.DtoExtensions.Encapsulate(_implementation.Sites, SiteDto.Create, _server));
+        }
+        
+        ///  <summary>
+        /// Gets the command with the given identifier
+        /// </summary>
+        /// <param name="commandIdentifier">A fully qualified command identifier</param>
+        /// <returns>A method object or null, if the command is not supported</returns>
+        public System.Reflection.MethodInfo GetCommand(string commandIdentifier)
+        {
+            return null;
+        }
+        
+        ///  <summary>
+        /// Gets the property with the given identifier
+        /// </summary>
+        /// <param name="propertyIdentifier">A fully qualified property identifier</param>
+        /// <returns>A property object or null, if the property is not supported</returns>
+        public System.Reflection.PropertyInfo GetProperty(string propertyIdentifier)
+        {
+            if ((propertyIdentifier == "tecan.sila.worktableintegration/infrastructure/WorktableService/v1/Property/Bound" +
+                "ingBox"))
+            {
+                return typeof(IWorktableService).GetProperty("BoundingBox");
+            }
+            if ((propertyIdentifier == "tecan.sila.worktableintegration/infrastructure/WorktableService/v1/Property/SiteT" +
+                "emplates"))
+            {
+                return typeof(IWorktableService).GetProperty("SiteTemplates");
+            }
+            if ((propertyIdentifier == "tecan.sila.worktableintegration/infrastructure/WorktableService/v1/Property/Sites" +
+                ""))
+            {
+                return typeof(IWorktableService).GetProperty("Sites");
+            }
+            return null;
+        }
+    }
 }
 
 

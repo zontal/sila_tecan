@@ -32,6 +32,7 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
         }
         
         ///  <summary>
+        /// The ground rectangle
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute(1)]
         public RectangleDto Rectangle
@@ -47,6 +48,7 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
         }
         
         ///  <summary>
+        /// The height of the bounding box
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute(2)]
         public Tecan.Sila2.RealDto Height
@@ -113,6 +115,7 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
         }
         
         ///  <summary>
+        /// Gets the name of the site template
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute(1)]
         public Tecan.Sila2.StringDto Name
@@ -128,6 +131,7 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
         }
         
         ///  <summary>
+        /// Gets the size of the site
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute(2)]
         public RectangleDto SiteRectangle
@@ -143,6 +147,7 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
         }
         
         ///  <summary>
+        /// Gets a collection of custom tags
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute(3)]
         public System.Collections.Generic.List<Tecan.Sila2.StringDto> Tags
@@ -212,6 +217,7 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
         }
         
         ///  <summary>
+        /// The name of the site
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute(1)]
         public Tecan.Sila2.StringDto Name
@@ -227,6 +233,7 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
         }
         
         ///  <summary>
+        /// The site template
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute(2)]
         public Tecan.Sila2.StringDto Template
@@ -242,6 +249,7 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
         }
         
         ///  <summary>
+        /// The offset from the device
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute(3)]
         public OffsetDto Offset
@@ -257,6 +265,7 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
         }
         
         ///  <summary>
+        /// The rotation
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute(4)]
         public Tecan.Sila2.RealDto Rotation
@@ -320,6 +329,7 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
         }
         
         ///  <summary>
+        /// The width of the rectangle
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute(1)]
         public Tecan.Sila2.RealDto Width
@@ -335,6 +345,7 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
         }
         
         ///  <summary>
+        /// The depth of the rectangle
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute(2)]
         public Tecan.Sila2.RealDto Depth
@@ -401,6 +412,7 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
         }
         
         ///  <summary>
+        /// The X offset
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute(1)]
         public Tecan.Sila2.RealDto X
@@ -416,6 +428,7 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
         }
         
         ///  <summary>
+        /// The Y offset
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute(2)]
         public Tecan.Sila2.RealDto Y
@@ -431,6 +444,7 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
         }
         
         ///  <summary>
+        /// The Z offset
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute(3)]
         public Tecan.Sila2.RealDto Z

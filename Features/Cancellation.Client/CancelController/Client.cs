@@ -27,7 +27,7 @@ namespace Tecan.Sila2.Cancellation.CancelController
         
         private IClientChannel _channel;
         
-        private string _serviceName = "sila2.org.silastandard.core.commands.cancelcontroller.v1.CancelController";
+        private const string _serviceName = "sila2.org.silastandard.core.commands.cancelcontroller.v1.CancelController";
         
         ///  <summary>
         /// Creates a new instance

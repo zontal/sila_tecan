@@ -122,7 +122,7 @@ namespace Tecan.Sila2.Generator.CommandLine
 
         private static void AddUsingStatements(CodeCompileUnit unit, string[] imports)
         {
-            if (imports == null || imports.Length == 0) return;
+            if (imports == null || imports.Length == 0 || unit == null) return;
             var ns = unit.Namespaces.Cast<CodeNamespace>().FirstOrDefault(n => n.Name == null);
             if (ns == null)
             {

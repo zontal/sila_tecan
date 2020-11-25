@@ -43,7 +43,7 @@ namespace Tecan.Sila2.Interop.Client.ComplexDataTypeTest
         
         private IClientChannel _channel;
         
-        private string _serviceName = "sila2.org.silastandard.test.complexdatatypetest.v1.ComplexDataTypeTest";
+        private const string _serviceName = "sila2.org.silastandard.test.complexdatatypetest.v1.ComplexDataTypeTest";
         
         ///  <summary>
         /// Creates a new instance
@@ -52,9 +52,9 @@ namespace Tecan.Sila2.Interop.Client.ComplexDataTypeTest
         /// <param name="channel">The channel through which calls should be executed</param>
         public ComplexDataTypeTestClient(IClientExecutionManager executionManager, IClientChannel channel)
         {
-            InitLazyRequests();
             _executionManager = executionManager;
             _channel = channel;
+            InitLazyRequests();
         }
         
         ///  <summary>

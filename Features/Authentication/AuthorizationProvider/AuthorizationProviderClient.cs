@@ -27,7 +27,7 @@ namespace Tecan.Sila2.AuthorizationProvider
         
         private IClientChannel _channel;
         
-        private string _serviceName = "sila2.org.silastandard.core.authorizationproviderservice.v1.AuthorizationProvider" +
+        private const string _serviceName = "sila2.org.silastandard.core.authorizationproviderservice.v1.AuthorizationProvider" +
             "Service";
         
         ///  <summary>

@@ -31,7 +31,7 @@ namespace Tecan.Sila2.Interop.Client.ObservablePropertyTest
         
         private IClientChannel _channel;
         
-        private string _serviceName = "sila2.org.silastandard.test.observablepropertytest.v1.ObservablePropertyTest";
+        private const string _serviceName = "sila2.org.silastandard.test.observablepropertytest.v1.ObservablePropertyTest";
         
         ///  <summary>
         /// Creates a new instance

@@ -65,7 +65,11 @@ namespace Tecan.Sila2.Generator
                     }
                     catch( Exception e )
                     {
+                        var oldColor = Console.ForegroundColor;
+                        Console.ForegroundColor = ConsoleColor.Red;
                         Console.Error.WriteLine( e.Message );
+                        Console.Error.WriteLine( "Code generation failed." );
+                        Console.ForegroundColor = oldColor;
                         Environment.Exit( 1 );
                     }
                 } );

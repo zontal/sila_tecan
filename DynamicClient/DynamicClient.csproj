@@ -30,6 +30,10 @@
     </ItemGroup>
 
     <ItemGroup>
+      <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
+    </ItemGroup>
+
+    <ItemGroup>
         <ProjectReference Include="..\Contracts\Contracts.csproj" />
         <ProjectReference Include="..\Features\Cancellation.Client\Cancellation.Client.csproj" />
         <ProjectReference Include="..\Framework\Framework.csproj" />

@@ -31,7 +31,7 @@ namespace Tecan.Sila2.ParameterConstraintsProvider.ParameterConstraintsProvider
         
         private IClientChannel _channel;
         
-        private string _serviceName = "sila2.org.silastandard.core.commands.parameterconstraintsprovider.v1.ParameterCon" +
+        private const string _serviceName = "sila2.org.silastandard.core.commands.parameterconstraintsprovider.v1.ParameterCon" +
             "straintsProvider";
         
         ///  <summary>

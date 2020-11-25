@@ -39,7 +39,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         
         private IClientChannel _channel;
         
-        private const string _serviceName = "sila2.tecan.sila.generator.test.silaservice.silaservice.v2.SiLAService";
+        private const string _serviceName = "sila2.tecan.sila.generator.test.silaservice.silaservice.v3.SiLAService";
         
         ///  <summary>
         /// Creates a new instance
@@ -60,7 +60,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         {
             get
             {
-                Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("tecan.sila.generator.test/silaservice/SiLAService/v2/Property/ServerName");
+                Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("tecan.sila.generator.test/silaservice/SiLAService/v3/Property/ServerName");
                 try
                 {
                     string response = _channel.ReadProperty<PropertyResponse<Tecan.Sila2.StringDto>>(_serviceName, "ServerName", callInfo).Value.Extract(_executionManager.DownloadBinaryStore);
@@ -76,7 +76,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             set
             {
                 SetServerNameRequestDto request = new SetServerNameRequestDto(value, null);
-                Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("tecan.sila.generator.test/silaservice/SiLAService/v2/Command/SetServerName");
+                Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("tecan.sila.generator.test/silaservice/SiLAService/v3/Command/SetServerName");
                 try
                 {
                     _channel.ExecuteUnobservableCommand<SetServerNameRequestDto>(_serviceName, "SetServerName", request, callInfo);
@@ -163,7 +163,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         
         private string RequestServerType()
         {
-            Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("tecan.sila.generator.test/silaservice/SiLAService/v2/Property/ServerType");
+            Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("tecan.sila.generator.test/silaservice/SiLAService/v3/Property/ServerType");
             try
             {
                 string response = _channel.ReadProperty<PropertyResponse<Tecan.Sila2.StringDto>>(_serviceName, "ServerType", callInfo).Value.Extract(_executionManager.DownloadBinaryStore);
@@ -179,7 +179,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         
         private string RequestServerUUID()
         {
-            Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("tecan.sila.generator.test/silaservice/SiLAService/v2/Property/ServerUUID");
+            Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("tecan.sila.generator.test/silaservice/SiLAService/v3/Property/ServerUUID");
             try
             {
                 string response = _channel.ReadProperty<ServerUUIDResponseDto>(_serviceName, "ServerUUID", callInfo).Value.Extract(_executionManager.DownloadBinaryStore);
@@ -195,7 +195,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         
         private string RequestServerDescription()
         {
-            Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("tecan.sila.generator.test/silaservice/SiLAService/v2/Property/ServerDescription");
+            Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("tecan.sila.generator.test/silaservice/SiLAService/v3/Property/ServerDescription");
             try
             {
                 string response = _channel.ReadProperty<PropertyResponse<Tecan.Sila2.StringDto>>(_serviceName, "ServerDescription", callInfo).Value.Extract(_executionManager.DownloadBinaryStore);
@@ -211,7 +211,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         
         private string RequestServerVersion()
         {
-            Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("tecan.sila.generator.test/silaservice/SiLAService/v2/Property/ServerVersion");
+            Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("tecan.sila.generator.test/silaservice/SiLAService/v3/Property/ServerVersion");
             try
             {
                 string response = _channel.ReadProperty<ServerVersionResponseDto>(_serviceName, "ServerVersion", callInfo).Value.Extract(_executionManager.DownloadBinaryStore);
@@ -227,7 +227,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         
         private Url RequestServerVendorURL()
         {
-            Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("tecan.sila.generator.test/silaservice/SiLAService/v2/Property/ServerVendorURL");
+            Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("tecan.sila.generator.test/silaservice/SiLAService/v3/Property/ServerVendorURL");
             try
             {
                 Url response = _channel.ReadProperty<PropertyResponse<UrlDto>>(_serviceName, "ServerVendorURL", callInfo).Value.Extract(_executionManager.DownloadBinaryStore);
@@ -243,7 +243,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         
         private System.Collections.Generic.ICollection<FeatureIdentifier> RequestImplementedFeatures()
         {
-            Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("tecan.sila.generator.test/silaservice/SiLAService/v2/Property/ImplementedFeatures" +
+            Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("tecan.sila.generator.test/silaservice/SiLAService/v3/Property/ImplementedFeatures" +
                     "");
             try
             {
@@ -278,7 +278,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         public virtual FeatureDefinition GetFeatureDefinition(FeatureIdentifier qualifiedFeatureIdentifier)
         {
             GetFeatureDefinitionRequestDto request = new GetFeatureDefinitionRequestDto(qualifiedFeatureIdentifier, null);
-            Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("tecan.sila.generator.test/silaservice/SiLAService/v2/Command/GetFeatureDefinition" +
+            Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("tecan.sila.generator.test/silaservice/SiLAService/v3/Command/GetFeatureDefinition" +
                     "");
             try
             {
@@ -301,7 +301,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// <returns>The converted exception or null, if the error is not understood</returns>
         private static System.Exception ConvertGetFeatureDefinitionException(string errorIdentifier, string errorMessage)
         {
-            if ((errorIdentifier == "tecan.sila.generator.test/silaservice/SiLAService/v2/DefinedError/UnimplementedFe" +
+            if ((errorIdentifier == "tecan.sila.generator.test/silaservice/SiLAService/v3/DefinedError/UnimplementedFe" +
                 "ature"))
             {
                 return new UnimplementedFeatureException(errorMessage);

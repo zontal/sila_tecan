@@ -27,7 +27,7 @@ namespace Tecan.Sila2.Interop.Client.ObservableCommandTest
         
         private IClientChannel _channel;
         
-        private string _serviceName = "sila2.org.silastandard.test.observablecommandtest.v1.ObservableCommandTest";
+        private const string _serviceName = "sila2.org.silastandard.test.observablecommandtest.v1.ObservableCommandTest";
         
         ///  <summary>
         /// Creates a new instance
@@ -118,29 +118,6 @@ namespace Tecan.Sila2.Interop.Client.ObservableCommandTest
         {
             return dto.Extract(_executionManager.DownloadBinaryStore);
         }
-    }
-    
-    ///  <summary>
-    /// Encapsulates provider classes to expose the Observable Command Test feature via SiLA2
-    /// </summary>
-    internal sealed partial class ObservableCommandTestMethods
-    {
-        
-        private static string @__ServiceName = "sila2.org.silastandard.test.observablecommandtest.v1.ObservableCommandTest";
-        
-        public static Grpc.Core.Method<ObservableIterationRequestDto, CommandConfirmation> ObservableIterationMethod = new Grpc.Core.Method<ObservableIterationRequestDto, CommandConfirmation>(Grpc.Core.MethodType.Unary, @__ServiceName, "ObservableIteration", ProtobufMarshaller<ObservableIterationRequestDto>.Default, ProtobufMarshaller<CommandConfirmation>.Default);
-        
-        public static Grpc.Core.Method<CommandExecutionUuid, ExecutionState> ObservableIterationStateMethod = new Grpc.Core.Method<CommandExecutionUuid, ExecutionState>(Grpc.Core.MethodType.ServerStreaming, @__ServiceName, "ObservableIteration_Info", ProtobufMarshaller<CommandExecutionUuid>.Default, ProtobufMarshaller<ExecutionState>.Default);
-        
-        public static Grpc.Core.Method<CommandExecutionUuid, ObservableIterationIntermediateDto> ObservableIterationIntermediateMethod = new Grpc.Core.Method<CommandExecutionUuid, ObservableIterationIntermediateDto>(Grpc.Core.MethodType.Unary, @__ServiceName, "ObservableIteration_IntermediateResponses", ProtobufMarshaller<CommandExecutionUuid>.Default, ProtobufMarshaller<ObservableIterationIntermediateDto>.Default);
-        
-        public static Grpc.Core.Method<CommandExecutionUuid, ObservableIterationResponseDto> ObservableIterationResponseMethod = new Grpc.Core.Method<CommandExecutionUuid, ObservableIterationResponseDto>(Grpc.Core.MethodType.Unary, @__ServiceName, "ObservableIteration_Result", ProtobufMarshaller<CommandExecutionUuid>.Default, ProtobufMarshaller<ObservableIterationResponseDto>.Default);
-        
-        public static Grpc.Core.Method<EchoValueAsyncRequestDto, CommandConfirmation> EchoValueAsyncMethod = new Grpc.Core.Method<EchoValueAsyncRequestDto, CommandConfirmation>(Grpc.Core.MethodType.Unary, @__ServiceName, "EchoValueAsync", ProtobufMarshaller<EchoValueAsyncRequestDto>.Default, ProtobufMarshaller<CommandConfirmation>.Default);
-        
-        public static Grpc.Core.Method<CommandExecutionUuid, ExecutionState> EchoValueAsyncStateMethod = new Grpc.Core.Method<CommandExecutionUuid, ExecutionState>(Grpc.Core.MethodType.ServerStreaming, @__ServiceName, "EchoValueAsync_Info", ProtobufMarshaller<CommandExecutionUuid>.Default, ProtobufMarshaller<ExecutionState>.Default);
-        
-        public static Grpc.Core.Method<CommandExecutionUuid, EchoValueAsyncResponseDto> EchoValueAsyncResponseMethod = new Grpc.Core.Method<CommandExecutionUuid, EchoValueAsyncResponseDto>(Grpc.Core.MethodType.Unary, @__ServiceName, "EchoValueAsync_Result", ProtobufMarshaller<CommandExecutionUuid>.Default, ProtobufMarshaller<EchoValueAsyncResponseDto>.Default);
     }
 }
 

@@ -27,7 +27,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         
         private IClientChannel _channel;
         
-        private string _serviceName = "sila2.tecan.sila.integrationtests.testserver.v1.TestServer";
+        private const string _serviceName = "sila2.tecan.sila.integrationtests.testserver.v1.TestServer";
         
         ///  <summary>
         /// Creates a new instance

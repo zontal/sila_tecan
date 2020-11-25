@@ -29,7 +29,7 @@ namespace Tecan.Sila2.Locking.LockController
         
         private IClientChannel _channel;
         
-        private string _serviceName = "sila2.org.silastandard.core.lockcontroller.v1.LockController";
+        private const string _serviceName = "sila2.org.silastandard.core.lockcontroller.v1.LockController";
         
         ///  <summary>
         /// Creates a new instance
@@ -38,9 +38,9 @@ namespace Tecan.Sila2.Locking.LockController
         /// <param name="channel">The channel through which calls should be executed</param>
         public LockControllerClient(IClientExecutionManager executionManager, IClientChannel channel)
         {
-            InitLazyRequests();
             _executionManager = executionManager;
             _channel = channel;
+            InitLazyRequests();
         }
         
         ///  <summary>

@@ -47,7 +47,7 @@
         <Element>
           <Identifier>Rectangle</Identifier>
           <DisplayName>Rectangle</DisplayName>
-          <Description />
+          <Description>The ground rectangle</Description>
           <DataType>
             <DataTypeIdentifier>Rectangle</DataTypeIdentifier>
           </DataType>
@@ -55,7 +55,7 @@
         <Element>
           <Identifier>Height</Identifier>
           <DisplayName>Height</DisplayName>
-          <Description />
+          <Description>The height of the bounding box</Description>
           <DataType>
             <Constrained>
               <DataType>
@@ -87,7 +87,7 @@
         <Element>
           <Identifier>Name</Identifier>
           <DisplayName>Name</DisplayName>
-          <Description />
+          <Description>Gets the name of the site template</Description>
           <DataType>
             <Basic>String</Basic>
           </DataType>
@@ -95,7 +95,7 @@
         <Element>
           <Identifier>SiteRectangle</Identifier>
           <DisplayName>SiteRectangle</DisplayName>
-          <Description />
+          <Description>Gets the size of the site</Description>
           <DataType>
             <DataTypeIdentifier>Rectangle</DataTypeIdentifier>
           </DataType>
@@ -103,7 +103,7 @@
         <Element>
           <Identifier>Tags</Identifier>
           <DisplayName>Tags</DisplayName>
-          <Description />
+          <Description>Gets a collection of custom tags</Description>
           <DataType>
             <List>
               <DataType>
@@ -124,7 +124,7 @@
         <Element>
           <Identifier>Name</Identifier>
           <DisplayName>Name</DisplayName>
-          <Description />
+          <Description>The name of the site</Description>
           <DataType>
             <Basic>String</Basic>
           </DataType>
@@ -132,7 +132,7 @@
         <Element>
           <Identifier>Template</Identifier>
           <DisplayName>Template</DisplayName>
-          <Description />
+          <Description>The site template</Description>
           <DataType>
             <Basic>String</Basic>
           </DataType>
@@ -140,7 +140,7 @@
         <Element>
           <Identifier>Offset</Identifier>
           <DisplayName>Offset</DisplayName>
-          <Description />
+          <Description>The offset from the device</Description>
           <DataType>
             <DataTypeIdentifier>Offset</DataTypeIdentifier>
           </DataType>
@@ -148,7 +148,7 @@
         <Element>
           <Identifier>Rotation</Identifier>
           <DisplayName>Rotation</DisplayName>
-          <Description />
+          <Description>The rotation</Description>
           <DataType>
             <Constrained>
               <DataType>
@@ -176,7 +176,7 @@
         <Element>
           <Identifier>Width</Identifier>
           <DisplayName>Width</DisplayName>
-          <Description />
+          <Description>The width of the rectangle</Description>
           <DataType>
             <Constrained>
               <DataType>
@@ -199,7 +199,7 @@
         <Element>
           <Identifier>Depth</Identifier>
           <DisplayName>Depth</DisplayName>
-          <Description />
+          <Description>The depth of the rectangle</Description>
           <DataType>
             <Constrained>
               <DataType>
@@ -231,7 +231,7 @@
         <Element>
           <Identifier>X</Identifier>
           <DisplayName>X</DisplayName>
-          <Description />
+          <Description>The X offset</Description>
           <DataType>
             <Constrained>
               <DataType>
@@ -254,7 +254,7 @@
         <Element>
           <Identifier>Y</Identifier>
           <DisplayName>Y</DisplayName>
-          <Description />
+          <Description>The Y offset</Description>
           <DataType>
             <Constrained>
               <DataType>
@@ -277,7 +277,7 @@
         <Element>
           <Identifier>Z</Identifier>
           <DisplayName>Z</DisplayName>
-          <Description />
+          <Description>The Z offset</Description>
           <DataType>
             <Constrained>
               <DataType>

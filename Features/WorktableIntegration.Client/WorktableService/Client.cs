@@ -33,7 +33,7 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
         
         private IClientChannel _channel;
         
-        private string _serviceName = "sila2.tecan.sila.worktableintegration.infrastructure.worktableservice.v1.Worktabl" +
+        private const string _serviceName = "sila2.tecan.sila.worktableintegration.infrastructure.worktableservice.v1.Worktabl" +
             "eService";
         
         ///  <summary>
@@ -43,9 +43,9 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
         /// <param name="channel">The channel through which calls should be executed</param>
         public WorktableServiceClient(IClientExecutionManager executionManager, IClientChannel channel)
         {
-            InitLazyRequests();
             _executionManager = executionManager;
             _channel = channel;
+            InitLazyRequests();
         }
         
         ///  <summary>

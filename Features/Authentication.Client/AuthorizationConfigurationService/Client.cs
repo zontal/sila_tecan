@@ -29,7 +29,7 @@ namespace Tecan.Sila2.Authorization.AuthorizationConfigurationService
         
         private IClientChannel _channel;
         
-        private string _serviceName = "sila2.org.silastandard.core.authorizationconfigurationservice.v1.AuthorizationCon" +
+        private const string _serviceName = "sila2.org.silastandard.core.authorizationconfigurationservice.v1.AuthorizationCon" +
             "figurationService";
         
         ///  <summary>
@@ -39,9 +39,9 @@ namespace Tecan.Sila2.Authorization.AuthorizationConfigurationService
         /// <param name="channel">The channel through which calls should be executed</param>
         public AuthorizationConfigurationServiceClient(IClientExecutionManager executionManager, IClientChannel channel)
         {
-            InitLazyRequests();
             _executionManager = executionManager;
             _channel = channel;
+            InitLazyRequests();
         }
         
         ///  <summary>

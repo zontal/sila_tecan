@@ -29,7 +29,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         
         private IClientChannel _channel;
         
-        private const string _serviceName = "sila2.tecan.sila.generator.test.dictionaryservice.v2.DictionaryService";
+        private const string _serviceName = "sila2.tecan.sila.generator.test.dictionaryservice.v3.DictionaryService";
         
         ///  <summary>
         /// Creates a new instance
@@ -55,7 +55,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         
         private System.Collections.Generic.IDictionary<long, string> RequestLookup()
         {
-            Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("tecan.sila.generator/test/DictionaryService/v2/Property/Lookup");
+            Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("tecan.sila.generator/test/DictionaryService/v3/Property/Lookup");
             try
             {
                 System.Collections.Generic.IDictionary<long, string> response = Tecan.Sila2.DtoExtensions.Extract(_channel.ReadProperty<PropertyResponse<System.Collections.Generic.List<Tecan.Sila2.KeyValuePairDto<long, Tecan.Sila2.IntegerDto, string, Tecan.Sila2.StringDto>>>>(_serviceName, "Lookup", callInfo).Value, _executionManager.DownloadBinaryStore);

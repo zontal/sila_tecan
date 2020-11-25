@@ -90,7 +90,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// <returns>A property object or null, if the property is not supported</returns>
         public System.Reflection.PropertyInfo GetProperty(string propertyIdentifier)
         {
-            if ((propertyIdentifier == "tecan.sila.generator/test/DictionaryService/v2/Property/Lookup"))
+            if ((propertyIdentifier == "tecan.sila.generator/test/DictionaryService/v3/Property/Lookup"))
             {
                 return typeof(IDictionaryService).GetProperty("Lookup");
             }

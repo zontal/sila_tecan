@@ -63,6 +63,7 @@ namespace Tecan.Sila2.WorktableIntegration
         }
         
         ///  <summary>
+        /// The ground rectangle
         /// </summary>
         public Rectangle Rectangle
         {
@@ -73,6 +74,7 @@ namespace Tecan.Sila2.WorktableIntegration
         }
         
         ///  <summary>
+        /// The height of the bounding box
         /// </summary>
         [Tecan.Sila2.UnitAttribute("mm", Meter=1, Factor=0.001D)]
         public double Height
@@ -104,6 +106,7 @@ namespace Tecan.Sila2.WorktableIntegration
         }
         
         ///  <summary>
+        /// Gets the name of the site template
         /// </summary>
         public string Name
         {
@@ -114,6 +117,7 @@ namespace Tecan.Sila2.WorktableIntegration
         }
         
         ///  <summary>
+        /// Gets the size of the site
         /// </summary>
         public Rectangle SiteRectangle
         {
@@ -124,6 +128,7 @@ namespace Tecan.Sila2.WorktableIntegration
         }
         
         ///  <summary>
+        /// Gets a collection of custom tags
         /// </summary>
         public System.Collections.Generic.ICollection<string> Tags
         {
@@ -157,6 +162,7 @@ namespace Tecan.Sila2.WorktableIntegration
         }
         
         ///  <summary>
+        /// The name of the site
         /// </summary>
         public string Name
         {
@@ -167,6 +173,7 @@ namespace Tecan.Sila2.WorktableIntegration
         }
         
         ///  <summary>
+        /// The site template
         /// </summary>
         public string Template
         {
@@ -177,6 +184,7 @@ namespace Tecan.Sila2.WorktableIntegration
         }
         
         ///  <summary>
+        /// The offset from the device
         /// </summary>
         public Offset Offset
         {
@@ -187,6 +195,7 @@ namespace Tecan.Sila2.WorktableIntegration
         }
         
         ///  <summary>
+        /// The rotation
         /// </summary>
         [Tecan.Sila2.UnitAttribute("Degree")]
         public double Rotation
@@ -215,6 +224,7 @@ namespace Tecan.Sila2.WorktableIntegration
         }
         
         ///  <summary>
+        /// The width of the rectangle
         /// </summary>
         [Tecan.Sila2.UnitAttribute("mm", Meter=1, Factor=0.001D)]
         public double Width
@@ -226,6 +236,7 @@ namespace Tecan.Sila2.WorktableIntegration
         }
         
         ///  <summary>
+        /// The depth of the rectangle
         /// </summary>
         [Tecan.Sila2.UnitAttribute("mm", Meter=1, Factor=0.001D)]
         public double Depth
@@ -257,6 +268,7 @@ namespace Tecan.Sila2.WorktableIntegration
         }
         
         ///  <summary>
+        /// The X offset
         /// </summary>
         [Tecan.Sila2.UnitAttribute("mm", Meter=1, Factor=0.001D)]
         public double X
@@ -268,6 +280,7 @@ namespace Tecan.Sila2.WorktableIntegration
         }
         
         ///  <summary>
+        /// The Y offset
         /// </summary>
         [Tecan.Sila2.UnitAttribute("mm", Meter=1, Factor=0.001D)]
         public double Y
@@ -279,6 +292,7 @@ namespace Tecan.Sila2.WorktableIntegration
         }
         
         ///  <summary>
+        /// The Z offset
         /// </summary>
         [Tecan.Sila2.UnitAttribute("mm", Meter=1, Factor=0.001D)]
         public double Z

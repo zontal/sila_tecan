@@ -8,9 +8,6 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using Tecan.Sila2;
 using Tecan.Sila2.Client;
@@ -18,112 +15,654 @@ using Tecan.Sila2.Server;
 
 namespace Tecan.Sila2.Interop.Client.DataTypeProvider
 {
-
-
+    
+    
     ///  <summary>
     /// Class that implements the IDataTypeProvider interface through SiLA2
     /// </summary>
     public partial class DataTypeProviderClient : IDataTypeProvider
     {
-        public string StringValue => throw new NotImplementedException();
-
-        public long IntegerValue => throw new NotImplementedException();
-
-        public double RealValue => throw new NotImplementedException();
-
-        public bool BooleanValue => throw new NotImplementedException();
-
-        public Stream BinaryValue => throw new NotImplementedException();
-
-        public DateTimeOffset DateValue => throw new NotImplementedException();
-
-        public TimeSpan TimeValue => throw new NotImplementedException();
-
-        public DateTimeOffset TimeStampValue => throw new NotImplementedException();
-
-        public ICollection<string> StringList => throw new NotImplementedException();
-
-        public ICollection<long> IntegerList => throw new NotImplementedException();
-
-        public AllDatatypeStructure StructureValues => throw new NotImplementedException();
-
-        [return: SilaDisplayName( "Received Value" ), SilaIdentifier( "ReceivedBinaryValue" )]
-        public Stream EchoBinaryValue( Stream binaryValue )
+        
+        private System.Lazy<string> _stringValue;
+        
+        private System.Lazy<long> _integerValue;
+        
+        private System.Lazy<double> _realValue;
+        
+        private System.Lazy<bool> _booleanValue;
+        
+        private System.Lazy<System.IO.Stream> _binaryValue;
+        
+        private System.Lazy<System.DateTimeOffset> _dateValue;
+        
+        private System.Lazy<System.TimeSpan> _timeValue;
+        
+        private System.Lazy<System.DateTimeOffset> _timeStampValue;
+        
+        private System.Lazy<System.Collections.Generic.ICollection<string>> _stringList;
+        
+        private System.Lazy<System.Collections.Generic.ICollection<long>> _integerList;
+        
+        private System.Lazy<AllDatatypeStructure> _structureValues;
+        
+        private IClientExecutionManager _executionManager;
+        
+        private IClientChannel _channel;
+        
+        private const string _serviceName = "sila2.org.silastandard.test.datatypeprovider.v1.DataTypeProvider";
+        
+        ///  <summary>
+        /// Creates a new instance
+        /// </summary>
+        /// <param name="executionManager">A component to determine metadata to attach to any requests</param>
+        /// <param name="channel">The channel through which calls should be executed</param>
+        public DataTypeProviderClient(IClientExecutionManager executionManager, IClientChannel channel)
         {
-            throw new NotImplementedException();
+            _executionManager = executionManager;
+            _channel = channel;
+            InitLazyRequests();
         }
-
-        [return: SilaIdentifier( "ReceivedBooleanValue" )]
-        public bool EchoBooleanValue( bool booleanValue )
+        
+        ///  <summary>
+        /// Returns the string value 'SiLA2_Test_String_Value'.
+        /// </summary>
+        public virtual string StringValue
         {
-            throw new NotImplementedException();
+            get
+            {
+                return _stringValue.Value;
+            }
         }
-
-        [return: SilaIdentifier( "ReceivedDateValue" )]
-        public DateTimeOffset EchoDateValue( DateTimeOffset dateValue )
+        
+        ///  <summary>
+        /// Returns the integer value '42'.
+        /// </summary>
+        public virtual long IntegerValue
         {
-            throw new NotImplementedException();
+            get
+            {
+                return _integerValue.Value;
+            }
         }
-
-        [return: SilaIdentifier( "ReceivedValues" )]
-        public long EchoIntegerList( ICollection<long> integerList )
+        
+        ///  <summary>
+        /// Returns the real value '3.1415926'.
+        /// </summary>
+        public virtual double RealValue
         {
-            throw new NotImplementedException();
+            get
+            {
+                return _realValue.Value;
+            }
         }
-
-        [return: SilaIdentifier( "ReceivedIntegerValue" )]
-        public long EchoIntegerValue( long integerValue )
+        
+        ///  <summary>
+        /// Returns the boolean value 'true'.
+        /// </summary>
+        public virtual bool BooleanValue
         {
-            throw new NotImplementedException();
+            get
+            {
+                return _booleanValue.Value;
+            }
         }
-
-        [return: SilaIdentifier( "ReceivedValues" )]
-        public string EchoMultipleMixedValues( string stringValue, long integerValue, double realValue, bool booleanValue, DateTimeOffset dateValue, TimeSpan timeValue, [SilaDisplayName( "TimeStamp Value" )] DateTimeOffset timeStampValue )
+        
+        ///  <summary>
+        /// Returns the UTF-8 encoded string 'SiLA2_Test_String_Value' as Binary value.
+        /// </summary>
+        public virtual System.IO.Stream BinaryValue
         {
-            throw new NotImplementedException();
+            get
+            {
+                return _binaryValue.Value;
+            }
         }
-
-        [return: SilaDisplayName( "Received Value" ), SilaIdentifier( "ReceivedRealValue" )]
-        public double EchoRealValue( double realValue )
+        
+        ///  <summary>
+        /// Returns the date value '2019-08-24' in ISO 8601 format, corresponding to US '08/24/2018' format.
+        /// </summary>
+        public virtual System.DateTimeOffset DateValue
         {
-            throw new NotImplementedException();
+            get
+            {
+                return _dateValue.Value;
+            }
         }
-
-        [return: SilaIdentifier( "ReceivedValues" )]
-        public ICollection<string> EchoStringList( ICollection<string> stringList )
+        
+        ///  <summary>
+        /// Returns the time value '12:34:56'.
+        /// </summary>
+        public virtual System.TimeSpan TimeValue
         {
-            throw new NotImplementedException();
+            get
+            {
+                return _timeValue.Value;
+            }
         }
-
-        [return: SilaIdentifier( "ReceivedStringValue" )]
-        public string EchoStringValue( string stringValue )
+        
+        ///  <summary>
+        /// Returns the time stamp value '2018-08-24 12:34:56'.
+        /// </summary>
+        public virtual System.DateTimeOffset TimeStampValue
         {
-            throw new NotImplementedException();
+            get
+            {
+                return _timeStampValue.Value;
+            }
         }
-
-        public void EchoStructureValues( AllDatatypeStructure receivedValues )
+        
+        ///  <summary>
+        /// Returns a list with the following String values: 'SiLA 2', 'is', 'great'.
+        /// </summary>
+        public virtual System.Collections.Generic.ICollection<string> StringList
         {
-            throw new NotImplementedException();
+            get
+            {
+                return _stringList.Value;
+            }
         }
-
-        [return: SilaIdentifier( "ReceivedValue" )]
-        public DateTimeOffset EchoTimeStampValue( [SilaDisplayName( "TimeStamp Value" )] DateTimeOffset timeStampValue )
+        
+        ///  <summary>
+        /// Returns a list with the following Integer values: '1', '2', '3'.
+        /// </summary>
+        public virtual System.Collections.Generic.ICollection<long> IntegerList
         {
-            throw new NotImplementedException();
+            get
+            {
+                return _integerList.Value;
+            }
         }
-
-        [return: SilaDisplayName( "Received Value" ), SilaIdentifier( "ReceivedTimeValue" )]
-        public TimeSpan EchoTimeValue( TimeSpan timeValue )
+        
+        ///  <summary>
+        /// Returns the Structure values.
+        /// </summary>
+        public virtual AllDatatypeStructure StructureValues
         {
-            throw new NotImplementedException();
+            get
+            {
+                return _structureValues.Value;
+            }
         }
-
-        [return: InlineStruct]
-        public GetMultipleMixedValuesResponse GetMultipleMixedValues()
+        
+        private string RequestStringValue()
         {
-            throw new NotImplementedException();
+            Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/DataTypeProvider/v1/Property/StringValue");
+            try
+            {
+                string response = _channel.ReadProperty<PropertyResponse<Tecan.Sila2.StringDto>>(_serviceName, "StringValue", callInfo).Value.Extract(_executionManager.DownloadBinaryStore);
+                callInfo.FinishSuccessful();
+                return response;
+            } catch (System.Exception ex)
+            {
+                System.Exception exception = _channel.ConvertException(ex);
+                callInfo.FinishWithErrors(exception);
+                throw exception;
+            }
+        }
+        
+        private long RequestIntegerValue()
+        {
+            Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/DataTypeProvider/v1/Property/IntegerValue");
+            try
+            {
+                long response = _channel.ReadProperty<PropertyResponse<Tecan.Sila2.IntegerDto>>(_serviceName, "IntegerValue", callInfo).Value.Extract(_executionManager.DownloadBinaryStore);
+                callInfo.FinishSuccessful();
+                return response;
+            } catch (System.Exception ex)
+            {
+                System.Exception exception = _channel.ConvertException(ex);
+                callInfo.FinishWithErrors(exception);
+                throw exception;
+            }
+        }
+        
+        private double RequestRealValue()
+        {
+            Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/DataTypeProvider/v1/Property/RealValue");
+            try
+            {
+                double response = _channel.ReadProperty<PropertyResponse<Tecan.Sila2.RealDto>>(_serviceName, "RealValue", callInfo).Value.Extract(_executionManager.DownloadBinaryStore);
+                callInfo.FinishSuccessful();
+                return response;
+            } catch (System.Exception ex)
+            {
+                System.Exception exception = _channel.ConvertException(ex);
+                callInfo.FinishWithErrors(exception);
+                throw exception;
+            }
+        }
+        
+        private bool RequestBooleanValue()
+        {
+            Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/DataTypeProvider/v1/Property/BooleanValue");
+            try
+            {
+                bool response = _channel.ReadProperty<PropertyResponse<Tecan.Sila2.BooleanDto>>(_serviceName, "BooleanValue", callInfo).Value.Extract(_executionManager.DownloadBinaryStore);
+                callInfo.FinishSuccessful();
+                return response;
+            } catch (System.Exception ex)
+            {
+                System.Exception exception = _channel.ConvertException(ex);
+                callInfo.FinishWithErrors(exception);
+                throw exception;
+            }
+        }
+        
+        private System.IO.Stream RequestBinaryValue()
+        {
+            Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/DataTypeProvider/v1/Property/BinaryValue");
+            try
+            {
+                System.IO.Stream response = _channel.ReadProperty<PropertyResponse<Tecan.Sila2.BinaryDto>>(_serviceName, "BinaryValue", callInfo).Value.Extract(_executionManager.DownloadBinaryStore);
+                callInfo.FinishSuccessful();
+                return response;
+            } catch (System.Exception ex)
+            {
+                System.Exception exception = _channel.ConvertException(ex);
+                callInfo.FinishWithErrors(exception);
+                throw exception;
+            }
+        }
+        
+        private System.DateTimeOffset RequestDateValue()
+        {
+            Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/DataTypeProvider/v1/Property/DateValue");
+            try
+            {
+                System.DateTimeOffset response = _channel.ReadProperty<PropertyResponse<Tecan.Sila2.DateDto>>(_serviceName, "DateValue", callInfo).Value.Extract(_executionManager.DownloadBinaryStore);
+                callInfo.FinishSuccessful();
+                return response;
+            } catch (System.Exception ex)
+            {
+                System.Exception exception = _channel.ConvertException(ex);
+                callInfo.FinishWithErrors(exception);
+                throw exception;
+            }
+        }
+        
+        private System.TimeSpan RequestTimeValue()
+        {
+            Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/DataTypeProvider/v1/Property/TimeValue");
+            try
+            {
+                System.TimeSpan response = _channel.ReadProperty<PropertyResponse<Tecan.Sila2.TimeDto>>(_serviceName, "TimeValue", callInfo).Value.Extract(_executionManager.DownloadBinaryStore);
+                callInfo.FinishSuccessful();
+                return response;
+            } catch (System.Exception ex)
+            {
+                System.Exception exception = _channel.ConvertException(ex);
+                callInfo.FinishWithErrors(exception);
+                throw exception;
+            }
+        }
+        
+        private System.DateTimeOffset RequestTimeStampValue()
+        {
+            Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/DataTypeProvider/v1/Property/TimeStampValue");
+            try
+            {
+                System.DateTimeOffset response = _channel.ReadProperty<PropertyResponse<Tecan.Sila2.TimestampDto>>(_serviceName, "TimeStampValue", callInfo).Value.Extract(_executionManager.DownloadBinaryStore);
+                callInfo.FinishSuccessful();
+                return response;
+            } catch (System.Exception ex)
+            {
+                System.Exception exception = _channel.ConvertException(ex);
+                callInfo.FinishWithErrors(exception);
+                throw exception;
+            }
+        }
+        
+        private System.Collections.Generic.ICollection<string> RequestStringList()
+        {
+            Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/DataTypeProvider/v1/Property/StringList");
+            try
+            {
+                System.Collections.Generic.ICollection<string> response = _channel.ReadProperty<PropertyResponse<System.Collections.Generic.List<Tecan.Sila2.StringDto>>>(_serviceName, "StringList", callInfo).Value.Extract(_executionManager.DownloadBinaryStore);
+                callInfo.FinishSuccessful();
+                return response;
+            } catch (System.Exception ex)
+            {
+                System.Exception exception = _channel.ConvertException(ex);
+                callInfo.FinishWithErrors(exception);
+                throw exception;
+            }
+        }
+        
+        private System.Collections.Generic.ICollection<long> RequestIntegerList()
+        {
+            Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/DataTypeProvider/v1/Property/IntegerList");
+            try
+            {
+                System.Collections.Generic.ICollection<long> response = _channel.ReadProperty<PropertyResponse<System.Collections.Generic.List<Tecan.Sila2.IntegerDto>>>(_serviceName, "IntegerList", callInfo).Value.Extract(_executionManager.DownloadBinaryStore);
+                callInfo.FinishSuccessful();
+                return response;
+            } catch (System.Exception ex)
+            {
+                System.Exception exception = _channel.ConvertException(ex);
+                callInfo.FinishWithErrors(exception);
+                throw exception;
+            }
+        }
+        
+        private AllDatatypeStructure RequestStructureValues()
+        {
+            Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/DataTypeProvider/v1/Property/StructureValues");
+            try
+            {
+                AllDatatypeStructure response = _channel.ReadProperty<PropertyResponse<AllDatatypeStructureDto>>(_serviceName, "StructureValues", callInfo).Value.Extract(_executionManager.DownloadBinaryStore);
+                callInfo.FinishSuccessful();
+                return response;
+            } catch (System.Exception ex)
+            {
+                System.Exception exception = _channel.ConvertException(ex);
+                callInfo.FinishWithErrors(exception);
+                throw exception;
+            }
+        }
+        
+        ///  <summary>
+        /// Initializes lazies for non-observable properties.
+        /// </summary>
+        private void InitLazyRequests()
+        {
+            _stringValue = new System.Lazy<string>(RequestStringValue);
+            _integerValue = new System.Lazy<long>(RequestIntegerValue);
+            _realValue = new System.Lazy<double>(RequestRealValue);
+            _booleanValue = new System.Lazy<bool>(RequestBooleanValue);
+            _binaryValue = new System.Lazy<System.IO.Stream>(RequestBinaryValue);
+            _dateValue = new System.Lazy<System.DateTimeOffset>(RequestDateValue);
+            _timeValue = new System.Lazy<System.TimeSpan>(RequestTimeValue);
+            _timeStampValue = new System.Lazy<System.DateTimeOffset>(RequestTimeStampValue);
+            _stringList = new System.Lazy<System.Collections.Generic.ICollection<string>>(RequestStringList);
+            _integerList = new System.Lazy<System.Collections.Generic.ICollection<long>>(RequestIntegerList);
+            _structureValues = new System.Lazy<AllDatatypeStructure>(RequestStructureValues);
+        }
+        
+        ///  <summary>
+        /// Echo the string that has been received.
+        /// </summary>
+        /// <param name="stringValue">The string value to echo.</param>
+        public virtual string EchoStringValue(string stringValue)
+        {
+            EchoStringValueRequestDto request = new EchoStringValueRequestDto(stringValue, null);
+            Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/DataTypeProvider/v1/Command/EchoStringValue");
+            try
+            {
+                string response = _channel.ExecuteUnobservableCommand<EchoStringValueRequestDto, EchoStringValueResponseDto>(_serviceName, "EchoStringValue", request, callInfo).ReceivedStringValue.Extract(_executionManager.DownloadBinaryStore);
+                callInfo.FinishSuccessful();
+                return response;
+            } catch (System.Exception ex)
+            {
+                System.Exception exception = _channel.ConvertException(ex);
+                callInfo.FinishWithErrors(exception);
+                throw exception;
+            }
+        }
+        
+        ///  <summary>
+        /// Echo the integer that has been received.
+        /// </summary>
+        /// <param name="integerValue">The integer value to echo.</param>
+        public virtual long EchoIntegerValue(long integerValue)
+        {
+            EchoIntegerValueRequestDto request = new EchoIntegerValueRequestDto(integerValue, null);
+            Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/DataTypeProvider/v1/Command/EchoIntegerValue");
+            try
+            {
+                long response = _channel.ExecuteUnobservableCommand<EchoIntegerValueRequestDto, EchoIntegerValueResponseDto>(_serviceName, "EchoIntegerValue", request, callInfo).ReceivedIntegerValue.Extract(_executionManager.DownloadBinaryStore);
+                callInfo.FinishSuccessful();
+                return response;
+            } catch (System.Exception ex)
+            {
+                System.Exception exception = _channel.ConvertException(ex);
+                callInfo.FinishWithErrors(exception);
+                throw exception;
+            }
+        }
+        
+        ///  <summary>
+        /// Echo a Real that has been received.
+        /// </summary>
+        /// <param name="realValue">The real value to be echo.</param>
+        public virtual double EchoRealValue(double realValue)
+        {
+            EchoRealValueRequestDto request = new EchoRealValueRequestDto(realValue, null);
+            Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/DataTypeProvider/v1/Command/EchoRealValue");
+            try
+            {
+                double response = _channel.ExecuteUnobservableCommand<EchoRealValueRequestDto, EchoRealValueResponseDto>(_serviceName, "EchoRealValue", request, callInfo).ReceivedRealValue.Extract(_executionManager.DownloadBinaryStore);
+                callInfo.FinishSuccessful();
+                return response;
+            } catch (System.Exception ex)
+            {
+                System.Exception exception = _channel.ConvertException(ex);
+                callInfo.FinishWithErrors(exception);
+                throw exception;
+            }
+        }
+        
+        ///  <summary>
+        /// Echo a Boolean that has been received.
+        /// </summary>
+        /// <param name="booleanValue">The boolean value to echo.</param>
+        public virtual bool EchoBooleanValue(bool booleanValue)
+        {
+            EchoBooleanValueRequestDto request = new EchoBooleanValueRequestDto(booleanValue, null);
+            Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/DataTypeProvider/v1/Command/EchoBooleanValue");
+            try
+            {
+                bool response = _channel.ExecuteUnobservableCommand<EchoBooleanValueRequestDto, EchoBooleanValueResponseDto>(_serviceName, "EchoBooleanValue", request, callInfo).ReceivedBooleanValue.Extract(_executionManager.DownloadBinaryStore);
+                callInfo.FinishSuccessful();
+                return response;
+            } catch (System.Exception ex)
+            {
+                System.Exception exception = _channel.ConvertException(ex);
+                callInfo.FinishWithErrors(exception);
+                throw exception;
+            }
+        }
+        
+        ///  <summary>
+        /// Echo a Binary that has been received.
+        /// </summary>
+        /// <param name="binaryValue">The Binary value to be echo.</param>
+        public virtual System.IO.Stream EchoBinaryValue(System.IO.Stream binaryValue)
+        {
+            EchoBinaryValueRequestDto request = new EchoBinaryValueRequestDto(binaryValue, _executionManager.CreateBinaryStore("org.silastandard/test/DataTypeProvider/v1/Command/EchoBinaryValue/Parameter/Binar" +
+                        "yValue"));
+            Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/DataTypeProvider/v1/Command/EchoBinaryValue");
+            try
+            {
+                System.IO.Stream response = _channel.ExecuteUnobservableCommand<EchoBinaryValueRequestDto, EchoBinaryValueResponseDto>(_serviceName, "EchoBinaryValue", request, callInfo).ReceivedBinaryValue.Extract(_executionManager.DownloadBinaryStore);
+                callInfo.FinishSuccessful();
+                return response;
+            } catch (System.Exception ex)
+            {
+                System.Exception exception = _channel.ConvertException(ex);
+                callInfo.FinishWithErrors(exception);
+                throw exception;
+            }
+        }
+        
+        ///  <summary>
+        /// Echo a Date that has been received.
+        /// </summary>
+        /// <param name="dateValue">The date value to echo.</param>
+        public virtual System.DateTimeOffset EchoDateValue(System.DateTimeOffset dateValue)
+        {
+            EchoDateValueRequestDto request = new EchoDateValueRequestDto(dateValue, null);
+            Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/DataTypeProvider/v1/Command/EchoDateValue");
+            try
+            {
+                System.DateTimeOffset response = _channel.ExecuteUnobservableCommand<EchoDateValueRequestDto, EchoDateValueResponseDto>(_serviceName, "EchoDateValue", request, callInfo).ReceivedDateValue.Extract(_executionManager.DownloadBinaryStore);
+                callInfo.FinishSuccessful();
+                return response;
+            } catch (System.Exception ex)
+            {
+                System.Exception exception = _channel.ConvertException(ex);
+                callInfo.FinishWithErrors(exception);
+                throw exception;
+            }
+        }
+        
+        ///  <summary>
+        /// Echo a Time that has been received.
+        /// </summary>
+        /// <param name="timeValue">The time value to echo.</param>
+        public virtual System.TimeSpan EchoTimeValue(System.TimeSpan timeValue)
+        {
+            EchoTimeValueRequestDto request = new EchoTimeValueRequestDto(timeValue, null);
+            Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/DataTypeProvider/v1/Command/EchoTimeValue");
+            try
+            {
+                System.TimeSpan response = _channel.ExecuteUnobservableCommand<EchoTimeValueRequestDto, EchoTimeValueResponseDto>(_serviceName, "EchoTimeValue", request, callInfo).ReceivedTimeValue.Extract(_executionManager.DownloadBinaryStore);
+                callInfo.FinishSuccessful();
+                return response;
+            } catch (System.Exception ex)
+            {
+                System.Exception exception = _channel.ConvertException(ex);
+                callInfo.FinishWithErrors(exception);
+                throw exception;
+            }
+        }
+        
+        ///  <summary>
+        /// Echo a TimeStamp that has been received.
+        /// </summary>
+        /// <param name="timeStampValue">The time stamp value to echo.</param>
+        public virtual System.DateTimeOffset EchoTimeStampValue(System.DateTimeOffset timeStampValue)
+        {
+            EchoTimeStampValueRequestDto request = new EchoTimeStampValueRequestDto(timeStampValue, null);
+            Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/DataTypeProvider/v1/Command/EchoTimeStampValue");
+            try
+            {
+                System.DateTimeOffset response = _channel.ExecuteUnobservableCommand<EchoTimeStampValueRequestDto, EchoTimeStampValueResponseDto>(_serviceName, "EchoTimeStampValue", request, callInfo).ReceivedValue.Extract(_executionManager.DownloadBinaryStore);
+                callInfo.FinishSuccessful();
+                return response;
+            } catch (System.Exception ex)
+            {
+                System.Exception exception = _channel.ConvertException(ex);
+                callInfo.FinishWithErrors(exception);
+                throw exception;
+            }
+        }
+        
+        ///  <summary>
+        /// Echo a List of String that has been received.
+        /// </summary>
+        /// <param name="stringList">The list of String values to echo.</param>
+        public virtual System.Collections.Generic.ICollection<string> EchoStringList(System.Collections.Generic.ICollection<string> stringList)
+        {
+            EchoStringListRequestDto request = new EchoStringListRequestDto(stringList, null);
+            Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/DataTypeProvider/v1/Command/EchoStringList");
+            try
+            {
+                System.Collections.Generic.ICollection<string> response = _channel.ExecuteUnobservableCommand<EchoStringListRequestDto, EchoStringListResponseDto>(_serviceName, "EchoStringList", request, callInfo).ReceivedValues.Extract(_executionManager.DownloadBinaryStore);
+                callInfo.FinishSuccessful();
+                return response;
+            } catch (System.Exception ex)
+            {
+                System.Exception exception = _channel.ConvertException(ex);
+                callInfo.FinishWithErrors(exception);
+                throw exception;
+            }
+        }
+        
+        ///  <summary>
+        /// Echo a List of Integer that has been received.
+        /// </summary>
+        /// <param name="integerList">The list of integer values to echo.</param>
+        public virtual long EchoIntegerList(System.Collections.Generic.ICollection<long> integerList)
+        {
+            EchoIntegerListRequestDto request = new EchoIntegerListRequestDto(integerList, null);
+            Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/DataTypeProvider/v1/Command/EchoIntegerList");
+            try
+            {
+                long response = _channel.ExecuteUnobservableCommand<EchoIntegerListRequestDto, EchoIntegerListResponseDto>(_serviceName, "EchoIntegerList", request, callInfo).ReceivedValues.Extract(_executionManager.DownloadBinaryStore);
+                callInfo.FinishSuccessful();
+                return response;
+            } catch (System.Exception ex)
+            {
+                System.Exception exception = _channel.ConvertException(ex);
+                callInfo.FinishWithErrors(exception);
+                throw exception;
+            }
+        }
+        
+        ///  <summary>
+        /// Echo values of different types that has been received.
+        /// </summary>
+        /// <param name="receivedValues">A structure containing values of different types that have been received</param>
+        public virtual void EchoStructureValues(AllDatatypeStructure receivedValues)
+        {
+            EchoStructureValuesRequestDto request = new EchoStructureValuesRequestDto(receivedValues, _executionManager.CreateBinaryStore("org.silastandard/test/DataTypeProvider/v1/Command/EchoStructureValues/Parameter/R" +
+                        "eceivedValues"));
+            Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/DataTypeProvider/v1/Command/EchoStructureValues");
+            try
+            {
+                _channel.ExecuteUnobservableCommand<EchoStructureValuesRequestDto>(_serviceName, "EchoStructureValues", request, callInfo);
+                callInfo.FinishSuccessful();
+                return;
+            } catch (System.Exception ex)
+            {
+                System.Exception exception = _channel.ConvertException(ex);
+                callInfo.FinishWithErrors(exception);
+                throw exception;
+            }
+        }
+        
+        ///  <summary>
+        /// Echo multiple mixed values that has been received.
+        /// </summary>
+        /// <param name="stringValue">The string value to echo.</param>
+        /// <param name="integerValue">The integer value to echo.</param>
+        /// <param name="realValue">The real value to echo.</param>
+        /// <param name="booleanValue">The boolean value to echo.</param>
+        /// <param name="dateValue">The date value to echo.</param>
+        /// <param name="timeValue">The time value to echo.</param>
+        /// <param name="timeStampValue">The time stamp value to echo.</param>
+        public virtual string EchoMultipleMixedValues(string stringValue, long integerValue, double realValue, bool booleanValue, System.DateTimeOffset dateValue, System.TimeSpan timeValue, System.DateTimeOffset timeStampValue)
+        {
+            EchoMultipleMixedValuesRequestDto request = new EchoMultipleMixedValuesRequestDto(stringValue, integerValue, realValue, booleanValue, dateValue, timeValue, timeStampValue, null);
+            Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/DataTypeProvider/v1/Command/EchoMultipleMixedValues");
+            try
+            {
+                string response = _channel.ExecuteUnobservableCommand<EchoMultipleMixedValuesRequestDto, EchoMultipleMixedValuesResponseDto>(_serviceName, "EchoMultipleMixedValues", request, callInfo).ReceivedValues.Extract(_executionManager.DownloadBinaryStore);
+                callInfo.FinishSuccessful();
+                return response;
+            } catch (System.Exception ex)
+            {
+                System.Exception exception = _channel.ConvertException(ex);
+                callInfo.FinishWithErrors(exception);
+                throw exception;
+            }
+        }
+        
+        ///  <summary>
+        /// Returns multiple parameter values of different types.
+        /// </summary>
+        public virtual GetMultipleMixedValuesResponse GetMultipleMixedValues()
+        {
+            GetMultipleMixedValuesRequestDto request = new GetMultipleMixedValuesRequestDto(null);
+            Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/DataTypeProvider/v1/Command/GetMultipleMixedValues");
+            try
+            {
+                GetMultipleMixedValuesResponse response = _channel.ExecuteUnobservableCommand<GetMultipleMixedValuesRequestDto, GetMultipleMixedValuesResponseDto>(_serviceName, "GetMultipleMixedValues", request, callInfo).Extract(_executionManager.DownloadBinaryStore);
+                callInfo.FinishSuccessful();
+                return response;
+            } catch (System.Exception ex)
+            {
+                System.Exception exception = _channel.ConvertException(ex);
+                callInfo.FinishWithErrors(exception);
+                throw exception;
+            }
+        }
+        
+        private T Extract<T>(Tecan.Sila2.ISilaTransferObject<T> dto)
+        
+        {
+            return dto.Extract(_executionManager.DownloadBinaryStore);
         }
     }
-
 }
 

@@ -113,7 +113,7 @@ namespace Tecan.Sila2.Interop.Client
 
         private void TestEchos()
         {
-            var client = new DataTypeProviderClient();
+            var client = new DataTypeProviderClient( _executionManager, _channel );
             Assert.That( client.EchoBooleanValue( true ), Is.True );
             Assert.That( client.EchoBooleanValue(false), Is.False);
 
@@ -151,7 +151,7 @@ namespace Tecan.Sila2.Interop.Client
 
         private void TestDataTypeProvider()
         {
-            var client = new DataTypeProviderClient();
+            var client = new DataTypeProviderClient(_executionManager, _channel);
 
             Assert.That( client.StringValue, Is.EqualTo( "SiLA2_Test_String_Value" ) );
             Assert.That( client.IntegerValue, Is.EqualTo( 42L ) );

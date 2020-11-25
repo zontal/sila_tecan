@@ -50,7 +50,7 @@ namespace Tecan.Sila2.Authentication.Tests
 
             _serverConnectorMock = new Mock<IServerConnector>( MockBehavior.Strict );
 
-            _authService = new AuthenticationAuthorizationService(logging, new Lazy<ISiLAService>(() => _serverMock.Object), _configProviderMock.Object, _serverConnectorMock.Object);
+            _authService = new AuthenticationAuthorizationService(logging, new Lazy<ISiLAService>(() => _serverMock.Object), _configProviderMock.Object, _serverConnectorMock.Object, null);
         }
 
         [TestCase("test", "test-pwd", "org.silastandard/core/SiLAService/v1" )]

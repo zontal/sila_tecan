@@ -9,7 +9,6 @@
 //------------------------------------------------------------------------------
 
 using System.Linq;
-using System.Reflection;
 using Tecan.Sila2;
 using Tecan.Sila2.Client;
 using Tecan.Sila2.ParameterDefaultsProvider.Tests;
@@ -56,20 +55,61 @@ namespace Tecan.Sila2.ParameterDefaultsProvider.Tests
                 return _feature;
             }
         }
-
-        public MethodInfo GetCommand( string commandIdentifier )
+        
+        ///  <summary>
+        /// Registers the feature in the provided feature registration
+        /// </summary>
+        /// <param name="registration">The registration component to which the feature should be registered</param>
+        public void Register(IServerBuilder registration)
         {
-            throw new System.NotImplementedException();
+            registration.RegisterUnobservableCommand<ExampleMethodRequestDto, EmptyRequest>("ExampleMethod", ExampleMethod);
         }
-
-        public PropertyInfo GetProperty( string propertyIdentifier )
+        
+        ///  <summary>
+        /// Executes the Example Method command
+        /// </summary>
+        /// <param name="request">A data transfer object that contains the command parameters</param>
+        /// <returns>The command response wrapped in a data transfer object</returns>
+        protected virtual EmptyRequest ExampleMethod(ExampleMethodRequestDto request)
         {
-            throw new System.NotImplementedException();
+            try
+            {
+                _implementation.ExampleMethod(request.Parameter.Extract(_server));
+                return EmptyRequest.Instance;
+            } catch (System.ArgumentException ex)
+            {
+                if ((ex.ParamName == "parameter"))
+                {
+                    throw _server.ErrorHandling.CreateValidationError("tecan.sila.parameterdefaultsprovider/tests/ExampleSetProviderService/v1/Command/E" +
+                            "xampleMethod/Parameter/Parameter", ex.Message);
+                }
+                throw _server.ErrorHandling.CreateUnknownValidationError(ex);
+            }
         }
-
-        public void Register( IServerBuilder registration )
+        
+        ///  <summary>
+        /// Gets the command with the given identifier
+        /// </summary>
+        /// <param name="commandIdentifier">A fully qualified command identifier</param>
+        /// <returns>A method object or null, if the command is not supported</returns>
+        public System.Reflection.MethodInfo GetCommand(string commandIdentifier)
         {
-            throw new System.NotImplementedException();
+            if ((commandIdentifier == "tecan.sila.parameterdefaultsprovider/tests/ExampleSetProviderService/v1/Command/E" +
+                "xampleMethod"))
+            {
+                return typeof(IExampleSetProviderService).GetMethod("ExampleMethod");
+            }
+            return null;
+        }
+        
+        ///  <summary>
+        /// Gets the property with the given identifier
+        /// </summary>
+        /// <param name="propertyIdentifier">A fully qualified property identifier</param>
+        /// <returns>A property object or null, if the property is not supported</returns>
+        public System.Reflection.PropertyInfo GetProperty(string propertyIdentifier)
+        {
+            return null;
         }
     }
 }

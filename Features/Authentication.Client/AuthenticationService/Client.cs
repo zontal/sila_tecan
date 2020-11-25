@@ -27,7 +27,7 @@ namespace Tecan.Sila2.Authentication.AuthenticationService
         
         private IClientChannel _channel;
         
-        private string _serviceName = "sila2.org.silastandard.core.authenticationservice.v1.AuthenticationService";
+        private const string _serviceName = "sila2.org.silastandard.core.authenticationservice.v1.AuthenticationService";
         
         ///  <summary>
         /// Creates a new instance

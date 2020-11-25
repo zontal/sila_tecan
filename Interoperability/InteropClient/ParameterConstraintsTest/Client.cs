@@ -27,7 +27,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest
         
         private IClientChannel _channel;
         
-        private string _serviceName = "sila2.org.silastandard.test.parameterconstraintstest.v1.ParameterConstraintsTest";
+        private const string _serviceName = "sila2.org.silastandard.test.parameterconstraintstest.v1.ParameterConstraintsTest";
         
         ///  <summary>
         /// Creates a new instance
