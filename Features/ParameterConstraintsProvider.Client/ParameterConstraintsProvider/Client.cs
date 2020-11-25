@@ -20,7 +20,7 @@ namespace Tecan.Sila2.ParameterConstraintsProvider.ParameterConstraintsProvider
     ///  <summary>
     /// Class that implements the IParameterConstraintsProvider interface through SiLA2
     /// </summary>
-    public partial class ParameterConstraintsProviderClient : Grpc.Core.ClientBase<ParameterConstraintsProviderClient>, IParameterConstraintsProvider, System.ComponentModel.INotifyPropertyChanged
+    public partial class ParameterConstraintsProviderClient : IParameterConstraintsProvider, System.ComponentModel.INotifyPropertyChanged
     {
         
         private System.Collections.Generic.ICollection<ParametersConstraint> _parametersConstraints;
@@ -39,7 +39,7 @@ namespace Tecan.Sila2.ParameterConstraintsProvider.ParameterConstraintsProvider
         /// </summary>
         /// <param name="executionManager">A component to determine metadata to attach to any requests</param>
         /// <param name="channel">The channel through which calls should be executed</param>
-        public ParameterConstraintsProviderClient(IClientExecutionManager executionManager)
+        public ParameterConstraintsProviderClient(IClientExecutionManager executionManager, IClientChannel channel)
         {
             _executionManager = executionManager;
             _channel = channel;
@@ -82,18 +82,6 @@ namespace Tecan.Sila2.ParameterConstraintsProvider.ParameterConstraintsProvider
         {
             return dto.Extract(_executionManager.DownloadBinaryStore);
         }
-    }
-    
-    ///  <summary>
-    /// Encapsulates provider classes to expose the Parameter Constraints Provider feature via SiLA2
-    /// </summary>
-    internal sealed partial class ParameterConstraintsProviderMethods
-    {
-        
-        private static string @__ServiceName = "sila2.org.silastandard.core.commands.parameterconstraintsprovider.v1.ParameterCon" +
-            "straintsProvider";
-        
-        public static Grpc.Core.Method<EmptyRequest, PropertyResponse<System.Collections.Generic.List<ParametersConstraintDto>>> SubscribeParametersConstraintsMethod = new Grpc.Core.Method<EmptyRequest, PropertyResponse<System.Collections.Generic.List<ParametersConstraintDto>>>(Grpc.Core.MethodType.ServerStreaming, @__ServiceName, "Subscribe_ParametersConstraints", EmptyRequest.Marshaller, ProtobufMarshaller<PropertyResponse<System.Collections.Generic.List<ParametersConstraintDto>>>.Default);
     }
 }
 

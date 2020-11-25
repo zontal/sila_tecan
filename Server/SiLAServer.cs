@@ -293,6 +293,9 @@ namespace Tecan.Sila2.Server
         public IEnumerable<IFeatureProvider> Features => _implementedFeatures.AsReadOnly();
 
         /// <inheritdoc />
+        public IServerErrorHandling ErrorHandling { get; } = new ServerErrorHandling();
+
+        /// <inheritdoc />
         public IObservableCommand[] FindCommandExecutions( Predicate<CommandState> stateFilter )
         {
             lock (_commandExecutions)
@@ -539,7 +542,7 @@ namespace Tecan.Sila2.Server
                 if(command == null)
                 {
                     // if command execution ID hasn't been found -> raise SiLA Framework Error
-                    throw ErrorHandling.CreateFrameworkError( FrameworkErrorType.InvalidCommandExecutionUuid );
+                    throw ServerErrorHandling.CreateFrameworkError( FrameworkErrorType.InvalidCommandExecutionUuid );
                 }
 
                 return command.Command;

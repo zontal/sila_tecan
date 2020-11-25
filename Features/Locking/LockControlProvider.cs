@@ -82,17 +82,17 @@ namespace Tecan.Sila2.Locking
             {
                 if ((ex.ParamName == "lockIdentifier"))
                 {
-                    throw ErrorHandling.CreateValidationError("org.silastandard/core/LockController/v1/Command/LockServer/Parameter/LockIdentifi" +
+                    throw _server.ErrorHandling.CreateValidationError("org.silastandard/core/LockController/v1/Command/LockServer/Parameter/LockIdentifi" +
                             "er", ex.Message);
                 }
                 if ((ex.ParamName == "timeout"))
                 {
-                    throw ErrorHandling.CreateValidationError("org.silastandard/core/LockController/v1/Command/LockServer/Parameter/Timeout", ex.Message);
+                    throw _server.ErrorHandling.CreateValidationError("org.silastandard/core/LockController/v1/Command/LockServer/Parameter/Timeout", ex.Message);
                 }
-                throw ErrorHandling.CreateUnknownValidationError(ex);
+                throw _server.ErrorHandling.CreateUnknownValidationError(ex);
             } catch (ServerAlreadyLockedException ex)
             {
-                throw ErrorHandling.CreateExecutionError("org.silastandard/core/LockController/v1/DefinedError/ServerAlreadyLocked", "The SiLA Server can not be locked because it is already locked.", ex.Message);
+                throw _server.ErrorHandling.CreateExecutionError("org.silastandard/core/LockController/v1/DefinedError/ServerAlreadyLocked", "The SiLA Server can not be locked because it is already locked.", ex.Message);
             }
         }
         
@@ -111,16 +111,16 @@ namespace Tecan.Sila2.Locking
             {
                 if ((ex.ParamName == "lockIdentifier"))
                 {
-                    throw ErrorHandling.CreateValidationError("org.silastandard/core/LockController/v1/Command/UnlockServer/Parameter/LockIdenti" +
+                    throw _server.ErrorHandling.CreateValidationError("org.silastandard/core/LockController/v1/Command/UnlockServer/Parameter/LockIdenti" +
                             "fier", ex.Message);
                 }
-                throw ErrorHandling.CreateUnknownValidationError(ex);
+                throw _server.ErrorHandling.CreateUnknownValidationError(ex);
             } catch (ServerNotLockedException ex)
             {
-                throw ErrorHandling.CreateExecutionError("org.silastandard/core/LockController/v1/DefinedError/ServerNotLocked", "The SiLA Server can not be unlocked because it is not locked.", ex.Message);
+                throw _server.ErrorHandling.CreateExecutionError("org.silastandard/core/LockController/v1/DefinedError/ServerNotLocked", "The SiLA Server can not be unlocked because it is not locked.", ex.Message);
             } catch (InvalidLockIdentifierException ex)
             {
-                throw ErrorHandling.CreateExecutionError("org.silastandard/core/LockController/v1/DefinedError/InvalidLockIdentifier", "The sent lock identifier is not valid.", ex.Message);
+                throw _server.ErrorHandling.CreateExecutionError("org.silastandard/core/LockController/v1/DefinedError/InvalidLockIdentifier", "The sent lock identifier is not valid.", ex.Message);
             }
         }
         
@@ -229,7 +229,7 @@ namespace Tecan.Sila2.Locking
                 return Intercept(commandIdentifier, Tecan.Sila2.Server.Metadata.Extract<Tecan.Sila2.StringDto>(metadata, "org.silastandard/core/LockController/v1/Metadata/LockIdentifier").Extract(server));
             } catch (InvalidLockIdentifierException ex)
             {
-                throw ErrorHandling.CreateExecutionError("org.silastandard/core/LockController/v1/DefinedError/InvalidLockIdentifier", "The sent lock identifier is not valid.", ex.Message);
+                throw server.ErrorHandling.CreateExecutionError("org.silastandard/core/LockController/v1/DefinedError/InvalidLockIdentifier", "The sent lock identifier is not valid.", ex.Message);
             }
         }
     }

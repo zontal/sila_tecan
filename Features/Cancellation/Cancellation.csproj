@@ -28,7 +28,6 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Contracts\Contracts.csproj" />
     <ProjectReference Include="..\..\Framework\Framework.csproj" />
-    <ProjectReference Include="..\..\Server\Server.csproj" />
   </ItemGroup>
 
   <ItemGroup>

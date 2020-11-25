@@ -182,11 +182,6 @@ namespace Tecan.Sila2.Server
                 container.ComposeExportedValue<ILoggingChannelFactory>( new ConsoleLogging() );
             }
 
-            if( container.GetExportedValueOrDefault<IServerConnector>() == null )
-            {
-                container.ComposeExportedValue<IServerConnector>(new ServerConnector(new DiscoveryExecutionManager(), container.GetExportedValue<ILoggingChannelFactory>()));
-            }
-
             if (container.GetExportedValueOrDefault<IFileManagement>() == null)
             {
                 container.ComposeExportedValue<IFileManagement>(new FileManagement());

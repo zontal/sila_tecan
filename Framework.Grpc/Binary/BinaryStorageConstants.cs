@@ -33,7 +33,7 @@ namespace Tecan.Sila2.Binary
         /// The method to delete an uploaded binary
         /// </summary>
         public static readonly Method<DeleteBinaryRequestDto, EmptyRequest> DeleteBinaryUpload = new Method<DeleteBinaryRequestDto, EmptyRequest>(MethodType.Unary, BinaryUploadServiceName, "DeleteBinary",
-            ProtobufMarshaller<DeleteBinaryRequestDto>.Default, EmptyRequest.Marshaller);
+            ProtobufMarshaller<DeleteBinaryRequestDto>.Default, EmptyRequestMarshaller.Instance );
 
         /// <summary>
         /// The method to obtain the binary information
@@ -51,6 +51,6 @@ namespace Tecan.Sila2.Binary
         /// The method to delete a downloaded binary
         /// </summary>
         public static readonly Method<DeleteBinaryRequestDto, EmptyRequest> DeleteBinaryDownload = new Method<DeleteBinaryRequestDto, EmptyRequest>(MethodType.Unary, BinaryDownloadServiceName, "DeleteBinary",
-            ProtobufMarshaller<DeleteBinaryRequestDto>.Default, EmptyRequest.Marshaller);
+            ProtobufMarshaller<DeleteBinaryRequestDto>.Default, EmptyRequestMarshaller.Instance );
     }
 }

@@ -20,7 +20,7 @@ namespace Tecan.Sila2.Authorization.AuthorizationConfigurationService
     ///  <summary>
     /// Class that implements the IAuthorizationConfigurationService interface through SiLA2
     /// </summary>
-    public partial class AuthorizationConfigurationServiceClient : Grpc.Core.ClientBase<AuthorizationConfigurationServiceClient>, IAuthorizationConfigurationService
+    public partial class AuthorizationConfigurationServiceClient : IAuthorizationConfigurationService
     {
         
         private System.Lazy<string> _authorizationProvider;
@@ -37,7 +37,7 @@ namespace Tecan.Sila2.Authorization.AuthorizationConfigurationService
         /// </summary>
         /// <param name="executionManager">A component to determine metadata to attach to any requests</param>
         /// <param name="channel">The channel through which calls should be executed</param>
-        public AuthorizationConfigurationServiceClient(IClientExecutionManager executionManager)
+        public AuthorizationConfigurationServiceClient(IClientExecutionManager executionManager, IClientChannel channel)
         {
             InitLazyRequests();
             _executionManager = executionManager;
@@ -66,7 +66,7 @@ namespace Tecan.Sila2.Authorization.AuthorizationConfigurationService
                 return response;
             } catch (System.Exception ex)
             {
-                System.Exception exception = ErrorHandling.ConvertException(ex);
+                System.Exception exception = _channel.ConvertException(ex);
                 callInfo.FinishWithErrors(exception);
                 throw exception;
             }
@@ -96,7 +96,7 @@ namespace Tecan.Sila2.Authorization.AuthorizationConfigurationService
                 return;
             } catch (System.Exception ex)
             {
-                System.Exception exception = ErrorHandling.ConvertException(ex);
+                System.Exception exception = _channel.ConvertException(ex);
                 callInfo.FinishWithErrors(exception);
                 throw exception;
             }
@@ -107,20 +107,6 @@ namespace Tecan.Sila2.Authorization.AuthorizationConfigurationService
         {
             return dto.Extract(_executionManager.DownloadBinaryStore);
         }
-    }
-    
-    ///  <summary>
-    /// Encapsulates provider classes to expose the Authorization Configuration feature via SiLA2
-    /// </summary>
-    internal sealed partial class AuthorizationConfigurationServiceMethods
-    {
-        
-        private static string @__ServiceName = "sila2.org.silastandard.core.authorizationconfigurationservice.v1.AuthorizationCon" +
-            "figurationService";
-        
-        public static Grpc.Core.Method<SetAuthorizationProviderRequestDto, EmptyRequest> SetAuthorizationProviderMethod = new Grpc.Core.Method<SetAuthorizationProviderRequestDto, EmptyRequest>(Grpc.Core.MethodType.Unary, @__ServiceName, "SetAuthorizationProvider", ProtobufMarshaller<SetAuthorizationProviderRequestDto>.Default, EmptyRequest.Marshaller);
-        
-        public static Grpc.Core.Method<EmptyRequest, AuthorizationProviderResponseDto> GetAuthorizationProviderMethod = new Grpc.Core.Method<EmptyRequest, AuthorizationProviderResponseDto>(Grpc.Core.MethodType.Unary, @__ServiceName, "Get_AuthorizationProvider", EmptyRequest.Marshaller, ProtobufMarshaller<AuthorizationProviderResponseDto>.Default);
     }
 }
 

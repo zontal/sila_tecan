@@ -25,14 +25,14 @@ namespace Tecan.Sila2.Server.ServiceDefinition
 
         public void RegisterMetadata( string metadata, IRequestInterceptor requestInterceptor )
         {
-            var method = new Method<EmptyRequest, List<StringDto>>( MethodType.Unary, ServiceName, "Get_FCPAffectedByMetadata_" + metadata, EmptyRequest.Marshaller, ProtobufMarshaller<List<StringDto>>.Default);
+            var method = new Method<EmptyRequest, List<StringDto>>( MethodType.Unary, ServiceName, "Get_FCPAffectedByMetadata_" + metadata, EmptyRequestMarshaller.Instance, ProtobufMarshaller<List<StringDto>>.Default);
             var builder = new MetadataHandler( _server, requestInterceptor );
             _serviceDefinitionBuilder.AddMethod( method, builder.GetAffectedBy );
         }
 
         public void RegisterUnobservableProperty<T>( string propertyName, Func<T> implementation ) where T : class
         {
-            var method = new Method<EmptyRequest, T>(MethodType.Unary, ServiceName, "Get_" + propertyName, EmptyRequest.Marshaller, ProtobufMarshaller<T>.Default );
+            var method = new Method<EmptyRequest, T>(MethodType.Unary, ServiceName, "Get_" + propertyName, EmptyRequestMarshaller.Instance, ProtobufMarshaller<T>.Default );
             var property = _feature.Items.OfType<FeatureProperty>().FirstOrDefault( p => p.Identifier == propertyName );
             var builder = new UnobservablePropertyHandler<T>(_server, _feature.GetFullyQualifiedIdentifier(property), implementation);
             _serviceDefinitionBuilder.AddMethod( method, builder.Execute );
@@ -40,7 +40,7 @@ namespace Tecan.Sila2.Server.ServiceDefinition
 
         public void RegisterObservableProperty<T>( string propertyName, Func<T> implementation ) where T : class
         {
-            var method = new Method<EmptyRequest, T>( MethodType.Unary, ServiceName, "Subscribe_" + propertyName, EmptyRequest.Marshaller, ProtobufMarshaller<T>.Default );
+            var method = new Method<EmptyRequest, T>( MethodType.Unary, ServiceName, "Subscribe_" + propertyName, EmptyRequestMarshaller.Instance, ProtobufMarshaller<T>.Default );
             var property = _feature.Items.OfType<FeatureProperty>().FirstOrDefault( p => p.Identifier == propertyName );
             var builder = new ObservablePropertyHandler<T>( _server, _feature.GetFullyQualifiedIdentifier( property ), implementation );
             _serviceDefinitionBuilder.AddMethod( method, builder.Subscribe );
@@ -60,7 +60,7 @@ namespace Tecan.Sila2.Server.ServiceDefinition
         {
             var method = new Method<TRequest, CommandConfirmation>( MethodType.Unary, ServiceName, methodName, ProtobufMarshaller<TRequest>.Default, ProtobufMarshaller<CommandConfirmation>.Default );
             var stateMethod = new Method<CommandExecutionUuid, ExecutionState>( MethodType.ServerStreaming, ServiceName, methodName + "_Info", ProtobufMarshaller<CommandExecutionUuid>.Default, ProtobufMarshaller<ExecutionState>.Default );
-            var resultMethod = new Method<CommandExecutionUuid, EmptyRequest>( MethodType.Unary, ServiceName, methodName + "_Result", ProtobufMarshaller<CommandExecutionUuid>.Default, EmptyRequest.Marshaller );
+            var resultMethod = new Method<CommandExecutionUuid, EmptyRequest>( MethodType.Unary, ServiceName, methodName + "_Result", ProtobufMarshaller<CommandExecutionUuid>.Default, EmptyRequestMarshaller.Instance );
             var builder = new ObservableCommandHandler<TRequest>( _server, implementation, exceptionConverter );
             _serviceDefinitionBuilder.AddMethod( method, builder.Execute );
             _serviceDefinitionBuilder.AddMethod( stateMethod, builder.QueryState );

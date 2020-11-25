@@ -20,7 +20,7 @@ namespace Tecan.Sila2.Authorization.AuthorizationProviderService
     ///  <summary>
     /// Class that implements the IAuthorizationProviderService interface through SiLA2
     /// </summary>
-    public partial class AuthorizationProviderServiceClient : Grpc.Core.ClientBase<AuthorizationProviderServiceClient>, IAuthorizationProviderService
+    public partial class AuthorizationProviderServiceClient : IAuthorizationProviderService
     {
         
         private IClientExecutionManager _executionManager;
@@ -35,7 +35,7 @@ namespace Tecan.Sila2.Authorization.AuthorizationProviderService
         /// </summary>
         /// <param name="executionManager">A component to determine metadata to attach to any requests</param>
         /// <param name="channel">The channel through which calls should be executed</param>
-        public AuthorizationProviderServiceClient(IClientExecutionManager executionManager)
+        public AuthorizationProviderServiceClient(IClientExecutionManager executionManager, IClientChannel channel)
         {
             _executionManager = executionManager;
             _channel = channel;
@@ -58,7 +58,7 @@ namespace Tecan.Sila2.Authorization.AuthorizationProviderService
                 return response;
             } catch (System.Exception ex)
             {
-                System.Exception exception = ErrorHandling.ConvertException(ex, ConvertVerifyException);
+                System.Exception exception = _channel.ConvertException(ex, ConvertVerifyException);
                 callInfo.FinishWithErrors(exception);
                 throw exception;
             }
@@ -90,18 +90,6 @@ namespace Tecan.Sila2.Authorization.AuthorizationProviderService
         {
             return dto.Extract(_executionManager.DownloadBinaryStore);
         }
-    }
-    
-    ///  <summary>
-    /// Encapsulates provider classes to expose the Authorization Provider Service feature via SiLA2
-    /// </summary>
-    internal sealed partial class AuthorizationProviderServiceMethods
-    {
-        
-        private static string @__ServiceName = "sila2.org.silastandard.core.authorizationproviderservice.v1.AuthorizationProvider" +
-            "Service";
-        
-        public static Grpc.Core.Method<VerifyRequestDto, VerifyResponseDto> VerifyMethod = new Grpc.Core.Method<VerifyRequestDto, VerifyResponseDto>(Grpc.Core.MethodType.Unary, @__ServiceName, "Verify", ProtobufMarshaller<VerifyRequestDto>.Default, ProtobufMarshaller<VerifyResponseDto>.Default);
     }
 }
 

@@ -20,7 +20,6 @@ namespace Tecan.Sila2.Server
 
         public bool TryGetMetadata( string metadataIdentifier, out byte[] metadata )
         {
-
             var headerIdentifier = ClientMetadata.GetHeaderName( metadataIdentifier );
             foreach(var header in _context.RequestHeaders)
             {

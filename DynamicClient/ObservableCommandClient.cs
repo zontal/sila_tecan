@@ -55,7 +55,7 @@ namespace Tecan.Sila2.DynamicClient
             }
             catch( Exception exception )
             {
-                var converted = ErrorHandling.ConvertException( exception );
+                var converted = Context.ConvertException( exception );
                 if( exception == converted )
                 {
                     throw;
@@ -142,7 +142,7 @@ namespace Tecan.Sila2.DynamicClient
             }
             catch( Exception exception )
             {
-                var converted = ErrorHandling.ConvertException( exception );
+                var converted = Context.ConvertException( exception );
                 if( exception == converted )
                 {
                     throw;

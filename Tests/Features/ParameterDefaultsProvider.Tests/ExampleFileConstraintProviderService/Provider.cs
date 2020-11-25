@@ -9,6 +9,7 @@
 //------------------------------------------------------------------------------
 
 using System.Linq;
+using System.Reflection;
 using Tecan.Sila2;
 using Tecan.Sila2.Client;
 using Tecan.Sila2.ParameterDefaultsProvider.Tests;
@@ -55,82 +56,21 @@ namespace Tecan.Sila2.ParameterDefaultsProvider.Tests
                 return _feature;
             }
         }
-        
-        ///  <summary>
-        /// Creates a service definition for this service provider
-        /// </summary>
-        /// <returns>An object that describes which services are offered by this instance</returns>
-        public Grpc.Core.ServerServiceDefinition CreateServiceDefinition()
+
+        public MethodInfo GetCommand( string commandIdentifier )
         {
-            Grpc.Core.ServerServiceDefinition.Builder builder = Grpc.Core.ServerServiceDefinition.CreateBuilder();
-            builder.AddMethod(ExampleFileConstraintProviderServiceMethods.FileExampleMethodMethod, FileExampleMethod);
-            return builder.Build();
+            throw new System.NotImplementedException();
         }
-        
-        private EmptyRequest FileExampleMethodInternal(FileExampleMethodRequestDto request)
+
+        public PropertyInfo GetProperty( string propertyIdentifier )
         {
-            try
-            {
-                _implementation.FileExampleMethod(request.Parameter.Extract(_server));
-                return EmptyRequest.Instance;
-            } catch (System.ArgumentException ex)
-            {
-                if ((ex.ParamName == "parameter"))
-                {
-                    throw ErrorHandling.CreateValidationError("tecan.sila.parameterdefaultsprovider/tests/ExampleFileConstraintProviderService/v" +
-                            "1/Command/FileExampleMethod/Parameter/Parameter", ex.Message);
-                }
-                throw ErrorHandling.CreateUnknownValidationError(ex);
-            }
+            throw new System.NotImplementedException();
         }
-        
-        ///  <summary>
-        /// Executes the File Example Method command
-        /// </summary>
-        /// <param name="request">A data transfer object that contains the command parameters</param>
-        /// <param name="context">The context in which the command is issued</param>
-        /// <returns>The command response wrapped in a data transfer object</returns>
-        protected virtual System.Threading.Tasks.Task<EmptyRequest> FileExampleMethod(FileExampleMethodRequestDto request, Grpc.Core.ServerCallContext context)
+
+        public void Register( IServerBuilder registration )
         {
-            return _server.InvokeCommand(FileExampleMethodInternal, request, context);
+            throw new System.NotImplementedException();
         }
-        
-        ///  <summary>
-        /// Gets the command with the given identifier
-        /// </summary>
-        /// <param name="commandIdentifier">A fully qualified command identifier</param>
-        /// <returns>A method object or null, if the command is not supported</returns>
-        public System.Reflection.MethodInfo GetCommand(string commandIdentifier)
-        {
-            if ((commandIdentifier == "tecan.sila.parameterdefaultsprovider/tests/ExampleFileConstraintProviderService/v" +
-                "1/Command/FileExampleMethod"))
-            {
-                return typeof(IExampleFileConstraintProviderService).GetMethod("FileExampleMethod");
-            }
-            return null;
-        }
-        
-        ///  <summary>
-        /// Gets the property with the given identifier
-        /// </summary>
-        /// <param name="propertyIdentifier">A fully qualified property identifier</param>
-        /// <returns>A property object or null, if the property is not supported</returns>
-        public System.Reflection.PropertyInfo GetProperty(string propertyIdentifier)
-        {
-            return null;
-        }
-    }
-    
-    ///  <summary>
-    /// Encapsulates provider classes to expose the Example File Constraint Provider Service feature via SiLA2
-    /// </summary>
-    internal sealed partial class ExampleFileConstraintProviderServiceMethods
-    {
-        
-        private static string @__ServiceName = "sila2.tecan.sila.parameterdefaultsprovider.tests.examplefileconstraintproviderser" +
-            "vice.v1.ExampleFileConstraintProviderService";
-        
-        public static Grpc.Core.Method<FileExampleMethodRequestDto, EmptyRequest> FileExampleMethodMethod = new Grpc.Core.Method<FileExampleMethodRequestDto, EmptyRequest>(Grpc.Core.MethodType.Unary, @__ServiceName, "FileExampleMethod", ProtobufMarshaller<FileExampleMethodRequestDto>.Default, EmptyRequest.Marshaller);
     }
 }
 

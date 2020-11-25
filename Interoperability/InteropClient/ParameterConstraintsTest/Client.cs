@@ -20,7 +20,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest
     ///  <summary>
     /// Class that implements the IParameterConstraintsTest interface through SiLA2
     /// </summary>
-    public partial class ParameterConstraintsTestClient : Grpc.Core.ClientBase<ParameterConstraintsTestClient>, IParameterConstraintsTest
+    public partial class ParameterConstraintsTestClient : IParameterConstraintsTest
     {
         
         private IClientExecutionManager _executionManager;
@@ -34,7 +34,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest
         /// </summary>
         /// <param name="executionManager">A component to determine metadata to attach to any requests</param>
         /// <param name="channel">The channel through which calls should be executed</param>
-        public ParameterConstraintsTestClient(IClientExecutionManager executionManager)
+        public ParameterConstraintsTestClient(IClientExecutionManager executionManager, IClientChannel channel)
         {
             _executionManager = executionManager;
             _channel = channel;
@@ -60,7 +60,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest
                 return;
             } catch (System.Exception ex)
             {
-                System.Exception exception = ErrorHandling.ConvertException(ex);
+                System.Exception exception = _channel.ConvertException(ex);
                 callInfo.FinishWithErrors(exception);
                 throw exception;
             }
@@ -89,7 +89,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest
                 return;
             } catch (System.Exception ex)
             {
-                System.Exception exception = ErrorHandling.ConvertException(ex);
+                System.Exception exception = _channel.ConvertException(ex);
                 callInfo.FinishWithErrors(exception);
                 throw exception;
             }
@@ -117,7 +117,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest
                 return;
             } catch (System.Exception ex)
             {
-                System.Exception exception = ErrorHandling.ConvertException(ex);
+                System.Exception exception = _channel.ConvertException(ex);
                 callInfo.FinishWithErrors(exception);
                 throw exception;
             }
@@ -142,7 +142,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest
                 return;
             } catch (System.Exception ex)
             {
-                System.Exception exception = ErrorHandling.ConvertException(ex);
+                System.Exception exception = _channel.ConvertException(ex);
                 callInfo.FinishWithErrors(exception);
                 throw exception;
             }
@@ -153,23 +153,6 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest
         {
             return dto.Extract(_executionManager.DownloadBinaryStore);
         }
-    }
-    
-    ///  <summary>
-    /// Encapsulates provider classes to expose the Parameter Constraints Test feature via SiLA2
-    /// </summary>
-    internal sealed partial class ParameterConstraintsTestMethods
-    {
-        
-        private static string @__ServiceName = "sila2.org.silastandard.test.parameterconstraintstest.v1.ParameterConstraintsTest";
-        
-        public static Grpc.Core.Method<ExactStringLengthRequestDto, EmptyRequest> ExactStringLengthMethod = new Grpc.Core.Method<ExactStringLengthRequestDto, EmptyRequest>(Grpc.Core.MethodType.Unary, @__ServiceName, "ExactStringLength", ProtobufMarshaller<ExactStringLengthRequestDto>.Default, EmptyRequest.Marshaller);
-        
-        public static Grpc.Core.Method<ConstrainedNumericParametersRequestDto, EmptyRequest> ConstrainedNumericParametersMethod = new Grpc.Core.Method<ConstrainedNumericParametersRequestDto, EmptyRequest>(Grpc.Core.MethodType.Unary, @__ServiceName, "ConstrainedNumericParameters", ProtobufMarshaller<ConstrainedNumericParametersRequestDto>.Default, EmptyRequest.Marshaller);
-        
-        public static Grpc.Core.Method<ConstrainedDateTimeParametersRequestDto, EmptyRequest> ConstrainedDateTimeParametersMethod = new Grpc.Core.Method<ConstrainedDateTimeParametersRequestDto, EmptyRequest>(Grpc.Core.MethodType.Unary, @__ServiceName, "ConstrainedDateTimeParameters", ProtobufMarshaller<ConstrainedDateTimeParametersRequestDto>.Default, EmptyRequest.Marshaller);
-        
-        public static Grpc.Core.Method<ConstrainedListParametersRequestDto, EmptyRequest> ConstrainedListParametersMethod = new Grpc.Core.Method<ConstrainedListParametersRequestDto, EmptyRequest>(Grpc.Core.MethodType.Unary, @__ServiceName, "ConstrainedListParameters", ProtobufMarshaller<ConstrainedListParametersRequestDto>.Default, EmptyRequest.Marshaller);
     }
 }
 

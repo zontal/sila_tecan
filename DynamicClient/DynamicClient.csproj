@@ -30,6 +30,7 @@
     </ItemGroup>
 
     <ItemGroup>
+        <ProjectReference Include="..\Client\Client.csproj" />
         <ProjectReference Include="..\Contracts\Contracts.csproj" />
         <ProjectReference Include="..\Features\Cancellation.Client\Cancellation.Client.csproj" />
         <ProjectReference Include="..\Framework\Framework.csproj" />

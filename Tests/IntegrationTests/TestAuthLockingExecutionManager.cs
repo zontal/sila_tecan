@@ -11,14 +11,14 @@ namespace Tecan.Sila2.IntegrationTests
     {
         private readonly string _lockingIdentifier;
         private readonly string _accessToken;
-        private readonly Channel _serverChannel;
+        private readonly IClientChannel _serverChannel;
 
-        public TestAuthLockingExecutionManager( string lockingIdentifier, string accessToken, Channel serverChannel )
+        public TestAuthLockingExecutionManager( string lockingIdentifier, string accessToken, IClientChannel serverChannel )
         {
             _lockingIdentifier = lockingIdentifier;
             _accessToken = accessToken;
             _serverChannel = serverChannel;
-            DownloadBinaryStore = new ClientBinaryStore(null, serverChannel, this);
+            DownloadBinaryStore = serverChannel.CreateBinaryStore( null, this );
         }
 
         public IClientCallInfo CreateCallOptions( string commandIdentifier )
@@ -44,7 +44,7 @@ namespace Tecan.Sila2.IntegrationTests
 
         public IBinaryStore CreateBinaryStore( string commandParameterIdentifier )
         {
-            return new ClientBinaryStore( commandParameterIdentifier, _serverChannel, this );
+            return _serverChannel.CreateBinaryStore( commandParameterIdentifier, this );
         }
 
         private class CallInfo : IClientCallInfo

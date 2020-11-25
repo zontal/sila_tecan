@@ -159,6 +159,15 @@ namespace Tecan.Sila2.Client
         IEnumerable<string> GetAffected( string serviceName, string metadataIdentifier );
 
         IBinaryStore CreateBinaryStore( string commandParameterIdentifier, IClientExecutionManager executionManager );
+        
+        /// <summary>
+        /// Converts the given server exception
+        /// </summary>
+        /// <param name="ex">The exception from gRPC</param>
+        /// <param name="executionErrorConversion">A function to convert defined errors</param>
+        /// <returns>The converted exception</returns>
+        Exception ConvertException( Exception ex,
+            Func<string, string, Exception> executionErrorConversion = null );
     }
 
     public struct ByteSerializer<T>

@@ -26,7 +26,15 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <None Remove="SiLAService.sila.xml" />
+    </ItemGroup>
+
+    <ItemGroup>
         <Compile Include="..\CommonAssemblyInfo.cs" Link="Properties\CommonAssemblyInfo.cs" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Include="Discovery\SiLAService.sila.xml" />
     </ItemGroup>
 
     <ItemGroup>
@@ -35,13 +43,17 @@
         <PackageReference Condition="!Exists('../../grpc/src/csharp/Grpc.Core/Grpc.Core.csproj')" Include="Grpc.Core" Version="2.27.0" />
 
         <PackageReference Include="CommandLineParser" Version="2.6.0" />
+
+        <PackageReference Include="IPNetwork2" Version="2.1.2" />
+
+        <PackageReference Include="Makaretu.Dns.Multicast" Version="0.25.0" />
         <PackageReference Include="System.Threading.Channels" Version="4.7.0" />
         <PackageReference Include="Tecan.MAP.Contracts.Services.Logging" Version="2.1.0.14695" />
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Client\Client.csproj" />
         <ProjectReference Include="..\Contracts\Contracts.csproj" />
+        <ProjectReference Include="..\Framework.Grpc\Framework.Grpc.csproj" />
         <ProjectReference Include="..\Framework\Framework.csproj" />
     </ItemGroup>
 

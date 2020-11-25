@@ -70,7 +70,7 @@ namespace Tecan.Sila2.DynamicClient
         /// <returns>A human-readable exception</returns>
         public Exception ConvertException(Exception ex)
         {
-            return ErrorHandling.ConvertException(ex, ConvertException);
+            return Channel.ConvertException(ex, ConvertException);
         }
 
         /// <summary>

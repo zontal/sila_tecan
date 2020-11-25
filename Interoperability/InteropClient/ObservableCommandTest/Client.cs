@@ -20,7 +20,7 @@ namespace Tecan.Sila2.Interop.Client.ObservableCommandTest
     ///  <summary>
     /// Class that implements the IObservableCommandTest interface through SiLA2
     /// </summary>
-    public partial class ObservableCommandTestClient : Grpc.Core.ClientBase<ObservableCommandTestClient>, IObservableCommandTest
+    public partial class ObservableCommandTestClient : IObservableCommandTest
     {
         
         private IClientExecutionManager _executionManager;
@@ -34,7 +34,7 @@ namespace Tecan.Sila2.Interop.Client.ObservableCommandTest
         /// </summary>
         /// <param name="executionManager">A component to determine metadata to attach to any requests</param>
         /// <param name="channel">The channel through which calls should be executed</param>
-        public ObservableCommandTestClient(IClientExecutionManager executionManager)
+        public ObservableCommandTestClient(IClientExecutionManager executionManager, IClientChannel channel)
         {
             _executionManager = executionManager;
             _channel = channel;
@@ -47,7 +47,7 @@ namespace Tecan.Sila2.Interop.Client.ObservableCommandTest
         public virtual Tecan.Sila2.IIntermediateObservableCommand<long, long> ObservableIteration(long numberIterations)
         {
             ObservableIterationRequestDto request = new ObservableIterationRequestDto(numberIterations, null);
-            return _channel.ExecuteIntermediatesCommand<ObservableIterationRequestDto, long, ObservableIterationIntermediateDto>(_serviceName, "ObservableIteration", request, ConvertObservableIterationException, ConvertObservableIterationIntermediate, ConvertObservableIterationResponse, _executionManager.CreateCallOptions(request.CommandIdentifier));
+            return _channel.ExecuteIntermediatesCommand<ObservableIterationRequestDto, long, ObservableIterationIntermediateDto, long, ObservableIterationResponseDto>(_serviceName, "ObservableIteration", request, ConvertObservableIterationIntermediate, ConvertObservableIterationResponse, ConvertObservableIterationException, _executionManager.CreateCallOptions(request.CommandIdentifier));
         }
         
         ///  <summary>
@@ -89,7 +89,7 @@ namespace Tecan.Sila2.Interop.Client.ObservableCommandTest
         public virtual Tecan.Sila2.IObservableCommand<long> EchoValueAsync(long value, long delayInMs)
         {
             EchoValueAsyncRequestDto request = new EchoValueAsyncRequestDto(value, delayInMs, null);
-            return _channel.ExecuteObservableCommand<EchoValueAsyncRequestDto>(_serviceName, "EchoValueAsync", request, ConvertEchoValueAsyncException, ConvertEchoValueAsyncResponse, _executionManager.CreateCallOptions(request.CommandIdentifier));
+            return _channel.ExecuteObservableCommand<EchoValueAsyncRequestDto, long, EchoValueAsyncResponseDto>(_serviceName, "EchoValueAsync", request, ConvertEchoValueAsyncResponse, ConvertEchoValueAsyncException, _executionManager.CreateCallOptions(request.CommandIdentifier));
         }
         
         ///  <summary>

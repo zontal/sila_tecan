@@ -80,18 +80,18 @@ namespace Tecan.Sila2.Cancellation
             {
                 if ((ex.ParamName == "commandExecutionUUID"))
                 {
-                    throw ErrorHandling.CreateValidationError("org.silastandard/core.commands/CancelController/v1/Command/CancelCommand/Paramete" +
+                    throw _server.ErrorHandling.CreateValidationError("org.silastandard/core.commands/CancelController/v1/Command/CancelCommand/Paramete" +
                             "r/CommandExecutionUUID", ex.Message);
                 }
-                throw ErrorHandling.CreateUnknownValidationError(ex);
+                throw _server.ErrorHandling.CreateUnknownValidationError(ex);
             } catch (InvalidCommandExecutionUUIDException ex)
             {
-                throw ErrorHandling.CreateExecutionError("org.silastandard/core.commands/CancelController/v1/DefinedError/InvalidCommandExe" +
+                throw _server.ErrorHandling.CreateExecutionError("org.silastandard/core.commands/CancelController/v1/DefinedError/InvalidCommandExe" +
                         "cutionUUID", "\n      The given Command Execution UUID does not specify a command that is curren" +
                         "tly being executed.\n    ", ex.Message);
             } catch (OperationNotSupportedException ex)
             {
-                throw ErrorHandling.CreateExecutionError("org.silastandard/core.commands/CancelController/v1/DefinedError/OperationNotSuppo" +
+                throw _server.ErrorHandling.CreateExecutionError("org.silastandard/core.commands/CancelController/v1/DefinedError/OperationNotSuppo" +
                         "rted", "\n      Canceling is not supported for the SiLA 2 Command with the\n      specified" +
                         " CommandExecutionUUID.\n    ", ex.Message);
             }
@@ -135,19 +135,6 @@ namespace Tecan.Sila2.Cancellation
         {
             return null;
         }
-    }
-    
-    ///  <summary>
-    /// Encapsulates provider classes to expose the Cancel Controller feature via SiLA2
-    /// </summary>
-    internal sealed partial class CancelControllerMethods
-    {
-        
-        private static string @__ServiceName = "sila2.org.silastandard.core.commands.cancelcontroller.v1.CancelController";
-        
-        public static Grpc.Core.Method<CancelCommandRequestDto, EmptyRequest> CancelCommandMethod = new Grpc.Core.Method<CancelCommandRequestDto, EmptyRequest>(Grpc.Core.MethodType.Unary, @__ServiceName, "CancelCommand", ProtobufMarshaller<CancelCommandRequestDto>.Default, EmptyRequest.Marshaller);
-        
-        public static Grpc.Core.Method<CancelAllRequestDto, EmptyRequest> CancelAllMethod = new Grpc.Core.Method<CancelAllRequestDto, EmptyRequest>(Grpc.Core.MethodType.Unary, @__ServiceName, "CancelAll", ProtobufMarshaller<CancelAllRequestDto>.Default, EmptyRequest.Marshaller);
     }
 }
 

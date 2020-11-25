@@ -55,7 +55,7 @@ namespace Tecan.Sila2.Client
             }
             catch (Exception exception)
             {
-                var ex = ErrorHandling.ConvertException(exception, ErrorConverter);
+                var ex = ClientErrorHandling.ConvertException(exception, ErrorConverter);
                 CallInfo.FinishWithErrors(exception);
                 throw ex;
             }
@@ -151,7 +151,7 @@ namespace Tecan.Sila2.Client
             }
             catch(Exception exception)
             {
-                var ex = ErrorHandling.ConvertException( exception, ErrorConverter );
+                var ex = ClientErrorHandling.ConvertException( exception, ErrorConverter );
                 CallInfo.FinishWithErrors( exception );
                 throw ex;
             }

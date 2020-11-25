@@ -60,7 +60,7 @@ namespace Tecan.Sila2.Cancellation.CancelController
                 return;
             } catch (System.Exception ex)
             {
-                System.Exception exception = ErrorHandling.ConvertException(ex, ConvertCancelCommandException);
+                System.Exception exception = _channel.ConvertException(ex, ConvertCancelCommandException);
                 callInfo.FinishWithErrors(exception);
                 throw exception;
             }
@@ -103,7 +103,7 @@ namespace Tecan.Sila2.Cancellation.CancelController
                 return;
             } catch (System.Exception ex)
             {
-                System.Exception exception = ErrorHandling.ConvertException(ex);
+                System.Exception exception = _channel.ConvertException(ex);
                 callInfo.FinishWithErrors(exception);
                 throw exception;
             }
@@ -114,19 +114,6 @@ namespace Tecan.Sila2.Cancellation.CancelController
         {
             return dto.Extract(_executionManager.DownloadBinaryStore);
         }
-    }
-    
-    ///  <summary>
-    /// Encapsulates provider classes to expose the Cancel Controller feature via SiLA2
-    /// </summary>
-    internal sealed partial class CancelControllerMethods
-    {
-        
-        private static string @__ServiceName = "sila2.org.silastandard.core.commands.cancelcontroller.v1.CancelController";
-        
-        public static Grpc.Core.Method<CancelCommandRequestDto, EmptyRequest> CancelCommandMethod = new Grpc.Core.Method<CancelCommandRequestDto, EmptyRequest>(Grpc.Core.MethodType.Unary, @__ServiceName, "CancelCommand", ProtobufMarshaller<CancelCommandRequestDto>.Default, EmptyRequest.Marshaller);
-        
-        public static Grpc.Core.Method<CancelAllRequestDto, EmptyRequest> CancelAllMethod = new Grpc.Core.Method<CancelAllRequestDto, EmptyRequest>(Grpc.Core.MethodType.Unary, @__ServiceName, "CancelAll", ProtobufMarshaller<CancelAllRequestDto>.Default, EmptyRequest.Marshaller);
     }
 }
 

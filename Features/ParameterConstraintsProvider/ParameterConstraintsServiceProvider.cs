@@ -98,17 +98,5 @@ namespace Tecan.Sila2.ParameterConstraintsProvider
             return null;
         }
     }
-    
-    ///  <summary>
-    /// Encapsulates provider classes to expose the Parameter Constraints Provider feature via SiLA2
-    /// </summary>
-    internal sealed partial class ParameterConstraintsProviderMethods
-    {
-        
-        private static string @__ServiceName = "sila2.org.silastandard.core.commands.parameterconstraintsprovider.v1.ParameterCon" +
-            "straintsProvider";
-        
-        public static Grpc.Core.Method<EmptyRequest, PropertyResponse<System.Collections.Generic.List<ParametersConstraintDto>>> SubscribeParametersConstraintsMethod = new Grpc.Core.Method<EmptyRequest, PropertyResponse<System.Collections.Generic.List<ParametersConstraintDto>>>(Grpc.Core.MethodType.ServerStreaming, @__ServiceName, "Subscribe_ParametersConstraints", EmptyRequest.Marshaller, ProtobufMarshaller<PropertyResponse<System.Collections.Generic.List<ParametersConstraintDto>>>.Default);
-    }
 }
 

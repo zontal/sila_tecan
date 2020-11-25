@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
-using System.Net.Http.Headers;
-using Makaretu.Dns;
 using ProtoBuf;
 using Tecan.Sila2.Binary;
 

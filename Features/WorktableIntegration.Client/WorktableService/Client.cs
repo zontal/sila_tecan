@@ -20,7 +20,7 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
     ///  <summary>
     /// Class that implements the IWorktableService interface through SiLA2
     /// </summary>
-    public partial class WorktableServiceClient : Grpc.Core.ClientBase<WorktableServiceClient>, IWorktableService
+    public partial class WorktableServiceClient : IWorktableService
     {
         
         private System.Lazy<BoundingBox> _boundingBox;
@@ -41,7 +41,7 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
         /// </summary>
         /// <param name="executionManager">A component to determine metadata to attach to any requests</param>
         /// <param name="channel">The channel through which calls should be executed</param>
-        public WorktableServiceClient(IClientExecutionManager executionManager)
+        public WorktableServiceClient(IClientExecutionManager executionManager, IClientChannel channel)
         {
             InitLazyRequests();
             _executionManager = executionManager;
@@ -92,7 +92,7 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
                 return response;
             } catch (System.Exception ex)
             {
-                System.Exception exception = ErrorHandling.ConvertException(ex);
+                System.Exception exception = _channel.ConvertException(ex);
                 callInfo.FinishWithErrors(exception);
                 throw exception;
             }
@@ -109,7 +109,7 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
                 return response;
             } catch (System.Exception ex)
             {
-                System.Exception exception = ErrorHandling.ConvertException(ex);
+                System.Exception exception = _channel.ConvertException(ex);
                 callInfo.FinishWithErrors(exception);
                 throw exception;
             }
@@ -126,7 +126,7 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
                 return response;
             } catch (System.Exception ex)
             {
-                System.Exception exception = ErrorHandling.ConvertException(ex);
+                System.Exception exception = _channel.ConvertException(ex);
                 callInfo.FinishWithErrors(exception);
                 throw exception;
             }
@@ -147,22 +147,6 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
         {
             return dto.Extract(_executionManager.DownloadBinaryStore);
         }
-    }
-    
-    ///  <summary>
-    /// Encapsulates provider classes to expose the Worktable Service feature via SiLA2
-    /// </summary>
-    internal sealed partial class WorktableServiceMethods
-    {
-        
-        private static string @__ServiceName = "sila2.tecan.sila.worktableintegration.infrastructure.worktableservice.v1.Worktabl" +
-            "eService";
-        
-        public static Grpc.Core.Method<EmptyRequest, PropertyResponse<BoundingBoxDto>> GetBoundingBoxMethod = new Grpc.Core.Method<EmptyRequest, PropertyResponse<BoundingBoxDto>>(Grpc.Core.MethodType.Unary, @__ServiceName, "Get_BoundingBox", EmptyRequest.Marshaller, ProtobufMarshaller<PropertyResponse<BoundingBoxDto>>.Default);
-        
-        public static Grpc.Core.Method<EmptyRequest, PropertyResponse<System.Collections.Generic.List<SiteTemplateDto>>> GetSiteTemplatesMethod = new Grpc.Core.Method<EmptyRequest, PropertyResponse<System.Collections.Generic.List<SiteTemplateDto>>>(Grpc.Core.MethodType.Unary, @__ServiceName, "Get_SiteTemplates", EmptyRequest.Marshaller, ProtobufMarshaller<PropertyResponse<System.Collections.Generic.List<SiteTemplateDto>>>.Default);
-        
-        public static Grpc.Core.Method<EmptyRequest, PropertyResponse<System.Collections.Generic.List<SiteDto>>> GetSitesMethod = new Grpc.Core.Method<EmptyRequest, PropertyResponse<System.Collections.Generic.List<SiteDto>>>(Grpc.Core.MethodType.Unary, @__ServiceName, "Get_Sites", EmptyRequest.Marshaller, ProtobufMarshaller<PropertyResponse<System.Collections.Generic.List<SiteDto>>>.Default);
     }
 }
 

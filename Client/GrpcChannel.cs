@@ -36,13 +36,13 @@ namespace Tecan.Sila2.Discovery
 
         private T ReadProperty<T>( string serviceName, string propertyName, IClientCallInfo callInfo, Marshaller<T> serializer ) where T : class, ISilaTransferObject
         {
-            var propertyMethod = new Method<EmptyRequest, T>( MethodType.Unary, serviceName, "Get_" + propertyName, EmptyRequest.Marshaller, serializer );
+            var propertyMethod = new Method<EmptyRequest, T>( MethodType.Unary, serviceName, "Get_" + propertyName, EmptyRequestMarshaller.Instance, serializer );
             return CallInvoker.BlockingUnaryCall( propertyMethod, null, callInfo.ToCallOptions(), EmptyRequest.Instance );
         }
 
         public Task<T> ReadPropertyAsync<T>( string serviceName, string propertyName, IClientCallInfo callInfo, ByteSerializer<T> serializer ) where T : class, ISilaTransferObject
         {
-            var propertyMethod = new Method<EmptyRequest, T>( MethodType.Unary, serviceName, "Get_" + propertyName, EmptyRequest.Marshaller, ToMarshaller(serializer) );
+            var propertyMethod = new Method<EmptyRequest, T>( MethodType.Unary, serviceName, "Get_" + propertyName, EmptyRequestMarshaller.Instance, ToMarshaller(serializer) );
             return CallInvoker.AsyncUnaryCall( propertyMethod, null, callInfo.ToCallOptions(), EmptyRequest.Instance ).ResponseAsync;
         }
 
@@ -58,7 +58,7 @@ namespace Tecan.Sila2.Discovery
 
         private async Task SubscribeProperty<T>( string serviceName, string propertyName, Action<T> newValueReceived, IClientCallInfo callInfo, Marshaller<T> serializer, CancellationToken cancellationToken ) where T : class, ISilaTransferObject
         {
-            var subscribeMethod = new Method<EmptyRequest, T>( MethodType.ServerStreaming, serviceName, "Subscribe_" + propertyName, EmptyRequest.Marshaller, serializer );
+            var subscribeMethod = new Method<EmptyRequest, T>( MethodType.ServerStreaming, serviceName, "Subscribe_" + propertyName, EmptyRequestMarshaller.Instance, serializer );
 
             var asyncCall = CallInvoker.AsyncServerStreamingCall( subscribeMethod, null,
                 callInfo.ToCallOptions().WithCancellationToken(cancellationToken), EmptyRequest.Instance );
@@ -108,7 +108,7 @@ namespace Tecan.Sila2.Discovery
             Marshaller<TRequest> requestSerializer )
             where TRequest : class, ISilaRequestObject
         {
-            var commandMethod = new Method<TRequest, EmptyRequest>( MethodType.Unary, serviceName, commandName, requestSerializer, EmptyRequest.Marshaller );
+            var commandMethod = new Method<TRequest, EmptyRequest>( MethodType.Unary, serviceName, commandName, requestSerializer, EmptyRequestMarshaller.Instance );
             CallInvoker.BlockingUnaryCall( commandMethod, null, callInfo.ToCallOptions(), request );
         }
 
@@ -120,7 +120,7 @@ namespace Tecan.Sila2.Discovery
             ByteSerializer<TRequest> requestSerializer )
             where TRequest : class, ISilaRequestObject
         {
-            var commandMethod = new Method<TRequest, EmptyRequest>( MethodType.Unary, serviceName, commandName, ToMarshaller(requestSerializer), EmptyRequest.Marshaller );
+            var commandMethod = new Method<TRequest, EmptyRequest>( MethodType.Unary, serviceName, commandName, ToMarshaller(requestSerializer), EmptyRequestMarshaller.Instance );
             return CallInvoker.AsyncUnaryCall( commandMethod, null, callInfo.ToCallOptions(), request ).ResponseAsync;
         }
 
@@ -422,7 +422,7 @@ namespace Tecan.Sila2.Discovery
         public IEnumerable<string> GetAffected( string serviceName, string metadataIdentifier )
         {
             var method = new Method<EmptyRequest, MetadataAffectedResponse>( MethodType.Unary, serviceName,
-                $"Get_FCPAffectedByMetadata_{metadataIdentifier}", EmptyRequest.Marshaller, ProtobufMarshaller<MetadataAffectedResponse>.Default );
+                $"Get_FCPAffectedByMetadata_{metadataIdentifier}", EmptyRequestMarshaller.Instance, ProtobufMarshaller<MetadataAffectedResponse>.Default );
 
             var result = CallInvoker.BlockingUnaryCall( method, null, new CallOptions(), EmptyRequest.Instance );
             return result.Affected.Select( dto => dto.Value );
@@ -431,6 +431,12 @@ namespace Tecan.Sila2.Discovery
         public IBinaryStore CreateBinaryStore( string commandParameterIdentifier, IClientExecutionManager executionManager )
         {
             return new ClientBinaryStore( commandParameterIdentifier, CallInvoker, executionManager );
+        }
+
+        public Exception ConvertException( Exception ex,
+            Func<string, string, Exception> executionErrorConversion = null )
+        {
+            return ClientErrorHandling.ConvertException( ex, executionErrorConversion );
         }
     }
 }

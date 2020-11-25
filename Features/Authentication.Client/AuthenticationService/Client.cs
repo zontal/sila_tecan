@@ -20,7 +20,7 @@ namespace Tecan.Sila2.Authentication.AuthenticationService
     ///  <summary>
     /// Class that implements the IAuthenticationService interface through SiLA2
     /// </summary>
-    public partial class AuthenticationServiceClient : Grpc.Core.ClientBase<AuthenticationServiceClient>, IAuthenticationService
+    public partial class AuthenticationServiceClient : IAuthenticationService
     {
         
         private IClientExecutionManager _executionManager;
@@ -34,7 +34,7 @@ namespace Tecan.Sila2.Authentication.AuthenticationService
         /// </summary>
         /// <param name="executionManager">A component to determine metadata to attach to any requests</param>
         /// <param name="channel">The channel through which calls should be executed</param>
-        public AuthenticationServiceClient(IClientExecutionManager executionManager)
+        public AuthenticationServiceClient(IClientExecutionManager executionManager, IClientChannel channel)
         {
             _executionManager = executionManager;
             _channel = channel;
@@ -58,7 +58,7 @@ namespace Tecan.Sila2.Authentication.AuthenticationService
                 return response;
             } catch (System.Exception ex)
             {
-                System.Exception exception = ErrorHandling.ConvertException(ex, ConvertLoginException);
+                System.Exception exception = _channel.ConvertException(ex, ConvertLoginException);
                 callInfo.FinishWithErrors(exception);
                 throw exception;
             }
@@ -94,7 +94,7 @@ namespace Tecan.Sila2.Authentication.AuthenticationService
                 return;
             } catch (System.Exception ex)
             {
-                System.Exception exception = ErrorHandling.ConvertException(ex, ConvertLogoutException);
+                System.Exception exception = _channel.ConvertException(ex, ConvertLogoutException);
                 callInfo.FinishWithErrors(exception);
                 throw exception;
             }
@@ -120,19 +120,6 @@ namespace Tecan.Sila2.Authentication.AuthenticationService
         {
             return dto.Extract(_executionManager.DownloadBinaryStore);
         }
-    }
-    
-    ///  <summary>
-    /// Encapsulates provider classes to expose the Authentication Service feature via SiLA2
-    /// </summary>
-    internal sealed partial class AuthenticationServiceMethods
-    {
-        
-        private static string @__ServiceName = "sila2.org.silastandard.core.authenticationservice.v1.AuthenticationService";
-        
-        public static Grpc.Core.Method<LoginRequestDto, LoginResponseDto> LoginMethod = new Grpc.Core.Method<LoginRequestDto, LoginResponseDto>(Grpc.Core.MethodType.Unary, @__ServiceName, "Login", ProtobufMarshaller<LoginRequestDto>.Default, ProtobufMarshaller<LoginResponseDto>.Default);
-        
-        public static Grpc.Core.Method<LogoutRequestDto, EmptyRequest> LogoutMethod = new Grpc.Core.Method<LogoutRequestDto, EmptyRequest>(Grpc.Core.MethodType.Unary, @__ServiceName, "Logout", ProtobufMarshaller<LogoutRequestDto>.Default, EmptyRequest.Marshaller);
     }
 }
 

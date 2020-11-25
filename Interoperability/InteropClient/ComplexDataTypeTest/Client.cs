@@ -20,7 +20,7 @@ namespace Tecan.Sila2.Interop.Client.ComplexDataTypeTest
     ///  <summary>
     /// Class that implements the IComplexDataTypeTest interface through SiLA2
     /// </summary>
-    public partial class ComplexDataTypeTestClient : Grpc.Core.ClientBase<ComplexDataTypeTestClient>, IComplexDataTypeTest
+    public partial class ComplexDataTypeTestClient : IComplexDataTypeTest
     {
         
         private System.Lazy<System.Collections.Generic.ICollection<string>> _hugeList;
@@ -50,7 +50,7 @@ namespace Tecan.Sila2.Interop.Client.ComplexDataTypeTest
         /// </summary>
         /// <param name="executionManager">A component to determine metadata to attach to any requests</param>
         /// <param name="channel">The channel through which calls should be executed</param>
-        public ComplexDataTypeTestClient(IClientExecutionManager executionManager)
+        public ComplexDataTypeTestClient(IClientExecutionManager executionManager, IClientChannel channel)
         {
             InitLazyRequests();
             _executionManager = executionManager;
@@ -155,7 +155,7 @@ namespace Tecan.Sila2.Interop.Client.ComplexDataTypeTest
                 return response;
             } catch (System.Exception ex)
             {
-                System.Exception exception = ErrorHandling.ConvertException(ex);
+                System.Exception exception = _channel.ConvertException(ex);
                 callInfo.FinishWithErrors(exception);
                 throw exception;
             }
@@ -171,7 +171,7 @@ namespace Tecan.Sila2.Interop.Client.ComplexDataTypeTest
                 return response;
             } catch (System.Exception ex)
             {
-                System.Exception exception = ErrorHandling.ConvertException(ex);
+                System.Exception exception = _channel.ConvertException(ex);
                 callInfo.FinishWithErrors(exception);
                 throw exception;
             }
@@ -187,7 +187,7 @@ namespace Tecan.Sila2.Interop.Client.ComplexDataTypeTest
                 return response;
             } catch (System.Exception ex)
             {
-                System.Exception exception = ErrorHandling.ConvertException(ex);
+                System.Exception exception = _channel.ConvertException(ex);
                 callInfo.FinishWithErrors(exception);
                 throw exception;
             }
@@ -203,7 +203,7 @@ namespace Tecan.Sila2.Interop.Client.ComplexDataTypeTest
                 return response;
             } catch (System.Exception ex)
             {
-                System.Exception exception = ErrorHandling.ConvertException(ex);
+                System.Exception exception = _channel.ConvertException(ex);
                 callInfo.FinishWithErrors(exception);
                 throw exception;
             }
@@ -219,7 +219,7 @@ namespace Tecan.Sila2.Interop.Client.ComplexDataTypeTest
                 return response;
             } catch (System.Exception ex)
             {
-                System.Exception exception = ErrorHandling.ConvertException(ex);
+                System.Exception exception = _channel.ConvertException(ex);
                 callInfo.FinishWithErrors(exception);
                 throw exception;
             }
@@ -235,7 +235,7 @@ namespace Tecan.Sila2.Interop.Client.ComplexDataTypeTest
                 return response;
             } catch (System.Exception ex)
             {
-                System.Exception exception = ErrorHandling.ConvertException(ex);
+                System.Exception exception = _channel.ConvertException(ex);
                 callInfo.FinishWithErrors(exception);
                 throw exception;
             }
@@ -251,7 +251,7 @@ namespace Tecan.Sila2.Interop.Client.ComplexDataTypeTest
                 return response;
             } catch (System.Exception ex)
             {
-                System.Exception exception = ErrorHandling.ConvertException(ex);
+                System.Exception exception = _channel.ConvertException(ex);
                 callInfo.FinishWithErrors(exception);
                 throw exception;
             }
@@ -267,7 +267,7 @@ namespace Tecan.Sila2.Interop.Client.ComplexDataTypeTest
                 return response;
             } catch (System.Exception ex)
             {
-                System.Exception exception = ErrorHandling.ConvertException(ex);
+                System.Exception exception = _channel.ConvertException(ex);
                 callInfo.FinishWithErrors(exception);
                 throw exception;
             }
@@ -304,7 +304,7 @@ namespace Tecan.Sila2.Interop.Client.ComplexDataTypeTest
                 return response;
             } catch (System.Exception ex)
             {
-                System.Exception exception = ErrorHandling.ConvertException(ex);
+                System.Exception exception = _channel.ConvertException(ex);
                 callInfo.FinishWithErrors(exception);
                 throw exception;
             }
@@ -325,7 +325,7 @@ namespace Tecan.Sila2.Interop.Client.ComplexDataTypeTest
                 return response;
             } catch (System.Exception ex)
             {
-                System.Exception exception = ErrorHandling.ConvertException(ex);
+                System.Exception exception = _channel.ConvertException(ex);
                 callInfo.FinishWithErrors(exception);
                 throw exception;
             }
@@ -346,7 +346,7 @@ namespace Tecan.Sila2.Interop.Client.ComplexDataTypeTest
                 return response;
             } catch (System.Exception ex)
             {
-                System.Exception exception = ErrorHandling.ConvertException(ex);
+                System.Exception exception = _channel.ConvertException(ex);
                 callInfo.FinishWithErrors(exception);
                 throw exception;
             }
@@ -369,7 +369,7 @@ namespace Tecan.Sila2.Interop.Client.ComplexDataTypeTest
                 return response;
             } catch (System.Exception ex)
             {
-                System.Exception exception = ErrorHandling.ConvertException(ex);
+                System.Exception exception = _channel.ConvertException(ex);
                 callInfo.FinishWithErrors(exception);
                 throw exception;
             }
@@ -391,7 +391,7 @@ namespace Tecan.Sila2.Interop.Client.ComplexDataTypeTest
                 return response;
             } catch (System.Exception ex)
             {
-                System.Exception exception = ErrorHandling.ConvertException(ex);
+                System.Exception exception = _channel.ConvertException(ex);
                 callInfo.FinishWithErrors(exception);
                 throw exception;
             }
@@ -412,7 +412,7 @@ namespace Tecan.Sila2.Interop.Client.ComplexDataTypeTest
                 return response;
             } catch (System.Exception ex)
             {
-                System.Exception exception = ErrorHandling.ConvertException(ex);
+                System.Exception exception = _channel.ConvertException(ex);
                 callInfo.FinishWithErrors(exception);
                 throw exception;
             }
@@ -423,45 +423,6 @@ namespace Tecan.Sila2.Interop.Client.ComplexDataTypeTest
         {
             return dto.Extract(_executionManager.DownloadBinaryStore);
         }
-    }
-    
-    ///  <summary>
-    /// Encapsulates provider classes to expose the ComplexDataTypeTest feature via SiLA2
-    /// </summary>
-    internal sealed partial class ComplexDataTypeTestMethods
-    {
-        
-        private static string @__ServiceName = "sila2.org.silastandard.test.complexdatatypetest.v1.ComplexDataTypeTest";
-        
-        public static Grpc.Core.Method<ListProviderRequestDto, ListProviderResponseDto> ListProviderMethod = new Grpc.Core.Method<ListProviderRequestDto, ListProviderResponseDto>(Grpc.Core.MethodType.Unary, @__ServiceName, "ListProvider", ProtobufMarshaller<ListProviderRequestDto>.Default, ProtobufMarshaller<ListProviderResponseDto>.Default);
-        
-        public static Grpc.Core.Method<ThreeDimensionalStructRequestDto, ThreeDimensionalStructResponseDto> ThreeDimensionalStructMethod = new Grpc.Core.Method<ThreeDimensionalStructRequestDto, ThreeDimensionalStructResponseDto>(Grpc.Core.MethodType.Unary, @__ServiceName, "ThreeDimensionalStruct", ProtobufMarshaller<ThreeDimensionalStructRequestDto>.Default, ProtobufMarshaller<ThreeDimensionalStructResponseDto>.Default);
-        
-        public static Grpc.Core.Method<ThreeDimensionalListRequestDto, ThreeDimensionalListResponseDto> ThreeDimensionalListMethod = new Grpc.Core.Method<ThreeDimensionalListRequestDto, ThreeDimensionalListResponseDto>(Grpc.Core.MethodType.Unary, @__ServiceName, "ThreeDimensionalList", ProtobufMarshaller<ThreeDimensionalListRequestDto>.Default, ProtobufMarshaller<ThreeDimensionalListResponseDto>.Default);
-        
-        public static Grpc.Core.Method<WhyMakeItSimpleWhenYouCanMakeItComplicatedRequestDto, WhyMakeItSimpleWhenYouCanMakeItComplicatedResponseDto> WhyMakeItSimpleWhenYouCanMakeItComplicatedMethod = new Grpc.Core.Method<WhyMakeItSimpleWhenYouCanMakeItComplicatedRequestDto, WhyMakeItSimpleWhenYouCanMakeItComplicatedResponseDto>(Grpc.Core.MethodType.Unary, @__ServiceName, "WhyMakeItSimpleWhenYouCanMakeItComplicated", ProtobufMarshaller<WhyMakeItSimpleWhenYouCanMakeItComplicatedRequestDto>.Default, ProtobufMarshaller<WhyMakeItSimpleWhenYouCanMakeItComplicatedResponseDto>.Default);
-        
-        public static Grpc.Core.Method<XOREncipherRequestDto, XOREncipherResponseDto> XOREncipherMethod = new Grpc.Core.Method<XOREncipherRequestDto, XOREncipherResponseDto>(Grpc.Core.MethodType.Unary, @__ServiceName, "XOREncipher", ProtobufMarshaller<XOREncipherRequestDto>.Default, ProtobufMarshaller<XOREncipherResponseDto>.Default);
-        
-        public static Grpc.Core.Method<ValueForTypeProviderRequestDto, ValueForTypeProviderResponseDto> ValueForTypeProviderMethod = new Grpc.Core.Method<ValueForTypeProviderRequestDto, ValueForTypeProviderResponseDto>(Grpc.Core.MethodType.Unary, @__ServiceName, "ValueForTypeProvider", ProtobufMarshaller<ValueForTypeProviderRequestDto>.Default, ProtobufMarshaller<ValueForTypeProviderResponseDto>.Default);
-        
-        public static Grpc.Core.Method<EmptyRequest, PropertyResponse<System.Collections.Generic.List<Tecan.Sila2.StringDto>>> GetHugeListMethod = new Grpc.Core.Method<EmptyRequest, PropertyResponse<System.Collections.Generic.List<Tecan.Sila2.StringDto>>>(Grpc.Core.MethodType.Unary, @__ServiceName, "Get_HugeList", EmptyRequest.Marshaller, ProtobufMarshaller<PropertyResponse<System.Collections.Generic.List<Tecan.Sila2.StringDto>>>.Default);
-        
-        public static Grpc.Core.Method<EmptyRequest, PropertyResponse<Tecan.Sila2.BooleanDto>> GetBooleanMethod = new Grpc.Core.Method<EmptyRequest, PropertyResponse<Tecan.Sila2.BooleanDto>>(Grpc.Core.MethodType.Unary, @__ServiceName, "Get_Boolean", EmptyRequest.Marshaller, ProtobufMarshaller<PropertyResponse<Tecan.Sila2.BooleanDto>>.Default);
-        
-        public static Grpc.Core.Method<EmptyRequest, PropertyResponse<System.Collections.Generic.List<Tecan.Sila2.StringDto>>> GetListStringMethod = new Grpc.Core.Method<EmptyRequest, PropertyResponse<System.Collections.Generic.List<Tecan.Sila2.StringDto>>>(Grpc.Core.MethodType.Unary, @__ServiceName, "Get_ListString", EmptyRequest.Marshaller, ProtobufMarshaller<PropertyResponse<System.Collections.Generic.List<Tecan.Sila2.StringDto>>>.Default);
-        
-        public static Grpc.Core.Method<EmptyRequest, PropertyResponse<System.Collections.Generic.List<Tecan.Sila2.StringDto>>> GetRandomChangingListStringMethod = new Grpc.Core.Method<EmptyRequest, PropertyResponse<System.Collections.Generic.List<Tecan.Sila2.StringDto>>>(Grpc.Core.MethodType.Unary, @__ServiceName, "Get_RandomChangingListString", EmptyRequest.Marshaller, ProtobufMarshaller<PropertyResponse<System.Collections.Generic.List<Tecan.Sila2.StringDto>>>.Default);
-        
-        public static Grpc.Core.Method<EmptyRequest, PropertyResponse<System.Collections.Generic.List<Tecan.Sila2.KeyValuePairDto<string, Tecan.Sila2.StringDto, string, Tecan.Sila2.StringDto>>>> GetListStructPairStringMethod = new Grpc.Core.Method<EmptyRequest, PropertyResponse<System.Collections.Generic.List<Tecan.Sila2.KeyValuePairDto<string, Tecan.Sila2.StringDto, string, Tecan.Sila2.StringDto>>>>(Grpc.Core.MethodType.Unary, @__ServiceName, "Get_ListStructPairString", EmptyRequest.Marshaller, ProtobufMarshaller<PropertyResponse<System.Collections.Generic.List<Tecan.Sila2.KeyValuePairDto<string, Tecan.Sila2.StringDto, string, Tecan.Sila2.StringDto>>>>.Default);
-        
-        public static Grpc.Core.Method<EmptyRequest, PropertyResponse<StructPairStringDto>> GetStructPairStringMethod = new Grpc.Core.Method<EmptyRequest, PropertyResponse<StructPairStringDto>>(Grpc.Core.MethodType.Unary, @__ServiceName, "Get_StructPairString", EmptyRequest.Marshaller, ProtobufMarshaller<PropertyResponse<StructPairStringDto>>.Default);
-        
-        public static Grpc.Core.Method<EmptyRequest, PropertyResponse<DataTypeStringDto>> GetDataTypeMethod = new Grpc.Core.Method<EmptyRequest, PropertyResponse<DataTypeStringDto>>(Grpc.Core.MethodType.Unary, @__ServiceName, "Get_DataType", EmptyRequest.Marshaller, ProtobufMarshaller<PropertyResponse<DataTypeStringDto>>.Default);
-        
-        public static Grpc.Core.Method<EmptyRequest, PropertyResponse<Tecan.Sila2.StringDto>> GetThrowExceptionMethod = new Grpc.Core.Method<EmptyRequest, PropertyResponse<Tecan.Sila2.StringDto>>(Grpc.Core.MethodType.Unary, @__ServiceName, "Get_ThrowException", EmptyRequest.Marshaller, ProtobufMarshaller<PropertyResponse<Tecan.Sila2.StringDto>>.Default);
-        
-        public static Grpc.Core.Method<EmptyRequest, System.Collections.Generic.List<Tecan.Sila2.StringDto>> GetAffectedByUserMethod = new Grpc.Core.Method<EmptyRequest, System.Collections.Generic.List<Tecan.Sila2.StringDto>>(Grpc.Core.MethodType.Unary, @__ServiceName, "Get_FCPAffectedByMetadata_User", EmptyRequest.Marshaller, ProtobufMarshaller<System.Collections.Generic.List<Tecan.Sila2.StringDto>>.Default);
     }
 }
 

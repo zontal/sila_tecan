@@ -79,27 +79,27 @@ namespace Tecan.Sila2.Authentication
             {
                 if ((ex.ParamName == "userIdentification"))
                 {
-                    throw ErrorHandling.CreateValidationError("org.silastandard/core/AuthenticationService/v1/Command/Login/Parameter/UserIdenti" +
+                    throw _server.ErrorHandling.CreateValidationError("org.silastandard/core/AuthenticationService/v1/Command/Login/Parameter/UserIdenti" +
                             "fication", ex.Message);
                 }
                 if ((ex.ParamName == "password"))
                 {
-                    throw ErrorHandling.CreateValidationError("org.silastandard/core/AuthenticationService/v1/Command/Login/Parameter/Password", ex.Message);
+                    throw _server.ErrorHandling.CreateValidationError("org.silastandard/core/AuthenticationService/v1/Command/Login/Parameter/Password", ex.Message);
                 }
                 if ((ex.ParamName == "requestedServer"))
                 {
-                    throw ErrorHandling.CreateValidationError("org.silastandard/core/AuthenticationService/v1/Command/Login/Parameter/RequestedS" +
+                    throw _server.ErrorHandling.CreateValidationError("org.silastandard/core/AuthenticationService/v1/Command/Login/Parameter/RequestedS" +
                             "erver", ex.Message);
                 }
                 if ((ex.ParamName == "requestedFeatures"))
                 {
-                    throw ErrorHandling.CreateValidationError("org.silastandard/core/AuthenticationService/v1/Command/Login/Parameter/RequestedF" +
+                    throw _server.ErrorHandling.CreateValidationError("org.silastandard/core/AuthenticationService/v1/Command/Login/Parameter/RequestedF" +
                             "eatures", ex.Message);
                 }
-                throw ErrorHandling.CreateUnknownValidationError(ex);
+                throw _server.ErrorHandling.CreateUnknownValidationError(ex);
             } catch (AuthenticationFailedException ex)
             {
-                throw ErrorHandling.CreateExecutionError("org.silastandard/core/AuthenticationService/v1/DefinedError/AuthenticationFailed", "The provided credentials are not valid.", ex.Message);
+                throw _server.ErrorHandling.CreateExecutionError("org.silastandard/core/AuthenticationService/v1/DefinedError/AuthenticationFailed", "The provided credentials are not valid.", ex.Message);
             }
         }
         
@@ -118,13 +118,13 @@ namespace Tecan.Sila2.Authentication
             {
                 if ((ex.ParamName == "accessToken"))
                 {
-                    throw ErrorHandling.CreateValidationError("org.silastandard/core/AuthenticationService/v1/Command/Logout/Parameter/AccessTok" +
+                    throw _server.ErrorHandling.CreateValidationError("org.silastandard/core/AuthenticationService/v1/Command/Logout/Parameter/AccessTok" +
                             "en", ex.Message);
                 }
-                throw ErrorHandling.CreateUnknownValidationError(ex);
+                throw _server.ErrorHandling.CreateUnknownValidationError(ex);
             } catch (InvalidAccessTokenException ex)
             {
-                throw ErrorHandling.CreateExecutionError("org.silastandard/core/AuthenticationService/v1/DefinedError/InvalidAccessToken", "The sent access token is not valid.", ex.Message);
+                throw _server.ErrorHandling.CreateExecutionError("org.silastandard/core/AuthenticationService/v1/DefinedError/InvalidAccessToken", "The sent access token is not valid.", ex.Message);
             }
         }
         
@@ -155,19 +155,6 @@ namespace Tecan.Sila2.Authentication
         {
             return null;
         }
-    }
-    
-    ///  <summary>
-    /// Encapsulates provider classes to expose the Authentication Service feature via SiLA2
-    /// </summary>
-    internal sealed partial class AuthenticationServiceMethods
-    {
-        
-        private static string @__ServiceName = "sila2.org.silastandard.core.authenticationservice.v1.AuthenticationService";
-        
-        public static Grpc.Core.Method<LoginRequestDto, LoginResponseDto> LoginMethod = new Grpc.Core.Method<LoginRequestDto, LoginResponseDto>(Grpc.Core.MethodType.Unary, @__ServiceName, "Login", ProtobufMarshaller<LoginRequestDto>.Default, ProtobufMarshaller<LoginResponseDto>.Default);
-        
-        public static Grpc.Core.Method<LogoutRequestDto, EmptyRequest> LogoutMethod = new Grpc.Core.Method<LogoutRequestDto, EmptyRequest>(Grpc.Core.MethodType.Unary, @__ServiceName, "Logout", ProtobufMarshaller<LogoutRequestDto>.Default, EmptyRequest.Marshaller);
     }
 }
 

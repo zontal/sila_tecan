@@ -20,7 +20,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
     ///  <summary>
     /// Class that implements the ITestServer interface through SiLA2
     /// </summary>
-    public partial class TestServerClient : Grpc.Core.ClientBase<TestServerClient>, ITestServer
+    public partial class TestServerClient : ITestServer
     {
         
         private IClientExecutionManager _executionManager;
@@ -34,7 +34,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         /// </summary>
         /// <param name="executionManager">A component to determine metadata to attach to any requests</param>
         /// <param name="channel">The channel through which calls should be executed</param>
-        public TestServerClient(IClientExecutionManager executionManager)
+        public TestServerClient(IClientExecutionManager executionManager, IClientChannel channel)
         {
             _executionManager = executionManager;
             _channel = channel;
@@ -54,7 +54,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
                 return response;
             } catch (System.Exception ex)
             {
-                System.Exception exception = ErrorHandling.ConvertException(ex);
+                System.Exception exception = _channel.ConvertException(ex);
                 callInfo.FinishWithErrors(exception);
                 throw exception;
             }
@@ -74,7 +74,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
                 return response;
             } catch (System.Exception ex)
             {
-                System.Exception exception = ErrorHandling.ConvertException(ex);
+                System.Exception exception = _channel.ConvertException(ex);
                 callInfo.FinishWithErrors(exception);
                 throw exception;
             }
@@ -94,7 +94,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
                 return response;
             } catch (System.Exception ex)
             {
-                System.Exception exception = ErrorHandling.ConvertException(ex);
+                System.Exception exception = _channel.ConvertException(ex);
                 callInfo.FinishWithErrors(exception);
                 throw exception;
             }
@@ -114,7 +114,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
                 return response;
             } catch (System.Exception ex)
             {
-                System.Exception exception = ErrorHandling.ConvertException(ex);
+                System.Exception exception = _channel.ConvertException(ex);
                 callInfo.FinishWithErrors(exception);
                 throw exception;
             }
@@ -134,7 +134,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
                 return response;
             } catch (System.Exception ex)
             {
-                System.Exception exception = ErrorHandling.ConvertException(ex);
+                System.Exception exception = _channel.ConvertException(ex);
                 callInfo.FinishWithErrors(exception);
                 throw exception;
             }
@@ -154,7 +154,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
                 return response;
             } catch (System.Exception ex)
             {
-                System.Exception exception = ErrorHandling.ConvertException(ex);
+                System.Exception exception = _channel.ConvertException(ex);
                 callInfo.FinishWithErrors(exception);
                 throw exception;
             }
@@ -174,7 +174,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
                 return response;
             } catch (System.Exception ex)
             {
-                System.Exception exception = ErrorHandling.ConvertException(ex);
+                System.Exception exception = _channel.ConvertException(ex);
                 callInfo.FinishWithErrors(exception);
                 throw exception;
             }
@@ -194,7 +194,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
                 return response;
             } catch (System.Exception ex)
             {
-                System.Exception exception = ErrorHandling.ConvertException(ex);
+                System.Exception exception = _channel.ConvertException(ex);
                 callInfo.FinishWithErrors(exception);
                 throw exception;
             }
@@ -214,7 +214,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
                 return response;
             } catch (System.Exception ex)
             {
-                System.Exception exception = ErrorHandling.ConvertException(ex);
+                System.Exception exception = _channel.ConvertException(ex);
                 callInfo.FinishWithErrors(exception);
                 throw exception;
             }
@@ -234,7 +234,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
                 return response;
             } catch (System.Exception ex)
             {
-                System.Exception exception = ErrorHandling.ConvertException(ex);
+                System.Exception exception = _channel.ConvertException(ex);
                 callInfo.FinishWithErrors(exception);
                 throw exception;
             }
@@ -254,7 +254,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
                 return response;
             } catch (System.Exception ex)
             {
-                System.Exception exception = ErrorHandling.ConvertException(ex);
+                System.Exception exception = _channel.ConvertException(ex);
                 callInfo.FinishWithErrors(exception);
                 throw exception;
             }
@@ -274,7 +274,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
                 return response;
             } catch (System.Exception ex)
             {
-                System.Exception exception = ErrorHandling.ConvertException(ex);
+                System.Exception exception = _channel.ConvertException(ex);
                 callInfo.FinishWithErrors(exception);
                 throw exception;
             }
@@ -285,7 +285,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         public virtual Tecan.Sila2.IObservableCommand<long> RunObservable()
         {
             RunObservableRequestDto request = new RunObservableRequestDto(null);
-            return _channel.ExecuteObservableCommand<RunObservableRequestDto>(_serviceName, "RunObservable", request, ConvertRunObservableException, ConvertRunObservableResponse, _executionManager.CreateCallOptions(request.CommandIdentifier));
+            return _channel.ExecuteObservableCommand<RunObservableRequestDto, long, RunObservableResponseDto>(_serviceName, "RunObservable", request, ConvertRunObservableResponse, ConvertRunObservableException, _executionManager.CreateCallOptions(request.CommandIdentifier));
         }
         
         ///  <summary>
@@ -314,7 +314,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         public virtual Tecan.Sila2.IIntermediateObservableCommand<long> RunIntermediateObservableCommand()
         {
             RunIntermediateObservableCommandRequestDto request = new RunIntermediateObservableCommandRequestDto(null);
-            return _channel.ExecuteIntermediatesCommand<RunIntermediateObservableCommandRequestDto, long, RunIntermediateObservableCommandIntermediateDto>(_serviceName, "RunIntermediateObservableCommand", request, ConvertRunIntermediateObservableCommandException, ConvertRunIntermediateObservableCommandIntermediate, _executionManager.CreateCallOptions(request.CommandIdentifier));
+            return _channel.ExecuteIntermediatesCommand<RunIntermediateObservableCommandRequestDto, long, RunIntermediateObservableCommandIntermediateDto>(_serviceName, "RunIntermediateObservableCommand", request, ConvertRunIntermediateObservableCommandIntermediate, ConvertRunIntermediateObservableCommandException, _executionManager.CreateCallOptions(request.CommandIdentifier));
         }
         
         ///  <summary>
@@ -375,7 +375,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
                 return;
             } catch (System.Exception ex)
             {
-                System.Exception exception = ErrorHandling.ConvertException(ex, ConvertRunIntoFailureException);
+                System.Exception exception = _channel.ConvertException(ex, ConvertRunIntoFailureException);
                 callInfo.FinishWithErrors(exception);
                 throw exception;
             }
@@ -433,7 +433,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
                 return response;
             } catch (System.Exception ex)
             {
-                System.Exception exception = ErrorHandling.ConvertException(ex);
+                System.Exception exception = _channel.ConvertException(ex);
                 callInfo.FinishWithErrors(exception);
                 throw exception;
             }
@@ -452,7 +452,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
                 return;
             } catch (System.Exception ex)
             {
-                System.Exception exception = ErrorHandling.ConvertException(ex);
+                System.Exception exception = _channel.ConvertException(ex);
                 callInfo.FinishWithErrors(exception);
                 throw exception;
             }
@@ -463,71 +463,6 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         {
             return dto.Extract(_executionManager.DownloadBinaryStore);
         }
-    }
-    
-    ///  <summary>
-    /// Encapsulates provider classes to expose the Test Server feature via SiLA2
-    /// </summary>
-    internal sealed partial class TestServerMethods
-    {
-        
-        private static string @__ServiceName = "sila2.tecan.sila.integrationtests.testserver.v1.TestServer";
-        
-        public static Grpc.Core.Method<PassBoolRequestDto, PassBoolResponseDto> PassBoolMethod = new Grpc.Core.Method<PassBoolRequestDto, PassBoolResponseDto>(Grpc.Core.MethodType.Unary, @__ServiceName, "PassBool", ProtobufMarshaller<PassBoolRequestDto>.Default, ProtobufMarshaller<PassBoolResponseDto>.Default);
-        
-        public static Grpc.Core.Method<PassDoubleRequestDto, PassDoubleResponseDto> PassDoubleMethod = new Grpc.Core.Method<PassDoubleRequestDto, PassDoubleResponseDto>(Grpc.Core.MethodType.Unary, @__ServiceName, "PassDouble", ProtobufMarshaller<PassDoubleRequestDto>.Default, ProtobufMarshaller<PassDoubleResponseDto>.Default);
-        
-        public static Grpc.Core.Method<PassLongRequestDto, PassLongResponseDto> PassLongMethod = new Grpc.Core.Method<PassLongRequestDto, PassLongResponseDto>(Grpc.Core.MethodType.Unary, @__ServiceName, "PassLong", ProtobufMarshaller<PassLongRequestDto>.Default, ProtobufMarshaller<PassLongResponseDto>.Default);
-        
-        public static Grpc.Core.Method<PassIntRequestDto, PassIntResponseDto> PassIntMethod = new Grpc.Core.Method<PassIntRequestDto, PassIntResponseDto>(Grpc.Core.MethodType.Unary, @__ServiceName, "PassInt", ProtobufMarshaller<PassIntRequestDto>.Default, ProtobufMarshaller<PassIntResponseDto>.Default);
-        
-        public static Grpc.Core.Method<PassTimestampRequestDto, PassTimestampResponseDto> PassTimestampMethod = new Grpc.Core.Method<PassTimestampRequestDto, PassTimestampResponseDto>(Grpc.Core.MethodType.Unary, @__ServiceName, "PassTimestamp", ProtobufMarshaller<PassTimestampRequestDto>.Default, ProtobufMarshaller<PassTimestampResponseDto>.Default);
-        
-        public static Grpc.Core.Method<PassTimeRequestDto, PassTimeResponseDto> PassTimeMethod = new Grpc.Core.Method<PassTimeRequestDto, PassTimeResponseDto>(Grpc.Core.MethodType.Unary, @__ServiceName, "PassTime", ProtobufMarshaller<PassTimeRequestDto>.Default, ProtobufMarshaller<PassTimeResponseDto>.Default);
-        
-        public static Grpc.Core.Method<PassStringRequestDto, PassStringResponseDto> PassStringMethod = new Grpc.Core.Method<PassStringRequestDto, PassStringResponseDto>(Grpc.Core.MethodType.Unary, @__ServiceName, "PassString", ProtobufMarshaller<PassStringRequestDto>.Default, ProtobufMarshaller<PassStringResponseDto>.Default);
-        
-        public static Grpc.Core.Method<PassStreamRequestDto, PassStreamResponseDto> PassStreamMethod = new Grpc.Core.Method<PassStreamRequestDto, PassStreamResponseDto>(Grpc.Core.MethodType.Unary, @__ServiceName, "PassStream", ProtobufMarshaller<PassStreamRequestDto>.Default, ProtobufMarshaller<PassStreamResponseDto>.Default);
-        
-        public static Grpc.Core.Method<PassFileRequestDto, PassFileResponseDto> PassFileMethod = new Grpc.Core.Method<PassFileRequestDto, PassFileResponseDto>(Grpc.Core.MethodType.Unary, @__ServiceName, "PassFile", ProtobufMarshaller<PassFileRequestDto>.Default, ProtobufMarshaller<PassFileResponseDto>.Default);
-        
-        public static Grpc.Core.Method<PassBytesRequestDto, PassBytesResponseDto> PassBytesMethod = new Grpc.Core.Method<PassBytesRequestDto, PassBytesResponseDto>(Grpc.Core.MethodType.Unary, @__ServiceName, "PassBytes", ProtobufMarshaller<PassBytesRequestDto>.Default, ProtobufMarshaller<PassBytesResponseDto>.Default);
-        
-        public static Grpc.Core.Method<PassCollectionRequestDto, PassCollectionResponseDto> PassCollectionMethod = new Grpc.Core.Method<PassCollectionRequestDto, PassCollectionResponseDto>(Grpc.Core.MethodType.Unary, @__ServiceName, "PassCollection", ProtobufMarshaller<PassCollectionRequestDto>.Default, ProtobufMarshaller<PassCollectionResponseDto>.Default);
-        
-        public static Grpc.Core.Method<PassStructureRequestDto, PassStructureResponseDto> PassStructureMethod = new Grpc.Core.Method<PassStructureRequestDto, PassStructureResponseDto>(Grpc.Core.MethodType.Unary, @__ServiceName, "PassStructure", ProtobufMarshaller<PassStructureRequestDto>.Default, ProtobufMarshaller<PassStructureResponseDto>.Default);
-        
-        public static Grpc.Core.Method<RunObservableRequestDto, CommandConfirmation> RunObservableMethod = new Grpc.Core.Method<RunObservableRequestDto, CommandConfirmation>(Grpc.Core.MethodType.Unary, @__ServiceName, "RunObservable", ProtobufMarshaller<RunObservableRequestDto>.Default, ProtobufMarshaller<CommandConfirmation>.Default);
-        
-        public static Grpc.Core.Method<CommandExecutionUuid, ExecutionState> RunObservableStateMethod = new Grpc.Core.Method<CommandExecutionUuid, ExecutionState>(Grpc.Core.MethodType.ServerStreaming, @__ServiceName, "RunObservable_Info", ProtobufMarshaller<CommandExecutionUuid>.Default, ProtobufMarshaller<ExecutionState>.Default);
-        
-        public static Grpc.Core.Method<CommandExecutionUuid, RunObservableResponseDto> RunObservableResponseMethod = new Grpc.Core.Method<CommandExecutionUuid, RunObservableResponseDto>(Grpc.Core.MethodType.Unary, @__ServiceName, "RunObservable_Result", ProtobufMarshaller<CommandExecutionUuid>.Default, ProtobufMarshaller<RunObservableResponseDto>.Default);
-        
-        public static Grpc.Core.Method<RunIntermediateObservableCommandRequestDto, CommandConfirmation> RunIntermediateObservableCommandMethod = new Grpc.Core.Method<RunIntermediateObservableCommandRequestDto, CommandConfirmation>(Grpc.Core.MethodType.Unary, @__ServiceName, "RunIntermediateObservableCommand", ProtobufMarshaller<RunIntermediateObservableCommandRequestDto>.Default, ProtobufMarshaller<CommandConfirmation>.Default);
-        
-        public static Grpc.Core.Method<CommandExecutionUuid, ExecutionState> RunIntermediateObservableCommandStateMethod = new Grpc.Core.Method<CommandExecutionUuid, ExecutionState>(Grpc.Core.MethodType.ServerStreaming, @__ServiceName, "RunIntermediateObservableCommand_Info", ProtobufMarshaller<CommandExecutionUuid>.Default, ProtobufMarshaller<ExecutionState>.Default);
-        
-        public static Grpc.Core.Method<CommandExecutionUuid, RunIntermediateObservableCommandIntermediateDto> RunIntermediateObservableCommandIntermediateMethod = new Grpc.Core.Method<CommandExecutionUuid, RunIntermediateObservableCommandIntermediateDto>(Grpc.Core.MethodType.Unary, @__ServiceName, "RunIntermediateObservableCommand_IntermediateResponses", ProtobufMarshaller<CommandExecutionUuid>.Default, ProtobufMarshaller<RunIntermediateObservableCommandIntermediateDto>.Default);
-        
-        public static Grpc.Core.Method<CommandExecutionUuid, EmptyRequest> RunIntermediateObservableCommandResponseMethod = new Grpc.Core.Method<CommandExecutionUuid, EmptyRequest>(Grpc.Core.MethodType.Unary, @__ServiceName, "RunIntermediateObservableCommand_Result", ProtobufMarshaller<CommandExecutionUuid>.Default, EmptyRequest.Marshaller);
-        
-        public static Grpc.Core.Method<WaitForCancelOrThrowRequestDto, CommandConfirmation> WaitForCancelOrThrowMethod = new Grpc.Core.Method<WaitForCancelOrThrowRequestDto, CommandConfirmation>(Grpc.Core.MethodType.Unary, @__ServiceName, "WaitForCancelOrThrow", ProtobufMarshaller<WaitForCancelOrThrowRequestDto>.Default, ProtobufMarshaller<CommandConfirmation>.Default);
-        
-        public static Grpc.Core.Method<CommandExecutionUuid, ExecutionState> WaitForCancelOrThrowStateMethod = new Grpc.Core.Method<CommandExecutionUuid, ExecutionState>(Grpc.Core.MethodType.ServerStreaming, @__ServiceName, "WaitForCancelOrThrow_Info", ProtobufMarshaller<CommandExecutionUuid>.Default, ProtobufMarshaller<ExecutionState>.Default);
-        
-        public static Grpc.Core.Method<CommandExecutionUuid, EmptyRequest> WaitForCancelOrThrowResponseMethod = new Grpc.Core.Method<CommandExecutionUuid, EmptyRequest>(Grpc.Core.MethodType.Unary, @__ServiceName, "WaitForCancelOrThrow_Result", ProtobufMarshaller<CommandExecutionUuid>.Default, EmptyRequest.Marshaller);
-        
-        public static Grpc.Core.Method<RunIntoFailureRequestDto, EmptyRequest> RunIntoFailureMethod = new Grpc.Core.Method<RunIntoFailureRequestDto, EmptyRequest>(Grpc.Core.MethodType.Unary, @__ServiceName, "RunIntoFailure", ProtobufMarshaller<RunIntoFailureRequestDto>.Default, EmptyRequest.Marshaller);
-        
-        public static Grpc.Core.Method<RunIntoFailureObservablyRequestDto, CommandConfirmation> RunIntoFailureObservablyMethod = new Grpc.Core.Method<RunIntoFailureObservablyRequestDto, CommandConfirmation>(Grpc.Core.MethodType.Unary, @__ServiceName, "RunIntoFailureObservably", ProtobufMarshaller<RunIntoFailureObservablyRequestDto>.Default, ProtobufMarshaller<CommandConfirmation>.Default);
-        
-        public static Grpc.Core.Method<CommandExecutionUuid, ExecutionState> RunIntoFailureObservablyStateMethod = new Grpc.Core.Method<CommandExecutionUuid, ExecutionState>(Grpc.Core.MethodType.ServerStreaming, @__ServiceName, "RunIntoFailureObservably_Info", ProtobufMarshaller<CommandExecutionUuid>.Default, ProtobufMarshaller<ExecutionState>.Default);
-        
-        public static Grpc.Core.Method<CommandExecutionUuid, EmptyRequest> RunIntoFailureObservablyResponseMethod = new Grpc.Core.Method<CommandExecutionUuid, EmptyRequest>(Grpc.Core.MethodType.Unary, @__ServiceName, "RunIntoFailureObservably_Result", ProtobufMarshaller<CommandExecutionUuid>.Default, EmptyRequest.Marshaller);
-        
-        public static Grpc.Core.Method<IsCancelledRequestDto, IsCancelledResponseDto> IsCancelledMethod = new Grpc.Core.Method<IsCancelledRequestDto, IsCancelledResponseDto>(Grpc.Core.MethodType.Unary, @__ServiceName, "IsCancelled", ProtobufMarshaller<IsCancelledRequestDto>.Default, ProtobufMarshaller<IsCancelledResponseDto>.Default);
-        
-        public static Grpc.Core.Method<ThrowRuntimeExceptionRequestDto, EmptyRequest> ThrowRuntimeExceptionMethod = new Grpc.Core.Method<ThrowRuntimeExceptionRequestDto, EmptyRequest>(Grpc.Core.MethodType.Unary, @__ServiceName, "ThrowRuntimeException", ProtobufMarshaller<ThrowRuntimeExceptionRequestDto>.Default, EmptyRequest.Marshaller);
     }
 }
 

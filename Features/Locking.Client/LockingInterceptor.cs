@@ -12,9 +12,9 @@ namespace Tecan.Sila2.Locking
     /// <summary>
     /// Denotes an interceptor that handles locking of a server
     /// </summary>
-    [Export( typeof( IRequestInterceptor ) )]
+    [Export( typeof( IClientRequestInterceptor ) )]
     [PartCreationPolicy( CreationPolicy.Shared )]
-    public class LockingInterceptor : IRequestInterceptor
+    public class LockingInterceptor : IClientRequestInterceptor
     {
         private readonly ConditionalWeakTable<ServerData, ServerLockInformation> _serverLockData = new ConditionalWeakTable<ServerData, ServerLockInformation>();
 
@@ -22,12 +22,12 @@ namespace Tecan.Sila2.Locking
         public string MetadataIdentifier => "org.silastandard/core/LockController/v1/Metadata/LockIdentifier";
 
         /// <inheritdoc />
-        public IRequestInterception Intercept( ServerData server, IClientExecutionManager executionManager, IDictionary<string, byte[]> metadata )
+        public IClientRequestInterception Intercept( ServerData server, IClientExecutionManager executionManager, IDictionary<string, byte[]> metadata )
         {
-            var grpcServer = server as GrpcServerData;
+            var grpcServer = server as ServerData;
             if(!_serverLockData.TryGetValue( server, out var lockData ))
             {
-                var lockingClient = new LockControllerClient( grpcServer.Channel, executionManager );
+                var lockingClient = new LockControllerClient( executionManager, grpcServer.Channel );
                 var lockingIdentifier = Guid.NewGuid().ToString();
                 lockData = new ServerLockInformation( lockingClient, lockingIdentifier );
                 _serverLockData.Add( server, lockData );
@@ -37,7 +37,7 @@ namespace Tecan.Sila2.Locking
             return lockData;
         }
 
-        private class ServerLockInformation : IRequestInterception
+        private class ServerLockInformation : IClientRequestInterception
         {
             private readonly ILockController _lockController;
             private readonly string _lockIdentifier;

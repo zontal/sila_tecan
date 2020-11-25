@@ -33,7 +33,7 @@ namespace Tecan.Sila2.Server.ServiceDefinition
             }
             catch(OperationCanceledException exception)
             {
-                throw ErrorHandling.CreateCancellationError( exception.Message );
+                throw _server.ErrorHandling.CreateCancellationError( exception.Message );
             }
             catch(Exception exception)
             {
@@ -86,7 +86,7 @@ namespace Tecan.Sila2.Server.ServiceDefinition
             }
             catch(OperationCanceledException exception)
             {
-                throw ErrorHandling.CreateCancellationError( exception.Message );
+                throw _server.ErrorHandling.CreateCancellationError( exception.Message );
             }
             catch(Exception otherException)
             {
@@ -136,7 +136,7 @@ namespace Tecan.Sila2.Server.ServiceDefinition
             }
             catch(OperationCanceledException exception)
             {
-                throw ErrorHandling.CreateCancellationError( exception.Message );
+                throw _server.ErrorHandling.CreateCancellationError( exception.Message );
             }
             catch(Exception otherException)
             {

@@ -48,7 +48,6 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Annotations\Annotations.csproj" />
     <ProjectReference Include="..\..\Contracts\Contracts.csproj" />
-    <ProjectReference Include="..\..\Server\Server.csproj" />
     <ProjectReference Include="..\..\Framework\Framework.csproj" />
   </ItemGroup>
 </Project>

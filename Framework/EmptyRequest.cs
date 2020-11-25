@@ -1,6 +1,6 @@
-﻿using Grpc.Core;
-using ProtoBuf;
+﻿using ProtoBuf;
 using Tecan.Sila2.Binary;
+using Tecan.Sila2.Client;
 
 namespace Tecan.Sila2
 {
@@ -13,7 +13,7 @@ namespace Tecan.Sila2
         /// <summary>
         /// The marshaller for empty requests
         /// </summary>
-        public static readonly Marshaller<EmptyRequest> Marshaller = new Marshaller<EmptyRequest>(ToByteArray, FromByteArray);
+        public static readonly ByteSerializer<EmptyRequest> Marshaller = new ByteSerializer<EmptyRequest>(ToByteArray, FromByteArray);
 
         /// <summary>
         /// The instance

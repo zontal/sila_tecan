@@ -45,6 +45,11 @@ namespace Tecan.Sila2.Server
         /// </summary>
         /// <param name="stateFilter">The state filter or null to return all command executions</param>
         IObservableCommand[] FindCommandExecutions( Predicate<CommandState> stateFilter );
+
+        /// <summary>
+        /// Gets a component for the creation of error messages
+        /// </summary>
+        IServerErrorHandling ErrorHandling { get; }
     }
 
     /// <summary>

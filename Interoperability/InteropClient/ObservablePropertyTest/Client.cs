@@ -20,7 +20,7 @@ namespace Tecan.Sila2.Interop.Client.ObservablePropertyTest
     ///  <summary>
     /// Class that implements the IObservablePropertyTest interface through SiLA2
     /// </summary>
-    public partial class ObservablePropertyTestClient : Grpc.Core.ClientBase<ObservablePropertyTestClient>, IObservablePropertyTest, System.ComponentModel.INotifyPropertyChanged
+    public partial class ObservablePropertyTestClient : IObservablePropertyTest, System.ComponentModel.INotifyPropertyChanged
     {
         
         private long _upTime;
@@ -38,7 +38,7 @@ namespace Tecan.Sila2.Interop.Client.ObservablePropertyTest
         /// </summary>
         /// <param name="executionManager">A component to determine metadata to attach to any requests</param>
         /// <param name="channel">The channel through which calls should be executed</param>
-        public ObservablePropertyTestClient(IClientExecutionManager executionManager)
+        public ObservablePropertyTestClient(IClientExecutionManager executionManager, IClientChannel channel)
         {
             _executionManager = executionManager;
             _channel = channel;
@@ -80,17 +80,6 @@ namespace Tecan.Sila2.Interop.Client.ObservablePropertyTest
         {
             return dto.Extract(_executionManager.DownloadBinaryStore);
         }
-    }
-    
-    ///  <summary>
-    /// Encapsulates provider classes to expose the Observable Property Test feature via SiLA2
-    /// </summary>
-    internal sealed partial class ObservablePropertyTestMethods
-    {
-        
-        private static string @__ServiceName = "sila2.org.silastandard.test.observablepropertytest.v1.ObservablePropertyTest";
-        
-        public static Grpc.Core.Method<EmptyRequest, PropertyResponse<Tecan.Sila2.IntegerDto>> SubscribeUpTimeMethod = new Grpc.Core.Method<EmptyRequest, PropertyResponse<Tecan.Sila2.IntegerDto>>(Grpc.Core.MethodType.ServerStreaming, @__ServiceName, "Subscribe_UpTime", EmptyRequest.Marshaller, ProtobufMarshaller<PropertyResponse<Tecan.Sila2.IntegerDto>>.Default);
     }
 }
 

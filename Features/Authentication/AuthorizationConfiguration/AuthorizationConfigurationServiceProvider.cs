@@ -80,10 +80,10 @@ namespace Tecan.Sila2.Authorization
             {
                 if ((ex.ParamName == "authorizationProvider"))
                 {
-                    throw ErrorHandling.CreateValidationError("org.silastandard/core/AuthorizationConfigurationService/v1/Command/SetAuthorizati" +
+                    throw _server.ErrorHandling.CreateValidationError("org.silastandard/core/AuthorizationConfigurationService/v1/Command/SetAuthorizati" +
                             "onProvider/Parameter/AuthorizationProvider", ex.Message);
                 }
-                throw ErrorHandling.CreateUnknownValidationError(ex);
+                throw _server.ErrorHandling.CreateUnknownValidationError(ex);
             }
         }
         
@@ -125,20 +125,6 @@ namespace Tecan.Sila2.Authorization
             }
             return null;
         }
-    }
-    
-    ///  <summary>
-    /// Encapsulates provider classes to expose the Authorization Configuration feature via SiLA2
-    /// </summary>
-    internal sealed partial class AuthorizationConfigurationServiceMethods
-    {
-        
-        private static string @__ServiceName = "sila2.org.silastandard.core.authorizationconfigurationservice.v1.AuthorizationCon" +
-            "figurationService";
-        
-        public static Grpc.Core.Method<SetAuthorizationProviderRequestDto, EmptyRequest> SetAuthorizationProviderMethod = new Grpc.Core.Method<SetAuthorizationProviderRequestDto, EmptyRequest>(Grpc.Core.MethodType.Unary, @__ServiceName, "SetAuthorizationProvider", ProtobufMarshaller<SetAuthorizationProviderRequestDto>.Default, EmptyRequest.Marshaller);
-        
-        public static Grpc.Core.Method<EmptyRequest, AuthorizationProviderResponseDto> GetAuthorizationProviderMethod = new Grpc.Core.Method<EmptyRequest, AuthorizationProviderResponseDto>(Grpc.Core.MethodType.Unary, @__ServiceName, "Get_AuthorizationProvider", EmptyRequest.Marshaller, ProtobufMarshaller<AuthorizationProviderResponseDto>.Default);
     }
 }
 

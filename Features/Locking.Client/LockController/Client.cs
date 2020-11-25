@@ -20,7 +20,7 @@ namespace Tecan.Sila2.Locking.LockController
     ///  <summary>
     /// Class that implements the ILockController interface through SiLA2
     /// </summary>
-    public partial class LockControllerClient : Grpc.Core.ClientBase<LockControllerClient>, ILockController
+    public partial class LockControllerClient : ILockController
     {
         
         private System.Lazy<bool> _isLocked;
@@ -36,7 +36,7 @@ namespace Tecan.Sila2.Locking.LockController
         /// </summary>
         /// <param name="executionManager">A component to determine metadata to attach to any requests</param>
         /// <param name="channel">The channel through which calls should be executed</param>
-        public LockControllerClient(IClientExecutionManager executionManager)
+        public LockControllerClient(IClientExecutionManager executionManager, IClientChannel channel)
         {
             InitLazyRequests();
             _executionManager = executionManager;
@@ -66,7 +66,7 @@ namespace Tecan.Sila2.Locking.LockController
                 return response;
             } catch (System.Exception ex)
             {
-                System.Exception exception = ErrorHandling.ConvertException(ex);
+                System.Exception exception = _channel.ConvertException(ex);
                 callInfo.FinishWithErrors(exception);
                 throw exception;
             }
@@ -104,7 +104,7 @@ namespace Tecan.Sila2.Locking.LockController
                 return;
             } catch (System.Exception ex)
             {
-                System.Exception exception = ErrorHandling.ConvertException(ex, ConvertLockServerException);
+                System.Exception exception = _channel.ConvertException(ex, ConvertLockServerException);
                 callInfo.FinishWithErrors(exception);
                 throw exception;
             }
@@ -141,7 +141,7 @@ namespace Tecan.Sila2.Locking.LockController
                 return;
             } catch (System.Exception ex)
             {
-                System.Exception exception = ErrorHandling.ConvertException(ex, ConvertUnlockServerException);
+                System.Exception exception = _channel.ConvertException(ex, ConvertUnlockServerException);
                 callInfo.FinishWithErrors(exception);
                 throw exception;
             }
@@ -171,23 +171,6 @@ namespace Tecan.Sila2.Locking.LockController
         {
             return dto.Extract(_executionManager.DownloadBinaryStore);
         }
-    }
-    
-    ///  <summary>
-    /// Encapsulates provider classes to expose the Lock Controller feature via SiLA2
-    /// </summary>
-    internal sealed partial class LockControllerMethods
-    {
-        
-        private static string @__ServiceName = "sila2.org.silastandard.core.lockcontroller.v1.LockController";
-        
-        public static Grpc.Core.Method<LockServerRequestDto, EmptyRequest> LockServerMethod = new Grpc.Core.Method<LockServerRequestDto, EmptyRequest>(Grpc.Core.MethodType.Unary, @__ServiceName, "LockServer", ProtobufMarshaller<LockServerRequestDto>.Default, EmptyRequest.Marshaller);
-        
-        public static Grpc.Core.Method<UnlockServerRequestDto, EmptyRequest> UnlockServerMethod = new Grpc.Core.Method<UnlockServerRequestDto, EmptyRequest>(Grpc.Core.MethodType.Unary, @__ServiceName, "UnlockServer", ProtobufMarshaller<UnlockServerRequestDto>.Default, EmptyRequest.Marshaller);
-        
-        public static Grpc.Core.Method<EmptyRequest, PropertyResponse<Tecan.Sila2.BooleanDto>> GetIsLockedMethod = new Grpc.Core.Method<EmptyRequest, PropertyResponse<Tecan.Sila2.BooleanDto>>(Grpc.Core.MethodType.Unary, @__ServiceName, "Get_IsLocked", EmptyRequest.Marshaller, ProtobufMarshaller<PropertyResponse<Tecan.Sila2.BooleanDto>>.Default);
-        
-        public static Grpc.Core.Method<EmptyRequest, System.Collections.Generic.List<Tecan.Sila2.StringDto>> GetAffectedByLockIdentifierMethod = new Grpc.Core.Method<EmptyRequest, System.Collections.Generic.List<Tecan.Sila2.StringDto>>(Grpc.Core.MethodType.Unary, @__ServiceName, "Get_FCPAffectedByMetadata_LockIdentifier", EmptyRequest.Marshaller, ProtobufMarshaller<System.Collections.Generic.List<Tecan.Sila2.StringDto>>.Default);
     }
 }
 

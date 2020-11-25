@@ -152,7 +152,7 @@ namespace Tecan.Sila2.Generator.Generators
             {
                 Name = ServiceNameFieldName,
                 Type = new CodeTypeReference( typeof( string ) ),
-                Attributes = MemberAttributes.Static | MemberAttributes.Const | MemberAttributes.Private,
+                Attributes = MemberAttributes.Const | MemberAttributes.Private,
                 InitExpression = new CodePrimitiveExpression( feature.Namespace + "." + feature.Identifier )
             } );
         }
@@ -268,6 +268,7 @@ namespace Tecan.Sila2.Generator.Generators
                 requestMethod.Statements.Add( new CodeMethodInvokeExpression(new CodeTypeReferenceExpression(typeof(CancellationHelper)), nameof(CancellationHelper.RegisterCancellation),
                     new CodeCastExpression(typeof(IClientCommand), command),
                     new CodeFieldReferenceExpression( null, ExecutionManagerFieldName ),
+                    new CodeFieldReferenceExpression(null, ChannelFieldName),
                     cancellationToken) );
             }
 
@@ -342,8 +343,7 @@ namespace Tecan.Sila2.Generator.Generators
                 executeMethod,
                 new CodeFieldReferenceExpression(null, ServiceNameFieldName),
                 new CodePrimitiveExpression(featureCommand.Identifier),
-                requestRef,
-                new CodeMethodReferenceExpression(null, exceptionConverter.Name));
+                requestRef);
             
             if (intermediateType != null)
             {
@@ -366,8 +366,11 @@ namespace Tecan.Sila2.Generator.Generators
                     featureCommand.Identifier + "Response",
                     featureCommand.Response, responseType,
                     client);
+                executeMethod.TypeArguments.Add( responseType );
+                executeMethod.TypeArguments.Add( _nameProvider.GenerateCommandResponseType( featureCommand ) );
                 actualCall.Parameters.Add(new CodeMethodReferenceExpression(null, convertResponseMethod.Name));
             }
+            actualCall.Parameters.Add( new CodeMethodReferenceExpression( null, exceptionConverter.Name ) );
             actualCall.Parameters.Add(callInfo);
 
             return actualCall;
@@ -475,8 +478,8 @@ namespace Tecan.Sila2.Generator.Generators
             var catchAll = new CodeCatchClause("ex", new CodeTypeReference(typeof(Exception)));
             tryStmt.CatchClauses.Add(catchAll);
             var errorHandler =
-                new CodeMethodInvokeExpression(new CodeTypeReferenceExpression(nameof(ErrorHandling)),
-                    nameof(ErrorHandling.ConvertException));
+                new CodeMethodInvokeExpression(new CodeFieldReferenceExpression(null, ChannelFieldName),
+                    nameof(IClientChannel.ConvertException));
             var exceptionRef = new CodeVariableReferenceExpression("exception");
             catchAll.Statements.Add(new CodeVariableDeclarationStatement(typeof(Exception), exceptionRef.VariableName, errorHandler));
             catchAll.Statements.Add(new CodeMethodInvokeExpression(callInfo, nameof(IClientCallInfo.FinishWithErrors), exceptionRef));

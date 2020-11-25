@@ -86,17 +86,6 @@ namespace Tecan.Sila2.Authorization
     }
     
     ///  <summary>
-    /// Encapsulates provider classes to expose the Authorization Service feature via SiLA2
-    /// </summary>
-    internal sealed partial class AuthorizationServiceMethods
-    {
-        
-        private static string @__ServiceName = "sila2.org.silastandard.core.authorizationservice.v1.AuthorizationService";
-        
-        public static Grpc.Core.Method<EmptyRequest, System.Collections.Generic.List<Tecan.Sila2.StringDto>> GetAffectedByAccessTokenMethod = new Grpc.Core.Method<EmptyRequest, System.Collections.Generic.List<Tecan.Sila2.StringDto>>(Grpc.Core.MethodType.Unary, @__ServiceName, "Get_FCPAffectedByMetadata_AccessToken", EmptyRequest.Marshaller, ProtobufMarshaller<System.Collections.Generic.List<Tecan.Sila2.StringDto>>.Default);
-    }
-    
-    ///  <summary>
     /// An abstract base class to support the AccessToken metadata
     /// </summary>
     public abstract partial class AccessTokenInterceptorBase : Tecan.Sila2.Server.IRequestInterceptor
@@ -159,7 +148,7 @@ namespace Tecan.Sila2.Authorization
                 return Intercept(commandIdentifier, Tecan.Sila2.Server.Metadata.Extract<Tecan.Sila2.StringDto>(metadata, "org.silastandard/core/AuthorizationService/v1/Metadata/AccessToken").Extract(server));
             } catch (InvalidAccessTokenException ex)
             {
-                throw ErrorHandling.CreateExecutionError("org.silastandard/core/AuthorizationService/v1/DefinedError/InvalidAccessToken", "The sent access token is not valid.", ex.Message);
+                throw server.ErrorHandling.CreateExecutionError("org.silastandard/core/AuthorizationService/v1/DefinedError/InvalidAccessToken", "The sent access token is not valid.", ex.Message);
             }
         }
     }

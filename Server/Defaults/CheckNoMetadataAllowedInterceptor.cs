@@ -23,7 +23,7 @@ namespace Tecan.Sila2.Server
         {
             if (metadata.Count > 0)
             {
-                throw ErrorHandling.CreateFrameworkError(FrameworkErrorType.NoMetadataAllowed);
+                throw ServerErrorHandling.CreateFrameworkError(FrameworkErrorType.NoMetadataAllowed);
             }
             return null;
         }
