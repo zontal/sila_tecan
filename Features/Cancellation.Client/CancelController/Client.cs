@@ -32,9 +32,9 @@ namespace Tecan.Sila2.Cancellation.CancelController
         ///  <summary>
         /// Creates a new instance
         /// </summary>
-        /// <param name="executionManager">A component to determine metadata to attach to any requests</param>
         /// <param name="channel">The channel through which calls should be executed</param>
-        public CancelControllerClient(IClientExecutionManager executionManager, IClientChannel channel)
+        /// <param name="executionManager">A component to determine metadata to attach to any requests</param>
+        public CancelControllerClient(IClientChannel channel, IClientExecutionManager executionManager)
         {
             _executionManager = executionManager;
             _channel = channel;

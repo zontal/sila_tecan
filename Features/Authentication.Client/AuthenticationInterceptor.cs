@@ -91,7 +91,7 @@ namespace Tecan.Sila2.Authentication
             {
                 try
                 {
-                    var client = new AuthorizationConfigurationServiceClient( executionManager, server.Channel );
+                    var client = new AuthorizationConfigurationServiceClient( server.Channel, executionManager );
                     var currentProvider = client.AuthorizationProvider;
                     if( !string.IsNullOrEmpty( currentProvider ) && Guid.TryParse( currentProvider, out var providerUuid ) )
                     {
@@ -168,7 +168,7 @@ namespace Tecan.Sila2.Authentication
                 {
                     _loggingChannel.Log($"Authenticating with provider {provider.Config.Name} using username and password.".ToString,
                         Severity.Info);
-                    var providerClient = new AuthenticationServiceClient( _executionManagerFactory.Value.CreateExecutionManager(provider), provider.Channel );
+                    var providerClient = new AuthenticationServiceClient( provider.Channel, _executionManagerFactory.Value.CreateExecutionManager(provider) );
                     try
                     {
                         var response = providerClient.Login(credentials.Username, credentials.Password,
@@ -196,7 +196,7 @@ namespace Tecan.Sila2.Authentication
             {
                 _loggingChannel.Log($"Authenticating with {server.Config.Name} using username and password.".ToString,
                     Severity.Info);
-                var client = new AuthenticationServiceClient( executionManager, server.Channel);
+                var client = new AuthenticationServiceClient( server.Channel, executionManager );
                 try
                 {
                     var response = client.Login(credentials.Username, credentials.Password, server.Config.Uuid.ToString("D"),

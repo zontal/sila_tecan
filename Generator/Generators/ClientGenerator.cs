@@ -764,13 +764,13 @@ namespace Tecan.Sila2.Generator.Generators
 
             var parameterDocumentation = new Dictionary<string, string>()
             {
-                {resolverParameter.Name, "A component to determine metadata to attach to any requests" },
                 {channelParameter.Name, "The channel through which calls should be executed" },
+                {resolverParameter.Name, "A component to determine metadata to attach to any requests" },
             };
             constructor.WriteDocumentation( "Creates a new instance", parameters: parameterDocumentation );
 
-            constructor.Parameters.Add( resolverParameter );
             constructor.Parameters.Add( channelParameter );
+            constructor.Parameters.Add( resolverParameter );
             constructor.Statements.Add( new CodeAssignStatement(
                 new CodeFieldReferenceExpression( null, resolverField.Name ),
                 new CodeArgumentReferenceExpression( resolverParameter.Name ) ) );

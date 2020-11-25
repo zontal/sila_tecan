@@ -14,10 +14,11 @@ namespace Tecan.Sila2.Cancellation
         /// Cancels the given command
         /// </summary>
         /// <param name="command">The command that should be cancelled</param>
+        /// <param name="channel">The channel to the server</param>
         /// <param name="executionManager">The execution manager managing calls</param>
         public static void Cancel( IClientCommand command, IClientExecutionManager executionManager, IClientChannel channel )
         {
-            var client = new CancelControllerClient( executionManager, channel );
+            var client = new CancelControllerClient( channel, executionManager );
             client.CancelCommand(command.CommandId);
         }
 
@@ -25,6 +26,7 @@ namespace Tecan.Sila2.Cancellation
         /// Registers the cancellation of the given command with the provided cancellation token
         /// </summary>
         /// <param name="command">The command that should be cancelled</param>
+        /// <param name="channel">The channel to the server</param>
         /// <param name="executionManager">The execution manager managing calls</param>
         /// <param name="cancellationToken">The cancellation token</param>
         public static void RegisterCancellation( IClientCommand command, IClientExecutionManager executionManager, IClientChannel channel, CancellationToken cancellationToken )

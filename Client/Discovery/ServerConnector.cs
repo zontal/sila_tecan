@@ -72,7 +72,7 @@ namespace Tecan.Sila2.Discovery
         public ServerData GetServerData( Channel channel )
         {
             var clientChannel = new GrpcChannel( channel );
-            var silaService = new SiLAServiceClient( _executionManager, clientChannel );
+            var silaService = new SiLAServiceClient( clientChannel, _executionManager );
             var config = GetServerConfig( silaService );
             var info = GetServerInfo( silaService );
             var features = GetImplementedFeatures( silaService );

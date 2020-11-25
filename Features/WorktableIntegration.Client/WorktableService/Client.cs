@@ -39,9 +39,9 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
         ///  <summary>
         /// Creates a new instance
         /// </summary>
-        /// <param name="executionManager">A component to determine metadata to attach to any requests</param>
         /// <param name="channel">The channel through which calls should be executed</param>
-        public WorktableServiceClient(IClientExecutionManager executionManager, IClientChannel channel)
+        /// <param name="executionManager">A component to determine metadata to attach to any requests</param>
+        public WorktableServiceClient(IClientChannel channel, IClientExecutionManager executionManager)
         {
             _executionManager = executionManager;
             _channel = channel;

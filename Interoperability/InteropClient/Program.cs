@@ -72,7 +72,7 @@ namespace Tecan.Sila2.Interop.Client
 
         private void TestConstraints()
         {
-            var client = new ParameterConstraintsTestClient( _executionManager, _channel );
+            var client = new ParameterConstraintsTestClient( _channel, _executionManager );
 
             var stringLen10 = new string( '=', 10 );
             var legalOption = "First option";
@@ -92,7 +92,7 @@ namespace Tecan.Sila2.Interop.Client
 
         private async Task TestObservableCommands()
         {
-            var client = new ObservableCommandTestClient( _executionManager, _channel );
+            var client = new ObservableCommandTestClient( _channel, _executionManager );
             var response = client.EchoValueAsync( 42, 100 ).Response;
             await response;
             Assert.That(response.Result, Is.EqualTo(42L));
@@ -113,7 +113,7 @@ namespace Tecan.Sila2.Interop.Client
 
         private void TestEchos()
         {
-            var client = new DataTypeProviderClient( _executionManager, _channel );
+            var client = new DataTypeProviderClient( _channel, _executionManager );
             Assert.That( client.EchoBooleanValue( true ), Is.True );
             Assert.That( client.EchoBooleanValue(false), Is.False);
 
@@ -151,7 +151,7 @@ namespace Tecan.Sila2.Interop.Client
 
         private void TestDataTypeProvider()
         {
-            var client = new DataTypeProviderClient(_executionManager, _channel);
+            var client = new DataTypeProviderClient( _channel, _executionManager );
 
             Assert.That( client.StringValue, Is.EqualTo( "SiLA2_Test_String_Value" ) );
             Assert.That( client.IntegerValue, Is.EqualTo( 42L ) );

@@ -34,7 +34,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// </summary>
         /// <param name="executionManager">A component that attaches metadata to SiLA2 calls</param>
         /// <param name="channel">The client channel</param>
-        public InlineObservableServiceClient( IClientExecutionManager executionManager, IClientChannel channel )
+        public InlineObservableServiceClient( IClientChannel channel, IClientExecutionManager executionManager )
         {
             _executionManager = executionManager;
             _channel = channel;

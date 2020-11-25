@@ -24,10 +24,9 @@ namespace Tecan.Sila2.Locking
         /// <inheritdoc />
         public IClientRequestInterception Intercept( ServerData server, IClientExecutionManager executionManager, IDictionary<string, byte[]> metadata )
         {
-            var grpcServer = server as ServerData;
             if(!_serverLockData.TryGetValue( server, out var lockData ))
             {
-                var lockingClient = new LockControllerClient( executionManager, grpcServer.Channel );
+                var lockingClient = new LockControllerClient( server.Channel, executionManager );
                 var lockingIdentifier = Guid.NewGuid().ToString();
                 lockData = new ServerLockInformation( lockingClient, lockingIdentifier );
                 _serverLockData.Add( server, lockData );

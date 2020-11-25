@@ -36,9 +36,9 @@ namespace Tecan.Sila2.Interop.Client.ObservablePropertyTest
         ///  <summary>
         /// Creates a new instance
         /// </summary>
-        /// <param name="executionManager">A component to determine metadata to attach to any requests</param>
         /// <param name="channel">The channel through which calls should be executed</param>
-        public ObservablePropertyTestClient(IClientExecutionManager executionManager, IClientChannel channel)
+        /// <param name="executionManager">A component to determine metadata to attach to any requests</param>
+        public ObservablePropertyTestClient(IClientChannel channel, IClientExecutionManager executionManager)
         {
             _executionManager = executionManager;
             _channel = channel;

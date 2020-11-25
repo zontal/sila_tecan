@@ -101,7 +101,7 @@ namespace Tecan.Sila2.IntegrationTests
             var token = Login();
             var lockId = Lock( token );
             var executionManager = new TestAuthLockingExecutionManager( lockId, token, _server.Channel );
-            var testClient = new TestServerClient( executionManager, _server.Channel);
+            var testClient = new TestServerClient( _server.Channel, executionManager );
             
             Assert.That(testClient.PassBool(true), Is.True);
             Assert.That(testClient.PassBool(false), Is.False);
@@ -152,7 +152,7 @@ namespace Tecan.Sila2.IntegrationTests
             var token = Login();
             var lockId = Lock( token );
             var executionManager = new TestAuthLockingExecutionManager( lockId, token, _server.Channel );
-            var testClient = new TestServerClient( executionManager, _server.Channel );
+            var testClient = new TestServerClient( _server.Channel, executionManager );
 
             Assert.That( testClient.PassDouble(0.0), Is.EqualTo(0.0) );
             Assert.That( testClient.PassDouble( 8.15 ), Is.EqualTo( 8.15 ) );
@@ -196,7 +196,7 @@ namespace Tecan.Sila2.IntegrationTests
             var token = Login();
             var lockId = Lock( token );
             var executionManager = new TestAuthLockingExecutionManager( lockId, token, _server.Channel );
-            var testClient = new TestServerClient( executionManager, _server.Channel );
+            var testClient = new TestServerClient( _server.Channel, executionManager );
 
             Assert.That( testClient.PassLong( 0 ), Is.EqualTo( 0L ) );
             Assert.That( testClient.PassLong( 42 ), Is.EqualTo( 42L ) );
@@ -229,7 +229,7 @@ namespace Tecan.Sila2.IntegrationTests
             var token = Login();
             var lockId = Lock( token );
             var executionManager = new TestAuthLockingExecutionManager( lockId, token, _server.Channel );
-            var testClient = new TestServerClient( executionManager, _server.Channel );
+            var testClient = new TestServerClient( _server.Channel, executionManager );
 
             Assert.That( testClient.PassInt( 0 ), Is.EqualTo( 0 ) );
             Assert.That( testClient.PassInt( 42 ), Is.EqualTo( 42 ) );
@@ -244,7 +244,7 @@ namespace Tecan.Sila2.IntegrationTests
             var token = Login();
             var lockId = Lock( token );
             var executionManager = new TestAuthLockingExecutionManager( lockId, token, _server.Channel );
-            var testClient = new TestServerClient( executionManager, _server.Channel );
+            var testClient = new TestServerClient( _server.Channel, executionManager );
 
             // everything below seconds is not transmitted, so we cannot simply use now
             var timestamp = new DateTimeOffset(DateTime.Today, DateTimeOffset.Now.Offset);
@@ -285,7 +285,7 @@ namespace Tecan.Sila2.IntegrationTests
             var token = Login();
             var lockId = Lock( token );
             var executionManager = new TestAuthLockingExecutionManager( lockId, token, _server.Channel );
-            var testClient = new TestServerClient( executionManager, _server.Channel );
+            var testClient = new TestServerClient( _server.Channel, executionManager );
 
             Assert.That( testClient.PassTime( TimeSpan.Zero ), Is.EqualTo( TimeSpan.Zero ) );
             var timespan = new TimeSpan(0, 8, 15, 42);
@@ -321,7 +321,7 @@ namespace Tecan.Sila2.IntegrationTests
             var token = Login();
             var lockId = Lock( token );
             var executionManager = new TestAuthLockingExecutionManager( lockId, token, _server.Channel );
-            var testClient = new TestServerClient( executionManager, _server.Channel );
+            var testClient = new TestServerClient( _server.Channel, executionManager );
 
             Assert.That( testClient.PassString( "Foo" ), Is.EqualTo("Foo") );
             Assert.That( testClient.PassString( "֍Bar©" ), Is.EqualTo( "֍Bar©" ) );
@@ -355,7 +355,7 @@ namespace Tecan.Sila2.IntegrationTests
             var token = Login();
             var lockId = Lock( token );
             var executionManager = new TestAuthLockingExecutionManager( lockId, token, _server.Channel );
-            var testClient = new TestServerClient( executionManager, _server.Channel );
+            var testClient = new TestServerClient( _server.Channel, executionManager );
 
             var structure = new SomeStructure(true, 8.15, 42L, 23, DateTimeOffset.MinValue, new TimeSpan(0, 8, 15));
             Assert.That( testClient.PassStructure( structure ), Is.EqualTo(structure) );
@@ -428,7 +428,7 @@ namespace Tecan.Sila2.IntegrationTests
             var token = Login();
             var lockId = Lock( token );
             var executionManager = new TestAuthLockingExecutionManager( lockId, token, _server.Channel );
-            var testClient = new TestServerClient( executionManager, _server.Channel );
+            var testClient = new TestServerClient( _server.Channel, executionManager );
 
             PassDataToClientAndTest(testClient, 0, 8, 15);
             PassDataToClientAndTest( testClient, CreateLargeByteArray() );
@@ -520,7 +520,7 @@ namespace Tecan.Sila2.IntegrationTests
             var token = Login();
             var lockId = Lock( token );
             var executionManager = new TestAuthLockingExecutionManager( lockId, token, _server.Channel );
-            var testClient = new TestServerClient( executionManager, _server.Channel );
+            var testClient = new TestServerClient( _server.Channel, executionManager );
 
             var listOfItems = new List<string>();
             Assert.That( testClient.PassCollection(listOfItems), Is.Null.Or.EquivalentTo(listOfItems) );
@@ -589,7 +589,7 @@ namespace Tecan.Sila2.IntegrationTests
             var token = Login();
             var lockId = Lock( token );
             var executionManager = new TestAuthLockingExecutionManager( lockId, token, _server.Channel );
-            var testClient = new TestServerClient( executionManager, _server.Channel );
+            var testClient = new TestServerClient( _server.Channel, executionManager );
             
             var command = testClient.RunObservable();
             var stateUpdates = ReadChannel( command.StateUpdates );
@@ -632,12 +632,12 @@ namespace Tecan.Sila2.IntegrationTests
             var token = Login();
             var lockId = Lock( token );
             var executionManager = new TestAuthLockingExecutionManager( lockId, token, _server.Channel );
-            var testClient = new TestServerClient( executionManager, _server.Channel );
+            var testClient = new TestServerClient( _server.Channel, executionManager );
             var command = testClient.WaitForCancelOrThrow( TimeSpan.FromMinutes( 1 ) ) as IClientCommand;
             Assert.That(command, Is.Not.Null);
             Assert.That(command.IsCancellationSupported, Is.True);
 
-            var cancelClient = new CancelControllerClient( executionManager, _server.Channel );
+            var cancelClient = new CancelControllerClient( _server.Channel, executionManager );
             cancelClient.CancelCommand( command.CommandId );
 
             Assert.ThrowsAsync<OperationCanceledException>( () => command.Response );
@@ -652,7 +652,7 @@ namespace Tecan.Sila2.IntegrationTests
             var token = Login();
             var lockId = Lock( token );
             var executionManager = new TestAuthLockingExecutionManager( lockId, token, _server.Channel );
-            var testClient = new TestServerClient( executionManager, _server.Channel );
+            var testClient = new TestServerClient( _server.Channel, executionManager );
 
             var feature = _server.Features.Single( f => f.Identifier == "TestServer" );
             var featureContext = new FeatureContext( feature, _server, executionManager );
@@ -705,7 +705,7 @@ namespace Tecan.Sila2.IntegrationTests
             var token = Login();
             var lockId = Lock( token );
             var executionManager = new TestAuthLockingExecutionManager( lockId, token, _server.Channel );
-            var testClient = new TestServerClient( executionManager, _server.Channel );
+            var testClient = new TestServerClient( _server.Channel, executionManager );
             
             var command = testClient.RunIntermediateObservableCommand();
             var intermediateResults = ReadChannel( command.IntermediateValues );
@@ -743,7 +743,7 @@ namespace Tecan.Sila2.IntegrationTests
             var token = Login();
             var lockId = Lock( token );
             var executionManager = new TestAuthLockingExecutionManager( lockId, token, _server.Channel );
-            var testClient = new TestServerClient( executionManager, _server.Channel );
+            var testClient = new TestServerClient( _server.Channel, executionManager );
 
             Assert.Throws<FakeException>( () => testClient.RunIntoFailure() );
 
@@ -757,7 +757,7 @@ namespace Tecan.Sila2.IntegrationTests
             var token = Login();
             var lockId = Lock( token );
             var executionManager = new TestAuthLockingExecutionManager( lockId, token, _server.Channel );
-            var testClient = new TestServerClient( executionManager, _server.Channel );
+            var testClient = new TestServerClient( _server.Channel, executionManager );
             var command = testClient.RunIntoFailureObservably();
 
             Assert.ThrowsAsync<FakeException>( () => command.Response );
@@ -814,7 +814,7 @@ namespace Tecan.Sila2.IntegrationTests
             var token = Login();
             var lockId = Lock( token );
             var executionManager = new TestAuthLockingExecutionManager( lockId, token, _server.Channel );
-            var testClient = new TestServerClient( executionManager, _server.Channel );
+            var testClient = new TestServerClient( _server.Channel, executionManager );
 
             var exception = Assert.Throws<SilaException>( () => testClient.ThrowRuntimeException() );
             Assert.That(exception.Message, Contains.Substring(nameof(InvalidOperationException)));
@@ -862,14 +862,14 @@ namespace Tecan.Sila2.IntegrationTests
 
         private string Login()
         {
-            var authenticationClient = new AuthenticationServiceClient(new DiscoveryExecutionManager(), _server.Channel );
+            var authenticationClient = new AuthenticationServiceClient(_server.Channel, new DiscoveryExecutionManager() );
             var token = authenticationClient.Login( "admin", "admin", _server.Config.Uuid.ToString(), new List<string>() );
             return token.AccessToken;
         }
 
         private string Lock( string token )
         {
-            var lockingClient = new LockControllerClient(new TestAuthLockingExecutionManager(null, token, _server.Channel), _server.Channel );
+            var lockingClient = new LockControllerClient(_server.Channel, new TestAuthLockingExecutionManager(null, token, _server.Channel) );
             var lockIdentifier = Guid.NewGuid().ToString();
             lockingClient.LockServer(lockIdentifier, 3600);
             return lockIdentifier;
@@ -877,13 +877,13 @@ namespace Tecan.Sila2.IntegrationTests
 
         private void Unlock( string identifier, string token )
         {
-            var lockingClient = new LockControllerClient( new TestAuthLockingExecutionManager( null, token, _server.Channel ), _server.Channel );
+            var lockingClient = new LockControllerClient( _server.Channel, new TestAuthLockingExecutionManager( null, token, _server.Channel ) );
             lockingClient.UnlockServer(identifier);
         }
 
         private void Logout( string token )
         {
-            var authenticationClient = new AuthenticationServiceClient( new DiscoveryExecutionManager(), _server.Channel );
+            var authenticationClient = new AuthenticationServiceClient( _server.Channel, new DiscoveryExecutionManager() );
             authenticationClient.Logout( token );
         }
     }
