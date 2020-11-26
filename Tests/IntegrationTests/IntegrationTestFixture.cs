@@ -838,6 +838,72 @@ namespace Tecan.Sila2.IntegrationTests
             Logout( token );
         }
 
+        [Test]
+        public void ObservableProperty_ReceivedValuesAreCorrect()
+        {
+            var token = Login();
+            var lockId = Lock( token );
+            var executionManager = new TestAuthLockingExecutionManager( lockId, token, _server.Channel );
+            var testClient = new TestServerClient( _server.Channel, executionManager );
+
+            Assert.That(testClient.DummyValue, Is.EqualTo(0L));
+
+            var receivedValues = new List<long>();
+            testClient.PropertyChanged += ( o, e ) =>
+            {
+                Assert.That( e.PropertyName, Is.EqualTo( nameof(ITestServer.DummyValue) ) );
+                receivedValues.Add( testClient.DummyValue );
+            };
+
+            testClient.SetDummy( 8 );
+            testClient.SetDummy( 15 );
+            testClient.SetDummy( 42 );
+
+            Thread.Sleep( 1000 );
+
+            Assert.That( receivedValues, Is.EquivalentTo( new long[] { 8, 15, 42 } ) );
+
+            Unlock( lockId, token );
+            Logout( token );
+        }
+
+        [Test]
+        public void ObservablePropertyDynamic_ReceivedValuesAreCorrect()
+        {
+            var token = Login();
+            var lockId = Lock( token );
+            var executionManager = new TestAuthLockingExecutionManager( lockId, token, _server.Channel );
+            var testClient = new TestServerClient( _server.Channel, executionManager );
+
+
+            var feature = _server.Features.Single( f => f.Identifier == "TestServer" );
+            var featureContext = new FeatureContext( feature, _server, executionManager );
+            var propertyClient = new PropertyClient( feature.Items.OfType<FeatureProperty>().FirstOrDefault( p => p.Identifier == nameof(ITestServer.DummyValue) ),
+                featureContext );
+
+            Assert.That( propertyClient.RequestValue().Value, Is.EqualTo( 0L ) );
+
+            var cts = new CancellationTokenSource();
+            var receivedValues = new List<long>();
+            var subscription = propertyClient.Subscribe( d => receivedValues.Add( (long)d.Value ), cts.Token );
+
+            testClient.SetDummy( 8 );
+            testClient.SetDummy( 15 );
+            testClient.SetDummy( 42 );
+
+            Thread.Sleep( 1000 );
+
+            cts.Cancel();
+            subscription.Wait();
+
+            testClient.SetDummy( 99 );
+
+            Assert.That( receivedValues, Is.EquivalentTo( new long[] { 0, 8, 15, 42 } ) );
+
+            Unlock( lockId, token );
+            Logout( token );
+        }
+
         private static void AssertData(byte[] expected, Stream response)
         {
             for (int i = 0; i < expected.Length; i++)

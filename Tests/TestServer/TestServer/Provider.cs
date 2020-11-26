@@ -111,6 +111,8 @@ namespace Tecan.Sila2.IntegrationTests
             registration.RegisterObservableCommand<RunIntoFailureObservablyRequestDto>("RunIntoFailureObservably", RunIntoFailureObservably, ConvertRunIntoFailureObservablyExceptions);
             registration.RegisterUnobservableCommand<IsCancelledRequestDto, IsCancelledResponseDto>("IsCancelled", IsCancelled);
             registration.RegisterUnobservableCommand<ThrowRuntimeExceptionRequestDto, EmptyRequest>("ThrowRuntimeException", ThrowRuntimeException);
+            registration.RegisterUnobservableCommand<SetDummyRequestDto, EmptyRequest>("SetDummy", SetDummy);
+            registration.RegisterObservableProperty("DummyValue", GetDummyValue, _implementation);
         }
         
         ///  <summary>
@@ -456,6 +458,36 @@ namespace Tecan.Sila2.IntegrationTests
         }
         
         ///  <summary>
+        /// Executes the Set Dummy command
+        /// </summary>
+        /// <param name="request">A data transfer object that contains the command parameters</param>
+        /// <returns>The command response wrapped in a data transfer object</returns>
+        protected virtual EmptyRequest SetDummy(SetDummyRequestDto request)
+        {
+            try
+            {
+                _implementation.SetDummy(((int)(request.Value.Extract(_server))));
+                return EmptyRequest.Instance;
+            } catch (System.ArgumentException ex)
+            {
+                if ((ex.ParamName == "value"))
+                {
+                    throw _server.ErrorHandling.CreateValidationError("tecan.sila/integrationtests/TestServer/v1/Command/SetDummy/Parameter/Value", ex.Message);
+                }
+                throw _server.ErrorHandling.CreateUnknownValidationError(ex);
+            }
+        }
+        
+        ///  <summary>
+        /// Gets the current value of the Dummy Value property
+        /// </summary>
+        /// <returns>The current value wrapped in a data transfer object</returns>
+        protected virtual PropertyResponse<Tecan.Sila2.IntegerDto> GetDummyValue()
+        {
+            return new PropertyResponse<Tecan.Sila2.IntegerDto>(new Tecan.Sila2.IntegerDto(_implementation.DummyValue, _server));
+        }
+        
+        ///  <summary>
         /// Gets the command with the given identifier
         /// </summary>
         /// <param name="commandIdentifier">A fully qualified command identifier</param>
@@ -539,6 +571,10 @@ namespace Tecan.Sila2.IntegrationTests
             {
                 return typeof(ITestServer).GetMethod("ThrowRuntimeException");
             }
+            if ((commandIdentifier == "tecan.sila/integrationtests/TestServer/v1/Command/SetDummy"))
+            {
+                return typeof(ITestServer).GetMethod("SetDummy");
+            }
             return null;
         }
         
@@ -549,6 +585,10 @@ namespace Tecan.Sila2.IntegrationTests
         /// <returns>A property object or null, if the property is not supported</returns>
         public System.Reflection.PropertyInfo GetProperty(string propertyIdentifier)
         {
+            if ((propertyIdentifier == "tecan.sila/integrationtests/TestServer/v1/Property/DummyValue"))
+            {
+                return typeof(ITestServer).GetProperty("DummyValue");
+            }
             return null;
         }
         

@@ -1882,6 +1882,69 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
     }
     
     ///  <summary>
+    /// Data transfer object for the request of the Set Dummy command
+    /// </summary>
+    [ProtoBuf.ProtoContractAttribute()]
+    public class SetDummyRequestDto : Tecan.Sila2.ISilaTransferObject, Tecan.Sila2.ISilaRequestObject
+    {
+        
+        private Tecan.Sila2.IntegerDto _value;
+        
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        public SetDummyRequestDto()
+        {
+        }
+        
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        /// <param name="store">An object to organize binaries.</param>
+        ///  <param name="value"></param>
+        public SetDummyRequestDto(long value, Tecan.Sila2.IBinaryStore store)
+        {
+            Value = new Tecan.Sila2.IntegerDto(value, store);
+        }
+        
+        ///  <summary>
+        /// </summary>
+        [ProtoBuf.ProtoMemberAttribute(1)]
+        public Tecan.Sila2.IntegerDto Value
+        {
+            get
+            {
+                return _value;
+            }
+            set
+            {
+                _value = value;
+            }
+        }
+        
+        ///  <summary>
+        /// Gets the command identifier for this command
+        /// </summary>
+        /// <returns>The fully qualified command identifier</returns>
+        public string CommandIdentifier
+        {
+            get
+            {
+                return "tecan.sila/integrationtests/TestServer/v1/Command/SetDummy";
+            }
+        }
+        
+        ///  <summary>
+        /// Validates the contents of this transfer object
+        /// </summary>
+        /// <returns>A validation error or null, if no validation error occurred.</returns>
+        public string GetValidationErrors()
+        {
+            return null;
+        }
+    }
+    
+    ///  <summary>
     /// The data transfer object for Some Structure
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]

@@ -366,6 +366,29 @@
     <Description />
     <Observable>No</Observable>
   </Command>
+  <Command>
+    <Identifier>SetDummy</Identifier>
+    <DisplayName>Set Dummy</DisplayName>
+    <Description />
+    <Observable>No</Observable>
+    <Parameter>
+      <Identifier>Value</Identifier>
+      <DisplayName>Value</DisplayName>
+      <Description />
+      <DataType>
+        <Basic>Integer</Basic>
+      </DataType>
+    </Parameter>
+  </Command>
+  <Property>
+    <Identifier>DummyValue</Identifier>
+    <DisplayName>Dummy Value</DisplayName>
+    <Description />
+    <Observable>Yes</Observable>
+    <DataType>
+      <Basic>Integer</Basic>
+    </DataType>
+  </Property>
   <DefinedExecutionError>
     <Identifier>ShouldHaveBeenCancelled</Identifier>
     <DisplayName>Should Have Been Cancelled</DisplayName>

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.Composition;
 using System.IO;
 using System.Threading;
@@ -10,7 +11,7 @@ namespace Tecan.Sila2.IntegrationTests
 {
     [Export(typeof(ITestServer))]
     [PartCreationPolicy(CreationPolicy.Shared)]
-    internal class TestServerImplementation : ITestServer
+    internal class TestServerImplementation : ITestServer, INotifyPropertyChanged
     {
         private readonly ISiLAServer _server;
 
@@ -137,5 +138,17 @@ namespace Tecan.Sila2.IntegrationTests
         {
             throw new InvalidOperationException("This came totally unexpected!");
         }
+
+        private int _dummy;
+
+        public int DummyValue => _dummy;
+
+        public void SetDummy( int value )
+        {
+            _dummy = value;
+            PropertyChanged?.Invoke( this, new PropertyChangedEventArgs( nameof(DummyValue) ) );
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
     }
 }

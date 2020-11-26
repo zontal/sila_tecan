@@ -20,8 +20,12 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
     ///  <summary>
     /// Class that implements the ITestServer interface through SiLA2
     /// </summary>
-    public partial class TestServerClient : ITestServer
+    public partial class TestServerClient : ITestServer, System.ComponentModel.INotifyPropertyChanged
     {
+        
+        private long _dummyValue;
+        
+        private System.Threading.Tasks.Task _dummyValueUpdateTask;
         
         private IClientExecutionManager _executionManager;
         
@@ -38,6 +42,36 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         {
             _executionManager = executionManager;
             _channel = channel;
+        }
+        
+        ///  <summary>
+        /// </summary>
+        public virtual long DummyValue
+        {
+            get
+            {
+                if ((_dummyValueUpdateTask == null))
+                {
+                    _dummyValueUpdateTask = _channel.SubscribeProperty<PropertyResponse<Tecan.Sila2.IntegerDto>>(_serviceName, "DummyValue", ReceiveNewDummyValue, _executionManager.CreateCallOptions("tecan.sila/integrationtests/TestServer/v1/Property/DummyValue"));
+                }
+                return _dummyValue;
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        private void ReceiveNewDummyValue(PropertyResponse<Tecan.Sila2.IntegerDto> dummyValue)
+        {
+            long inner = dummyValue.Value.Extract(_executionManager.DownloadBinaryStore);
+            if ((_dummyValue != inner))
+            {
+                _dummyValue = inner;
+                System.ComponentModel.PropertyChangedEventHandler handler = PropertyChanged;
+                if ((handler != null))
+                {
+                    handler.Invoke(this, new System.ComponentModel.PropertyChangedEventArgs("DummyValue"));
+                }
+            }
         }
         
         ///  <summary>
@@ -448,6 +482,26 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             try
             {
                 _channel.ExecuteUnobservableCommand<ThrowRuntimeExceptionRequestDto>(_serviceName, "ThrowRuntimeException", request, callInfo);
+                callInfo.FinishSuccessful();
+                return;
+            } catch (System.Exception ex)
+            {
+                System.Exception exception = _channel.ConvertException(ex);
+                callInfo.FinishWithErrors(exception);
+                throw exception;
+            }
+        }
+        
+        ///  <summary>
+        /// </summary>
+        /// <param name="value"></param>
+        public virtual void SetDummy(long value)
+        {
+            SetDummyRequestDto request = new SetDummyRequestDto(value, null);
+            Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("tecan.sila/integrationtests/TestServer/v1/Command/SetDummy");
+            try
+            {
+                _channel.ExecuteUnobservableCommand<SetDummyRequestDto>(_serviceName, "SetDummy", request, callInfo);
                 callInfo.FinishSuccessful();
                 return;
             } catch (System.Exception ex)

@@ -69,7 +69,7 @@ namespace Tecan.Sila2.Client
                 }
                 else if(rpcEx.StatusCode == StatusCode.Cancelled)
                 {
-                    throw new OperationCanceledException( "The operation was cancelled at the server", rpcEx );
+                    return new OperationCanceledException( "The operation was cancelled at the server", rpcEx );
                 }
                 else
                 {

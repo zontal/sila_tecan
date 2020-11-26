@@ -87,7 +87,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         public void Register(IServerBuilder registration)
         {
             registration.RegisterObservableCommand<ControlTemperatureRequestDto>("ControlTemperature", ControlTemperature, ConvertControlTemperatureExceptions);
-            registration.RegisterObservableProperty("CurrentTemperature", GetCurrentTemperature);
+            registration.RegisterObservableProperty("CurrentTemperature", GetCurrentTemperature, _implementation);
         }
         
         ///  <summary>

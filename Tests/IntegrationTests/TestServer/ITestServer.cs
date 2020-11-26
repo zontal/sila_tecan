@@ -22,6 +22,14 @@ namespace Tecan.Sila2.IntegrationTests
         
         ///  <summary>
         /// </summary>
+        [Tecan.Sila2.ObservableAttribute()]
+        long DummyValue
+        {
+            get;
+        }
+        
+        ///  <summary>
+        /// </summary>
         /// <param name="data"></param>
         /// <returns></returns>
         [return: Tecan.Sila2.SilaIdentifierAttribute("ReturnValue")]
@@ -144,6 +152,11 @@ namespace Tecan.Sila2.IntegrationTests
         ///  <summary>
         /// </summary>
         void ThrowRuntimeException();
+        
+        ///  <summary>
+        /// </summary>
+        /// <param name="value"></param>
+        void SetDummy(long value);
     }
     
     ///  <summary>

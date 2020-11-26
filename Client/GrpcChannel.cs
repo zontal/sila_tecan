@@ -55,26 +55,29 @@ namespace Tecan.Sila2.Discovery
             return SubscribeProperty( serviceName, propertyName, newValueReceived, callInfo, ToMarshaller( serializer ), cancellationToken );
         }
 
-        private async Task SubscribeProperty<T>( string serviceName, string propertyName, Action<T> newValueReceived, IClientCallInfo callInfo, Marshaller<T> serializer, CancellationToken cancellationToken ) where T : class, ISilaTransferObject
+        private async Task SubscribeProperty<T>( string serviceName, string propertyName, Action<T> newValueReceived, IClientCallInfo callInfo, Marshaller<T> serializer,
+            CancellationToken cancellationToken ) where T : class, ISilaTransferObject
         {
             var subscribeMethod = new Method<EmptyRequest, T>( MethodType.ServerStreaming, serviceName, "Subscribe_" + propertyName, EmptyRequestMarshaller.Instance, serializer );
 
             var asyncCall = CallInvoker.AsyncServerStreamingCall( subscribeMethod, null,
-                callInfo.ToCallOptions().WithCancellationToken(cancellationToken), EmptyRequest.Instance );
+                callInfo.ToCallOptions().WithCancellationToken( cancellationToken ), EmptyRequest.Instance );
             var responseStream = asyncCall.ResponseStream;
 
             try
             {
-                while(await responseStream.MoveNext( default ))
+                while(await responseStream.MoveNext( cancellationToken ))
                 {
                     newValueReceived?.Invoke( responseStream.Current );
                 }
-                callInfo.FinishSuccessful();
             }
-            catch(Exception exception)
+            catch( RpcException e )
             {
-                callInfo.FinishWithErrors( exception );
-                throw;
+                if( e.StatusCode != StatusCode.Cancelled || !cancellationToken.IsCancellationRequested )
+                {
+                    throw;
+                }
+                // operation cancelled is not an exception if we asked for it
             }
         }
 

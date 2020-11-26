@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using Grpc.Core;
 
@@ -9,7 +10,7 @@ namespace Tecan.Sila2.Server.ServiceDefinition
     {
         private readonly SiLAServer _server;
         private readonly Feature _feature;
-        private ServerServiceDefinition.Builder _serviceDefinitionBuilder;
+        private readonly ServerServiceDefinition.Builder _serviceDefinitionBuilder;
 
         public ServerBuilder(SiLAServer server, Feature feature)
         {
@@ -35,11 +36,11 @@ namespace Tecan.Sila2.Server.ServiceDefinition
             _serviceDefinitionBuilder.AddMethod( method, builder.Execute );
         }
 
-        public void RegisterObservableProperty<T>( string propertyName, Func<T> implementation ) where T : class
+        public void RegisterObservableProperty<T>( string propertyName, Func<T> implementation, object changeSource, string clientPropertyName = null ) where T : class
         {
             var method = new Method<EmptyRequest, T>( MethodType.Unary, ServiceName, "Subscribe_" + propertyName, EmptyRequestMarshaller.Instance, ProtobufMarshaller<T>.Default );
             var property = _feature.Items.OfType<FeatureProperty>().FirstOrDefault( p => p.Identifier == propertyName );
-            var builder = new ObservablePropertyHandler<T>( _server, _feature.GetFullyQualifiedIdentifier( property ), implementation );
+            var builder = new ObservablePropertyHandler<T>( _server, _feature.GetFullyQualifiedIdentifier( property ), implementation, changeSource as INotifyPropertyChanged, clientPropertyName ?? propertyName );
             _serviceDefinitionBuilder.AddMethod( method, builder.Subscribe );
         }
 

@@ -53,6 +53,14 @@ namespace Tecan.Sila2.IntegrationTests
         bool IsCancelled( string commandId );
 
         void ThrowRuntimeException();
+
+        [Observable]
+        int DummyValue
+        {
+            get;
+        }
+
+        void SetDummy( int value );
     }
 
     public class FakeException : Exception

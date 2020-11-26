@@ -689,7 +689,8 @@ namespace Tecan.Sila2.Generator.Generators
                             registration,
                             nameof( IServerBuilder.RegisterObservableProperty ),
                             new CodePrimitiveExpression( featureProperty.Identifier ),
-                            new CodeMethodReferenceExpression( null, "Get" + featureProperty.Identifier ) ) );
+                            new CodeMethodReferenceExpression( null, "Get" + featureProperty.Identifier ),
+                            implementation) );
                     }
                 }
 

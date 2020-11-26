@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 
 namespace Tecan.Sila2.Server
 {
@@ -28,7 +29,9 @@ namespace Tecan.Sila2.Server
         /// <typeparam name="T">The data transfer type of the property</typeparam>
         /// <param name="propertyName">The local identifier of the property</param>
         /// <param name="implementation">The implementation of the property, i.e. the getter</param>
-        void RegisterObservableProperty<T>( string propertyName, Func<T> implementation ) where T : class;
+        /// <param name="changeSource">The source for changes</param>
+        /// <param name="clientPropertyName">The client property name</param>
+        void RegisterObservableProperty<T>( string propertyName, Func<T> implementation, object changeSource, string clientPropertyName = null ) where T : class;
 
         /// <summary>
         /// Registers the given unobservable command

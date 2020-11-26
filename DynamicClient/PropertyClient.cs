@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace Tecan.Sila2.DynamicClient
 {
@@ -47,16 +48,18 @@ namespace Tecan.Sila2.DynamicClient
         /// <summary>
         /// Requests the value for the property one time
         /// </summary>
-        /// <param name="host">The host at which the property value should be queries or null to use the default host</param>
         /// <param name="additionalMetadata">A dictionary with additional request metadata</param>
         /// <returns>A dynamic property with the property value</returns>
-        public DynamicObjectProperty RequestValue(string host = null, IDictionary<string, byte[]> additionalMetadata = null )
+        public DynamicObjectProperty RequestValue( IDictionary<string, byte[]> additionalMetadata = null )
         {
-            var callInfo = MetadataHelper.TakeInMetadata( Context.ExecutionManager.CreateCallOptions(PropertyIdentifier), additionalMetadata );
+            var callInfo = MetadataHelper.TakeInMetadata( Context.ExecutionManager.CreateCallOptions( PropertyIdentifier ), additionalMetadata );
+
+            DynamicObjectProperty result = null;
+
+
             try
             {
-                DynamicObjectProperty result = null;
-                if (Property.Observable == FeaturePropertyObservable.Yes)
+                if( Property.Observable == FeaturePropertyObservable.Yes )
                 {
                     var cts = new CancellationTokenSource();
 
@@ -71,14 +74,49 @@ namespace Tecan.Sila2.DynamicClient
                 else
                 {
                     result = Context.Channel.ReadProperty( Context.ServiceName, Property.Identifier, callInfo, _responseSerializer );
+                    callInfo.FinishSuccessful();
                 }
-                callInfo.FinishSuccessful();
-                return result;
             }
-            catch (Exception e)
+            catch( Exception e )
             {
-                var exception = Context.ConvertException(e);
-                callInfo.FinishWithErrors(exception);
+                var exception = Context.ConvertException( e );
+                // OperationCancelledException is because we cancelled the subscription
+                if( !(exception is OperationCanceledException) )
+                {
+                    callInfo.FinishWithErrors( exception );
+                    throw exception;
+                }
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Subscribes to the property
+        /// </summary>
+        /// <param name="callback">The callback to which the updated values should be returned to</param>
+        /// <param name="cancellationToken">A cancellation token to cancel the subscription</param>
+        /// <param name="additionalMetadata">Additional metadata</param>
+        /// <returns>A task that represents the subscription</returns>
+        public Task Subscribe( Action<DynamicObjectProperty> callback, CancellationToken cancellationToken = default, IDictionary<string, byte[]> additionalMetadata = null )
+        {
+            if( Property.Observable != FeaturePropertyObservable.Yes )
+            {
+                throw new NotSupportedException( "The property is not observable" );
+            }
+
+            var callInfo = MetadataHelper.TakeInMetadata( Context.ExecutionManager.CreateCallOptions( PropertyIdentifier ), additionalMetadata );
+            try
+            {
+                var subscription = Context.Channel.SubscribeProperty( Context.ServiceName, Property.Identifier, callback, callInfo, _responseSerializer, cancellationToken );
+                
+                callInfo.FinishSuccessful();
+                return subscription;
+            }
+            catch(Exception e)
+            {
+                var exception = Context.ConvertException( e );
+                callInfo.FinishWithErrors( exception );
                 throw exception;
             }
         }

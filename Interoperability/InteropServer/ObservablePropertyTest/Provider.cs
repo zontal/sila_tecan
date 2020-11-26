@@ -61,7 +61,7 @@ namespace Tecan.Sila2.Interop.Server
         /// <param name="registration">The registration component to which the feature should be registered</param>
         public void Register(IServerBuilder registration)
         {
-            registration.RegisterObservableProperty("UpTime", GetUpTime);
+            registration.RegisterObservableProperty("UpTime", GetUpTime, _implementation);
         }
         
         ///  <summary>
