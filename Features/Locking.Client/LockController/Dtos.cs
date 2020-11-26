@@ -43,7 +43,7 @@ namespace Tecan.Sila2.Locking.LockController
         ///        The time (in seconds) after a SiLA Server is automatically unlocked when no request with a valid lock identifier
         ///        has been received meanwhile. A timeout of zero seconds specifies an infinite time (no timeout).
         ///      </param>
-        public LockServerRequestDto(string lockIdentifier, long timeout, Tecan.Sila2.Binary.IBinaryStore store)
+        public LockServerRequestDto(string lockIdentifier, long timeout, Tecan.Sila2.IBinaryStore store)
         {
             LockIdentifier = new Tecan.Sila2.StringDto(lockIdentifier, store);
             Timeout = new Tecan.Sila2.IntegerDto(timeout, store);
@@ -126,7 +126,7 @@ namespace Tecan.Sila2.Locking.LockController
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
         ///  <param name="lockIdentifier">The lock identifier that has been used to lock the SiLA Server.</param>
-        public UnlockServerRequestDto(string lockIdentifier, Tecan.Sila2.Binary.IBinaryStore store)
+        public UnlockServerRequestDto(string lockIdentifier, Tecan.Sila2.IBinaryStore store)
         {
             LockIdentifier = new Tecan.Sila2.StringDto(lockIdentifier, store);
         }

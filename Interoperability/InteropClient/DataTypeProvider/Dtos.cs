@@ -34,7 +34,7 @@ namespace Tecan.Sila2.Interop.Client.DataTypeProvider
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
         ///  <param name="stringValue">The string value to echo.</param>
-        public EchoStringValueRequestDto(string stringValue, Tecan.Sila2.Binary.IBinaryStore store)
+        public EchoStringValueRequestDto(string stringValue, Tecan.Sila2.IBinaryStore store)
         {
             StringValue = new Tecan.Sila2.StringDto(stringValue, store);
         }
@@ -98,7 +98,7 @@ namespace Tecan.Sila2.Interop.Client.DataTypeProvider
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
         ///  <param name="receivedStringValue">A message containing the string value that has been received.</param>
-        public EchoStringValueResponseDto(string receivedStringValue, Tecan.Sila2.Binary.IBinaryStore store)
+        public EchoStringValueResponseDto(string receivedStringValue, Tecan.Sila2.IBinaryStore store)
         {
             ReceivedStringValue = new Tecan.Sila2.StringDto(receivedStringValue, store);
         }
@@ -150,7 +150,7 @@ namespace Tecan.Sila2.Interop.Client.DataTypeProvider
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
         ///  <param name="integerValue">The integer value to echo.</param>
-        public EchoIntegerValueRequestDto(long integerValue, Tecan.Sila2.Binary.IBinaryStore store)
+        public EchoIntegerValueRequestDto(long integerValue, Tecan.Sila2.IBinaryStore store)
         {
             IntegerValue = new Tecan.Sila2.IntegerDto(integerValue, store);
         }
@@ -214,7 +214,7 @@ namespace Tecan.Sila2.Interop.Client.DataTypeProvider
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
         ///  <param name="receivedIntegerValue">A message containing the integer value that has been received.</param>
-        public EchoIntegerValueResponseDto(long receivedIntegerValue, Tecan.Sila2.Binary.IBinaryStore store)
+        public EchoIntegerValueResponseDto(long receivedIntegerValue, Tecan.Sila2.IBinaryStore store)
         {
             ReceivedIntegerValue = new Tecan.Sila2.IntegerDto(receivedIntegerValue, store);
         }
@@ -266,7 +266,7 @@ namespace Tecan.Sila2.Interop.Client.DataTypeProvider
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
         ///  <param name="realValue">The real value to be echo.</param>
-        public EchoRealValueRequestDto(double realValue, Tecan.Sila2.Binary.IBinaryStore store)
+        public EchoRealValueRequestDto(double realValue, Tecan.Sila2.IBinaryStore store)
         {
             RealValue = new Tecan.Sila2.RealDto(realValue, store);
         }
@@ -330,7 +330,7 @@ namespace Tecan.Sila2.Interop.Client.DataTypeProvider
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
         ///  <param name="receivedRealValue">A message containing the real value that has been received.</param>
-        public EchoRealValueResponseDto(double receivedRealValue, Tecan.Sila2.Binary.IBinaryStore store)
+        public EchoRealValueResponseDto(double receivedRealValue, Tecan.Sila2.IBinaryStore store)
         {
             ReceivedRealValue = new Tecan.Sila2.RealDto(receivedRealValue, store);
         }
@@ -382,7 +382,7 @@ namespace Tecan.Sila2.Interop.Client.DataTypeProvider
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
         ///  <param name="booleanValue">The boolean value to echo.</param>
-        public EchoBooleanValueRequestDto(bool booleanValue, Tecan.Sila2.Binary.IBinaryStore store)
+        public EchoBooleanValueRequestDto(bool booleanValue, Tecan.Sila2.IBinaryStore store)
         {
             BooleanValue = new Tecan.Sila2.BooleanDto(booleanValue, store);
         }
@@ -446,7 +446,7 @@ namespace Tecan.Sila2.Interop.Client.DataTypeProvider
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
         ///  <param name="receivedBooleanValue">A message containing the boolean value that has been received.</param>
-        public EchoBooleanValueResponseDto(bool receivedBooleanValue, Tecan.Sila2.Binary.IBinaryStore store)
+        public EchoBooleanValueResponseDto(bool receivedBooleanValue, Tecan.Sila2.IBinaryStore store)
         {
             ReceivedBooleanValue = new Tecan.Sila2.BooleanDto(receivedBooleanValue, store);
         }
@@ -498,7 +498,7 @@ namespace Tecan.Sila2.Interop.Client.DataTypeProvider
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
         ///  <param name="binaryValue">The Binary value to be echo.</param>
-        public EchoBinaryValueRequestDto(System.IO.Stream binaryValue, Tecan.Sila2.Binary.IBinaryStore store)
+        public EchoBinaryValueRequestDto(System.IO.Stream binaryValue, Tecan.Sila2.IBinaryStore store)
         {
             BinaryValue = new Tecan.Sila2.BinaryDto(binaryValue, store);
         }
@@ -562,7 +562,7 @@ namespace Tecan.Sila2.Interop.Client.DataTypeProvider
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
         ///  <param name="receivedBinaryValue">A message containing the Binary value that has been received.</param>
-        public EchoBinaryValueResponseDto(System.IO.Stream receivedBinaryValue, Tecan.Sila2.Binary.IBinaryStore store)
+        public EchoBinaryValueResponseDto(System.IO.Stream receivedBinaryValue, Tecan.Sila2.IBinaryStore store)
         {
             ReceivedBinaryValue = new Tecan.Sila2.BinaryDto(receivedBinaryValue, store);
         }
@@ -614,7 +614,7 @@ namespace Tecan.Sila2.Interop.Client.DataTypeProvider
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
         ///  <param name="dateValue">The date value to echo.</param>
-        public EchoDateValueRequestDto(System.DateTimeOffset dateValue, Tecan.Sila2.Binary.IBinaryStore store)
+        public EchoDateValueRequestDto(System.DateTimeOffset dateValue, Tecan.Sila2.IBinaryStore store)
         {
             DateValue = new Tecan.Sila2.DateDto(dateValue, store);
         }
@@ -678,7 +678,7 @@ namespace Tecan.Sila2.Interop.Client.DataTypeProvider
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
         ///  <param name="receivedDateValue">A message containing the date value that has been received.</param>
-        public EchoDateValueResponseDto(System.DateTimeOffset receivedDateValue, Tecan.Sila2.Binary.IBinaryStore store)
+        public EchoDateValueResponseDto(System.DateTimeOffset receivedDateValue, Tecan.Sila2.IBinaryStore store)
         {
             ReceivedDateValue = new Tecan.Sila2.DateDto(receivedDateValue, store);
         }
@@ -730,7 +730,7 @@ namespace Tecan.Sila2.Interop.Client.DataTypeProvider
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
         ///  <param name="timeValue">The time value to echo.</param>
-        public EchoTimeValueRequestDto(System.TimeSpan timeValue, Tecan.Sila2.Binary.IBinaryStore store)
+        public EchoTimeValueRequestDto(System.TimeSpan timeValue, Tecan.Sila2.IBinaryStore store)
         {
             TimeValue = new Tecan.Sila2.TimeDto(timeValue, store);
         }
@@ -794,7 +794,7 @@ namespace Tecan.Sila2.Interop.Client.DataTypeProvider
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
         ///  <param name="receivedTimeValue">A message containing the time value that has been received.</param>
-        public EchoTimeValueResponseDto(System.TimeSpan receivedTimeValue, Tecan.Sila2.Binary.IBinaryStore store)
+        public EchoTimeValueResponseDto(System.TimeSpan receivedTimeValue, Tecan.Sila2.IBinaryStore store)
         {
             ReceivedTimeValue = new Tecan.Sila2.TimeDto(receivedTimeValue, store);
         }
@@ -846,7 +846,7 @@ namespace Tecan.Sila2.Interop.Client.DataTypeProvider
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
         ///  <param name="timeStampValue">The time stamp value to echo.</param>
-        public EchoTimeStampValueRequestDto(System.DateTimeOffset timeStampValue, Tecan.Sila2.Binary.IBinaryStore store)
+        public EchoTimeStampValueRequestDto(System.DateTimeOffset timeStampValue, Tecan.Sila2.IBinaryStore store)
         {
             TimeStampValue = new Tecan.Sila2.TimestampDto(timeStampValue, store);
         }
@@ -910,7 +910,7 @@ namespace Tecan.Sila2.Interop.Client.DataTypeProvider
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
         ///  <param name="receivedValue">A message containing the time stamp value that has been received.</param>
-        public EchoTimeStampValueResponseDto(System.DateTimeOffset receivedValue, Tecan.Sila2.Binary.IBinaryStore store)
+        public EchoTimeStampValueResponseDto(System.DateTimeOffset receivedValue, Tecan.Sila2.IBinaryStore store)
         {
             ReceivedValue = new Tecan.Sila2.TimestampDto(receivedValue, store);
         }
@@ -962,7 +962,7 @@ namespace Tecan.Sila2.Interop.Client.DataTypeProvider
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
         ///  <param name="stringList">The list of String values to echo.</param>
-        public EchoStringListRequestDto(System.Collections.Generic.ICollection<string> stringList, Tecan.Sila2.Binary.IBinaryStore store)
+        public EchoStringListRequestDto(System.Collections.Generic.ICollection<string> stringList, Tecan.Sila2.IBinaryStore store)
         {
             StringList = Tecan.Sila2.DtoExtensions.Encapsulate(stringList, Tecan.Sila2.StringDto.Create, store);
         }
@@ -1026,7 +1026,7 @@ namespace Tecan.Sila2.Interop.Client.DataTypeProvider
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
         ///  <param name="receivedValues">A message containing the string values that have been received.</param>
-        public EchoStringListResponseDto(System.Collections.Generic.ICollection<string> receivedValues, Tecan.Sila2.Binary.IBinaryStore store)
+        public EchoStringListResponseDto(System.Collections.Generic.ICollection<string> receivedValues, Tecan.Sila2.IBinaryStore store)
         {
             ReceivedValues = Tecan.Sila2.DtoExtensions.Encapsulate(receivedValues, Tecan.Sila2.StringDto.Create, store);
         }
@@ -1078,7 +1078,7 @@ namespace Tecan.Sila2.Interop.Client.DataTypeProvider
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
         ///  <param name="integerList">The list of integer values to echo.</param>
-        public EchoIntegerListRequestDto(System.Collections.Generic.ICollection<long> integerList, Tecan.Sila2.Binary.IBinaryStore store)
+        public EchoIntegerListRequestDto(System.Collections.Generic.ICollection<long> integerList, Tecan.Sila2.IBinaryStore store)
         {
             IntegerList = Tecan.Sila2.DtoExtensions.Encapsulate(integerList, Tecan.Sila2.IntegerDto.Create, store);
         }
@@ -1142,7 +1142,7 @@ namespace Tecan.Sila2.Interop.Client.DataTypeProvider
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
         ///  <param name="receivedValues">A message containing the integer values that have been received.</param>
-        public EchoIntegerListResponseDto(long receivedValues, Tecan.Sila2.Binary.IBinaryStore store)
+        public EchoIntegerListResponseDto(long receivedValues, Tecan.Sila2.IBinaryStore store)
         {
             ReceivedValues = new Tecan.Sila2.IntegerDto(receivedValues, store);
         }
@@ -1194,7 +1194,7 @@ namespace Tecan.Sila2.Interop.Client.DataTypeProvider
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
         ///  <param name="receivedValues">A structure containing values of different types that have been received</param>
-        public EchoStructureValuesRequestDto(AllDatatypeStructure receivedValues, Tecan.Sila2.Binary.IBinaryStore store)
+        public EchoStructureValuesRequestDto(AllDatatypeStructure receivedValues, Tecan.Sila2.IBinaryStore store)
         {
             ReceivedValues = new AllDatatypeStructureDto(receivedValues, store);
         }
@@ -1276,7 +1276,7 @@ namespace Tecan.Sila2.Interop.Client.DataTypeProvider
         ///  <param name="dateValue">The date value to echo.</param>
         ///  <param name="timeValue">The time value to echo.</param>
         ///  <param name="timeStampValue">The time stamp value to echo.</param>
-        public EchoMultipleMixedValuesRequestDto(string stringValue, long integerValue, double realValue, bool booleanValue, System.DateTimeOffset dateValue, System.TimeSpan timeValue, System.DateTimeOffset timeStampValue, Tecan.Sila2.Binary.IBinaryStore store)
+        public EchoMultipleMixedValuesRequestDto(string stringValue, long integerValue, double realValue, bool booleanValue, System.DateTimeOffset dateValue, System.TimeSpan timeValue, System.DateTimeOffset timeStampValue, Tecan.Sila2.IBinaryStore store)
         {
             StringValue = new Tecan.Sila2.StringDto(stringValue, store);
             IntegerValue = new Tecan.Sila2.IntegerDto(integerValue, store);
@@ -1442,7 +1442,7 @@ namespace Tecan.Sila2.Interop.Client.DataTypeProvider
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
         ///  <param name="receivedValues">A message containing the values that have been received.</param>
-        public EchoMultipleMixedValuesResponseDto(string receivedValues, Tecan.Sila2.Binary.IBinaryStore store)
+        public EchoMultipleMixedValuesResponseDto(string receivedValues, Tecan.Sila2.IBinaryStore store)
         {
             ReceivedValues = new Tecan.Sila2.StringDto(receivedValues, store);
         }
@@ -1491,7 +1491,7 @@ namespace Tecan.Sila2.Interop.Client.DataTypeProvider
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
-        public GetMultipleMixedValuesRequestDto(Tecan.Sila2.Binary.IBinaryStore store)
+        public GetMultipleMixedValuesRequestDto(Tecan.Sila2.IBinaryStore store)
         {
         }
         
@@ -1538,11 +1538,19 @@ namespace Tecan.Sila2.Interop.Client.DataTypeProvider
         
         private Tecan.Sila2.TimestampDto _timeStampValue;
         
+        ///  <summary>
+        /// Initializes a new instance (to be used by the serializer)
+        /// </summary>
         public GetMultipleMixedValuesResponseDto()
         {
         }
         
-        public GetMultipleMixedValuesResponseDto(GetMultipleMixedValuesResponse inner, Tecan.Sila2.Binary.IBinaryStore store)
+        ///  <summary>
+        /// Initializes a new data transfer object from the business object
+        /// </summary>
+        /// <param name="inner">The business object that should be transferred</param>
+        /// <param name="store">A component to handle binary data</param>
+        public GetMultipleMixedValuesResponseDto(GetMultipleMixedValuesResponse inner, Tecan.Sila2.IBinaryStore store)
         {
             StringValue = new Tecan.Sila2.StringDto(inner.StringValue, store);
             IntegerValue = new Tecan.Sila2.IntegerDto(inner.IntegerValue, store);
@@ -1670,7 +1678,7 @@ namespace Tecan.Sila2.Interop.Client.DataTypeProvider
         /// </summary>
         /// <param name="store">The binary store in which to store binary data</param>
         /// <returns>the inner value</returns>
-        public GetMultipleMixedValuesResponse Extract(Tecan.Sila2.Binary.IBinaryStore store)
+        public GetMultipleMixedValuesResponse Extract(Tecan.Sila2.IBinaryStore store)
         {
             return new GetMultipleMixedValuesResponse(StringValue.Extract(store), IntegerValue.Extract(store), RealValue.Extract(store), BooleanValue.Extract(store), DateValue.Extract(store), TimeValue.Extract(store), TimeStampValue.Extract(store));
         }
@@ -1680,7 +1688,7 @@ namespace Tecan.Sila2.Interop.Client.DataTypeProvider
         /// </summary>
         /// <param name="inner">The object to transfer</param>
         /// <param name="store">An object to store binary data</param>
-        public static GetMultipleMixedValuesResponseDto Create(GetMultipleMixedValuesResponse inner, Tecan.Sila2.Binary.IBinaryStore store)
+        public static GetMultipleMixedValuesResponseDto Create(GetMultipleMixedValuesResponse inner, Tecan.Sila2.IBinaryStore store)
         {
             return new GetMultipleMixedValuesResponseDto(inner, store);
         }
@@ -1695,6 +1703,9 @@ namespace Tecan.Sila2.Interop.Client.DataTypeProvider
         }
     }
     
+    ///  <summary>
+    /// The data transfer object for All Datatype Structure
+    /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
     public class AllDatatypeStructureDto : Tecan.Sila2.ISilaTransferObject<AllDatatypeStructure>
     {
@@ -1715,11 +1726,19 @@ namespace Tecan.Sila2.Interop.Client.DataTypeProvider
         
         private Tecan.Sila2.TimestampDto _timestampStructureElement;
         
+        ///  <summary>
+        /// Initializes a new instance (to be used by the serializer)
+        /// </summary>
         public AllDatatypeStructureDto()
         {
         }
         
-        public AllDatatypeStructureDto(AllDatatypeStructure inner, Tecan.Sila2.Binary.IBinaryStore store)
+        ///  <summary>
+        /// Initializes a new data transfer object from the business object
+        /// </summary>
+        /// <param name="inner">The business object that should be transferred</param>
+        /// <param name="store">A component to handle binary data</param>
+        public AllDatatypeStructureDto(AllDatatypeStructure inner, Tecan.Sila2.IBinaryStore store)
         {
             StringStructureElement = new Tecan.Sila2.StringDto(inner.StringStructureElement, store);
             IntegerStructureElement = new Tecan.Sila2.IntegerDto(inner.IntegerStructureElement, store);
@@ -1864,7 +1883,7 @@ namespace Tecan.Sila2.Interop.Client.DataTypeProvider
         /// </summary>
         /// <param name="store">The binary store in which to store binary data</param>
         /// <returns>the inner value</returns>
-        public AllDatatypeStructure Extract(Tecan.Sila2.Binary.IBinaryStore store)
+        public AllDatatypeStructure Extract(Tecan.Sila2.IBinaryStore store)
         {
             return new AllDatatypeStructure(StringStructureElement.Extract(store), IntegerStructureElement.Extract(store), RealStructureElement.Extract(store), BooleanStructureElement.Extract(store), BinaryStructureElement.Extract(store), DateStructureElement.Extract(store), TimeStructureElement.Extract(store), TimestampStructureElement.Extract(store));
         }
@@ -1874,7 +1893,7 @@ namespace Tecan.Sila2.Interop.Client.DataTypeProvider
         /// </summary>
         /// <param name="inner">The object to transfer</param>
         /// <param name="store">An object to store binary data</param>
-        public static AllDatatypeStructureDto Create(AllDatatypeStructure inner, Tecan.Sila2.Binary.IBinaryStore store)
+        public static AllDatatypeStructureDto Create(AllDatatypeStructure inner, Tecan.Sila2.IBinaryStore store)
         {
             return new AllDatatypeStructureDto(inner, store);
         }

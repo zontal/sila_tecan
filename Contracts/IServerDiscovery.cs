@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 
-namespace Tecan.Sila2.Discovery
+namespace Tecan.Sila2
 {
     /// <summary>
     /// Denotes the interface for a class responsible for server discovery

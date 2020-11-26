@@ -21,7 +21,7 @@ namespace Tecan.Sila2
         /// Typically the URL to the vendor website
         /// </summary>
         /// <value></value>
-        public string VendorURI { get; }
+        public string VendorUri { get; }
 
         /// <summary>
         /// Version of the server 
@@ -34,13 +34,13 @@ namespace Tecan.Sila2
         /// </summary>
         /// <param name="type"></param>
         /// <param name="description"></param>
-        /// <param name="vendorURI"></param>
+        /// <param name="vendorUri"></param>
         /// <param name="version"></param>
-        public ServerInformation(string type, string description, string vendorURI, string version)
+        public ServerInformation(string type, string description, string vendorUri, string version)
         {
             Type = type;
             Description = description;
-            VendorURI = vendorURI;
+            VendorUri = vendorUri;
             Version = version;
         }
 
@@ -52,7 +52,7 @@ namespace Tecan.Sila2
         {
             return $"Server Type: {Type}"
             + $"\nServer Description: {Description}"
-            + $"\nServer VendorURI: {VendorURI}"
+            + $"\nServer VendorURI: {VendorUri}"
             + $"\nServer Version: {Version}\n";
         }
     }

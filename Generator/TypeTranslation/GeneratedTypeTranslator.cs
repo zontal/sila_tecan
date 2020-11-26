@@ -1,11 +1,8 @@
 ﻿using System;
 using System.CodeDom;
-using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using Tecan.Sila2.Generator.Contracts;
 
 namespace Tecan.Sila2.Generator.TypeTranslation

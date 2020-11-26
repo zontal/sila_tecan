@@ -12,6 +12,9 @@ namespace Tecan.Sila2.Interop.Server
 {
     
     
+    ///  <summary>
+    /// Response type for the Why make it simple when you can make it complicated command
+    /// </summary>
     [Tecan.Sila2.SilaDisplayNameAttribute("Why make it simple when you can make it complicated - Response")]
     public struct WhyMakeItSimpleWhenYouCanMakeItComplicatedResponse
     {
@@ -20,6 +23,9 @@ namespace Tecan.Sila2.Interop.Server
         
         private string _secondResponse;
         
+        ///  <summary>
+        /// Initializes a new instance
+        /// </summary>
         public WhyMakeItSimpleWhenYouCanMakeItComplicatedResponse(string firstResponse, string secondResponse)
         {
             _firstResponse = firstResponse;
@@ -196,12 +202,16 @@ namespace Tecan.Sila2.Interop.Server
         
         private System.Collections.Generic.ICollection<string> _value;
         
+        ///  <summary>
+        /// Initializes a new instance
+        /// </summary>
         public OneDimensionalString(System.Collections.Generic.ICollection<string> value)
         {
             _value = value;
         }
         
         ///  <summary>
+        /// The inner value
         /// </summary>
         public System.Collections.Generic.ICollection<string> Value
         {
@@ -220,12 +230,16 @@ namespace Tecan.Sila2.Interop.Server
         
         private System.Collections.Generic.ICollection<Tecan.Sila2.DynamicClient.DynamicObjectProperty> _value;
         
+        ///  <summary>
+        /// Initializes a new instance
+        /// </summary>
         public AnonymousList(System.Collections.Generic.ICollection<Tecan.Sila2.DynamicClient.DynamicObjectProperty> value)
         {
             _value = value;
         }
         
         ///  <summary>
+        /// The inner value
         /// </summary>
         public System.Collections.Generic.ICollection<Tecan.Sila2.DynamicClient.DynamicObjectProperty> Value
         {
@@ -245,12 +259,16 @@ namespace Tecan.Sila2.Interop.Server
         
         private System.Collections.Generic.ICollection<OneDimensionalString> _value;
         
+        ///  <summary>
+        /// Initializes a new instance
+        /// </summary>
         public TwoDimensionalString(System.Collections.Generic.ICollection<OneDimensionalString> value)
         {
             _value = value;
         }
         
         ///  <summary>
+        /// The inner value
         /// </summary>
         public System.Collections.Generic.ICollection<OneDimensionalString> Value
         {
@@ -270,12 +288,16 @@ namespace Tecan.Sila2.Interop.Server
         
         private System.Collections.Generic.ICollection<TwoDimensionalString> _value;
         
+        ///  <summary>
+        /// Initializes a new instance
+        /// </summary>
         public ThreeDimensionalString(System.Collections.Generic.ICollection<TwoDimensionalString> value)
         {
             _value = value;
         }
         
         ///  <summary>
+        /// The inner value
         /// </summary>
         public System.Collections.Generic.ICollection<TwoDimensionalString> Value
         {
@@ -295,12 +317,16 @@ namespace Tecan.Sila2.Interop.Server
         
         private string _value;
         
+        ///  <summary>
+        /// Initializes a new instance
+        /// </summary>
         public DataTypeString(string value)
         {
             _value = value;
         }
         
         ///  <summary>
+        /// The inner value
         /// </summary>
         public string Value
         {
@@ -343,11 +369,17 @@ namespace Tecan.Sila2.Interop.Server
         }
     }
     
+    ///  <summary>
+    /// The class User reflects an anonymous type from the feature definition.
+    /// </summary>
     public struct User
     {
         
         private string _identifier;
         
+        ///  <summary>
+        /// Initializes a new instance
+        /// </summary>
         public User(string identifier)
         {
             _identifier = identifier;
@@ -365,12 +397,18 @@ namespace Tecan.Sila2.Interop.Server
         }
     }
     
+    ///  <summary>
+    /// The class ThreeDimensionalStructStructStructStructFirstDimensionSecondDimension reflects an anonymous type from the feature definition.
+    /// </summary>
     [Tecan.Sila2.SilaDisplayNameAttribute("ThreeDimensionalStructStructStructStructFirstDimensionSecondDimension")]
     public struct ThreeDimensionalStructStructStructStructFirstDimensionSecondDimension
     {
         
         private string _thirdDimension;
         
+        ///  <summary>
+        /// Initializes a new instance
+        /// </summary>
         public ThreeDimensionalStructStructStructStructFirstDimensionSecondDimension(string thirdDimension)
         {
             _thirdDimension = thirdDimension;
@@ -388,12 +426,18 @@ namespace Tecan.Sila2.Interop.Server
         }
     }
     
+    ///  <summary>
+    /// The class ThreeDimensionalStructStructStructStructFirstDimension reflects an anonymous type from the feature definition.
+    /// </summary>
     [Tecan.Sila2.SilaDisplayNameAttribute("ThreeDimensionalStructStructStructStructFirstDimension")]
     public struct ThreeDimensionalStructStructStructStructFirstDimension
     {
         
         private ThreeDimensionalStructStructStructStructFirstDimensionSecondDimension _secondDimension;
         
+        ///  <summary>
+        /// Initializes a new instance
+        /// </summary>
         public ThreeDimensionalStructStructStructStructFirstDimension(ThreeDimensionalStructStructStructStructFirstDimensionSecondDimension secondDimension)
         {
             _secondDimension = secondDimension;
@@ -411,12 +455,18 @@ namespace Tecan.Sila2.Interop.Server
         }
     }
     
+    ///  <summary>
+    /// The class ThreeDimensionalStructStructStructStruct reflects an anonymous type from the feature definition.
+    /// </summary>
     [Tecan.Sila2.SilaDisplayNameAttribute("ThreeDimensionalStructStructStructStruct")]
     public struct ThreeDimensionalStructStructStructStruct
     {
         
         private ThreeDimensionalStructStructStructStructFirstDimension _firstDimension;
         
+        ///  <summary>
+        /// Initializes a new instance
+        /// </summary>
         public ThreeDimensionalStructStructStructStruct(ThreeDimensionalStructStructStructStructFirstDimension firstDimension)
         {
             _firstDimension = firstDimension;
@@ -434,12 +484,18 @@ namespace Tecan.Sila2.Interop.Server
         }
     }
     
+    ///  <summary>
+    /// The class ThreeDimensionalListThreeDimensionalStructResultFirstDimensionSecondDimension reflects an anonymous type from the feature definition.
+    /// </summary>
     [Tecan.Sila2.SilaDisplayNameAttribute("ThreeDimensionalListThreeDimensionalStructResultFirstDimensionSecondDimension")]
     public struct ThreeDimensionalListThreeDimensionalStructResultFirstDimensionSecondDimension
     {
         
         private string _thirdDimension;
         
+        ///  <summary>
+        /// Initializes a new instance
+        /// </summary>
         public ThreeDimensionalListThreeDimensionalStructResultFirstDimensionSecondDimension(string thirdDimension)
         {
             _thirdDimension = thirdDimension;
@@ -457,12 +513,18 @@ namespace Tecan.Sila2.Interop.Server
         }
     }
     
+    ///  <summary>
+    /// The class ThreeDimensionalListThreeDimensionalStructResultFirstDimension reflects an anonymous type from the feature definition.
+    /// </summary>
     [Tecan.Sila2.SilaDisplayNameAttribute("ThreeDimensionalListThreeDimensionalStructResultFirstDimension")]
     public struct ThreeDimensionalListThreeDimensionalStructResultFirstDimension
     {
         
         private ThreeDimensionalListThreeDimensionalStructResultFirstDimensionSecondDimension _secondDimension;
         
+        ///  <summary>
+        /// Initializes a new instance
+        /// </summary>
         public ThreeDimensionalListThreeDimensionalStructResultFirstDimension(ThreeDimensionalListThreeDimensionalStructResultFirstDimensionSecondDimension secondDimension)
         {
             _secondDimension = secondDimension;
@@ -480,12 +542,18 @@ namespace Tecan.Sila2.Interop.Server
         }
     }
     
+    ///  <summary>
+    /// The class ThreeDimensionalListThreeDimensionalStructResult reflects an anonymous type from the feature definition.
+    /// </summary>
     [Tecan.Sila2.SilaDisplayNameAttribute("ThreeDimensionalListThreeDimensionalStructResult")]
     public struct ThreeDimensionalListThreeDimensionalStructResult
     {
         
         private ThreeDimensionalListThreeDimensionalStructResultFirstDimension _firstDimension;
         
+        ///  <summary>
+        /// Initializes a new instance
+        /// </summary>
         public ThreeDimensionalListThreeDimensionalStructResult(ThreeDimensionalListThreeDimensionalStructResultFirstDimension firstDimension)
         {
             _firstDimension = firstDimension;
@@ -503,12 +571,18 @@ namespace Tecan.Sila2.Interop.Server
         }
     }
     
+    ///  <summary>
+    /// The class WhyMakeItSimpleWhenYouCanMakeItComplicatedStructListStruct reflects an anonymous type from the feature definition.
+    /// </summary>
     [Tecan.Sila2.SilaDisplayNameAttribute("WhyMakeItSimpleWhenYouCanMakeItComplicatedStructListStruct")]
     public struct WhyMakeItSimpleWhenYouCanMakeItComplicatedStructListStruct
     {
         
         private System.Collections.Generic.IDictionary<string, string> _listStruct;
         
+        ///  <summary>
+        /// Initializes a new instance
+        /// </summary>
         public WhyMakeItSimpleWhenYouCanMakeItComplicatedStructListStruct(System.Collections.Generic.IDictionary<string, string> listStruct)
         {
             _listStruct = listStruct;
@@ -526,12 +600,18 @@ namespace Tecan.Sila2.Interop.Server
         }
     }
     
+    ///  <summary>
+    /// The class WhyMakeItSimpleWhenYouCanMakeItComplicatedListStructListItem reflects an anonymous type from the feature definition.
+    /// </summary>
     [Tecan.Sila2.SilaDisplayNameAttribute("WhyMakeItSimpleWhenYouCanMakeItComplicatedListStructListItem")]
     public struct WhyMakeItSimpleWhenYouCanMakeItComplicatedListStructListItem
     {
         
         private System.Collections.Generic.ICollection<string> _list;
         
+        ///  <summary>
+        /// Initializes a new instance
+        /// </summary>
         public WhyMakeItSimpleWhenYouCanMakeItComplicatedListStructListItem(System.Collections.Generic.ICollection<string> list)
         {
             _list = list;
@@ -549,6 +629,9 @@ namespace Tecan.Sila2.Interop.Server
         }
     }
     
+    ///  <summary>
+    /// The class StructPairStringPairString reflects an anonymous type from the feature definition.
+    /// </summary>
     [Tecan.Sila2.SilaDisplayNameAttribute("StructPairStringPairString")]
     public struct StructPairStringPairString
     {
@@ -557,6 +640,9 @@ namespace Tecan.Sila2.Interop.Server
         
         private string _value;
         
+        ///  <summary>
+        /// Initializes a new instance
+        /// </summary>
         public StructPairStringPairString(string key, string value)
         {
             _key = key;
@@ -586,12 +672,18 @@ namespace Tecan.Sila2.Interop.Server
         }
     }
     
+    ///  <summary>
+    /// The class StructPairString reflects an anonymous type from the feature definition.
+    /// </summary>
     [Tecan.Sila2.SilaDisplayNameAttribute("StructPairString")]
     public struct StructPairString
     {
         
         private StructPairStringPairString _pairString;
         
+        ///  <summary>
+        /// Initializes a new instance
+        /// </summary>
         public StructPairString(StructPairStringPairString pairString)
         {
             _pairString = pairString;

@@ -34,7 +34,7 @@ namespace Tecan.Sila2.Interop.Server
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
         ///  <param name="numberIterations">Number of Iterations to perform</param>
-        public ObservableIterationRequestDto(long numberIterations, Tecan.Sila2.Binary.IBinaryStore store)
+        public ObservableIterationRequestDto(long numberIterations, Tecan.Sila2.IBinaryStore store)
         {
             NumberIterations = new Tecan.Sila2.IntegerDto(numberIterations, store);
         }
@@ -98,7 +98,7 @@ namespace Tecan.Sila2.Interop.Server
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
         ///  <param name="currentIteration">Return the current iteration in progress, starting from 0 to NumberIterations (excluded).</param>
-        public ObservableIterationIntermediateDto(long currentIteration, Tecan.Sila2.Binary.IBinaryStore store)
+        public ObservableIterationIntermediateDto(long currentIteration, Tecan.Sila2.IBinaryStore store)
         {
             CurrentIteration = new Tecan.Sila2.IntegerDto(currentIteration, store);
         }
@@ -150,7 +150,7 @@ namespace Tecan.Sila2.Interop.Server
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
         ///  <param name="iterationResponse">If the command ended successfully the response should be NumberIterations - 1</param>
-        public ObservableIterationResponseDto(long iterationResponse, Tecan.Sila2.Binary.IBinaryStore store)
+        public ObservableIterationResponseDto(long iterationResponse, Tecan.Sila2.IBinaryStore store)
         {
             IterationResponse = new Tecan.Sila2.IntegerDto(iterationResponse, store);
         }
@@ -205,7 +205,7 @@ namespace Tecan.Sila2.Interop.Server
         /// <param name="store">An object to organize binaries.</param>
         ///  <param name="value">The value to echo</param>
         ///  <param name="delayInMs">The delay in milliseconds</param>
-        public EchoValueAsyncRequestDto(long value, long delayInMs, Tecan.Sila2.Binary.IBinaryStore store)
+        public EchoValueAsyncRequestDto(long value, long delayInMs, Tecan.Sila2.IBinaryStore store)
         {
             Value = new Tecan.Sila2.IntegerDto(value, store);
             DelayInMs = new Tecan.Sila2.IntegerDto(delayInMs, store);
@@ -286,7 +286,7 @@ namespace Tecan.Sila2.Interop.Server
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
         ///  <param name="receivedValue">The Received Value</param>
-        public EchoValueAsyncResponseDto(long receivedValue, Tecan.Sila2.Binary.IBinaryStore store)
+        public EchoValueAsyncResponseDto(long receivedValue, Tecan.Sila2.IBinaryStore store)
         {
             ReceivedValue = new Tecan.Sila2.IntegerDto(receivedValue, store);
         }

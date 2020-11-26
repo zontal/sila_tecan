@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Tecan.Sila2.Server
+﻿namespace Tecan.Sila2.Server
 {
     /// <summary>
     /// Denotes a component that can access the metadata of a request

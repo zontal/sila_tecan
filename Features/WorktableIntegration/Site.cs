@@ -1,5 +1,4 @@
 ﻿using System;
-using Tecan.Sila2;
 
 namespace Tecan.Sila2.WorktableIntegration
 {

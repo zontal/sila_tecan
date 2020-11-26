@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Net;
-using System.Text;
+﻿using System.Net;
 
-namespace Tecan.Sila2.Discovery
+namespace Tecan.Sila2
 {
     /// <summary>
     /// Denotes an interface for a component that creates channels

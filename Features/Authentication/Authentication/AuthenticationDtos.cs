@@ -26,6 +26,9 @@ namespace Tecan.Sila2.Authentication
         
         private Tecan.Sila2.StringDto _requestedServer;
         
+        ///  <summary>
+        /// A regular expression to check the validity of RequestedServer
+        /// </summary>
         public static System.Text.RegularExpressions.Regex RequestedServerPattern = new System.Text.RegularExpressions.Regex("[0-9a-f]{8}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{12}");
         
         private System.Collections.Generic.List<Tecan.Sila2.StringDto> _requestedFeatures;
@@ -45,7 +48,7 @@ namespace Tecan.Sila2.Authentication
         ///  <param name="password">The (encrypted) password</param>
         ///  <param name="requestedServer">The ServerUUID of the server for which an authorization is requested.</param>
         ///  <param name="requestedFeatures">The fully qualified identifiers of features that are requested to access. If no feature is provided, this means that all features are requested.</param>
-        public LoginRequestDto(string userIdentification, string password, string requestedServer, System.Collections.Generic.ICollection<string> requestedFeatures, Tecan.Sila2.Binary.IBinaryStore store)
+        public LoginRequestDto(string userIdentification, string password, string requestedServer, System.Collections.Generic.ICollection<string> requestedFeatures, Tecan.Sila2.IBinaryStore store)
         {
             UserIdentification = new Tecan.Sila2.StringDto(userIdentification, store);
             Password = new Tecan.Sila2.StringDto(password, store);
@@ -156,11 +159,19 @@ namespace Tecan.Sila2.Authentication
         
         private Tecan.Sila2.IntegerDto _tokenLifetime;
         
+        ///  <summary>
+        /// Initializes a new instance (to be used by the serializer)
+        /// </summary>
         public LoginResponseDto()
         {
         }
         
-        public LoginResponseDto(LoginResponse inner, Tecan.Sila2.Binary.IBinaryStore store)
+        ///  <summary>
+        /// Initializes a new data transfer object from the business object
+        /// </summary>
+        /// <param name="inner">The business object that should be transferred</param>
+        /// <param name="store">A component to handle binary data</param>
+        public LoginResponseDto(LoginResponse inner, Tecan.Sila2.IBinaryStore store)
         {
             AccessToken = new Tecan.Sila2.StringDto(inner.AccessToken, store);
             TokenLifetime = new Tecan.Sila2.IntegerDto(inner.TokenLifetime, store);
@@ -204,7 +215,7 @@ namespace Tecan.Sila2.Authentication
         /// </summary>
         /// <param name="store">The binary store in which to store binary data</param>
         /// <returns>the inner value</returns>
-        public LoginResponse Extract(Tecan.Sila2.Binary.IBinaryStore store)
+        public LoginResponse Extract(Tecan.Sila2.IBinaryStore store)
         {
             return new LoginResponse(AccessToken.Extract(store), TokenLifetime.Extract(store));
         }
@@ -214,7 +225,7 @@ namespace Tecan.Sila2.Authentication
         /// </summary>
         /// <param name="inner">The object to transfer</param>
         /// <param name="store">An object to store binary data</param>
-        public static LoginResponseDto Create(LoginResponse inner, Tecan.Sila2.Binary.IBinaryStore store)
+        public static LoginResponseDto Create(LoginResponse inner, Tecan.Sila2.IBinaryStore store)
         {
             return new LoginResponseDto(inner, store);
         }
@@ -250,7 +261,7 @@ namespace Tecan.Sila2.Authentication
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
         ///  <param name="accessToken">The access token to be invalidated.</param>
-        public LogoutRequestDto(string accessToken, Tecan.Sila2.Binary.IBinaryStore store)
+        public LogoutRequestDto(string accessToken, Tecan.Sila2.IBinaryStore store)
         {
             AccessToken = new Tecan.Sila2.StringDto(accessToken, store);
         }

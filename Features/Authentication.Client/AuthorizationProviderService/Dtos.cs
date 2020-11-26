@@ -24,6 +24,9 @@ namespace Tecan.Sila2.Authorization.AuthorizationProviderService
         
         private Tecan.Sila2.StringDto _requestedServer;
         
+        ///  <summary>
+        /// A regular expression to check the validity of RequestedServer
+        /// </summary>
         public static System.Text.RegularExpressions.Regex RequestedServerPattern = new System.Text.RegularExpressions.Regex("[0-9a-f]{8}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{12}");
         
         private Tecan.Sila2.StringDto _requestedFeature;
@@ -42,7 +45,7 @@ namespace Tecan.Sila2.Authorization.AuthorizationProviderService
         ///  <param name="accessToken">The token to be used along with accessing a Command or Property on a SiLA Server.</param>
         ///  <param name="requestedServer">The server for which an authorization is requested.</param>
         ///  <param name="requestedFeature">The feature that is requested to access.</param>
-        public VerifyRequestDto(string accessToken, string requestedServer, string requestedFeature, Tecan.Sila2.Binary.IBinaryStore store)
+        public VerifyRequestDto(string accessToken, string requestedServer, string requestedFeature, Tecan.Sila2.IBinaryStore store)
         {
             AccessToken = new Tecan.Sila2.StringDto(accessToken, store);
             RequestedServer = new Tecan.Sila2.StringDto(requestedServer, store);
@@ -146,7 +149,7 @@ namespace Tecan.Sila2.Authorization.AuthorizationProviderService
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
         ///  <param name="tokenLifetime">The lifetime of the provided access token as the maximum validity period after the last SiLA Server request.</param>
-        public VerifyResponseDto(long tokenLifetime, Tecan.Sila2.Binary.IBinaryStore store)
+        public VerifyResponseDto(long tokenLifetime, Tecan.Sila2.IBinaryStore store)
         {
             TokenLifetime = new Tecan.Sila2.IntegerDto(tokenLifetime, store);
         }

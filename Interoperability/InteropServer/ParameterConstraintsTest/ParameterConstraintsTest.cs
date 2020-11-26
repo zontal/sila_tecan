@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
-using System.Text;
 using System.Text.RegularExpressions;
 
 namespace Tecan.Sila2.Interop.Server

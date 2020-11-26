@@ -13,6 +13,9 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
     using Tecan.Sila2;
     
     
+    ///  <summary>
+    /// The data transfer object for Bounding Box
+    /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
     public class BoundingBoxDto : Tecan.Sila2.ISilaTransferObject<BoundingBox>
     {
@@ -21,11 +24,19 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
         
         private Tecan.Sila2.RealDto _height;
         
+        ///  <summary>
+        /// Initializes a new instance (to be used by the serializer)
+        /// </summary>
         public BoundingBoxDto()
         {
         }
         
-        public BoundingBoxDto(BoundingBox inner, Tecan.Sila2.Binary.IBinaryStore store)
+        ///  <summary>
+        /// Initializes a new data transfer object from the business object
+        /// </summary>
+        /// <param name="inner">The business object that should be transferred</param>
+        /// <param name="store">A component to handle binary data</param>
+        public BoundingBoxDto(BoundingBox inner, Tecan.Sila2.IBinaryStore store)
         {
             Rectangle = new RectangleDto(inner.Rectangle, store);
             Height = new Tecan.Sila2.RealDto(inner.Height, store);
@@ -68,7 +79,7 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
         /// </summary>
         /// <param name="store">The binary store in which to store binary data</param>
         /// <returns>the inner value</returns>
-        public BoundingBox Extract(Tecan.Sila2.Binary.IBinaryStore store)
+        public BoundingBox Extract(Tecan.Sila2.IBinaryStore store)
         {
             return new BoundingBox(Rectangle.Extract(store), Height.Extract(store));
         }
@@ -78,7 +89,7 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
         /// </summary>
         /// <param name="inner">The object to transfer</param>
         /// <param name="store">An object to store binary data</param>
-        public static BoundingBoxDto Create(BoundingBox inner, Tecan.Sila2.Binary.IBinaryStore store)
+        public static BoundingBoxDto Create(BoundingBox inner, Tecan.Sila2.IBinaryStore store)
         {
             return new BoundingBoxDto(inner, store);
         }
@@ -93,6 +104,9 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
         }
     }
     
+    ///  <summary>
+    /// The data transfer object for Site Template
+    /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
     public class SiteTemplateDto : Tecan.Sila2.ISilaTransferObject<SiteTemplate>
     {
@@ -103,11 +117,19 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
         
         private System.Collections.Generic.List<Tecan.Sila2.StringDto> _tags;
         
+        ///  <summary>
+        /// Initializes a new instance (to be used by the serializer)
+        /// </summary>
         public SiteTemplateDto()
         {
         }
         
-        public SiteTemplateDto(SiteTemplate inner, Tecan.Sila2.Binary.IBinaryStore store)
+        ///  <summary>
+        /// Initializes a new data transfer object from the business object
+        /// </summary>
+        /// <param name="inner">The business object that should be transferred</param>
+        /// <param name="store">A component to handle binary data</param>
+        public SiteTemplateDto(SiteTemplate inner, Tecan.Sila2.IBinaryStore store)
         {
             Name = new Tecan.Sila2.StringDto(inner.Name, store);
             SiteRectangle = new RectangleDto(inner.SiteRectangle, store);
@@ -167,7 +189,7 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
         /// </summary>
         /// <param name="store">The binary store in which to store binary data</param>
         /// <returns>the inner value</returns>
-        public SiteTemplate Extract(Tecan.Sila2.Binary.IBinaryStore store)
+        public SiteTemplate Extract(Tecan.Sila2.IBinaryStore store)
         {
             return new SiteTemplate(Name.Extract(store), SiteRectangle.Extract(store), Tags.Extract(store));
         }
@@ -177,7 +199,7 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
         /// </summary>
         /// <param name="inner">The object to transfer</param>
         /// <param name="store">An object to store binary data</param>
-        public static SiteTemplateDto Create(SiteTemplate inner, Tecan.Sila2.Binary.IBinaryStore store)
+        public static SiteTemplateDto Create(SiteTemplate inner, Tecan.Sila2.IBinaryStore store)
         {
             return new SiteTemplateDto(inner, store);
         }
@@ -192,6 +214,9 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
         }
     }
     
+    ///  <summary>
+    /// The data transfer object for Site
+    /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
     public class SiteDto : Tecan.Sila2.ISilaTransferObject<Site>
     {
@@ -204,11 +229,19 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
         
         private Tecan.Sila2.RealDto _rotation;
         
+        ///  <summary>
+        /// Initializes a new instance (to be used by the serializer)
+        /// </summary>
         public SiteDto()
         {
         }
         
-        public SiteDto(Site inner, Tecan.Sila2.Binary.IBinaryStore store)
+        ///  <summary>
+        /// Initializes a new data transfer object from the business object
+        /// </summary>
+        /// <param name="inner">The business object that should be transferred</param>
+        /// <param name="store">A component to handle binary data</param>
+        public SiteDto(Site inner, Tecan.Sila2.IBinaryStore store)
         {
             Name = new Tecan.Sila2.StringDto(inner.Name, store);
             Template = new Tecan.Sila2.StringDto(inner.Template, store);
@@ -285,7 +318,7 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
         /// </summary>
         /// <param name="store">The binary store in which to store binary data</param>
         /// <returns>the inner value</returns>
-        public Site Extract(Tecan.Sila2.Binary.IBinaryStore store)
+        public Site Extract(Tecan.Sila2.IBinaryStore store)
         {
             return new Site(Name.Extract(store), Template.Extract(store), Offset.Extract(store), Rotation.Extract(store));
         }
@@ -295,7 +328,7 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
         /// </summary>
         /// <param name="inner">The object to transfer</param>
         /// <param name="store">An object to store binary data</param>
-        public static SiteDto Create(Site inner, Tecan.Sila2.Binary.IBinaryStore store)
+        public static SiteDto Create(Site inner, Tecan.Sila2.IBinaryStore store)
         {
             return new SiteDto(inner, store);
         }
@@ -310,6 +343,9 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
         }
     }
     
+    ///  <summary>
+    /// The data transfer object for Rectangle
+    /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
     public class RectangleDto : Tecan.Sila2.ISilaTransferObject<Rectangle>
     {
@@ -318,11 +354,19 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
         
         private Tecan.Sila2.RealDto _depth;
         
+        ///  <summary>
+        /// Initializes a new instance (to be used by the serializer)
+        /// </summary>
         public RectangleDto()
         {
         }
         
-        public RectangleDto(Rectangle inner, Tecan.Sila2.Binary.IBinaryStore store)
+        ///  <summary>
+        /// Initializes a new data transfer object from the business object
+        /// </summary>
+        /// <param name="inner">The business object that should be transferred</param>
+        /// <param name="store">A component to handle binary data</param>
+        public RectangleDto(Rectangle inner, Tecan.Sila2.IBinaryStore store)
         {
             Width = new Tecan.Sila2.RealDto(inner.Width, store);
             Depth = new Tecan.Sila2.RealDto(inner.Depth, store);
@@ -365,7 +409,7 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
         /// </summary>
         /// <param name="store">The binary store in which to store binary data</param>
         /// <returns>the inner value</returns>
-        public Rectangle Extract(Tecan.Sila2.Binary.IBinaryStore store)
+        public Rectangle Extract(Tecan.Sila2.IBinaryStore store)
         {
             return new Rectangle(Width.Extract(store), Depth.Extract(store));
         }
@@ -375,7 +419,7 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
         /// </summary>
         /// <param name="inner">The object to transfer</param>
         /// <param name="store">An object to store binary data</param>
-        public static RectangleDto Create(Rectangle inner, Tecan.Sila2.Binary.IBinaryStore store)
+        public static RectangleDto Create(Rectangle inner, Tecan.Sila2.IBinaryStore store)
         {
             return new RectangleDto(inner, store);
         }
@@ -390,6 +434,9 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
         }
     }
     
+    ///  <summary>
+    /// The data transfer object for Offset
+    /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
     public class OffsetDto : Tecan.Sila2.ISilaTransferObject<Offset>
     {
@@ -400,11 +447,19 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
         
         private Tecan.Sila2.RealDto _z;
         
+        ///  <summary>
+        /// Initializes a new instance (to be used by the serializer)
+        /// </summary>
         public OffsetDto()
         {
         }
         
-        public OffsetDto(Offset inner, Tecan.Sila2.Binary.IBinaryStore store)
+        ///  <summary>
+        /// Initializes a new data transfer object from the business object
+        /// </summary>
+        /// <param name="inner">The business object that should be transferred</param>
+        /// <param name="store">A component to handle binary data</param>
+        public OffsetDto(Offset inner, Tecan.Sila2.IBinaryStore store)
         {
             X = new Tecan.Sila2.RealDto(inner.X, store);
             Y = new Tecan.Sila2.RealDto(inner.Y, store);
@@ -464,7 +519,7 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
         /// </summary>
         /// <param name="store">The binary store in which to store binary data</param>
         /// <returns>the inner value</returns>
-        public Offset Extract(Tecan.Sila2.Binary.IBinaryStore store)
+        public Offset Extract(Tecan.Sila2.IBinaryStore store)
         {
             return new Offset(X.Extract(store), Y.Extract(store), Z.Extract(store));
         }
@@ -474,7 +529,7 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
         /// </summary>
         /// <param name="inner">The object to transfer</param>
         /// <param name="store">An object to store binary data</param>
-        public static OffsetDto Create(Offset inner, Tecan.Sila2.Binary.IBinaryStore store)
+        public static OffsetDto Create(Offset inner, Tecan.Sila2.IBinaryStore store)
         {
             return new OffsetDto(inner, store);
         }

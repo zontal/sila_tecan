@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -233,6 +232,10 @@ namespace Tecan.Sila2.Server.Binary
             _cleanupTimer?.Dispose();
         }
 
+        /// <summary>
+        /// Deletes the upload with the given binary storage identifier
+        /// </summary>
+        /// <param name="binaryStorageIdentifier"></param>
         public void DeleteUpload( string binaryStorageIdentifier )
         {
             _openStreams.TryRemove( binaryStorageIdentifier, out _ );

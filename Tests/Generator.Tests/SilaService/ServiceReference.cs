@@ -106,12 +106,16 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         
         private string _value;
         
+        ///  <summary>
+        /// Initializes a new instance
+        /// </summary>
         public FeatureIdentifier(string value)
         {
             _value = value;
         }
         
         ///  <summary>
+        /// The inner value
         /// </summary>
         public string Value
         {
@@ -131,12 +135,16 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         
         private string _value;
         
+        ///  <summary>
+        /// Initializes a new instance
+        /// </summary>
         public FeatureDefinition(string value)
         {
             _value = value;
         }
         
         ///  <summary>
+        /// The inner value
         /// </summary>
         public string Value
         {
@@ -156,12 +164,16 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         
         private string _value;
         
+        ///  <summary>
+        /// Initializes a new instance
+        /// </summary>
         public Url(string value)
         {
             _value = value;
         }
         
         ///  <summary>
+        /// The inner value
         /// </summary>
         public string Value
         {

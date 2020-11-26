@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Runtime.CompilerServices;
-using System.Text;
 using System.Threading;
 using Tecan.Sila2.Client;
 using Tecan.Sila2.Locking.LockController;

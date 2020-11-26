@@ -1,6 +1,4 @@
 ﻿using ProtoBuf;
-using Tecan.Sila2.Binary;
-using Tecan.Sila2.Client;
 
 namespace Tecan.Sila2
 {

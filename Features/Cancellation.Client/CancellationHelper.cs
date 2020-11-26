@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 using Tecan.Sila2.Cancellation.CancelController;
 using Tecan.Sila2.Client;
 

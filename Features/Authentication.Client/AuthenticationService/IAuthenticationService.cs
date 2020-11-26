@@ -12,6 +12,9 @@ namespace Tecan.Sila2.Authentication
 {
     
     
+    ///  <summary>
+    /// Response type for the Login command
+    /// </summary>
     [Tecan.Sila2.SilaDisplayNameAttribute("Login - Response")]
     public struct LoginResponse
     {
@@ -20,6 +23,9 @@ namespace Tecan.Sila2.Authentication
         
         private long _tokenLifetime;
         
+        ///  <summary>
+        /// Initializes a new instance
+        /// </summary>
         public LoginResponse(string accessToken, long tokenLifetime)
         {
             _accessToken = accessToken;

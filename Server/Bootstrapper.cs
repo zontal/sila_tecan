@@ -10,7 +10,6 @@ using System.Reflection;
 using System.Text;
 using CommandLine;
 using Tecan.MAP.Contracts.Services.Logging;
-using Tecan.Sila2.Discovery;
 using Tecan.Sila2.Server.Binary;
 
 namespace Tecan.Sila2.Server

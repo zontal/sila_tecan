@@ -1,7 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Grpc.Core;
-using Tecan.Sila2.Binary;
 using Tecan.Sila2.Discovery;
 
 namespace Tecan.Sila2.Client.ExecutionManagement

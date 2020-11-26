@@ -22,5 +22,11 @@ namespace Tecan.Sila2.Generator.Contracts
         /// <param name="metadata">The metadata for which an interceptor should be generated</param>
         /// <returns>A declaration of the interceptor class</returns>
         CodeTypeDeclaration GenerateMetadataInterceptorBase(Feature feature, FeatureMetadata metadata);
+
+        /// <summary>
+        /// Generate a server implementation for the given feature
+        /// </summary>
+        /// <param name="feature">The feature</param>
+        CodeTypeDeclaration GenerateServerClass( Feature feature );
     }
 }

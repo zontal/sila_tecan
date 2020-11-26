@@ -1,10 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Net;
-using System.Xml.Serialization;
-using Grpc.Core;
 using Tecan.MAP.Contracts.Services.Logging;
 using Tecan.Sila2.AuthorizationProvider;
 using Tecan.Sila2.Discovery;

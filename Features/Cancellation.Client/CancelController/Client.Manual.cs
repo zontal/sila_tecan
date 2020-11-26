@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Tecan.Sila2.Client;
-using Tecan.Sila2.Discovery;
-
-namespace Tecan.Sila2.Cancellation.CancelController
+﻿namespace Tecan.Sila2.Cancellation.CancelController
 {
     public partial class CancelControllerClient
     {

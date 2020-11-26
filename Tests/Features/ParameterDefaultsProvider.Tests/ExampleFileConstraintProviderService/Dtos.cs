@@ -36,7 +36,7 @@ namespace Tecan.Sila2.ParameterDefaultsProvider.Tests
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
         ///  <param name="parameter"></param>
-        public FileExampleMethodRequestDto(string parameter, Tecan.Sila2.Binary.IBinaryStore store)
+        public FileExampleMethodRequestDto(string parameter, Tecan.Sila2.IBinaryStore store)
         {
             Parameter = new Tecan.Sila2.StringDto(parameter, store);
         }

@@ -34,7 +34,7 @@ namespace Tecan.Sila2.Cancellation.CancelController
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
         ///  <param name="commandExecutionUUID">The Command Execution UUID according to the SiLA Standard.</param>
-        public CancelCommandRequestDto(Uuid commandExecutionUUID, Tecan.Sila2.Binary.IBinaryStore store)
+        public CancelCommandRequestDto(Uuid commandExecutionUUID, Tecan.Sila2.IBinaryStore store)
         {
             CommandExecutionUUID = new UuidDto(commandExecutionUUID, store);
         }
@@ -95,7 +95,7 @@ namespace Tecan.Sila2.Cancellation.CancelController
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
-        public CancelAllRequestDto(Tecan.Sila2.Binary.IBinaryStore store)
+        public CancelAllRequestDto(Tecan.Sila2.IBinaryStore store)
         {
         }
         
@@ -130,13 +130,24 @@ namespace Tecan.Sila2.Cancellation.CancelController
         
         private Tecan.Sila2.StringDto _uUID;
         
+        ///  <summary>
+        /// A regular expression to check the validity of UUID
+        /// </summary>
         public static System.Text.RegularExpressions.Regex UUIDPattern = new System.Text.RegularExpressions.Regex("[0-9a-f]{8}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{12}");
         
+        ///  <summary>
+        /// Initializes a new instance (to be used by the serializer)
+        /// </summary>
         public UuidDto()
         {
         }
         
-        public UuidDto(Uuid inner, Tecan.Sila2.Binary.IBinaryStore store)
+        ///  <summary>
+        /// Initializes a new data transfer object from the business object
+        /// </summary>
+        /// <param name="inner">The business object that should be transferred</param>
+        /// <param name="store">A component to handle binary data</param>
+        public UuidDto(Uuid inner, Tecan.Sila2.IBinaryStore store)
         {
             UUID = new Tecan.Sila2.StringDto(inner.Value, store);
         }
@@ -162,7 +173,7 @@ namespace Tecan.Sila2.Cancellation.CancelController
         /// </summary>
         /// <param name="store">The binary store in which to store binary data</param>
         /// <returns>the inner value</returns>
-        public Uuid Extract(Tecan.Sila2.Binary.IBinaryStore store)
+        public Uuid Extract(Tecan.Sila2.IBinaryStore store)
         {
             return new Uuid(UUID.Extract(store));
         }
@@ -172,7 +183,7 @@ namespace Tecan.Sila2.Cancellation.CancelController
         /// </summary>
         /// <param name="inner">The object to transfer</param>
         /// <param name="store">An object to store binary data</param>
-        public static UuidDto Create(Uuid inner, Tecan.Sila2.Binary.IBinaryStore store)
+        public static UuidDto Create(Uuid inner, Tecan.Sila2.IBinaryStore store)
         {
             return new UuidDto(inner, store);
         }

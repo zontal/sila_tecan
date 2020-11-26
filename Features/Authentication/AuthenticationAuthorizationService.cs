@@ -2,7 +2,6 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
-using System.IO;
 using System.Linq;
 using Tecan.MAP.Contracts.Services.Logging;
 using Tecan.Sila2.Authentication;

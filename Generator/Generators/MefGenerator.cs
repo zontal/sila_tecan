@@ -1,12 +1,7 @@
-﻿using System;
-using System.CodeDom;
-using System.Collections.Generic;
+﻿using System.CodeDom;
 using System.ComponentModel.Composition;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Tecan.Sila2.Generator.Contracts;
-using Tecan.Sila2.Server;
 
 namespace Tecan.Sila2.Generator.Generators
 {

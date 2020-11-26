@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Linq;
-using Tecan.Sila2.Binary;
-using Tecan.Sila2.Client;
 
 namespace Tecan.Sila2.DynamicClient
 {

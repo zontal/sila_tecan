@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.IO;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Tecan.Sila2.Server;

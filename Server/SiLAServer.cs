@@ -6,7 +6,6 @@ using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
-using System.Threading.Channels;
 using System.Threading.Tasks;
 using Grpc.Core;
 using Grpc.Core.Interceptors;
@@ -130,7 +129,7 @@ namespace Tecan.Sila2.Server
 
             ServerType = startupInfo.Info.Type;
             ServerDescription = startupInfo.Info.Description;
-            ServerVendorURL = startupInfo.Info.VendorURI;
+            ServerVendorURL = startupInfo.Info.VendorUri;
             ServerVersion = startupInfo.Info.Version;
             ServerUUID = startupInfo.ServerUuid.ToString();
             ServerName = startupInfo.Name ?? ServerType;
@@ -421,7 +420,13 @@ namespace Tecan.Sila2.Server
             }
         }
 
-        private Stack<IRequestInterception> RequestInterceptions(string commandIdentifier, ServerCallContext context)
+        /// <summary>
+        /// Requests interceptors for a call with the given command identifier
+        /// </summary>
+        /// <param name="commandIdentifier">Unique identifier of a command or property</param>
+        /// <param name="context">The context in which the call is made</param>
+        /// <returns>A stack of request interceptions</returns>
+        public Stack<IRequestInterception> RequestInterceptions(string commandIdentifier, ServerCallContext context)
         {
             Stack<IRequestInterception> interceptions = null;
             try
@@ -462,7 +467,13 @@ namespace Tecan.Sila2.Server
             return interceptions;
         }
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Registers an observable command execution
+        /// </summary>
+        /// <param name="commandIdentifier">The unique identifier of the command that shall be executed</param>
+        /// <param name="command">The observable command</param>
+        /// <param name="context">The context in which the call is made</param>
+        /// <returns></returns>
         public string AddObservableCommandExecution(string commandIdentifier, IObservableCommand command, ServerCallContext context)
         {
             var interceptions = RequestInterceptions( commandIdentifier, context );
@@ -483,10 +494,34 @@ namespace Tecan.Sila2.Server
             return commandExecutionId;
         }
 
-        /// <inheritdoc />
-        public Task<T> CreatePropertyTask<T>(string propertyIdentifier, T value, ServerCallContext context)
+        internal T GetPropertyValue<T>(string propertyIdentifier, Func<T> value, ServerCallContext context)
         {
-            return Task.FromResult(value);
+            var interceptors = RequestInterceptions( propertyIdentifier, context );
+            try
+            {
+                var result = value();
+                if( interceptors != null )
+                {
+                    foreach( var interceptor in interceptors )
+                    {
+                        interceptor.ReportSuccess();
+                    }
+                }
+
+                return result;
+            }
+            catch( Exception exception )
+            {
+                if( interceptors != null )
+                {
+                    foreach( var interceptor in interceptors )
+                    {
+                        interceptor.ReportException(exception);
+                    }
+                }
+
+                throw;
+            }
         }
 
         /// <inheritdoc />

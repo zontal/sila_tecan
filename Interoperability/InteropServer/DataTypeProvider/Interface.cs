@@ -12,6 +12,9 @@ namespace Tecan.Sila2.Interop.Server
 {
     
     
+    ///  <summary>
+    /// Response type for the Get Multiple Mixed Values command
+    /// </summary>
     [Tecan.Sila2.SilaDisplayNameAttribute("Get Multiple Mixed Values - Response")]
     public struct GetMultipleMixedValuesResponse
     {
@@ -30,6 +33,9 @@ namespace Tecan.Sila2.Interop.Server
         
         private System.DateTimeOffset _timeStampValue;
         
+        ///  <summary>
+        /// Initializes a new instance
+        /// </summary>
         public GetMultipleMixedValuesResponse(string stringValue, long integerValue, double realValue, bool booleanValue, System.DateTimeOffset dateValue, System.TimeSpan timeValue, System.DateTimeOffset timeStampValue)
         {
             _stringValue = stringValue;
@@ -353,6 +359,9 @@ namespace Tecan.Sila2.Interop.Server
         
         private System.DateTimeOffset _timestampStructureElement;
         
+        ///  <summary>
+        /// Initializes a new instance
+        /// </summary>
         public AllDatatypeStructure(string stringStructureElement, long integerStructureElement, double realStructureElement, bool booleanStructureElement, System.IO.Stream binaryStructureElement, System.DateTimeOffset dateStructureElement, System.TimeSpan timeStructureElement, System.DateTimeOffset timestampStructureElement)
         {
             _stringStructureElement = stringStructureElement;

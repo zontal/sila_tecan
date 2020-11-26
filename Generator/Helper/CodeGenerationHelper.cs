@@ -6,8 +6,6 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using Microsoft.CSharp;
-using Tecan.Sila2.DynamicClient;
-using Tecan.Sila2.Generator.Contracts;
 
 namespace Tecan.Sila2.Generator.Helper
 {

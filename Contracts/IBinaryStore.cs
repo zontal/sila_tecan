@@ -1,7 +1,6 @@
 ﻿using System.IO;
-using System.Threading.Tasks;
 
-namespace Tecan.Sila2.Binary
+namespace Tecan.Sila2
 {
     /// <summary>
     /// Denotes the command for a binary store

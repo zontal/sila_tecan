@@ -1,6 +1,5 @@
 ﻿using System;
 using NUnit.Framework;
-using Tecan.Sila2.Generator.Test.Logging;
 
 namespace Tecan.Sila2.Generator.Test.Dictionary
 {

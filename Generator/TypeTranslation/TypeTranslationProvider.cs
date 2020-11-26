@@ -5,7 +5,6 @@ using System.ComponentModel.Composition;
 using System.Linq;
 using Tecan.MAP.Contracts.Services.Logging;
 using Tecan.Sila2.Generator.Contracts;
-using Tecan.Sila2.Generator.Helper;
 
 namespace Tecan.Sila2.Generator.TypeTranslation
 {

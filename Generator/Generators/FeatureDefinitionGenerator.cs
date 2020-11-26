@@ -1,17 +1,11 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.ComponentModel.Composition;
-using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using System.Xml.Linq;
 using Tecan.MAP.Contracts.Services.Logging;
 using Tecan.Sila2.Generator.Contracts;
-using Tecan.Sila2.Generator.Helper;
-using Tecan.Sila2.Server;
 
 namespace Tecan.Sila2.Generator.Generators
 {
@@ -37,6 +31,7 @@ namespace Tecan.Sila2.Generator.Generators
         /// </summary>
         /// <param name="nameRegistry">A component that accepts rename reports</param>
         /// <param name="translationProvider">A component that translates types between SiLA2 and .NET</param>
+        /// <param name="loggingChannelFactory">A factory for logging channels</param>
         /// <param name="hooks">Generator hooks</param>
         [ImportingConstructor]
         public FeatureDefinitionGenerator( ICodeNameRegistry nameRegistry, ITypeTranslationProvider translationProvider, ILoggingChannelFactory loggingChannelFactory, [ImportMany] IEnumerable<IGeneratorHook> hooks )

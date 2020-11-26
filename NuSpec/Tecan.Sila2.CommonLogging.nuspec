@@ -3,7 +3,7 @@
     <metadata>
         <id>Tecan.Sila2.CommonLogging</id>
         <description>An adapter to use Common.Logging implementations with the Tecan SiLA2 SDK</description>
-        <version>2.0.0-local</version>
+        <version>3.0.0-local</version>
         <authors>Tecan Trading AG, Switzerland</authors>
         <owners>Tecan Trading AG, Switzerland</owners>
         <copyright>Copyright 2019 by Tecan Trading AG, Switzerland</copyright>

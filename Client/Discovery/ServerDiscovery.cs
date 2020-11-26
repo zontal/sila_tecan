@@ -4,10 +4,8 @@ using System.ComponentModel.Composition;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Grpc.Core;
 using Makaretu.Dns;
 using Tecan.MAP.Contracts.Services.Logging;
-using Tecan.Sila2.Client;
 
 namespace Tecan.Sila2.Discovery
 {

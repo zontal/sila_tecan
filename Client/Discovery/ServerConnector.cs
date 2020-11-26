@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Text;
 using Grpc.Core;
 using Tecan.MAP.Contracts.Services.Logging;
 using Tecan.Sila2.Client;

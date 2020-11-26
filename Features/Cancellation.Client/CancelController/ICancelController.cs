@@ -53,12 +53,16 @@ namespace Tecan.Sila2.Cancellation
         
         private string _value;
         
+        ///  <summary>
+        /// Initializes a new instance
+        /// </summary>
         public Uuid(string value)
         {
             _value = value;
         }
         
         ///  <summary>
+        /// The inner value
         /// </summary>
         public string Value
         {

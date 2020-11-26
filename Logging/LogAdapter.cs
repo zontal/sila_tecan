@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Text;
 using Common.Logging;
 using Tecan.MAP.Contracts.Services.Logging;
 

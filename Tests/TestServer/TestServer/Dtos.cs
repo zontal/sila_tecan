@@ -36,7 +36,7 @@ namespace Tecan.Sila2.IntegrationTests
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
         ///  <param name="data"></param>
-        public PassBoolRequestDto(bool data, Tecan.Sila2.Binary.IBinaryStore store)
+        public PassBoolRequestDto(bool data, Tecan.Sila2.IBinaryStore store)
         {
             Data = new Tecan.Sila2.BooleanDto(data, store);
         }
@@ -99,7 +99,7 @@ namespace Tecan.Sila2.IntegrationTests
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
         ///  <param name="returnValue"></param>
-        public PassBoolResponseDto(bool returnValue, Tecan.Sila2.Binary.IBinaryStore store)
+        public PassBoolResponseDto(bool returnValue, Tecan.Sila2.IBinaryStore store)
         {
             ReturnValue = new Tecan.Sila2.BooleanDto(returnValue, store);
         }
@@ -150,7 +150,7 @@ namespace Tecan.Sila2.IntegrationTests
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
         ///  <param name="data"></param>
-        public PassDoubleRequestDto(double data, Tecan.Sila2.Binary.IBinaryStore store)
+        public PassDoubleRequestDto(double data, Tecan.Sila2.IBinaryStore store)
         {
             Data = new Tecan.Sila2.RealDto(data, store);
         }
@@ -213,7 +213,7 @@ namespace Tecan.Sila2.IntegrationTests
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
         ///  <param name="returnValue"></param>
-        public PassDoubleResponseDto(double returnValue, Tecan.Sila2.Binary.IBinaryStore store)
+        public PassDoubleResponseDto(double returnValue, Tecan.Sila2.IBinaryStore store)
         {
             ReturnValue = new Tecan.Sila2.RealDto(returnValue, store);
         }
@@ -264,7 +264,7 @@ namespace Tecan.Sila2.IntegrationTests
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
         ///  <param name="data"></param>
-        public PassLongRequestDto(long data, Tecan.Sila2.Binary.IBinaryStore store)
+        public PassLongRequestDto(long data, Tecan.Sila2.IBinaryStore store)
         {
             Data = new Tecan.Sila2.IntegerDto(data, store);
         }
@@ -327,7 +327,7 @@ namespace Tecan.Sila2.IntegrationTests
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
         ///  <param name="returnValue"></param>
-        public PassLongResponseDto(long returnValue, Tecan.Sila2.Binary.IBinaryStore store)
+        public PassLongResponseDto(long returnValue, Tecan.Sila2.IBinaryStore store)
         {
             ReturnValue = new Tecan.Sila2.IntegerDto(returnValue, store);
         }
@@ -378,7 +378,7 @@ namespace Tecan.Sila2.IntegrationTests
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
         ///  <param name="data"></param>
-        public PassIntRequestDto(int data, Tecan.Sila2.Binary.IBinaryStore store)
+        public PassIntRequestDto(int data, Tecan.Sila2.IBinaryStore store)
         {
             Data = new Tecan.Sila2.IntegerDto(data, store);
         }
@@ -441,7 +441,7 @@ namespace Tecan.Sila2.IntegrationTests
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
         ///  <param name="returnValue"></param>
-        public PassIntResponseDto(int returnValue, Tecan.Sila2.Binary.IBinaryStore store)
+        public PassIntResponseDto(int returnValue, Tecan.Sila2.IBinaryStore store)
         {
             ReturnValue = new Tecan.Sila2.IntegerDto(returnValue, store);
         }
@@ -492,7 +492,7 @@ namespace Tecan.Sila2.IntegrationTests
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
         ///  <param name="timestamp"></param>
-        public PassTimestampRequestDto(System.DateTimeOffset timestamp, Tecan.Sila2.Binary.IBinaryStore store)
+        public PassTimestampRequestDto(System.DateTimeOffset timestamp, Tecan.Sila2.IBinaryStore store)
         {
             Timestamp = new Tecan.Sila2.TimestampDto(timestamp, store);
         }
@@ -555,7 +555,7 @@ namespace Tecan.Sila2.IntegrationTests
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
         ///  <param name="returnValue"></param>
-        public PassTimestampResponseDto(System.DateTimeOffset returnValue, Tecan.Sila2.Binary.IBinaryStore store)
+        public PassTimestampResponseDto(System.DateTimeOffset returnValue, Tecan.Sila2.IBinaryStore store)
         {
             ReturnValue = new Tecan.Sila2.TimestampDto(returnValue, store);
         }
@@ -606,7 +606,7 @@ namespace Tecan.Sila2.IntegrationTests
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
         ///  <param name="time"></param>
-        public PassTimeRequestDto(System.TimeSpan time, Tecan.Sila2.Binary.IBinaryStore store)
+        public PassTimeRequestDto(System.TimeSpan time, Tecan.Sila2.IBinaryStore store)
         {
             Time = new Tecan.Sila2.TimeDto(time, store);
         }
@@ -669,7 +669,7 @@ namespace Tecan.Sila2.IntegrationTests
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
         ///  <param name="returnValue"></param>
-        public PassTimeResponseDto(System.TimeSpan returnValue, Tecan.Sila2.Binary.IBinaryStore store)
+        public PassTimeResponseDto(System.TimeSpan returnValue, Tecan.Sila2.IBinaryStore store)
         {
             ReturnValue = new Tecan.Sila2.TimeDto(returnValue, store);
         }
@@ -720,7 +720,7 @@ namespace Tecan.Sila2.IntegrationTests
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
         ///  <param name="value"></param>
-        public PassStringRequestDto(string value, Tecan.Sila2.Binary.IBinaryStore store)
+        public PassStringRequestDto(string value, Tecan.Sila2.IBinaryStore store)
         {
             Value = new Tecan.Sila2.StringDto(value, store);
         }
@@ -783,7 +783,7 @@ namespace Tecan.Sila2.IntegrationTests
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
         ///  <param name="returnValue"></param>
-        public PassStringResponseDto(string returnValue, Tecan.Sila2.Binary.IBinaryStore store)
+        public PassStringResponseDto(string returnValue, Tecan.Sila2.IBinaryStore store)
         {
             ReturnValue = new Tecan.Sila2.StringDto(returnValue, store);
         }
@@ -834,7 +834,7 @@ namespace Tecan.Sila2.IntegrationTests
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
         ///  <param name="value"></param>
-        public PassStreamRequestDto(System.IO.Stream value, Tecan.Sila2.Binary.IBinaryStore store)
+        public PassStreamRequestDto(System.IO.Stream value, Tecan.Sila2.IBinaryStore store)
         {
             Value = new Tecan.Sila2.BinaryDto(value, store);
         }
@@ -897,7 +897,7 @@ namespace Tecan.Sila2.IntegrationTests
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
         ///  <param name="returnValue"></param>
-        public PassStreamResponseDto(System.IO.Stream returnValue, Tecan.Sila2.Binary.IBinaryStore store)
+        public PassStreamResponseDto(System.IO.Stream returnValue, Tecan.Sila2.IBinaryStore store)
         {
             ReturnValue = new Tecan.Sila2.BinaryDto(returnValue, store);
         }
@@ -948,7 +948,7 @@ namespace Tecan.Sila2.IntegrationTests
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
         ///  <param name="file"></param>
-        public PassFileRequestDto(System.IO.FileInfo file, Tecan.Sila2.Binary.IBinaryStore store)
+        public PassFileRequestDto(System.IO.FileInfo file, Tecan.Sila2.IBinaryStore store)
         {
             File = new Tecan.Sila2.BinaryDto(file, store);
         }
@@ -1011,7 +1011,7 @@ namespace Tecan.Sila2.IntegrationTests
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
         ///  <param name="returnValue"></param>
-        public PassFileResponseDto(System.IO.FileInfo returnValue, Tecan.Sila2.Binary.IBinaryStore store)
+        public PassFileResponseDto(System.IO.FileInfo returnValue, Tecan.Sila2.IBinaryStore store)
         {
             ReturnValue = new Tecan.Sila2.BinaryDto(returnValue, store);
         }
@@ -1062,7 +1062,7 @@ namespace Tecan.Sila2.IntegrationTests
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
         ///  <param name="bytes"></param>
-        public PassBytesRequestDto(byte[] bytes, Tecan.Sila2.Binary.IBinaryStore store)
+        public PassBytesRequestDto(byte[] bytes, Tecan.Sila2.IBinaryStore store)
         {
             Bytes = new Tecan.Sila2.BinaryDto(bytes, store);
         }
@@ -1125,7 +1125,7 @@ namespace Tecan.Sila2.IntegrationTests
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
         ///  <param name="returnValue"></param>
-        public PassBytesResponseDto(byte[] returnValue, Tecan.Sila2.Binary.IBinaryStore store)
+        public PassBytesResponseDto(byte[] returnValue, Tecan.Sila2.IBinaryStore store)
         {
             ReturnValue = new Tecan.Sila2.BinaryDto(returnValue, store);
         }
@@ -1176,7 +1176,7 @@ namespace Tecan.Sila2.IntegrationTests
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
         ///  <param name="strings"></param>
-        public PassCollectionRequestDto(System.Collections.Generic.ICollection<string> strings, Tecan.Sila2.Binary.IBinaryStore store)
+        public PassCollectionRequestDto(System.Collections.Generic.ICollection<string> strings, Tecan.Sila2.IBinaryStore store)
         {
             Strings = Tecan.Sila2.DtoExtensions.Encapsulate(strings, Tecan.Sila2.StringDto.Create, store);
         }
@@ -1239,7 +1239,7 @@ namespace Tecan.Sila2.IntegrationTests
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
         ///  <param name="returnValue"></param>
-        public PassCollectionResponseDto(System.Collections.Generic.ICollection<string> returnValue, Tecan.Sila2.Binary.IBinaryStore store)
+        public PassCollectionResponseDto(System.Collections.Generic.ICollection<string> returnValue, Tecan.Sila2.IBinaryStore store)
         {
             ReturnValue = Tecan.Sila2.DtoExtensions.Encapsulate(returnValue, Tecan.Sila2.StringDto.Create, store);
         }
@@ -1290,7 +1290,7 @@ namespace Tecan.Sila2.IntegrationTests
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
         ///  <param name="structure"></param>
-        public PassStructureRequestDto(SomeStructure structure, Tecan.Sila2.Binary.IBinaryStore store)
+        public PassStructureRequestDto(SomeStructure structure, Tecan.Sila2.IBinaryStore store)
         {
             Structure = new SomeStructureDto(structure, store);
         }
@@ -1353,7 +1353,7 @@ namespace Tecan.Sila2.IntegrationTests
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
         ///  <param name="returnValue"></param>
-        public PassStructureResponseDto(SomeStructure returnValue, Tecan.Sila2.Binary.IBinaryStore store)
+        public PassStructureResponseDto(SomeStructure returnValue, Tecan.Sila2.IBinaryStore store)
         {
             ReturnValue = new SomeStructureDto(returnValue, store);
         }
@@ -1401,7 +1401,7 @@ namespace Tecan.Sila2.IntegrationTests
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
-        public RunObservableRequestDto(Tecan.Sila2.Binary.IBinaryStore store)
+        public RunObservableRequestDto(Tecan.Sila2.IBinaryStore store)
         {
         }
         
@@ -1448,7 +1448,7 @@ namespace Tecan.Sila2.IntegrationTests
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
         ///  <param name="returnValue"></param>
-        public RunObservableResponseDto(int returnValue, Tecan.Sila2.Binary.IBinaryStore store)
+        public RunObservableResponseDto(int returnValue, Tecan.Sila2.IBinaryStore store)
         {
             ReturnValue = new Tecan.Sila2.IntegerDto(returnValue, store);
         }
@@ -1496,7 +1496,7 @@ namespace Tecan.Sila2.IntegrationTests
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
-        public RunIntermediateObservableCommandRequestDto(Tecan.Sila2.Binary.IBinaryStore store)
+        public RunIntermediateObservableCommandRequestDto(Tecan.Sila2.IBinaryStore store)
         {
         }
         
@@ -1544,7 +1544,7 @@ namespace Tecan.Sila2.IntegrationTests
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
         ///  <param name="intermediate"></param>
-        public RunIntermediateObservableCommandIntermediateDto(long intermediate, Tecan.Sila2.Binary.IBinaryStore store)
+        public RunIntermediateObservableCommandIntermediateDto(long intermediate, Tecan.Sila2.IBinaryStore store)
         {
             Intermediate = new Tecan.Sila2.IntegerDto(intermediate, store);
         }
@@ -1595,7 +1595,7 @@ namespace Tecan.Sila2.IntegrationTests
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
         ///  <param name="duration"></param>
-        public WaitForCancelOrThrowRequestDto(System.TimeSpan duration, Tecan.Sila2.Binary.IBinaryStore store)
+        public WaitForCancelOrThrowRequestDto(System.TimeSpan duration, Tecan.Sila2.IBinaryStore store)
         {
             Duration = new Tecan.Sila2.TimeDto(duration, store);
         }
@@ -1655,7 +1655,7 @@ namespace Tecan.Sila2.IntegrationTests
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
-        public RunIntoFailureRequestDto(Tecan.Sila2.Binary.IBinaryStore store)
+        public RunIntoFailureRequestDto(Tecan.Sila2.IBinaryStore store)
         {
         }
         
@@ -1699,7 +1699,7 @@ namespace Tecan.Sila2.IntegrationTests
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
-        public RunIntoFailureObservablyRequestDto(Tecan.Sila2.Binary.IBinaryStore store)
+        public RunIntoFailureObservablyRequestDto(Tecan.Sila2.IBinaryStore store)
         {
         }
         
@@ -1746,7 +1746,7 @@ namespace Tecan.Sila2.IntegrationTests
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
         ///  <param name="commandId"></param>
-        public IsCancelledRequestDto(string commandId, Tecan.Sila2.Binary.IBinaryStore store)
+        public IsCancelledRequestDto(string commandId, Tecan.Sila2.IBinaryStore store)
         {
             CommandId = new Tecan.Sila2.StringDto(commandId, store);
         }
@@ -1809,7 +1809,7 @@ namespace Tecan.Sila2.IntegrationTests
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
         ///  <param name="returnValue"></param>
-        public IsCancelledResponseDto(bool returnValue, Tecan.Sila2.Binary.IBinaryStore store)
+        public IsCancelledResponseDto(bool returnValue, Tecan.Sila2.IBinaryStore store)
         {
             ReturnValue = new Tecan.Sila2.BooleanDto(returnValue, store);
         }
@@ -1857,7 +1857,7 @@ namespace Tecan.Sila2.IntegrationTests
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
-        public ThrowRuntimeExceptionRequestDto(Tecan.Sila2.Binary.IBinaryStore store)
+        public ThrowRuntimeExceptionRequestDto(Tecan.Sila2.IBinaryStore store)
         {
         }
         
@@ -1883,6 +1883,9 @@ namespace Tecan.Sila2.IntegrationTests
         }
     }
     
+    ///  <summary>
+    /// The data transfer object for Some Structure
+    /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
     public class SomeStructureDto : Tecan.Sila2.ISilaTransferObject<SomeStructure>
     {
@@ -1899,11 +1902,19 @@ namespace Tecan.Sila2.IntegrationTests
         
         private Tecan.Sila2.TimeDto _time;
         
+        ///  <summary>
+        /// Initializes a new instance (to be used by the serializer)
+        /// </summary>
         public SomeStructureDto()
         {
         }
         
-        public SomeStructureDto(SomeStructure inner, Tecan.Sila2.Binary.IBinaryStore store)
+        ///  <summary>
+        /// Initializes a new data transfer object from the business object
+        /// </summary>
+        /// <param name="inner">The business object that should be transferred</param>
+        /// <param name="store">A component to handle binary data</param>
+        public SomeStructureDto(SomeStructure inner, Tecan.Sila2.IBinaryStore store)
         {
             Boolean = new Tecan.Sila2.BooleanDto(inner.Boolean, store);
             Real = new Tecan.Sila2.RealDto(inner.Real, store);
@@ -2008,7 +2019,7 @@ namespace Tecan.Sila2.IntegrationTests
         /// </summary>
         /// <param name="store">The binary store in which to store binary data</param>
         /// <returns>the inner value</returns>
-        public SomeStructure Extract(Tecan.Sila2.Binary.IBinaryStore store)
+        public SomeStructure Extract(Tecan.Sila2.IBinaryStore store)
         {
             return new SomeStructure(Boolean.Extract(store), Real.Extract(store), Long.Extract(store), ((int)(Int.Extract(store))), Timestamp.Extract(store), Time.Extract(store));
         }
@@ -2018,7 +2029,7 @@ namespace Tecan.Sila2.IntegrationTests
         /// </summary>
         /// <param name="inner">The object to transfer</param>
         /// <param name="store">An object to store binary data</param>
-        public static SomeStructureDto Create(SomeStructure inner, Tecan.Sila2.Binary.IBinaryStore store)
+        public static SomeStructureDto Create(SomeStructure inner, Tecan.Sila2.IBinaryStore store)
         {
             return new SomeStructureDto(inner, store);
         }

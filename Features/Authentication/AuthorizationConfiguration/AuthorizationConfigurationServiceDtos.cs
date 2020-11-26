@@ -22,6 +22,9 @@ namespace Tecan.Sila2.Authorization
         
         private Tecan.Sila2.StringDto _authorizationProvider;
         
+        ///  <summary>
+        /// A regular expression to check the validity of AuthorizationProvider
+        /// </summary>
         public static System.Text.RegularExpressions.Regex AuthorizationProviderPattern = new System.Text.RegularExpressions.Regex("[0-9a-f]{8}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{12}");
         
         ///  <summary>
@@ -36,7 +39,7 @@ namespace Tecan.Sila2.Authorization
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
         ///  <param name="authorizationProvider">The UUID of the SiLA server that this server uses to verify access tokens.</param>
-        public SetAuthorizationProviderRequestDto(string authorizationProvider, Tecan.Sila2.Binary.IBinaryStore store)
+        public SetAuthorizationProviderRequestDto(string authorizationProvider, Tecan.Sila2.IBinaryStore store)
         {
             AuthorizationProvider = new Tecan.Sila2.StringDto(authorizationProvider, store);
         }
@@ -95,6 +98,9 @@ namespace Tecan.Sila2.Authorization
         
         private Tecan.Sila2.StringDto _value;
         
+        ///  <summary>
+        /// A regular expression to check the validity of Value
+        /// </summary>
         public static System.Text.RegularExpressions.Regex ValuePattern = new System.Text.RegularExpressions.Regex("[0-9a-f]{8}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{12}");
         
         ///  <summary>
@@ -109,7 +115,7 @@ namespace Tecan.Sila2.Authorization
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
         ///  <param name="value"></param>
-        public AuthorizationProviderResponseDto(string value, Tecan.Sila2.Binary.IBinaryStore store)
+        public AuthorizationProviderResponseDto(string value, Tecan.Sila2.IBinaryStore store)
         {
             Value = new Tecan.Sila2.StringDto(value, store);
         }

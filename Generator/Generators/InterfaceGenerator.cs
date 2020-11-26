@@ -103,6 +103,7 @@ namespace Tecan.Sila2.Generator.Generators
                 {
                     Identifier = name,
                     DisplayName = name,
+                    Description = $"The class {name} reflects an anonymous type from the feature definition.",
                     DataType = new DataTypeType()
                     {
                         Item = structure
@@ -120,51 +121,45 @@ namespace Tecan.Sila2.Generator.Generators
 
         private CodeTypeDeclaration GenerateDataTypeDefinition( SiLAElement dataType, Action<string, StructureType> structHandler )
         {
-            var summary = dataType.Description ?? $"The {dataType.DisplayName} type";
-            CodeTypeDeclaration declaration = null;
             if( dataType.DataType.Item is ConstrainedType constrained )
             {
                 if( constrained.Constraints.Set != null && constrained.Constraints.Set.Length > 0 )
                 {
-                    declaration = GenerateEnumeration( dataType, constrained.Constraints.Set );
+                    return GenerateEnumeration( dataType, constrained.Constraints.Set );
                 }
             }
             else if( dataType.DataType.Item is StructureType structure )
             {
-                declaration = GenerateStruct( dataType, structure, false, structHandler );
+                return GenerateStruct( dataType, structure, false, structHandler );
             }
 
-            if( declaration == null )
+            var newStructure = new StructureType
             {
-                var newStructure = new StructureType
+                Element = new[]
                 {
-                    Element = new SiLAElement[]
+                    new SiLAElement
                     {
-                        new SiLAElement()
-                        {
-                            DataType = dataType.DataType,
-                            DisplayName = "Value",
-                            Identifier = "Value",
-                        }
+                        DataType = dataType.DataType,
+                        DisplayName = "Value",
+                        Identifier = "Value",
+                        Description = "The inner value"
                     }
-                };
-                declaration = GenerateStruct( dataType, newStructure, true, structHandler );
-            }
-
-            declaration.WriteDocumentation( summary );
-            return declaration;
+                }
+            };
+            return GenerateStruct( dataType, newStructure, true, structHandler );
         }
 
         private CodeTypeDeclaration GenerateStruct( SiLAElement dataType, StructureType structureType, bool inline, Action<string, StructureType> structHandler )
         {
             var name = _translationProvider.ExtractType( new DataTypeType() { Item = dataType.Identifier }, null ).BaseType;
+            var summary = dataType.Description ?? $"The {dataType.DisplayName} type";
             var structure = new CodeTypeDeclaration( name )
             {
                 Attributes = MemberAttributes.Public,
                 TypeAttributes = TypeAttributes.Public,
                 IsStruct = true
             };
-
+            structure.WriteDocumentation( summary );
             ApplyDataType( dataType, structure );
 
             var constructor = new CodeConstructor
@@ -172,17 +167,19 @@ namespace Tecan.Sila2.Generator.Generators
                 Attributes = MemberAttributes.Public,
             };
             structure.Members.Add( constructor );
-
+            var parameterDocs = new Dictionary<string, string>();
             foreach( var element in structureType.Element )
             {
-                GenerateStructureElement( element, structure, constructor, inline, structHandler );
+                GenerateStructureElement( element, structure, constructor, inline, structHandler, parameterDocs );
             }
+
+            constructor.WriteDocumentation( "Initializes a new instance", parameters: parameterDocs );
 
             return structure;
         }
 
         private void GenerateStructureElement( SiLAElement element, CodeTypeDeclaration structure,
-            CodeConstructor constructor, bool inline, Action<string, StructureType> structHandler )
+            CodeConstructor constructor, bool inline, Action<string, StructureType> structHandler, IDictionary<string, string> parameterDocs )
         {
             var property = new CodeMemberProperty
             {
@@ -191,7 +188,7 @@ namespace Tecan.Sila2.Generator.Generators
                 HasSet = false,
                 HasGet = true
             };
-            property.WriteDocumentation( element.Description );
+            property.WriteDocumentation( element.Description ?? $"The {element.Identifier} property" );
             var targetAttributes = inline ? structure.CustomAttributes : property.CustomAttributes;
             property.Type = _translationProvider.ExtractType( element.DataType,
                 structure.Name + element.Identifier, constraints => HandleConstraints( constraints, targetAttributes ), structHandler );
@@ -381,6 +378,7 @@ namespace Tecan.Sila2.Generator.Generators
                 TypeAttributes = TypeAttributes.Public,
                 IsEnum = true
             };
+            enumeration.WriteDocumentation( dataType.Identifier ?? "Enumeration consisting of the entries " + string.Join( ", ", literals ) );
             foreach( var literal in literals )
             {
                 enumeration.Members.Add( new CodeMemberField

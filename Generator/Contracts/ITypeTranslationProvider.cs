@@ -1,9 +1,5 @@
 ﻿using System;
 using System.CodeDom;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Tecan.Sila2.Generator.Contracts
 {
@@ -77,7 +73,6 @@ namespace Tecan.Sila2.Generator.Contracts
         /// <param name="expression">The expression that should be extracted</param>
         /// <param name="dataType">The SiLA2 type of the expression</param>
         /// <param name="binaryStorageArgument">The argument to use as binary store</param>
-        /// <param name="suggestedName">The suggested name for anonymous types</param>
         /// <param name="targetType">An overridden target type or null</param>
         /// <returns>A CodeDOM expression that represents the extracted value</returns>
         CodeExpression Extract( CodeExpression expression, DataTypeType dataType, CodeExpression binaryStorageArgument, CodeTypeReference targetType );

@@ -34,7 +34,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
         ///  <param name="parameter"></param>
-        public TestInlineObservableRequestDto(string parameter, Tecan.Sila2.Binary.IBinaryStore store)
+        public TestInlineObservableRequestDto(string parameter, Tecan.Sila2.IBinaryStore store)
         {
             Parameter = new Tecan.Sila2.StringDto(parameter, store);
         }
@@ -98,7 +98,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
         ///  <param name="returnValue"></param>
-        public TestInlineObservableResponseDto(bool returnValue, Tecan.Sila2.Binary.IBinaryStore store)
+        public TestInlineObservableResponseDto(bool returnValue, Tecan.Sila2.IBinaryStore store)
         {
             ReturnValue = new Tecan.Sila2.BooleanDto(returnValue, store);
         }

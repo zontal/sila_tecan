@@ -35,6 +35,9 @@ namespace Tecan.Sila2.ParameterConstraintsProvider
         }
     }
     
+    ///  <summary>
+    /// The class ParametersConstraint reflects an anonymous type from the feature definition.
+    /// </summary>
     [Tecan.Sila2.SilaDisplayNameAttribute("ParametersConstraint")]
     public struct ParametersConstraint
     {
@@ -43,6 +46,9 @@ namespace Tecan.Sila2.ParameterConstraintsProvider
         
         private string _constraints;
         
+        ///  <summary>
+        /// Initializes a new instance
+        /// </summary>
         public ParametersConstraint(string commandParameterIdentifier, string constraints)
         {
             _commandParameterIdentifier = commandParameterIdentifier;

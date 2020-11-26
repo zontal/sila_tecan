@@ -34,7 +34,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
         ///  <param name="qualifiedFeatureIdentifier">The qualified Feature identifier for which the Feature description should be retrieved.</param>
-        public GetFeatureDefinitionRequestDto(FeatureIdentifier qualifiedFeatureIdentifier, Tecan.Sila2.Binary.IBinaryStore store)
+        public GetFeatureDefinitionRequestDto(FeatureIdentifier qualifiedFeatureIdentifier, Tecan.Sila2.IBinaryStore store)
         {
             QualifiedFeatureIdentifier = new FeatureIdentifierDto(qualifiedFeatureIdentifier, store);
         }
@@ -99,7 +99,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
         ///  <param name="featureDefinition">The Feature Definition in XML format.</param>
-        public GetFeatureDefinitionResponseDto(FeatureDefinition featureDefinition, Tecan.Sila2.Binary.IBinaryStore store)
+        public GetFeatureDefinitionResponseDto(FeatureDefinition featureDefinition, Tecan.Sila2.IBinaryStore store)
         {
             FeatureDefinition = new FeatureDefinitionDto(featureDefinition, store);
         }
@@ -151,7 +151,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
         ///  <param name="serverName">The human readable name of to assign to the SiLA Server</param>
-        public SetServerNameRequestDto(string serverName, Tecan.Sila2.Binary.IBinaryStore store)
+        public SetServerNameRequestDto(string serverName, Tecan.Sila2.IBinaryStore store)
         {
             ServerName = new Tecan.Sila2.StringDto(serverName, store);
         }
@@ -203,6 +203,9 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         
         private Tecan.Sila2.StringDto _value;
         
+        ///  <summary>
+        /// A regular expression to check the validity of Value
+        /// </summary>
         public static System.Text.RegularExpressions.Regex ValuePattern = new System.Text.RegularExpressions.Regex("[0-9a-f]{8}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{12}");
         
         ///  <summary>
@@ -217,7 +220,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
         ///  <param name="value"></param>
-        public ServerUUIDResponseDto(string value, Tecan.Sila2.Binary.IBinaryStore store)
+        public ServerUUIDResponseDto(string value, Tecan.Sila2.IBinaryStore store)
         {
             Value = new Tecan.Sila2.StringDto(value, store);
         }
@@ -263,6 +266,9 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         
         private Tecan.Sila2.StringDto _value;
         
+        ///  <summary>
+        /// A regular expression to check the validity of Value
+        /// </summary>
         public static System.Text.RegularExpressions.Regex ValuePattern = new System.Text.RegularExpressions.Regex("(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(\\.(0|[1-9][0-9]*))?(_[_a-zA-Z0-9]+)?");
         
         ///  <summary>
@@ -277,7 +283,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
         ///  <param name="value"></param>
-        public ServerVersionResponseDto(string value, Tecan.Sila2.Binary.IBinaryStore store)
+        public ServerVersionResponseDto(string value, Tecan.Sila2.IBinaryStore store)
         {
             Value = new Tecan.Sila2.StringDto(value, store);
         }
@@ -323,11 +329,19 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         
         private Tecan.Sila2.StringDto _featureIdentifier;
         
+        ///  <summary>
+        /// Initializes a new instance (to be used by the serializer)
+        /// </summary>
         public FeatureIdentifierDto()
         {
         }
         
-        public FeatureIdentifierDto(FeatureIdentifier inner, Tecan.Sila2.Binary.IBinaryStore store)
+        ///  <summary>
+        /// Initializes a new data transfer object from the business object
+        /// </summary>
+        /// <param name="inner">The business object that should be transferred</param>
+        /// <param name="store">A component to handle binary data</param>
+        public FeatureIdentifierDto(FeatureIdentifier inner, Tecan.Sila2.IBinaryStore store)
         {
             FeatureIdentifier = new Tecan.Sila2.StringDto(inner.Value, store);
         }
@@ -353,7 +367,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// </summary>
         /// <param name="store">The binary store in which to store binary data</param>
         /// <returns>the inner value</returns>
-        public FeatureIdentifier Extract(Tecan.Sila2.Binary.IBinaryStore store)
+        public FeatureIdentifier Extract(Tecan.Sila2.IBinaryStore store)
         {
             return new FeatureIdentifier(FeatureIdentifier.Extract(store));
         }
@@ -363,7 +377,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// </summary>
         /// <param name="inner">The object to transfer</param>
         /// <param name="store">An object to store binary data</param>
-        public static FeatureIdentifierDto Create(FeatureIdentifier inner, Tecan.Sila2.Binary.IBinaryStore store)
+        public static FeatureIdentifierDto Create(FeatureIdentifier inner, Tecan.Sila2.IBinaryStore store)
         {
             return new FeatureIdentifierDto(inner, store);
         }
@@ -392,11 +406,19 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         
         private Tecan.Sila2.StringDto _featureDefinition;
         
+        ///  <summary>
+        /// Initializes a new instance (to be used by the serializer)
+        /// </summary>
         public FeatureDefinitionDto()
         {
         }
         
-        public FeatureDefinitionDto(FeatureDefinition inner, Tecan.Sila2.Binary.IBinaryStore store)
+        ///  <summary>
+        /// Initializes a new data transfer object from the business object
+        /// </summary>
+        /// <param name="inner">The business object that should be transferred</param>
+        /// <param name="store">A component to handle binary data</param>
+        public FeatureDefinitionDto(FeatureDefinition inner, Tecan.Sila2.IBinaryStore store)
         {
             FeatureDefinition = new Tecan.Sila2.StringDto(inner.Value, store);
         }
@@ -422,7 +444,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// </summary>
         /// <param name="store">The binary store in which to store binary data</param>
         /// <returns>the inner value</returns>
-        public FeatureDefinition Extract(Tecan.Sila2.Binary.IBinaryStore store)
+        public FeatureDefinition Extract(Tecan.Sila2.IBinaryStore store)
         {
             return new FeatureDefinition(FeatureDefinition.Extract(store));
         }
@@ -432,7 +454,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// </summary>
         /// <param name="inner">The object to transfer</param>
         /// <param name="store">An object to store binary data</param>
-        public static FeatureDefinitionDto Create(FeatureDefinition inner, Tecan.Sila2.Binary.IBinaryStore store)
+        public static FeatureDefinitionDto Create(FeatureDefinition inner, Tecan.Sila2.IBinaryStore store)
         {
             return new FeatureDefinitionDto(inner, store);
         }
@@ -456,13 +478,24 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         
         private Tecan.Sila2.StringDto _uRL;
         
+        ///  <summary>
+        /// A regular expression to check the validity of URL
+        /// </summary>
         public static System.Text.RegularExpressions.Regex URLPattern = new System.Text.RegularExpressions.Regex("https?://.+");
         
+        ///  <summary>
+        /// Initializes a new instance (to be used by the serializer)
+        /// </summary>
         public UrlDto()
         {
         }
         
-        public UrlDto(Url inner, Tecan.Sila2.Binary.IBinaryStore store)
+        ///  <summary>
+        /// Initializes a new data transfer object from the business object
+        /// </summary>
+        /// <param name="inner">The business object that should be transferred</param>
+        /// <param name="store">A component to handle binary data</param>
+        public UrlDto(Url inner, Tecan.Sila2.IBinaryStore store)
         {
             URL = new Tecan.Sila2.StringDto(inner.Value, store);
         }
@@ -488,7 +521,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// </summary>
         /// <param name="store">The binary store in which to store binary data</param>
         /// <returns>the inner value</returns>
-        public Url Extract(Tecan.Sila2.Binary.IBinaryStore store)
+        public Url Extract(Tecan.Sila2.IBinaryStore store)
         {
             return new Url(URL.Extract(store));
         }
@@ -498,7 +531,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// </summary>
         /// <param name="inner">The object to transfer</param>
         /// <param name="store">An object to store binary data</param>
-        public static UrlDto Create(Url inner, Tecan.Sila2.Binary.IBinaryStore store)
+        public static UrlDto Create(Url inner, Tecan.Sila2.IBinaryStore store)
         {
             return new UrlDto(inner, store);
         }

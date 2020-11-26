@@ -5,7 +5,7 @@ namespace Tecan.Sila2
     /// <summary>
     /// Describes an update of an observable command
     /// </summary>
-    public struct StateUpdate
+    public readonly struct StateUpdate
     {
         /// <summary>
         /// Creates new even arguments

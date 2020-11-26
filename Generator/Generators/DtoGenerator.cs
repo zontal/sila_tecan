@@ -2,14 +2,11 @@
 using System.CodeDom;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
-using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using ProtoBuf;
 using Tecan.MAP.Contracts.Services.Logging;
-using Tecan.Sila2.Binary;
-using Tecan.Sila2.DynamicClient;
 using Tecan.Sila2.Generator.Contracts;
 using Tecan.Sila2.Generator.Helper;
 
@@ -37,6 +34,7 @@ namespace Tecan.Sila2.Generator.Generators
         /// </summary>
         /// <param name="translationProvider">The translation provider</param>
         /// <param name="nameProvider">A name provider</param>
+        /// <param name="loggingChannelFactory">A factory for logging channels</param>
         [ImportingConstructor]
         public DtoGenerator(ITypeTranslationProvider translationProvider, ICodeNameProvider nameProvider, ILoggingChannelFactory loggingChannelFactory)
         {
@@ -220,6 +218,7 @@ namespace Tecan.Sila2.Generator.Generators
 
         private CodeTypeDeclaration GenerateDataTypeDefinition( SiLAElement dataType, Action<string, StructureType> structHandler )
         {
+            CodeTypeDeclaration declaration = null;
             if( dataType.DataType.Item is ConstrainedType constrained )
             {
                 if( constrained.Constraints.Set != null && constrained.Constraints.Set.Length > 0 )
@@ -229,23 +228,27 @@ namespace Tecan.Sila2.Generator.Generators
             }
             else if( dataType.DataType.Item is StructureType structure )
             {
-                return GenerateDto( CreateProperIdentifier( dataType.Identifier ), structure, true, dataType.Identifier, structHandler );
+                declaration = GenerateDto( CreateProperIdentifier( dataType.Identifier ), structure, true, dataType.Identifier, structHandler );
             }
 
-            var dataTypeStructure = new StructureType
+            if( declaration == null )
             {
-                Element = new[]
+                var dataTypeStructure = new StructureType
                 {
-                    new SiLAElement
+                    Element = new[]
                     {
-                        DataType = dataType.DataType,
-                        Identifier = dataType.Identifier,
-                        DisplayName = dataType.DisplayName,
-                        Description = dataType.Description
+                        new SiLAElement
+                        {
+                            DataType = dataType.DataType,
+                            Identifier = dataType.Identifier,
+                            DisplayName = dataType.DisplayName,
+                            Description = dataType.Description
+                        }
                     }
-                }
-            };
-            var declaration = GenerateDto( CreateProperIdentifier( dataType.Identifier ), dataTypeStructure, true, dataType.Identifier, structHandler );
+                };
+                declaration = GenerateDto( CreateProperIdentifier( dataType.Identifier ), dataTypeStructure, true, dataType.Identifier, structHandler );
+            }
+
             declaration.WriteDocumentation( $"The data transfer object for {dataType.DisplayName}" );
             return declaration;
         }
@@ -485,12 +488,20 @@ namespace Tecan.Sila2.Generator.Generators
             CodeTypeDeclaration dto, CodeTypeReference innerType)
         {
             // add default constructor
-            dto.Members.Add(new CodeConstructor() {Attributes = MemberAttributes.Public});
+            var defaultConstructor = new CodeConstructor() { Attributes = MemberAttributes.Public };
+            defaultConstructor.WriteDocumentation( "Initializes a new instance (to be used by the serializer)" );
+            dto.Members.Add(defaultConstructor);
             var copyConstructor = new CodeConstructor() {Attributes = MemberAttributes.Public};
             dto.Members.Add(copyConstructor);
             var parameter = new CodeParameterDeclarationExpression(innerType, "inner");
             copyConstructor.Parameters.Add(parameter);
             copyConstructor.Parameters.Add(new CodeParameterDeclarationExpression(typeof(IBinaryStore), BinaryStoreParameterName));
+            copyConstructor.WriteDocumentation( "Initializes a new data transfer object from the business object",
+                parameters: new Dictionary<string, string>()
+                {
+                    {parameter.Name, "The business object that should be transferred"},
+                    {BinaryStoreParameterName, "A component to handle binary data"}
+                } );
             return (copyConstructor, new CodeArgumentReferenceExpression(parameter.Name));
         }
 
@@ -557,6 +568,7 @@ namespace Tecan.Sila2.Generator.Generators
                     InitExpression = new CodeObjectCreateExpression(regexType,
                         new CodePrimitiveExpression(constraints.Pattern))
                 };
+                patternField.WriteDocumentation( $"A regular expression to check the validity of {propertyReference.PropertyName}" );
                 wrapper.Members.Add(patternField);
                 var check = new CodeMethodInvokeExpression(
                     new CodeFieldReferenceExpression(null, patternField.Name), nameof(Regex.IsMatch),

@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.InteropServices;
-using System.Text;
 using Tecan.MAP.Contracts.Services.Logging;
 using Tecan.Sila2.Server;
 

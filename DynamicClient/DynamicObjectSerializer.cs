@@ -65,34 +65,13 @@ namespace Tecan.Sila2.DynamicClient
                     }
                     break;
                 case BasicType.Integer:
-                    if( IsInField( reader, 1 ) )
-                    {
-                        setProperty( reader.ReadInt64() );
-                    }
-                    else
-                    {
-                        setProperty( 0L );
-                    }
+                    setProperty( IsInField( reader, 1 ) ? reader.ReadInt64() : 0L );
                     break;
                 case BasicType.Real:
-                    if( IsInField( reader, 1 ) )
-                    {
-                        setProperty( reader.ReadDouble() );
-                    }
-                    else
-                    {
-                        setProperty( 0.0 );
-                    }
+                    setProperty( IsInField( reader, 1 ) ? reader.ReadDouble() : 0.0 );
                     break; ;
                 case BasicType.Boolean:
-                    if( IsInField( reader, 1 ) )
-                    {
-                        setProperty( reader.ReadBoolean() );
-                    }
-                    else
-                    {
-                        setProperty( false );
-                    }
+                    setProperty( IsInField( reader, 1 ) && reader.ReadBoolean() );
                     break;
                 case BasicType.Time:
                     ReadTime(reader, setProperty);
@@ -113,20 +92,20 @@ namespace Tecan.Sila2.DynamicClient
                 case BasicType.Timestamp:
                     ReadTimestamp(reader, setProperty);
                     break;
+                default:
+                    throw new ArgumentOutOfRangeException( nameof(type), type, $"Type {type} is not a supported basic type." );
             }
             ProtoReader.EndSubItem(token, reader);
         }
 
-        private static int ReadUIntOfField( ProtoReader reader, int field )
+        private static int ReadIntOfField( ProtoReader reader, int field )
         {
             if(IsInField( reader, field ))
             {
                 return (int)reader.ReadUInt32();
             }
-            else
-            {
-                return 0;
-            }
+
+            return 0;
         }
 
         private static void ReadAny( ProtoReader reader, Action<object> setProperty, IBinaryStore binaryStore )
@@ -146,57 +125,55 @@ namespace Tecan.Sila2.DynamicClient
 
         private static void ReadTimestamp(ProtoReader reader, Action<object> setProperty)
         {
-            var seconds = ReadUIntOfField( reader, 1 );
-            var minute = ReadUIntOfField( reader, 2 );
-            var hour = ReadUIntOfField( reader, 3 );
-            var day = ReadUIntOfField( reader, 4 );
-            var month = ReadUIntOfField( reader, 5 );
-            var year = ReadUIntOfField( reader, 6 );
-            TimeSpan timeZone = ReadTimezone(reader, 7);
-            setProperty(new DateTimeOffset((int)year, (int)month, (int)day, (int)hour, (int)minute, (int)seconds, timeZone));
+            var seconds = ReadIntOfField( reader, 1 );
+            var minute = ReadIntOfField( reader, 2 );
+            var hour = ReadIntOfField( reader, 3 );
+            var day = ReadIntOfField( reader, 4 );
+            var month = ReadIntOfField( reader, 5 );
+            var year = ReadIntOfField( reader, 6 );
+            var timeZone = ReadTimezone(reader, 7);
+            setProperty(new DateTimeOffset( year, month, day, hour, minute, seconds, timeZone));
         }
 
         private static void ReadDate(ProtoReader reader, Action<object> setProperty)
         {
-            var day = ReadUIntOfField( reader, 1 );
-            var month = ReadUIntOfField( reader, 2 );
-            var year = ReadUIntOfField( reader, 3 );
-            TimeSpan timeZone = ReadTimezone(reader, 4);
-            setProperty(new DateTimeOffset((int)year, (int)month, (int)day, 0, 0, 0, timeZone));
+            var day = ReadIntOfField( reader, 1 );
+            var month = ReadIntOfField( reader, 2 );
+            var year = ReadIntOfField( reader, 3 );
+            var timeZone = ReadTimezone(reader, 4);
+            setProperty(new DateTimeOffset( year, month, day, 0, 0, 0, timeZone));
         }
 
         private static void ReadTime(ProtoReader reader, Action<object> setProperty)
         {
-            var seconds = ReadUIntOfField( reader, 1 );
-            var minute = ReadUIntOfField( reader, 2 );
-            var hour = ReadUIntOfField( reader, 3 );
+            var seconds = ReadIntOfField( reader, 1 );
+            var minute = ReadIntOfField( reader, 2 );
+            var hour = ReadIntOfField( reader, 3 );
 
             var time = new TimeSpan(hour, minute, seconds);
-            TimeSpan timeZone = ReadTimezone( reader, 4 );
+            var timeZone = ReadTimezone( reader, 4 );
 
             setProperty(time + timeZone);
         }
 
         private static TimeSpan ReadTimezone(ProtoReader reader, int field)
         {
-            if( IsInField( reader, field ) )
-            {
-                var innerToken = ProtoReader.StartSubItem( reader );
-                int timeZoneHour = 0;
-                if( IsInField( reader, 1 ) )
-                {
-                    timeZoneHour = reader.ReadInt32();
-                }
-
-                var timeZoneMinute = ReadUIntOfField( reader, 2 );
-                ProtoReader.EndSubItem( innerToken, reader );
-                var timeZone = new TimeSpan( timeZoneHour, (int)timeZoneMinute, 0 );
-                return timeZone;
-            }
-            else
+            if( !IsInField( reader, field ) )
             {
                 return TimeSpan.Zero;
             }
+            var innerToken = ProtoReader.StartSubItem( reader );
+            var timeZoneHour = 0;
+            if( IsInField( reader, 1 ) )
+            {
+                timeZoneHour = reader.ReadInt32();
+            }
+
+            var timeZoneMinute = ReadIntOfField( reader, 2 );
+            ProtoReader.EndSubItem( innerToken, reader );
+            var timeZone = new TimeSpan( timeZoneHour, (int)timeZoneMinute, 0 );
+            return timeZone;
+
         }
 
         private static bool IsInField( ProtoReader reader, int field )
@@ -223,7 +200,7 @@ namespace Tecan.Sila2.DynamicClient
             int field;
             var dynamicObject = new DynamicObject();
             var first = reader.LongPosition == 0;
-            SubItemToken token = default(SubItemToken);
+            var token = default(SubItemToken);
             if (!first) token = ProtoReader.StartSubItem(reader);
             while ((field = reader.ReadFieldHeader()) > 0)
             {
@@ -264,11 +241,11 @@ namespace Tecan.Sila2.DynamicClient
             {
                 type = new StructureType()
                 {
-                    Element = new SiLAElement[]
+                    Element = new[]
                     {
                         new SiLAElement
                         {
-                            DataType = new DataTypeType() {Item = type},
+                            DataType = new DataTypeType {Item = type},
                             Identifier = "Value"
                         }
                     }
@@ -281,6 +258,7 @@ namespace Tecan.Sila2.DynamicClient
         /// Serializes the given dynamic property into a byte array
         /// </summary>
         /// <param name="property">The dynamic property</param>
+        /// <param name="store">A component that handles binary transfer</param>
         /// <returns>A byte array</returns>
         /// <exception cref="ArgumentNullException">Thrown, if <paramref name="property"/> is null.</exception>
         public byte[] Serialize(DynamicObjectProperty property, IBinaryStore store )
@@ -335,6 +313,8 @@ namespace Tecan.Sila2.DynamicClient
                 case BasicType.Any:
                     WriteAny( writer, value, store );
                     break;
+                default:
+                    throw new ArgumentOutOfRangeException( nameof(type), type, $"Type {type} is not a supported basic type" );
             }
             ProtoWriter.EndSubItem(token, writer);
         }
@@ -462,8 +442,7 @@ namespace Tecan.Sila2.DynamicClient
 
         private void Write(ProtoWriter writer, object value, int fieldNumber, IBinaryStore store, StructureType type)
         {
-            var dynamicObject = value as DynamicObject;
-            if( dynamicObject == null )
+            if( !(value is DynamicObject dynamicObject) )
             {
                 if( value != null )
                 {
@@ -472,7 +451,7 @@ namespace Tecan.Sila2.DynamicClient
 
                 return;
             }
-            SubItemToken token = default(SubItemToken);
+            var token = default(SubItemToken);
             if (fieldNumber > 0)
             {
                 ProtoWriter.WriteFieldHeader(fieldNumber, WireType.String, writer);
@@ -481,7 +460,7 @@ namespace Tecan.Sila2.DynamicClient
 
             if (type.Element != null)
             {
-                for (int i = 0; i < type.Element.Length; i++)
+                for (var i = 0; i < type.Element.Length; i++)
                 {
                     var element = type.Element[i];
                     var prop = dynamicObject.Elements.FirstOrDefault(p => p.Identifier == element.Identifier);
@@ -521,7 +500,7 @@ namespace Tecan.Sila2.DynamicClient
             {
                 type = new StructureType()
                 {
-                    Element = new SiLAElement[]
+                    Element = new[]
                     {
                         new SiLAElement
                         {

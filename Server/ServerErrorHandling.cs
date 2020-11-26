@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Text;
 using Grpc.Core;
 
 namespace Tecan.Sila2.Server

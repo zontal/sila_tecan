@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Threading.Channels;
 using System.Threading.Tasks;
-using Tecan.Sila2.Binary;
 
 namespace Tecan.Sila2.Server
 {

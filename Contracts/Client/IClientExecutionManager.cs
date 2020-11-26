@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Tecan.Sila2.Binary;
 
 namespace Tecan.Sila2.Client
 {

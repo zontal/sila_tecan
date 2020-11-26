@@ -1,6 +1,4 @@
-﻿using Tecan.Sila2.Binary;
-
-namespace Tecan.Sila2
+﻿namespace Tecan.Sila2
 {
     /// <summary>
     /// Defines a class used as data transfer object type

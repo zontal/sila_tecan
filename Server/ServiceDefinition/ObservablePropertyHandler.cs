@@ -23,7 +23,7 @@ namespace Tecan.Sila2.Server.ServiceDefinition
             return _server.InvokeCommand( () => SendValueAsync( responseStream, _implementation, 1000, context ), _identifier, context );
         }
 
-        private static async Task<int> SendValueAsync<T>( IServerStreamWriter<T> responseStream, Func<T> factory, int delay, ServerCallContext context )
+        private static async Task<int> SendValueAsync( IServerStreamWriter<T> responseStream, Func<T> factory, int delay, ServerCallContext context )
         {
             do
             {

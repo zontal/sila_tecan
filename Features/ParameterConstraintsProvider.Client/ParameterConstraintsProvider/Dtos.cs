@@ -13,6 +13,9 @@ namespace Tecan.Sila2.ParameterConstraintsProvider.ParameterConstraintsProvider
     using Tecan.Sila2;
     
     
+    ///  <summary>
+    /// The data transfer object for Parameters Constraint
+    /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
     public class ParametersConstraintDto : Tecan.Sila2.ISilaTransferObject<ParametersConstraint>
     {
@@ -21,11 +24,19 @@ namespace Tecan.Sila2.ParameterConstraintsProvider.ParameterConstraintsProvider
         
         private Tecan.Sila2.StringDto _constraints;
         
+        ///  <summary>
+        /// Initializes a new instance (to be used by the serializer)
+        /// </summary>
         public ParametersConstraintDto()
         {
         }
         
-        public ParametersConstraintDto(ParametersConstraint inner, Tecan.Sila2.Binary.IBinaryStore store)
+        ///  <summary>
+        /// Initializes a new data transfer object from the business object
+        /// </summary>
+        /// <param name="inner">The business object that should be transferred</param>
+        /// <param name="store">A component to handle binary data</param>
+        public ParametersConstraintDto(ParametersConstraint inner, Tecan.Sila2.IBinaryStore store)
         {
             CommandParameterIdentifier = new Tecan.Sila2.StringDto(inner.CommandParameterIdentifier, store);
             Constraints = new Tecan.Sila2.StringDto(inner.Constraints, store);
@@ -68,7 +79,7 @@ namespace Tecan.Sila2.ParameterConstraintsProvider.ParameterConstraintsProvider
         /// </summary>
         /// <param name="store">The binary store in which to store binary data</param>
         /// <returns>the inner value</returns>
-        public ParametersConstraint Extract(Tecan.Sila2.Binary.IBinaryStore store)
+        public ParametersConstraint Extract(Tecan.Sila2.IBinaryStore store)
         {
             return new ParametersConstraint(CommandParameterIdentifier.Extract(store), Constraints.Extract(store));
         }
@@ -78,7 +89,7 @@ namespace Tecan.Sila2.ParameterConstraintsProvider.ParameterConstraintsProvider
         /// </summary>
         /// <param name="inner">The object to transfer</param>
         /// <param name="store">An object to store binary data</param>
-        public static ParametersConstraintDto Create(ParametersConstraint inner, Tecan.Sila2.Binary.IBinaryStore store)
+        public static ParametersConstraintDto Create(ParametersConstraint inner, Tecan.Sila2.IBinaryStore store)
         {
             return new ParametersConstraintDto(inner, store);
         }

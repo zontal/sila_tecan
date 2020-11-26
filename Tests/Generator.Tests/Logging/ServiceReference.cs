@@ -43,6 +43,9 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         
         private System.Collections.Generic.ICollection<LogEntryData> _data;
         
+        ///  <summary>
+        /// Initializes a new instance
+        /// </summary>
         public LogEntry(string message, string channel, Severity severity, System.Collections.Generic.ICollection<LogEntryData> data)
         {
             _message = message;
@@ -93,6 +96,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
     }
     
     ///  <summary>
+    /// Severity
     /// </summary>
     public enum Severity
     {
@@ -121,6 +125,9 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         
         private System.Collections.Generic.ICollection<LogEntryData> _children;
         
+        ///  <summary>
+        /// Initializes a new instance
+        /// </summary>
         public LogEntryData(string key, string value, System.Collections.Generic.ICollection<LogEntryData> children)
         {
             _key = key;

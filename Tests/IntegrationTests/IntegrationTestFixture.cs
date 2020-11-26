@@ -7,19 +7,14 @@ using System.Net;
 using System.Threading;
 using System.Threading.Channels;
 using System.Threading.Tasks;
-using Grpc.Core;
 using NUnit.Framework;
-using Tecan.Sila2.Authentication;
 using Tecan.Sila2.Authentication.AuthenticationService;
-using Tecan.Sila2.Cancellation;
 using Tecan.Sila2.Cancellation.CancelController;
 using Tecan.Sila2.Client;
 using Tecan.Sila2.Discovery;
 using Tecan.Sila2.DynamicClient;
 using Tecan.Sila2.IntegrationTests.TestServer;
-using Tecan.Sila2.Locking;
 using Tecan.Sila2.Locking.LockController;
-using Tecan.Sila2.Server;
 using Tecan.Sila2.Tests;
 
 namespace Tecan.Sila2.IntegrationTests

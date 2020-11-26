@@ -37,7 +37,7 @@ namespace Tecan.Sila2.Interop.Server
         /// <param name="store">An object to organize binaries.</param>
         ///  <param name="listLength">Number of elements in the list</param>
         ///  <param name="elementLength">Length of each elements</param>
-        public ListProviderRequestDto(long listLength, long elementLength, Tecan.Sila2.Binary.IBinaryStore store)
+        public ListProviderRequestDto(long listLength, long elementLength, Tecan.Sila2.IBinaryStore store)
         {
             ListLength = new Tecan.Sila2.IntegerDto(listLength, store);
             ElementLength = new Tecan.Sila2.IntegerDto(elementLength, store);
@@ -118,7 +118,7 @@ namespace Tecan.Sila2.Interop.Server
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
         ///  <param name="list">A list of string</param>
-        public ListProviderResponseDto(System.Collections.Generic.ICollection<string> list, Tecan.Sila2.Binary.IBinaryStore store)
+        public ListProviderResponseDto(System.Collections.Generic.ICollection<string> list, Tecan.Sila2.IBinaryStore store)
         {
             List = Tecan.Sila2.DtoExtensions.Encapsulate(list, Tecan.Sila2.StringDto.Create, store);
         }
@@ -170,7 +170,7 @@ namespace Tecan.Sila2.Interop.Server
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
         ///  <param name="structStructStruct">Structure of structure of structure</param>
-        public ThreeDimensionalStructRequestDto(ThreeDimensionalStructStructStructStruct structStructStruct, Tecan.Sila2.Binary.IBinaryStore store)
+        public ThreeDimensionalStructRequestDto(ThreeDimensionalStructStructStructStruct structStructStruct, Tecan.Sila2.IBinaryStore store)
         {
             StructStructStruct = new ThreeDimensionalStructStructStructStructDto(structStructStruct, store);
         }
@@ -234,7 +234,7 @@ namespace Tecan.Sila2.Interop.Server
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
         ///  <param name="threeDimensionalListResult">³d list</param>
-        public ThreeDimensionalStructResponseDto(ThreeDimensionalString threeDimensionalListResult, Tecan.Sila2.Binary.IBinaryStore store)
+        public ThreeDimensionalStructResponseDto(ThreeDimensionalString threeDimensionalListResult, Tecan.Sila2.IBinaryStore store)
         {
             ThreeDimensionalListResult = new ThreeDimensionalStringDto(threeDimensionalListResult, store);
         }
@@ -286,7 +286,7 @@ namespace Tecan.Sila2.Interop.Server
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
         ///  <param name="listListList">List of list of list</param>
-        public ThreeDimensionalListRequestDto(ThreeDimensionalString listListList, Tecan.Sila2.Binary.IBinaryStore store)
+        public ThreeDimensionalListRequestDto(ThreeDimensionalString listListList, Tecan.Sila2.IBinaryStore store)
         {
             ListListList = new ThreeDimensionalStringDto(listListList, store);
         }
@@ -350,7 +350,7 @@ namespace Tecan.Sila2.Interop.Server
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
         ///  <param name="threeDimensionalStructResult">³d structure</param>
-        public ThreeDimensionalListResponseDto(ThreeDimensionalListThreeDimensionalStructResult threeDimensionalStructResult, Tecan.Sila2.Binary.IBinaryStore store)
+        public ThreeDimensionalListResponseDto(ThreeDimensionalListThreeDimensionalStructResult threeDimensionalStructResult, Tecan.Sila2.IBinaryStore store)
         {
             ThreeDimensionalStructResult = new ThreeDimensionalListThreeDimensionalStructResultDto(threeDimensionalStructResult, store);
         }
@@ -405,7 +405,7 @@ namespace Tecan.Sila2.Interop.Server
         /// <param name="store">An object to organize binaries.</param>
         ///  <param name="structListStruct">A structure of list of structure</param>
         ///  <param name="listStructList">A list of structure of list</param>
-        public WhyMakeItSimpleWhenYouCanMakeItComplicatedRequestDto(WhyMakeItSimpleWhenYouCanMakeItComplicatedStructListStruct structListStruct, System.Collections.Generic.ICollection<WhyMakeItSimpleWhenYouCanMakeItComplicatedListStructListItem> listStructList, Tecan.Sila2.Binary.IBinaryStore store)
+        public WhyMakeItSimpleWhenYouCanMakeItComplicatedRequestDto(WhyMakeItSimpleWhenYouCanMakeItComplicatedStructListStruct structListStruct, System.Collections.Generic.ICollection<WhyMakeItSimpleWhenYouCanMakeItComplicatedListStructListItem> listStructList, Tecan.Sila2.IBinaryStore store)
         {
             StructListStruct = new WhyMakeItSimpleWhenYouCanMakeItComplicatedStructListStructDto(structListStruct, store);
             ListStructList = Tecan.Sila2.DtoExtensions.Encapsulate(listStructList, WhyMakeItSimpleWhenYouCanMakeItComplicatedListStructListItemDto.Create, store);
@@ -477,11 +477,19 @@ namespace Tecan.Sila2.Interop.Server
         
         private Tecan.Sila2.StringDto _secondResponse;
         
+        ///  <summary>
+        /// Initializes a new instance (to be used by the serializer)
+        /// </summary>
         public WhyMakeItSimpleWhenYouCanMakeItComplicatedResponseDto()
         {
         }
         
-        public WhyMakeItSimpleWhenYouCanMakeItComplicatedResponseDto(WhyMakeItSimpleWhenYouCanMakeItComplicatedResponse inner, Tecan.Sila2.Binary.IBinaryStore store)
+        ///  <summary>
+        /// Initializes a new data transfer object from the business object
+        /// </summary>
+        /// <param name="inner">The business object that should be transferred</param>
+        /// <param name="store">A component to handle binary data</param>
+        public WhyMakeItSimpleWhenYouCanMakeItComplicatedResponseDto(WhyMakeItSimpleWhenYouCanMakeItComplicatedResponse inner, Tecan.Sila2.IBinaryStore store)
         {
             FirstResponse = new Tecan.Sila2.StringDto(inner.FirstResponse, store);
             SecondResponse = new Tecan.Sila2.StringDto(inner.SecondResponse, store);
@@ -524,7 +532,7 @@ namespace Tecan.Sila2.Interop.Server
         /// </summary>
         /// <param name="store">The binary store in which to store binary data</param>
         /// <returns>the inner value</returns>
-        public WhyMakeItSimpleWhenYouCanMakeItComplicatedResponse Extract(Tecan.Sila2.Binary.IBinaryStore store)
+        public WhyMakeItSimpleWhenYouCanMakeItComplicatedResponse Extract(Tecan.Sila2.IBinaryStore store)
         {
             return new WhyMakeItSimpleWhenYouCanMakeItComplicatedResponse(FirstResponse.Extract(store), SecondResponse.Extract(store));
         }
@@ -534,7 +542,7 @@ namespace Tecan.Sila2.Interop.Server
         /// </summary>
         /// <param name="inner">The object to transfer</param>
         /// <param name="store">An object to store binary data</param>
-        public static WhyMakeItSimpleWhenYouCanMakeItComplicatedResponseDto Create(WhyMakeItSimpleWhenYouCanMakeItComplicatedResponse inner, Tecan.Sila2.Binary.IBinaryStore store)
+        public static WhyMakeItSimpleWhenYouCanMakeItComplicatedResponseDto Create(WhyMakeItSimpleWhenYouCanMakeItComplicatedResponse inner, Tecan.Sila2.IBinaryStore store)
         {
             return new WhyMakeItSimpleWhenYouCanMakeItComplicatedResponseDto(inner, store);
         }
@@ -573,7 +581,7 @@ namespace Tecan.Sila2.Interop.Server
         /// <param name="store">An object to organize binaries.</param>
         ///  <param name="data">The data to encipher</param>
         ///  <param name="cipherKey">The key to encipher the data with</param>
-        public XOREncipherRequestDto(System.IO.Stream data, long cipherKey, Tecan.Sila2.Binary.IBinaryStore store)
+        public XOREncipherRequestDto(System.IO.Stream data, long cipherKey, Tecan.Sila2.IBinaryStore store)
         {
             Data = new Tecan.Sila2.BinaryDto(data, store);
             CipherKey = new Tecan.Sila2.IntegerDto(cipherKey, store);
@@ -654,7 +662,7 @@ namespace Tecan.Sila2.Interop.Server
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
         ///  <param name="data">The enciphered data</param>
-        public XOREncipherResponseDto(System.IO.Stream data, Tecan.Sila2.Binary.IBinaryStore store)
+        public XOREncipherResponseDto(System.IO.Stream data, Tecan.Sila2.IBinaryStore store)
         {
             Data = new Tecan.Sila2.BinaryDto(data, store);
         }
@@ -706,7 +714,7 @@ namespace Tecan.Sila2.Interop.Server
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
         ///  <param name="type">The wanted type</param>
-        public ValueForTypeProviderRequestDto(string type, Tecan.Sila2.Binary.IBinaryStore store)
+        public ValueForTypeProviderRequestDto(string type, Tecan.Sila2.IBinaryStore store)
         {
             Type = new Tecan.Sila2.StringDto(type, store);
         }
@@ -770,7 +778,7 @@ namespace Tecan.Sila2.Interop.Server
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
         ///  <param name="any">Any</param>
-        public ValueForTypeProviderResponseDto(Tecan.Sila2.DynamicClient.DynamicObjectProperty any, Tecan.Sila2.Binary.IBinaryStore store)
+        public ValueForTypeProviderResponseDto(Tecan.Sila2.DynamicClient.DynamicObjectProperty any, Tecan.Sila2.IBinaryStore store)
         {
             Any = new Tecan.Sila2.DynamicClient.AnyTypeDto(any, store);
         }
@@ -810,11 +818,19 @@ namespace Tecan.Sila2.Interop.Server
         
         private System.Collections.Generic.List<Tecan.Sila2.StringDto> _oneDimensionalString;
         
+        ///  <summary>
+        /// Initializes a new instance (to be used by the serializer)
+        /// </summary>
         public OneDimensionalStringDto()
         {
         }
         
-        public OneDimensionalStringDto(OneDimensionalString inner, Tecan.Sila2.Binary.IBinaryStore store)
+        ///  <summary>
+        /// Initializes a new data transfer object from the business object
+        /// </summary>
+        /// <param name="inner">The business object that should be transferred</param>
+        /// <param name="store">A component to handle binary data</param>
+        public OneDimensionalStringDto(OneDimensionalString inner, Tecan.Sila2.IBinaryStore store)
         {
             OneDimensionalString = Tecan.Sila2.DtoExtensions.Encapsulate(inner.Value, Tecan.Sila2.StringDto.Create, store);
         }
@@ -840,7 +856,7 @@ namespace Tecan.Sila2.Interop.Server
         /// </summary>
         /// <param name="store">The binary store in which to store binary data</param>
         /// <returns>the inner value</returns>
-        public OneDimensionalString Extract(Tecan.Sila2.Binary.IBinaryStore store)
+        public OneDimensionalString Extract(Tecan.Sila2.IBinaryStore store)
         {
             return new OneDimensionalString(OneDimensionalString.Extract(store));
         }
@@ -850,7 +866,7 @@ namespace Tecan.Sila2.Interop.Server
         /// </summary>
         /// <param name="inner">The object to transfer</param>
         /// <param name="store">An object to store binary data</param>
-        public static OneDimensionalStringDto Create(OneDimensionalString inner, Tecan.Sila2.Binary.IBinaryStore store)
+        public static OneDimensionalStringDto Create(OneDimensionalString inner, Tecan.Sila2.IBinaryStore store)
         {
             return new OneDimensionalStringDto(inner, store);
         }
@@ -874,11 +890,19 @@ namespace Tecan.Sila2.Interop.Server
         
         private System.Collections.Generic.List<Tecan.Sila2.DynamicClient.AnyTypeDto> _anonymousList;
         
+        ///  <summary>
+        /// Initializes a new instance (to be used by the serializer)
+        /// </summary>
         public AnonymousListDto()
         {
         }
         
-        public AnonymousListDto(AnonymousList inner, Tecan.Sila2.Binary.IBinaryStore store)
+        ///  <summary>
+        /// Initializes a new data transfer object from the business object
+        /// </summary>
+        /// <param name="inner">The business object that should be transferred</param>
+        /// <param name="store">A component to handle binary data</param>
+        public AnonymousListDto(AnonymousList inner, Tecan.Sila2.IBinaryStore store)
         {
             AnonymousList = Tecan.Sila2.DtoExtensions.Encapsulate(inner.Value, Tecan.Sila2.DynamicClient.AnyTypeDto.Create, store);
         }
@@ -904,7 +928,7 @@ namespace Tecan.Sila2.Interop.Server
         /// </summary>
         /// <param name="store">The binary store in which to store binary data</param>
         /// <returns>the inner value</returns>
-        public AnonymousList Extract(Tecan.Sila2.Binary.IBinaryStore store)
+        public AnonymousList Extract(Tecan.Sila2.IBinaryStore store)
         {
             return new AnonymousList(AnonymousList.Extract(store));
         }
@@ -914,7 +938,7 @@ namespace Tecan.Sila2.Interop.Server
         /// </summary>
         /// <param name="inner">The object to transfer</param>
         /// <param name="store">An object to store binary data</param>
-        public static AnonymousListDto Create(AnonymousList inner, Tecan.Sila2.Binary.IBinaryStore store)
+        public static AnonymousListDto Create(AnonymousList inner, Tecan.Sila2.IBinaryStore store)
         {
             return new AnonymousListDto(inner, store);
         }
@@ -938,11 +962,19 @@ namespace Tecan.Sila2.Interop.Server
         
         private System.Collections.Generic.List<OneDimensionalStringDto> _twoDimensionalString;
         
+        ///  <summary>
+        /// Initializes a new instance (to be used by the serializer)
+        /// </summary>
         public TwoDimensionalStringDto()
         {
         }
         
-        public TwoDimensionalStringDto(TwoDimensionalString inner, Tecan.Sila2.Binary.IBinaryStore store)
+        ///  <summary>
+        /// Initializes a new data transfer object from the business object
+        /// </summary>
+        /// <param name="inner">The business object that should be transferred</param>
+        /// <param name="store">A component to handle binary data</param>
+        public TwoDimensionalStringDto(TwoDimensionalString inner, Tecan.Sila2.IBinaryStore store)
         {
             TwoDimensionalString = Tecan.Sila2.DtoExtensions.Encapsulate(inner.Value, OneDimensionalStringDto.Create, store);
         }
@@ -968,7 +1000,7 @@ namespace Tecan.Sila2.Interop.Server
         /// </summary>
         /// <param name="store">The binary store in which to store binary data</param>
         /// <returns>the inner value</returns>
-        public TwoDimensionalString Extract(Tecan.Sila2.Binary.IBinaryStore store)
+        public TwoDimensionalString Extract(Tecan.Sila2.IBinaryStore store)
         {
             return new TwoDimensionalString(TwoDimensionalString.Extract(store));
         }
@@ -978,7 +1010,7 @@ namespace Tecan.Sila2.Interop.Server
         /// </summary>
         /// <param name="inner">The object to transfer</param>
         /// <param name="store">An object to store binary data</param>
-        public static TwoDimensionalStringDto Create(TwoDimensionalString inner, Tecan.Sila2.Binary.IBinaryStore store)
+        public static TwoDimensionalStringDto Create(TwoDimensionalString inner, Tecan.Sila2.IBinaryStore store)
         {
             return new TwoDimensionalStringDto(inner, store);
         }
@@ -1002,11 +1034,19 @@ namespace Tecan.Sila2.Interop.Server
         
         private System.Collections.Generic.List<TwoDimensionalStringDto> _threeDimensionalString;
         
+        ///  <summary>
+        /// Initializes a new instance (to be used by the serializer)
+        /// </summary>
         public ThreeDimensionalStringDto()
         {
         }
         
-        public ThreeDimensionalStringDto(ThreeDimensionalString inner, Tecan.Sila2.Binary.IBinaryStore store)
+        ///  <summary>
+        /// Initializes a new data transfer object from the business object
+        /// </summary>
+        /// <param name="inner">The business object that should be transferred</param>
+        /// <param name="store">A component to handle binary data</param>
+        public ThreeDimensionalStringDto(ThreeDimensionalString inner, Tecan.Sila2.IBinaryStore store)
         {
             ThreeDimensionalString = Tecan.Sila2.DtoExtensions.Encapsulate(inner.Value, TwoDimensionalStringDto.Create, store);
         }
@@ -1032,7 +1072,7 @@ namespace Tecan.Sila2.Interop.Server
         /// </summary>
         /// <param name="store">The binary store in which to store binary data</param>
         /// <returns>the inner value</returns>
-        public ThreeDimensionalString Extract(Tecan.Sila2.Binary.IBinaryStore store)
+        public ThreeDimensionalString Extract(Tecan.Sila2.IBinaryStore store)
         {
             return new ThreeDimensionalString(ThreeDimensionalString.Extract(store));
         }
@@ -1042,7 +1082,7 @@ namespace Tecan.Sila2.Interop.Server
         /// </summary>
         /// <param name="inner">The object to transfer</param>
         /// <param name="store">An object to store binary data</param>
-        public static ThreeDimensionalStringDto Create(ThreeDimensionalString inner, Tecan.Sila2.Binary.IBinaryStore store)
+        public static ThreeDimensionalStringDto Create(ThreeDimensionalString inner, Tecan.Sila2.IBinaryStore store)
         {
             return new ThreeDimensionalStringDto(inner, store);
         }
@@ -1066,11 +1106,19 @@ namespace Tecan.Sila2.Interop.Server
         
         private Tecan.Sila2.StringDto _dataTypeString;
         
+        ///  <summary>
+        /// Initializes a new instance (to be used by the serializer)
+        /// </summary>
         public DataTypeStringDto()
         {
         }
         
-        public DataTypeStringDto(DataTypeString inner, Tecan.Sila2.Binary.IBinaryStore store)
+        ///  <summary>
+        /// Initializes a new data transfer object from the business object
+        /// </summary>
+        /// <param name="inner">The business object that should be transferred</param>
+        /// <param name="store">A component to handle binary data</param>
+        public DataTypeStringDto(DataTypeString inner, Tecan.Sila2.IBinaryStore store)
         {
             DataTypeString = new Tecan.Sila2.StringDto(inner.Value, store);
         }
@@ -1096,7 +1144,7 @@ namespace Tecan.Sila2.Interop.Server
         /// </summary>
         /// <param name="store">The binary store in which to store binary data</param>
         /// <returns>the inner value</returns>
-        public DataTypeString Extract(Tecan.Sila2.Binary.IBinaryStore store)
+        public DataTypeString Extract(Tecan.Sila2.IBinaryStore store)
         {
             return new DataTypeString(DataTypeString.Extract(store));
         }
@@ -1106,7 +1154,7 @@ namespace Tecan.Sila2.Interop.Server
         /// </summary>
         /// <param name="inner">The object to transfer</param>
         /// <param name="store">An object to store binary data</param>
-        public static DataTypeStringDto Create(DataTypeString inner, Tecan.Sila2.Binary.IBinaryStore store)
+        public static DataTypeStringDto Create(DataTypeString inner, Tecan.Sila2.IBinaryStore store)
         {
             return new DataTypeStringDto(inner, store);
         }
@@ -1121,17 +1169,28 @@ namespace Tecan.Sila2.Interop.Server
         }
     }
     
+    ///  <summary>
+    /// The data transfer object for Three Dimensional Struct Struct Struct Struct
+    /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
     public class ThreeDimensionalStructStructStructStructDto : Tecan.Sila2.ISilaTransferObject<ThreeDimensionalStructStructStructStruct>
     {
         
         private ThreeDimensionalStructStructStructStructFirstDimensionDto _firstDimension;
         
+        ///  <summary>
+        /// Initializes a new instance (to be used by the serializer)
+        /// </summary>
         public ThreeDimensionalStructStructStructStructDto()
         {
         }
         
-        public ThreeDimensionalStructStructStructStructDto(ThreeDimensionalStructStructStructStruct inner, Tecan.Sila2.Binary.IBinaryStore store)
+        ///  <summary>
+        /// Initializes a new data transfer object from the business object
+        /// </summary>
+        /// <param name="inner">The business object that should be transferred</param>
+        /// <param name="store">A component to handle binary data</param>
+        public ThreeDimensionalStructStructStructStructDto(ThreeDimensionalStructStructStructStruct inner, Tecan.Sila2.IBinaryStore store)
         {
             FirstDimension = new ThreeDimensionalStructStructStructStructFirstDimensionDto(inner.FirstDimension, store);
         }
@@ -1157,7 +1216,7 @@ namespace Tecan.Sila2.Interop.Server
         /// </summary>
         /// <param name="store">The binary store in which to store binary data</param>
         /// <returns>the inner value</returns>
-        public ThreeDimensionalStructStructStructStruct Extract(Tecan.Sila2.Binary.IBinaryStore store)
+        public ThreeDimensionalStructStructStructStruct Extract(Tecan.Sila2.IBinaryStore store)
         {
             return new ThreeDimensionalStructStructStructStruct(FirstDimension.Extract(store));
         }
@@ -1167,7 +1226,7 @@ namespace Tecan.Sila2.Interop.Server
         /// </summary>
         /// <param name="inner">The object to transfer</param>
         /// <param name="store">An object to store binary data</param>
-        public static ThreeDimensionalStructStructStructStructDto Create(ThreeDimensionalStructStructStructStruct inner, Tecan.Sila2.Binary.IBinaryStore store)
+        public static ThreeDimensionalStructStructStructStructDto Create(ThreeDimensionalStructStructStructStruct inner, Tecan.Sila2.IBinaryStore store)
         {
             return new ThreeDimensionalStructStructStructStructDto(inner, store);
         }
@@ -1182,17 +1241,28 @@ namespace Tecan.Sila2.Interop.Server
         }
     }
     
+    ///  <summary>
+    /// The data transfer object for Three Dimensional List Three Dimensional Struct Result
+    /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
     public class ThreeDimensionalListThreeDimensionalStructResultDto : Tecan.Sila2.ISilaTransferObject<ThreeDimensionalListThreeDimensionalStructResult>
     {
         
         private ThreeDimensionalListThreeDimensionalStructResultFirstDimensionDto _firstDimension;
         
+        ///  <summary>
+        /// Initializes a new instance (to be used by the serializer)
+        /// </summary>
         public ThreeDimensionalListThreeDimensionalStructResultDto()
         {
         }
         
-        public ThreeDimensionalListThreeDimensionalStructResultDto(ThreeDimensionalListThreeDimensionalStructResult inner, Tecan.Sila2.Binary.IBinaryStore store)
+        ///  <summary>
+        /// Initializes a new data transfer object from the business object
+        /// </summary>
+        /// <param name="inner">The business object that should be transferred</param>
+        /// <param name="store">A component to handle binary data</param>
+        public ThreeDimensionalListThreeDimensionalStructResultDto(ThreeDimensionalListThreeDimensionalStructResult inner, Tecan.Sila2.IBinaryStore store)
         {
             FirstDimension = new ThreeDimensionalListThreeDimensionalStructResultFirstDimensionDto(inner.FirstDimension, store);
         }
@@ -1218,7 +1288,7 @@ namespace Tecan.Sila2.Interop.Server
         /// </summary>
         /// <param name="store">The binary store in which to store binary data</param>
         /// <returns>the inner value</returns>
-        public ThreeDimensionalListThreeDimensionalStructResult Extract(Tecan.Sila2.Binary.IBinaryStore store)
+        public ThreeDimensionalListThreeDimensionalStructResult Extract(Tecan.Sila2.IBinaryStore store)
         {
             return new ThreeDimensionalListThreeDimensionalStructResult(FirstDimension.Extract(store));
         }
@@ -1228,7 +1298,7 @@ namespace Tecan.Sila2.Interop.Server
         /// </summary>
         /// <param name="inner">The object to transfer</param>
         /// <param name="store">An object to store binary data</param>
-        public static ThreeDimensionalListThreeDimensionalStructResultDto Create(ThreeDimensionalListThreeDimensionalStructResult inner, Tecan.Sila2.Binary.IBinaryStore store)
+        public static ThreeDimensionalListThreeDimensionalStructResultDto Create(ThreeDimensionalListThreeDimensionalStructResult inner, Tecan.Sila2.IBinaryStore store)
         {
             return new ThreeDimensionalListThreeDimensionalStructResultDto(inner, store);
         }
@@ -1243,17 +1313,28 @@ namespace Tecan.Sila2.Interop.Server
         }
     }
     
+    ///  <summary>
+    /// The data transfer object for Why Make It Simple When You Can Make It Complicated Struct List Struct
+    /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
     public class WhyMakeItSimpleWhenYouCanMakeItComplicatedStructListStructDto : Tecan.Sila2.ISilaTransferObject<WhyMakeItSimpleWhenYouCanMakeItComplicatedStructListStruct>
     {
         
         private System.Collections.Generic.List<Tecan.Sila2.KeyValuePairDto<string, Tecan.Sila2.StringDto, string, Tecan.Sila2.StringDto>> _listStruct;
         
+        ///  <summary>
+        /// Initializes a new instance (to be used by the serializer)
+        /// </summary>
         public WhyMakeItSimpleWhenYouCanMakeItComplicatedStructListStructDto()
         {
         }
         
-        public WhyMakeItSimpleWhenYouCanMakeItComplicatedStructListStructDto(WhyMakeItSimpleWhenYouCanMakeItComplicatedStructListStruct inner, Tecan.Sila2.Binary.IBinaryStore store)
+        ///  <summary>
+        /// Initializes a new data transfer object from the business object
+        /// </summary>
+        /// <param name="inner">The business object that should be transferred</param>
+        /// <param name="store">A component to handle binary data</param>
+        public WhyMakeItSimpleWhenYouCanMakeItComplicatedStructListStructDto(WhyMakeItSimpleWhenYouCanMakeItComplicatedStructListStruct inner, Tecan.Sila2.IBinaryStore store)
         {
             ListStruct = Tecan.Sila2.DtoExtensions.Encapsulate(inner.ListStruct, Tecan.Sila2.StringDto.Create, Tecan.Sila2.StringDto.Create, store);
         }
@@ -1279,7 +1360,7 @@ namespace Tecan.Sila2.Interop.Server
         /// </summary>
         /// <param name="store">The binary store in which to store binary data</param>
         /// <returns>the inner value</returns>
-        public WhyMakeItSimpleWhenYouCanMakeItComplicatedStructListStruct Extract(Tecan.Sila2.Binary.IBinaryStore store)
+        public WhyMakeItSimpleWhenYouCanMakeItComplicatedStructListStruct Extract(Tecan.Sila2.IBinaryStore store)
         {
             return new WhyMakeItSimpleWhenYouCanMakeItComplicatedStructListStruct(Tecan.Sila2.DtoExtensions.Extract(ListStruct, store));
         }
@@ -1289,7 +1370,7 @@ namespace Tecan.Sila2.Interop.Server
         /// </summary>
         /// <param name="inner">The object to transfer</param>
         /// <param name="store">An object to store binary data</param>
-        public static WhyMakeItSimpleWhenYouCanMakeItComplicatedStructListStructDto Create(WhyMakeItSimpleWhenYouCanMakeItComplicatedStructListStruct inner, Tecan.Sila2.Binary.IBinaryStore store)
+        public static WhyMakeItSimpleWhenYouCanMakeItComplicatedStructListStructDto Create(WhyMakeItSimpleWhenYouCanMakeItComplicatedStructListStruct inner, Tecan.Sila2.IBinaryStore store)
         {
             return new WhyMakeItSimpleWhenYouCanMakeItComplicatedStructListStructDto(inner, store);
         }
@@ -1304,17 +1385,28 @@ namespace Tecan.Sila2.Interop.Server
         }
     }
     
+    ///  <summary>
+    /// The data transfer object for Why Make It Simple When You Can Make It Complicated List Struct List Item
+    /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
     public class WhyMakeItSimpleWhenYouCanMakeItComplicatedListStructListItemDto : Tecan.Sila2.ISilaTransferObject<WhyMakeItSimpleWhenYouCanMakeItComplicatedListStructListItem>
     {
         
         private System.Collections.Generic.List<Tecan.Sila2.StringDto> _list;
         
+        ///  <summary>
+        /// Initializes a new instance (to be used by the serializer)
+        /// </summary>
         public WhyMakeItSimpleWhenYouCanMakeItComplicatedListStructListItemDto()
         {
         }
         
-        public WhyMakeItSimpleWhenYouCanMakeItComplicatedListStructListItemDto(WhyMakeItSimpleWhenYouCanMakeItComplicatedListStructListItem inner, Tecan.Sila2.Binary.IBinaryStore store)
+        ///  <summary>
+        /// Initializes a new data transfer object from the business object
+        /// </summary>
+        /// <param name="inner">The business object that should be transferred</param>
+        /// <param name="store">A component to handle binary data</param>
+        public WhyMakeItSimpleWhenYouCanMakeItComplicatedListStructListItemDto(WhyMakeItSimpleWhenYouCanMakeItComplicatedListStructListItem inner, Tecan.Sila2.IBinaryStore store)
         {
             List = Tecan.Sila2.DtoExtensions.Encapsulate(inner.List, Tecan.Sila2.StringDto.Create, store);
         }
@@ -1340,7 +1432,7 @@ namespace Tecan.Sila2.Interop.Server
         /// </summary>
         /// <param name="store">The binary store in which to store binary data</param>
         /// <returns>the inner value</returns>
-        public WhyMakeItSimpleWhenYouCanMakeItComplicatedListStructListItem Extract(Tecan.Sila2.Binary.IBinaryStore store)
+        public WhyMakeItSimpleWhenYouCanMakeItComplicatedListStructListItem Extract(Tecan.Sila2.IBinaryStore store)
         {
             return new WhyMakeItSimpleWhenYouCanMakeItComplicatedListStructListItem(List.Extract(store));
         }
@@ -1350,7 +1442,7 @@ namespace Tecan.Sila2.Interop.Server
         /// </summary>
         /// <param name="inner">The object to transfer</param>
         /// <param name="store">An object to store binary data</param>
-        public static WhyMakeItSimpleWhenYouCanMakeItComplicatedListStructListItemDto Create(WhyMakeItSimpleWhenYouCanMakeItComplicatedListStructListItem inner, Tecan.Sila2.Binary.IBinaryStore store)
+        public static WhyMakeItSimpleWhenYouCanMakeItComplicatedListStructListItemDto Create(WhyMakeItSimpleWhenYouCanMakeItComplicatedListStructListItem inner, Tecan.Sila2.IBinaryStore store)
         {
             return new WhyMakeItSimpleWhenYouCanMakeItComplicatedListStructListItemDto(inner, store);
         }
@@ -1365,17 +1457,28 @@ namespace Tecan.Sila2.Interop.Server
         }
     }
     
+    ///  <summary>
+    /// The data transfer object for Struct Pair String
+    /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
     public class StructPairStringDto : Tecan.Sila2.ISilaTransferObject<StructPairString>
     {
         
         private StructPairStringPairStringDto _pairString;
         
+        ///  <summary>
+        /// Initializes a new instance (to be used by the serializer)
+        /// </summary>
         public StructPairStringDto()
         {
         }
         
-        public StructPairStringDto(StructPairString inner, Tecan.Sila2.Binary.IBinaryStore store)
+        ///  <summary>
+        /// Initializes a new data transfer object from the business object
+        /// </summary>
+        /// <param name="inner">The business object that should be transferred</param>
+        /// <param name="store">A component to handle binary data</param>
+        public StructPairStringDto(StructPairString inner, Tecan.Sila2.IBinaryStore store)
         {
             PairString = new StructPairStringPairStringDto(inner.PairString, store);
         }
@@ -1401,7 +1504,7 @@ namespace Tecan.Sila2.Interop.Server
         /// </summary>
         /// <param name="store">The binary store in which to store binary data</param>
         /// <returns>the inner value</returns>
-        public StructPairString Extract(Tecan.Sila2.Binary.IBinaryStore store)
+        public StructPairString Extract(Tecan.Sila2.IBinaryStore store)
         {
             return new StructPairString(PairString.Extract(store));
         }
@@ -1411,7 +1514,7 @@ namespace Tecan.Sila2.Interop.Server
         /// </summary>
         /// <param name="inner">The object to transfer</param>
         /// <param name="store">An object to store binary data</param>
-        public static StructPairStringDto Create(StructPairString inner, Tecan.Sila2.Binary.IBinaryStore store)
+        public static StructPairStringDto Create(StructPairString inner, Tecan.Sila2.IBinaryStore store)
         {
             return new StructPairStringDto(inner, store);
         }
@@ -1426,17 +1529,28 @@ namespace Tecan.Sila2.Interop.Server
         }
     }
     
+    ///  <summary>
+    /// The data transfer object for User
+    /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
     public class UserDto : Tecan.Sila2.ISilaTransferObject<User>
     {
         
         private Tecan.Sila2.StringDto _identifier;
         
+        ///  <summary>
+        /// Initializes a new instance (to be used by the serializer)
+        /// </summary>
         public UserDto()
         {
         }
         
-        public UserDto(User inner, Tecan.Sila2.Binary.IBinaryStore store)
+        ///  <summary>
+        /// Initializes a new data transfer object from the business object
+        /// </summary>
+        /// <param name="inner">The business object that should be transferred</param>
+        /// <param name="store">A component to handle binary data</param>
+        public UserDto(User inner, Tecan.Sila2.IBinaryStore store)
         {
             Identifier = new Tecan.Sila2.StringDto(inner.Identifier, store);
         }
@@ -1462,7 +1576,7 @@ namespace Tecan.Sila2.Interop.Server
         /// </summary>
         /// <param name="store">The binary store in which to store binary data</param>
         /// <returns>the inner value</returns>
-        public User Extract(Tecan.Sila2.Binary.IBinaryStore store)
+        public User Extract(Tecan.Sila2.IBinaryStore store)
         {
             return new User(Identifier.Extract(store));
         }
@@ -1472,7 +1586,7 @@ namespace Tecan.Sila2.Interop.Server
         /// </summary>
         /// <param name="inner">The object to transfer</param>
         /// <param name="store">An object to store binary data</param>
-        public static UserDto Create(User inner, Tecan.Sila2.Binary.IBinaryStore store)
+        public static UserDto Create(User inner, Tecan.Sila2.IBinaryStore store)
         {
             return new UserDto(inner, store);
         }
@@ -1487,17 +1601,28 @@ namespace Tecan.Sila2.Interop.Server
         }
     }
     
+    ///  <summary>
+    /// The data transfer object for Three Dimensional Struct Struct Struct Struct First Dimension
+    /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
     public class ThreeDimensionalStructStructStructStructFirstDimensionDto : Tecan.Sila2.ISilaTransferObject<ThreeDimensionalStructStructStructStructFirstDimension>
     {
         
         private ThreeDimensionalStructStructStructStructFirstDimensionSecondDimensionDto _secondDimension;
         
+        ///  <summary>
+        /// Initializes a new instance (to be used by the serializer)
+        /// </summary>
         public ThreeDimensionalStructStructStructStructFirstDimensionDto()
         {
         }
         
-        public ThreeDimensionalStructStructStructStructFirstDimensionDto(ThreeDimensionalStructStructStructStructFirstDimension inner, Tecan.Sila2.Binary.IBinaryStore store)
+        ///  <summary>
+        /// Initializes a new data transfer object from the business object
+        /// </summary>
+        /// <param name="inner">The business object that should be transferred</param>
+        /// <param name="store">A component to handle binary data</param>
+        public ThreeDimensionalStructStructStructStructFirstDimensionDto(ThreeDimensionalStructStructStructStructFirstDimension inner, Tecan.Sila2.IBinaryStore store)
         {
             SecondDimension = new ThreeDimensionalStructStructStructStructFirstDimensionSecondDimensionDto(inner.SecondDimension, store);
         }
@@ -1523,7 +1648,7 @@ namespace Tecan.Sila2.Interop.Server
         /// </summary>
         /// <param name="store">The binary store in which to store binary data</param>
         /// <returns>the inner value</returns>
-        public ThreeDimensionalStructStructStructStructFirstDimension Extract(Tecan.Sila2.Binary.IBinaryStore store)
+        public ThreeDimensionalStructStructStructStructFirstDimension Extract(Tecan.Sila2.IBinaryStore store)
         {
             return new ThreeDimensionalStructStructStructStructFirstDimension(SecondDimension.Extract(store));
         }
@@ -1533,7 +1658,7 @@ namespace Tecan.Sila2.Interop.Server
         /// </summary>
         /// <param name="inner">The object to transfer</param>
         /// <param name="store">An object to store binary data</param>
-        public static ThreeDimensionalStructStructStructStructFirstDimensionDto Create(ThreeDimensionalStructStructStructStructFirstDimension inner, Tecan.Sila2.Binary.IBinaryStore store)
+        public static ThreeDimensionalStructStructStructStructFirstDimensionDto Create(ThreeDimensionalStructStructStructStructFirstDimension inner, Tecan.Sila2.IBinaryStore store)
         {
             return new ThreeDimensionalStructStructStructStructFirstDimensionDto(inner, store);
         }
@@ -1548,17 +1673,28 @@ namespace Tecan.Sila2.Interop.Server
         }
     }
     
+    ///  <summary>
+    /// The data transfer object for Three Dimensional List Three Dimensional Struct Result First Dimension
+    /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
     public class ThreeDimensionalListThreeDimensionalStructResultFirstDimensionDto : Tecan.Sila2.ISilaTransferObject<ThreeDimensionalListThreeDimensionalStructResultFirstDimension>
     {
         
         private ThreeDimensionalListThreeDimensionalStructResultFirstDimensionSecondDimensionDto _secondDimension;
         
+        ///  <summary>
+        /// Initializes a new instance (to be used by the serializer)
+        /// </summary>
         public ThreeDimensionalListThreeDimensionalStructResultFirstDimensionDto()
         {
         }
         
-        public ThreeDimensionalListThreeDimensionalStructResultFirstDimensionDto(ThreeDimensionalListThreeDimensionalStructResultFirstDimension inner, Tecan.Sila2.Binary.IBinaryStore store)
+        ///  <summary>
+        /// Initializes a new data transfer object from the business object
+        /// </summary>
+        /// <param name="inner">The business object that should be transferred</param>
+        /// <param name="store">A component to handle binary data</param>
+        public ThreeDimensionalListThreeDimensionalStructResultFirstDimensionDto(ThreeDimensionalListThreeDimensionalStructResultFirstDimension inner, Tecan.Sila2.IBinaryStore store)
         {
             SecondDimension = new ThreeDimensionalListThreeDimensionalStructResultFirstDimensionSecondDimensionDto(inner.SecondDimension, store);
         }
@@ -1584,7 +1720,7 @@ namespace Tecan.Sila2.Interop.Server
         /// </summary>
         /// <param name="store">The binary store in which to store binary data</param>
         /// <returns>the inner value</returns>
-        public ThreeDimensionalListThreeDimensionalStructResultFirstDimension Extract(Tecan.Sila2.Binary.IBinaryStore store)
+        public ThreeDimensionalListThreeDimensionalStructResultFirstDimension Extract(Tecan.Sila2.IBinaryStore store)
         {
             return new ThreeDimensionalListThreeDimensionalStructResultFirstDimension(SecondDimension.Extract(store));
         }
@@ -1594,7 +1730,7 @@ namespace Tecan.Sila2.Interop.Server
         /// </summary>
         /// <param name="inner">The object to transfer</param>
         /// <param name="store">An object to store binary data</param>
-        public static ThreeDimensionalListThreeDimensionalStructResultFirstDimensionDto Create(ThreeDimensionalListThreeDimensionalStructResultFirstDimension inner, Tecan.Sila2.Binary.IBinaryStore store)
+        public static ThreeDimensionalListThreeDimensionalStructResultFirstDimensionDto Create(ThreeDimensionalListThreeDimensionalStructResultFirstDimension inner, Tecan.Sila2.IBinaryStore store)
         {
             return new ThreeDimensionalListThreeDimensionalStructResultFirstDimensionDto(inner, store);
         }
@@ -1609,6 +1745,9 @@ namespace Tecan.Sila2.Interop.Server
         }
     }
     
+    ///  <summary>
+    /// The data transfer object for Struct Pair String Pair String
+    /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
     public class StructPairStringPairStringDto : Tecan.Sila2.ISilaTransferObject<StructPairStringPairString>
     {
@@ -1617,11 +1756,19 @@ namespace Tecan.Sila2.Interop.Server
         
         private Tecan.Sila2.StringDto _value;
         
+        ///  <summary>
+        /// Initializes a new instance (to be used by the serializer)
+        /// </summary>
         public StructPairStringPairStringDto()
         {
         }
         
-        public StructPairStringPairStringDto(StructPairStringPairString inner, Tecan.Sila2.Binary.IBinaryStore store)
+        ///  <summary>
+        /// Initializes a new data transfer object from the business object
+        /// </summary>
+        /// <param name="inner">The business object that should be transferred</param>
+        /// <param name="store">A component to handle binary data</param>
+        public StructPairStringPairStringDto(StructPairStringPairString inner, Tecan.Sila2.IBinaryStore store)
         {
             Key = new Tecan.Sila2.StringDto(inner.Key, store);
             Value = new Tecan.Sila2.StringDto(inner.Value, store);
@@ -1664,7 +1811,7 @@ namespace Tecan.Sila2.Interop.Server
         /// </summary>
         /// <param name="store">The binary store in which to store binary data</param>
         /// <returns>the inner value</returns>
-        public StructPairStringPairString Extract(Tecan.Sila2.Binary.IBinaryStore store)
+        public StructPairStringPairString Extract(Tecan.Sila2.IBinaryStore store)
         {
             return new StructPairStringPairString(Key.Extract(store), Value.Extract(store));
         }
@@ -1674,7 +1821,7 @@ namespace Tecan.Sila2.Interop.Server
         /// </summary>
         /// <param name="inner">The object to transfer</param>
         /// <param name="store">An object to store binary data</param>
-        public static StructPairStringPairStringDto Create(StructPairStringPairString inner, Tecan.Sila2.Binary.IBinaryStore store)
+        public static StructPairStringPairStringDto Create(StructPairStringPairString inner, Tecan.Sila2.IBinaryStore store)
         {
             return new StructPairStringPairStringDto(inner, store);
         }
@@ -1689,17 +1836,28 @@ namespace Tecan.Sila2.Interop.Server
         }
     }
     
+    ///  <summary>
+    /// The data transfer object for Three Dimensional Struct Struct Struct Struct First Dimension Second Dimension
+    /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
     public class ThreeDimensionalStructStructStructStructFirstDimensionSecondDimensionDto : Tecan.Sila2.ISilaTransferObject<ThreeDimensionalStructStructStructStructFirstDimensionSecondDimension>
     {
         
         private Tecan.Sila2.StringDto _thirdDimension;
         
+        ///  <summary>
+        /// Initializes a new instance (to be used by the serializer)
+        /// </summary>
         public ThreeDimensionalStructStructStructStructFirstDimensionSecondDimensionDto()
         {
         }
         
-        public ThreeDimensionalStructStructStructStructFirstDimensionSecondDimensionDto(ThreeDimensionalStructStructStructStructFirstDimensionSecondDimension inner, Tecan.Sila2.Binary.IBinaryStore store)
+        ///  <summary>
+        /// Initializes a new data transfer object from the business object
+        /// </summary>
+        /// <param name="inner">The business object that should be transferred</param>
+        /// <param name="store">A component to handle binary data</param>
+        public ThreeDimensionalStructStructStructStructFirstDimensionSecondDimensionDto(ThreeDimensionalStructStructStructStructFirstDimensionSecondDimension inner, Tecan.Sila2.IBinaryStore store)
         {
             ThirdDimension = new Tecan.Sila2.StringDto(inner.ThirdDimension, store);
         }
@@ -1725,7 +1883,7 @@ namespace Tecan.Sila2.Interop.Server
         /// </summary>
         /// <param name="store">The binary store in which to store binary data</param>
         /// <returns>the inner value</returns>
-        public ThreeDimensionalStructStructStructStructFirstDimensionSecondDimension Extract(Tecan.Sila2.Binary.IBinaryStore store)
+        public ThreeDimensionalStructStructStructStructFirstDimensionSecondDimension Extract(Tecan.Sila2.IBinaryStore store)
         {
             return new ThreeDimensionalStructStructStructStructFirstDimensionSecondDimension(ThirdDimension.Extract(store));
         }
@@ -1735,7 +1893,7 @@ namespace Tecan.Sila2.Interop.Server
         /// </summary>
         /// <param name="inner">The object to transfer</param>
         /// <param name="store">An object to store binary data</param>
-        public static ThreeDimensionalStructStructStructStructFirstDimensionSecondDimensionDto Create(ThreeDimensionalStructStructStructStructFirstDimensionSecondDimension inner, Tecan.Sila2.Binary.IBinaryStore store)
+        public static ThreeDimensionalStructStructStructStructFirstDimensionSecondDimensionDto Create(ThreeDimensionalStructStructStructStructFirstDimensionSecondDimension inner, Tecan.Sila2.IBinaryStore store)
         {
             return new ThreeDimensionalStructStructStructStructFirstDimensionSecondDimensionDto(inner, store);
         }
@@ -1750,17 +1908,28 @@ namespace Tecan.Sila2.Interop.Server
         }
     }
     
+    ///  <summary>
+    /// The data transfer object for Three Dimensional List Three Dimensional Struct Result First Dimension Second Dimension
+    /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
     public class ThreeDimensionalListThreeDimensionalStructResultFirstDimensionSecondDimensionDto : Tecan.Sila2.ISilaTransferObject<ThreeDimensionalListThreeDimensionalStructResultFirstDimensionSecondDimension>
     {
         
         private Tecan.Sila2.StringDto _thirdDimension;
         
+        ///  <summary>
+        /// Initializes a new instance (to be used by the serializer)
+        /// </summary>
         public ThreeDimensionalListThreeDimensionalStructResultFirstDimensionSecondDimensionDto()
         {
         }
         
-        public ThreeDimensionalListThreeDimensionalStructResultFirstDimensionSecondDimensionDto(ThreeDimensionalListThreeDimensionalStructResultFirstDimensionSecondDimension inner, Tecan.Sila2.Binary.IBinaryStore store)
+        ///  <summary>
+        /// Initializes a new data transfer object from the business object
+        /// </summary>
+        /// <param name="inner">The business object that should be transferred</param>
+        /// <param name="store">A component to handle binary data</param>
+        public ThreeDimensionalListThreeDimensionalStructResultFirstDimensionSecondDimensionDto(ThreeDimensionalListThreeDimensionalStructResultFirstDimensionSecondDimension inner, Tecan.Sila2.IBinaryStore store)
         {
             ThirdDimension = new Tecan.Sila2.StringDto(inner.ThirdDimension, store);
         }
@@ -1786,7 +1955,7 @@ namespace Tecan.Sila2.Interop.Server
         /// </summary>
         /// <param name="store">The binary store in which to store binary data</param>
         /// <returns>the inner value</returns>
-        public ThreeDimensionalListThreeDimensionalStructResultFirstDimensionSecondDimension Extract(Tecan.Sila2.Binary.IBinaryStore store)
+        public ThreeDimensionalListThreeDimensionalStructResultFirstDimensionSecondDimension Extract(Tecan.Sila2.IBinaryStore store)
         {
             return new ThreeDimensionalListThreeDimensionalStructResultFirstDimensionSecondDimension(ThirdDimension.Extract(store));
         }
@@ -1796,7 +1965,7 @@ namespace Tecan.Sila2.Interop.Server
         /// </summary>
         /// <param name="inner">The object to transfer</param>
         /// <param name="store">An object to store binary data</param>
-        public static ThreeDimensionalListThreeDimensionalStructResultFirstDimensionSecondDimensionDto Create(ThreeDimensionalListThreeDimensionalStructResultFirstDimensionSecondDimension inner, Tecan.Sila2.Binary.IBinaryStore store)
+        public static ThreeDimensionalListThreeDimensionalStructResultFirstDimensionSecondDimensionDto Create(ThreeDimensionalListThreeDimensionalStructResultFirstDimensionSecondDimension inner, Tecan.Sila2.IBinaryStore store)
         {
             return new ThreeDimensionalListThreeDimensionalStructResultFirstDimensionSecondDimensionDto(inner, store);
         }

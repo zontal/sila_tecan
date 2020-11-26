@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using Tecan.Sila2.AuthorizationProvider;
 
 namespace Tecan.Sila2

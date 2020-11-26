@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ComponentModel.Composition;
 using Tecan.MAP.Contracts.Services.Logging;
 using Tecan.MAP.Contracts.Services.Logging.Configuration;
 

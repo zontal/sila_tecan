@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace Tecan.Sila2.Server
+﻿namespace Tecan.Sila2.Server
 {
     /// <summary>
     /// Defines the interface for a component that intercepts requests

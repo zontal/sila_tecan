@@ -36,7 +36,7 @@ namespace Tecan.Sila2.Discovery
         ///  <param name="featureIdentifier">
         ///        The fully qualified Feature identifier for which the Feature definition shall be retrieved.
         ///      </param>
-        public GetFeatureDefinitionRequestDto(string featureIdentifier, Tecan.Sila2.Binary.IBinaryStore store)
+        public GetFeatureDefinitionRequestDto(string featureIdentifier, Tecan.Sila2.IBinaryStore store)
         {
             FeatureIdentifier = new Tecan.Sila2.StringDto(featureIdentifier, store);
         }
@@ -100,7 +100,7 @@ namespace Tecan.Sila2.Discovery
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
         ///  <param name="featureDefinition">The Feature definition in XML format (according to the Feature Definition Schema).</param>
-        public GetFeatureDefinitionResponseDto(string featureDefinition, Tecan.Sila2.Binary.IBinaryStore store)
+        public GetFeatureDefinitionResponseDto(string featureDefinition, Tecan.Sila2.IBinaryStore store)
         {
             FeatureDefinition = new Tecan.Sila2.StringDto(featureDefinition, store);
         }
@@ -152,7 +152,7 @@ namespace Tecan.Sila2.Discovery
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
         ///  <param name="serverName">The human readable name to assign to the SiLA Server.</param>
-        public SetServerNameRequestDto(string serverName, Tecan.Sila2.Binary.IBinaryStore store)
+        public SetServerNameRequestDto(string serverName, Tecan.Sila2.IBinaryStore store)
         {
             ServerName = new Tecan.Sila2.StringDto(serverName, store);
         }
@@ -221,7 +221,7 @@ namespace Tecan.Sila2.Discovery
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
         ///  <param name="value"></param>
-        public ServerNameResponseDto(string value, Tecan.Sila2.Binary.IBinaryStore store)
+        public ServerNameResponseDto(string value, Tecan.Sila2.IBinaryStore store)
         {
             Value = new Tecan.Sila2.StringDto(value, store);
         }
@@ -266,6 +266,9 @@ namespace Tecan.Sila2.Discovery
         
         private Tecan.Sila2.StringDto _value;
         
+        ///  <summary>
+        /// A regular expression to check the validity of Value
+        /// </summary>
         public static System.Text.RegularExpressions.Regex ValuePattern = new System.Text.RegularExpressions.Regex("[A-Z][a-zA-Z0-9]*");
         
         ///  <summary>
@@ -280,7 +283,7 @@ namespace Tecan.Sila2.Discovery
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
         ///  <param name="value"></param>
-        public ServerTypeResponseDto(string value, Tecan.Sila2.Binary.IBinaryStore store)
+        public ServerTypeResponseDto(string value, Tecan.Sila2.IBinaryStore store)
         {
             Value = new Tecan.Sila2.StringDto(value, store);
         }
@@ -325,6 +328,9 @@ namespace Tecan.Sila2.Discovery
         
         private Tecan.Sila2.StringDto _value;
         
+        ///  <summary>
+        /// A regular expression to check the validity of Value
+        /// </summary>
         public static System.Text.RegularExpressions.Regex ValuePattern = new System.Text.RegularExpressions.Regex("[0-9a-f]{8}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{12}");
         
         ///  <summary>
@@ -339,7 +345,7 @@ namespace Tecan.Sila2.Discovery
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
         ///  <param name="value"></param>
-        public ServerUUIDResponseDto(string value, Tecan.Sila2.Binary.IBinaryStore store)
+        public ServerUUIDResponseDto(string value, Tecan.Sila2.IBinaryStore store)
         {
             Value = new Tecan.Sila2.StringDto(value, store);
         }
@@ -385,6 +391,9 @@ namespace Tecan.Sila2.Discovery
         
         private Tecan.Sila2.StringDto _value;
         
+        ///  <summary>
+        /// A regular expression to check the validity of Value
+        /// </summary>
         public static System.Text.RegularExpressions.Regex ValuePattern = new System.Text.RegularExpressions.Regex("(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(\\.(0|[1-9][0-9]*))?(_[_a-zA-Z0-9]+)?");
         
         ///  <summary>
@@ -399,7 +408,7 @@ namespace Tecan.Sila2.Discovery
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
         ///  <param name="value"></param>
-        public ServerVersionResponseDto(string value, Tecan.Sila2.Binary.IBinaryStore store)
+        public ServerVersionResponseDto(string value, Tecan.Sila2.IBinaryStore store)
         {
             Value = new Tecan.Sila2.StringDto(value, store);
         }
@@ -445,6 +454,9 @@ namespace Tecan.Sila2.Discovery
         
         private Tecan.Sila2.StringDto _value;
         
+        ///  <summary>
+        /// A regular expression to check the validity of Value
+        /// </summary>
         public static System.Text.RegularExpressions.Regex ValuePattern = new System.Text.RegularExpressions.Regex("https?://.+");
         
         ///  <summary>
@@ -459,7 +471,7 @@ namespace Tecan.Sila2.Discovery
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
         ///  <param name="value"></param>
-        public ServerVendorURLResponseDto(string value, Tecan.Sila2.Binary.IBinaryStore store)
+        public ServerVendorURLResponseDto(string value, Tecan.Sila2.IBinaryStore store)
         {
             Value = new Tecan.Sila2.StringDto(value, store);
         }

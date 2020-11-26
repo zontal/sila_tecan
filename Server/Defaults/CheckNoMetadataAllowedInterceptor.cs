@@ -1,6 +1,4 @@
 ﻿using System.ComponentModel.Composition;
-using System.Linq;
-using Grpc.Core;
 
 namespace Tecan.Sila2.Server
 {

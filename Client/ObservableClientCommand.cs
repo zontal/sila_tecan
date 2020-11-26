@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Threading;
-using System.Threading.Channels;
 using System.Threading.Tasks;
 using Grpc.Core;
-using Channel = System.Threading.Channels.Channel;
 
 namespace Tecan.Sila2.Client
 {

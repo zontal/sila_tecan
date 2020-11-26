@@ -31,7 +31,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
-        public ListenForLogEntriesRequestDto(Tecan.Sila2.Binary.IBinaryStore store)
+        public ListenForLogEntriesRequestDto(Tecan.Sila2.IBinaryStore store)
         {
         }
         
@@ -79,7 +79,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
         ///  <param name="intermediate"></param>
-        public ListenForLogEntriesIntermediateDto(LogEntry intermediate, Tecan.Sila2.Binary.IBinaryStore store)
+        public ListenForLogEntriesIntermediateDto(LogEntry intermediate, Tecan.Sila2.IBinaryStore store)
         {
             Intermediate = new LogEntryDto(intermediate, store);
         }
@@ -109,6 +109,9 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         }
     }
     
+    ///  <summary>
+    /// The data transfer object for Log Entry
+    /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
     public class LogEntryDto : Tecan.Sila2.ISilaTransferObject<LogEntry>
     {
@@ -121,11 +124,19 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         
         private System.Collections.Generic.List<LogEntryDataDto> _data;
         
+        ///  <summary>
+        /// Initializes a new instance (to be used by the serializer)
+        /// </summary>
         public LogEntryDto()
         {
         }
         
-        public LogEntryDto(LogEntry inner, Tecan.Sila2.Binary.IBinaryStore store)
+        ///  <summary>
+        /// Initializes a new data transfer object from the business object
+        /// </summary>
+        /// <param name="inner">The business object that should be transferred</param>
+        /// <param name="store">A component to handle binary data</param>
+        public LogEntryDto(LogEntry inner, Tecan.Sila2.IBinaryStore store)
         {
             Message = new Tecan.Sila2.StringDto(inner.Message, store);
             Channel = new Tecan.Sila2.StringDto(inner.Channel, store);
@@ -198,7 +209,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// </summary>
         /// <param name="store">The binary store in which to store binary data</param>
         /// <returns>the inner value</returns>
-        public LogEntry Extract(Tecan.Sila2.Binary.IBinaryStore store)
+        public LogEntry Extract(Tecan.Sila2.IBinaryStore store)
         {
             return new LogEntry(Message.Extract(store), Channel.Extract(store), Severity.Extract(store), Data.Extract(store));
         }
@@ -208,7 +219,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// </summary>
         /// <param name="inner">The object to transfer</param>
         /// <param name="store">An object to store binary data</param>
-        public static LogEntryDto Create(LogEntry inner, Tecan.Sila2.Binary.IBinaryStore store)
+        public static LogEntryDto Create(LogEntry inner, Tecan.Sila2.IBinaryStore store)
         {
             return new LogEntryDto(inner, store);
         }
@@ -232,11 +243,19 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         
         private Tecan.Sila2.StringDto _value;
         
+        ///  <summary>
+        /// Initializes a new instance (to be used by the serializer)
+        /// </summary>
         public SeverityDto()
         {
         }
         
-        public SeverityDto(Severity inner, Tecan.Sila2.Binary.IBinaryStore store)
+        ///  <summary>
+        /// Initializes a new data transfer object from the business object
+        /// </summary>
+        /// <param name="inner">The business object that should be transferred</param>
+        /// <param name="store">A component to handle binary data</param>
+        public SeverityDto(Severity inner, Tecan.Sila2.IBinaryStore store)
         {
             Value = inner.ToString();
         }
@@ -262,7 +281,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// </summary>
         /// <param name="store">The binary store in which to store binary data</param>
         /// <returns>the inner value</returns>
-        public Severity Extract(Tecan.Sila2.Binary.IBinaryStore store)
+        public Severity Extract(Tecan.Sila2.IBinaryStore store)
         {
             return ((Severity)(System.Enum.Parse(typeof(Severity), Value.Value)));
         }
@@ -272,7 +291,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// </summary>
         /// <param name="inner">The object to transfer</param>
         /// <param name="store">An object to store binary data</param>
-        public static SeverityDto Create(Severity inner, Tecan.Sila2.Binary.IBinaryStore store)
+        public static SeverityDto Create(Severity inner, Tecan.Sila2.IBinaryStore store)
         {
             return new SeverityDto(inner, store);
         }
@@ -287,6 +306,9 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         }
     }
     
+    ///  <summary>
+    /// The data transfer object for Log Entry Data
+    /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
     public class LogEntryDataDto : Tecan.Sila2.ISilaTransferObject<LogEntryData>
     {
@@ -297,11 +319,19 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         
         private System.Collections.Generic.List<LogEntryDataDto> _children;
         
+        ///  <summary>
+        /// Initializes a new instance (to be used by the serializer)
+        /// </summary>
         public LogEntryDataDto()
         {
         }
         
-        public LogEntryDataDto(LogEntryData inner, Tecan.Sila2.Binary.IBinaryStore store)
+        ///  <summary>
+        /// Initializes a new data transfer object from the business object
+        /// </summary>
+        /// <param name="inner">The business object that should be transferred</param>
+        /// <param name="store">A component to handle binary data</param>
+        public LogEntryDataDto(LogEntryData inner, Tecan.Sila2.IBinaryStore store)
         {
             Key = new Tecan.Sila2.StringDto(inner.Key, store);
             Value = new Tecan.Sila2.StringDto(inner.Value, store);
@@ -358,7 +388,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// </summary>
         /// <param name="store">The binary store in which to store binary data</param>
         /// <returns>the inner value</returns>
-        public LogEntryData Extract(Tecan.Sila2.Binary.IBinaryStore store)
+        public LogEntryData Extract(Tecan.Sila2.IBinaryStore store)
         {
             return new LogEntryData(Key.Extract(store), Value.Extract(store), Children.Extract(store));
         }
@@ -368,7 +398,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// </summary>
         /// <param name="inner">The object to transfer</param>
         /// <param name="store">An object to store binary data</param>
-        public static LogEntryDataDto Create(LogEntryData inner, Tecan.Sila2.Binary.IBinaryStore store)
+        public static LogEntryDataDto Create(LogEntryData inner, Tecan.Sila2.IBinaryStore store)
         {
             return new LogEntryDataDto(inner, store);
         }

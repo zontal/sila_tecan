@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Grpc.Core;
 
 namespace Tecan.Sila2.Client.ExecutionManagement
 {

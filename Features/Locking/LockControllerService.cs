@@ -1,6 +1,5 @@
 ﻿using System;
 using System.ComponentModel.Composition;
-using Tecan.Sila2;
 using Tecan.Sila2.Server;
 
 namespace Tecan.Sila2.Locking

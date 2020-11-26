@@ -1,13 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.Composition;
-using System.IO;
-using System.Linq;
-using System.Text;
-using Tecan.Sila2.DynamicClient;
-using Tecan.Sila2.Server;
-
-namespace Tecan.Sila2.Interop.Server
+﻿namespace Tecan.Sila2.Interop.Server
 {
     //[Export(typeof(IComplexDataTypeTest))]
     //[PartCreationPolicy(CreationPolicy.Shared)]

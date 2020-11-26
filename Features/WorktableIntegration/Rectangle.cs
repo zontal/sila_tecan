@@ -1,6 +1,4 @@
-﻿using Tecan.Sila2;
-
-namespace Tecan.Sila2.WorktableIntegration
+﻿namespace Tecan.Sila2.WorktableIntegration
 {
     /// <summary>
     /// Denotes a rectangle on the ground

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
 using Tecan.MAP.Contracts.Services.Logging;
 using Tecan.Sila2.Authentication.AuthenticationService;
 using Tecan.Sila2.Authorization.AuthorizationConfigurationService;

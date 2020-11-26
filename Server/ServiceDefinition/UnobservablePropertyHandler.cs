@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using Grpc.Core;
 
@@ -21,7 +19,7 @@ namespace Tecan.Sila2.Server.ServiceDefinition
 
         public Task<T> Execute( EmptyRequest request, ServerCallContext context )
         {
-            return _server.CreatePropertyTask( _identifier, _implementation(), context );
+            return Task.Factory.StartNew( () => _server.GetPropertyValue( _identifier, _implementation, context ) );
         }
     }
 }

@@ -12,7 +12,6 @@ using Tecan.Sila2.Cancellation;
 using Tecan.Sila2.Client;
 using Tecan.Sila2.Generator.Contracts;
 using Tecan.Sila2.Generator.Helper;
-using Tecan.Sila2.Server;
 
 namespace Tecan.Sila2.Generator.Generators
 {
@@ -37,6 +36,7 @@ namespace Tecan.Sila2.Generator.Generators
         /// </summary>
         /// <param name="nameProvider">The name provider used to generate feature names</param>
         /// <param name="translationProvider">A component used to translate types between SiLA2 and .NET</param>
+        /// <param name="loggingChannelFactory">A factory for logging channels</param>
         /// <param name="hooks">Generator hooks</param>
         [ImportingConstructor]
         public ClientGenerator(ICodeNameProvider nameProvider, ITypeTranslationProvider translationProvider, ILoggingChannelFactory loggingChannelFactory, [ImportMany] IEnumerable<IGeneratorHook> hooks)

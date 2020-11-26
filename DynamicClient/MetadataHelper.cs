@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using Tecan.Sila2.Client;
 
 namespace Tecan.Sila2.DynamicClient

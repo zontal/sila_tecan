@@ -56,6 +56,9 @@ namespace Tecan.Sila2.WorktableIntegration
         
         private double _height;
         
+        ///  <summary>
+        /// Initializes a new instance
+        /// </summary>
         public BoundingBox(Rectangle rectangle, double height)
         {
             _rectangle = rectangle;
@@ -98,6 +101,9 @@ namespace Tecan.Sila2.WorktableIntegration
         
         private System.Collections.Generic.ICollection<string> _tags;
         
+        ///  <summary>
+        /// Initializes a new instance
+        /// </summary>
         public SiteTemplate(string name, Rectangle siteRectangle, System.Collections.Generic.ICollection<string> tags)
         {
             _name = name;
@@ -153,6 +159,9 @@ namespace Tecan.Sila2.WorktableIntegration
         
         private double _rotation;
         
+        ///  <summary>
+        /// Initializes a new instance
+        /// </summary>
         public Site(string name, string template, Offset offset, double rotation)
         {
             _name = name;
@@ -217,6 +226,9 @@ namespace Tecan.Sila2.WorktableIntegration
         
         private double _depth;
         
+        ///  <summary>
+        /// Initializes a new instance
+        /// </summary>
         public Rectangle(double width, double depth)
         {
             _width = width;
@@ -260,6 +272,9 @@ namespace Tecan.Sila2.WorktableIntegration
         
         private double _z;
         
+        ///  <summary>
+        /// Initializes a new instance
+        /// </summary>
         public Offset(double x, double y, double z)
         {
             _x = x;

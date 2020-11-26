@@ -1,12 +1,12 @@
 ﻿using System;
 
-namespace Tecan.Sila2.Client
+namespace Tecan.Sila2
 {
     /// <summary>
     /// Denotes a pair of serialization and deserialization methods
     /// </summary>
     /// <typeparam name="T">The data transfer object type</typeparam>
-    public struct ByteSerializer<T>
+    public readonly struct ByteSerializer<T>
     {
         /// <summary>
         /// A method to serialize an instance of <typeparamref name="T"/>

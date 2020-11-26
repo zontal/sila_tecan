@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
-namespace Tecan.Sila2.Client
+namespace Tecan.Sila2
 {
     /// <summary>
     /// Denotes the interface for a component that manages connections

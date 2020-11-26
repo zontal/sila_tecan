@@ -4,7 +4,6 @@ using Moq;
 using NUnit.Framework;
 using Tecan.Sila2.AuthorizationProvider;
 using Tecan.Sila2.Discovery;
-using Tecan.Sila2.Server;
 using Tecan.Sila2.Tests;
 using AuthorizationInvalidAccessTokenException = Tecan.Sila2.Authorization.InvalidAccessTokenException;
 

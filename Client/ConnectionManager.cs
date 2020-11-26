@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Tecan.MAP.Contracts.Services.Logging;
 using Tecan.Sila2.Discovery;
 

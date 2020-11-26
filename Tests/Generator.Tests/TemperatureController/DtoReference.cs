@@ -35,7 +35,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// <param name="store">An object to organize binaries.</param>
         ///  <param name="targetTemperature">The target temperature that the device will try to reach. Note that the command might
         ///be completed at a temperature that is close enough.</param>
-        public ControlTemperatureRequestDto(double targetTemperature, Tecan.Sila2.Binary.IBinaryStore store)
+        public ControlTemperatureRequestDto(double targetTemperature, Tecan.Sila2.IBinaryStore store)
         {
             TargetTemperature = new Tecan.Sila2.RealDto(targetTemperature, store);
         }
@@ -100,7 +100,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
         ///  <param name="value"></param>
-        public CurrentTemperatureResponseDto(double value, Tecan.Sila2.Binary.IBinaryStore store)
+        public CurrentTemperatureResponseDto(double value, Tecan.Sila2.IBinaryStore store)
         {
             Value = new Tecan.Sila2.RealDto(value, store);
         }

@@ -32,6 +32,9 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest
         
         private Tecan.Sila2.StringDto _patternString;
         
+        ///  <summary>
+        /// A regular expression to check the validity of PatternString
+        /// </summary>
         public static System.Text.RegularExpressions.Regex PatternStringPattern = new System.Text.RegularExpressions.Regex("[0-9]{2}/[0-9]{2}/[0-9]{2}/[0-9]{4}");
         
         ///  <summary>
@@ -51,7 +54,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest
         ///  <param name="minMaxLengthString">Tests the combination of MinimalLength and MaximalLength constraints on String type</param>
         ///  <param name="setString">Tests the Set constraint on String type</param>
         ///  <param name="patternString">Tests the Pattern constraint on String type (date of birth in dd/mm/yyyy format)</param>
-        public ExactStringLengthRequestDto(string stringLength, string maximalLengthString, string minimalLengthString, string minMaxLengthString, string setString, string patternString, Tecan.Sila2.Binary.IBinaryStore store)
+        public ExactStringLengthRequestDto(string stringLength, string maximalLengthString, string minimalLengthString, string minMaxLengthString, string setString, string patternString, Tecan.Sila2.IBinaryStore store)
         {
             StringLength = new Tecan.Sila2.StringDto(stringLength, store);
             MaximalLengthString = new Tecan.Sila2.StringDto(maximalLengthString, store);
@@ -234,7 +237,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest
         ///  <param name="minimalInclusiveInteger">Tests the MinimalInclusive constraint on Integer type</param>
         ///  <param name="minMaxInclusiveInteger">Tests the combination of MinimalInclusive and MaximalInclusive constraints on Integer type</param>
         ///  <param name="unit">Tests the Unit constraint</param>
-        public ConstrainedNumericParametersRequestDto(long integersSet, double maximalExclusiveReal, double minimalExclusiveReal, double minMaxExclusiveReal, long maximalInclusiveInteger, long minimalInclusiveInteger, long minMaxInclusiveInteger, long unit, Tecan.Sila2.Binary.IBinaryStore store)
+        public ConstrainedNumericParametersRequestDto(long integersSet, double maximalExclusiveReal, double minimalExclusiveReal, double minMaxExclusiveReal, long maximalInclusiveInteger, long minimalInclusiveInteger, long minMaxInclusiveInteger, long unit, Tecan.Sila2.IBinaryStore store)
         {
             IntegersSet = new Tecan.Sila2.IntegerDto(integersSet, store);
             MaximalExclusiveReal = new Tecan.Sila2.RealDto(maximalExclusiveReal, store);
@@ -436,7 +439,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest
         ///  <param name="maximalInclusiveTime">Tests the MaximalInclusive constraint on Time type</param>
         ///  <param name="minimalInclusiveTime">Tests the MinimalInclusive constraint on Time type</param>
         ///  <param name="minMaxInclusiveTime">Tests the combination of MinimalInclusive and MaximalInclusive constraints on Time type</param>
-        public ConstrainedDateTimeParametersRequestDto(System.DateTimeOffset dateSet, System.DateTimeOffset maximalExclusiveDate, System.DateTimeOffset minimalExclusiveDate, System.DateTimeOffset minMaxExclusiveDate, System.TimeSpan maximalInclusiveTime, System.TimeSpan minimalInclusiveTime, System.TimeSpan minMaxInclusiveTime, Tecan.Sila2.Binary.IBinaryStore store)
+        public ConstrainedDateTimeParametersRequestDto(System.DateTimeOffset dateSet, System.DateTimeOffset maximalExclusiveDate, System.DateTimeOffset minimalExclusiveDate, System.DateTimeOffset minMaxExclusiveDate, System.TimeSpan maximalInclusiveTime, System.TimeSpan minimalInclusiveTime, System.TimeSpan minMaxInclusiveTime, Tecan.Sila2.IBinaryStore store)
         {
             DateSet = new Tecan.Sila2.DateDto(dateSet, store);
             MaximalExclusiveDate = new Tecan.Sila2.DateDto(maximalExclusiveDate, store);
@@ -612,7 +615,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest
         ///  <param name="maximalElementCountList">Test the MaximalElementCount constraint on List type</param>
         ///  <param name="minimalElementCountList">Tests the MinimalElementCount constraint on List type</param>
         ///  <param name="minMaxElementCountList">Tests the combination of MinimalElementCount and MaximalElementCount constraints on List type</param>
-        public ConstrainedListParametersRequestDto(System.Collections.Generic.ICollection<string> elementCountList, System.Collections.Generic.ICollection<string> maximalElementCountList, System.Collections.Generic.ICollection<string> minimalElementCountList, System.Collections.Generic.ICollection<string> minMaxElementCountList, Tecan.Sila2.Binary.IBinaryStore store)
+        public ConstrainedListParametersRequestDto(System.Collections.Generic.ICollection<string> elementCountList, System.Collections.Generic.ICollection<string> maximalElementCountList, System.Collections.Generic.ICollection<string> minimalElementCountList, System.Collections.Generic.ICollection<string> minMaxElementCountList, Tecan.Sila2.IBinaryStore store)
         {
             ElementCountList = Tecan.Sila2.DtoExtensions.Encapsulate(elementCountList, Tecan.Sila2.StringDto.Create, store);
             MaximalElementCountList = Tecan.Sila2.DtoExtensions.Encapsulate(maximalElementCountList, Tecan.Sila2.StringDto.Create, store);

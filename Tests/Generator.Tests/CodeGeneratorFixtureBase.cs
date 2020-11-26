@@ -11,7 +11,6 @@ using Microsoft.CSharp;
 using NUnit.Framework;
 using Tecan.Sila2.Generator.Contracts;
 using Tecan.Sila2.Generator.Generators;
-using Tecan.Sila2.Generator.Helper;
 using Tecan.Sila2.Generator.TypeTranslation;
 
 namespace Tecan.Sila2.Generator.Test

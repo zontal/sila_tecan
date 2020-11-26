@@ -163,6 +163,9 @@ namespace Tecan.Sila2.IntegrationTests
         
         private System.TimeSpan _time;
         
+        ///  <summary>
+        /// Initializes a new instance
+        /// </summary>
         public SomeStructure(bool boolean, double real, long @long, long @int, System.DateTimeOffset timestamp, System.TimeSpan time)
         {
             _boolean = boolean;

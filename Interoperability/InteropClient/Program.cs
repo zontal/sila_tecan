@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using Grpc.Core;
 using NUnit.Framework;
 using Tecan.Sila2.Client;
-using Tecan.Sila2.Discovery;
 using Tecan.Sila2.Interop.Client.DataTypeProvider;
 using Tecan.Sila2.Interop.Client.ObservableCommandTest;
 using Tecan.Sila2.Interop.Client.ParameterConstraintsTest;

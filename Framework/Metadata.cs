@@ -1,7 +1,4 @@
-﻿using System.IO;
-using ProtoBuf;
-
-namespace Tecan.Sila2.Server
+﻿namespace Tecan.Sila2.Server
 {
     /// <summary>
     /// Denotes a helper class for handling metadata
