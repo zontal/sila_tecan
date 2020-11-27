@@ -10,6 +10,13 @@ namespace Tecan.Sila2.Server
     public class FileConfigurationStore : IConfigurationStore
     {
         /// <inheritdoc />
+        public bool Exists( string name, Type type )
+        {
+            var path = Path.Combine( AppDomain.CurrentDomain.BaseDirectory, name );
+            return File.Exists( path );
+        }
+
+        /// <inheritdoc />
         public T Read<T>( string name )
         {
             var path = Path.Combine( AppDomain.CurrentDomain.BaseDirectory, name );
