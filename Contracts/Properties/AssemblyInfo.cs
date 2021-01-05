@@ -1,4 +1,4 @@
 ﻿using System.Reflection;
 
 [assembly: AssemblyTitle("Tecan.Sila2.Contracts")]
-[assembly: AssemblyDescription("Attributes to define an interface to be exported via SiLA2")]
+[assembly: AssemblyDescription("Contracts to decouple generated code from transport layer")]
