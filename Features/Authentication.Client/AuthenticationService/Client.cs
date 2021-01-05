@@ -121,5 +121,47 @@ namespace Tecan.Sila2.Authentication.AuthenticationService
             return dto.Extract(_executionManager.DownloadBinaryStore);
         }
     }
+    
+    ///  <summary>
+    /// Factory to instantiate clients for the Authentication Service.
+    /// </summary>
+    [System.ComponentModel.Composition.ExportAttribute(typeof(IClientFactory))]
+    [System.ComponentModel.Composition.PartCreationPolicyAttribute(System.ComponentModel.Composition.CreationPolicy.Shared)]
+    public partial class AuthenticationServiceClientFactory : IClientFactory
+    {
+        
+        ///  <summary>
+        /// Gets the fully-qualified identifier of the feature for which clients can be generated
+        /// </summary>
+        public string FeatureIdentifier
+        {
+            get
+            {
+                return "org.silastandard/core/AuthenticationService/v1";
+            }
+        }
+        
+        ///  <summary>
+        /// Gets the interface type for which clients can be generated
+        /// </summary>
+        public System.Type InterfaceType
+        {
+            get
+            {
+                return typeof(IAuthenticationService);
+            }
+        }
+        
+        ///  <summary>
+        /// Creates a strongly typed client for the given execution channel and execution manager
+        /// </summary>
+        /// <param name="channel">The channel that should be used for communication with the server</param>
+        /// <param name="executionManager">The execution manager to manage metadata</param>
+        /// <returns>A strongly typed client. This object will be an instance of the InterfaceType property</returns>
+        public object CreateClient(IClientChannel channel, IClientExecutionManager executionManager)
+        {
+            return new AuthenticationServiceClient(channel, executionManager);
+        }
+    }
 }
 

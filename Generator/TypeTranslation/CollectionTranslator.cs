@@ -54,7 +54,8 @@ namespace Tecan.Sila2.Generator.TypeTranslation
                    || typeDefinition == typeof( ICollection<> )
                    || typeDefinition == typeof( IReadOnlyList<> )
                    || typeDefinition == typeof( IReadOnlyCollection<> )
-                   || typeDefinition == typeof( IList<> ))
+                   || typeDefinition == typeof( IList<> )
+                   || typeDefinition == typeof( List<> ))
                 {
                     elementType = type.GetGenericArguments()[0];
                     return true;

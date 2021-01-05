@@ -30,6 +30,7 @@ namespace Tecan.Sila2.Generator.Generators
         private readonly IEnumerable<IGeneratorHook> _hooks;
         private readonly ITypeTranslationProvider _translationProvider;
         private readonly ILoggingChannel _loggingChannel;
+        private readonly IDependencyInjectionGenerator _diGenerator;
 
         /// <summary>
         /// Creates a new client generator
@@ -39,12 +40,13 @@ namespace Tecan.Sila2.Generator.Generators
         /// <param name="loggingChannelFactory">A factory for logging channels</param>
         /// <param name="hooks">Generator hooks</param>
         [ImportingConstructor]
-        public ClientGenerator(ICodeNameProvider nameProvider, ITypeTranslationProvider translationProvider, ILoggingChannelFactory loggingChannelFactory, [ImportMany] IEnumerable<IGeneratorHook> hooks)
+        public ClientGenerator(ICodeNameProvider nameProvider, ITypeTranslationProvider translationProvider, ILoggingChannelFactory loggingChannelFactory, [ImportMany] IEnumerable<IGeneratorHook> hooks, IDependencyInjectionGenerator diGenerator )
         {
             _nameProvider = nameProvider;
             _hooks = hooks;
             _translationProvider = translationProvider;
             _loggingChannel = loggingChannelFactory.CreateChannel( typeof(ClientGenerator) );
+            _diGenerator = diGenerator;
         }
 
         /// <inheritdoc />
@@ -57,6 +59,7 @@ namespace Tecan.Sila2.Generator.Generators
 
             var client = GenerateClientClass( feature );
             nSpace.Types.Add( client );
+            nSpace.Types.Add( GenerateClientFactory( feature ) );
 
             var usingNs = new CodeNamespace();
             usingNs.Imports.Add( new CodeNamespaceImport( "System.Linq" ) );
@@ -75,6 +78,73 @@ namespace Tecan.Sila2.Generator.Generators
             }
 
             return unit;
+        }
+
+        private CodeTypeDeclaration GenerateClientFactory( Feature feature )
+        {
+            _loggingChannel.Log( $"Generating client factory for feature {feature.FullyQualifiedIdentifier}".ToString, Severity.Info );
+            var client = new CodeTypeDeclaration( feature.Identifier + "ClientFactory" )
+            {
+                Attributes = MemberAttributes.Public,
+                TypeAttributes = TypeAttributes.Public,
+                IsClass = true,
+                IsPartial = true
+            };
+            client.BaseTypes.Add( typeof(IClientFactory).Name );
+
+            client.Members.Add( (new CodeMemberProperty
+            {
+                Name = nameof( IClientFactory.FeatureIdentifier ),
+                Attributes = MemberAttributes.Public | MemberAttributes.Final,
+                Type = new CodeTypeReference(typeof(string)),
+                HasGet = true,
+                HasSet = false,
+                GetStatements =
+                {
+                    new CodeMethodReturnStatement(new CodePrimitiveExpression(feature.FullyQualifiedIdentifier))
+                }
+            }).WriteDocumentation( "Gets the fully-qualified identifier of the feature for which clients can be generated" ) );
+
+            client.Members.Add( (new CodeMemberProperty
+            {
+                Name = nameof( IClientFactory.InterfaceType ),
+                Attributes = MemberAttributes.Public | MemberAttributes.Final,
+                Type = new CodeTypeReference( typeof( Type ) ),
+                HasGet = true,
+                HasSet = false,
+                GetStatements =
+                {
+                    new CodeMethodReturnStatement(new CodeTypeOfExpression(_nameProvider.CreateFeatureInterfaceReference(feature)))
+                }
+            }).WriteDocumentation( "Gets the interface type for which clients can be generated" ) );
+
+            var channelParameter = new CodeParameterDeclarationExpression( typeof( IClientChannel ).Name, "channel" );
+            var executionManagerParameter = new CodeParameterDeclarationExpression( typeof( IClientExecutionManager ).Name, "executionManager" );
+
+            client.Members.Add( (new CodeMemberMethod
+            {
+                Name = nameof( IClientFactory.CreateClient ),
+                Attributes = MemberAttributes.Public | MemberAttributes.Final,
+                ReturnType = new CodeTypeReference( typeof( object ) ),
+                Parameters = { channelParameter, executionManagerParameter },
+                Statements =
+                {
+                    new CodeMethodReturnStatement(new CodeObjectCreateExpression(feature.Identifier + "Client",
+                        new CodeArgumentReferenceExpression(channelParameter.Name),
+                        new CodeArgumentReferenceExpression(executionManagerParameter.Name)))
+                }
+            }).WriteDocumentation( summary: "Creates a strongly typed client for the given execution channel and execution manager",
+                                   returns: "A strongly typed client. This object will be an instance of the InterfaceType property",
+                                   parameters: new Dictionary<string, string>
+                                   {
+                                       {channelParameter.Name, "The channel that should be used for communication with the server" },
+                                       {executionManagerParameter.Name, "The execution manager to manage metadata" }
+                                   } ) );
+
+            client.WriteDocumentation( $"Factory to instantiate clients for the {feature.DisplayName}." );
+
+            _diGenerator.AddDependencyInjectionRegistrations( client );
+            return client;
         }
 
 

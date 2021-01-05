@@ -856,7 +856,9 @@ namespace Tecan.Sila2.IntegrationTests
             };
 
             testClient.SetDummy( 8 );
+            Thread.Sleep( 10 );
             testClient.SetDummy( 15 );
+            Thread.Sleep( 10 );
             testClient.SetDummy( 42 );
 
             Thread.Sleep( 1000 );

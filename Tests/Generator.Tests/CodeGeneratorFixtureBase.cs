@@ -131,7 +131,7 @@ namespace Tecan.Sila2.Generator.Test
         {
             var feature = FeatureSerializer.Load( FeatureDefinitionFile );
             var nameProvider = CreateNameProvider();
-            var providerGenerator = new ClientGenerator( nameProvider, _typeTranslationProvider, new TestLoggingFactory(), null );
+            var providerGenerator = new ClientGenerator( nameProvider, _typeTranslationProvider, new TestLoggingFactory(), null, new MefGenerator() );
             var unit = providerGenerator.GenerateClient( feature,
                 "Tecan.Sila2.Generator.Test.TestReference" );
 

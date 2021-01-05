@@ -11,30 +11,30 @@
 namespace Tecan.Sila2.Generator.Test.TestReference
 {
     using Tecan.Sila2;
-
-
+    
+    
     ///  <summary>
     /// Data transfer object for the request of the Check Ambiguous Entries command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
     public class CheckAmbiguousEntriesRequestDto : Tecan.Sila2.ISilaTransferObject, Tecan.Sila2.ISilaRequestObject
     {
-
+        
         ///  <summary>
         /// Create a new instance
         /// </summary>
         public CheckAmbiguousEntriesRequestDto()
         {
         }
-
+        
         ///  <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
-        public CheckAmbiguousEntriesRequestDto( Tecan.Sila2.IBinaryStore store )
+        public CheckAmbiguousEntriesRequestDto(Tecan.Sila2.IBinaryStore store)
         {
         }
-
+        
         ///  <summary>
         /// Gets the command identifier for this command
         /// </summary>
@@ -47,7 +47,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
                     "heckAmbiguousEntries";
             }
         }
-
+        
         ///  <summary>
         /// Validates the contents of this transfer object
         /// </summary>
@@ -57,36 +57,36 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             return null;
         }
     }
-
+    
     ///  <summary>
     /// Data transfer object for the response of the Check Ambiguous Entries command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
     public class CheckAmbiguousEntriesResponseDto : Tecan.Sila2.ISilaTransferObject
     {
-
+        
         private AmbiguousClassDto _returnValue;
-
+        
         ///  <summary>
         /// Create a new instance
         /// </summary>
         public CheckAmbiguousEntriesResponseDto()
         {
         }
-
+        
         ///  <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
         ///  <param name="returnValue"></param>
-        public CheckAmbiguousEntriesResponseDto( AmbiguousClass returnValue, Tecan.Sila2.IBinaryStore store )
+        public CheckAmbiguousEntriesResponseDto(AmbiguousClass returnValue, Tecan.Sila2.IBinaryStore store)
         {
-            ReturnValue = new AmbiguousClassDto( returnValue, store );
+            ReturnValue = new AmbiguousClassDto(returnValue, store);
         }
-
+        
         ///  <summary>
         /// </summary>
-        [ProtoBuf.ProtoMemberAttribute( 1 )]
+        [ProtoBuf.ProtoMemberAttribute(1)]
         public AmbiguousClassDto ReturnValue
         {
             get
@@ -98,7 +98,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
                 _returnValue = value;
             }
         }
-
+        
         ///  <summary>
         /// Validates the contents of this transfer object
         /// </summary>
@@ -108,39 +108,39 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             return null;
         }
     }
-
+    
     ///  <summary>
     /// The data transfer object for Ambiguous Class
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
     public class AmbiguousClassDto : Tecan.Sila2.ISilaTransferObject<AmbiguousClass>
     {
-
+        
         private Tecan.Sila2.StringDto _message;
-
+        
         private Tecan.Sila2.StringDto _ambiguousChannel;
-
+        
         ///  <summary>
         /// Initializes a new instance (to be used by the serializer)
         /// </summary>
         public AmbiguousClassDto()
         {
         }
-
+        
         ///  <summary>
         /// Initializes a new data transfer object from the business object
         /// </summary>
         /// <param name="inner">The business object that should be transferred</param>
         /// <param name="store">A component to handle binary data</param>
-        public AmbiguousClassDto( AmbiguousClass inner, Tecan.Sila2.IBinaryStore store )
+        public AmbiguousClassDto(AmbiguousClass inner, Tecan.Sila2.IBinaryStore store)
         {
-            Message = new Tecan.Sila2.StringDto( inner.Message, store );
-            AmbiguousChannel = new Tecan.Sila2.StringDto( inner.AmbiguousChannel, store );
+            Message = new Tecan.Sila2.StringDto(inner.Message, store);
+            AmbiguousChannel = new Tecan.Sila2.StringDto(inner.AmbiguousChannel, store);
         }
-
+        
         ///  <summary>
         /// </summary>
-        [ProtoBuf.ProtoMemberAttribute( 1 )]
+        [ProtoBuf.ProtoMemberAttribute(1)]
         public Tecan.Sila2.StringDto Message
         {
             get
@@ -152,10 +152,10 @@ namespace Tecan.Sila2.Generator.Test.TestReference
                 _message = value;
             }
         }
-
+        
         ///  <summary>
         /// </summary>
-        [ProtoBuf.ProtoMemberAttribute( 2 )]
+        [ProtoBuf.ProtoMemberAttribute(2)]
         public Tecan.Sila2.StringDto AmbiguousChannel
         {
             get
@@ -167,27 +167,27 @@ namespace Tecan.Sila2.Generator.Test.TestReference
                 _ambiguousChannel = value;
             }
         }
-
+        
         ///  <summary>
         /// Extracts the transferred value
         /// </summary>
         /// <param name="store">The binary store in which to store binary data</param>
         /// <returns>the inner value</returns>
-        public AmbiguousClass Extract( Tecan.Sila2.IBinaryStore store )
+        public AmbiguousClass Extract(Tecan.Sila2.IBinaryStore store)
         {
-            return new AmbiguousClass( Message.Extract( store ), AmbiguousChannel.Extract( store ) );
+            return new AmbiguousClass(Message.Extract(store), AmbiguousChannel.Extract(store));
         }
-
+        
         ///  <summary>
         /// Creates the data transfer object from the given object to transport
         /// </summary>
         /// <param name="inner">The object to transfer</param>
         /// <param name="store">An object to store binary data</param>
-        public static AmbiguousClassDto Create( AmbiguousClass inner, Tecan.Sila2.IBinaryStore store )
+        public static AmbiguousClassDto Create(AmbiguousClass inner, Tecan.Sila2.IBinaryStore store)
         {
-            return new AmbiguousClassDto( inner, store );
+            return new AmbiguousClassDto(inner, store);
         }
-
+        
         ///  <summary>
         /// Validates the contents of this transfer object
         /// </summary>

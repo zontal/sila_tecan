@@ -10,43 +10,43 @@
 
 namespace Tecan.Sila2.Generator.Test.TestReference
 {
-
-
+    
+    
     ///  <summary>
     /// </summary>
-    [Tecan.Sila2.SilaFeatureAttribute( true, "ambiguityresolver" )]
-    [Tecan.Sila2.SilaIdentifierAttribute( "AmbiguityResolverService" )]
-    [Tecan.Sila2.SilaDisplayNameAttribute( "Ambiguity Resolver Service" )]
+    [Tecan.Sila2.SilaFeatureAttribute(true, "ambiguityresolver")]
+    [Tecan.Sila2.SilaIdentifierAttribute("AmbiguityResolverService")]
+    [Tecan.Sila2.SilaDisplayNameAttribute("Ambiguity Resolver Service")]
     public partial interface IAmbiguityResolverService
     {
-
+        
         ///  <summary>
         /// </summary>
         /// <returns></returns>
         [Tecan.Sila2.ObservableAttribute()]
-        [return: Tecan.Sila2.SilaIdentifierAttribute( "ReturnValue" )]
+        [return: Tecan.Sila2.SilaIdentifierAttribute("ReturnValue")]
         Tecan.Sila2.IObservableCommand<AmbiguousClass> CheckAmbiguousEntries();
     }
-
+    
     ///  <summary>
     /// Describes a class which has ambiguous parameter
     /// </summary>
     public struct AmbiguousClass
     {
-
+        
         private string _message;
-
+        
         private string _ambiguousChannel;
-
+        
         ///  <summary>
         /// Initializes a new instance
         /// </summary>
-        public AmbiguousClass( string message, string ambiguousChannel )
+        public AmbiguousClass(string message, string ambiguousChannel)
         {
             _message = message;
             _ambiguousChannel = ambiguousChannel;
         }
-
+        
         ///  <summary>
         /// </summary>
         public string Message
@@ -56,7 +56,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
                 return _message;
             }
         }
-
+        
         ///  <summary>
         /// </summary>
         public string AmbiguousChannel
