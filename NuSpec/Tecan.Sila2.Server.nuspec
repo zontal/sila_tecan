@@ -13,7 +13,7 @@
         <repository type="git" url="https://gitlab.com/SiLA2/vendors/sila_tecan.git" />
         <dependencies>
             <dependency id="Tecan.Sila2" version="[3.0,4.0)" />
-            <dependency id="Tecan.Grpc" version="[3.0,4.0)" />
+            <dependency id="Tecan.Sila2.Grpc" version="[3.0,4.0)" />
             <dependency id="CommandLineParser" version="2.6.0" />
         </dependencies>
     </metadata>
