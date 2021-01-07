@@ -39,14 +39,21 @@ namespace Tecan.Sila2.Discovery
         {
             var cts = new TaskCompletionSource<ServerData>();
             cancellationToken.Register( cts.SetCanceled );
+            var found = false;
 
             DiscoverServers( channel =>
             {
                 if( channel.Config.Uuid == serverUuid )
                 {
                     cts.SetResult(channel);
+                    found = true;
                 }
             }, timeout, cancellationToken );
+
+            if (!found)
+            {
+                cts.TrySetResult( null );
+            }
 
             return cts.Task.Result;
         }
