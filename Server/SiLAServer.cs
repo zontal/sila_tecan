@@ -4,6 +4,7 @@ using System.ComponentModel.Composition;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
@@ -49,6 +50,8 @@ namespace Tecan.Sila2.Server
         private readonly LoggingInterceptor _loggingInterceptor;
 
         private readonly Timer _cleanupTimer;
+
+        private readonly ServerPooling.ServerPoolDispatcher _poolDispatcher;
 
         #endregion
 
@@ -125,6 +128,7 @@ namespace Tecan.Sila2.Server
             _upload = new BinaryUpload(fileManagement, this);
             _download = new BinaryDownload(fileManagement);
             _fileManagement = fileManagement;
+            _poolDispatcher = new ServerPooling.ServerPoolDispatcher(loggingChannelFactory);
             EnsurePortIsAvailable(startupInfo.Port);
 
             ServerType = startupInfo.Info.Type;
@@ -154,17 +158,19 @@ namespace Tecan.Sila2.Server
                 credentials = ServerCredentials.Insecure;
             }
 
-            // create gRPC server such that it uses only the specified network interface
-            if (startupInfo.NetworkInterface != null)
+            // create gRPC server such that it uses only the specified network interfaces
+            if (startupInfo.NetworkInterfaces != null && startupInfo.NetworkInterfaces != null)
             {
-                var unicastAddresses = startupInfo.NetworkInterface.GetIPProperties().UnicastAddresses.Select(u => u.Address);
                 _logger.Log("Running on the following addresses:".ToString, Severity.Info);
-                foreach (var v4addr in unicastAddresses.Where(a => a.AddressFamily == AddressFamily.InterNetwork))
+                foreach (var v4addr in NetworkInterface.GetAllNetworkInterfaces()
+                    .Where(nic => startupInfo.NetworkInterfaces(nic))
+                    .SelectMany(nic => nic.GetIPProperties().UnicastAddresses.Select(ua => ua.Address))
+                    .Where(a => a.AddressFamily == AddressFamily.InterNetwork))
                 {
                     _logger.Log(v4addr.ToString, Severity.Info);
                     GrpcServer.Ports.Add(new ServerPort(v4addr.ToString(), startupInfo.Port, credentials));
                 }
-                _announcer = new ServiceAnnouncer(ServerUUID, (ushort)startupInfo.Port, startupInfo.NetworkInterface, loggingChannelFactory);
+                _announcer = new ServiceAnnouncer(ServerUUID, (ushort)startupInfo.Port, startupInfo.NetworkInterfaces, loggingChannelFactory);
             }
             else
             {
@@ -256,7 +262,7 @@ namespace Tecan.Sila2.Server
         public void AddFeature(IFeatureProvider feature)
         {
             _implementedFeatures.Add(feature);
-            var builder = new ServerBuilder( this, feature.FeatureDefinition );
+            var builder = new ServerBuilder( this, feature.FeatureDefinition, _poolDispatcher );
             feature.Register( builder );
             GrpcServer.Services.Add( builder.CreateServiceDefinition().Intercept(_loggingInterceptor) );
             _logger.Log( $"Exposing feature {feature.FeatureDefinition.FullyQualifiedIdentifier}".ToString, Severity.Info );
@@ -295,13 +301,17 @@ namespace Tecan.Sila2.Server
         public IServerErrorHandling ErrorHandling { get; } = new ServerErrorHandling();
 
         /// <inheritdoc />
-        public IObservableCommand[] FindCommandExecutions( Predicate<CommandState> stateFilter )
+        public ObservableCommandExecution[] FindCommandExecutions( Predicate<CommandState> stateFilter )
         {
+            if (stateFilter == null)
+            {
+                throw new ArgumentNullException( nameof( stateFilter ) );
+            }
+
             lock (_commandExecutions)
             {
                 return _commandExecutions
                     .Where( ex => stateFilter(ex.Command.State.State))
-                    .Select( ex => ex.Command )
                     .ToArray();
             }
         }
@@ -317,22 +327,22 @@ namespace Tecan.Sila2.Server
         /// <typeparam name="TResponse">The type of the response</typeparam>
         /// <param name="command">The actual command</param>
         /// <param name="request">The request object</param>
-        /// <param name="context">The call context in which the command is executed</param>
+        /// <param name="metadataRepository">The metadata entries to consider for the command</param>
         /// <returns>An awaitable task with the command response</returns>
         public Task<TResponse> InvokeCommand<TRequest, TResponse>(Func<TRequest, TResponse> command, TRequest request,
-            ServerCallContext context)
+            IMetadataRepository metadataRepository)
             where TRequest : ISilaRequestObject
         {
-            return Task.Factory.StartNew( () => InvokeCommandCore( command, request, context ) );
+            return Task.Factory.StartNew( () => InvokeCommandCore( command, request, metadataRepository ) );
         }
 
         private TResponse InvokeCommandCore<TRequest, TResponse>( Func<TRequest, TResponse> command, TRequest request,
-            ServerCallContext context )
+            IMetadataRepository metadataRepository )
             where TRequest : ISilaRequestObject
         {
             using( new ActivityBlock( "Request of " + request.CommandIdentifier ) )
             {
-                var interceptions = RequestInterceptions( request.CommandIdentifier, context );
+                var interceptions = RequestInterceptions( request.CommandIdentifier, metadataRepository );
                 try
                 {
                     var result = command( request );
@@ -376,13 +386,13 @@ namespace Tecan.Sila2.Server
         /// <typeparam name="TResponse">The type of the response</typeparam>
         /// <param name="command">The actual command</param>
         /// <param name="commandIdentifier">The identifier of the command</param>
-        /// <param name="context">The call context in which the command is executed</param>
+        /// <param name="metadataRepository">The metadata entries to consider for the command</param>
         /// <returns>An awaitable task with the command response</returns>
-        public async Task<TResponse> InvokeCommand<TResponse>(Func<Task<TResponse>> command, string commandIdentifier, ServerCallContext context)
+        public async Task<TResponse> InvokeCommand<TResponse>(Func<Task<TResponse>> command, string commandIdentifier, IMetadataRepository metadataRepository)
         {
             using( new ActivityBlock( "Request of " + commandIdentifier ) )
             {
-                var interceptions = RequestInterceptions( commandIdentifier, context );
+                var interceptions = RequestInterceptions( commandIdentifier, metadataRepository );
                 try
                 {
                     var result = await command();
@@ -424,14 +434,13 @@ namespace Tecan.Sila2.Server
         /// Requests interceptors for a call with the given command identifier
         /// </summary>
         /// <param name="commandIdentifier">Unique identifier of a command or property</param>
-        /// <param name="context">The context in which the call is made</param>
+        /// <param name="metadataRepository">A repository with metadata information</param>
         /// <returns>A stack of request interceptions</returns>
-        public Stack<IRequestInterception> RequestInterceptions(string commandIdentifier, ServerCallContext context)
+        public Stack<IRequestInterception> RequestInterceptions(string commandIdentifier, IMetadataRepository metadataRepository )
         {
             Stack<IRequestInterception> interceptions = null;
             try
             {
-                var metadataRepository = new MetadataRepository( context );
                 foreach( var interceptor in GetInterceptors( commandIdentifier ) )
                 {
                     var interception = interceptor.Intercept( commandIdentifier, this, metadataRepository );
@@ -472,11 +481,11 @@ namespace Tecan.Sila2.Server
         /// </summary>
         /// <param name="commandIdentifier">The unique identifier of the command that shall be executed</param>
         /// <param name="command">The observable command</param>
-        /// <param name="context">The context in which the call is made</param>
+        /// <param name="metadataRepository">The metadata entries to consider for the command</param>
         /// <returns></returns>
-        public string AddObservableCommandExecution(string commandIdentifier, IObservableCommand command, ServerCallContext context)
+        public string AddObservableCommandExecution(string commandIdentifier, IObservableCommand command, IMetadataRepository metadataRepository)
         {
-            var interceptions = RequestInterceptions( commandIdentifier, context );
+            var interceptions = RequestInterceptions( commandIdentifier, metadataRepository );
             // create command ID
             var commandExecutionId = Guid.NewGuid().ToString();
 
@@ -494,9 +503,9 @@ namespace Tecan.Sila2.Server
             return commandExecutionId;
         }
 
-        internal T GetPropertyValue<T>(string propertyIdentifier, Func<T> value, ServerCallContext context)
+        internal T GetPropertyValue<T>(string propertyIdentifier, Func<T> value, IMetadataRepository metadataRepository)
         {
-            var interceptors = RequestInterceptions( propertyIdentifier, context );
+            var interceptors = RequestInterceptions( propertyIdentifier, metadataRepository );
             try
             {
                 var result = value();
@@ -569,7 +578,7 @@ namespace Tecan.Sila2.Server
         }
 
         /// <inheritdoc />
-        public IObservableCommand GetCommandExecution( string commandExecutionId )
+        public ObservableCommandExecution GetCommandExecution( string commandExecutionId )
         {
             lock(_commandExecutions)
             {
@@ -580,7 +589,7 @@ namespace Tecan.Sila2.Server
                     throw ServerErrorHandling.CreateFrameworkError( FrameworkErrorType.InvalidCommandExecutionUuid );
                 }
 
-                return command.Command;
+                return command;
             }
         }
 

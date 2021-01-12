@@ -1,10 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using Grpc.Core;
+using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
+using Tecan.Sila2.ServerPooling;
 
 namespace Tecan.Sila2.Server.ServiceDefinition
 {
-    internal class MetadataHandler
+    internal class MetadataHandler : IRequestHandler
     {
         private readonly SiLAServer _server;
         private readonly IRequestInterceptor _requestInterceptor;
@@ -17,7 +21,14 @@ namespace Tecan.Sila2.Server.ServiceDefinition
 
         public Task<List<StringDto>> GetAffectedBy( EmptyRequest request, Grpc.Core.ServerCallContext context )
         {
-            var affected = new List<StringDto>();
+            List<StringDto> affected = DtoExtensions.Encapsulate( GetAffected(), StringDto.Create, null );
+
+            return Task.FromResult( affected );
+        }
+
+        private IEnumerable<string> GetAffected()
+        {
+            var affected = new List<string>();
 
             foreach(var provider in _server.Features)
             {
@@ -29,7 +40,7 @@ namespace Tecan.Sila2.Server.ServiceDefinition
                         var identifier = feature.GetFullyQualifiedIdentifier( command );
                         if(_requestInterceptor.IsInterceptRequired( feature, identifier ))
                         {
-                            affected.Add( new StringDto( identifier ) );
+                            affected.Add( identifier );
                         }
                     }
                 }
@@ -40,15 +51,30 @@ namespace Tecan.Sila2.Server.ServiceDefinition
                         var identifier = feature.GetFullyQualifiedIdentifier( property );
                         if(_requestInterceptor.IsInterceptRequired( feature, identifier ))
                         {
-                            affected.Add( new StringDto( identifier ) );
+                            affected.Add( identifier );
                         }
                     }
                 }
             }
 
-            return Task.FromResult( affected );
+            return affected;
         }
 
+        public async void HandleRequest( SilaClientMessage message, IClientStreamWriter<SilaServerMessage> responseWriter, ServerPoolDispatcher dispatcher )
+        {
+            if(message.Type != SilaClientMessageType.MetadataRequest)
+            {
+                throw new ArgumentException( $"The message type {message.Type} is not supported.", nameof( message ) );
+            }
 
+            await responseWriter.WriteAsync( new SilaServerMessage
+            {
+                RequestUuid = message.RequestUuid,
+                MetadataResponse = new GetFCPAffectedByMetadataResponse
+                {
+                    AffectedCalls = GetAffected().ToList()
+                }
+            } );
+        }
     }
 }

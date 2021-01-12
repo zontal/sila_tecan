@@ -37,13 +37,13 @@ namespace Tecan.Sila2.Server
         /// </summary>
         /// <param name="commandExecutionId">The identifier of the command execution</param>
         /// <returns>The command execution object</returns>
-        IObservableCommand GetCommandExecution( string commandExecutionId );
+        ObservableCommandExecution GetCommandExecution( string commandExecutionId );
 
         /// <summary>
         /// Gets a collection of currently running commands that match the given filter
         /// </summary>
         /// <param name="stateFilter">The state filter or null to return all command executions</param>
-        IObservableCommand[] FindCommandExecutions( Predicate<CommandState> stateFilter );
+        ObservableCommandExecution[] FindCommandExecutions( Predicate<CommandState> stateFilter );
 
         /// <summary>
         /// Gets a component for the creation of error messages

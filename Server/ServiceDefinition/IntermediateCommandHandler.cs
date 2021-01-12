@@ -1,14 +1,15 @@
 ﻿using Grpc.Core;
 using System;
 using System.Threading.Tasks;
+using Tecan.Sila2.ServerPooling;
 
 namespace Tecan.Sila2.Server.ServiceDefinition
 {
-    internal class IntermediateCommandHandler<TIntermediate, TIntermediateDto>
+    internal class IntermediateCommandHandler<TIntermediate, TIntermediateDto> : IIntermediateRequestHandler
     {
-        private SiLAServer _server;
-        private Func<TIntermediate, TIntermediateDto> _intermediateConverter;
-        private Func<Exception, Exception> _errorConverter;
+        private readonly SiLAServer _server;
+        private readonly Func<TIntermediate, TIntermediateDto> _intermediateConverter;
+        private readonly Func<Exception, Exception> _errorConverter;
 
         public IntermediateCommandHandler( SiLAServer server, Func<TIntermediate, TIntermediateDto> intermediateConverter, Func<Exception, Exception> errorConverter )
         {
@@ -50,5 +51,9 @@ namespace Tecan.Sila2.Server.ServiceDefinition
             }
         }
 
+        public void HandleIntermediatesSubscription( string requestUuid, ObservableCommandExecution command, IClientStreamWriter<SilaServerMessage> responseWriter, ServerPoolDispatcher dispatcher )
+        {
+            throw new NotImplementedException();
+        }
     }
 }

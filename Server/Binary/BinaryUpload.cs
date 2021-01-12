@@ -73,7 +73,7 @@ namespace Tecan.Sila2.Server.Binary
         {
             var commandIdentifier = GetCommandIdentifier( request.CommandIdentifier );
             var internalRequest = new InternalCreateBinaryRequest(commandIdentifier, request);
-            return _server.InvokeCommand( CreateBinaryCore, internalRequest, context );
+            return _server.InvokeCommand( CreateBinaryCore, internalRequest, new MetadataRepository(context) );
         }
 
         private CreateBinaryResponseDto CreateBinaryCore( InternalCreateBinaryRequest request)
