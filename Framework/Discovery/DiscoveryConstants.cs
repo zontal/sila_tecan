@@ -18,13 +18,5 @@ namespace Tecan.Sila2.Discovery
         /// </summary>
         public const string ServiceDomainName = "local";
 
-        /// <summary>
-        /// Pattern which is expected to exist in a the instance name portion of 
-        /// the SiLA service
-        /// 
-        /// TODO: any discovered _sila.tcp.local service must also be checked for the service instance name and validate that it contains a GUID i.e. must match the InstanceNamePattern which should be some form of REGEX pattern
-        /// </summary>
-        public const string InstanceNamePattern = null;
-
     }
 }

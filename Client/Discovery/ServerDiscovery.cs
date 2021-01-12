@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
+using System.Net.NetworkInformation;
 using System.Threading;
 using System.Threading.Tasks;
 using Makaretu.Dns;
@@ -18,8 +19,9 @@ namespace Tecan.Sila2.Discovery
     public class ServerDiscovery : IServerDiscovery
     {
         private readonly ILoggingChannel _loggingChannel;
-        private readonly Networking _networking;
         private readonly IServerConnector _serverConnector;
+
+        private readonly Dictionary<string, ServerData> _connectedServers = new Dictionary<string, ServerData>();
 
         /// <summary>
         /// Create a new sila discovery object
@@ -30,12 +32,11 @@ namespace Tecan.Sila2.Discovery
         public ServerDiscovery( ILoggingChannelFactory factory, IServerConnector serverConnector )
         {
             _loggingChannel = factory.CreateChannel( typeof(ServerDiscovery) );
-            _networking = new Networking( factory );
             _serverConnector = serverConnector;
         }
 
         /// <inheritdoc />
-        public ServerData Connect( Guid serverUuid, TimeSpan timeout, CancellationToken cancellationToken = default )
+        public ServerData Connect( Guid serverUuid, TimeSpan timeout, Predicate<NetworkInterface> networkFilter = null, CancellationToken cancellationToken = default )
         {
             var cts = new TaskCompletionSource<ServerData>();
             cancellationToken.Register( cts.SetCanceled );
@@ -48,7 +49,7 @@ namespace Tecan.Sila2.Discovery
                     cts.SetResult(channel);
                     found = true;
                 }
-            }, timeout, cancellationToken );
+            }, timeout, networkFilter, cancellationToken );
 
             if (!found)
             {
@@ -59,75 +60,156 @@ namespace Tecan.Sila2.Discovery
         }
 
         /// <inheritdoc />
-        public void DiscoverServers( Action<ServerData> serverFoundCallback, TimeSpan timeout = default, CancellationToken cancellationToken = default )
+        public void DiscoverServers( Action<ServerData> serverFoundCallback, TimeSpan timeout = default, Predicate<NetworkInterface> networkInterfaceFilter = null, CancellationToken cancellationToken = default )
         {
-            using( var mdns = new MulticastService( _networking.CreateFilterFunc() ) )
+            if (serverFoundCallback == null)
             {
-                var handler = new EventHandler<MessageEventArgs>( ( s, e ) =>
-                {
-                    // The first Answer will be a PTRRecord
-                    var pointers = e.Message.Answers.OfType<PTRRecord>().Where( p => p.Name.ToString().Contains( DiscoveryConstants.ServiceName ) );
-                    foreach( var pointer in pointers )
-                    {
-                        // Ask for the service instance details
-                        mdns.SendQuery( pointer.DomainName, type: DnsType.SRV );
-                    }
+                throw new ArgumentNullException( nameof( serverFoundCallback ) );
+            }
 
-                    // The second Answer will be a SRVRecord (also contain A and AAAA records)
-                    var servers = e.Message.Answers.OfType<SRVRecord>().Where( p => p.Name.ToString().Contains( DiscoveryConstants.ServiceName ) );
-                    foreach( var server in servers )
+            lock(_connectedServers)
+            {
+                NotifyKnownServers( serverFoundCallback );
+
+                using(var mdns = new MulticastService( CreateFilter( networkInterfaceFilter ) ))
+                {
+                    var handler = new EventHandler<MessageEventArgs>( ( s, e ) =>
                     {
-                        var aRecord = e.Message.AdditionalRecords.OfType<ARecord>().FirstOrDefault();
-                        if( aRecord != null )
+                        // The first Answer will be a PTRRecord, in that case request an SRV if it is not already contained in the answer
+                        RequestSrvForPtrRecord( e.Message, mdns );
+
+                        // The second Answer will be a SRVRecord (also contain A and AAAA records or as separate answers)
+                        var servers = e.Message.Answers.OfType<SRVRecord>().Where( p => p.Name.ToString().Contains( DiscoveryConstants.ServiceName ) );
+                        foreach(var server in servers)
                         {
-                            try
+                            var aRecord = e.Message.AdditionalRecords.OfType<ARecord>().FirstOrDefault() ?? e.Message.Answers.OfType<ARecord>().FirstOrDefault();
+                            if(aRecord != null)
                             {
-                                var channel = _serverConnector.Connect( aRecord.Address, server.Port );
-                                serverFoundCallback( channel );
-                            }
-                            catch( Exception exception )
-                            {
-                                _loggingChannel.LogException( $"Failed to create channel to {aRecord.Address} on port {server.Port}".ToString, exception );
+                                try
+                                {
+                                    var channel = _serverConnector.Connect( aRecord.Address, server.Port );
+                                    serverFoundCallback( channel );
+                                    _connectedServers[server.Name.ToString()] = channel;
+                                }
+                                catch(Exception exception)
+                                {
+                                    _loggingChannel.LogException( $"Failed to create channel to {aRecord.Address} on port {server.Port}".ToString, exception );
+                                }
                             }
                         }
-                    }
-                } );
+                    } );
 
-                mdns.AnswerReceived += handler;
+                    mdns.AnswerReceived += handler;
 
-                mdns.Start();
-                // Ask for PTRRecords (the devices will only respond to SRV that are directed exactly to them)
-                mdns.SendQuery( string.Join( ".", DiscoveryConstants.ServiceName, DiscoveryConstants.ServiceDomainName ), type: DnsType.PTR );
-                if( cancellationToken.CanBeCanceled )
-                {
-                    if( timeout > TimeSpan.Zero )
-                    {
-                        cancellationToken.WaitHandle.WaitOne( timeout );
-                    }
-                    else
-                    {
-                        cancellationToken.WaitHandle.WaitOne();
-                    }
+                    mdns.Start();
+                    ResendQueryTillTimeoutOrCancel( timeout, mdns, cancellationToken );
+
+                    mdns.Stop();
+                    mdns.AnswerReceived -= handler;
                 }
-                else
-                {
-                    Thread.Sleep( timeout );
-                }
-
-                mdns.Stop();
-                mdns.AnswerReceived -= handler;
             }
         }
 
-        /// <summary>
-        /// Query a list of SiLA2 servers with valid SiLAService
-        /// </summary>
-        /// <param name="timeout">duration of Query period</param>
-        /// <returns>"List of valid SiLA2 servers</returns>
-        public IEnumerable<ServerData> GetServers(TimeSpan timeout)
+        private void NotifyKnownServers( Action<ServerData> serverFoundCallback )
+        {
+            foreach(var knownServer in _connectedServers.Keys.ToArray())
+            {
+                var server = _connectedServers[knownServer];
+                if(server.Channel.State == Client.ChannelState.Shutdown)
+                {
+                    _loggingChannel.Log( $"Removing server {server.Config.Name} because the connection is lost".ToString, Severity.Info );
+                    _connectedServers.Remove( knownServer );
+                }
+                else
+                {
+                    serverFoundCallback( server );
+                }
+            }
+        }
+
+        private void RequestSrvForPtrRecord( Message message, MulticastService mdns )
+        {
+            var pointers = message.Answers.OfType<PTRRecord>().Where( p => p.Name.ToString().Contains( DiscoveryConstants.ServiceName ) );
+            foreach(var pointer in pointers)
+            {
+                if(!_connectedServers.ContainsKey( pointer.DomainName.ToString() ) && !message.Answers.OfType<SRVRecord>().Any() )
+                {
+                    // Ask for the service instance details
+                    mdns.SendQuery( pointer.DomainName, type: DnsType.SRV );
+                }
+            }
+        }
+
+        private static void ResendQueryTillTimeoutOrCancel( TimeSpan timeout, MulticastService mdns, CancellationToken cancellationToken )
+        {
+            var toWait = TimeSpan.FromSeconds( 1 );
+            while(timeout > TimeSpan.Zero)
+            {
+                // Ask for PTRRecords (the devices will only respond to SRV that are directed exactly to them)
+                mdns.SendQuery( DiscoveryConstants.ServiceName + "." + DiscoveryConstants.ServiceDomainName + ".", DnsClass.IN, DnsType.PTR );
+                Wait( new TimeSpan(Math.Min(toWait.Ticks, timeout.Ticks)), cancellationToken );
+                if (cancellationToken.IsCancellationRequested)
+                {
+                    break;
+                }
+                else
+                {
+                    timeout -= toWait;
+                    toWait += toWait;
+                }
+            }
+        }
+
+        private Func<IEnumerable<NetworkInterface>, IEnumerable<NetworkInterface>> CreateFilter( Predicate<NetworkInterface> networkInterfaceFilter )
+        {
+            if (networkInterfaceFilter == null)
+            {
+                return null;
+            }
+
+            IEnumerable<NetworkInterface> filter(IEnumerable<NetworkInterface> nics)
+            {
+                foreach(var nic in nics)
+                {
+                    if (networkInterfaceFilter(nic))
+                    {
+                        _loggingChannel.Log( $"Running discovery on network interface {nic.Name}".ToString, Severity.Info );
+                        yield return nic;
+                    }
+                    else
+                    {
+                        _loggingChannel.Log( $"Skipping network interface {nic.Name}".ToString, Severity.Debug );
+                    }
+                }
+            }
+
+            return filter;
+        }
+
+        private static void Wait( TimeSpan timeout, CancellationToken cancellationToken )
+        {
+            if(cancellationToken.CanBeCanceled)
+            {
+                if(timeout > TimeSpan.Zero)
+                {
+                    cancellationToken.WaitHandle.WaitOne( timeout );
+                }
+                else
+                {
+                    cancellationToken.WaitHandle.WaitOne();
+                }
+            }
+            else
+            {
+                Thread.Sleep( timeout );
+            }
+        }
+
+        /// <inheritdoc />
+        public IEnumerable<ServerData> GetServers(TimeSpan timeout, Predicate<NetworkInterface> networkFilter = null )
         {
             var services = new List<ServerData>();
-            DiscoverServers(services.Add, timeout);
+            DiscoverServers(services.Add, timeout, networkFilter);
             return services;
         }
     }

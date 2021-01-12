@@ -1617,4 +1617,12 @@ namespace Tecan.Sila2
             } ).ToList();
         }
     }
+
+    /// <summary>
+    /// The data transfer object of the response to delete a binary
+    /// </summary>
+    [ProtoContract()]
+    public partial class EmptyMessage
+    {
+    }
 }

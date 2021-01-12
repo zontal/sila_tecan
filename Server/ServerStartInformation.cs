@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net.NetworkInformation;
 
 namespace Tecan.Sila2.Server
@@ -13,15 +14,15 @@ namespace Tecan.Sila2.Server
         /// </summary>
         /// <param name="info">The server information</param>
         /// <param name="port">The port the server is running on</param>
-        /// <param name="networkInterface">The network interface the server uses for discovery</param>
+        /// <param name="networkInterfaces">The network interfaces the server uses for discovery</param>
         /// <param name="serverUuid">The unique identifier of the server</param>
         /// <param name="name">the initial name of the server</param>
-        public ServerStartInformation( ServerInformation info, int port, NetworkInterface networkInterface, Guid serverUuid, string name )
+        public ServerStartInformation( ServerInformation info, int port, Predicate<NetworkInterface> networkInterfaces, Guid serverUuid, string name )
         {
             Name = name;
             Info = info;
             Port = port;
-            NetworkInterface = networkInterface;
+            NetworkInterfaces = networkInterfaces;
             ServerUuid = serverUuid;
         }
 
@@ -44,9 +45,9 @@ namespace Tecan.Sila2.Server
         public int Port { get; }
 
         /// <summary>
-        /// Gets the network interface the server uses for discovery
+        /// Filters the network interface the server uses for discovery
         /// </summary>
-        public NetworkInterface NetworkInterface { get; }
+        public Predicate<NetworkInterface> NetworkInterfaces { get; }
 
         /// <summary>
         /// Gets the unique identifier of the server

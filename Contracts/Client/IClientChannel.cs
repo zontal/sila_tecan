@@ -11,6 +11,11 @@ namespace Tecan.Sila2.Client
     public interface IClientChannel
     {
         /// <summary>
+        /// Gets the state of the channel
+        /// </summary>
+        ChannelState State { get; }
+
+        /// <summary>
         /// Reads a property through the channel
         /// </summary>
         /// <typeparam name="T">The data transfer object type of the property response</typeparam>
@@ -402,5 +407,33 @@ namespace Tecan.Sila2.Client
         /// <returns>The converted exception</returns>
         Exception ConvertException( Exception ex,
             Func<string, string, Exception> executionErrorConversion = null );
+    }
+
+
+    /// <summary>
+    /// Denotes the state of a channel, using same states as in gRPC
+    /// </summary>
+    public enum ChannelState
+    {
+        /// <summary>
+        /// Channel is idle
+        /// </summary>
+        Idle = 0,
+        /// <summary>
+        /// Channel is connecting
+        /// </summary>     
+        Connecting = 1,
+        /// <summary>
+        /// Channel is ready for work
+        /// </summary>
+        Ready = 2,
+        /// <summary>
+        /// Channel has seen a failure but expects to recover
+        /// </summary>
+        TransientFailure = 3,
+        /// <summary>
+        /// Channel has seen a failure that it cannot recover from
+        /// </summary>
+        Shutdown = 4
     }
 }

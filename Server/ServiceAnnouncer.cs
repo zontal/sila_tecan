@@ -15,7 +15,6 @@ namespace Tecan.Sila2
     public class ServiceAnnouncer : IDisposable
     {
         private readonly ILoggingChannel _logger;
-        private readonly Networking _networking;
         private MulticastService _multicastService;
         private ServiceDiscovery _serviceDiscoverer;
 
@@ -48,31 +47,42 @@ namespace Tecan.Sila2
         /// </summary>
         /// <param name="instanceName">Unique name of the SiLA device service</param>
         /// <param name="portNumber">Listening port of the gRPC server</param>
-        /// <param name="networkInterface">The network interface to advertise on</param>
+        /// <param name="networkFilter">A predicate that filters network interfaces to advertise on</param>
         /// <param name="loggingChannelFactory">A factory to create logging channels</param>
-        public ServiceAnnouncer( string instanceName, ushort portNumber, NetworkInterface networkInterface, ILoggingChannelFactory loggingChannelFactory )
-            : this(instanceName, portNumber, networkInterface, loggingChannelFactory, new Networking(loggingChannelFactory))
-        {
-        }
-
-        /// <summary>
-        /// Creates a helper object that can announce as a SiLA service on mDNS as long as it exists.
-        /// </summary>
-        /// <param name="instanceName">Unique name of the SiLA device service</param>
-        /// <param name="portNumber">Listening port of the gRPC server</param>
-        /// <param name="networkInterface">The network interface to advertise on</param>
-        /// <param name="loggingChannelFactory">A factory to create logging channels</param>
-        /// <param name="networking">A networking library</param>
-        internal ServiceAnnouncer( string instanceName, ushort portNumber, NetworkInterface networkInterface, ILoggingChannelFactory loggingChannelFactory, Networking networking )
+        public ServiceAnnouncer( string instanceName, ushort portNumber, Predicate<NetworkInterface> networkFilter, ILoggingChannelFactory loggingChannelFactory )
         {
             _logger = loggingChannelFactory.CreateChannel( typeof(ServiceAnnouncer) );
-            _networking = networking;
-
-            var selectedAddresses = _networking.ListInterNetworkAddresses( networkInterface );
-            var filterFunc = _networking.CreateFilterFunc( networkInterface );
+            networkFilter ??= (n => true);
+            var selectedAddresses = Networking.ListInterNetworkAddresses( networkFilter );
 
             Profile = new ServiceProfile( instanceName, DiscoveryConstants.ServiceName, portNumber, selectedAddresses );
-            _multicastService = new MulticastService( filterFunc );
+            _multicastService = new MulticastService( CreateFilter(networkFilter) );
+        }
+
+        private Func<IEnumerable<NetworkInterface>, IEnumerable<NetworkInterface>> CreateFilter( Predicate<NetworkInterface> networkInterfaceFilter )
+        {
+            if(networkInterfaceFilter == null)
+            {
+                return null;
+            }
+
+            IEnumerable<NetworkInterface> filter( IEnumerable<NetworkInterface> nics )
+            {
+                foreach(var nic in nics)
+                {
+                    if(networkInterfaceFilter( nic ))
+                    {
+                        _logger.Log( $"Advertising service on network interface {nic.Name}".ToString, Severity.Info );
+                        yield return nic;
+                    }
+                    else
+                    {
+                        _logger.Log( $"Skipping network interface {nic.Name}".ToString, Severity.Debug );
+                    }
+                }
+            }
+
+            return filter;
         }
 
         /// <summary>

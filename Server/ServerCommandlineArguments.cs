@@ -15,11 +15,11 @@ namespace Tecan.Sila2.Server
         public int Port { get; set; }
 
         /// <summary>
-        /// Network interface/IP Address/ Mask to use for discovery (e.g. lo, wlp1s0, eth0, 192.168.1.0/24, 192.168.1.0)
+        /// Network interface/IP Address/ Mask filter to use for discovery (e.g. lo, wlp1s0, eth\d, 192.168.1.0/24, 192.168.1.0), can be regex
         /// </summary>
         [Option('i', "interface", Required = false,
-            HelpText = "Network interface/IP Address/ Mask to use for discovery (e.g. lo, wlp1s0, eth0, 192.168.1.0/24, 192.168.1.0)")]
-        public string InterfaceNameOrCIDR { get; set; }
+            HelpText = "Network interface/IP Address/ Mask filter to use for discovery (e.g. lo, wlp1s0, eth\\d, 192.168.1.0/24, 192.168.1.0), can be regex")]
+        public string InterfaceFilter { get; set; }
 
         /// <summary>
         /// The server UUID to be used

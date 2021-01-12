@@ -11,17 +11,24 @@ namespace Tecan.Sila2.Discovery
 {
     internal class GrpcChannel : ClientBase<GrpcChannel>, IClientChannel
     {
+        private readonly Channel _channel;
 
-        public GrpcChannel( Channel channel ) : base( channel ) { }
+        public Client.ChannelState State => (Client.ChannelState)_channel.State;
 
-        public GrpcChannel(CallInvoker callInvoker) : base(callInvoker) { }
+        public GrpcChannel( Channel channel ) : base( channel )
+        {
+            _channel = channel;
+        }
 
-        protected GrpcChannel(ClientBaseConfiguration configuration) : base(configuration) { }
+        protected GrpcChannel( ClientBaseConfiguration configuration, Channel channel ) : base( configuration )
+        {
+            _channel = channel;
+        }
 
 
         protected override GrpcChannel NewInstance( ClientBaseConfiguration configuration )
         {
-            return new GrpcChannel( configuration );
+            return new GrpcChannel( configuration, _channel );
         }
         public T ReadProperty<T>( string serviceName, string propertyName, IClientCallInfo callInfo ) where T : class, ISilaTransferObject
         {

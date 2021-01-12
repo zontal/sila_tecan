@@ -10,12 +10,12 @@ namespace Tecan.Sila2.Binary
         /// <summary>
         /// The name of the binary upload service
         /// </summary>
-        public const string BinaryUploadServiceName = nameof(BinaryUploadServiceName);
+        public const string BinaryUploadServiceName = "sila2.org.silastandard.BinaryUpload";
 
         /// <summary>
         /// The name of the binary download service
         /// </summary>
-        public const string BinaryDownloadServiceName = nameof(BinaryDownloadServiceName);
+        public const string BinaryDownloadServiceName = "sila2.org.silastandard.BinaryDownload";
 
         /// <summary>
         /// The method to create a binary

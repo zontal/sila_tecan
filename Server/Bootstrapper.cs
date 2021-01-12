@@ -5,9 +5,11 @@ using System.ComponentModel.Composition.Hosting;
 using System.ComponentModel.Composition.Primitives;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Net.NetworkInformation;
 using System.Reflection;
 using System.Text;
+using System.Text.RegularExpressions;
 using CommandLine;
 using Tecan.MAP.Contracts.Services.Logging;
 using Tecan.Sila2.Server.Binary;
@@ -57,7 +59,7 @@ namespace Tecan.Sila2.Server
                 }
 
                 _channel = logging.CreateChannel( typeof(Bootstrapper) );
-                var networkInterface = FindNetworkInterface( args.InterfaceNameOrCIDR, logging );
+                var networkInterface = CreateNetworkInterfaceFilter( args.InterfaceFilter );
                 var startup = new ServerStartInformation( selfInfo, args.Port, networkInterface, args.ServerUuid, args.Name );
                 _container.ComposeExportedValue( startup );
                 _server = _container.GetExportedValue<ISiLAServer>();
@@ -88,6 +90,53 @@ namespace Tecan.Sila2.Server
             {
                 LogError(_channel, e);
             }
+        }
+
+        private Predicate<NetworkInterface> CreateNetworkInterfaceFilter(string filterString)
+        {
+            if (string.IsNullOrEmpty(filterString))
+            {
+                return nic => nic.OperationalStatus == OperationalStatus.Up && nic.SupportsMulticast;
+            }
+
+            var parts = new List<Predicate<NetworkInterface>>();
+            foreach(var part in filterString.Split( ',' ))
+            {
+                var trimmedPart = part.Trim();
+                if(IPAddress.TryParse( trimmedPart, out var address ))
+                {
+                    parts.Add( nic => nic.GetIPProperties().UnicastAddresses.Any( ua => ua.Address == address ) );
+                }
+                else if (IPNetwork.TryParse( trimmedPart, out var network))
+                {
+                    parts.Add( nic => nic.GetIPProperties().UnicastAddresses.Any( ua => network.Contains( ua.Address ) ) );
+                }
+                else
+                {
+                    try
+                    {
+                        var regex = new Regex( "\\A" + trimmedPart + "\\Z" );
+                        parts.Add( nic => regex.IsMatch( nic.Name ) );
+                    }
+                    catch (ArgumentException)
+                    {
+                        _channel.Log( $"{trimmedPart} is not a valid regular expression, using as exact match filter".ToString, Severity.Warning );
+                        parts.Add( nic => nic.Name.Contains( trimmedPart ) );
+                    }
+                }
+            }
+
+            return nic => parts.Any( pred => pred( nic ) ) && CheckOperationalStatus(nic);
+        }
+
+        private bool CheckOperationalStatus(NetworkInterface nic)
+        {
+            if (nic.OperationalStatus != OperationalStatus.Up || !nic.SupportsMulticast)
+            {
+                _channel.Log( $"Network {nic.Name} matches the filter criteria but is {nic.OperationalStatus}.".ToString, Severity.Warning );
+                return false;
+            }
+            return true;
         }
 
         private static void LogError(ILoggingChannel channel, Exception e)
@@ -136,29 +185,6 @@ namespace Tecan.Sila2.Server
             }
 
             _container?.Dispose();
-        }
-
-        private static NetworkInterface FindNetworkInterface(string interfaceNameOrCidr, ILoggingChannelFactory logging)
-        {
-            NetworkInterface networkInterface;
-            if( interfaceNameOrCidr != null )
-            {
-                try
-                {
-                    var networking = new Networking( logging );
-                    networkInterface = networking.GetNetworkInterface( interfaceNameOrCidr );
-                }
-                catch( ArgumentNullException )
-                {
-                    networkInterface = null;
-                }
-            }
-            else
-            {
-                networkInterface = NetworkInterface.GetAllNetworkInterfaces().FirstOrDefault( ni => ni.SupportsMulticast && ni.OperationalStatus == OperationalStatus.Up );
-            }
-
-            return networkInterface;
         }
 
         /// <summary>
