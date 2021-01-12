@@ -65,17 +65,21 @@ namespace Tecan.Sila2.Discovery
                 {
                     // The first Answer will be a PTRRecord
                     var pointers = e.Message.Answers.OfType<PTRRecord>().Where( p => p.Name.ToString().Contains( DiscoveryConstants.ServiceName ) );
-                    foreach( var pointer in pointers )
+                    if(!e.Message.Answers.OfType<SRVRecord>().Any())
                     {
-                        // Ask for the service instance details
-                        mdns.SendQuery( pointer.DomainName, type: DnsType.SRV );
+                        foreach(var pointer in pointers)
+                        {
+                            // Ask for the service instance details
+                            mdns.SendQuery( pointer.DomainName, type: DnsType.SRV );
+                        }
                     }
 
                     // The second Answer will be a SRVRecord (also contain A and AAAA records)
                     var servers = e.Message.Answers.OfType<SRVRecord>().Where( p => p.Name.ToString().Contains( DiscoveryConstants.ServiceName ) );
                     foreach( var server in servers )
                     {
-                        var aRecord = e.Message.AdditionalRecords.OfType<ARecord>().FirstOrDefault();
+                        var aRecord = e.Message.AdditionalRecords.OfType<ARecord>().FirstOrDefault()
+                            ?? e.Message.Answers.OfType<ARecord>().FirstOrDefault();
                         if( aRecord != null )
                         {
                             try
