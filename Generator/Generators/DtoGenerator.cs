@@ -88,7 +88,7 @@ namespace Tecan.Sila2.Generator.Generators
                 foreach(var dataTypeDefinition in feature.Items.OfType<SiLAElement>())
                 {
                     _loggingChannel.Log( $"Generating data transfer type for {dataTypeDefinition.Identifier}".ToString );
-                    var type = GenerateDataTypeDefinition( dataTypeDefinition, structHandler );
+                    var type = GenerateDataTypeDefinition( dataTypeDefinition, structHandler, true );
                     if(type != null)
                     {
                         nSpace.Types.Add( type );
@@ -113,7 +113,7 @@ namespace Tecan.Sila2.Generator.Generators
                     },
                     DisplayName = name.ToDisplayName()
                 };
-                var type = GenerateDataTypeDefinition( element, structHandler );
+                var type = GenerateDataTypeDefinition( element, structHandler, false );
                 if(type != null)
                 {
                     nSpace.Types.Add( type );
@@ -216,7 +216,7 @@ namespace Tecan.Sila2.Generator.Generators
             return commandIdentifierProperty;
         }
 
-        private CodeTypeDeclaration GenerateDataTypeDefinition( SiLAElement dataType, Action<string, StructureType> structHandler )
+        private CodeTypeDeclaration GenerateDataTypeDefinition( SiLAElement dataType, Action<string, StructureType> structHandler, bool encapsulate )
         {
             CodeTypeDeclaration declaration = null;
             if( dataType.DataType.Item is ConstrainedType constrained )
@@ -229,6 +229,10 @@ namespace Tecan.Sila2.Generator.Generators
             else if( dataType.DataType.Item is StructureType structure )
             {
                 declaration = GenerateDto( CreateProperIdentifier( dataType.Identifier ), structure, true, dataType.Identifier, structHandler );
+                if (encapsulate)
+                {
+                    declaration = EncapsulateDto(dto);
+                }
             }
 
             if( declaration == null )
@@ -251,6 +255,112 @@ namespace Tecan.Sila2.Generator.Generators
 
             declaration.WriteDocumentation( $"The data transfer object for {dataType.DisplayName}" );
             return declaration;
+        }
+
+        private CodeTypeDeclaration EncapsulateDto( CodeTypeDeclaration codeTypeDeclaration )
+        {
+            var innerType = new CodeTypeDeclaration
+            {
+                Name = "InnerStruct",
+                Attributes = MemberAttributes.Public,
+                TypeAttributes = TypeAttributes.Public,
+                IsClass = true
+            };
+            AddAttribute( innerType.CustomAttributes, typeof( ProtoContractAttribute ) );
+            innerType.WriteDocumentation( "Represents the inner structure for actual content" );
+            var innerField = new CodeMemberField
+            {
+                Name = "_inner",
+                Attributes = MemberAttributes.Private,
+                Type = new CodeTypeReference( innerType.Name )
+            };
+            var innerFieldRef = new CodeFieldReferenceExpression( null, innerField.Name );
+            var innerProperty = new CodeMemberProperty
+            {
+                Name = "Inner",
+                Attributes = MemberAttributes.Public | MemberAttributes.Final,
+                HasGet = true,
+                HasSet = true,
+                Type = innerField.Type,
+                GetStatements =
+                {
+                    new CodeMethodReturnStatement(innerFieldRef)
+                },
+                SetStatements =
+                {
+                    new CodeAssignStatement(innerFieldRef, new CodePropertySetValueReferenceExpression())
+                }
+            };
+            innerProperty.CustomAttributes.AddAttribute( typeof( ProtoMemberAttribute ), 1 );
+            innerProperty.WriteDocumentation( "The actual contents of the data transfer object." );
+            var innerPropertyRef = new CodePropertyReferenceExpression( null, innerProperty.Name );
+
+            foreach(var constructor in codeTypeDeclaration.Members.OfType<CodeConstructor>().ToArray())
+            {
+                codeTypeDeclaration.Members.Remove( constructor );
+                innerType.Members.Add( constructor );
+
+                var wrapConstructor = new CodeConstructor
+                {
+                    Attributes = constructor.Attributes
+                };
+                var createInner = new CodeObjectCreateExpression( innerField.Type );
+                foreach(CodeParameterDeclarationExpression parameter in constructor.Parameters)
+                {
+                    wrapConstructor.Parameters.Add( parameter );
+                    createInner.Parameters.Add( new CodeArgumentReferenceExpression( parameter.Name ) );
+                }
+                wrapConstructor.Statements.Add( new CodeAssignStatement( innerFieldRef, createInner ) );
+                CopyComments( constructor.Comments, wrapConstructor.Comments );
+                codeTypeDeclaration.Members.Add( wrapConstructor );
+            }
+
+            foreach(var field in codeTypeDeclaration.Members.OfType<CodeMemberField>().ToArray())
+            {
+                codeTypeDeclaration.Members.Remove( field );
+                innerType.Members.Add( field );
+            }
+
+            var ifNullCreate = new CodeConditionStatement(
+                new CodeBinaryOperatorExpression( innerFieldRef, CodeBinaryOperatorType.IdentityEquality, new CodePrimitiveExpression() ),
+                new CodeAssignStatement( innerFieldRef, new CodeObjectCreateExpression( innerField.Type ) ) );
+
+            foreach(var property in codeTypeDeclaration.Members.OfType<CodeMemberProperty>().ToArray())
+            {
+                codeTypeDeclaration.Members.Remove( property );
+                innerType.Members.Add( property );
+                var wrapProperty = new CodeMemberProperty
+                {
+                    Name = property.Name,
+                    Attributes = property.Attributes,
+                    Type = property.Type,
+                    GetStatements =
+                    {
+                        ifNullCreate,
+                        new CodeMethodReturnStatement(new CodePropertyReferenceExpression(innerPropertyRef, property.Name))
+                    },
+                    SetStatements =
+                    {
+                        ifNullCreate,
+                        new CodeAssignStatement(new CodePropertyReferenceExpression(innerPropertyRef, property.Name), new CodePropertySetValueReferenceExpression())
+                    }
+                };
+                CopyComments( property.Comments, wrapProperty.Comments );
+                codeTypeDeclaration.Members.Add( wrapProperty );
+            }
+
+            codeTypeDeclaration.Members.Add( innerField );
+            codeTypeDeclaration.Members.Add( innerProperty );
+            codeTypeDeclaration.Members.Add( innerType );
+            return codeTypeDeclaration;
+        }
+
+        private static void CopyComments(CodeCommentStatementCollection source, CodeCommentStatementCollection target)
+        {
+            for(int i = 0; i < source.Count; i++)
+            {
+                target.Add( source[i] );
+            }
         }
 
         private static string CreateProperIdentifier(string identifier)

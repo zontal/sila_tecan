@@ -1953,23 +1953,14 @@ namespace Tecan.Sila2.IntegrationTests
     public class SomeStructureDto : Tecan.Sila2.ISilaTransferObject<SomeStructure>
     {
         
-        private Tecan.Sila2.BooleanDto _boolean;
-        
-        private Tecan.Sila2.RealDto _real;
-        
-        private Tecan.Sila2.IntegerDto _long;
-        
-        private Tecan.Sila2.IntegerDto _int;
-        
-        private Tecan.Sila2.TimestampDto _timestamp;
-        
-        private Tecan.Sila2.TimeDto _time;
+        private InnerStruct _inner;
         
         ///  <summary>
         /// Initializes a new instance (to be used by the serializer)
         /// </summary>
         public SomeStructureDto()
         {
+            _inner = new InnerStruct();
         }
         
         ///  <summary>
@@ -1979,101 +1970,154 @@ namespace Tecan.Sila2.IntegrationTests
         /// <param name="store">A component to handle binary data</param>
         public SomeStructureDto(SomeStructure inner, Tecan.Sila2.IBinaryStore store)
         {
-            Boolean = new Tecan.Sila2.BooleanDto(inner.Boolean, store);
-            Real = new Tecan.Sila2.RealDto(inner.Real, store);
-            Long = new Tecan.Sila2.IntegerDto(inner.Long, store);
-            Int = new Tecan.Sila2.IntegerDto(inner.Int, store);
-            Timestamp = new Tecan.Sila2.TimestampDto(inner.Timestamp, store);
-            Time = new Tecan.Sila2.TimeDto(inner.Time, store);
+            _inner = new InnerStruct(inner, store);
         }
         
         ///  <summary>
         /// </summary>
-        [ProtoBuf.ProtoMemberAttribute(1)]
         public Tecan.Sila2.BooleanDto Boolean
         {
             get
             {
-                return _boolean;
+                if ((_inner == null))
+                {
+                    _inner = new InnerStruct();
+                }
+                return Inner.Boolean;
             }
             set
             {
-                _boolean = value;
+                if ((_inner == null))
+                {
+                    _inner = new InnerStruct();
+                }
+                Inner.Boolean = value;
             }
         }
         
         ///  <summary>
         /// </summary>
-        [ProtoBuf.ProtoMemberAttribute(2)]
         public Tecan.Sila2.RealDto Real
         {
             get
             {
-                return _real;
+                if ((_inner == null))
+                {
+                    _inner = new InnerStruct();
+                }
+                return Inner.Real;
             }
             set
             {
-                _real = value;
+                if ((_inner == null))
+                {
+                    _inner = new InnerStruct();
+                }
+                Inner.Real = value;
             }
         }
         
         ///  <summary>
         /// </summary>
-        [ProtoBuf.ProtoMemberAttribute(3)]
         public Tecan.Sila2.IntegerDto Long
         {
             get
             {
-                return _long;
+                if ((_inner == null))
+                {
+                    _inner = new InnerStruct();
+                }
+                return Inner.Long;
             }
             set
             {
-                _long = value;
+                if ((_inner == null))
+                {
+                    _inner = new InnerStruct();
+                }
+                Inner.Long = value;
             }
         }
         
         ///  <summary>
         /// </summary>
-        [ProtoBuf.ProtoMemberAttribute(4)]
         public Tecan.Sila2.IntegerDto Int
         {
             get
             {
-                return _int;
+                if ((_inner == null))
+                {
+                    _inner = new InnerStruct();
+                }
+                return Inner.Int;
             }
             set
             {
-                _int = value;
+                if ((_inner == null))
+                {
+                    _inner = new InnerStruct();
+                }
+                Inner.Int = value;
             }
         }
         
         ///  <summary>
         /// </summary>
-        [ProtoBuf.ProtoMemberAttribute(5)]
         public Tecan.Sila2.TimestampDto Timestamp
         {
             get
             {
-                return _timestamp;
+                if ((_inner == null))
+                {
+                    _inner = new InnerStruct();
+                }
+                return Inner.Timestamp;
             }
             set
             {
-                _timestamp = value;
+                if ((_inner == null))
+                {
+                    _inner = new InnerStruct();
+                }
+                Inner.Timestamp = value;
             }
         }
         
         ///  <summary>
         /// </summary>
-        [ProtoBuf.ProtoMemberAttribute(6)]
         public Tecan.Sila2.TimeDto Time
         {
             get
             {
-                return _time;
+                if ((_inner == null))
+                {
+                    _inner = new InnerStruct();
+                }
+                return Inner.Time;
             }
             set
             {
-                _time = value;
+                if ((_inner == null))
+                {
+                    _inner = new InnerStruct();
+                }
+                Inner.Time = value;
+            }
+        }
+        
+        ///  <summary>
+        /// The actual contents of the data transfer object.
+        /// </summary>
+        [ProtoBuf.ProtoMemberAttribute(1)]
+        public InnerStruct Inner
+        {
+            get
+            {
+                return _inner;
+            }
+            set
+            {
+                _inner = value;
             }
         }
         
@@ -2104,6 +2148,130 @@ namespace Tecan.Sila2.IntegrationTests
         public string GetValidationErrors()
         {
             return null;
+        }
+        
+        ///  <summary>
+        /// Represents the inner structure for actual content
+        /// </summary>
+        [ProtoBuf.ProtoContractAttribute()]
+        public class InnerStruct
+        {
+            
+            private Tecan.Sila2.BooleanDto _boolean;
+            
+            private Tecan.Sila2.RealDto _real;
+            
+            private Tecan.Sila2.IntegerDto _long;
+            
+            private Tecan.Sila2.IntegerDto _int;
+            
+            private Tecan.Sila2.TimestampDto _timestamp;
+            
+            private Tecan.Sila2.TimeDto _time;
+            
+            public InnerStruct()
+            {
+            }
+            
+            public InnerStruct(SomeStructure inner, Tecan.Sila2.Binary.IBinaryStore store)
+            {
+                Boolean = new Tecan.Sila2.BooleanDto(inner.Boolean, store);
+                Real = new Tecan.Sila2.RealDto(inner.Real, store);
+                Long = new Tecan.Sila2.IntegerDto(inner.Long, store);
+                Int = new Tecan.Sila2.IntegerDto(inner.Int, store);
+                Timestamp = new Tecan.Sila2.TimestampDto(inner.Timestamp, store);
+                Time = new Tecan.Sila2.TimeDto(inner.Time, store);
+            }
+            
+            ///  <summary>
+            /// </summary>
+            [ProtoBuf.ProtoMemberAttribute(1)]
+            public Tecan.Sila2.BooleanDto Boolean
+            {
+                get
+                {
+                    return _boolean;
+                }
+                set
+                {
+                    _boolean = value;
+                }
+            }
+            
+            ///  <summary>
+            /// </summary>
+            [ProtoBuf.ProtoMemberAttribute(2)]
+            public Tecan.Sila2.RealDto Real
+            {
+                get
+                {
+                    return _real;
+                }
+                set
+                {
+                    _real = value;
+                }
+            }
+            
+            ///  <summary>
+            /// </summary>
+            [ProtoBuf.ProtoMemberAttribute(3)]
+            public Tecan.Sila2.IntegerDto Long
+            {
+                get
+                {
+                    return _long;
+                }
+                set
+                {
+                    _long = value;
+                }
+            }
+            
+            ///  <summary>
+            /// </summary>
+            [ProtoBuf.ProtoMemberAttribute(4)]
+            public Tecan.Sila2.IntegerDto Int
+            {
+                get
+                {
+                    return _int;
+                }
+                set
+                {
+                    _int = value;
+                }
+            }
+            
+            ///  <summary>
+            /// </summary>
+            [ProtoBuf.ProtoMemberAttribute(5)]
+            public Tecan.Sila2.TimestampDto Timestamp
+            {
+                get
+                {
+                    return _timestamp;
+                }
+                set
+                {
+                    _timestamp = value;
+                }
+            }
+            
+            ///  <summary>
+            /// </summary>
+            [ProtoBuf.ProtoMemberAttribute(6)]
+            public Tecan.Sila2.TimeDto Time
+            {
+                get
+                {
+                    return _time;
+                }
+                set
+                {
+                    _time = value;
+                }
+            }
         }
     }
 }
