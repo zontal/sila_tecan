@@ -1699,163 +1699,215 @@ namespace Tecan.Sila2.Interop.Server
     public class AllDatatypeStructureDto : Tecan.Sila2.ISilaTransferObject<AllDatatypeStructure>
     {
         
-        private Tecan.Sila2.StringDto _stringStructureElement;
-        
-        private Tecan.Sila2.IntegerDto _integerStructureElement;
-        
-        private Tecan.Sila2.RealDto _realStructureElement;
-        
-        private Tecan.Sila2.BooleanDto _booleanStructureElement;
-        
-        private Tecan.Sila2.BinaryDto _binaryStructureElement;
-        
-        private Tecan.Sila2.DateDto _dateStructureElement;
-        
-        private Tecan.Sila2.TimeDto _timeStructureElement;
-        
-        private Tecan.Sila2.TimestampDto _timestampStructureElement;
+        private InnerStruct _inner;
         
         public AllDatatypeStructureDto()
         {
+            _inner = new InnerStruct();
         }
         
         public AllDatatypeStructureDto(AllDatatypeStructure inner, Tecan.Sila2.Binary.IBinaryStore store)
         {
-            StringStructureElement = new Tecan.Sila2.StringDto(inner.StringStructureElement, store);
-            IntegerStructureElement = new Tecan.Sila2.IntegerDto(inner.IntegerStructureElement, store);
-            RealStructureElement = new Tecan.Sila2.RealDto(inner.RealStructureElement, store);
-            BooleanStructureElement = new Tecan.Sila2.BooleanDto(inner.BooleanStructureElement, store);
-            BinaryStructureElement = new Tecan.Sila2.BinaryDto(inner.BinaryStructureElement, store);
-            DateStructureElement = new Tecan.Sila2.DateDto(inner.DateStructureElement, store);
-            TimeStructureElement = new Tecan.Sila2.TimeDto(inner.TimeStructureElement, store);
-            TimestampStructureElement = new Tecan.Sila2.TimestampDto(inner.TimestampStructureElement, store);
+            _inner = new InnerStruct(inner, store);
         }
         
         ///  <summary>
         /// String Structure Element.
         /// </summary>
-        [ProtoBuf.ProtoMemberAttribute(1)]
         public Tecan.Sila2.StringDto StringStructureElement
         {
             get
             {
-                return _stringStructureElement;
+                if ((_inner == null))
+                {
+                    _inner = new InnerStruct();
+                }
+                return Inner.StringStructureElement;
             }
             set
             {
-                _stringStructureElement = value;
+                if ((_inner == null))
+                {
+                    _inner = new InnerStruct();
+                }
+                Inner.StringStructureElement = value;
             }
         }
         
         ///  <summary>
         /// Integer Structure Element.
         /// </summary>
-        [ProtoBuf.ProtoMemberAttribute(2)]
         public Tecan.Sila2.IntegerDto IntegerStructureElement
         {
             get
             {
-                return _integerStructureElement;
+                if ((_inner == null))
+                {
+                    _inner = new InnerStruct();
+                }
+                return Inner.IntegerStructureElement;
             }
             set
             {
-                _integerStructureElement = value;
+                if ((_inner == null))
+                {
+                    _inner = new InnerStruct();
+                }
+                Inner.IntegerStructureElement = value;
             }
         }
         
         ///  <summary>
         /// Real Structure Element.
         /// </summary>
-        [ProtoBuf.ProtoMemberAttribute(3)]
         public Tecan.Sila2.RealDto RealStructureElement
         {
             get
             {
-                return _realStructureElement;
+                if ((_inner == null))
+                {
+                    _inner = new InnerStruct();
+                }
+                return Inner.RealStructureElement;
             }
             set
             {
-                _realStructureElement = value;
+                if ((_inner == null))
+                {
+                    _inner = new InnerStruct();
+                }
+                Inner.RealStructureElement = value;
             }
         }
         
         ///  <summary>
         /// Boolean Structure Element.
         /// </summary>
-        [ProtoBuf.ProtoMemberAttribute(4)]
         public Tecan.Sila2.BooleanDto BooleanStructureElement
         {
             get
             {
-                return _booleanStructureElement;
+                if ((_inner == null))
+                {
+                    _inner = new InnerStruct();
+                }
+                return Inner.BooleanStructureElement;
             }
             set
             {
-                _booleanStructureElement = value;
+                if ((_inner == null))
+                {
+                    _inner = new InnerStruct();
+                }
+                Inner.BooleanStructureElement = value;
             }
         }
         
         ///  <summary>
         /// Binary Structure Element.
         /// </summary>
-        [ProtoBuf.ProtoMemberAttribute(5)]
         public Tecan.Sila2.BinaryDto BinaryStructureElement
         {
             get
             {
-                return _binaryStructureElement;
+                if ((_inner == null))
+                {
+                    _inner = new InnerStruct();
+                }
+                return Inner.BinaryStructureElement;
             }
             set
             {
-                _binaryStructureElement = value;
+                if ((_inner == null))
+                {
+                    _inner = new InnerStruct();
+                }
+                Inner.BinaryStructureElement = value;
             }
         }
         
         ///  <summary>
         /// Date Structure Element.
         /// </summary>
-        [ProtoBuf.ProtoMemberAttribute(6)]
         public Tecan.Sila2.DateDto DateStructureElement
         {
             get
             {
-                return _dateStructureElement;
+                if ((_inner == null))
+                {
+                    _inner = new InnerStruct();
+                }
+                return Inner.DateStructureElement;
             }
             set
             {
-                _dateStructureElement = value;
+                if ((_inner == null))
+                {
+                    _inner = new InnerStruct();
+                }
+                Inner.DateStructureElement = value;
             }
         }
         
         ///  <summary>
         /// Time Structure Element.
         /// </summary>
-        [ProtoBuf.ProtoMemberAttribute(7)]
         public Tecan.Sila2.TimeDto TimeStructureElement
         {
             get
             {
-                return _timeStructureElement;
+                if ((_inner == null))
+                {
+                    _inner = new InnerStruct();
+                }
+                return Inner.TimeStructureElement;
             }
             set
             {
-                _timeStructureElement = value;
+                if ((_inner == null))
+                {
+                    _inner = new InnerStruct();
+                }
+                Inner.TimeStructureElement = value;
             }
         }
         
         ///  <summary>
         /// Timestamp Structure Element.
         /// </summary>
-        [ProtoBuf.ProtoMemberAttribute(8)]
         public Tecan.Sila2.TimestampDto TimestampStructureElement
         {
             get
             {
-                return _timestampStructureElement;
+                if ((_inner == null))
+                {
+                    _inner = new InnerStruct();
+                }
+                return Inner.TimestampStructureElement;
             }
             set
             {
-                _timestampStructureElement = value;
+                if ((_inner == null))
+                {
+                    _inner = new InnerStruct();
+                }
+                Inner.TimestampStructureElement = value;
+            }
+        }
+        
+        ///  <summary>
+        /// The actual contents of the data transfer object.
+        /// </summary>
+        [ProtoBuf.ProtoMemberAttribute(1)]
+        public InnerStruct Inner
+        {
+            get
+            {
+                return _inner;
+            }
+            set
+            {
+                _inner = value;
             }
         }
         
@@ -1886,6 +1938,174 @@ namespace Tecan.Sila2.Interop.Server
         public string GetValidationErrors()
         {
             return null;
+        }
+        
+        ///  <summary>
+        /// Represents the inner structure for actual content
+        /// </summary>
+        [ProtoBuf.ProtoContractAttribute()]
+        public class InnerStruct
+        {
+            
+            private Tecan.Sila2.StringDto _stringStructureElement;
+            
+            private Tecan.Sila2.IntegerDto _integerStructureElement;
+            
+            private Tecan.Sila2.RealDto _realStructureElement;
+            
+            private Tecan.Sila2.BooleanDto _booleanStructureElement;
+            
+            private Tecan.Sila2.BinaryDto _binaryStructureElement;
+            
+            private Tecan.Sila2.DateDto _dateStructureElement;
+            
+            private Tecan.Sila2.TimeDto _timeStructureElement;
+            
+            private Tecan.Sila2.TimestampDto _timestampStructureElement;
+            
+            public InnerStruct()
+            {
+            }
+            
+            public InnerStruct(AllDatatypeStructure inner, Tecan.Sila2.Binary.IBinaryStore store)
+            {
+                StringStructureElement = new Tecan.Sila2.StringDto(inner.StringStructureElement, store);
+                IntegerStructureElement = new Tecan.Sila2.IntegerDto(inner.IntegerStructureElement, store);
+                RealStructureElement = new Tecan.Sila2.RealDto(inner.RealStructureElement, store);
+                BooleanStructureElement = new Tecan.Sila2.BooleanDto(inner.BooleanStructureElement, store);
+                BinaryStructureElement = new Tecan.Sila2.BinaryDto(inner.BinaryStructureElement, store);
+                DateStructureElement = new Tecan.Sila2.DateDto(inner.DateStructureElement, store);
+                TimeStructureElement = new Tecan.Sila2.TimeDto(inner.TimeStructureElement, store);
+                TimestampStructureElement = new Tecan.Sila2.TimestampDto(inner.TimestampStructureElement, store);
+            }
+            
+            ///  <summary>
+            /// String Structure Element.
+            /// </summary>
+            [ProtoBuf.ProtoMemberAttribute(1)]
+            public Tecan.Sila2.StringDto StringStructureElement
+            {
+                get
+                {
+                    return _stringStructureElement;
+                }
+                set
+                {
+                    _stringStructureElement = value;
+                }
+            }
+            
+            ///  <summary>
+            /// Integer Structure Element.
+            /// </summary>
+            [ProtoBuf.ProtoMemberAttribute(2)]
+            public Tecan.Sila2.IntegerDto IntegerStructureElement
+            {
+                get
+                {
+                    return _integerStructureElement;
+                }
+                set
+                {
+                    _integerStructureElement = value;
+                }
+            }
+            
+            ///  <summary>
+            /// Real Structure Element.
+            /// </summary>
+            [ProtoBuf.ProtoMemberAttribute(3)]
+            public Tecan.Sila2.RealDto RealStructureElement
+            {
+                get
+                {
+                    return _realStructureElement;
+                }
+                set
+                {
+                    _realStructureElement = value;
+                }
+            }
+            
+            ///  <summary>
+            /// Boolean Structure Element.
+            /// </summary>
+            [ProtoBuf.ProtoMemberAttribute(4)]
+            public Tecan.Sila2.BooleanDto BooleanStructureElement
+            {
+                get
+                {
+                    return _booleanStructureElement;
+                }
+                set
+                {
+                    _booleanStructureElement = value;
+                }
+            }
+            
+            ///  <summary>
+            /// Binary Structure Element.
+            /// </summary>
+            [ProtoBuf.ProtoMemberAttribute(5)]
+            public Tecan.Sila2.BinaryDto BinaryStructureElement
+            {
+                get
+                {
+                    return _binaryStructureElement;
+                }
+                set
+                {
+                    _binaryStructureElement = value;
+                }
+            }
+            
+            ///  <summary>
+            /// Date Structure Element.
+            /// </summary>
+            [ProtoBuf.ProtoMemberAttribute(6)]
+            public Tecan.Sila2.DateDto DateStructureElement
+            {
+                get
+                {
+                    return _dateStructureElement;
+                }
+                set
+                {
+                    _dateStructureElement = value;
+                }
+            }
+            
+            ///  <summary>
+            /// Time Structure Element.
+            /// </summary>
+            [ProtoBuf.ProtoMemberAttribute(7)]
+            public Tecan.Sila2.TimeDto TimeStructureElement
+            {
+                get
+                {
+                    return _timeStructureElement;
+                }
+                set
+                {
+                    _timeStructureElement = value;
+                }
+            }
+            
+            ///  <summary>
+            /// Timestamp Structure Element.
+            /// </summary>
+            [ProtoBuf.ProtoMemberAttribute(8)]
+            public Tecan.Sila2.TimestampDto TimestampStructureElement
+            {
+                get
+                {
+                    return _timestampStructureElement;
+                }
+                set
+                {
+                    _timestampStructureElement = value;
+                }
+            }
         }
     }
 }

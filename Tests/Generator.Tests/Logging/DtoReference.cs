@@ -113,83 +113,119 @@ namespace Tecan.Sila2.Generator.Test.TestReference
     public class LogEntryDto : Tecan.Sila2.ISilaTransferObject<LogEntry>
     {
         
-        private Tecan.Sila2.StringDto _message;
-        
-        private Tecan.Sila2.StringDto _channel;
-        
-        private SeverityDto _severity;
-        
-        private System.Collections.Generic.List<LogEntryDataDto> _data;
+        private InnerStruct _inner;
         
         public LogEntryDto()
         {
+            _inner = new InnerStruct();
         }
         
         public LogEntryDto(LogEntry inner, Tecan.Sila2.Binary.IBinaryStore store)
         {
-            Message = new Tecan.Sila2.StringDto(inner.Message, store);
-            Channel = new Tecan.Sila2.StringDto(inner.Channel, store);
-            Severity = new SeverityDto(inner.Severity, store);
-            Data = Tecan.Sila2.DtoExtensions.Encapsulate(inner.Data, LogEntryDataDto.Create, store);
+            _inner = new InnerStruct(inner, store);
         }
         
         ///  <summary>
         /// </summary>
-        [ProtoBuf.ProtoMemberAttribute(1)]
         public Tecan.Sila2.StringDto Message
         {
             get
             {
-                return _message;
+                if ((_inner == null))
+                {
+                    _inner = new InnerStruct();
+                }
+                return Inner.Message;
             }
             set
             {
-                _message = value;
+                if ((_inner == null))
+                {
+                    _inner = new InnerStruct();
+                }
+                Inner.Message = value;
             }
         }
         
         ///  <summary>
         /// </summary>
-        [ProtoBuf.ProtoMemberAttribute(2)]
         public Tecan.Sila2.StringDto Channel
         {
             get
             {
-                return _channel;
+                if ((_inner == null))
+                {
+                    _inner = new InnerStruct();
+                }
+                return Inner.Channel;
             }
             set
             {
-                _channel = value;
+                if ((_inner == null))
+                {
+                    _inner = new InnerStruct();
+                }
+                Inner.Channel = value;
             }
         }
         
         ///  <summary>
         /// </summary>
-        [ProtoBuf.ProtoMemberAttribute(3)]
         public SeverityDto Severity
         {
             get
             {
-                return _severity;
+                if ((_inner == null))
+                {
+                    _inner = new InnerStruct();
+                }
+                return Inner.Severity;
             }
             set
             {
-                _severity = value;
+                if ((_inner == null))
+                {
+                    _inner = new InnerStruct();
+                }
+                Inner.Severity = value;
             }
         }
         
         ///  <summary>
         /// </summary>
-        [ProtoBuf.ProtoMemberAttribute(4)]
         public System.Collections.Generic.List<LogEntryDataDto> Data
         {
             get
             {
-                return _data;
+                if ((_inner == null))
+                {
+                    _inner = new InnerStruct();
+                }
+                return Inner.Data;
             }
             set
             {
-                _data = value;
+                if ((_inner == null))
+                {
+                    _inner = new InnerStruct();
+                }
+                Inner.Data = value;
+            }
+        }
+        
+        ///  <summary>
+        /// The actual contents of the data transfer object.
+        /// </summary>
+        [ProtoBuf.ProtoMemberAttribute(1)]
+        public InnerStruct Inner
+        {
+            get
+            {
+                return _inner;
+            }
+            set
+            {
+                _inner = value;
             }
         }
         
@@ -220,6 +256,94 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         public string GetValidationErrors()
         {
             return null;
+        }
+        
+        ///  <summary>
+        /// Represents the inner structure for actual content
+        /// </summary>
+        [ProtoBuf.ProtoContractAttribute()]
+        public class InnerStruct
+        {
+            
+            private Tecan.Sila2.StringDto _message;
+            
+            private Tecan.Sila2.StringDto _channel;
+            
+            private SeverityDto _severity;
+            
+            private System.Collections.Generic.List<LogEntryDataDto> _data;
+            
+            public InnerStruct()
+            {
+            }
+            
+            public InnerStruct(LogEntry inner, Tecan.Sila2.Binary.IBinaryStore store)
+            {
+                Message = new Tecan.Sila2.StringDto(inner.Message, store);
+                Channel = new Tecan.Sila2.StringDto(inner.Channel, store);
+                Severity = new SeverityDto(inner.Severity, store);
+                Data = Tecan.Sila2.DtoExtensions.Encapsulate(inner.Data, LogEntryDataDto.Create, store);
+            }
+            
+            ///  <summary>
+            /// </summary>
+            [ProtoBuf.ProtoMemberAttribute(1)]
+            public Tecan.Sila2.StringDto Message
+            {
+                get
+                {
+                    return _message;
+                }
+                set
+                {
+                    _message = value;
+                }
+            }
+            
+            ///  <summary>
+            /// </summary>
+            [ProtoBuf.ProtoMemberAttribute(2)]
+            public Tecan.Sila2.StringDto Channel
+            {
+                get
+                {
+                    return _channel;
+                }
+                set
+                {
+                    _channel = value;
+                }
+            }
+            
+            ///  <summary>
+            /// </summary>
+            [ProtoBuf.ProtoMemberAttribute(3)]
+            public SeverityDto Severity
+            {
+                get
+                {
+                    return _severity;
+                }
+                set
+                {
+                    _severity = value;
+                }
+            }
+            
+            ///  <summary>
+            /// </summary>
+            [ProtoBuf.ProtoMemberAttribute(4)]
+            public System.Collections.Generic.List<LogEntryDataDto> Data
+            {
+                get
+                {
+                    return _data;
+                }
+                set
+                {
+                    _data = value;
+                }
+            }
         }
     }
     
@@ -291,65 +415,97 @@ namespace Tecan.Sila2.Generator.Test.TestReference
     public class LogEntryDataDto : Tecan.Sila2.ISilaTransferObject<LogEntryData>
     {
         
-        private Tecan.Sila2.StringDto _key;
-        
-        private Tecan.Sila2.StringDto _value;
-        
-        private System.Collections.Generic.List<LogEntryDataDto> _children;
+        private InnerStruct _inner;
         
         public LogEntryDataDto()
         {
+            _inner = new InnerStruct();
         }
         
         public LogEntryDataDto(LogEntryData inner, Tecan.Sila2.Binary.IBinaryStore store)
         {
-            Key = new Tecan.Sila2.StringDto(inner.Key, store);
-            Value = new Tecan.Sila2.StringDto(inner.Value, store);
-            Children = Tecan.Sila2.DtoExtensions.Encapsulate(inner.Children, LogEntryDataDto.Create, store);
+            _inner = new InnerStruct(inner, store);
         }
         
         ///  <summary>
         /// </summary>
-        [ProtoBuf.ProtoMemberAttribute(1)]
         public Tecan.Sila2.StringDto Key
         {
             get
             {
-                return _key;
+                if ((_inner == null))
+                {
+                    _inner = new InnerStruct();
+                }
+                return Inner.Key;
             }
             set
             {
-                _key = value;
+                if ((_inner == null))
+                {
+                    _inner = new InnerStruct();
+                }
+                Inner.Key = value;
             }
         }
         
         ///  <summary>
         /// </summary>
-        [ProtoBuf.ProtoMemberAttribute(2)]
         public Tecan.Sila2.StringDto Value
         {
             get
             {
-                return _value;
+                if ((_inner == null))
+                {
+                    _inner = new InnerStruct();
+                }
+                return Inner.Value;
             }
             set
             {
-                _value = value;
+                if ((_inner == null))
+                {
+                    _inner = new InnerStruct();
+                }
+                Inner.Value = value;
             }
         }
         
         ///  <summary>
         /// </summary>
-        [ProtoBuf.ProtoMemberAttribute(3)]
         public System.Collections.Generic.List<LogEntryDataDto> Children
         {
             get
             {
-                return _children;
+                if ((_inner == null))
+                {
+                    _inner = new InnerStruct();
+                }
+                return Inner.Children;
             }
             set
             {
-                _children = value;
+                if ((_inner == null))
+                {
+                    _inner = new InnerStruct();
+                }
+                Inner.Children = value;
+            }
+        }
+        
+        ///  <summary>
+        /// The actual contents of the data transfer object.
+        /// </summary>
+        [ProtoBuf.ProtoMemberAttribute(1)]
+        public InnerStruct Inner
+        {
+            get
+            {
+                return _inner;
+            }
+            set
+            {
+                _inner = value;
             }
         }
         
@@ -380,6 +536,76 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         public string GetValidationErrors()
         {
             return null;
+        }
+        
+        ///  <summary>
+        /// Represents the inner structure for actual content
+        /// </summary>
+        [ProtoBuf.ProtoContractAttribute()]
+        public class InnerStruct
+        {
+            
+            private Tecan.Sila2.StringDto _key;
+            
+            private Tecan.Sila2.StringDto _value;
+            
+            private System.Collections.Generic.List<LogEntryDataDto> _children;
+            
+            public InnerStruct()
+            {
+            }
+            
+            public InnerStruct(LogEntryData inner, Tecan.Sila2.Binary.IBinaryStore store)
+            {
+                Key = new Tecan.Sila2.StringDto(inner.Key, store);
+                Value = new Tecan.Sila2.StringDto(inner.Value, store);
+                Children = Tecan.Sila2.DtoExtensions.Encapsulate(inner.Children, LogEntryDataDto.Create, store);
+            }
+            
+            ///  <summary>
+            /// </summary>
+            [ProtoBuf.ProtoMemberAttribute(1)]
+            public Tecan.Sila2.StringDto Key
+            {
+                get
+                {
+                    return _key;
+                }
+                set
+                {
+                    _key = value;
+                }
+            }
+            
+            ///  <summary>
+            /// </summary>
+            [ProtoBuf.ProtoMemberAttribute(2)]
+            public Tecan.Sila2.StringDto Value
+            {
+                get
+                {
+                    return _value;
+                }
+                set
+                {
+                    _value = value;
+                }
+            }
+            
+            ///  <summary>
+            /// </summary>
+            [ProtoBuf.ProtoMemberAttribute(3)]
+            public System.Collections.Generic.List<LogEntryDataDto> Children
+            {
+                get
+                {
+                    return _children;
+                }
+                set
+                {
+                    _children = value;
+                }
+            }
         }
     }
 }
