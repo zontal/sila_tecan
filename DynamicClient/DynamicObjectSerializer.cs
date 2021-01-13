@@ -260,27 +260,17 @@ namespace Tecan.Sila2.DynamicClient
         private void Read(ProtoReader reader, Action<object> setProperty, IBinaryStore binaryStore, string typeName)
         {
             var type = DataTypeResolver?.Invoke(typeName)?.Item;
-            if (!(type is StructureType))
-            {
-                type = new StructureType()
-                {
-                    Element = new SiLAElement[]
-                    {
-                        new SiLAElement
-                        {
-                            DataType = new DataTypeType() {Item = type},
-                            Identifier = "Value"
-                        }
-                    }
-                };
-            }
+            var token = ProtoReader.StartSubItem( reader );
+            reader.ReadFieldHeader();
             Read(reader, setProperty, binaryStore, (dynamic)(type));
+            ProtoReader.EndSubItem( token, reader );
         }
 
         /// <summary>
         /// Serializes the given dynamic property into a byte array
         /// </summary>
         /// <param name="property">The dynamic property</param>
+        /// <param name="store">The binary store to resolve streams</param>
         /// <returns>A byte array</returns>
         /// <exception cref="ArgumentNullException">Thrown, if <paramref name="property"/> is null.</exception>
         public byte[] Serialize(DynamicObjectProperty property, IBinaryStore store )
@@ -517,21 +507,11 @@ namespace Tecan.Sila2.DynamicClient
         private void Write(ProtoWriter writer, object value, int fieldNumber, IBinaryStore store, string typeName)
         {
             var type = DataTypeResolver?.Invoke(typeName)?.Item;
-            if (!(type is StructureType))
-            {
-                type = new StructureType()
-                {
-                    Element = new SiLAElement[]
-                    {
-                        new SiLAElement
-                        {
-                            DataType = new DataTypeType() {Item = type},
-                            Identifier = "Value"
-                        }
-                    }
-                };
-            }
-            Write(writer, value, fieldNumber, store, (dynamic)type);
+
+            ProtoWriter.WriteFieldHeader( fieldNumber, WireType.String, writer );
+            var token = ProtoWriter.StartSubItem( value, writer );
+            Write(writer, value, 1, store, (dynamic)type);
+            ProtoWriter.EndSubItem( token, writer );
         }
     }
 }
