@@ -135,8 +135,8 @@ namespace Tecan.Sila2.Binary
                     ChunkIndex = i,
                     Payload = bytesToSend
                 });
-                await uploadChannel.RequestStream.CompleteAsync();
             }
+            await uploadChannel.RequestStream.CompleteAsync();
 
             return identifier.BinaryTransferUUID;
         }

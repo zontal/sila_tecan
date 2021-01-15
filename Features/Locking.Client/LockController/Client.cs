@@ -61,7 +61,7 @@ namespace Tecan.Sila2.Locking.LockController
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/core/LockController/v1/Property/IsLocked");
             try
             {
-                bool response = _channel.ReadProperty<PropertyResponse<Tecan.Sila2.BooleanDto>>(_serviceName, "IsLocked", callInfo).Value.Extract(_executionManager.DownloadBinaryStore);
+                bool response = _channel.ReadProperty<PropertyResponse<Tecan.Sila2.BooleanDto>>(_serviceName, "IsLocked", "org.silastandard/core/LockController/v1/Property/IsLocked", callInfo).Value.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)

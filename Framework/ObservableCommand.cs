@@ -129,7 +129,7 @@ namespace Tecan.Sila2
         public StateUpdate State => _stateUpdate;
 
         /// <inheritdoc />
-        public void Cancel()
+        public virtual void Cancel()
         {
             if( _cancellationTokenSource != null )
             {
@@ -261,7 +261,7 @@ namespace Tecan.Sila2
         public StateUpdate State => _stateUpdate;
 
         /// <inheritdoc />
-        public void Cancel()
+        public virtual void Cancel()
         {
             if(_cancellationTokenSource != null)
             {

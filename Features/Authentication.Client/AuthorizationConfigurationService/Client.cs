@@ -61,7 +61,8 @@ namespace Tecan.Sila2.Authorization.AuthorizationConfigurationService
                     "Provider");
             try
             {
-                string response = _channel.ReadProperty<AuthorizationProviderResponseDto>(_serviceName, "AuthorizationProvider", callInfo).Value.Extract(_executionManager.DownloadBinaryStore);
+                string response = _channel.ReadProperty<AuthorizationProviderResponseDto>(_serviceName, "AuthorizationProvider", "org.silastandard/core/AuthorizationConfigurationService/v1/Property/Authorization" +
+                        "Provider", callInfo).Value.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)

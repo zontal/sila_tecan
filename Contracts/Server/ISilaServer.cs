@@ -49,6 +49,12 @@ namespace Tecan.Sila2.Server
         /// Gets a component for the creation of error messages
         /// </summary>
         IServerErrorHandling ErrorHandling { get; }
+
+        /// <summary>
+        /// Connects the server to the server pool with the given address
+        /// </summary>
+        /// <param name="poolAddress"></param>
+        IDisposable ConnectToPool( string poolAddress );
     }
 
     /// <summary>

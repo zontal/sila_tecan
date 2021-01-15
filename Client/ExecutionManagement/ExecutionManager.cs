@@ -28,7 +28,7 @@ namespace Tecan.Sila2.Client.ExecutionManagement
                 var serviceName = feature.Namespace + "." + feature.Identifier;
                 foreach(var metadata in feature.Items.OfType<FeatureMetadata>())
                 {
-                    _interceptionRepository.RegisterAffected( feature.GetFullyQualifiedIdentifier( metadata ), _serverData.Channel.GetAffected( serviceName, feature.GetFullyQualifiedIdentifier(metadata) ) );
+                    _interceptionRepository.RegisterAffected( feature.GetFullyQualifiedIdentifier( metadata ), _serverData.Channel.GetAffected( serviceName, metadata.Identifier, feature.GetFullyQualifiedIdentifier(metadata) ) );
                 }
             }
         }

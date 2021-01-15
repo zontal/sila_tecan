@@ -35,5 +35,15 @@ namespace Tecan.Sila2
                 return data;
             }
         }
+
+        /// <summary>
+        /// Create the default byte serializer for the type T
+        /// </summary>
+        /// <typeparam name="T">The type that should be transported</typeparam>
+        /// <returns>A byte serializer instance</returns>
+        public static ByteSerializer<T> GetDefault<T>()
+        {
+            return new ByteSerializer<T>( ToByteArray, FromByteArray<T> );
+        }
     }
 }

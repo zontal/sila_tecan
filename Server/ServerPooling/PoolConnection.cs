@@ -7,38 +7,29 @@ using Tecan.Sila2.Server;
 
 namespace Tecan.Sila2.ServerPooling
 {
-    internal class PoolConnection : ClientBase<PoolConnection>
+    internal class PoolConnection : IDisposable
     {
-        private ServerPoolDispatcher _dispatcher;
+        private readonly ServerPoolDispatcher _dispatcher;
+        private readonly AsyncDuplexStreamingCall<SilaServerMessage, SilaClientMessage> _call;
 
-        protected PoolConnection( ServerPoolDispatcher dispatcher, ClientBaseConfiguration configuration ) : base( configuration )
+        public PoolConnection( ServerPoolDispatcher dispatcher, AsyncDuplexStreamingCall<SilaServerMessage, SilaClientMessage> call )
         {
             _dispatcher = dispatcher;
+            _call = call;
         }
 
-        public PoolConnection( ServerPoolDispatcher dispatcher, ChannelBase channel ) : base( channel )
+        public async void Start()
         {
-            _dispatcher = dispatcher;
-        }
-
-        public PoolConnection( ServerPoolDispatcher dispatcher, CallInvoker callInvoker ) : base( callInvoker )
-        {
-            _dispatcher = dispatcher;
-        }
-
-        public async Task Start(CallOptions options)
-        {
-            var call = CallInvoker.AsyncDuplexStreamingCall( PoolingConstants.ConnectSilaServerMethod, null, options );
-            while(await call.ResponseStream.MoveNext())
+            while(await _call.ResponseStream.MoveNext())
             {
-                _dispatcher.HandleClientRequest( call.ResponseStream.Current, call.RequestStream );
+                _dispatcher.HandleClientRequest( _call.ResponseStream.Current, _call.RequestStream );
             }
-            await call.RequestStream.CompleteAsync();
+            await _call.RequestStream.CompleteAsync();
         }
 
-        protected override PoolConnection NewInstance( ClientBaseConfiguration configuration )
+        public void Dispose()
         {
-            return new PoolConnection( _dispatcher, configuration );
+            _call.RequestStream.CompleteAsync().Wait();
         }
     }
 }

@@ -6,13 +6,14 @@ using System.Threading;
 using System.Threading.Tasks;
 using Grpc.Core;
 using Tecan.Sila2.Binary;
+using Tecan.Sila2.ServerPooling;
 
 namespace Tecan.Sila2.Server.Binary
 {
     /// <summary>
     /// Helper class to implement upload of binary data
     /// </summary>
-    public class BinaryUpload : IDisposable
+    public class BinaryUpload : IDisposable, IBinaryUploadHandler
     {
         private readonly IFileManagement _fileManagement;
         private readonly SiLAServer _server;
@@ -240,6 +241,30 @@ namespace Tecan.Sila2.Server.Binary
         {
             _openStreams.TryRemove( binaryStorageIdentifier, out _ );
             _fileManagement.Delete(binaryStorageIdentifier, true);
+        }
+
+        /// <inheritdoc />
+        public async void CreateBinary( CreateBinaryRequestDto createBinaryRequest, string requestUuid, IClientStreamWriter<SilaServerMessage> responseStream )
+        {
+            var commandIdentifier = GetCommandIdentifier( createBinaryRequest.CommandIdentifier );
+            var internalRequest = new InternalCreateBinaryRequest( commandIdentifier, createBinaryRequest );
+            var response = await _server.InvokeCommand( CreateBinaryCore, internalRequest, null );
+            await responseStream.WriteAsync( new SilaServerMessage
+            {
+                RequestUuid = requestUuid,
+                CreateBinaryResponse = response
+            } );
+        }
+
+        /// <inheritdoc />
+        public async void UploadChunk( UploadChunkRequestDto uploadChunkRequest, string requestUuid, IClientStreamWriter<SilaServerMessage> responseStream )
+        {
+            var response = await UploadChunkCore( uploadChunkRequest, null );
+            await responseStream.WriteAsync( new SilaServerMessage
+            {
+                RequestUuid = requestUuid,
+                UploadChunkResponse = response
+            } );
         }
     }
 

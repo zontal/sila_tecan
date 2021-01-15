@@ -14,10 +14,14 @@ namespace Tecan.Sila2.ServerPooling
         private readonly Dictionary<string, CancellationTokenSource> _cancellationSources = new Dictionary<string, CancellationTokenSource>();
         private readonly ISiLAServer _server;
         private readonly ILoggingChannel _loggingChannel;
+        private readonly IBinaryUploadHandler _upload;
+        private readonly IBinaryDownloadHandler _download;
 
-        public ServerPoolDispatcher(ILoggingChannelFactory loggingChannelFactory)
+        public ServerPoolDispatcher(ILoggingChannelFactory loggingChannelFactory, IBinaryUploadHandler upload, IBinaryDownloadHandler download)
         {
             _loggingChannel = loggingChannelFactory.CreateChannel( typeof( ServerPoolDispatcher ) );
+            _upload = upload;
+            _download = download;
         }
 
         public void RegisterHandler(string fullyQualifiedId, IRequestHandler handler)
@@ -25,7 +29,7 @@ namespace Tecan.Sila2.ServerPooling
             _handlers.Add( fullyQualifiedId, handler );
         }
 
-        internal void HandleClientRequest( SilaClientMessage message, IClientStreamWriter<SilaServerMessage> responseStream )
+        public void HandleClientRequest( SilaClientMessage message, IClientStreamWriter<SilaServerMessage> responseStream )
         {
             switch(message.Type)
             {
@@ -37,15 +41,15 @@ namespace Tecan.Sila2.ServerPooling
                     break;
                 case SilaClientMessageType.CommandExecutionInfoSubscription:
                     var execution = _server.GetCommandExecution( message.CommandExecutionInfoSubscription.ExecutionUUID.CommandId );
-                    GetCommandHandler( execution ).HandleExecutionStateSubscription( message.RequestUuid, execution, responseStream, this );
+                    GetCommandHandler( execution )?.HandleExecutionStateSubscription( message.RequestUuid, execution, responseStream, this );
                     break;
                 case SilaClientMessageType.CommandIntermediateResponseSubscription:
                     var execution2 = _server.GetCommandExecution( message.CommandIntermediateResponseSubscription.ExecutionUUID.CommandId );
-                    GetCommandHandler( execution2 ).HandleIntermediatesSubscription( message.RequestUuid, execution2, responseStream, this );
+                    GetCommandHandler( execution2 )?.HandleIntermediatesSubscription( message.RequestUuid, execution2, responseStream, this );
                     break;
                 case SilaClientMessageType.CommandGetResponse:
                     var execution3 = _server.GetCommandExecution( message.CommandExecutionInfoSubscription.ExecutionUUID.CommandId );
-                    GetCommandHandler( execution3 ).HandleResultRequest( message.RequestUuid, execution3, responseStream, this );
+                    GetCommandHandler( execution3 )?.HandleResultRequest( message.RequestUuid, execution3, responseStream, this );
                     break;
                 case SilaClientMessageType.MetadataRequest:
                     HandleClientRequestCore( message.MetadataRequest.FullyQualifiedMetadataId, message, responseStream );
@@ -62,14 +66,19 @@ namespace Tecan.Sila2.ServerPooling
                     TryCancel( message.RequestUuid );
                     break;
                 case SilaClientMessageType.CreateBinaryRequest:
+                    _upload.CreateBinary( message.CreateBinaryRequest, message.RequestUuid, responseStream );
                     break;
                 case SilaClientMessageType.UploadChunkRequest:
+                    _upload.UploadChunk( message.UploadChunkRequest, message.RequestUuid, responseStream );
                     break;
                 case SilaClientMessageType.DeleteBinaryRequest:
+                    _download.DeleteBinary( message.DeleteBinaryRequest, message.RequestUuid, responseStream );
                     break;
                 case SilaClientMessageType.GetBinaryInfoRequest:
+                    _download.GetBinaryInfo( message.GetBinaryInfoRequest, message.RequestUuid, responseStream );
                     break;
                 case SilaClientMessageType.GetChunkRequest:
+                    _download.GetChunk( message.GetChunkRequest, message.RequestUuid, responseStream );
                     break;
             }
         }
@@ -80,6 +89,7 @@ namespace Tecan.Sila2.ServerPooling
             {
                 return commandHandler;
             }
+            _loggingChannel.Log( $"No handler was found to handle command execution {command.CommandExecutionID}".ToString, Severity.Warning );
             return null;
         }
 
@@ -91,7 +101,7 @@ namespace Tecan.Sila2.ServerPooling
             }
             else
             {
-                
+                _loggingChannel.Log( $"No handler was found to handle {id}.".ToString, Severity.Warning );
             }
         }
 

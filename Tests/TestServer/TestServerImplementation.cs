@@ -131,7 +131,7 @@ namespace Tecan.Sila2.IntegrationTests
         public bool IsCancelled( string commandId )
         {
             var command = _server.GetCommandExecution( commandId );
-            return command.Response.IsCanceled;
+            return command.Command.Response.IsCanceled;
         }
 
         public void ThrowRuntimeException()

@@ -26,43 +26,50 @@ namespace Tecan.Sila2.Discovery
         }
 
 
+        /// <inheritdoc />
         protected override GrpcChannel NewInstance( ClientBaseConfiguration configuration )
         {
             return new GrpcChannel( configuration, _channel );
         }
-        public T ReadProperty<T>( string serviceName, string propertyName, IClientCallInfo callInfo ) where T : class, ISilaTransferObject
+
+        /// <inheritdoc />
+        public T ReadProperty<T>( string serviceName, string propertyName, string propertyIdentifier, IClientCallInfo callInfo ) where T : class, ISilaTransferObject
         {
-            return ReadProperty( serviceName, propertyName, callInfo, ProtobufMarshaller<T>.Default );
+            return ReadProperty( serviceName, propertyName, propertyIdentifier, callInfo, ProtobufMarshaller<T>.Default );
         }
 
-        public T ReadProperty<T>( string serviceName, string propertyName, IClientCallInfo callInfo, ByteSerializer<T> serializer ) where T : class, ISilaTransferObject
+        /// <inheritdoc />
+        public T ReadProperty<T>( string serviceName, string propertyName, string propertyIdentifier, IClientCallInfo callInfo, ByteSerializer<T> serializer ) where T : class, ISilaTransferObject
         {
-            return ReadProperty( serviceName, propertyName, callInfo, ToMarshaller(serializer) );
+            return ReadProperty( serviceName, propertyName, propertyIdentifier, callInfo, ToMarshaller(serializer) );
         }
 
-        private T ReadProperty<T>( string serviceName, string propertyName, IClientCallInfo callInfo, Marshaller<T> serializer ) where T : class, ISilaTransferObject
+        private T ReadProperty<T>( string serviceName, string propertyName, string propertyIdentifier, IClientCallInfo callInfo, Marshaller<T> serializer ) where T : class, ISilaTransferObject
         {
             var propertyMethod = new Method<EmptyRequest, T>( MethodType.Unary, serviceName, "Get_" + propertyName, EmptyRequestMarshaller.Instance, serializer );
             return CallInvoker.BlockingUnaryCall( propertyMethod, null, callInfo.ToCallOptions(), EmptyRequest.Instance );
         }
 
-        public Task<T> ReadPropertyAsync<T>( string serviceName, string propertyName, IClientCallInfo callInfo, ByteSerializer<T> serializer ) where T : class, ISilaTransferObject
+        /// <inheritdoc />
+        public Task<T> ReadPropertyAsync<T>( string serviceName, string propertyName, string propertyIdentifier, IClientCallInfo callInfo, ByteSerializer<T> serializer ) where T : class, ISilaTransferObject
         {
             var propertyMethod = new Method<EmptyRequest, T>( MethodType.Unary, serviceName, "Get_" + propertyName, EmptyRequestMarshaller.Instance, ToMarshaller(serializer) );
             return CallInvoker.AsyncUnaryCall( propertyMethod, null, callInfo.ToCallOptions(), EmptyRequest.Instance ).ResponseAsync;
         }
 
-        public Task SubscribeProperty<T>( string serviceName, string propertyName, Action<T> newValueReceived, IClientCallInfo callInfo, CancellationToken cancellationToken = default ) where T : class, ISilaTransferObject
+        /// <inheritdoc />
+        public Task SubscribeProperty<T>( string serviceName, string propertyName, string propertyIdentifier, Action<T> newValueReceived, IClientCallInfo callInfo, CancellationToken cancellationToken = default ) where T : class, ISilaTransferObject
         {
-            return SubscribeProperty( serviceName, propertyName, newValueReceived, callInfo, ProtobufMarshaller<T>.Default, cancellationToken );
+            return SubscribeProperty( serviceName, propertyName, propertyIdentifier, newValueReceived, callInfo, ProtobufMarshaller<T>.Default, cancellationToken );
         }
 
-        public Task SubscribeProperty<T>( string serviceName, string propertyName, Action<T> newValueReceived, IClientCallInfo callInfo, ByteSerializer<T> serializer, CancellationToken cancellationToken = default ) where T : class, ISilaTransferObject
+        /// <inheritdoc />
+        public Task SubscribeProperty<T>( string serviceName, string propertyName, string propertyIdentifier, Action<T> newValueReceived, IClientCallInfo callInfo, ByteSerializer<T> serializer, CancellationToken cancellationToken = default ) where T : class, ISilaTransferObject
         {
-            return SubscribeProperty( serviceName, propertyName, newValueReceived, callInfo, ToMarshaller( serializer ), cancellationToken );
+            return SubscribeProperty( serviceName, propertyName, propertyIdentifier, newValueReceived, callInfo, ToMarshaller( serializer ), cancellationToken );
         }
 
-        private async Task SubscribeProperty<T>( string serviceName, string propertyName, Action<T> newValueReceived, IClientCallInfo callInfo, Marshaller<T> serializer,
+        private async Task SubscribeProperty<T>( string serviceName, string propertyName, string propertyIdentifier, Action<T> newValueReceived, IClientCallInfo callInfo, Marshaller<T> serializer,
             CancellationToken cancellationToken ) where T : class, ISilaTransferObject
         {
             var subscribeMethod = new Method<EmptyRequest, T>( MethodType.ServerStreaming, serviceName, "Subscribe_" + propertyName, EmptyRequestMarshaller.Instance, serializer );
@@ -88,6 +95,7 @@ namespace Tecan.Sila2.Discovery
             }
         }
 
+        /// <inheritdoc />
         public void ExecuteUnobservableCommand<TRequest>(
             string serviceName,
             string commandName,
@@ -98,6 +106,7 @@ namespace Tecan.Sila2.Discovery
             ExecuteUnobservableCommand( serviceName, commandName, request, callInfo, ProtobufMarshaller<TRequest>.Default );
         }
 
+        /// <inheritdoc />
         public void ExecuteUnobservableCommand<TRequest>(
             string serviceName,
             string commandName,
@@ -121,6 +130,7 @@ namespace Tecan.Sila2.Discovery
             CallInvoker.BlockingUnaryCall( commandMethod, null, callInfo.ToCallOptions(), request );
         }
 
+        /// <inheritdoc />
         public Task ExecuteUnobservableCommandAsync<TRequest>(
             string serviceName,
             string commandName,
@@ -133,6 +143,7 @@ namespace Tecan.Sila2.Discovery
             return CallInvoker.AsyncUnaryCall( commandMethod, null, callInfo.ToCallOptions(), request ).ResponseAsync;
         }
 
+        /// <inheritdoc />
         public TResponse ExecuteUnobservableCommand<TRequest, TResponse>(
             string serviceName,
             string commandName,
@@ -144,6 +155,7 @@ namespace Tecan.Sila2.Discovery
             return ExecuteUnobservableCommand( serviceName, commandName, request, callInfo, ProtobufMarshaller<TRequest>.Default, ProtobufMarshaller<TResponse>.Default );
         }
 
+        /// <inheritdoc />
         public TResponse ExecuteUnobservableCommand<TRequest, TResponse>(
             string serviceName,
             string commandName,
@@ -171,6 +183,7 @@ namespace Tecan.Sila2.Discovery
             return CallInvoker.BlockingUnaryCall( commandMethod, null, callInfo.ToCallOptions(), request );
         }
 
+        /// <inheritdoc />
         public Task<TResponse> ExecuteUnobservableCommandAsync<TRequest, TResponse>(
             string serviceName,
             string commandName,
@@ -185,6 +198,7 @@ namespace Tecan.Sila2.Discovery
             return CallInvoker.AsyncUnaryCall( commandMethod, null, callInfo.ToCallOptions(), request ).ResponseAsync;
         }
 
+        /// <inheritdoc />
         public IObservableCommand ExecuteObservableCommand<TRequest>(
             string serviceName,
             string commandName,
@@ -196,6 +210,7 @@ namespace Tecan.Sila2.Discovery
             return ExecuteObservableCommand( serviceName, commandName, request, errorConverter, callInfo, ProtobufMarshaller<TRequest>.Default );
         }
 
+        /// <inheritdoc />
         public IObservableCommand ExecuteObservableCommand<TRequest>(
             string serviceName,
             string commandName,
@@ -233,6 +248,7 @@ namespace Tecan.Sila2.Discovery
             return command;
         }
 
+        /// <inheritdoc />
         public IObservableCommand<TResponse> ExecuteObservableCommand<TRequest, TResponse, TResponseDto>(
             string serviceName,
             string commandName,
@@ -246,6 +262,7 @@ namespace Tecan.Sila2.Discovery
             return ExecuteObservableCommand( serviceName, commandName, request, responseConverter, errorConverter, callInfo, ProtobufMarshaller<TRequest>.Default, ProtobufMarshaller<TResponseDto>.Default );
         }
 
+        /// <inheritdoc />
         public IObservableCommand<TResponse> ExecuteObservableCommand<TRequest, TResponse, TResponseDto>(
             string serviceName,
             string commandName,
@@ -292,6 +309,7 @@ namespace Tecan.Sila2.Discovery
             return command;
         }
 
+        /// <inheritdoc />
         public IIntermediateObservableCommand<TIntermediate> ExecuteIntermediatesCommand<TRequest, TIntermediate, TIntermediateDto>(
             string serviceName,
             string commandName,
@@ -305,6 +323,7 @@ namespace Tecan.Sila2.Discovery
             return ExecuteIntermediatesCommand( serviceName, commandName, request, intermediateConverter, errorConverter, callInfo, ProtobufMarshaller<TRequest>.Default, ProtobufMarshaller<TIntermediateDto>.Default );
         }
 
+        /// <inheritdoc />
         public IIntermediateObservableCommand<TIntermediate> ExecuteIntermediatesCommand<TRequest, TIntermediate, TIntermediateDto>(
             string serviceName,
             string commandName,
@@ -351,6 +370,7 @@ namespace Tecan.Sila2.Discovery
             return command;
         }
 
+        /// <inheritdoc />
         public IIntermediateObservableCommand<TIntermediate, TResponse> ExecuteIntermediatesCommand<TRequest, TIntermediate, TIntermediateDto, TResponse, TResponseDto>(
             string serviceName,
             string commandName,
@@ -367,6 +387,7 @@ namespace Tecan.Sila2.Discovery
                 ProtobufMarshaller<TRequest>.Default, ProtobufMarshaller<TIntermediateDto>.Default, ProtobufMarshaller<TResponseDto>.Default );
         }
 
+        /// <inheritdoc />
         public IIntermediateObservableCommand<TIntermediate, TResponse> ExecuteIntermediatesCommand<TRequest, TIntermediate, TIntermediateDto, TResponse, TResponseDto>(
             string serviceName,
             string commandName,
@@ -428,20 +449,23 @@ namespace Tecan.Sila2.Discovery
             return new Marshaller<T>( byteSerializer.Serializer, byteSerializer.Deserializer );
         }
 
-        public IEnumerable<string> GetAffected( string serviceName, string metadataIdentifier )
+        /// <inheritdoc />
+        public IEnumerable<string> GetAffected( string serviceName, string metadataName, string metadataIdentifier )
         {
             var method = new Method<EmptyRequest, MetadataAffectedResponse>( MethodType.Unary, serviceName,
-                $"Get_FCPAffectedByMetadata_{metadataIdentifier}", EmptyRequestMarshaller.Instance, ProtobufMarshaller<MetadataAffectedResponse>.Default );
+                $"Get_FCPAffectedByMetadata_{metadataName}", EmptyRequestMarshaller.Instance, ProtobufMarshaller<MetadataAffectedResponse>.Default );
 
             var result = CallInvoker.BlockingUnaryCall( method, null, new CallOptions(), EmptyRequest.Instance );
             return result.Affected.Select( dto => dto.Value );
         }
 
+        /// <inheritdoc />
         public IBinaryStore CreateBinaryStore( string commandParameterIdentifier, IClientExecutionManager executionManager )
         {
             return new ClientBinaryStore( commandParameterIdentifier, CallInvoker, executionManager );
         }
 
+        /// <inheritdoc />
         public Exception ConvertException( Exception ex,
             Func<string, string, Exception> executionErrorConversion = null )
         {

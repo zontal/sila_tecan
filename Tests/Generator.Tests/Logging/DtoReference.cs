@@ -284,11 +284,19 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             
             private System.Collections.Generic.List<LogEntryDataDto> _data;
             
+            ///  <summary>
+            /// Initializes a new instance (to be used by the serializer)
+            /// </summary>
             public InnerStruct()
             {
             }
             
-            public InnerStruct(LogEntry inner, Tecan.Sila2.Binary.IBinaryStore store)
+            ///  <summary>
+            /// Initializes a new data transfer object from the business object
+            /// </summary>
+            /// <param name="inner">The business object that should be transferred</param>
+            /// <param name="store">A component to handle binary data</param>
+            public InnerStruct(LogEntry inner, Tecan.Sila2.IBinaryStore store)
             {
                 Message = new Tecan.Sila2.StringDto(inner.Message, store);
                 Channel = new Tecan.Sila2.StringDto(inner.Channel, store);
@@ -581,11 +589,19 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             
             private System.Collections.Generic.List<LogEntryDataDto> _children;
             
+            ///  <summary>
+            /// Initializes a new instance (to be used by the serializer)
+            /// </summary>
             public InnerStruct()
             {
             }
             
-            public InnerStruct(LogEntryData inner, Tecan.Sila2.Binary.IBinaryStore store)
+            ///  <summary>
+            /// Initializes a new data transfer object from the business object
+            /// </summary>
+            /// <param name="inner">The business object that should be transferred</param>
+            /// <param name="store">A component to handle binary data</param>
+            public InnerStruct(LogEntryData inner, Tecan.Sila2.IBinaryStore store)
             {
                 Key = new Tecan.Sila2.StringDto(inner.Key, store);
                 Value = new Tecan.Sila2.StringDto(inner.Value, store);

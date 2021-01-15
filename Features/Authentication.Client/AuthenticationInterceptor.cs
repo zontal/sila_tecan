@@ -22,7 +22,7 @@ namespace Tecan.Sila2.Authentication
         public string MetadataIdentifier => "org.silastandard/core/AuthorizationService/v1/Metadata/AccessToken";
         private readonly IAuthenticationHandler _authenticationHandler;
         private readonly ILoggingChannel _loggingChannel;
-        private readonly Lazy<IConnectionManager> _connectionManager;
+        private readonly IServerDiscovery _discovery;
         private readonly Lazy<IExecutionManagerFactory> _executionManagerFactory;
         private readonly ConditionalWeakTable<ServerData, AuthTokenHandle> _cachedTokens = new ConditionalWeakTable<ServerData, AuthTokenHandle>();
 
@@ -34,13 +34,13 @@ namespace Tecan.Sila2.Authentication
         /// </summary>
         /// <param name="authenticationHandler">An object that handles the authentication internally</param>
         /// <param name="loggingChannelFactory">A logging channel factory</param>
-        /// <param name="connectionManager">A connection manager</param>
+        /// <param name="discovery">A server discovery agent</param>
         /// <param name="executionManagerFactory">A factory to create client execution managers</param>
-        public AuthenticationInterceptor( IAuthenticationHandler authenticationHandler, ILoggingChannelFactory loggingChannelFactory, Lazy<IConnectionManager> connectionManager, Lazy<IExecutionManagerFactory> executionManagerFactory )
+        public AuthenticationInterceptor( IAuthenticationHandler authenticationHandler, ILoggingChannelFactory loggingChannelFactory, IServerDiscovery discovery, Lazy<IExecutionManagerFactory> executionManagerFactory )
         {
             _loggingChannel = loggingChannelFactory.CreateChannel( typeof(AuthenticationInterceptor) );
             _authenticationHandler = authenticationHandler;
-            _connectionManager = connectionManager;
+            _discovery = discovery;
             _executionManagerFactory = executionManagerFactory;
         }
 
@@ -154,7 +154,7 @@ namespace Tecan.Sila2.Authentication
 
         private bool TryAuthenticateWithProvider(ServerData server, Guid providerUuid, out AuthTokenHandle authenticationTokenHandle)
         {
-            var provider = _connectionManager.Value.Connect(providerUuid, TimeSpan.FromSeconds(10));
+            var provider = _discovery.Connect( providerUuid, TimeSpan.FromSeconds( 1 ) );
             if( provider == null )
             {
                 authenticationTokenHandle = null;

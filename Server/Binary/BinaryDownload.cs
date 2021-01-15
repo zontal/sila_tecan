@@ -5,13 +5,14 @@ using System.Threading;
 using System.Threading.Tasks;
 using Grpc.Core;
 using Tecan.Sila2.Binary;
+using Tecan.Sila2.ServerPooling;
 
 namespace Tecan.Sila2.Server.Binary
 {
     /// <summary>
     /// A helper class to implement binary download functionality based on a given file management implementation
     /// </summary>
-    public class BinaryDownload
+    public class BinaryDownload : IBinaryDownloadHandler
     {
         private readonly Timer _disposeTimer;
         private readonly IFileManagement _server;
@@ -85,7 +86,7 @@ namespace Tecan.Sila2.Server.Binary
 
         private async Task GetChunk(IAsyncStreamReader<GetChunkRequestDto> requestStream, IServerStreamWriter<GetChunkResponseDto> responseStream, ServerCallContext context)
         {
-            while (await requestStream.MoveNext(default))
+            while (await requestStream.MoveNext(context.CancellationToken))
             {
                 await responseStream.WriteAsync(await GetChunkCore(requestStream.Current, context));
             }
@@ -127,6 +128,39 @@ namespace Tecan.Sila2.Server.Binary
             builder.AddMethod(BinaryStorageConstants.GetBinaryInfo, GetBinaryInfo);
             builder.AddMethod(BinaryStorageConstants.GetChunk, GetChunk);
             return builder.Build();
+        }
+
+        /// <inheritdoc />
+        public async void GetBinaryInfo( GetBinaryInfoRequestDto getBinaryInfoRequest, string requestUuid, IClientStreamWriter<SilaServerMessage> responseStream )
+        {
+            var response = await GetBinaryInfo( getBinaryInfoRequest, null );
+            await responseStream.WriteAsync( new SilaServerMessage
+            {
+                RequestUuid = requestUuid,
+                GetBinaryResponse = response
+            } );
+        }
+
+        /// <inheritdoc />
+        public async void GetChunk( GetChunkRequestDto getChunkRequest, string requestUuid, IClientStreamWriter<SilaServerMessage> responseStream )
+        {
+            var response = await GetChunkCore( getChunkRequest, null );
+            await responseStream.WriteAsync( new SilaServerMessage
+            {
+                RequestUuid = requestUuid,
+                GetChunkResponse = response
+            } );
+        }
+
+        /// <inheritdoc />
+        public async void DeleteBinary( DeleteBinaryRequestDto deleteBinaryRequest, string requestUuid, IClientStreamWriter<SilaServerMessage> responseStream )
+        {
+            await DeleteBinary( deleteBinaryRequest, null );
+            await responseStream.WriteAsync( new SilaServerMessage
+            {
+                RequestUuid = requestUuid,
+                DeleteBinaryResponse = new EmptyMessage()
+            } );
         }
     }
 

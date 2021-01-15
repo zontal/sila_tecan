@@ -734,6 +734,7 @@ namespace Tecan.Sila2.Generator.Generators
                 new CodeMethodInvokeExpression( method,
                     new CodeFieldReferenceExpression( null, ServiceNameFieldName ),
                     new CodePrimitiveExpression( featureProperty.Identifier ),
+                    new CodePrimitiveExpression( feature.GetFullyQualifiedIdentifier(featureProperty)), 
                     callInfoRef ),
                 _nameProvider.GetMemberType( featureProperty.Identifier ) );
             requestMethod.Add(GenerateClientExceptionHandling(feature, client, response, propertyType,
@@ -760,7 +761,8 @@ namespace Tecan.Sila2.Generator.Generators
             var subscription = new CodeMethodInvokeExpression(
                 subscriptionMethod,
                 new CodeFieldReferenceExpression(null, ServiceNameFieldName),
-                new CodePrimitiveExpression(featureProperty.Identifier),
+                new CodePrimitiveExpression( featureProperty.Identifier ),
+                new CodePrimitiveExpression( feature.GetFullyQualifiedIdentifier(featureProperty) ),
                 new CodeMethodReferenceExpression(null, receiveValueMethod.Name),
                 new CodeMethodInvokeExpression(new CodeFieldReferenceExpression(null, ExecutionManagerFieldName), nameof(IClientExecutionManager.CreateCallOptions), new CodePrimitiveExpression(feature.GetFullyQualifiedIdentifier(featureProperty))));
             var ifUpdateTaskNull = new CodeConditionStatement(

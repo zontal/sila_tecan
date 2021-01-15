@@ -2169,11 +2169,19 @@ namespace Tecan.Sila2.IntegrationTests
             
             private Tecan.Sila2.TimeDto _time;
             
+            ///  <summary>
+            /// Initializes a new instance (to be used by the serializer)
+            /// </summary>
             public InnerStruct()
             {
             }
             
-            public InnerStruct(SomeStructure inner, Tecan.Sila2.Binary.IBinaryStore store)
+            ///  <summary>
+            /// Initializes a new data transfer object from the business object
+            /// </summary>
+            /// <param name="inner">The business object that should be transferred</param>
+            /// <param name="store">A component to handle binary data</param>
+            public InnerStruct(SomeStructure inner, Tecan.Sila2.IBinaryStore store)
             {
                 Boolean = new Tecan.Sila2.BooleanDto(inner.Boolean, store);
                 Real = new Tecan.Sila2.RealDto(inner.Real, store);

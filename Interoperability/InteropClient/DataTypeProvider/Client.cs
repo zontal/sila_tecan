@@ -189,7 +189,7 @@ namespace Tecan.Sila2.Interop.Client.DataTypeProvider
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/DataTypeProvider/v1/Property/StringValue");
             try
             {
-                string response = _channel.ReadProperty<PropertyResponse<Tecan.Sila2.StringDto>>(_serviceName, "StringValue", callInfo).Value.Extract(_executionManager.DownloadBinaryStore);
+                string response = _channel.ReadProperty<PropertyResponse<Tecan.Sila2.StringDto>>(_serviceName, "StringValue", "org.silastandard/test/DataTypeProvider/v1/Property/StringValue", callInfo).Value.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -205,7 +205,7 @@ namespace Tecan.Sila2.Interop.Client.DataTypeProvider
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/DataTypeProvider/v1/Property/IntegerValue");
             try
             {
-                long response = _channel.ReadProperty<PropertyResponse<Tecan.Sila2.IntegerDto>>(_serviceName, "IntegerValue", callInfo).Value.Extract(_executionManager.DownloadBinaryStore);
+                long response = _channel.ReadProperty<PropertyResponse<Tecan.Sila2.IntegerDto>>(_serviceName, "IntegerValue", "org.silastandard/test/DataTypeProvider/v1/Property/IntegerValue", callInfo).Value.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -221,7 +221,7 @@ namespace Tecan.Sila2.Interop.Client.DataTypeProvider
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/DataTypeProvider/v1/Property/RealValue");
             try
             {
-                double response = _channel.ReadProperty<PropertyResponse<Tecan.Sila2.RealDto>>(_serviceName, "RealValue", callInfo).Value.Extract(_executionManager.DownloadBinaryStore);
+                double response = _channel.ReadProperty<PropertyResponse<Tecan.Sila2.RealDto>>(_serviceName, "RealValue", "org.silastandard/test/DataTypeProvider/v1/Property/RealValue", callInfo).Value.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -237,7 +237,7 @@ namespace Tecan.Sila2.Interop.Client.DataTypeProvider
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/DataTypeProvider/v1/Property/BooleanValue");
             try
             {
-                bool response = _channel.ReadProperty<PropertyResponse<Tecan.Sila2.BooleanDto>>(_serviceName, "BooleanValue", callInfo).Value.Extract(_executionManager.DownloadBinaryStore);
+                bool response = _channel.ReadProperty<PropertyResponse<Tecan.Sila2.BooleanDto>>(_serviceName, "BooleanValue", "org.silastandard/test/DataTypeProvider/v1/Property/BooleanValue", callInfo).Value.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -253,7 +253,7 @@ namespace Tecan.Sila2.Interop.Client.DataTypeProvider
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/DataTypeProvider/v1/Property/BinaryValue");
             try
             {
-                System.IO.Stream response = _channel.ReadProperty<PropertyResponse<Tecan.Sila2.BinaryDto>>(_serviceName, "BinaryValue", callInfo).Value.Extract(_executionManager.DownloadBinaryStore);
+                System.IO.Stream response = _channel.ReadProperty<PropertyResponse<Tecan.Sila2.BinaryDto>>(_serviceName, "BinaryValue", "org.silastandard/test/DataTypeProvider/v1/Property/BinaryValue", callInfo).Value.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -269,7 +269,7 @@ namespace Tecan.Sila2.Interop.Client.DataTypeProvider
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/DataTypeProvider/v1/Property/DateValue");
             try
             {
-                System.DateTimeOffset response = _channel.ReadProperty<PropertyResponse<Tecan.Sila2.DateDto>>(_serviceName, "DateValue", callInfo).Value.Extract(_executionManager.DownloadBinaryStore);
+                System.DateTimeOffset response = _channel.ReadProperty<PropertyResponse<Tecan.Sila2.DateDto>>(_serviceName, "DateValue", "org.silastandard/test/DataTypeProvider/v1/Property/DateValue", callInfo).Value.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -285,7 +285,7 @@ namespace Tecan.Sila2.Interop.Client.DataTypeProvider
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/DataTypeProvider/v1/Property/TimeValue");
             try
             {
-                System.TimeSpan response = _channel.ReadProperty<PropertyResponse<Tecan.Sila2.TimeDto>>(_serviceName, "TimeValue", callInfo).Value.Extract(_executionManager.DownloadBinaryStore);
+                System.TimeSpan response = _channel.ReadProperty<PropertyResponse<Tecan.Sila2.TimeDto>>(_serviceName, "TimeValue", "org.silastandard/test/DataTypeProvider/v1/Property/TimeValue", callInfo).Value.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -301,7 +301,7 @@ namespace Tecan.Sila2.Interop.Client.DataTypeProvider
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/DataTypeProvider/v1/Property/TimeStampValue");
             try
             {
-                System.DateTimeOffset response = _channel.ReadProperty<PropertyResponse<Tecan.Sila2.TimestampDto>>(_serviceName, "TimeStampValue", callInfo).Value.Extract(_executionManager.DownloadBinaryStore);
+                System.DateTimeOffset response = _channel.ReadProperty<PropertyResponse<Tecan.Sila2.TimestampDto>>(_serviceName, "TimeStampValue", "org.silastandard/test/DataTypeProvider/v1/Property/TimeStampValue", callInfo).Value.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -317,7 +317,7 @@ namespace Tecan.Sila2.Interop.Client.DataTypeProvider
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/DataTypeProvider/v1/Property/StringList");
             try
             {
-                System.Collections.Generic.ICollection<string> response = _channel.ReadProperty<PropertyResponse<System.Collections.Generic.List<Tecan.Sila2.StringDto>>>(_serviceName, "StringList", callInfo).Value.Extract(_executionManager.DownloadBinaryStore);
+                System.Collections.Generic.ICollection<string> response = _channel.ReadProperty<PropertyResponse<System.Collections.Generic.List<Tecan.Sila2.StringDto>>>(_serviceName, "StringList", "org.silastandard/test/DataTypeProvider/v1/Property/StringList", callInfo).Value.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -333,7 +333,7 @@ namespace Tecan.Sila2.Interop.Client.DataTypeProvider
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/DataTypeProvider/v1/Property/IntegerList");
             try
             {
-                System.Collections.Generic.ICollection<long> response = _channel.ReadProperty<PropertyResponse<System.Collections.Generic.List<Tecan.Sila2.IntegerDto>>>(_serviceName, "IntegerList", callInfo).Value.Extract(_executionManager.DownloadBinaryStore);
+                System.Collections.Generic.ICollection<long> response = _channel.ReadProperty<PropertyResponse<System.Collections.Generic.List<Tecan.Sila2.IntegerDto>>>(_serviceName, "IntegerList", "org.silastandard/test/DataTypeProvider/v1/Property/IntegerList", callInfo).Value.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -349,7 +349,7 @@ namespace Tecan.Sila2.Interop.Client.DataTypeProvider
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/DataTypeProvider/v1/Property/StructureValues");
             try
             {
-                AllDatatypeStructure response = _channel.ReadProperty<PropertyResponse<AllDatatypeStructureDto>>(_serviceName, "StructureValues", callInfo).Value.Extract(_executionManager.DownloadBinaryStore);
+                AllDatatypeStructure response = _channel.ReadProperty<PropertyResponse<AllDatatypeStructureDto>>(_serviceName, "StructureValues", "org.silastandard/test/DataTypeProvider/v1/Property/StructureValues", callInfo).Value.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)

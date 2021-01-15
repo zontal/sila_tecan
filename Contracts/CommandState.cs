@@ -6,6 +6,10 @@
     public enum CommandState
     {
         /// <summary>
+        /// The state of the command is unknown
+        /// </summary>
+        Unknown = 0,
+        /// <summary>
         /// The command is queued for execution
         /// </summary>
         NotStarted,
@@ -20,6 +24,6 @@
         /// <summary>
         /// The command completed successfully
         /// </summary>
-        FinishedSuccess
+        FinishedSuccess,
     }
 }

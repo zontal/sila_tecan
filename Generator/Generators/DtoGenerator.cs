@@ -231,7 +231,7 @@ namespace Tecan.Sila2.Generator.Generators
                 declaration = GenerateDto( CreateProperIdentifier( dataType.Identifier ), structure, true, dataType.Identifier, structHandler );
                 if (encapsulate)
                 {
-                    declaration = EncapsulateDto(dto);
+                    declaration = EncapsulateDto(declaration);
                 }
             }
 

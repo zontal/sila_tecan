@@ -116,15 +116,14 @@ namespace Tecan.Sila2.Generator.Test.TestReference
     public class AmbiguousClassDto : Tecan.Sila2.ISilaTransferObject<AmbiguousClass>
     {
         
-        private Tecan.Sila2.StringDto _message;
-        
-        private Tecan.Sila2.StringDto _ambiguousChannel;
+        private InnerStruct _inner;
         
         ///  <summary>
         /// Initializes a new instance (to be used by the serializer)
         /// </summary>
         public AmbiguousClassDto()
         {
+            _inner = new InnerStruct();
         }
         
         ///  <summary>
@@ -134,37 +133,66 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// <param name="store">A component to handle binary data</param>
         public AmbiguousClassDto(AmbiguousClass inner, Tecan.Sila2.IBinaryStore store)
         {
-            Message = new Tecan.Sila2.StringDto(inner.Message, store);
-            AmbiguousChannel = new Tecan.Sila2.StringDto(inner.AmbiguousChannel, store);
+            _inner = new InnerStruct(inner, store);
         }
         
         ///  <summary>
         /// </summary>
-        [ProtoBuf.ProtoMemberAttribute(1)]
         public Tecan.Sila2.StringDto Message
         {
             get
             {
-                return _message;
+                if ((_inner == null))
+                {
+                    _inner = new InnerStruct();
+                }
+                return Inner.Message;
             }
             set
             {
-                _message = value;
+                if ((_inner == null))
+                {
+                    _inner = new InnerStruct();
+                }
+                Inner.Message = value;
             }
         }
         
         ///  <summary>
         /// </summary>
-        [ProtoBuf.ProtoMemberAttribute(2)]
         public Tecan.Sila2.StringDto AmbiguousChannel
         {
             get
             {
-                return _ambiguousChannel;
+                if ((_inner == null))
+                {
+                    _inner = new InnerStruct();
+                }
+                return Inner.AmbiguousChannel;
             }
             set
             {
-                _ambiguousChannel = value;
+                if ((_inner == null))
+                {
+                    _inner = new InnerStruct();
+                }
+                Inner.AmbiguousChannel = value;
+            }
+        }
+        
+        ///  <summary>
+        /// The actual contents of the data transfer object.
+        /// </summary>
+        [ProtoBuf.ProtoMemberAttribute(1)]
+        public InnerStruct Inner
+        {
+            get
+            {
+                return _inner;
+            }
+            set
+            {
+                _inner = value;
             }
         }
         
@@ -195,6 +223,66 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         public string GetValidationErrors()
         {
             return null;
+        }
+        
+        ///  <summary>
+        /// Represents the inner structure for actual content
+        /// </summary>
+        [ProtoBuf.ProtoContractAttribute()]
+        public class InnerStruct
+        {
+            
+            private Tecan.Sila2.StringDto _message;
+            
+            private Tecan.Sila2.StringDto _ambiguousChannel;
+            
+            ///  <summary>
+            /// Initializes a new instance (to be used by the serializer)
+            /// </summary>
+            public InnerStruct()
+            {
+            }
+            
+            ///  <summary>
+            /// Initializes a new data transfer object from the business object
+            /// </summary>
+            /// <param name="inner">The business object that should be transferred</param>
+            /// <param name="store">A component to handle binary data</param>
+            public InnerStruct(AmbiguousClass inner, Tecan.Sila2.IBinaryStore store)
+            {
+                Message = new Tecan.Sila2.StringDto(inner.Message, store);
+                AmbiguousChannel = new Tecan.Sila2.StringDto(inner.AmbiguousChannel, store);
+            }
+            
+            ///  <summary>
+            /// </summary>
+            [ProtoBuf.ProtoMemberAttribute(1)]
+            public Tecan.Sila2.StringDto Message
+            {
+                get
+                {
+                    return _message;
+                }
+                set
+                {
+                    _message = value;
+                }
+            }
+            
+            ///  <summary>
+            /// </summary>
+            [ProtoBuf.ProtoMemberAttribute(2)]
+            public Tecan.Sila2.StringDto AmbiguousChannel
+            {
+                get
+                {
+                    return _ambiguousChannel;
+                }
+                set
+                {
+                    _ambiguousChannel = value;
+                }
+            }
         }
     }
 }

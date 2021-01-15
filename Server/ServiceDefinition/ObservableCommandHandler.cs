@@ -157,9 +157,16 @@ namespace Tecan.Sila2.Server.ServiceDefinition
 
         public async void HandleExecutionStateSubscription( string uuid, ObservableCommandExecution command, IClientStreamWriter<SilaServerMessage> responseWriter, ServerPoolDispatcher dispatcher )
         {
-            var cancellationToken = dispatcher.CreateCancellationToken( uuid + "_ExecutionState" );
-            var executionId = new CommandExecutionUuid( command.CommandExecutionID );
-            await QueryState( command, new ExecutionStateResponseStream( responseWriter, uuid, executionId ), cancellationToken );
+            try
+            {
+                var cancellationToken = dispatcher.CreateCancellationToken( uuid );
+                var executionId = new CommandExecutionUuid( command.CommandExecutionID );
+                await QueryState( command, new ExecutionStateResponseStream( responseWriter, uuid, executionId ), cancellationToken );
+            }
+            finally
+            {
+                dispatcher.VoidCancellationToken( uuid );
+            }
         }
 
         public void HandleIntermediatesSubscription( string uuid, ObservableCommandExecution command, IClientStreamWriter<SilaServerMessage> responseWriter, ServerPoolDispatcher dispatcher )

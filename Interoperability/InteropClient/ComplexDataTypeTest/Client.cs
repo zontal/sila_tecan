@@ -150,7 +150,7 @@ namespace Tecan.Sila2.Interop.Client.ComplexDataTypeTest
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/ComplexDataTypeTest/v1/Property/HugeList");
             try
             {
-                System.Collections.Generic.ICollection<string> response = _channel.ReadProperty<PropertyResponse<System.Collections.Generic.List<Tecan.Sila2.StringDto>>>(_serviceName, "HugeList", callInfo).Value.Extract(_executionManager.DownloadBinaryStore);
+                System.Collections.Generic.ICollection<string> response = _channel.ReadProperty<PropertyResponse<System.Collections.Generic.List<Tecan.Sila2.StringDto>>>(_serviceName, "HugeList", "org.silastandard/test/ComplexDataTypeTest/v1/Property/HugeList", callInfo).Value.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -166,7 +166,7 @@ namespace Tecan.Sila2.Interop.Client.ComplexDataTypeTest
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/ComplexDataTypeTest/v1/Property/Boolean");
             try
             {
-                bool response = _channel.ReadProperty<PropertyResponse<Tecan.Sila2.BooleanDto>>(_serviceName, "Boolean", callInfo).Value.Extract(_executionManager.DownloadBinaryStore);
+                bool response = _channel.ReadProperty<PropertyResponse<Tecan.Sila2.BooleanDto>>(_serviceName, "Boolean", "org.silastandard/test/ComplexDataTypeTest/v1/Property/Boolean", callInfo).Value.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -182,7 +182,7 @@ namespace Tecan.Sila2.Interop.Client.ComplexDataTypeTest
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/ComplexDataTypeTest/v1/Property/ListString");
             try
             {
-                System.Collections.Generic.ICollection<string> response = _channel.ReadProperty<PropertyResponse<System.Collections.Generic.List<Tecan.Sila2.StringDto>>>(_serviceName, "ListString", callInfo).Value.Extract(_executionManager.DownloadBinaryStore);
+                System.Collections.Generic.ICollection<string> response = _channel.ReadProperty<PropertyResponse<System.Collections.Generic.List<Tecan.Sila2.StringDto>>>(_serviceName, "ListString", "org.silastandard/test/ComplexDataTypeTest/v1/Property/ListString", callInfo).Value.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -198,7 +198,7 @@ namespace Tecan.Sila2.Interop.Client.ComplexDataTypeTest
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/ComplexDataTypeTest/v1/Property/RandomChangingListString");
             try
             {
-                System.Collections.Generic.ICollection<string> response = _channel.ReadProperty<PropertyResponse<System.Collections.Generic.List<Tecan.Sila2.StringDto>>>(_serviceName, "RandomChangingListString", callInfo).Value.Extract(_executionManager.DownloadBinaryStore);
+                System.Collections.Generic.ICollection<string> response = _channel.ReadProperty<PropertyResponse<System.Collections.Generic.List<Tecan.Sila2.StringDto>>>(_serviceName, "RandomChangingListString", "org.silastandard/test/ComplexDataTypeTest/v1/Property/RandomChangingListString", callInfo).Value.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -214,7 +214,7 @@ namespace Tecan.Sila2.Interop.Client.ComplexDataTypeTest
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/ComplexDataTypeTest/v1/Property/ListStructPairString");
             try
             {
-                System.Collections.Generic.IDictionary<string, string> response = Tecan.Sila2.DtoExtensions.Extract(_channel.ReadProperty<PropertyResponse<System.Collections.Generic.List<Tecan.Sila2.KeyValuePairDto<string, Tecan.Sila2.StringDto, string, Tecan.Sila2.StringDto>>>>(_serviceName, "ListStructPairString", callInfo).Value, _executionManager.DownloadBinaryStore);
+                System.Collections.Generic.IDictionary<string, string> response = Tecan.Sila2.DtoExtensions.Extract(_channel.ReadProperty<PropertyResponse<System.Collections.Generic.List<Tecan.Sila2.KeyValuePairDto<string, Tecan.Sila2.StringDto, string, Tecan.Sila2.StringDto>>>>(_serviceName, "ListStructPairString", "org.silastandard/test/ComplexDataTypeTest/v1/Property/ListStructPairString", callInfo).Value, _executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -230,7 +230,7 @@ namespace Tecan.Sila2.Interop.Client.ComplexDataTypeTest
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/ComplexDataTypeTest/v1/Property/StructPairString");
             try
             {
-                StructPairString response = _channel.ReadProperty<PropertyResponse<StructPairStringDto>>(_serviceName, "StructPairString", callInfo).Value.Extract(_executionManager.DownloadBinaryStore);
+                StructPairString response = _channel.ReadProperty<PropertyResponse<StructPairStringDto>>(_serviceName, "StructPairString", "org.silastandard/test/ComplexDataTypeTest/v1/Property/StructPairString", callInfo).Value.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -246,7 +246,7 @@ namespace Tecan.Sila2.Interop.Client.ComplexDataTypeTest
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/ComplexDataTypeTest/v1/Property/DataType");
             try
             {
-                DataTypeString response = _channel.ReadProperty<PropertyResponse<DataTypeStringDto>>(_serviceName, "DataType", callInfo).Value.Extract(_executionManager.DownloadBinaryStore);
+                DataTypeString response = _channel.ReadProperty<PropertyResponse<DataTypeStringDto>>(_serviceName, "DataType", "org.silastandard/test/ComplexDataTypeTest/v1/Property/DataType", callInfo).Value.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -262,7 +262,7 @@ namespace Tecan.Sila2.Interop.Client.ComplexDataTypeTest
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/ComplexDataTypeTest/v1/Property/ThrowException");
             try
             {
-                string response = _channel.ReadProperty<PropertyResponse<Tecan.Sila2.StringDto>>(_serviceName, "ThrowException", callInfo).Value.Extract(_executionManager.DownloadBinaryStore);
+                string response = _channel.ReadProperty<PropertyResponse<Tecan.Sila2.StringDto>>(_serviceName, "ThrowException", "org.silastandard/test/ComplexDataTypeTest/v1/Property/ThrowException", callInfo).Value.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)

@@ -87,7 +87,8 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
                     "ingBox");
             try
             {
-                BoundingBox response = _channel.ReadProperty<PropertyResponse<BoundingBoxDto>>(_serviceName, "BoundingBox", callInfo).Value.Extract(_executionManager.DownloadBinaryStore);
+                BoundingBox response = _channel.ReadProperty<PropertyResponse<BoundingBoxDto>>(_serviceName, "BoundingBox", "tecan.sila.worktableintegration/infrastructure/WorktableService/v1/Property/Bound" +
+                        "ingBox", callInfo).Value.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -104,7 +105,8 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
                     "emplates");
             try
             {
-                System.Collections.Generic.ICollection<SiteTemplate> response = _channel.ReadProperty<PropertyResponse<System.Collections.Generic.List<SiteTemplateDto>>>(_serviceName, "SiteTemplates", callInfo).Value.Extract(_executionManager.DownloadBinaryStore);
+                System.Collections.Generic.ICollection<SiteTemplate> response = _channel.ReadProperty<PropertyResponse<System.Collections.Generic.List<SiteTemplateDto>>>(_serviceName, "SiteTemplates", "tecan.sila.worktableintegration/infrastructure/WorktableService/v1/Property/SiteT" +
+                        "emplates", callInfo).Value.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -121,7 +123,8 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
                     "");
             try
             {
-                System.Collections.Generic.ICollection<Site> response = _channel.ReadProperty<PropertyResponse<System.Collections.Generic.List<SiteDto>>>(_serviceName, "Sites", callInfo).Value.Extract(_executionManager.DownloadBinaryStore);
+                System.Collections.Generic.ICollection<Site> response = _channel.ReadProperty<PropertyResponse<System.Collections.Generic.List<SiteDto>>>(_serviceName, "Sites", "tecan.sila.worktableintegration/infrastructure/WorktableService/v1/Property/Sites" +
+                        "", callInfo).Value.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)

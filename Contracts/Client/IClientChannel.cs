@@ -21,9 +21,10 @@ namespace Tecan.Sila2.Client
         /// <typeparam name="T">The data transfer object type of the property response</typeparam>
         /// <param name="serviceName">The service name for the property</param>
         /// <param name="propertyName">The name of the property</param>
+        /// <param name="propertyIdentifier">The fully qualified identifier of the property</param>
         /// <param name="callInfo">An object that encapsulates the call information</param>
         /// <returns>The property value as data transfer object</returns>
-        T ReadProperty<T>( string serviceName, string propertyName, IClientCallInfo callInfo ) where T : class, ISilaTransferObject;
+        T ReadProperty<T>( string serviceName, string propertyName, string propertyIdentifier, IClientCallInfo callInfo ) where T : class, ISilaTransferObject;
 
         /// <summary>
         /// Reads a property through the channel
@@ -31,10 +32,11 @@ namespace Tecan.Sila2.Client
         /// <typeparam name="T">The data transfer object type of the property response</typeparam>
         /// <param name="serviceName">The service name for the property</param>
         /// <param name="propertyName">The name of the property</param>
+        /// <param name="propertyIdentifier">The fully qualified identifier of the property</param>
         /// <param name="callInfo">An object that encapsulates the call information</param>
         /// <param name="serializer">A custom serializer for the property response</param>
         /// <returns>The property value as data transfer object</returns>
-        T ReadProperty<T>( string serviceName, string propertyName, IClientCallInfo callInfo, ByteSerializer<T> serializer ) where T : class, ISilaTransferObject;
+        T ReadProperty<T>( string serviceName, string propertyName, string propertyIdentifier, IClientCallInfo callInfo, ByteSerializer<T> serializer ) where T : class, ISilaTransferObject;
 
         /// <summary>
         /// Reads a property through the channel asynchronously
@@ -42,10 +44,11 @@ namespace Tecan.Sila2.Client
         /// <typeparam name="T">The data transfer object type of the property response</typeparam>
         /// <param name="serviceName">The service name for the property</param>
         /// <param name="propertyName">The name of the property</param>
+        /// <param name="propertyIdentifier">The fully qualified identifier of the property</param>
         /// <param name="callInfo">An object that encapsulates the call information</param>
         /// <param name="serializer">A custom serializer for the property response</param>
         /// <returns>A task that returns the property value as data transfer object</returns>
-        Task<T> ReadPropertyAsync<T>( string serviceName, string propertyName, IClientCallInfo callInfo, ByteSerializer<T> serializer ) where T : class, ISilaTransferObject;
+        Task<T> ReadPropertyAsync<T>( string serviceName, string propertyName, string propertyIdentifier, IClientCallInfo callInfo, ByteSerializer<T> serializer ) where T : class, ISilaTransferObject;
 
         /// <summary>
         /// Subscribes to the given property
@@ -53,11 +56,12 @@ namespace Tecan.Sila2.Client
         /// <typeparam name="T">The data transfer object type of the property response</typeparam>
         /// <param name="serviceName">The service name for the property</param>
         /// <param name="propertyName">The name of the property</param>
+        /// <param name="propertyIdentifier">The fully qualified identifier of the property</param>
         /// <param name="newValueReceived">A callback that should be called when a new value is received</param>
         /// <param name="callInfo">An object that encapsulates the call information</param>
         /// <param name="cancellationToken">A cancellation token that can be used to cancel the subscription</param>
         /// <returns>A task that ends when the subscription is terminated</returns>
-        Task SubscribeProperty<T>( string serviceName, string propertyName, Action<T> newValueReceived, IClientCallInfo callInfo, CancellationToken cancellationToken = default ) where T : class, ISilaTransferObject;
+        Task SubscribeProperty<T>( string serviceName, string propertyName, string propertyIdentifier, Action<T> newValueReceived, IClientCallInfo callInfo, CancellationToken cancellationToken = default ) where T : class, ISilaTransferObject;
 
         /// <summary>
         /// Subscribes to the given property
@@ -65,12 +69,13 @@ namespace Tecan.Sila2.Client
         /// <typeparam name="T">The data transfer object type of the property response</typeparam>
         /// <param name="serviceName">The service name for the property</param>
         /// <param name="propertyName">The name of the property</param>
+        /// <param name="propertyIdentifier">The fully qualified identifier of the property</param>
         /// <param name="newValueReceived">A callback that should be called when a new value is received</param>
         /// <param name="callInfo">An object that encapsulates the call information</param>
         /// <param name="serializer">A custom serializer for the property response</param>
         /// <param name="cancellationToken">A cancellation token that can be used to cancel the subscription</param>
         /// <returns>A task that ends when the subscription is terminated</returns>
-        Task SubscribeProperty<T>( string serviceName, string propertyName, Action<T> newValueReceived, IClientCallInfo callInfo, ByteSerializer<T> serializer, CancellationToken cancellationToken = default ) where T : class, ISilaTransferObject;
+        Task SubscribeProperty<T>( string serviceName, string propertyName, string propertyIdentifier, Action<T> newValueReceived, IClientCallInfo callInfo, ByteSerializer<T> serializer, CancellationToken cancellationToken = default ) where T : class, ISilaTransferObject;
 
         /// <summary>
         /// Executes an unobservable command
@@ -387,9 +392,10 @@ namespace Tecan.Sila2.Client
         /// Gets the affected feature or command or property identifiers for the given metadata
         /// </summary>
         /// <param name="serviceName">service name of the metadata</param>
+        /// <param name="metadataName">The name of the metadata</param>
         /// <param name="metadataIdentifier">The unique identifier of the metadata</param>
         /// <returns>A collection of unique identifiers of features, properties or commands</returns>
-        IEnumerable<string> GetAffected( string serviceName, string metadataIdentifier );
+        IEnumerable<string> GetAffected( string serviceName, string metadataName, string metadataIdentifier );
 
         /// <summary>
         /// Creates a binary store for the given command parameter

@@ -52,7 +52,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             {
                 if ((_dummyValueUpdateTask == null))
                 {
-                    _dummyValueUpdateTask = _channel.SubscribeProperty<PropertyResponse<Tecan.Sila2.IntegerDto>>(_serviceName, "DummyValue", ReceiveNewDummyValue, _executionManager.CreateCallOptions("tecan.sila/integrationtests/TestServer/v1/Property/DummyValue"));
+                    _dummyValueUpdateTask = _channel.SubscribeProperty<PropertyResponse<Tecan.Sila2.IntegerDto>>(_serviceName, "DummyValue", "tecan.sila/integrationtests/TestServer/v1/Property/DummyValue", ReceiveNewDummyValue, _executionManager.CreateCallOptions("tecan.sila/integrationtests/TestServer/v1/Property/DummyValue"));
                 }
                 return _dummyValue;
             }

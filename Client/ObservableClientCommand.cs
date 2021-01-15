@@ -72,7 +72,7 @@ namespace Tecan.Sila2.Client
                 case ExecutionState.CommandStatus.FinishedSuccessfully:
                     return CommandState.FinishedSuccess;
                 default:
-                    throw new ArgumentOutOfRangeException(nameof(state));
+                    return CommandState.Unknown;
             }
         }
     }

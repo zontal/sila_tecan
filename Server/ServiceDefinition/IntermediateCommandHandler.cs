@@ -1,5 +1,6 @@
 ﻿using Grpc.Core;
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 using Tecan.Sila2.ServerPooling;
 
@@ -18,14 +19,18 @@ namespace Tecan.Sila2.Server.ServiceDefinition
             _intermediateConverter = intermediateConverter;
         }
 
-        public async Task GetIntermediateResponses( CommandExecutionUuid commandId, IServerStreamWriter<TIntermediateDto> responseStream, ServerCallContext context )
+        public Task GetIntermediateResponses( CommandExecutionUuid commandId, IServerStreamWriter<TIntermediateDto> responseStream, ServerCallContext context )
+        {
+            return GetIntermediateResponses( _server.GetCommandExecution( commandId.CommandId ), responseStream, context.CancellationToken );
+        }
+
+        private async Task GetIntermediateResponses( ObservableCommandExecution command, IServerStreamWriter<TIntermediateDto> responseStream, CancellationToken cancellationToken )
         {
             try
             {
-                var command = (IIntermediateObservableCommand<TIntermediate>)_server.GetCommandExecution( commandId.CommandId );
-                var reader = command.IntermediateValues;
+                var reader = ((IIntermediateObservableCommand<TIntermediate>)(command.Command)).IntermediateValues;
 
-                while(await reader.WaitToReadAsync( context.CancellationToken ))
+                while(await reader.WaitToReadAsync( cancellationToken ))
                 {
                     if(reader.TryRead( out var intermediate ))
                     {

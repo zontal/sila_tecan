@@ -1,0 +1,31 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <RootNamespace>Tecan.Sila2.ServerPooling</RootNamespace>
+        <AssemblyName>Tecan.Sila2.ServerPool</AssemblyName>
+        <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+        <LangVersion>latest</LangVersion>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <OutputPath>..\Build\</OutputPath>
+        <DocumentationFile>..\Build\Tecan.Sila2.ServerPool.xml</DocumentationFile>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <Compile Include="..\CommonAssemblyInfo.cs" Link="Properties\CommonAssemblyInfo.cs" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Grpc.Core" Version="2.27.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\Client\Client.csproj" />
+        <ProjectReference Include="..\Contracts\Contracts.csproj" />
+        <ProjectReference Include="..\Framework.Grpc\Framework.Grpc.csproj" />
+        <ProjectReference Include="..\Framework\Framework.csproj" />
+    </ItemGroup>
+
+</Project>

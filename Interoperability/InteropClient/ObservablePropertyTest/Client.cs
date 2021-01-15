@@ -53,7 +53,7 @@ namespace Tecan.Sila2.Interop.Client.ObservablePropertyTest
             {
                 if ((_upTimeUpdateTask == null))
                 {
-                    _upTimeUpdateTask = _channel.SubscribeProperty<PropertyResponse<Tecan.Sila2.IntegerDto>>(_serviceName, "UpTime", ReceiveNewUpTime, _executionManager.CreateCallOptions("org.silastandard/test/ObservablePropertyTest/v1/Property/UpTime"));
+                    _upTimeUpdateTask = _channel.SubscribeProperty<PropertyResponse<Tecan.Sila2.IntegerDto>>(_serviceName, "UpTime", "org.silastandard/test/ObservablePropertyTest/v1/Property/UpTime", ReceiveNewUpTime, _executionManager.CreateCallOptions("org.silastandard/test/ObservablePropertyTest/v1/Property/UpTime"));
                 }
                 return _upTime;
             }

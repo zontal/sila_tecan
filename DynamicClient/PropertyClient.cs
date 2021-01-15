@@ -69,11 +69,11 @@ namespace Tecan.Sila2.DynamicClient
                         cts.Cancel();
                     }
 
-                    Context.Channel.SubscribeProperty( Context.ServiceName, Property.Identifier, SetResult, callInfo, _responseSerializer, cts.Token ).Wait();
+                    Context.Channel.SubscribeProperty( Context.ServiceName, Property.Identifier, Context.Feature.GetFullyQualifiedIdentifier(Property), SetResult, callInfo, _responseSerializer, cts.Token ).Wait();
                 }
                 else
                 {
-                    result = Context.Channel.ReadProperty( Context.ServiceName, Property.Identifier, callInfo, _responseSerializer );
+                    result = Context.Channel.ReadProperty( Context.ServiceName, Property.Identifier, Context.Feature.GetFullyQualifiedIdentifier( Property ), callInfo, _responseSerializer );
                     callInfo.FinishSuccessful();
                 }
             }
@@ -108,7 +108,7 @@ namespace Tecan.Sila2.DynamicClient
             var callInfo = MetadataHelper.TakeInMetadata( Context.ExecutionManager.CreateCallOptions( PropertyIdentifier ), additionalMetadata );
             try
             {
-                var subscription = Context.Channel.SubscribeProperty( Context.ServiceName, Property.Identifier, callback, callInfo, _responseSerializer, cancellationToken );
+                var subscription = Context.Channel.SubscribeProperty( Context.ServiceName, Property.Identifier, Context.Feature.GetFullyQualifiedIdentifier( Property ), callback, callInfo, _responseSerializer, cancellationToken );
                 
                 callInfo.FinishSuccessful();
                 return subscription;

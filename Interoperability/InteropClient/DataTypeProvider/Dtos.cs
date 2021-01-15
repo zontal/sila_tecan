@@ -1982,11 +1982,19 @@ namespace Tecan.Sila2.Interop.Client.DataTypeProvider
             
             private Tecan.Sila2.TimestampDto _timestampStructureElement;
             
+            ///  <summary>
+            /// Initializes a new instance (to be used by the serializer)
+            /// </summary>
             public InnerStruct()
             {
             }
             
-            public InnerStruct(AllDatatypeStructure inner, Tecan.Sila2.Binary.IBinaryStore store)
+            ///  <summary>
+            /// Initializes a new data transfer object from the business object
+            /// </summary>
+            /// <param name="inner">The business object that should be transferred</param>
+            /// <param name="store">A component to handle binary data</param>
+            public InnerStruct(AllDatatypeStructure inner, Tecan.Sila2.IBinaryStore store)
             {
                 StringStructureElement = new Tecan.Sila2.StringDto(inner.StringStructureElement, store);
                 IntegerStructureElement = new Tecan.Sila2.IntegerDto(inner.IntegerStructureElement, store);

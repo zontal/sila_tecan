@@ -22,7 +22,7 @@ namespace Tecan.Sila2.Client
         /// <summary>
         /// Starts the server pool
         /// </summary>
-        void Start();
+        void Start(string host, int port);
 
         /// <summary>
         /// Shuts down the server pool

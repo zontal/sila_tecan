@@ -21,7 +21,7 @@ namespace Tecan.Sila2.Cancellation
             IObservableCommand command;
             try
             {
-                command = _server.GetCommandExecution( commandExecutionUuid.Value );
+                command = _server.GetCommandExecution( commandExecutionUuid.Value ).Command;
             }
             catch( Exception ex )
             {
@@ -42,9 +42,9 @@ namespace Tecan.Sila2.Cancellation
         {
             foreach( var commandExecution in _server.FindCommandExecutions(state => state == CommandState.Running || state == CommandState.NotStarted) )
             {
-                if( commandExecution.IsCancellationSupported )
+                if( commandExecution.Command.IsCancellationSupported )
                 {
-                    commandExecution.Cancel();
+                    commandExecution.Command.Cancel();
                 }
             }
         }
