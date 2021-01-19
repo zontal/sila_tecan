@@ -3,7 +3,7 @@
     <metadata>
         <id>Tecan.Sila2.Generator</id>
         <description>The code generator of the Tecan SiLA2 SDK for customization purposes</description>
-        <version>3.0.0-local</version>
+        <version>3.1.0-local</version>
         <authors>Tecan Trading AG, Switzerland</authors>
         <owners>Tecan Trading AG, Switzerland</owners>
         <copyright>Copyright 2019 by Tecan Trading AG, Switzerland</copyright>
