@@ -36,13 +36,13 @@ namespace Tecan.Sila2.Server.ServiceDefinition
             {
                 var response = _server.GetPropertyValue( parameters.FullyQualifiedPropertyId, _implementation, parameters );
                 await responseWriter.WriteAsync( new SilaServerMessage
-                {
-                    RequestUuid = message.RequestUuid,
-                    PropertyValue = new PropertyValue
                     {
-                        Result = ProtobufMarshaller<T>.ToByteArray( response )
-                    }
-                } );
+                        RequestUuid = message.RequestUuid,
+                        PropertyValue = new PropertyValue
+                        {
+                            Result = ProtobufMarshaller<T>.ToByteArray( response )
+                        }
+                    } );
             }
             catch(RpcException rpc)
             {

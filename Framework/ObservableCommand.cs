@@ -100,7 +100,7 @@ namespace Tecan.Sila2
         /// Cleans up resources used for the execution of this command
         /// </summary>
         /// <param name="exception">An exception that caused the command to terminate or null, if the command completed successfully</param>
-        public virtual void Cleanup( Exception exception )
+        protected virtual void Cleanup( Exception exception )
         {
             _stateUpdateChannel.Writer.Complete( exception );
             _cancellationTokenSource?.Dispose();
@@ -133,7 +133,13 @@ namespace Tecan.Sila2
         {
             if( _cancellationTokenSource != null )
             {
-                _cancellationTokenSource.Cancel();
+                try
+                {
+                    _cancellationTokenSource.Cancel();
+                }
+                catch(ObjectDisposedException)
+                {
+                }
             }
             else
             {
@@ -215,7 +221,7 @@ namespace Tecan.Sila2
         /// Cleans up resources used for the execution of this command
         /// </summary>
         /// <param name="exception">An exception that caused the command to terminate or null, if the command completed successfully</param>
-        public virtual void Cleanup( Exception exception )
+        protected virtual void Cleanup( Exception exception )
         {
             _stateUpdateChannel.Writer.Complete( exception );
             _cancellationTokenSource?.Dispose();
@@ -265,7 +271,13 @@ namespace Tecan.Sila2
         {
             if(_cancellationTokenSource != null)
             {
-                _cancellationTokenSource.Cancel();
+                try
+                {
+                    _cancellationTokenSource.Cancel();
+                }
+                catch (ObjectDisposedException)
+                {
+                }
             }
             else
             {

@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="ClientConnection"
+    targetNamespace="http://tempuri.org/ClientConnection.xsd"
+    elementFormDefault="qualified"
+    xmlns="http://tempuri.org/ClientConnection.xsd"
+    xmlns:mstns="http://tempuri.org/ClientConnection.xsd"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+>
+    <xs:element name="ClientConnection">
+        <xs:complexType>
+            <xs:attribute name="Name" type="xs:string" use="required" />
+            <xs:attribute name="Host" type="xs:string" use="required" />
+            <xs:attribute name="Port" type="xs:int" use="required" />
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

@@ -72,6 +72,14 @@ namespace Tecan.Sila2.Server.ServiceDefinition
 
                 return 0;
             }
+            catch (OperationCanceledException)
+            {
+                if (!cancellationToken.IsCancellationRequested)
+                {
+                    throw;
+                }
+                return 0;
+            }
             finally
             {
                 changeSource.PropertyChanged -= handler;
@@ -85,7 +93,7 @@ namespace Tecan.Sila2.Server.ServiceDefinition
                 throw new ArgumentException( $"The message type {message.Type} is not supported.", nameof( message ) );
             }
 
-            var parameters = message.PropertyRead;
+            var parameters = message.PropertySubscription;
             try
             {
                 var wrappedStream = new BackwardStreamWriter( responseWriter, message.RequestUuid );
@@ -135,7 +143,7 @@ namespace Tecan.Sila2.Server.ServiceDefinition
                 return _baseWriter.WriteAsync( new SilaServerMessage
                 {
                     RequestUuid = _uuid,
-                    PropertyValue = new PropertyValue
+                    ObservablePropertyValue = new PropertyValue
                     {
                         Result = ProtobufMarshaller<T>.ToByteArray( message )
                     }

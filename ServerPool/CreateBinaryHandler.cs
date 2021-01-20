@@ -27,6 +27,10 @@ namespace Tecan.Sila2.ServerPooling
                 _responseTask.SetResult( serverMessage.CreateBinaryResponse );
                 return true;
             }
+            else if(serverMessage.Type == SilaServerMessageType.BinaryError)
+            {
+                _responseTask.SetException( ErrorHandling.ConvertException( serverMessage.BinaryError, null ) );
+            }
             return false;
         }
 

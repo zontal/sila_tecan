@@ -2,21 +2,25 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
+using Tecan.Sila2.Client;
 
 namespace Tecan.Sila2.ServerPooling
 {
-    internal class ObservableCommandHandler : ObservableCommand, IResponseHandler
+    internal class ObservableCommandHandler : ObservableCommand, IResponseHandler, IClientCommand
     {
         private readonly TaskCompletionSource<bool> _completionSource;
         private readonly IServerStreamWriter<SilaClientMessage> _requestStream;
         private readonly string _requestUuid;
-        private CommandExecutionUuid _executionUuid;
+        private readonly TaskCompletionSource<CommandExecutionUuid> _executionUuid = new TaskCompletionSource<CommandExecutionUuid>();
         private readonly Func<string, string, Exception> _errorConverter;
         private readonly Action _cleanupAction;
-        
+
+        public CommandExecutionUuid CommandId => _executionUuid.Task.Result;
 
         public ObservableCommandHandler(string requestUuid, IServerStreamWriter<SilaClientMessage> requestStream, Func<string, string, Exception> errorConverter, Action cleanupAction )
+            : base( new CancellationTokenSource() )
         {
             _completionSource = new TaskCompletionSource<bool>();
             _requestUuid = requestUuid;
@@ -31,20 +35,21 @@ namespace Tecan.Sila2.ServerPooling
             switch(serverMessage.Type)
             {
                 case SilaServerMessageType.ObservableCommandConfirmation:
-                    _executionUuid = serverMessage.ObservableCommandConfirmation.CommandConfirmation.CommandId;
-                    TraceCommandExecution( _executionUuid );
+                    var executionUuid = serverMessage.ObservableCommandConfirmation.CommandConfirmation.CommandId;
+                    TraceCommandExecution( executionUuid );
+                    _executionUuid.SetResult( executionUuid );
                     return true;
                 case SilaServerMessageType.ObservableCommandExecutionInfo:
                     var stateUpdate = serverMessage.ObservableCommandExecutionInfo.ExecutionInfo;
                     PushStateUpdate( stateUpdate.Progress.Value, stateUpdate.EstimatedRemainingTime.Extract( null ), ConvertCommandState( stateUpdate.Status ) );
-                    if(stateUpdate.Status == ExecutionState.CommandStatus.FinishedSuccessfully)
+                    if(stateUpdate.Status == ExecutionState.CommandStatus.FinishedSuccessfully && _executionUuid.Task.IsCompleted)
                     {
                         _ = _requestStream.WriteAsync( new SilaClientMessage
                         {
                             RequestUuid = _requestUuid,
                             CommandGetResponse = new CommandExecutionReference
                             {
-                                ExecutionUUID = _executionUuid
+                                ExecutionUUID = _executionUuid.Task.Result
                             }
                         } );
                     }
@@ -104,7 +109,7 @@ namespace Tecan.Sila2.ServerPooling
         public override void Cancel()
         {
             base.Cancel();
-            if (_executionUuid != null)
+            if (_executionUuid.Task.IsCompleted)
             {
                 _requestStream.WriteAsync( new SilaClientMessage
                 {
@@ -114,23 +119,41 @@ namespace Tecan.Sila2.ServerPooling
             }
         }
 
-        public override Task Run()
+        public override async Task Run()
         {
-            return _completionSource.Task.ContinueWith( t => { _cleanupAction(); } );
+            try
+            {
+                await _completionSource.Task;
+            }
+            catch(TaskCanceledException)
+            {
+                throw new OperationCanceledException();
+            }
         }
+
+        protected override void Cleanup( Exception exception )
+        {
+            base.Cleanup( exception );
+            _cleanupAction();
+        }
+
+        protected override bool SendLastUpdate => false;
     }
 
-    internal class ObservableCommandHandler<TResponse> : ObservableCommand<TResponse>, IResponseHandler
+    internal class ObservableCommandHandler<TResponse> : ObservableCommand<TResponse>, IResponseHandler, IClientCommand
     {
         private readonly TaskCompletionSource<TResponse> _completionSource;
         private readonly IServerStreamWriter<SilaClientMessage> _requestStream;
         private readonly string _requestUuid;
-        private CommandExecutionUuid _executionUuid;
+        private readonly TaskCompletionSource<CommandExecutionUuid> _executionUuid = new TaskCompletionSource<CommandExecutionUuid>();
         private readonly Func<string, string, Exception> _errorConverter;
         private readonly Func<byte[], TResponse> _responseSerializer;
         private readonly Action _cleanupAction;
 
+        public CommandExecutionUuid CommandId => _executionUuid.Task.Result;
+
         public ObservableCommandHandler( string requestUuid, IServerStreamWriter<SilaClientMessage> requestStream, Func<string, string, Exception> errorConverter, Func<byte[], TResponse> responseSerializer, Action cleanupAction )
+            : base(new CancellationTokenSource())
         {
             _completionSource = new TaskCompletionSource<TResponse>();
             _requestUuid = requestUuid;
@@ -146,20 +169,21 @@ namespace Tecan.Sila2.ServerPooling
             switch(serverMessage.Type)
             {
                 case SilaServerMessageType.ObservableCommandConfirmation:
-                    _executionUuid = serverMessage.ObservableCommandConfirmation.CommandConfirmation.CommandId;
-                    TraceCommandExecution( _executionUuid );
+                    var executionUuid = serverMessage.ObservableCommandConfirmation.CommandConfirmation.CommandId;
+                    TraceCommandExecution( executionUuid );
+                    _executionUuid.SetResult( executionUuid );
                     return true;
                 case SilaServerMessageType.ObservableCommandExecutionInfo:
                     var stateUpdate = serverMessage.ObservableCommandExecutionInfo.ExecutionInfo;
                     PushStateUpdate( stateUpdate.Progress.Value, stateUpdate.EstimatedRemainingTime.Extract( null ), ObservableCommandHandler.ConvertCommandState( stateUpdate.Status ) );
-                    if(stateUpdate.Status == ExecutionState.CommandStatus.FinishedSuccessfully)
+                    if(stateUpdate.Status == ExecutionState.CommandStatus.FinishedSuccessfully && _executionUuid.Task.IsCompleted)
                     {
                         _ = _requestStream.WriteAsync( new SilaClientMessage
                         {
                             RequestUuid = _requestUuid,
                             CommandGetResponse = new CommandExecutionReference
                             {
-                                ExecutionUUID = _executionUuid
+                                ExecutionUUID = _executionUuid.Task.Result
                             }
                         } );
                     }
@@ -167,10 +191,11 @@ namespace Tecan.Sila2.ServerPooling
                 case SilaServerMessageType.ObservableCommandIntermediateResponse:
                     return HandleIntermediateResponse( serverMessage.ObservableCommandIntermediateResponse );
                 case SilaServerMessageType.ObservableCommandResponse:
-                    _completionSource.TrySetResult( _responseSerializer( serverMessage.ObservableCommandResponse.Result ) );
+                    var result = _responseSerializer( serverMessage.ObservableCommandResponse.Result );
+                    _completionSource.SetResult( result );
                     return true;
                 case SilaServerMessageType.CommandError:
-                    _completionSource.TrySetException( ErrorHandling.ConvertException(serverMessage.CommandError.SilaError, _errorConverter) );
+                    _completionSource.SetException( ErrorHandling.ConvertException(serverMessage.CommandError.SilaError, _errorConverter) );
                     return true;
                 default:
                     return false;
@@ -202,7 +227,7 @@ namespace Tecan.Sila2.ServerPooling
         public override void Cancel()
         {
             base.Cancel();
-            if(_executionUuid != null)
+            if(_executionUuid.Task.IsCompleted)
             {
                 _requestStream.WriteAsync( new SilaClientMessage
                 {
@@ -212,13 +237,24 @@ namespace Tecan.Sila2.ServerPooling
             }
         }
 
-        public override Task<TResponse> Run()
+        public override async Task<TResponse> Run()
         {
-            return _completionSource.Task.ContinueWith( t =>
-             {
-                 _cleanupAction();
-                 return t.Result;
-             } );
+            try
+            {
+                return await _completionSource.Task;
+            }
+            catch(TaskCanceledException)
+            {
+                throw new OperationCanceledException();
+            }
         }
+
+        protected override void Cleanup( Exception exception )
+        {
+            base.Cleanup( exception );
+            _cleanupAction();
+        }
+
+        protected override bool SendLastUpdate => false;
     }
 }

@@ -183,6 +183,16 @@ namespace Tecan.Sila2.ServerPooling
         }
 
         /// <summary>
+        /// Gets the binary error information
+        /// </summary>
+        [ProtoMember( 18 )]
+        public BinaryTransferError BinaryError
+        {
+            get => __pbn__message.Is( 18 ) ? ((BinaryTransferError)__pbn__message.Object) : default;
+            set => __pbn__message = new DiscriminatedUnionObject( 18, value );
+        }
+
+        /// <summary>
         /// Gets the type of the message
         /// </summary>
         public SilaServerMessageType Type => (SilaServerMessageType)__pbn__message.Discriminator;
@@ -262,6 +272,10 @@ namespace Tecan.Sila2.ServerPooling
         /// Server responds chunk of binary
         /// </summary>
         GetChunkResponse = 17,
+        /// <summary>
+        /// Messages that there was an error transferring binaries
+        /// </summary>
+        BinaryError = 18
     }
 
     /// <summary>
@@ -393,29 +407,29 @@ namespace Tecan.Sila2.ServerPooling
         /// Gets or sets the details of a request to create a binary
         /// </summary>
         [ProtoMember( 13 )]
-        public CreateBinaryRequestDto CreateBinaryRequest
+        public CreateBinaryUploadRequest CreateBinaryRequest
         {
-            get => __pbn__message.Is( 13 ) ? ((CreateBinaryRequestDto)__pbn__message.Object) : default;
+            get => __pbn__message.Is( 13 ) ? ((CreateBinaryUploadRequest)__pbn__message.Object) : default;
             set => __pbn__message = new DiscriminatedUnionObject( 13, value );
-        }
-
-        /// <summary>
-        /// Gets or sets the details of a request to upload a chunk
-        /// </summary>
-        [ProtoMember( 14 )]
-        public UploadChunkRequestDto UploadChunkRequest
-        {
-            get => __pbn__message.Is( 14 ) ? ((UploadChunkRequestDto)__pbn__message.Object) : default;
-            set => __pbn__message = new DiscriminatedUnionObject( 14, value );
         }
 
         /// <summary>
         /// Gets or sets the request to delete a binary
         /// </summary>
-        [ProtoMember( 15 )]
-        public DeleteBinaryRequestDto DeleteBinaryRequest
+        [ProtoMember( 14 )]
+        public DeleteBinaryUploadRequest DeleteBinaryRequest
         {
-            get => __pbn__message.Is( 15 ) ? ((DeleteBinaryRequestDto)__pbn__message.Object) : default;
+            get => __pbn__message.Is( 14 ) ? ((DeleteBinaryUploadRequest)__pbn__message.Object) : default;
+            set => __pbn__message = new DiscriminatedUnionObject( 14, value );
+        }
+
+        /// <summary>
+        /// Gets or sets the details of a request to upload a chunk
+        /// </summary>
+        [ProtoMember( 15 )]
+        public UploadChunkRequestDto UploadChunkRequest
+        {
+            get => __pbn__message.Is( 15 ) ? ((UploadChunkRequestDto)__pbn__message.Object) : default;
             set => __pbn__message = new DiscriminatedUnionObject( 15, value );
         }
 
@@ -504,13 +518,13 @@ namespace Tecan.Sila2.ServerPooling
         /// </summary>
         CreateBinaryRequest = 13,
         /// <summary>
-        /// Requests to upload a binary chunk
-        /// </summary>
-        UploadChunkRequest = 14,
-        /// <summary>
         /// Requests to delete a binary
         /// </summary>
-        DeleteBinaryRequest = 15,
+        DeleteBinaryRequest = 14,
+        /// <summary>
+        /// Requests to upload a binary chunk
+        /// </summary>
+        UploadChunkRequest = 15,
         /// <summary>
         /// Requests to get binary information
         /// </summary>
@@ -538,7 +552,7 @@ namespace Tecan.Sila2.ServerPooling
         /// Gets or sets the command parameters
         /// </summary>
         [ProtoMember( 2 )]
-        public CommandParameter commandParameter { get; set; }
+        public CommandParameter CommandParameter { get; set; }
 
     }
 
@@ -710,17 +724,10 @@ namespace Tecan.Sila2.ServerPooling
     public partial class CommandError
     {
         /// <summary>
-        /// Gets or sets the identifier of the command execution
-        /// </summary>
-        [ProtoMember( 1 )]
-        public CommandExecutionUuid ExecutionUUID { get; set; }
-
-        /// <summary>
         /// Gets or sets the actual error
         /// </summary>
-        [ProtoMember( 2 )]
+        [ProtoMember( 1 )]
         public SiLAErrorDto SilaError { get; set; }
-
     }
 
     /// <summary>
@@ -806,6 +813,76 @@ namespace Tecan.Sila2.ServerPooling
     }
 
     /// <summary>
+    /// Denotes the transfer information for a request to create binary data
+    /// </summary>
+    [ProtoContract]
+    public partial class CreateBinaryUploadRequest : IMetadataRepository
+    {
+        /// <summary>
+        /// Gets the list of metadata entries for the create binary request
+        /// </summary>
+        [ProtoMember( 1 )]
+        public List<Metadata> Metadata
+        {
+            get;
+        } = new List<Metadata>();
+
+        /// <summary>
+        /// Gets or sets the actual create binary request
+        /// </summary>
+        [ProtoMember( 2 )]
+        public CreateBinaryRequestDto CreateBinaryRequest
+        {
+            get;
+            set;
+        }
+
+        /// <inheritdoc />
+        public int Count => Metadata.Count;
+
+        /// <inheritdoc />
+        public bool TryGetMetadata( string metadataIdentifier, out byte[] metadata )
+        {
+            foreach(var item in Metadata)
+            {
+                if (item.FullyQualifiedMetadataId == metadataIdentifier)
+                {
+                    metadata = item.Value;
+                    return true;
+                }
+            }
+            metadata = null;
+            return false;
+        }
+    }
+
+    /// <summary>
+    /// Denotes the transfer information for a request to create binary data
+    /// </summary>
+    [ProtoContract]
+    public partial class DeleteBinaryUploadRequest
+    {
+        /// <summary>
+        /// Gets the list of metadata entries for the delete binary request
+        /// </summary>
+        [ProtoMember( 1 )]
+        public List<Metadata> Metadata
+        {
+            get;
+        } = new List<Metadata>();
+
+        /// <summary>
+        /// Gets or sets the actual delete binary request
+        /// </summary>
+        [ProtoMember( 2 )]
+        public DeleteBinaryRequestDto DeleteBinaryRequest
+        {
+            get;
+            set;
+        }
+    }
+
+    /// <summary>
     /// Denotes a response with a property value
     /// </summary>
     [ProtoContract()]
@@ -819,16 +896,16 @@ namespace Tecan.Sila2.ServerPooling
 
     }
 
+    /// <summary>
+    /// Denotes the server message to be sent when the connection is established
+    /// </summary>
     [ProtoContract()]
-    public partial class ConnectMessage : IExtensible
+    public partial class ConnectMessage
     {
-        private IExtension __pbn__extensionData;
-        IExtension IExtensible.GetExtensionObject( bool createIfMissing )
-            => Extensible.GetExtensionObject( ref __pbn__extensionData, createIfMissing );
 
         [ProtoMember( 1 )]
         [System.ComponentModel.DefaultValue( "" )]
-        public string serverName { get; set; } = "";
+        public string ServerName { get; set; } = "";
 
     }
 }

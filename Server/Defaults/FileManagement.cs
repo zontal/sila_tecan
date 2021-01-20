@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using Tecan.Sila2.Binary;
 using Tecan.Sila2.Server.Binary;
 
 namespace Tecan.Sila2.Server
@@ -30,7 +31,7 @@ namespace Tecan.Sila2.Server
 
         public void Delete(string binaryTransferUUID, bool isUploaded)
         {
-            LocateFile(binaryTransferUUID).Delete();
+            LocateFileAndCheck( binaryTransferUUID).Delete();
         }
 
         public FileInfo Locate( string binaryTransferUUID )
@@ -45,17 +46,30 @@ namespace Tecan.Sila2.Server
 
         public Stream OpenRead(string binaryTransferUUID)
         {
-            return LocateFile(binaryTransferUUID).OpenRead();
+            return LocateFileAndCheck( binaryTransferUUID).OpenRead();
         }
 
         public Stream OpenWrite(string binaryTransferUUID)
         {
-            return LocateFile(binaryTransferUUID).OpenWrite();
+            return LocateFileAndCheck( binaryTransferUUID).OpenWrite();
         }
 
         protected virtual FileInfo LocateFile(string binaryTransferUUID)
         {
             return new FileInfo(Path.Combine(Path.GetTempPath(), binaryTransferUUID));
+        }
+
+        private FileInfo LocateFileAndCheck(string binaryTransferUuid)
+        {
+            var file = LocateFile( binaryTransferUuid );
+            if(file.Exists)
+            {
+                return file;
+            }
+            else
+            {
+                throw new InvalidBinaryTransferIdException( "The provided binary transfer Uuid is invalid.", binaryTransferUuid );
+            }
         }
     }
 }

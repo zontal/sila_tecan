@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace sila2.sila.hackathon.demo.greetingservice.v1
+namespace Client.GreetingService
 {
     
     
@@ -57,6 +57,9 @@ namespace sila2.sila.hackathon.demo.greetingservice.v1
         
         private long _y;
         
+        ///  <summary>
+        /// Initializes a new instance
+        /// </summary>
         public DemoStructure(long x, long y)
         {
             _x = x;

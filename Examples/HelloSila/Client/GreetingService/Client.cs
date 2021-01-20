@@ -8,7 +8,6 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-using sila2.sila.hackathon.demo.greetingservice.v1;
 using System.Linq;
 using Tecan.Sila2;
 using Tecan.Sila2.Client;
@@ -21,51 +20,24 @@ namespace Client.GreetingService
     ///  <summary>
     /// Class that implements the IGreetingService interface through SiLA2
     /// </summary>
-    public partial class GreetingServiceClient : Grpc.Core.ClientBase<GreetingServiceClient>, IGreetingService
+    public partial class GreetingServiceClient : IGreetingService
     {
         
         private IClientExecutionManager _executionManager;
         
-        ///  <summary>
-        /// Creates a new instance
-        /// </summary>
-        /// <param name="executionManager">A component that attaches metadata to SiLA2 calls</param>
-        public GreetingServiceClient(IClientExecutionManager executionManager)
-        {
-            _executionManager = executionManager;
-        }
+        private IClientChannel _channel;
+        
+        private const string _serviceName = "sila2.sila.hackathon.demo.greetingservice.v1.GreetingService";
         
         ///  <summary>
         /// Creates a new instance
         /// </summary>
-        /// <param name="configuration">The underlying configuration</param>
-        /// <param name="executionManager">A component that attaches metadata to SiLA2 calls</param>
-        protected GreetingServiceClient(ClientBaseConfiguration configuration, IClientExecutionManager executionManager) : 
-                base(configuration)
+        /// <param name="channel">The channel through which calls should be executed</param>
+        /// <param name="executionManager">A component to determine metadata to attach to any requests</param>
+        public GreetingServiceClient(IClientChannel channel, IClientExecutionManager executionManager)
         {
             _executionManager = executionManager;
-        }
-        
-        ///  <summary>
-        /// Creates a new instance
-        /// </summary>
-        /// <param name="channel">The underlying channel</param>
-        /// <param name="executionManager">A component that attaches metadata to SiLA2 calls</param>
-        public GreetingServiceClient(Grpc.Core.Channel channel, IClientExecutionManager executionManager) : 
-                base(channel)
-        {
-            _executionManager = executionManager;
-        }
-        
-        ///  <summary>
-        /// Creates a new instance
-        /// </summary>
-        /// <param name="invoker">The underlying invoker</param>
-        /// <param name="executionManager">A component that attaches metadata to SiLA2 calls</param>
-        public GreetingServiceClient(Grpc.Core.CallInvoker invoker, IClientExecutionManager executionManager) : 
-                base(invoker)
-        {
-            _executionManager = executionManager;
+            _channel = channel;
         }
         
         ///  <summary>
@@ -78,12 +50,12 @@ namespace Client.GreetingService
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("sila.hackathon/demo/GreetingService/v1/Command/SayHello");
             try
             {
-                string response = CallInvoker.BlockingUnaryCall(GreetingServiceProvider.SayHelloMethod, null, callInfo.Options, request).ReturnValue.Extract(_executionManager.DownloadBinaryStore);
+                string response = _channel.ExecuteUnobservableCommand<SayHelloRequestDto, SayHelloResponseDto>(_serviceName, "SayHello", request, callInfo).ReturnValue.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
             {
-                System.Exception exception = ErrorHandling.ConvertException(ex, ConvertSayHelloException);
+                System.Exception exception = _channel.ConvertException(ex, ConvertSayHelloException);
                 callInfo.FinishWithErrors(exception);
                 throw exception;
             }
@@ -92,13 +64,14 @@ namespace Client.GreetingService
         ///  <summary>
         /// Converts the error ocurred during execution of SayHello to a proper exception
         /// </summary>
-        /// <param name="error">The SiLA2 execution error</param>
+        /// <param name="errorIdentifier">The identifier of the error that has happened</param>
+        /// <param name="errorMessage">The original error message from the server</param>
         /// <returns>The converted exception or null, if the error is not understood</returns>
-        private static System.Exception ConvertSayHelloException(Tecan.Sila2.DefinedExecutionErrorDto error)
+        private static System.Exception ConvertSayHelloException(string errorIdentifier, string errorMessage)
         {
-            if ((error.ErrorIdentifier == "sila.hackathon/demo/GreetingService/v1/DefinedError/UnfriendlyName"))
+            if ((errorIdentifier == "sila.hackathon/demo/GreetingService/v1/DefinedError/UnfriendlyName"))
             {
-                return new UnfriendlyNameException(error.Message);
+                return new UnfriendlyNameException(errorMessage);
             }
             return null;
         }
@@ -113,12 +86,12 @@ namespace Client.GreetingService
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("sila.hackathon/demo/GreetingService/v1/Command/EchoStructure");
             try
             {
-                DemoStructure response = CallInvoker.BlockingUnaryCall(GreetingServiceProvider.EchoStructureMethod, null, callInfo.Options, request).ReturnValue.Extract(_executionManager.DownloadBinaryStore);
+                DemoStructure response = _channel.ExecuteUnobservableCommand<EchoStructureRequestDto, EchoStructureResponseDto>(_serviceName, "EchoStructure", request, callInfo).ReturnValue.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
             {
-                System.Exception exception = ErrorHandling.ConvertException(ex);
+                System.Exception exception = _channel.ConvertException(ex);
                 callInfo.FinishWithErrors(exception);
                 throw exception;
             }
@@ -134,24 +107,15 @@ namespace Client.GreetingService
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("sila.hackathon/demo/GreetingService/v1/Command/EchoStream");
             try
             {
-                System.IO.Stream response = CallInvoker.BlockingUnaryCall(GreetingServiceProvider.EchoStreamMethod, null, callInfo.Options, request).ReturnValue.Extract(_executionManager.DownloadBinaryStore);
+                System.IO.Stream response = _channel.ExecuteUnobservableCommand<EchoStreamRequestDto, EchoStreamResponseDto>(_serviceName, "EchoStream", request, callInfo).ReturnValue.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
             {
-                System.Exception exception = ErrorHandling.ConvertException(ex);
+                System.Exception exception = _channel.ConvertException(ex);
                 callInfo.FinishWithErrors(exception);
                 throw exception;
             }
-        }
-        
-        ///  <summary>
-        /// Creates a new instance
-        /// </summary>
-        /// <param name="configuration">The new client configuration</param>
-        protected override GreetingServiceClient NewInstance(ClientBaseConfiguration configuration)
-        {
-            return new GreetingServiceClient(configuration, _executionManager);
         }
         
         private T Extract<T>(Tecan.Sila2.ISilaTransferObject<T> dto)
@@ -159,21 +123,6 @@ namespace Client.GreetingService
         {
             return dto.Extract(_executionManager.DownloadBinaryStore);
         }
-    }
-    
-    ///  <summary>
-    /// Encapsulates provider classes to expose the Greeting Service feature via SiLA2
-    /// </summary>
-    internal sealed partial class GreetingServiceProvider
-    {
-        
-        private static string @__ServiceName = "sila2.sila.hackathon.demo.greetingservice.v1.GreetingService";
-        
-        public static Grpc.Core.Method<SayHelloRequestDto, SayHelloResponseDto> SayHelloMethod = new Grpc.Core.Method<SayHelloRequestDto, SayHelloResponseDto>(Grpc.Core.MethodType.Unary, @__ServiceName, "SayHello", ProtobufMarshaller<SayHelloRequestDto>.Default, ProtobufMarshaller<SayHelloResponseDto>.Default);
-        
-        public static Grpc.Core.Method<EchoStructureRequestDto, EchoStructureResponseDto> EchoStructureMethod = new Grpc.Core.Method<EchoStructureRequestDto, EchoStructureResponseDto>(Grpc.Core.MethodType.Unary, @__ServiceName, "EchoStructure", ProtobufMarshaller<EchoStructureRequestDto>.Default, ProtobufMarshaller<EchoStructureResponseDto>.Default);
-        
-        public static Grpc.Core.Method<EchoStreamRequestDto, EchoStreamResponseDto> EchoStreamMethod = new Grpc.Core.Method<EchoStreamRequestDto, EchoStreamResponseDto>(Grpc.Core.MethodType.Unary, @__ServiceName, "EchoStream", ProtobufMarshaller<EchoStreamRequestDto>.Default, ProtobufMarshaller<EchoStreamResponseDto>.Default);
     }
 }
 

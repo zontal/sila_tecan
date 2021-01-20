@@ -72,7 +72,7 @@ namespace Tecan.Sila2.Server.ServiceDefinition
             var method = new Method<TRequest, CommandConfirmation>( MethodType.Unary, ServiceName, methodName, ProtobufMarshaller<TRequest>.Default, ProtobufMarshaller<CommandConfirmation>.Default );
             var stateMethod = new Method<CommandExecutionUuid, ExecutionState>( MethodType.ServerStreaming, ServiceName, methodName + "_Info", ProtobufMarshaller<CommandExecutionUuid>.Default, ProtobufMarshaller<ExecutionState>.Default );
             var resultMethod = new Method<CommandExecutionUuid, EmptyRequest>( MethodType.Unary, ServiceName, methodName + "_Result", ProtobufMarshaller<CommandExecutionUuid>.Default, EmptyRequestMarshaller.Instance );
-            var builder = new ObservableCommandHandler<TRequest>( _server, implementation, exceptionConverter, null );
+            var builder = new ObservableCommandHandler<TRequest>( _server, implementation, exceptionConverter, intermediateHandler );
             _serviceDefinitionBuilder.AddMethod( method, builder.Execute );
             _serviceDefinitionBuilder.AddMethod( stateMethod, builder.QueryState );
             _serviceDefinitionBuilder.AddMethod( resultMethod, builder.GetResponse );

@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
+using Tecan.Sila2.Binary;
 
 namespace Tecan.Sila2.ServerPooling
 {
@@ -51,11 +54,43 @@ namespace Tecan.Sila2.ServerPooling
             return new SilaException( "An unknown error occured." );
         }
 
+        internal static Exception ConvertException( BinaryTransferError binaryError, string binaryStorageId )
+        {
+            switch(binaryError.Type)
+            {
+                case BinaryTransferError.ErrorType.InvalidBinaryTransferUuid:
+                    return new InvalidBinaryTransferIdException( binaryError.Message, binaryStorageId );
+                case BinaryTransferError.ErrorType.BinaryUploadFailed:
+                    return new BinaryUploadFailedException( binaryError.Message, binaryStorageId );
+                case BinaryTransferError.ErrorType.BinaryDownloadFailed:
+                    return new BinaryDownloadFailedException( binaryError.Message, binaryStorageId );
+                default:
+                    return new BinaryTransferException( binaryError.Message, binaryStorageId );
+            }
+        }
+
         public static Exception ConvertException(Exception exception, Func<string, string, Exception> innerConverter)
         {
             if (exception is TemporaryException temp)
             {
                 return ConvertException( temp.Error, innerConverter );
+            }
+            else if (exception is AggregateException aggregateException)
+            {
+                var tempException = aggregateException.InnerExceptions.OfType<TemporaryException>().FirstOrDefault();
+                if (tempException != null)
+                {
+                    return ConvertException( tempException.Error, innerConverter );
+                }
+                if (aggregateException.InnerException is TaskCanceledException)
+                {
+                    return new OperationCanceledException();
+                }
+                if (aggregateException.InnerExceptions.Count == 1)
+                {
+                    return aggregateException.InnerException;
+                }
+                return aggregateException;
             }
             else
             {

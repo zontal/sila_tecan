@@ -110,8 +110,9 @@ namespace Tecan.Sila2.ServerPooling
 
         private Task ConnectServer( IAsyncStreamReader<SilaServerMessage> requestStream, IServerStreamWriter<SilaClientMessage> responseStream, ServerCallContext context )
         {
-            var channel = new ServerConnection( _loggingChannelFactory, responseStream, requestStream, context.CancellationToken );
-            var runTask = channel.Run();
+            var bufferedWriter = new BufferedStreamWriter<SilaClientMessage>( responseStream );
+            var channel = new ServerConnection( _loggingChannelFactory, bufferedWriter, requestStream, context.CancellationToken );
+            var runTask = Task.WhenAll( channel.Run(), bufferedWriter.StartWriting( context.CancellationToken ) );
             var server = CreateServerData( channel );
             _pooledServers.Add( server );
             ServerConnected?.Invoke( this, new ServerDataEventArgs( server ) );

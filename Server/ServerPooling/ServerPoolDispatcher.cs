@@ -17,11 +17,12 @@ namespace Tecan.Sila2.ServerPooling
         private readonly IBinaryUploadHandler _upload;
         private readonly IBinaryDownloadHandler _download;
 
-        public ServerPoolDispatcher(ILoggingChannelFactory loggingChannelFactory, IBinaryUploadHandler upload, IBinaryDownloadHandler download)
+        public ServerPoolDispatcher(ILoggingChannelFactory loggingChannelFactory, IBinaryUploadHandler upload, IBinaryDownloadHandler download, ISiLAServer server)
         {
             _loggingChannel = loggingChannelFactory.CreateChannel( typeof( ServerPoolDispatcher ) );
             _upload = upload;
             _download = download;
+            _server = server;
         }
 
         public void RegisterHandler(string fullyQualifiedId, IRequestHandler handler)
@@ -31,55 +32,62 @@ namespace Tecan.Sila2.ServerPooling
 
         public void HandleClientRequest( SilaClientMessage message, IClientStreamWriter<SilaServerMessage> responseStream )
         {
-            switch(message.Type)
+            try
             {
-                case SilaClientMessageType.CommandExecution:
-                    HandleClientRequestCore( message.CommandExecution.FullyQualifiedCommandId, message, responseStream );
-                    break;
-                case SilaClientMessageType.CommandInitiation:
-                    HandleClientRequestCore( message.CommandInitiation.FullyQualifiedCommandId, message, responseStream );
-                    break;
-                case SilaClientMessageType.CommandExecutionInfoSubscription:
-                    var execution = _server.GetCommandExecution( message.CommandExecutionInfoSubscription.ExecutionUUID.CommandId );
-                    GetCommandHandler( execution )?.HandleExecutionStateSubscription( message.RequestUuid, execution, responseStream, this );
-                    break;
-                case SilaClientMessageType.CommandIntermediateResponseSubscription:
-                    var execution2 = _server.GetCommandExecution( message.CommandIntermediateResponseSubscription.ExecutionUUID.CommandId );
-                    GetCommandHandler( execution2 )?.HandleIntermediatesSubscription( message.RequestUuid, execution2, responseStream, this );
-                    break;
-                case SilaClientMessageType.CommandGetResponse:
-                    var execution3 = _server.GetCommandExecution( message.CommandExecutionInfoSubscription.ExecutionUUID.CommandId );
-                    GetCommandHandler( execution3 )?.HandleResultRequest( message.RequestUuid, execution3, responseStream, this );
-                    break;
-                case SilaClientMessageType.MetadataRequest:
-                    HandleClientRequestCore( message.MetadataRequest.FullyQualifiedMetadataId, message, responseStream );
-                    break;
-                case SilaClientMessageType.PropertyRead:
-                    HandleClientRequestCore( message.PropertyRead.FullyQualifiedPropertyId, message, responseStream );
-                    break;
-                case SilaClientMessageType.PropertySubscription:
-                    HandleClientRequestCore( message.PropertySubscription.FullyQualifiedPropertyId, message, responseStream );
-                    break;
-                case SilaClientMessageType.CancelCommandExecutionInfoSubscription:
-                case SilaClientMessageType.CancelCommandIntermediateResponseSubscription:
-                case SilaClientMessageType.CancelPropertySubscription:
-                    TryCancel( message.RequestUuid );
-                    break;
-                case SilaClientMessageType.CreateBinaryRequest:
-                    _upload.CreateBinary( message.CreateBinaryRequest, message.RequestUuid, responseStream );
-                    break;
-                case SilaClientMessageType.UploadChunkRequest:
-                    _upload.UploadChunk( message.UploadChunkRequest, message.RequestUuid, responseStream );
-                    break;
-                case SilaClientMessageType.DeleteBinaryRequest:
-                    _download.DeleteBinary( message.DeleteBinaryRequest, message.RequestUuid, responseStream );
-                    break;
-                case SilaClientMessageType.GetBinaryInfoRequest:
-                    _download.GetBinaryInfo( message.GetBinaryInfoRequest, message.RequestUuid, responseStream );
-                    break;
-                case SilaClientMessageType.GetChunkRequest:
-                    _download.GetChunk( message.GetChunkRequest, message.RequestUuid, responseStream );
-                    break;
+                switch(message.Type)
+                {
+                    case SilaClientMessageType.CommandExecution:
+                        HandleClientRequestCore( message.CommandExecution.FullyQualifiedCommandId, message, responseStream );
+                        break;
+                    case SilaClientMessageType.CommandInitiation:
+                        HandleClientRequestCore( message.CommandInitiation.FullyQualifiedCommandId, message, responseStream );
+                        break;
+                    case SilaClientMessageType.CommandExecutionInfoSubscription:
+                        var execution = _server.GetCommandExecution( message.CommandExecutionInfoSubscription.ExecutionUUID.CommandId );
+                        GetCommandHandler( execution )?.HandleExecutionStateSubscription( message.RequestUuid, _loggingChannel, execution, responseStream, this );
+                        break;
+                    case SilaClientMessageType.CommandIntermediateResponseSubscription:
+                        var execution2 = _server.GetCommandExecution( message.CommandIntermediateResponseSubscription.ExecutionUUID.CommandId );
+                        GetCommandHandler( execution2 )?.HandleIntermediatesSubscription( message.RequestUuid, _loggingChannel, execution2, responseStream, this );
+                        break;
+                    case SilaClientMessageType.CommandGetResponse:
+                        var execution3 = _server.GetCommandExecution( message.CommandGetResponse.ExecutionUUID.CommandId );
+                        GetCommandHandler( execution3 )?.HandleResultRequest( message.RequestUuid, _loggingChannel, execution3, responseStream, this );
+                        break;
+                    case SilaClientMessageType.MetadataRequest:
+                        HandleClientRequestCore( message.MetadataRequest.FullyQualifiedMetadataId, message, responseStream );
+                        break;
+                    case SilaClientMessageType.PropertyRead:
+                        HandleClientRequestCore( message.PropertyRead.FullyQualifiedPropertyId, message, responseStream );
+                        break;
+                    case SilaClientMessageType.PropertySubscription:
+                        HandleClientRequestCore( message.PropertySubscription.FullyQualifiedPropertyId, message, responseStream );
+                        break;
+                    case SilaClientMessageType.CancelCommandExecutionInfoSubscription:
+                    case SilaClientMessageType.CancelCommandIntermediateResponseSubscription:
+                    case SilaClientMessageType.CancelPropertySubscription:
+                        TryCancel( message.RequestUuid );
+                        break;
+                    case SilaClientMessageType.CreateBinaryRequest:
+                        _upload.CreateBinary( message.CreateBinaryRequest, message.RequestUuid, responseStream );
+                        break;
+                    case SilaClientMessageType.UploadChunkRequest:
+                        _upload.UploadChunk( message.UploadChunkRequest, message.RequestUuid, responseStream );
+                        break;
+                    case SilaClientMessageType.DeleteBinaryRequest:
+                        _upload.DeleteBinary( message.DeleteBinaryRequest, message.RequestUuid, responseStream );
+                        break;
+                    case SilaClientMessageType.GetBinaryInfoRequest:
+                        _download.GetBinaryInfo( message.GetBinaryInfoRequest, message.RequestUuid, responseStream );
+                        break;
+                    case SilaClientMessageType.GetChunkRequest:
+                        _download.GetChunk( message.GetChunkRequest, message.RequestUuid, responseStream );
+                        break;
+                }
+            }
+            catch (Exception exception)
+            {
+                _loggingChannel.LogException( $"Handling of {message.Type} ran into an unexpected error.".ToString, exception );
             }
         }
 
@@ -135,9 +143,10 @@ namespace Tecan.Sila2.ServerPooling
         {
             lock(_cancellationSources)
             {
-                if(_cancellationSources.ContainsKey( id ))
+                if(_cancellationSources.TryGetValue(id, out var source))
                 {
                     _cancellationSources.Remove( id );
+                    source.Dispose();
                 }
             }
         }

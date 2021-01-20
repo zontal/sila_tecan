@@ -151,17 +151,6 @@ namespace Tecan.Sila2.Server.Binary
                 GetChunkResponse = response
             } );
         }
-
-        /// <inheritdoc />
-        public async void DeleteBinary( DeleteBinaryRequestDto deleteBinaryRequest, string requestUuid, IClientStreamWriter<SilaServerMessage> responseStream )
-        {
-            await DeleteBinary( deleteBinaryRequest, null );
-            await responseStream.WriteAsync( new SilaServerMessage
-            {
-                RequestUuid = requestUuid,
-                DeleteBinaryResponse = new EmptyMessage()
-            } );
-        }
     }
 
 }

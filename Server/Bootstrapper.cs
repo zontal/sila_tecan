@@ -59,8 +59,12 @@ namespace Tecan.Sila2.Server
                 }
 
                 _channel = logging.CreateChannel( typeof(Bootstrapper) );
-                var networkInterface = CreateNetworkInterfaceFilter( args.InterfaceFilter );
-                var startup = new ServerStartInformation( selfInfo, args.Port, networkInterface, args.ServerUuid, args.Name );
+                var interfaceFilter = args.InterfaceFilter;
+                if (interfaceFilter == "None")
+                {
+                    interfaceFilter = null;
+                }
+                var startup = new ServerStartInformation( selfInfo, args.Port, args.InterfaceFilter, args.ServerUuid, args.Name );
                 _container.ComposeExportedValue( startup );
                 _server = _container.GetExportedValue<ISiLAServer>();
 
@@ -71,7 +75,6 @@ namespace Tecan.Sila2.Server
                 }
 
                 _server.StartServer();
-                _channel.Log( () => "Server listening on port " + args.Port, Severity.Info );
             }
             catch( CompositionException e )
             {
@@ -90,53 +93,6 @@ namespace Tecan.Sila2.Server
             {
                 LogError(_channel, e);
             }
-        }
-
-        private Predicate<NetworkInterface> CreateNetworkInterfaceFilter(string filterString)
-        {
-            if (string.IsNullOrEmpty(filterString))
-            {
-                return nic => nic.OperationalStatus == OperationalStatus.Up && nic.SupportsMulticast;
-            }
-
-            var parts = new List<Predicate<NetworkInterface>>();
-            foreach(var part in filterString.Split( ',' ))
-            {
-                var trimmedPart = part.Trim();
-                if(IPAddress.TryParse( trimmedPart, out var address ))
-                {
-                    parts.Add( nic => nic.GetIPProperties().UnicastAddresses.Any( ua => ua.Address == address ) );
-                }
-                else if (IPNetwork.TryParse( trimmedPart, out var network))
-                {
-                    parts.Add( nic => nic.GetIPProperties().UnicastAddresses.Any( ua => network.Contains( ua.Address ) ) );
-                }
-                else
-                {
-                    try
-                    {
-                        var regex = new Regex( "\\A" + trimmedPart + "\\Z" );
-                        parts.Add( nic => regex.IsMatch( nic.Name ) );
-                    }
-                    catch (ArgumentException)
-                    {
-                        _channel.Log( $"{trimmedPart} is not a valid regular expression, using as exact match filter".ToString, Severity.Warning );
-                        parts.Add( nic => nic.Name.Contains( trimmedPart ) );
-                    }
-                }
-            }
-
-            return nic => parts.Any( pred => pred( nic ) ) && CheckOperationalStatus(nic);
-        }
-
-        private bool CheckOperationalStatus(NetworkInterface nic)
-        {
-            if (nic.OperationalStatus != OperationalStatus.Up || !nic.SupportsMulticast)
-            {
-                _channel.Log( $"Network {nic.Name} matches the filter criteria but is {nic.OperationalStatus}.".ToString, Severity.Warning );
-                return false;
-            }
-            return true;
         }
 
         private static void LogError(ILoggingChannel channel, Exception e)

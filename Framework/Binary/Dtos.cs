@@ -245,20 +245,20 @@ namespace Tecan.Sila2.Binary
         public enum ErrorType
         {
             /// <summary>
-            /// Denotes that the chunk index is invalid
-            /// </summary>
-            [ProtoEnum(Name = @"INVALID_BINARY_CHUNK")]
-            InvalidBinaryChunk = 0,
-            /// <summary>
             /// Denotes that the binary transfer identifier is invalid
             /// </summary>
-            [ProtoEnum(Name = @"INVALID_BINARY_TRANSFER_UUID")]
-            InvalidBinaryTransferUuid = 1,
+            [ProtoEnum(Name = @"INVALID_BINARY_TRANSFER_UUID" )]
+            InvalidBinaryTransferUuid = 0,
             /// <summary>
-            /// Defines that the upload is impossible
+            /// Denotes that the binary upload failed
             /// </summary>
-            [ProtoEnum(Name = @"BINARY_UPLOAD_IMPOSSIBLE")]
-            BinaryUploadImpossible = 2,
+            [ProtoEnum(Name = @"BINARY_UPLOAD_FAILED" )]
+            BinaryUploadFailed = 1,
+            /// <summary>
+            /// Defines that the download failed
+            /// </summary>
+            [ProtoEnum(Name = @"BINARY_DOWNLOAD_FAILED" )]
+            BinaryDownloadFailed = 2,
         }
 
     }

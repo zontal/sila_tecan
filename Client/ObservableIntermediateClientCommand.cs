@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Channels;
+using System.Threading.Tasks;
 using Grpc.Core;
 
 namespace Tecan.Sila2.Client
@@ -33,16 +34,16 @@ namespace Tecan.Sila2.Client
         public override void Start()
         {
             base.Start();
-            FetchIntermediateResponses();
+            _ = FetchIntermediateResponses();
         }
 
-        public override void Cleanup( Exception exception )
+        protected override void Cleanup( Exception exception )
         {
             Cancel();
             base.Cleanup( exception );
         }
 
-        private async void FetchIntermediateResponses()
+        private async Task FetchIntermediateResponses()
         {
             Exception exception = null;
             try
@@ -111,16 +112,16 @@ namespace Tecan.Sila2.Client
         public override void Start()
         {
             base.Start();
-            FetchIntermediateResponses();
+            _ = FetchIntermediateResponses();
         }
 
-        public override void Cleanup( Exception exception )
+        protected override void Cleanup( Exception exception )
         {
             Cancel();
             base.Cleanup( exception );
         }
 
-        private async void FetchIntermediateResponses()
+        private async Task FetchIntermediateResponses()
         {
             Exception exception = null;
             try

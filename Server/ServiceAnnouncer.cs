@@ -52,37 +52,11 @@ namespace Tecan.Sila2
         public ServiceAnnouncer( string instanceName, ushort portNumber, Predicate<NetworkInterface> networkFilter, ILoggingChannelFactory loggingChannelFactory )
         {
             _logger = loggingChannelFactory.CreateChannel( typeof(ServiceAnnouncer) );
-            networkFilter ??= (n => true);
-            var selectedAddresses = Networking.ListInterNetworkAddresses( networkFilter );
 
+            var networking = new Networking( loggingChannelFactory );
+            var selectedAddresses = networking.ListInterNetworkAddresses( networkFilter );
             Profile = new ServiceProfile( instanceName, DiscoveryConstants.ServiceName, portNumber, selectedAddresses );
-            _multicastService = new MulticastService( CreateFilter(networkFilter) );
-        }
-
-        private Func<IEnumerable<NetworkInterface>, IEnumerable<NetworkInterface>> CreateFilter( Predicate<NetworkInterface> networkInterfaceFilter )
-        {
-            if(networkInterfaceFilter == null)
-            {
-                return null;
-            }
-
-            IEnumerable<NetworkInterface> filter( IEnumerable<NetworkInterface> nics )
-            {
-                foreach(var nic in nics)
-                {
-                    if(networkInterfaceFilter( nic ))
-                    {
-                        _logger.Log( $"Advertising service on network interface {nic.Name}".ToString, Severity.Info );
-                        yield return nic;
-                    }
-                    else
-                    {
-                        _logger.Log( $"Skipping network interface {nic.Name}".ToString, Severity.Debug );
-                    }
-                }
-            }
-
-            return filter;
+            _multicastService = new MulticastService( networking.CreateFilter(networkFilter) );
         }
 
         /// <summary>

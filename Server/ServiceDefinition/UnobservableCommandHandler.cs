@@ -29,7 +29,7 @@ namespace Tecan.Sila2.Server.ServiceDefinition
                 throw new ArgumentException( $"The message type {message.Type} is not supported.", nameof( message ) );
             }
 
-            var parameters = message.CommandExecution.commandParameter;
+            var parameters = message.CommandExecution.CommandParameter;
             var request = ProtobufMarshaller<TRequest>.Default.Deserializer( parameters.Parameters );
             try
             {
@@ -51,7 +51,6 @@ namespace Tecan.Sila2.Server.ServiceDefinition
                     RequestUuid = message.RequestUuid,
                     CommandError = new CommandError
                     {
-                        ExecutionUUID = new CommandExecutionUuid(),
                         SilaError = error
                     }
                 } );

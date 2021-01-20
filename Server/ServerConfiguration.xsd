@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="ServerConfiguration"
+    targetNamespace="https://gitlab.com/SiLA2/vendors/sila_tecan/-/blob/master/Server/ServerConfiguration.xsd"
+    elementFormDefault="qualified"
+    xmlns="https://gitlab.com/SiLA2/vendors/sila_tecan/-/blob/master/Server/ServerConfiguration.xsd"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+>
+    <xs:element name="ServerConfiguration">
+        <xs:complexType>
+            <xs:attribute name="Identifier" use="required" type="xs:string" />
+            <xs:attribute name="Port" use="required" type="xs:int" />
+            <xs:attribute name="Name" use="required" type="xs:string" />
+            <xs:attribute name="InterfaceFilter" use="required" type="xs:string" />
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

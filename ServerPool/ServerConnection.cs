@@ -113,7 +113,7 @@ namespace Tecan.Sila2.ServerPooling
                          RequestUuid = requestId,
                          CancelPropertySubscription = new EmptyMessage()
                      } );
-                     handler.Cancel();
+                     handler.Complete();
                  } );
             }
             return SendAndGetResponse( new SilaClientMessage
@@ -166,7 +166,7 @@ namespace Tecan.Sila2.ServerPooling
                 CommandExecution = new CommandExecution
                 {
                     FullyQualifiedCommandId = request.CommandIdentifier,
-                    commandParameter = SetMetadata( new CommandParameter
+                    CommandParameter = SetMetadata( new CommandParameter
                     {
                         Parameters = requestSerializer.Serializer( request ),
                     }, callInfo )
@@ -220,7 +220,7 @@ namespace Tecan.Sila2.ServerPooling
                 CommandExecution = new CommandExecution
                 {
                     FullyQualifiedCommandId = request.CommandIdentifier,
-                    commandParameter = SetMetadata( new CommandParameter
+                    CommandParameter = SetMetadata( new CommandParameter
                     {
                         Parameters = requestSerializer.Serializer( request ),
                     }, callInfo )
@@ -253,6 +253,7 @@ namespace Tecan.Sila2.ServerPooling
             var requestId = Guid.NewGuid().ToString();
             var handler = new ObservableCommandHandler( requestId, _requestStream, errorConverter, () => _responseHandlers.TryRemove( requestId, out _ ) );
             _responseHandlers.TryAdd( requestId, handler );
+            handler.Start();
             _ = _requestStream.WriteAsync( new SilaClientMessage
             {
                 RequestUuid = requestId,
@@ -298,6 +299,7 @@ namespace Tecan.Sila2.ServerPooling
             var requestId = Guid.NewGuid().ToString();
             var handler = new ObservableCommandHandler<TResponse>( requestId, _requestStream, errorConverter, data => responseConverter( responseSerializer.Deserializer(data) ), () => _responseHandlers.TryRemove( requestId, out _ ) );
             _responseHandlers.TryAdd( requestId, handler );
+            handler.Start();
             _ = _requestStream.WriteAsync( new SilaClientMessage
             {
                 RequestUuid = requestId,
@@ -324,7 +326,7 @@ namespace Tecan.Sila2.ServerPooling
             where TRequest : class, ISilaRequestObject
             where TIntermediateDto : class, ISilaTransferObject
         {
-            return ExecuteIntermediatesCommand( serviceName, commandName, request, intermediateConverter, errorConverter, callInfo );
+            return ExecuteIntermediatesCommand( serviceName, commandName, request, intermediateConverter, errorConverter, callInfo, ByteSerializer.GetDefault<TRequest>(), ByteSerializer.GetDefault<TIntermediateDto>() );
         }
 
         /// <inheritdoc />
@@ -343,6 +345,7 @@ namespace Tecan.Sila2.ServerPooling
             var requestId = Guid.NewGuid().ToString();
             var handler = new IntermediateCommandHandler<TIntermediate>( requestId, _requestStream, errorConverter, data => intermediateConverter(intermediateSerializer.Deserializer(data)), () => _responseHandlers.TryRemove( requestId, out _ ) );
             _responseHandlers.TryAdd( requestId, handler );
+            handler.Start();
             _ = _requestStream.WriteAsync( new SilaClientMessage
             {
                 RequestUuid = requestId,
@@ -409,6 +412,7 @@ namespace Tecan.Sila2.ServerPooling
                 data => responseConverter( responseSerializer.Deserializer( data ) ),
                 () => _responseHandlers.TryRemove( requestId, out _ ) );
             _responseHandlers.TryAdd( requestId, handler );
+            handler.Start();
             _ = _requestStream.WriteAsync( new SilaClientMessage
             {
                 RequestUuid = requestId,
@@ -426,34 +430,41 @@ namespace Tecan.Sila2.ServerPooling
 
         private static CommandParameter SetMetadata(CommandParameter parameter, IClientCallInfo callInfo)
         {
-            if(callInfo.Metadata != null)
-            {
-                foreach(var metadata in callInfo.Metadata)
-                {
-                    parameter.Metadata.Add( new Metadata
-                    {
-                        FullyQualifiedMetadataId = metadata.Key,
-                        Value = metadata.Value
-                    } );
-                }
-            }
+            CopyMetadata(callInfo, parameter.Metadata);
             return parameter;
         }
 
         private static PropertyRead SetMetadata( PropertyRead parameter, IClientCallInfo callInfo )
         {
-            if(callInfo.Metadata != null)
+            CopyMetadata( callInfo, parameter.Metadatas );
+            return parameter;
+        }
+
+        private static CreateBinaryUploadRequest SetMetadata( CreateBinaryUploadRequest parameter, IClientCallInfo callInfo )
+        {
+            CopyMetadata( callInfo, parameter.Metadata );
+            return parameter;
+        }
+
+        private static DeleteBinaryUploadRequest SetMetadata(DeleteBinaryUploadRequest parameter, IClientCallInfo callInfo)
+        {
+            CopyMetadata( callInfo, parameter.Metadata );
+            return parameter;
+        }
+
+        private static void CopyMetadata(IClientCallInfo source, List<Metadata> target)
+        {
+            if(source?.Metadata != null)
             {
-                foreach(var metadata in callInfo.Metadata)
+                foreach(var metadata in source.Metadata)
                 {
-                    parameter.Metadatas.Add( new Metadata
+                    target.Add( new Metadata
                     {
                         FullyQualifiedMetadataId = metadata.Key,
                         Value = metadata.Value
                     } );
                 }
             }
-            return parameter;
         }
 
         /// <inheritdoc />
@@ -501,14 +512,17 @@ namespace Tecan.Sila2.ServerPooling
             return SendAndGetResponse( new SilaClientMessage
             {
                 RequestUuid = requestId,
-                CreateBinaryRequest = createBinaryRequestDto
-            }, handler );
+                CreateBinaryRequest = SetMetadata( new CreateBinaryUploadRequest
+                {
+                    CreateBinaryRequest = createBinaryRequestDto
+                }, callInfo )
+            }, handler ); ;
         }
 
         public Task<GetChunkResponseDto> GetChunk( GetChunkRequestDto getChunkRequestDto )
         {
             var requestId = Guid.NewGuid().ToString();
-            var handler = new GetChunkHandler();
+            var handler = new GetChunkHandler(getChunkRequestDto.BinaryTransferUUID);
             return SendAndGetResponse( new SilaClientMessage
             {
                 RequestUuid = requestId,
@@ -519,7 +533,7 @@ namespace Tecan.Sila2.ServerPooling
         public Task<GetBinaryInfoResponseDto> GetBinaryInfoAsync( GetBinaryInfoRequestDto getBinaryInfoRequestDto )
         {
             var requestId = Guid.NewGuid().ToString();
-            var handler = new GetBinaryInfoHandler();
+            var handler = new GetBinaryInfoHandler(getBinaryInfoRequestDto.BinaryTransferUUID);
             return SendAndGetResponse( new SilaClientMessage
             {
                 RequestUuid = requestId,
@@ -535,6 +549,14 @@ namespace Tecan.Sila2.ServerPooling
                 await _requestStream.WriteAsync( message );
                 return await handler.ResponseTask;
             }
+            catch(AggregateException aggregate) when (aggregate.InnerException is TaskCanceledException)
+            {
+                throw new OperationCanceledException();
+            }
+            catch(TaskCanceledException)
+            {
+                throw new OperationCanceledException();
+            }
             finally
             {
                 _responseHandlers.TryRemove( message.RequestUuid, out _ );
@@ -547,8 +569,11 @@ namespace Tecan.Sila2.ServerPooling
             return _requestStream.WriteAsync( new SilaClientMessage
             {
                 RequestUuid = requestId,
-                DeleteBinaryRequest = deleteBinaryRequestDto
-            } );
+                DeleteBinaryRequest = new DeleteBinaryUploadRequest
+                {
+                    DeleteBinaryRequest = deleteBinaryRequestDto
+                }
+            } ); ;
         }
     }
 }

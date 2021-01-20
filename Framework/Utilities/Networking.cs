@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
+using System.Text.RegularExpressions;
 using Tecan.MAP.Contracts.Services.Logging;
 
 namespace Tecan.Sila2
@@ -12,45 +13,17 @@ namespace Tecan.Sila2
     /// Networking utility library listing network interfaces and finding 
     /// interfaces based on name or CIDR
     /// </summary>
-    public static class Networking
+    public class Networking
     {
+        private readonly ILoggingChannel _loggingChannel;
 
         /// <summary>
-        /// Finds the network interface that has a matching interface name
+        /// Initializes a new instance
         /// </summary>
-        /// <param name="interfaceName">interface name to find</param>
-        /// <returns>the matching found network interface</returns>
-        public static NetworkInterface GetNetworkInterfaceByName(string interfaceName)
+        /// <param name="loggingChannelFactory">A factory to create logging channels</param>
+        public Networking(ILoggingChannelFactory loggingChannelFactory)
         {
-            if(interfaceName == null)
-            {
-                throw new NetworkInterfaceNotFoundException("No network interface name was specified");
-            }
-
-            return NetworkInterface.GetAllNetworkInterfaces().FirstOrDefault( nic => nic.Name.Contains( interfaceName ) );
-        }
-
-        /// <summary>
-        /// Finds the first network interface that has a matching unicast address-
-        /// </summary>
-        /// <param name="mask">IPv4/IPv6 address or CIDR mask.</param>
-        /// <returns>a matching interface</returns>
-        public static NetworkInterface GetNetworkInterfaceByCidr(string mask)
-        {
-            if(mask.Contains('/'))
-            {
-                IPNetwork ipnetwork = IPNetwork.Parse(mask);
-                return NetworkInterface.GetAllNetworkInterfaces()
-                    .FirstOrDefault( nic => nic.GetIPProperties().UnicastAddresses.Any( ua => ipnetwork.Contains( ua.Address ) ) );
-
-            }
-            else
-            {
-                IPAddress address = IPAddress.Parse(mask);
-
-                return NetworkInterface.GetAllNetworkInterfaces()
-                    .FirstOrDefault( nic => nic.GetIPProperties().UnicastAddresses.Any(ua => ua.Address == address) );
-            }
+            _loggingChannel = loggingChannelFactory.CreateChannel( typeof( Networking ) );
         }
 
         /// <summary>
@@ -58,7 +31,7 @@ namespace Tecan.Sila2
         /// </summary>
         /// <param name="networkInterfaceFilter">A filter of network interfaces to inspect</param>
         /// <returns>list of InterNetwork Unicast IP v4 addresses</returns>
-        public static IEnumerable<IPAddress> ListInterNetworkAddresses(Predicate<NetworkInterface> networkInterfaceFilter)
+        public IEnumerable<IPAddress> ListInterNetworkAddresses(Predicate<NetworkInterface> networkInterfaceFilter)
         {
             IEnumerable<NetworkInterface> networkInterfaces = NetworkInterface.GetAllNetworkInterfaces();
             if (networkInterfaceFilter != null)
@@ -67,6 +40,136 @@ namespace Tecan.Sila2
             }
             var unicastAddresses = networkInterfaces.SelectMany(nic => nic.GetIPProperties().UnicastAddresses.Select(u => u.Address));
             return unicastAddresses.Where(a => a.AddressFamily == AddressFamily.InterNetwork);
+        }
+
+
+
+        /// <summary>
+        /// Creates a network interface filter
+        /// </summary>
+        /// <param name="filterString">The filter string</param>
+        /// <returns>A predicate for network interfaces</returns>
+        public Predicate<NetworkInterface> CreateNetworkInterfaceFilter( string filterString )
+        {
+            if(string.IsNullOrEmpty( filterString ) || filterString == "*")
+            {
+                return nic => nic.OperationalStatus == OperationalStatus.Up && nic.SupportsMulticast;
+            }
+
+            var parts = new List<NetworkInterfaceFilter>();
+            foreach(var part in filterString.Split( ',' ))
+            {
+                var trimmedPart = part.Trim();
+                if(IPAddress.TryParse( trimmedPart, out var address ))
+                {
+                    parts.Add( new IpFilter(address) );
+                }
+                else if(IPNetwork.TryParse( trimmedPart, out var network ))
+                {
+                    parts.Add( new IpnetFilter(network) );
+                }
+                else
+                {
+                    var regex = new Regex( "\\A" + trimmedPart + "\\Z" );
+                    parts.Add( new RegexFilter( regex ) );
+                }
+            }
+
+            return nic => parts.Any( pred => pred.PassFilter( nic ) ) && CheckOperationalStatus( nic );
+        }
+
+        private bool CheckOperationalStatus( NetworkInterface nic )
+        {
+            if(nic.OperationalStatus != OperationalStatus.Up || !nic.SupportsMulticast)
+            {
+                _loggingChannel.Log( $"Network {nic.Name} matches the filter criteria but is {nic.OperationalStatus}.".ToString, Severity.Warning );
+                return false;
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// Create a network interface filter function
+        /// </summary>
+        /// <param name="networkInterfaceFilter">The inner network interface filter function</param>
+        /// <returns>A network interface filter function</returns>
+        public Func<IEnumerable<NetworkInterface>, IEnumerable<NetworkInterface>> CreateFilter( Predicate<NetworkInterface> networkInterfaceFilter )
+        {
+            if(networkInterfaceFilter == null)
+            {
+                return null;
+            }
+
+            IEnumerable<NetworkInterface> filter( IEnumerable<NetworkInterface> nics )
+            {
+                foreach(var nic in NetworkInterface.GetAllNetworkInterfaces())
+                {
+                    if(networkInterfaceFilter( nic ))
+                    {
+                        if(CheckOperationalStatus( nic ))
+                        {
+                            _loggingChannel.Log( $"Advertising service on network interface {nic.Name}".ToString, Severity.Info );
+                            yield return nic;
+                        }
+                    }
+                    else
+                    {
+                        _loggingChannel.Log( $"Skipping network interface {nic.Name}".ToString, Severity.Debug );
+                    }
+                }
+            }
+
+            return filter;
+        }
+
+        private abstract class NetworkInterfaceFilter
+        {
+            public abstract bool PassFilter( NetworkInterface nic );
+        }
+
+        private class IpFilter : NetworkInterfaceFilter
+        {
+            private IPAddress _filterAddress;
+
+            public IpFilter(IPAddress filterAddress)
+            {
+                _filterAddress = filterAddress;
+            }
+
+            public override bool PassFilter( NetworkInterface nic )
+            {
+                return nic.GetIPProperties().UnicastAddresses.Any( ua => ua.Address.Equals(_filterAddress) );
+            }
+        }
+
+        private class IpnetFilter : NetworkInterfaceFilter
+        {
+            private IPNetwork _filterNetwork;
+
+            public IpnetFilter(IPNetwork filterNetwork)
+            {
+                _filterNetwork = filterNetwork;
+            }
+
+            public override bool PassFilter( NetworkInterface nic )
+            {
+                return nic.GetIPProperties().UnicastAddresses.Any( ua => _filterNetwork.Contains( ua.Address ) );
+            }
+        }
+
+        private class RegexFilter : NetworkInterfaceFilter
+        {
+            private Regex _filterRegex;
+
+            public RegexFilter(Regex regex)
+            {
+                _filterRegex = regex;
+            }
+
+            public override bool PassFilter( NetworkInterface nic )
+            {
+                return _filterRegex.IsMatch( nic.Name );
+            }
         }
     }
 }

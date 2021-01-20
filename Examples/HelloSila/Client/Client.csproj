@@ -6,10 +6,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Tecan.Sila2" Version="2.2.0-master.111" />
-    <PackageReference Include="Tecan.Sila2.Client" Version="2.2.0-master.111" />
-    <PackageReference Include="Tecan.Sila2.DynamicClient" Version="2.2.0-master.111" />
-    <PackageReference Include="Tecan.Sila2.Features.Locking.Client" Version="2.2.0-master.111" />
+    <PackageReference Include="Tecan.Sila2" Version="3.1.0-master.139" />
+    <PackageReference Include="Tecan.Sila2.Client" Version="3.1.0-master.139" />
+    <PackageReference Include="Tecan.Sila2.DynamicClient" Version="3.1.0-master.139" />
+    <PackageReference Include="Tecan.Sila2.Features.Locking.Client" Version="3.1.0-master.139" />
   </ItemGroup>
 
 </Project>

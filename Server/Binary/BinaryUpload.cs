@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -79,18 +80,26 @@ namespace Tecan.Sila2.Server.Binary
 
         private CreateBinaryResponseDto CreateBinaryCore( InternalCreateBinaryRequest request)
         {
-            var identifier = _fileManagement.CreateNew( (long)request.ActualRequest.BinarySize );
-            var stream = _fileManagement.OpenWrite( identifier );
-            var expiration = DateTimeOffset.Now.AddMinutes( 5 );
-            _openStreams.TryAdd( identifier, new FileUploadData( stream, request.ActualRequest.ChunkCount )
+            string identifier = null;
+            try
             {
-                ExpirationTime = expiration
-            } );
-            return new CreateBinaryResponseDto()
+                identifier = _fileManagement.CreateNew( (long)request.ActualRequest.BinarySize );
+                var stream = _fileManagement.OpenWrite( identifier );
+                var expiration = DateTimeOffset.Now.AddMinutes( 5 );
+                _openStreams.TryAdd( identifier, new FileUploadData( stream, request.ActualRequest.ChunkCount )
+                {
+                    ExpirationTime = expiration
+                } );
+                return new CreateBinaryResponseDto()
+                {
+                    BinaryTransferUUID = identifier,
+                    LifetimeOfBinary = new TimestampDto( expiration )
+                };
+            }
+            catch (IOException io)
             {
-                BinaryTransferUUID = identifier,
-                LifetimeOfBinary = new TimestampDto( expiration )
-            };
+                throw new BinaryUploadFailedException( io.Message, identifier );
+            }
         }
 
         private string GetCommandIdentifier( string commandIdentifier )
@@ -244,11 +253,12 @@ namespace Tecan.Sila2.Server.Binary
         }
 
         /// <inheritdoc />
-        public async void CreateBinary( CreateBinaryRequestDto createBinaryRequest, string requestUuid, IClientStreamWriter<SilaServerMessage> responseStream )
+        public async void CreateBinary( CreateBinaryUploadRequest createBinaryRequest, string requestUuid, IClientStreamWriter<SilaServerMessage> responseStream )
         {
-            var commandIdentifier = GetCommandIdentifier( createBinaryRequest.CommandIdentifier );
-            var internalRequest = new InternalCreateBinaryRequest( commandIdentifier, createBinaryRequest );
-            var response = await _server.InvokeCommand( CreateBinaryCore, internalRequest, null );
+            var request = createBinaryRequest.CreateBinaryRequest;
+            var commandIdentifier = GetCommandIdentifier( request.CommandIdentifier );
+            var internalRequest = new InternalCreateBinaryRequest( commandIdentifier, request );
+            var response = await _server.InvokeCommand( CreateBinaryCore, internalRequest, createBinaryRequest );
             await responseStream.WriteAsync( new SilaServerMessage
             {
                 RequestUuid = requestUuid,
@@ -264,6 +274,17 @@ namespace Tecan.Sila2.Server.Binary
             {
                 RequestUuid = requestUuid,
                 UploadChunkResponse = response
+            } );
+        }
+
+        /// <inheritdoc />
+        public async void DeleteBinary( DeleteBinaryUploadRequest deleteBinaryRequest, string requestUuid, IClientStreamWriter<SilaServerMessage> responseStream )
+        {
+            await DeleteBinary( deleteBinaryRequest.DeleteBinaryRequest, null );
+            await responseStream.WriteAsync( new SilaServerMessage
+            {
+                RequestUuid = requestUuid,
+                DeleteBinaryResponse = new EmptyMessage()
             } );
         }
     }

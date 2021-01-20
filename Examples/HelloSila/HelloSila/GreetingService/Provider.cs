@@ -23,14 +23,14 @@ namespace HelloSila.GreetingService
     /// </summary>
     [System.ComponentModel.Composition.ExportAttribute(typeof(IFeatureProvider))]
     [System.ComponentModel.Composition.PartCreationPolicyAttribute(System.ComponentModel.Composition.CreationPolicy.Shared)]
-    public partial class GreetingService : IFeatureProvider
+    public partial class GreetingServiceProvider : IFeatureProvider
     {
         
         private IGreetingService _implementation;
         
         private Tecan.Sila2.Server.ISiLAServer _server;
         
-        private static Tecan.Sila2.Feature _feature = FeatureSerializer.LoadFromAssembly(typeof(GreetingService).Assembly, "GreetingService.sila.xml");
+        private static Tecan.Sila2.Feature _feature = FeatureSerializer.LoadFromAssembly(typeof(GreetingServiceProvider).Assembly, "GreetingService.sila.xml");
         
         ///  <summary>
         /// Creates a new instance
@@ -38,7 +38,7 @@ namespace HelloSila.GreetingService
         /// <param name="implementation">The implementation to exported through SiLA2</param>
         /// <param name="server">The SiLA2 server instance through which the implementation shall be exported</param>
         [System.ComponentModel.Composition.ImportingConstructorAttribute()]
-        public GreetingService(IGreetingService implementation, Tecan.Sila2.Server.ISiLAServer server)
+        public GreetingServiceProvider(IGreetingService implementation, Tecan.Sila2.Server.ISiLAServer server)
         {
             _implementation = implementation;
             _server = server;
@@ -57,19 +57,22 @@ namespace HelloSila.GreetingService
         }
         
         ///  <summary>
-        /// Creates a service definition for this service provider
+        /// Registers the feature in the provided feature registration
         /// </summary>
-        /// <returns>An object that describes which services are offered by this instance</returns>
-        public Grpc.Core.ServerServiceDefinition CreateServiceDefinition()
+        /// <param name="registration">The registration component to which the feature should be registered</param>
+        public void Register(IServerBuilder registration)
         {
-            Grpc.Core.ServerServiceDefinition.Builder builder = Grpc.Core.ServerServiceDefinition.CreateBuilder();
-            builder.AddMethod(GreetingServiceProvider.SayHelloMethod, SayHello);
-            builder.AddMethod(GreetingServiceProvider.EchoStructureMethod, EchoStructure);
-            builder.AddMethod(GreetingServiceProvider.EchoStreamMethod, EchoStream);
-            return builder.Build();
+            registration.RegisterUnobservableCommand<SayHelloRequestDto, SayHelloResponseDto>("SayHello", SayHello);
+            registration.RegisterUnobservableCommand<EchoStructureRequestDto, EchoStructureResponseDto>("EchoStructure", EchoStructure);
+            registration.RegisterUnobservableCommand<EchoStreamRequestDto, EchoStreamResponseDto>("EchoStream", EchoStream);
         }
         
-        private SayHelloResponseDto SayHelloInternal(SayHelloRequestDto request)
+        ///  <summary>
+        /// Executes the Say Hello command
+        /// </summary>
+        /// <param name="request">A data transfer object that contains the command parameters</param>
+        /// <returns>The command response wrapped in a data transfer object</returns>
+        protected virtual SayHelloResponseDto SayHello(SayHelloRequestDto request)
         {
             try
             {
@@ -78,27 +81,21 @@ namespace HelloSila.GreetingService
             {
                 if ((ex.ParamName == "name"))
                 {
-                    throw ErrorHandling.CreateValidationError("sila.hackathon/demo/GreetingService/v1/Command/SayHello/Parameter/Name", ex.Message);
+                    throw _server.ErrorHandling.CreateValidationError("sila.hackathon/demo/GreetingService/v1/Command/SayHello/Parameter/Name", ex.Message);
                 }
-                throw ErrorHandling.CreateUnknownValidationError(ex);
+                throw _server.ErrorHandling.CreateUnknownValidationError(ex);
             } catch (UnfriendlyNameException ex)
             {
-                throw ErrorHandling.CreateExecutionError("sila.hackathon/demo/GreetingService/v1/DefinedError/UnfriendlyName", "Thrown if the name contains digits", ex.Message);
+                throw _server.ErrorHandling.CreateExecutionError("sila.hackathon/demo/GreetingService/v1/DefinedError/UnfriendlyName", "Thrown if the name contains digits", ex.Message);
             }
         }
         
         ///  <summary>
-        /// Executes the Say Hello command
+        /// Executes the Echo Structure command
         /// </summary>
         /// <param name="request">A data transfer object that contains the command parameters</param>
-        /// <param name="context">The context in which the command is issued</param>
         /// <returns>The command response wrapped in a data transfer object</returns>
-        protected virtual System.Threading.Tasks.Task<SayHelloResponseDto> SayHello(SayHelloRequestDto request, Grpc.Core.ServerCallContext context)
-        {
-            return _server.InvokeCommand(SayHelloInternal, request, context);
-        }
-        
-        private EchoStructureResponseDto EchoStructureInternal(EchoStructureRequestDto request)
+        protected virtual EchoStructureResponseDto EchoStructure(EchoStructureRequestDto request)
         {
             try
             {
@@ -107,24 +104,18 @@ namespace HelloSila.GreetingService
             {
                 if ((ex.ParamName == "structure"))
                 {
-                    throw ErrorHandling.CreateValidationError("sila.hackathon/demo/GreetingService/v1/Command/EchoStructure/Parameter/Structure", ex.Message);
+                    throw _server.ErrorHandling.CreateValidationError("sila.hackathon/demo/GreetingService/v1/Command/EchoStructure/Parameter/Structure", ex.Message);
                 }
-                throw ErrorHandling.CreateUnknownValidationError(ex);
+                throw _server.ErrorHandling.CreateUnknownValidationError(ex);
             }
         }
         
         ///  <summary>
-        /// Executes the Echo Structure command
+        /// Executes the Echo Stream command
         /// </summary>
         /// <param name="request">A data transfer object that contains the command parameters</param>
-        /// <param name="context">The context in which the command is issued</param>
         /// <returns>The command response wrapped in a data transfer object</returns>
-        protected virtual System.Threading.Tasks.Task<EchoStructureResponseDto> EchoStructure(EchoStructureRequestDto request, Grpc.Core.ServerCallContext context)
-        {
-            return _server.InvokeCommand(EchoStructureInternal, request, context);
-        }
-        
-        private EchoStreamResponseDto EchoStreamInternal(EchoStreamRequestDto request)
+        protected virtual EchoStreamResponseDto EchoStream(EchoStreamRequestDto request)
         {
             try
             {
@@ -133,21 +124,10 @@ namespace HelloSila.GreetingService
             {
                 if ((ex.ParamName == "stream"))
                 {
-                    throw ErrorHandling.CreateValidationError("sila.hackathon/demo/GreetingService/v1/Command/EchoStream/Parameter/Stream", ex.Message);
+                    throw _server.ErrorHandling.CreateValidationError("sila.hackathon/demo/GreetingService/v1/Command/EchoStream/Parameter/Stream", ex.Message);
                 }
-                throw ErrorHandling.CreateUnknownValidationError(ex);
+                throw _server.ErrorHandling.CreateUnknownValidationError(ex);
             }
-        }
-        
-        ///  <summary>
-        /// Executes the Echo Stream command
-        /// </summary>
-        /// <param name="request">A data transfer object that contains the command parameters</param>
-        /// <param name="context">The context in which the command is issued</param>
-        /// <returns>The command response wrapped in a data transfer object</returns>
-        protected virtual System.Threading.Tasks.Task<EchoStreamResponseDto> EchoStream(EchoStreamRequestDto request, Grpc.Core.ServerCallContext context)
-        {
-            return _server.InvokeCommand(EchoStreamInternal, request, context);
         }
         
         ///  <summary>
@@ -181,21 +161,6 @@ namespace HelloSila.GreetingService
         {
             return null;
         }
-    }
-    
-    ///  <summary>
-    /// Encapsulates provider classes to expose the Greeting Service feature via SiLA2
-    /// </summary>
-    internal sealed partial class GreetingServiceProvider
-    {
-        
-        private static string @__ServiceName = "sila2.sila.hackathon.demo.greetingservice.v1.GreetingService";
-        
-        public static Grpc.Core.Method<SayHelloRequestDto, SayHelloResponseDto> SayHelloMethod = new Grpc.Core.Method<SayHelloRequestDto, SayHelloResponseDto>(Grpc.Core.MethodType.Unary, @__ServiceName, "SayHello", ProtobufMarshaller<SayHelloRequestDto>.Default, ProtobufMarshaller<SayHelloResponseDto>.Default);
-        
-        public static Grpc.Core.Method<EchoStructureRequestDto, EchoStructureResponseDto> EchoStructureMethod = new Grpc.Core.Method<EchoStructureRequestDto, EchoStructureResponseDto>(Grpc.Core.MethodType.Unary, @__ServiceName, "EchoStructure", ProtobufMarshaller<EchoStructureRequestDto>.Default, ProtobufMarshaller<EchoStructureResponseDto>.Default);
-        
-        public static Grpc.Core.Method<EchoStreamRequestDto, EchoStreamResponseDto> EchoStreamMethod = new Grpc.Core.Method<EchoStreamRequestDto, EchoStreamResponseDto>(Grpc.Core.MethodType.Unary, @__ServiceName, "EchoStream", ProtobufMarshaller<EchoStreamRequestDto>.Default, ProtobufMarshaller<EchoStreamResponseDto>.Default);
     }
 }
 

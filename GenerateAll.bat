@@ -2,6 +2,10 @@ dotnet build Generator\Generator.csproj -c Release
 
 Build\Generator\net472\SilaGen.exe generate-provider Server\Discovery\SiLAService.sila.xml Framework\Discovery\SilaServiceDto.cs Server\Discovery\SiLAServiceProvider.cs Client\Discovery\SiLAServiceClient.cs -n Tecan.Sila2.Discovery
 
+Build\Generator\net472\SilaGen.exe generate-interface Server\ConnectionConfigurationService.sila.xml Server\ConnectionConfiguration\IConnectionConfigurationService.cs -n Tecan.Sila2.Server.ConnectionConfiguration
+Build\Generator\net472\SilaGen.exe generate-provider Server\ConnectionConfigurationService.sila.xml Server\ConnectionConfiguration\ConnectionConfigurationDtos.cs Server\ConnectionConfiguration\ConnectionConfigurationProvider -n Tecan.Sila2.Server.ConnectionConfiguration -s
+Build\Generator\net472\SilaGen.exe generate-client Server\ConnectionConfigurationService.sila.xml Features\ConnectionConfiguration.Client\ConnectionConfiguration.csproj -n Tecan.Sila2.ConnectionConfiguration
+
 Build\Generator\net472\SilaGen.exe generate-interface Features\Locking\LockController.sila.xml Features\Locking\ILockController.cs -n Tecan.Sila2.Locking
 Build\Generator\net472\SilaGen.exe generate-provider Features\Locking\LockController.sila.xml Features\Locking\LockControlDtos.cs Features\Locking\LockControlProvider.cs -n Tecan.Sila2.Locking -s
 
@@ -73,3 +77,6 @@ Build\Generator\net472\SilaGen.exe generate-provider -n Tecan.Sila2.Interop.Serv
 Build\Generator\net472\SilaGen.exe generate-interface Tests\Generator.Tests\AmbiguityResolver\Feature.xml Tests\Generator.Tests\AmbiguityResolver\ServiceReference.cs -n Tecan.Sila2.Generator.Test.TestReference
 Build\Generator\net472\SilaGen.exe generate-provider Tests\Generator.Tests\AmbiguityResolver\Feature.xml Tests\Generator.Tests\AmbiguityResolver\DtoReference.cs Tests\Generator.Tests\AmbiguityResolver\ProviderReference.cs Tests\Generator.Tests\AmbiguityResolver\ClientReference.cs -n Tecan.Sila2.Generator.Test.TestReference
 Build\Generator\net472\SilaGen.exe generate-feature Build\Test\net472\Tecan.Sila2Generator.Test.dll -i Tecan.Sila2.Generator.Test.AmbiguityResolver.IAmbiguityResolverService Tests\Generator.Tests\AmbiguityResolver\Feature.xml -c Tests\Generator.Tests\AmbiguityResolver\AmbiguityResolver.xml
+
+xsd /classes Server\ServerConfiguration.xsd /n:Tecan.Sila2.Server
+xsd /classes Server\ConnectionConfiguration\ClientConnection.xsd /n:Tecan.Sila2.Server.ConnectionConfiguration

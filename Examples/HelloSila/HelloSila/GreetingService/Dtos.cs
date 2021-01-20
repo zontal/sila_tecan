@@ -36,7 +36,7 @@ namespace HelloSila.GreetingService
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
         ///  <param name="name">The name of the person greeted</param>
-        public SayHelloRequestDto(string name, Tecan.Sila2.Binary.IBinaryStore store)
+        public SayHelloRequestDto(string name, Tecan.Sila2.IBinaryStore store)
         {
             Name = new Tecan.Sila2.StringDto(name, store);
         }
@@ -105,7 +105,7 @@ namespace HelloSila.GreetingService
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
         ///  <param name="returnValue">A greeting</param>
-        public SayHelloResponseDto(string returnValue, Tecan.Sila2.Binary.IBinaryStore store)
+        public SayHelloResponseDto(string returnValue, Tecan.Sila2.IBinaryStore store)
         {
             ReturnValue = new Tecan.Sila2.StringDto(returnValue, store);
         }
@@ -157,7 +157,7 @@ namespace HelloSila.GreetingService
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
         ///  <param name="structure">the data structure to echo</param>
-        public EchoStructureRequestDto(DemoStructure structure, Tecan.Sila2.Binary.IBinaryStore store)
+        public EchoStructureRequestDto(DemoStructure structure, Tecan.Sila2.IBinaryStore store)
         {
             Structure = new DemoStructureDto(structure, store);
         }
@@ -221,7 +221,7 @@ namespace HelloSila.GreetingService
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
         ///  <param name="returnValue">the echoed data structure</param>
-        public EchoStructureResponseDto(DemoStructure returnValue, Tecan.Sila2.Binary.IBinaryStore store)
+        public EchoStructureResponseDto(DemoStructure returnValue, Tecan.Sila2.IBinaryStore store)
         {
             ReturnValue = new DemoStructureDto(returnValue, store);
         }
@@ -273,7 +273,7 @@ namespace HelloSila.GreetingService
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
         ///  <param name="stream">the stream to echo</param>
-        public EchoStreamRequestDto(System.IO.Stream stream, Tecan.Sila2.Binary.IBinaryStore store)
+        public EchoStreamRequestDto(System.IO.Stream stream, Tecan.Sila2.IBinaryStore store)
         {
             Stream = new Tecan.Sila2.BinaryDto(stream, store);
         }
@@ -337,7 +337,7 @@ namespace HelloSila.GreetingService
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
         ///  <param name="returnValue">the echoed stream</param>
-        public EchoStreamResponseDto(System.IO.Stream returnValue, Tecan.Sila2.Binary.IBinaryStore store)
+        public EchoStreamResponseDto(System.IO.Stream returnValue, Tecan.Sila2.IBinaryStore store)
         {
             ReturnValue = new Tecan.Sila2.BinaryDto(returnValue, store);
         }
@@ -368,6 +368,9 @@ namespace HelloSila.GreetingService
         }
     }
     
+    ///  <summary>
+    /// The data transfer object for Demo Structure
+    /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
     public class DemoStructureDto : Tecan.Sila2.ISilaTransferObject<DemoStructure>
     {
@@ -376,11 +379,19 @@ namespace HelloSila.GreetingService
         
         private Tecan.Sila2.IntegerDto _y;
         
+        ///  <summary>
+        /// Initializes a new instance (to be used by the serializer)
+        /// </summary>
         public DemoStructureDto()
         {
         }
         
-        public DemoStructureDto(DemoStructure inner, Tecan.Sila2.Binary.IBinaryStore store)
+        ///  <summary>
+        /// Initializes a new data transfer object from the business object
+        /// </summary>
+        /// <param name="inner">The business object that should be transferred</param>
+        /// <param name="store">A component to handle binary data</param>
+        public DemoStructureDto(DemoStructure inner, Tecan.Sila2.IBinaryStore store)
         {
             X = new Tecan.Sila2.IntegerDto(inner.X, store);
             Y = new Tecan.Sila2.IntegerDto(inner.Y, store);
@@ -421,7 +432,7 @@ namespace HelloSila.GreetingService
         /// </summary>
         /// <param name="store">The binary store in which to store binary data</param>
         /// <returns>the inner value</returns>
-        public DemoStructure Extract(Tecan.Sila2.Binary.IBinaryStore store)
+        public DemoStructure Extract(Tecan.Sila2.IBinaryStore store)
         {
             return new DemoStructure(X.Extract(store), Y.Extract(store));
         }
@@ -431,7 +442,7 @@ namespace HelloSila.GreetingService
         /// </summary>
         /// <param name="inner">The object to transfer</param>
         /// <param name="store">An object to store binary data</param>
-        public static DemoStructureDto Create(DemoStructure inner, Tecan.Sila2.Binary.IBinaryStore store)
+        public static DemoStructureDto Create(DemoStructure inner, Tecan.Sila2.IBinaryStore store)
         {
             return new DemoStructureDto(inner, store);
         }

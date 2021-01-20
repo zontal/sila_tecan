@@ -20,6 +20,7 @@ namespace Tecan.Sila2.Discovery
     {
         private readonly ILoggingChannel _loggingChannel;
         private readonly IServerConnector _serverConnector;
+        private readonly Networking _networking;
 
         private readonly Dictionary<string, ServerData> _connectedServers = new Dictionary<string, ServerData>();
 
@@ -33,6 +34,7 @@ namespace Tecan.Sila2.Discovery
         {
             _loggingChannel = factory.CreateChannel( typeof(ServerDiscovery) );
             _serverConnector = serverConnector;
+            _networking = new Networking( factory );
         }
 
         /// <inheritdoc />
@@ -71,7 +73,7 @@ namespace Tecan.Sila2.Discovery
             {
                 NotifyKnownServers( serverFoundCallback );
 
-                using(var mdns = new MulticastService( CreateFilter( networkInterfaceFilter ) ))
+                using(var mdns = new MulticastService( _networking.CreateFilter( networkInterfaceFilter ) ))
                 {
                     var handler = new EventHandler<MessageEventArgs>( ( s, e ) =>
                     {
@@ -158,32 +160,6 @@ namespace Tecan.Sila2.Discovery
                     toWait += toWait;
                 }
             }
-        }
-
-        private Func<IEnumerable<NetworkInterface>, IEnumerable<NetworkInterface>> CreateFilter( Predicate<NetworkInterface> networkInterfaceFilter )
-        {
-            if (networkInterfaceFilter == null)
-            {
-                return null;
-            }
-
-            IEnumerable<NetworkInterface> filter(IEnumerable<NetworkInterface> nics)
-            {
-                foreach(var nic in nics)
-                {
-                    if (networkInterfaceFilter(nic))
-                    {
-                        _loggingChannel.Log( $"Running discovery on network interface {nic.Name}".ToString, Severity.Info );
-                        yield return nic;
-                    }
-                    else
-                    {
-                        _loggingChannel.Log( $"Skipping network interface {nic.Name}".ToString, Severity.Debug );
-                    }
-                }
-            }
-
-            return filter;
         }
 
         private static void Wait( TimeSpan timeout, CancellationToken cancellationToken )

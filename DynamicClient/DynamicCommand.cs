@@ -61,7 +61,7 @@ namespace Tecan.Sila2.DynamicClient
         /// <inheritdoc />
         public Task<DynamicObjectProperty> Response => InnerCommand.Response;
 
-        Task IObservableCommand.Response => ((IObservableCommand)InnerCommand).Response;
+        Task IObservableCommand.Response => InnerCommand.Response;
 
         /// <inheritdoc />
         public CancellationToken CancellationToken => InnerCommand.CancellationToken;

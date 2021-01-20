@@ -84,7 +84,14 @@ namespace Tecan.Sila2.DynamicClient
                 if( !(exception is OperationCanceledException) )
                 {
                     callInfo.FinishWithErrors( exception );
-                    throw exception;
+                    if(exception != e)
+                    {
+                        throw exception;
+                    }
+                    else
+                    {
+                        throw;
+                    }
                 }
             }
 

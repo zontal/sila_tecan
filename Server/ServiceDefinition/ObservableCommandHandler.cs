@@ -2,6 +2,7 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Tecan.MAP.Contracts.Services.Logging;
 using Tecan.Sila2.ServerPooling;
 
 namespace Tecan.Sila2.Server.ServiceDefinition
@@ -155,7 +156,7 @@ namespace Tecan.Sila2.Server.ServiceDefinition
             }
         }
 
-        public async void HandleExecutionStateSubscription( string uuid, ObservableCommandExecution command, IClientStreamWriter<SilaServerMessage> responseWriter, ServerPoolDispatcher dispatcher )
+        public async void HandleExecutionStateSubscription( string uuid, ILoggingChannel loggingChannel, ObservableCommandExecution command, IClientStreamWriter<SilaServerMessage> responseWriter, ServerPoolDispatcher dispatcher )
         {
             try
             {
@@ -163,13 +164,36 @@ namespace Tecan.Sila2.Server.ServiceDefinition
                 var executionId = new CommandExecutionUuid( command.CommandExecutionID );
                 await QueryState( command, new ExecutionStateResponseStream( responseWriter, uuid, executionId ), cancellationToken );
             }
+            catch(RpcException rpc)
+            {
+                var error = ProtobufMarshaller<SiLAErrorDto>.FromByteArray( Convert.FromBase64String( rpc.Status.Detail ) );
+                await responseWriter.WriteAsync( new SilaServerMessage
+                {
+                    RequestUuid = uuid,
+                    CommandError = new CommandError
+                    {
+                        SilaError = error
+                    }
+                } );
+            }
+            catch (Exception exception)
+            {
+                if (command.Command.Response.IsCanceled)
+                {
+                    loggingChannel.Log( $"Cancelling execution subscription of command {command.CommandExecutionID} because command has been cancelled".ToString, Severity.Info );
+                }
+                else
+                {
+                    loggingChannel.LogException( $"Subscription to execution states of command {command.CommandExecutionID} unexpectedly cancelled".ToString, exception );
+                }
+            }
             finally
             {
                 dispatcher.VoidCancellationToken( uuid );
             }
         }
 
-        public void HandleIntermediatesSubscription( string uuid, ObservableCommandExecution command, IClientStreamWriter<SilaServerMessage> responseWriter, ServerPoolDispatcher dispatcher )
+        public void HandleIntermediatesSubscription( string uuid, ILoggingChannel loggingChannel, ObservableCommandExecution command, IClientStreamWriter<SilaServerMessage> responseWriter, ServerPoolDispatcher dispatcher )
         {
             if (_intermediateHandler != null)
             {
@@ -182,7 +206,6 @@ namespace Tecan.Sila2.Server.ServiceDefinition
                     RequestUuid = uuid,
                     CommandError = new CommandError
                     {
-                        ExecutionUUID = new CommandExecutionUuid( command.CommandExecutionID ),
                         SilaError = new SiLAErrorDto
                         {
                             FrameworkError = new FrameworkErrorDto
@@ -196,7 +219,7 @@ namespace Tecan.Sila2.Server.ServiceDefinition
             }
         }
 
-        public virtual async void HandleResultRequest( string uuid, ObservableCommandExecution command, IClientStreamWriter<SilaServerMessage> responseWriter, ServerPoolDispatcher dispatcher )
+        public virtual async void HandleResultRequest( string uuid, ILoggingChannel loggingChannel, ObservableCommandExecution command, IClientStreamWriter<SilaServerMessage> responseWriter, ServerPoolDispatcher dispatcher )
         {
             try
             {
@@ -204,8 +227,9 @@ namespace Tecan.Sila2.Server.ServiceDefinition
                 await responseWriter.WriteAsync( new SilaServerMessage
                 {
                     RequestUuid = uuid,
-                    CommandResponse = new CommandResponse
+                    ObservableCommandResponse = new ObservableCommandResponse
                     {
+                        ExecutionUUID = new CommandExecutionUuid(command.CommandExecutionID),
                         Result = EmptyRequest.Marshaller.Serializer( EmptyRequest.Instance )
                     }
                 } );
@@ -218,7 +242,6 @@ namespace Tecan.Sila2.Server.ServiceDefinition
                     RequestUuid = uuid,
                     CommandError = new CommandError
                     {
-                        ExecutionUUID = new CommandExecutionUuid(command.CommandExecutionID),
                         SilaError = error
                     }
                 } );
@@ -301,7 +324,7 @@ namespace Tecan.Sila2.Server.ServiceDefinition
             }
         }
 
-        public override async void HandleResultRequest( string uuid, ObservableCommandExecution command, IClientStreamWriter<SilaServerMessage> responseWriter, ServerPoolDispatcher dispatcher )
+        public override async void HandleResultRequest( string uuid, ILoggingChannel loggingChannel, ObservableCommandExecution command, IClientStreamWriter<SilaServerMessage> responseWriter, ServerPoolDispatcher dispatcher )
         {
             try
             {
@@ -309,8 +332,9 @@ namespace Tecan.Sila2.Server.ServiceDefinition
                 await responseWriter.WriteAsync( new SilaServerMessage
                 {
                     RequestUuid = uuid,
-                    CommandResponse = new CommandResponse
+                    ObservableCommandResponse = new ObservableCommandResponse
                     {
+                        ExecutionUUID = new CommandExecutionUuid( command.CommandExecutionID ),
                         Result = ProtobufMarshaller<TResponseDto>.ToByteArray( result )
                     }
                 } );
@@ -323,7 +347,6 @@ namespace Tecan.Sila2.Server.ServiceDefinition
                     RequestUuid = uuid,
                     CommandError = new CommandError
                     {
-                        ExecutionUUID = new CommandExecutionUuid( command.CommandExecutionID ),
                         SilaError = error
                     }
                 } );

@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using Grpc.Core;
@@ -29,6 +30,7 @@ namespace Tecan.Sila2.Server
         #region Members
 
         private readonly ILoggingChannel _logger;
+        private readonly ILoggingChannelFactory _loggingChannelFactory;
 
         /// <summary>The gRPC server.</summary>
         public Grpc.Core.Server GrpcServer { get; }
@@ -46,6 +48,7 @@ namespace Tecan.Sila2.Server
         private readonly Dictionary<string, List<IRequestInterceptor>> _cachedInterceptorList = new Dictionary<string, List<IRequestInterceptor>>();
 
         private readonly IFileManagement _fileManagement;
+        private readonly IConfigurationStore _configurationStore;
         private readonly BinaryUpload _upload;
         private readonly BinaryDownload _download;
         private readonly LoggingInterceptor _loggingInterceptor;
@@ -53,6 +56,8 @@ namespace Tecan.Sila2.Server
         private readonly Timer _cleanupTimer;
 
         private readonly ServerPooling.ServerPoolDispatcher _poolDispatcher;
+
+        private const string ServerConfigurationName = "default";
 
         #endregion
 
@@ -108,6 +113,19 @@ namespace Tecan.Sila2.Server
         public void SetServerName(string serverName)
         {
             ServerName = serverName;
+            var configuration = _configurationStore.Read<ServerConfiguration>( "default" );
+            if (configuration != null)
+            {
+                configuration.Name = serverName;
+                try
+                {
+                    _configurationStore.Write( ServerConfigurationName, configuration );
+                }
+                catch(Exception exception)
+                {
+                    _logger.LogException( "Could not save server configuration".ToString, exception );
+                }
+            }
         }
 
         #endregion
@@ -118,54 +136,73 @@ namespace Tecan.Sila2.Server
         /// Creates a new instance of the SiLA2Server class, adds the SiLAService Feature implementation, creates a gRPC Server and registers the server for Server discovery.
         /// </summary>
         /// <param name="startupInfo">The information the server requires to start up</param>
+        /// <param name="configurationStore">An object to read and write server configuration</param>
         /// <param name="loggingChannelFactory">The factory for logging</param>
         /// <param name="interceptors">Interceptors to intercept any commands issued to the server</param>
         /// <param name="fileManagement">The file management used by this server</param>
-        public SiLAServer( ServerStartInformation startupInfo, ILoggingChannelFactory loggingChannelFactory, IEnumerable<IRequestInterceptor> interceptors, IFileManagement fileManagement, Grpc.Core.Server server, ServerCredentials credentials )
-            : this(startupInfo, loggingChannelFactory, loggingChannelFactory.CreateChannel(typeof(SiLAServer)), interceptors, fileManagement, server, credentials )
+        public SiLAServer( ServerStartInformation startupInfo, IConfigurationStore configurationStore, ILoggingChannelFactory loggingChannelFactory, IEnumerable<IRequestInterceptor> interceptors, IFileManagement fileManagement, Grpc.Core.Server server, ServerCredentials credentials )
+            : this(startupInfo, configurationStore, loggingChannelFactory, loggingChannelFactory.CreateChannel(typeof(SiLAServer)), interceptors, fileManagement, server, credentials )
         {
         }
 
-        private SiLAServer( ServerStartInformation startupInfo, ILoggingChannelFactory loggingChannelFactory, ILoggingChannel loggingChannel, IEnumerable<IRequestInterceptor> interceptors, IFileManagement fileManagement, Grpc.Core.Server server, ServerCredentials credentials )
+        private SiLAServer( ServerStartInformation startupInfo, IConfigurationStore configurationStore, ILoggingChannelFactory loggingChannelFactory, ILoggingChannel loggingChannel, IEnumerable<IRequestInterceptor> interceptors, IFileManagement fileManagement, Grpc.Core.Server server, ServerCredentials credentials )
         {
+            _loggingChannelFactory = loggingChannelFactory;
             _logger = loggingChannel;
             _interceptors = interceptors;
+            _configurationStore = configurationStore;
             _upload = new BinaryUpload( fileManagement, this );
             _download = new BinaryDownload( fileManagement );
             _fileManagement = fileManagement;
-            _poolDispatcher = new ServerPoolDispatcher( loggingChannelFactory, _upload, _download );
-            EnsurePortIsAvailable( startupInfo.Port );
+            _poolDispatcher = new ServerPoolDispatcher( loggingChannelFactory, _upload, _download, this );
+
+            var configuration = configurationStore.Read<ServerConfiguration>( ServerConfigurationName );
+            var port = (startupInfo.Port ?? configuration?.Port).GetValueOrDefault( 50052 );
+            EnsurePortIsAvailable( port );
+
+            var uuid = startupInfo.ServerUuid;
+            if (uuid == Guid.Empty)
+            {
+                if (!(configuration?.Identifier != null && Guid.TryParse(configuration.Identifier, out uuid) && uuid != Guid.Empty))
+                {
+                    uuid = Guid.NewGuid();
+                }
+            }
+
+            _logger.Log( $"Starting server {uuid} on port {port}.".ToString, Severity.Info );
 
             ServerType = startupInfo.Info.Type;
             ServerDescription = startupInfo.Info.Description;
             ServerVendorURL = startupInfo.Info.VendorUri;
             ServerVersion = startupInfo.Info.Version;
-            ServerUUID = startupInfo.ServerUuid.ToString();
-            ServerName = startupInfo.Name ?? ServerType;
+            ServerUUID = uuid.ToString();
+            ServerName = startupInfo.Name ?? configuration?.Name ?? ServerType;
             _implementedFeatures = new List<IFeatureProvider>();
             _loggingInterceptor = new LoggingInterceptor( _logger );
 
             GrpcServer = server;
 
             // create gRPC server such that it uses only the specified network interfaces
-            if(startupInfo.NetworkInterfaces != null && startupInfo.NetworkInterfaces != null)
+            if((startupInfo.NetworkInterfaces ?? configuration?.InterfaceFilter) != null)
             {
+                var networking = new Networking( loggingChannelFactory );
+                var filter = networking.CreateNetworkInterfaceFilter( startupInfo.NetworkInterfaces ?? configuration?.InterfaceFilter );
                 _logger.Log( "Running on the following addresses:".ToString, Severity.Info );
                 foreach(var v4addr in NetworkInterface.GetAllNetworkInterfaces()
-                    .Where( nic => startupInfo.NetworkInterfaces( nic ) )
+                    .Where( nic => filter( nic ) )
                     .SelectMany( nic => nic.GetIPProperties().UnicastAddresses.Select( ua => ua.Address ) )
                     .Where( a => a.AddressFamily == AddressFamily.InterNetwork ))
                 {
                     _logger.Log( v4addr.ToString, Severity.Info );
-                    GrpcServer.Ports.Add( new ServerPort( v4addr.ToString(), startupInfo.Port, credentials ) );
+                    GrpcServer.Ports.Add( new ServerPort( v4addr.ToString(), port, credentials ) );
                 }
-                _announcer = new ServiceAnnouncer( ServerUUID, (ushort)startupInfo.Port, startupInfo.NetworkInterfaces, loggingChannelFactory );
+                _announcer = new ServiceAnnouncer( ServerUUID, (ushort)port, filter, loggingChannelFactory );
             }
             else
             {
                 _logger.Log( "Server is running without Discovery!".ToString, Severity.Warning );
                 // if no interface was specified, the SiLA server will (try to) run on all of them
-                GrpcServer.Ports.Add( new ServerPort( "0.0.0.0", startupInfo.Port, credentials ) );
+                GrpcServer.Ports.Add( new ServerPort( "0.0.0.0", port, credentials ) );
             }
 
             GrpcServer.Services.Add( _upload.CreateServiceDefinition() );
@@ -173,10 +210,33 @@ namespace Tecan.Sila2.Server
 
             var cleanupInterval = TimeSpan.FromSeconds( 30 );
             _cleanupTimer = new Timer( Cleanup, null, cleanupInterval, cleanupInterval );
+
+            if (configuration == null)
+            {
+                TryPersistConfiguration( startupInfo, configurationStore, port );
+            }
         }
 
-        private SiLAServer( ServerStartInformation startupInfo, ILoggingChannelFactory loggingChannelFactory, ILoggingChannel loggingChannel, IEnumerable<IRequestInterceptor> interceptors, IFileManagement fileManagements )
-            : this(startupInfo, loggingChannelFactory, loggingChannel, interceptors, fileManagements, new Grpc.Core.Server(), CreateDefaultCredentials(loggingChannel))
+        private void TryPersistConfiguration( ServerStartInformation startupInfo, IConfigurationStore configurationStore, int port )
+        {
+            try
+            {
+                configurationStore.Write( ServerConfigurationName, new ServerConfiguration
+                {
+                    Identifier = ServerUUID,
+                    InterfaceFilter = startupInfo.NetworkInterfaces,
+                    Name = startupInfo.Name,
+                    Port = port
+                } );
+            }
+            catch(Exception exception)
+            {
+                _logger.Log( $"Could not save server configuration: {exception.Message}".ToString, Severity.Warning );
+            }
+        }
+
+        private SiLAServer( ServerStartInformation startupInfo, IConfigurationStore configurationStore, ILoggingChannelFactory loggingChannelFactory, ILoggingChannel loggingChannel, IEnumerable<IRequestInterceptor> interceptors, IFileManagement fileManagements )
+            : this(startupInfo, configurationStore, loggingChannelFactory, loggingChannel, interceptors, fileManagements, new Grpc.Core.Server(), CreateDefaultCredentials(loggingChannel))
         { 
         }
 
@@ -205,12 +265,13 @@ namespace Tecan.Sila2.Server
         /// Creates a new instance of the SiLA2Server class, adds the SiLAService Feature implementation, creates a gRPC Server and registers the server for Server discovery.
         /// </summary>
         /// <param name="startupInfo">The information the server requires to start up</param>
+        /// <param name="configurationStore">An object to read and write server configuration</param>
         /// <param name="loggingChannelFactory">The factory for logging</param>
         /// <param name="interceptors">Interceptors to intercept any commands issued to the server</param>
         /// <param name="fileManagement">The file management used by this server</param>
         [ImportingConstructor]
-        public SiLAServer(ServerStartInformation startupInfo, ILoggingChannelFactory loggingChannelFactory, [ImportMany] IEnumerable<IRequestInterceptor> interceptors, IFileManagement fileManagement)
-            : this( startupInfo, loggingChannelFactory, loggingChannelFactory.CreateChannel( typeof( SiLAServer ) ), interceptors, fileManagement )
+        public SiLAServer(ServerStartInformation startupInfo, IConfigurationStore configurationStore, ILoggingChannelFactory loggingChannelFactory, [ImportMany] IEnumerable<IRequestInterceptor> interceptors, IFileManagement fileManagement)
+            : this( startupInfo, configurationStore, loggingChannelFactory, loggingChannelFactory.CreateChannel( typeof( SiLAServer ) ), interceptors, fileManagement )
         {
         }
 
@@ -628,7 +689,9 @@ namespace Tecan.Sila2.Server
         public IDisposable ConnectToPool( string poolAddress )
         {
             var channel = new Channel( poolAddress, ChannelCredentials.Insecure );
-            return new PoolConnection( _poolDispatcher, channel.CreateCallInvoker().AsyncDuplexStreamingCall( PoolingConstants.ConnectSilaServerMethod, null, new CallOptions() ) );
+            var connection = new PoolConnection( _poolDispatcher, _loggingChannelFactory, channel.CreateCallInvoker().AsyncDuplexStreamingCall( PoolingConstants.ConnectSilaServerMethod, null, new CallOptions() ) );
+            connection.Start();
+            return connection;
         }
 
         #endregion

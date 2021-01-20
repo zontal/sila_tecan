@@ -20,7 +20,7 @@ namespace Client
             // by default, SiLA2 uses trusted connections, but as we are to lazy to setup certificates, we create a custom connector that accepts plaintext
             var connector = new PlaintextConnector(new DiscoveryExecutionManager(), logging);
             var discovery = new ServerDiscovery(logging, connector);
-            var executionManagerFactory = new ExecutionManagerFactory(new IRequestInterceptor[] { new LockingInterceptor() } );
+            var executionManagerFactory = new ExecutionManagerFactory(new IClientRequestInterceptor[] { new LockingInterceptor() } );
             // we simply collect all servers that respond within 10 seconds. Other options exist if you know which server you are looking for.
             var servers = discovery.GetServers(TimeSpan.FromSeconds(10));
             foreach (var s in servers)
@@ -46,7 +46,7 @@ namespace Client
             }
 
             // lets demonstrate the usage of complex data structures
-            var testStructure = greetingClient.EchoStructure(new sila2.sila.hackathon.demo.greetingservice.v1.DemoStructure(42, 23));
+            var testStructure = greetingClient.EchoStructure(new DemoStructure( 42, 23));
             Console.WriteLine($"Echoed demo: X={testStructure.X}, Y={testStructure.Y}");
 
             // lets pass a stream and check that it was transferred correctly

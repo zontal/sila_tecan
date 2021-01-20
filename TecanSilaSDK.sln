@@ -37,6 +37,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NuSpec", "NuSpec", "{B34C24
 		NuSpec\Tecan.Sila2.Features.Auth.nuspec = NuSpec\Tecan.Sila2.Features.Auth.nuspec
 		NuSpec\Tecan.Sila2.Features.Cancellation.Client.nuspec = NuSpec\Tecan.Sila2.Features.Cancellation.Client.nuspec
 		NuSpec\Tecan.Sila2.Features.Cancellation.nuspec = NuSpec\Tecan.Sila2.Features.Cancellation.nuspec
+		NuSpec\Tecan.Sila2.Features.ConnectionConfiguration.Client.nuspec = NuSpec\Tecan.Sila2.Features.ConnectionConfiguration.Client.nuspec
 		NuSpec\Tecan.Sila2.Features.Locking.Client.nuspec = NuSpec\Tecan.Sila2.Features.Locking.Client.nuspec
 		NuSpec\Tecan.Sila2.Features.Locking.nuspec = NuSpec\Tecan.Sila2.Features.Locking.nuspec
 		NuSpec\Tecan.Sila2.Features.ParameterConstraintsProvider.Client.nuspec = NuSpec\Tecan.Sila2.Features.ParameterConstraintsProvider.Client.nuspec
@@ -104,7 +105,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Annotations", "Annotations\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Framework.Grpc", "Framework.Grpc\Framework.Grpc.csproj", "{F5BDB9CA-BF8A-4BFC-A821-764EDFA8CE31}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServerPool", "ServerPool\ServerPool.csproj", "{5F1A39F6-9809-403D-A007-D1029F907730}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServerPool", "ServerPool\ServerPool.csproj", "{5F1A39F6-9809-403D-A007-D1029F907730}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConnectionConfiguration.Client", "Features\ConnectionConfiguration.Client\ConnectionConfiguration.Client.csproj", "{A4660F6A-6F68-4109-984B-FCFF76E71952}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -224,6 +227,10 @@ Global
 		{5F1A39F6-9809-403D-A007-D1029F907730}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5F1A39F6-9809-403D-A007-D1029F907730}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5F1A39F6-9809-403D-A007-D1029F907730}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A4660F6A-6F68-4109-984B-FCFF76E71952}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A4660F6A-6F68-4109-984B-FCFF76E71952}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A4660F6A-6F68-4109-984B-FCFF76E71952}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A4660F6A-6F68-4109-984B-FCFF76E71952}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -256,6 +263,7 @@ Global
 		{49D79FD5-9721-4396-8534-77E215415DE5} = {C552BB03-C50A-4F7F-9B67-A080E13AF7C4}
 		{48D20D86-70FC-4B14-A568-A8924DCD4E3A} = {E27A5F4F-AFCB-4BAD-B2EE-5A88300C1169}
 		{5F1A39F6-9809-403D-A007-D1029F907730} = {E27A5F4F-AFCB-4BAD-B2EE-5A88300C1169}
+		{A4660F6A-6F68-4109-984B-FCFF76E71952} = {7FB691BE-23E3-477C-907C-95DB5BD9D7B6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F2AE9C9D-34E5-4A2A-8AAA-5EEA105AF08F}

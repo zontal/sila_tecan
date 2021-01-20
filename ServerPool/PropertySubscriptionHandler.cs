@@ -8,7 +8,7 @@ namespace Tecan.Sila2.ServerPooling
 {
     internal class PropertySubscriptionHandler<T> : IResponseHandler<bool>
     {
-        private readonly TaskCompletionSource<bool> _responseTask;
+        private readonly TaskCompletionSource<bool> _responseTask = new TaskCompletionSource<bool>();
         private readonly Func<byte[], T> _responseSerializer;
         private readonly Action<T> _responseAction;
 
@@ -16,6 +16,11 @@ namespace Tecan.Sila2.ServerPooling
         {
             _responseSerializer = responseSerializer;
             _responseAction = responseAction;
+        }
+
+        public void Complete()
+        {
+            _responseTask.SetResult( true );
         }
 
         public void Cancel()

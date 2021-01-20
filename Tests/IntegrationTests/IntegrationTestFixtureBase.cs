@@ -19,21 +19,19 @@ using Tecan.Sila2.Tests;
 
 namespace Tecan.Sila2.IntegrationTests
 {
-    // Integration tests do not work on CI server, unfortunately
-    [TestFixture( Category = "IntegrationTests" )]
-    public class IntegrationTestFixture
+    public abstract class IntegrationTestFixtureBase
     {
         private ServerData _server;
         private Process _serverProcess;
 
         [SetUp]
-        public void StartTestServer()
+        public virtual void StartTestServer()
         {
-            var dir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "TestServer");
+            var dir = Path.Combine( AppDomain.CurrentDomain.BaseDirectory, "..", "TestServer" );
             var serverId = Guid.NewGuid();
             var payloadArguments = $"-u {serverId} -i 127.0.0.1";
             var attachDebugger = false; // Debugger.IsAttached;
-            if( attachDebugger )
+            if(attachDebugger)
             {
                 payloadArguments = "debug " + payloadArguments;
             }
@@ -41,7 +39,7 @@ namespace Tecan.Sila2.IntegrationTests
             {
 #if NETCOREAPP
                 FileName = "dotnet",
-                Arguments = Path.Combine(dir, "netcoreapp2.1", "TestServer.dll") + " " + payloadArguments,
+                Arguments = Path.Combine( dir, "netcoreapp2.1", "TestServer.dll" ) + " " + payloadArguments,
 #elif NET461
                 FileName = Path.Combine(dir, "net461", "TestServer.exe"),
                 Arguments = payloadArguments,
@@ -57,9 +55,9 @@ namespace Tecan.Sila2.IntegrationTests
                 UseShellExecute = false,
                 WorkingDirectory = dir
             };
-            _serverProcess = Process.Start(processStartInfo);
+            _serverProcess = Process.Start( processStartInfo );
 
-            if( attachDebugger )
+            if(attachDebugger)
             {
                 Debugger.Break();
             }
@@ -67,16 +65,20 @@ namespace Tecan.Sila2.IntegrationTests
             {
                 Thread.Sleep( TimeSpan.FromSeconds( 1 ) );
             }
-
-            var testLogging = new TestLoggingFactory();
-            var connector = new ServerConnector( new DiscoveryExecutionManager(), testLogging );
-            
-            _server = connector.Connect( IPAddress.Loopback, 50052 );
+            _server = FindServer();
             Assert.That( _server, Is.Not.Null );
         }
 
+        protected virtual ServerData FindServer()
+        {
+            var testLogging = new TestLoggingFactory();
+            var connector = new ServerConnector( new DiscoveryExecutionManager(), testLogging );
+
+            return connector.Connect( IPAddress.Loopback, 50052 );
+        }
+
         [TearDown]
-        public void StopTestServer()
+        public virtual void StopTestServer()
         {
             if( _serverProcess != null && !_serverProcess.HasExited )
             {
@@ -923,14 +925,14 @@ namespace Tecan.Sila2.IntegrationTests
             Assert.Throws<DefinedErrorException>( () => Lock( "bullshit" ) );
         }
 
-        private string Login()
+        protected string Login()
         {
             var authenticationClient = new AuthenticationServiceClient(_server.Channel, new DiscoveryExecutionManager() );
             var token = authenticationClient.Login( "admin", "admin", _server.Config.Uuid.ToString(), new List<string>() );
             return token.AccessToken;
         }
 
-        private string Lock( string token )
+        protected string Lock( string token )
         {
             var lockingClient = new LockControllerClient(_server.Channel, new TestAuthLockingExecutionManager(null, token, _server.Channel) );
             var lockIdentifier = Guid.NewGuid().ToString();
