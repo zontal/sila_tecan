@@ -105,40 +105,48 @@ namespace Tecan.Sila2.Binary
         /// <returns>An awaitable task that returns the storage identifier</returns>
         public async Task<string> Upload(Stream file)
         {
-            var chunkCount = (uint) ((file.Length + ChunkSize - 1) / ChunkSize);
-            var options = CreateCallOptions( true );
-            var identifier = await CreateBinaryAsync(new CreateBinaryRequestDto()
+            CreateBinaryResponseDto identifier = null;
+            try
             {
-                BinarySize = (ulong) file.Length,
-                ChunkCount = chunkCount,
-                CommandIdentifier = _commandParameterIdentifier
-            }, options);
-            var uploadChannel = UploadChunk(new CallOptions());
-            var bytes = new byte[ChunkSize];
-            for (uint i = 0; i < chunkCount; i++)
-            {
-                var bytesRead = await file.ReadAsync(bytes, 0, ChunkSize);
-                byte[] bytesToSend;
-                if (bytesRead == ChunkSize)
+                var chunkCount = (uint)((file.Length + ChunkSize - 1) / ChunkSize);
+                var options = CreateCallOptions( true );
+                identifier = await CreateBinaryAsync( new CreateBinaryRequestDto()
                 {
-                    bytesToSend = bytes;
-                }
-                else
+                    BinarySize = (ulong)file.Length,
+                    ChunkCount = chunkCount,
+                    CommandIdentifier = _commandParameterIdentifier
+                }, options );
+                var uploadChannel = UploadChunk( new CallOptions() );
+                var bytes = new byte[ChunkSize];
+                for(uint i = 0; i < chunkCount; i++)
                 {
-                    bytesToSend = new byte[bytesRead];
-                    Array.Copy(bytes, bytesToSend, bytesRead);
-                }
+                    var bytesRead = await file.ReadAsync( bytes, 0, ChunkSize );
+                    byte[] bytesToSend;
+                    if(bytesRead == ChunkSize)
+                    {
+                        bytesToSend = bytes;
+                    }
+                    else
+                    {
+                        bytesToSend = new byte[bytesRead];
+                        Array.Copy( bytes, bytesToSend, bytesRead );
+                    }
 
-                await uploadChannel.RequestStream.WriteAsync(new UploadChunkRequestDto()
-                {
-                    BinaryTransferUUID = identifier.BinaryTransferUUID,
-                    ChunkIndex = i,
-                    Payload = bytesToSend
-                });
+                    await uploadChannel.RequestStream.WriteAsync( new UploadChunkRequestDto()
+                    {
+                        BinaryTransferUUID = identifier.BinaryTransferUUID,
+                        ChunkIndex = i,
+                        Payload = bytesToSend
+                    } );
+                }
+                await uploadChannel.RequestStream.CompleteAsync();
+
+                return identifier.BinaryTransferUUID;
             }
-            await uploadChannel.RequestStream.CompleteAsync();
-
-            return identifier.BinaryTransferUUID;
+            catch (RpcException rpcException)
+            {
+                throw ClientErrorHandling.ConvertBinaryException( rpcException, identifier?.BinaryTransferUUID );
+            }
         }
 
         private CallOptions CreateCallOptions(bool useExecutionManager)
@@ -175,28 +183,35 @@ namespace Tecan.Sila2.Binary
         /// <param name="binaryIdentifier">The binary storage identifier</param>
         /// <param name="file">The stream in which to download the remote file</param>
         /// <returns>An awaitable task that completes when the download completes.</returns>
-        public async Task Download(string binaryIdentifier, Stream file)
+        public async Task Download( string binaryIdentifier, Stream file )
         {
-            var data = await GetBinaryInfoAsync(new GetBinaryInfoRequestDto()
+            try
             {
-                BinaryTransferUUID = binaryIdentifier
-            }, CreateCallOptions(false));
-            var getChunk = GetChunk(CreateCallOptions(false));
-            var chunkCount = (uint) (data.BinarySize + ChunkSize - 1) / ChunkSize;
-            for (ulong i = 0; i < chunkCount; i++)
-            {
-                await getChunk.RequestStream.WriteAsync(new GetChunkRequestDto()
+                var data = await GetBinaryInfoAsync( new GetBinaryInfoRequestDto()
                 {
-                    BinaryTransferUUID = binaryIdentifier,
-                    Length = ChunkSize,
-                    Offset = i * ChunkSize
-                });
-                await getChunk.ResponseStream.MoveNext( default );
-                var chunk = getChunk.ResponseStream.Current;
-                await file.WriteAsync(chunk.Payload, 0, chunk.Payload.Length);
-            }
+                    BinaryTransferUUID = binaryIdentifier
+                }, CreateCallOptions( false ) );
+                var getChunk = GetChunk( CreateCallOptions( false ) );
+                var chunkCount = (uint)(data.BinarySize + ChunkSize - 1) / ChunkSize;
+                for(ulong i = 0; i < chunkCount; i++)
+                {
+                    await getChunk.RequestStream.WriteAsync( new GetChunkRequestDto()
+                    {
+                        BinaryTransferUUID = binaryIdentifier,
+                        Length = ChunkSize,
+                        Offset = i * ChunkSize
+                    } );
+                    await getChunk.ResponseStream.MoveNext( default );
+                    var chunk = getChunk.ResponseStream.Current;
+                    await file.WriteAsync( chunk.Payload, 0, chunk.Payload.Length );
+                }
 
-            await getChunk.RequestStream.CompleteAsync();
+                await getChunk.RequestStream.CompleteAsync();
+            }
+            catch(RpcException rpcException)
+            {
+                throw ClientErrorHandling.ConvertBinaryException( rpcException, binaryIdentifier );
+            }
         }
 
         /// <summary>

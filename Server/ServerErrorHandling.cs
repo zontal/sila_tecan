@@ -1,5 +1,6 @@
 ﻿using System;
 using Grpc.Core;
+using Tecan.Sila2.Binary;
 
 namespace Tecan.Sila2.Server
 {
@@ -13,6 +14,12 @@ namespace Tecan.Sila2.Server
         private static string ToBase64String(SiLAErrorDto error)
         {
             var bytes = ProtobufMarshaller<SiLAErrorDto>.Default.Serializer(error);
+            return Convert.ToBase64String( bytes );
+        }
+
+        private static string ToBase64String( BinaryTransferError error )
+        {
+            var bytes = ProtobufMarshaller<BinaryTransferError>.Default.Serializer( error );
             return Convert.ToBase64String( bytes );
         }
 
@@ -65,6 +72,16 @@ namespace Tecan.Sila2.Server
                     Message = $"{exception.GetType().Name}: {exception.Message}"
                 }
             })));
+        }
+
+        /// <summary>
+        /// Create an exception to represent a binary transfer error
+        /// </summary>
+        /// <param name="binaryTransferError">The binary transfer error</param>
+        /// <returns>The exception to raise</returns>
+        public static Exception CreateBinaryError( BinaryTransferError binaryTransferError )
+        {
+            return new RpcException( new Status( StatusCode.Aborted, ToBase64String( binaryTransferError ) ) );
         }
 
         /// <summary>

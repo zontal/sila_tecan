@@ -20,6 +20,17 @@ namespace Tecan.Sila2.Binary
         }
 
         /// <summary>
+        /// Initializes a new binary transfer exception
+        /// </summary>
+        /// <param name="message">The error message</param>
+        /// <param name="binaryStorageId">The binary storage id</param>
+        /// <param name="innerException">The inner exception</param>
+        public BinaryTransferException( string message, string binaryStorageId, Exception innerException ) : base( message, innerException )
+        {
+            Data.Add( nameof( BinaryStorageId ), binaryStorageId );
+        }
+
+        /// <summary>
         /// Gets the binary storage id connected with this error
         /// </summary>
         public string BinaryStorageId => (string)Data[nameof( BinaryStorageId )];

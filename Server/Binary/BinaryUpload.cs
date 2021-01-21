@@ -71,35 +71,46 @@ namespace Tecan.Sila2.Server.Binary
             _cleanupTimer.Change( interval, interval );
         }
 
-        private Task<CreateBinaryResponseDto> CreateBinary(CreateBinaryRequestDto request, ServerCallContext context)
+        private Task<CreateBinaryResponseDto> CreateBinary( CreateBinaryRequestDto request, ServerCallContext context )
         {
-            var commandIdentifier = GetCommandIdentifier( request.CommandIdentifier );
-            var internalRequest = new InternalCreateBinaryRequest(commandIdentifier, request);
-            return _server.InvokeCommand( CreateBinaryCore, internalRequest, new MetadataRepository(context) );
-        }
-
-        private CreateBinaryResponseDto CreateBinaryCore( InternalCreateBinaryRequest request)
-        {
-            string identifier = null;
             try
             {
-                identifier = _fileManagement.CreateNew( (long)request.ActualRequest.BinarySize );
-                var stream = _fileManagement.OpenWrite( identifier );
-                var expiration = DateTimeOffset.Now.AddMinutes( 5 );
-                _openStreams.TryAdd( identifier, new FileUploadData( stream, request.ActualRequest.ChunkCount )
-                {
-                    ExpirationTime = expiration
-                } );
-                return new CreateBinaryResponseDto()
-                {
-                    BinaryTransferUUID = identifier,
-                    LifetimeOfBinary = new TimestampDto( expiration )
-                };
+                var commandIdentifier = GetCommandIdentifier( request.CommandIdentifier );
+                var internalRequest = new InternalCreateBinaryRequest( commandIdentifier, request );
+                return _server.InvokeCommand( CreateBinaryCore, internalRequest, new MetadataRepository( context ) );
             }
-            catch (IOException io)
+            catch(InvalidBinaryTransferIdException transferException)
             {
-                throw new BinaryUploadFailedException( io.Message, identifier );
+                return Task.FromException<CreateBinaryResponseDto>( ServerErrorHandling.CreateBinaryError( new BinaryTransferError
+                {
+                    Type = BinaryTransferError.ErrorType.InvalidBinaryTransferUuid,
+                    Message = transferException.Message
+                } ) );
             }
+            catch(Exception exception)
+            {
+                return Task.FromException<CreateBinaryResponseDto>( ServerErrorHandling.CreateBinaryError( new BinaryTransferError
+                {
+                    Type = BinaryTransferError.ErrorType.BinaryUploadFailed,
+                    Message = exception.Message
+                } ) );
+            }
+        }
+
+        private CreateBinaryResponseDto CreateBinaryCore( InternalCreateBinaryRequest request )
+        {
+            string identifier = _fileManagement.CreateNew( (long)request.ActualRequest.BinarySize );
+            var stream = _fileManagement.OpenWrite( identifier );
+            var expiration = DateTimeOffset.Now.AddMinutes( 5 );
+            _openStreams.TryAdd( identifier, new FileUploadData( stream, request.ActualRequest.ChunkCount )
+            {
+                ExpirationTime = expiration
+            } );
+            return new CreateBinaryResponseDto()
+            {
+                BinaryTransferUUID = identifier,
+                LifetimeOfBinary = new TimestampDto( expiration )
+            };
         }
 
         private string GetCommandIdentifier( string commandIdentifier )
@@ -117,17 +128,61 @@ namespace Tecan.Sila2.Server.Binary
             return commandIdentifier.Substring( 0, parameterSeparator );
         }
 
-        private Task<EmptyRequest> DeleteBinary(DeleteBinaryRequestDto request, ServerCallContext context)
+        private Task<EmptyRequest> DeleteBinary( DeleteBinaryRequestDto request, ServerCallContext context )
         {
-            _fileManagement.Delete(request.BinaryTransferUUID, true);
-            return Task.FromResult(EmptyRequest.Instance);
+            try
+            {
+                DeleteBinaryCore( request );
+                return Task.FromResult( EmptyRequest.Instance );
+            }
+            catch(InvalidBinaryTransferIdException transferException)
+            {
+                return Task.FromException<EmptyRequest>( ServerErrorHandling.CreateBinaryError( new BinaryTransferError
+                {
+                    Type = BinaryTransferError.ErrorType.InvalidBinaryTransferUuid,
+                    Message = transferException.Message
+                } ) );
+            }
+            catch(Exception exception)
+            {
+                return Task.FromException<EmptyRequest>( ServerErrorHandling.CreateBinaryError( new BinaryTransferError
+                {
+                    Type = BinaryTransferError.ErrorType.BinaryUploadFailed,
+                    Message = exception.Message
+                } ) );
+            }
+        }
+
+        private void DeleteBinaryCore( DeleteBinaryRequestDto request )
+        {
+            _fileManagement.Delete( request.BinaryTransferUUID, true );
         }
 
         private async Task UploadChunk(IAsyncStreamReader<UploadChunkRequestDto> requestStream,IServerStreamWriter<UploadChunkResponseDto> responseStream, ServerCallContext context)
         {
             while (await requestStream.MoveNext())
             {
-                await responseStream.WriteAsync(await UploadChunkCore(requestStream.Current, context));
+                try
+                {
+
+                    await responseStream.WriteAsync(await UploadChunkCore(requestStream.Current, context));
+                }
+                catch(InvalidBinaryTransferIdException transferException)
+                {
+                    throw ServerErrorHandling.CreateBinaryError( new BinaryTransferError
+                    {
+                        Type = BinaryTransferError.ErrorType.InvalidBinaryTransferUuid,
+                        Message = transferException.Message
+                    } );
+                }
+                catch(Exception exception)
+                {
+                    throw ServerErrorHandling.CreateBinaryError( new BinaryTransferError
+                    {
+                        Type = BinaryTransferError.ErrorType.BinaryUploadFailed,
+                        Message = exception.Message
+                    } );
+                }
             }
         }
 
@@ -255,37 +310,118 @@ namespace Tecan.Sila2.Server.Binary
         /// <inheritdoc />
         public async void CreateBinary( CreateBinaryUploadRequest createBinaryRequest, string requestUuid, IClientStreamWriter<SilaServerMessage> responseStream )
         {
-            var request = createBinaryRequest.CreateBinaryRequest;
-            var commandIdentifier = GetCommandIdentifier( request.CommandIdentifier );
-            var internalRequest = new InternalCreateBinaryRequest( commandIdentifier, request );
-            var response = await _server.InvokeCommand( CreateBinaryCore, internalRequest, createBinaryRequest );
-            await responseStream.WriteAsync( new SilaServerMessage
+            try
             {
-                RequestUuid = requestUuid,
-                CreateBinaryResponse = response
-            } );
+                var request = createBinaryRequest.CreateBinaryRequest;
+                var commandIdentifier = GetCommandIdentifier( request.CommandIdentifier );
+                var internalRequest = new InternalCreateBinaryRequest( commandIdentifier, request );
+                var response = await _server.InvokeCommand( CreateBinaryCore, internalRequest, createBinaryRequest );
+                await responseStream.WriteAsync( new SilaServerMessage
+                {
+                    RequestUuid = requestUuid,
+                    CreateBinaryResponse = response
+                } );
+            }
+            catch(InvalidBinaryTransferIdException transferException)
+            {
+                await responseStream.WriteAsync( new SilaServerMessage
+                {
+                    RequestUuid = requestUuid,
+                    BinaryError = new BinaryTransferError
+                    {
+                        Type = BinaryTransferError.ErrorType.InvalidBinaryTransferUuid,
+                        Message = transferException.Message
+                    }
+                } );
+            }
+            catch(Exception exception)
+            {
+                await responseStream.WriteAsync( new SilaServerMessage
+                {
+                    RequestUuid = requestUuid,
+                    BinaryError = new BinaryTransferError
+                    {
+                        Type = BinaryTransferError.ErrorType.BinaryUploadFailed,
+                        Message = exception.Message
+                    }
+                } );
+            }
         }
 
         /// <inheritdoc />
         public async void UploadChunk( UploadChunkRequestDto uploadChunkRequest, string requestUuid, IClientStreamWriter<SilaServerMessage> responseStream )
         {
-            var response = await UploadChunkCore( uploadChunkRequest, null );
-            await responseStream.WriteAsync( new SilaServerMessage
+            try
             {
-                RequestUuid = requestUuid,
-                UploadChunkResponse = response
-            } );
+                var response = await UploadChunkCore( uploadChunkRequest, null );
+                await responseStream.WriteAsync( new SilaServerMessage
+                {
+                    RequestUuid = requestUuid,
+                    UploadChunkResponse = response
+                } );
+            }
+            catch(InvalidBinaryTransferIdException transferException)
+            {
+                await responseStream.WriteAsync( new SilaServerMessage
+                {
+                    RequestUuid = requestUuid,
+                    BinaryError = new BinaryTransferError
+                    {
+                        Type = BinaryTransferError.ErrorType.InvalidBinaryTransferUuid,
+                        Message = transferException.Message
+                    }
+                } );
+            }
+            catch(Exception exception)
+            {
+                await responseStream.WriteAsync( new SilaServerMessage
+                {
+                    RequestUuid = requestUuid,
+                    BinaryError = new BinaryTransferError
+                    {
+                        Type = BinaryTransferError.ErrorType.BinaryUploadFailed,
+                        Message = exception.Message
+                    }
+                } );
+            }
         }
 
         /// <inheritdoc />
         public async void DeleteBinary( DeleteBinaryUploadRequest deleteBinaryRequest, string requestUuid, IClientStreamWriter<SilaServerMessage> responseStream )
         {
-            await DeleteBinary( deleteBinaryRequest.DeleteBinaryRequest, null );
-            await responseStream.WriteAsync( new SilaServerMessage
+            try
             {
-                RequestUuid = requestUuid,
-                DeleteBinaryResponse = new EmptyMessage()
-            } );
+                await DeleteBinary( deleteBinaryRequest.DeleteBinaryRequest, null );
+                await responseStream.WriteAsync( new SilaServerMessage
+                {
+                    RequestUuid = requestUuid,
+                    DeleteBinaryResponse = new EmptyMessage()
+                } );
+            }
+            catch(InvalidBinaryTransferIdException transferException)
+            {
+                await responseStream.WriteAsync( new SilaServerMessage
+                {
+                    RequestUuid = requestUuid,
+                    BinaryError = new BinaryTransferError
+                    {
+                        Type = BinaryTransferError.ErrorType.InvalidBinaryTransferUuid,
+                        Message = transferException.Message
+                    }
+                } );
+            }
+            catch(Exception exception)
+            {
+                await responseStream.WriteAsync( new SilaServerMessage
+                {
+                    RequestUuid = requestUuid,
+                    BinaryError = new BinaryTransferError
+                    {
+                        Type = BinaryTransferError.ErrorType.BinaryUploadFailed,
+                        Message = exception.Message
+                    }
+                } );
+            }
         }
     }
 

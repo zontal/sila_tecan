@@ -1,5 +1,6 @@
 ﻿using Grpc.Core;
 using System;
+using Tecan.Sila2.Binary;
 
 namespace Tecan.Sila2.Client
 {
@@ -78,6 +79,29 @@ namespace Tecan.Sila2.Client
             }
 
             return ex;
+        }
+
+        public static Exception ConvertBinaryException( RpcException rpcEx, string binaryIdentifier )
+        {
+            try
+            {
+                var binaryTransferError = ProtobufMarshaller<BinaryTransferError>.FromByteArray( Convert.FromBase64String( rpcEx.Status.Detail ) );
+                switch(binaryTransferError.Type)
+                {
+                    case BinaryTransferError.ErrorType.InvalidBinaryTransferUuid:
+                        return new InvalidBinaryTransferIdException( binaryTransferError.Message, binaryIdentifier );
+                    case BinaryTransferError.ErrorType.BinaryUploadFailed:
+                        return new BinaryUploadFailedException( binaryTransferError.Message, binaryIdentifier );
+                    case BinaryTransferError.ErrorType.BinaryDownloadFailed:
+                        return new BinaryDownloadFailedException( binaryTransferError.Message, binaryIdentifier );
+                    default:
+                        return new BinaryTransferException( binaryTransferError.Message, binaryIdentifier );
+                }
+            }
+            catch (Exception exception)
+            {
+                return new BinaryTransferException( exception.Message, binaryIdentifier, rpcEx );
+            }
         }
     }
 }

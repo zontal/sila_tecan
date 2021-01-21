@@ -54,16 +54,40 @@ namespace Tecan.Sila2.Server.Binary
 
         private Task<GetBinaryInfoResponseDto> GetBinaryInfo(GetBinaryInfoRequestDto request, ServerCallContext context)
         {
-            (Stream stream, DateTimeOffset expiration) fileData;
-            if (!_openStreams.TryGetValue(request.BinaryTransferUUID, out fileData) || fileData.stream == null)
+            try
             {
-                fileData = OpenFile(request.BinaryTransferUUID, fileData.expiration);
+                return Task.FromResult( GetBinaryInfoCore( request ) );
             }
-            return Task.FromResult(new GetBinaryInfoResponseDto()
+            catch (InvalidBinaryTransferIdException transferException)
+            {
+                return Task.FromException<GetBinaryInfoResponseDto>( ServerErrorHandling.CreateBinaryError( new BinaryTransferError
+                {
+                    Type = BinaryTransferError.ErrorType.InvalidBinaryTransferUuid,
+                    Message = transferException.Message
+                } ) );
+            }
+            catch (Exception exception)
+            {
+                return Task.FromException<GetBinaryInfoResponseDto>( ServerErrorHandling.CreateBinaryError( new BinaryTransferError
+                {
+                    Type = BinaryTransferError.ErrorType.BinaryDownloadFailed,
+                    Message = exception.Message
+                } ) );
+            }
+        }
+
+        private GetBinaryInfoResponseDto GetBinaryInfoCore( GetBinaryInfoRequestDto request )
+        {
+            (Stream stream, DateTimeOffset expiration) fileData;
+            if(!_openStreams.TryGetValue( request.BinaryTransferUUID, out fileData ) || fileData.stream == null)
+            {
+                fileData = OpenFile( request.BinaryTransferUUID, fileData.expiration );
+            }
+            return new GetBinaryInfoResponseDto()
             {
                 BinarySize = (ulong)fileData.stream.Length,
-                LifetimeOfBinary = new TimestampDto(fileData.expiration)
-            });
+                LifetimeOfBinary = new TimestampDto( fileData.expiration )
+            };
         }
 
         private (Stream stream, DateTimeOffset expiration) OpenFile(string binaryIdentifier, DateTimeOffset expiration)
@@ -80,7 +104,7 @@ namespace Tecan.Sila2.Server.Binary
             }
             else
             {
-                throw new InvalidOperationException("The specified file does not exist.");
+                throw new InvalidBinaryTransferIdException( "The specified file does not exist", binaryIdentifier );
             }
         }
 
@@ -88,32 +112,51 @@ namespace Tecan.Sila2.Server.Binary
         {
             while (await requestStream.MoveNext(context.CancellationToken))
             {
-                await responseStream.WriteAsync(await GetChunkCore(requestStream.Current, context));
+                try
+                {
+                    await responseStream.WriteAsync(await GetChunkCore(requestStream.Current, context));
+                }
+                catch(InvalidBinaryTransferIdException transferException)
+                {
+                    throw ServerErrorHandling.CreateBinaryError( new BinaryTransferError
+                    {
+                        Type = BinaryTransferError.ErrorType.InvalidBinaryTransferUuid,
+                        Message = transferException.Message
+                    } );
+                }
+                catch(Exception exception)
+                {
+                    throw ServerErrorHandling.CreateBinaryError( new BinaryTransferError
+                    {
+                        Type = BinaryTransferError.ErrorType.BinaryDownloadFailed,
+                        Message = exception.Message
+                    } );
+                }
             }
         }
 
-        private async Task<GetChunkResponseDto> GetChunkCore(GetChunkRequestDto request, ServerCallContext context)
+        private async Task<GetChunkResponseDto> GetChunkCore( GetChunkRequestDto request, ServerCallContext context )
         {
-            if (!_openStreams.TryGetValue(request.BinaryTransferUUID, out var fileData) || fileData.stream == null)
+            if(!_openStreams.TryGetValue( request.BinaryTransferUUID, out var fileData ) || fileData.stream == null)
             {
-                fileData = OpenFile(request.BinaryTransferUUID, fileData.expiration);
+                fileData = OpenFile( request.BinaryTransferUUID, fileData.expiration );
             }
             fileData.stream.Position = (long)request.Offset;
-            var newExpiration = DateTimeOffset.Now.AddMinutes(5);
-            _openStreams.TryUpdate(request.BinaryTransferUUID, (fileData.stream, newExpiration), fileData);
+            var newExpiration = DateTimeOffset.Now.AddMinutes( 5 );
+            _openStreams.TryUpdate( request.BinaryTransferUUID, (fileData.stream, newExpiration), fileData );
             var bytes = new byte[request.Length];
-            var bytesRead = await fileData.stream.ReadAsync(bytes, 0, (int)request.Length);
+            var bytesRead = await fileData.stream.ReadAsync( bytes, 0, (int)request.Length );
             var bytesToSend = bytes;
-            if (bytesRead != request.Length)
+            if(bytesRead != request.Length)
             {
                 bytesToSend = new byte[bytesRead];
-                Array.Copy(bytes, bytesToSend, bytesRead);
+                Array.Copy( bytes, bytesToSend, bytesRead );
             }
             return new GetChunkResponseDto()
             {
                 Payload = bytesToSend,
                 BinaryTransferUUID = request.BinaryTransferUUID,
-                LifetimeOfBinary = new TimestampDto(newExpiration),
+                LifetimeOfBinary = new TimestampDto( newExpiration ),
             };
         }
 
@@ -133,23 +176,78 @@ namespace Tecan.Sila2.Server.Binary
         /// <inheritdoc />
         public async void GetBinaryInfo( GetBinaryInfoRequestDto getBinaryInfoRequest, string requestUuid, IClientStreamWriter<SilaServerMessage> responseStream )
         {
-            var response = await GetBinaryInfo( getBinaryInfoRequest, null );
-            await responseStream.WriteAsync( new SilaServerMessage
+            try
             {
-                RequestUuid = requestUuid,
-                GetBinaryResponse = response
-            } );
+                var response = GetBinaryInfoCore( getBinaryInfoRequest );
+                await responseStream.WriteAsync( new SilaServerMessage
+                {
+                    RequestUuid = requestUuid,
+                    GetBinaryResponse = response
+                } );
+            }
+            catch(InvalidBinaryTransferIdException transferException)
+            {
+                await responseStream.WriteAsync( new SilaServerMessage
+                {
+                    RequestUuid = requestUuid,
+                    BinaryError = new BinaryTransferError
+                    {
+                        Type = BinaryTransferError.ErrorType.InvalidBinaryTransferUuid,
+                        Message = transferException.Message
+                    }
+                } );
+            }
+            catch(Exception exception)
+            {
+                await responseStream.WriteAsync( new SilaServerMessage
+                {
+                    RequestUuid = requestUuid,
+                    BinaryError = new BinaryTransferError
+                    {
+                        Type = BinaryTransferError.ErrorType.BinaryDownloadFailed,
+                        Message = exception.Message
+                    }
+                } );
+            }
         }
 
         /// <inheritdoc />
         public async void GetChunk( GetChunkRequestDto getChunkRequest, string requestUuid, IClientStreamWriter<SilaServerMessage> responseStream )
         {
-            var response = await GetChunkCore( getChunkRequest, null );
-            await responseStream.WriteAsync( new SilaServerMessage
+            try
             {
-                RequestUuid = requestUuid,
-                GetChunkResponse = response
-            } );
+
+                var response = await GetChunkCore( getChunkRequest, null );
+                await responseStream.WriteAsync( new SilaServerMessage
+                {
+                    RequestUuid = requestUuid,
+                    GetChunkResponse = response
+                } );
+            }
+            catch(InvalidBinaryTransferIdException transferException)
+            {
+                await responseStream.WriteAsync( new SilaServerMessage
+                {
+                    RequestUuid = requestUuid,
+                    BinaryError = new BinaryTransferError
+                    {
+                        Type = BinaryTransferError.ErrorType.InvalidBinaryTransferUuid,
+                        Message = transferException.Message
+                    }
+                } );
+            }
+            catch(Exception exception)
+            {
+                await responseStream.WriteAsync( new SilaServerMessage
+                {
+                    RequestUuid = requestUuid,
+                    BinaryError = new BinaryTransferError
+                    {
+                        Type = BinaryTransferError.ErrorType.BinaryDownloadFailed,
+                        Message = exception.Message
+                    }
+                } );
+            }
         }
     }
 
