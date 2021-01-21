@@ -25,6 +25,7 @@ namespace Tecan.Sila2.Generator.Generators
         private const string ExecutionManagerFieldName = "_executionManager";
         private const string ChannelFieldName = "_channel";
         private const string ServiceNameFieldName = "_serviceName";
+        private const string CancellationTokenSourceFieldName = "_cancellationTokenSource";
 
         private readonly ICodeNameProvider _nameProvider;
         private readonly IEnumerable<IGeneratorHook> _hooks;
@@ -201,14 +202,33 @@ namespace Tecan.Sila2.Generator.Generators
 
             if (anyDynamic)
             {
-                _loggingChannel.Log("Client contains dynamic properties. Implementing INotifyPropertyChanged.".ToString);
+                _loggingChannel.Log("Client contains dynamic properties. Implementing INotifyPropertyChanged and IDisposable.".ToString);
                 client.BaseTypes.Add(typeof(INotifyPropertyChanged));
+                client.BaseTypes.Add( typeof( IDisposable ) );
                 client.Members.Add(new CodeMemberEvent()
                 {
                     Name = nameof(INotifyPropertyChanged.PropertyChanged),
                     Attributes = MemberAttributes.Public,
                     Type = new CodeTypeReference(typeof(PropertyChangedEventHandler))
                 });
+                client.Members.Add( new CodeMemberField
+                {
+                    Name = CancellationTokenSourceFieldName,
+                    Attributes = MemberAttributes.Private,
+                    Type = new CodeTypeReference( typeof( CancellationTokenSource ) ),
+                    InitExpression = new CodeObjectCreateExpression( typeof( CancellationTokenSource ) )
+                } );
+                var ctsRef = new CodeFieldReferenceExpression( null, CancellationTokenSourceFieldName );
+                client.Members.Add( (new CodeMemberMethod
+                {
+                    Name = nameof( IDisposable.Dispose ),
+                    Attributes = MemberAttributes.Public | MemberAttributes.Final,
+                    Statements =
+                    {
+                        new CodeMethodInvokeExpression(ctsRef, nameof(CancellationTokenSource.Cancel)),
+                        new CodeMethodInvokeExpression(ctsRef, nameof(CancellationTokenSource.Dispose))
+                    }
+                }).WriteDocumentation( "Disposes the current client and cancels all subscriptions" ) );
             }
 
             if (anyLazy) client.Members.Add(initLazyRequests);
@@ -764,7 +784,8 @@ namespace Tecan.Sila2.Generator.Generators
                 new CodePrimitiveExpression( featureProperty.Identifier ),
                 new CodePrimitiveExpression( feature.GetFullyQualifiedIdentifier(featureProperty) ),
                 new CodeMethodReferenceExpression(null, receiveValueMethod.Name),
-                new CodeMethodInvokeExpression(new CodeFieldReferenceExpression(null, ExecutionManagerFieldName), nameof(IClientExecutionManager.CreateCallOptions), new CodePrimitiveExpression(feature.GetFullyQualifiedIdentifier(featureProperty))));
+                new CodeMethodInvokeExpression(new CodeFieldReferenceExpression(null, ExecutionManagerFieldName), nameof(IClientExecutionManager.CreateCallOptions), new CodePrimitiveExpression(feature.GetFullyQualifiedIdentifier(featureProperty))),
+                new CodePropertyReferenceExpression(new CodeFieldReferenceExpression(null, CancellationTokenSourceFieldName), nameof(CancellationTokenSource.Token)));
             var ifUpdateTaskNull = new CodeConditionStatement(
                 new CodeBinaryOperatorExpression(updateTask, CodeBinaryOperatorType.IdentityEquality,
                     new CodePrimitiveExpression()),
