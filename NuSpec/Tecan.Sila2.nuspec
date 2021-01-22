@@ -13,8 +13,8 @@
         <projectUrl>https://gitlab.com/SiLA2/vendors/sila_tecan</projectUrl>
         <repository type="git" url="https://gitlab.com/SiLA2/vendors/sila_tecan.git" />
         <dependencies>
-            <dependency id="Tecan.Sila2.Contracts" version="[3.0,4.0)" />
-            <dependency id="Tecan.Sila2.Annotations" version="[3.0.1,4.0)" />
+            <dependency id="Tecan.Sila2.Contracts" version="[3.1,4.0)" />
+            <dependency id="Tecan.Sila2.Annotations" version="[3.1.1,4.0)" />
             <dependency id="protobuf-net" version="2.4" />
             <dependency id="System.ComponentModel.Composition" version="4.5" />
             <dependency id="Tecan.MAP.Contracts.Services.Logging" version="[2.1,6.0)" />
