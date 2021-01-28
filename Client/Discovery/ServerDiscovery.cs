@@ -72,26 +72,28 @@ namespace Tecan.Sila2.Discovery
             lock(_connectedServers)
             {
                 NotifyKnownServers( serverFoundCallback );
-
-                using(var mdns = new MulticastService( _networking.CreateFilter( networkInterfaceFilter ) ))
+            }
+            using(var mdns = new MulticastService( _networking.CreateFilter( networkInterfaceFilter ) ))
+            {
+                var handler = new EventHandler<MessageEventArgs>( ( s, e ) =>
                 {
-                    var handler = new EventHandler<MessageEventArgs>( ( s, e ) =>
-                    {
-                        // The first Answer will be a PTRRecord, in that case request an SRV if it is not already contained in the answer
-                        RequestSrvForPtrRecord( e.Message, mdns );
+                    // The first Answer will be a PTRRecord, in that case request an SRV if it is not already contained in the answer
+                    RequestSrvForPtrRecord( e.Message, mdns );
 
-                        // The second Answer will be a SRVRecord (also contain A and AAAA records or as separate answers)
-                        var servers = e.Message.Answers.OfType<SRVRecord>().Where( p => p.Name.ToString().Contains( DiscoveryConstants.ServiceName ) );
-                        foreach(var server in servers)
+                    // The second Answer will be a SRVRecord (also contain A and AAAA records or as separate answers)
+                    var servers = e.Message.Answers.OfType<SRVRecord>().Where( p => p.Name.ToString().Contains( DiscoveryConstants.ServiceName ) );
+                    foreach(var server in servers)
+                    {
+                        var aRecord = e.Message.AdditionalRecords.OfType<ARecord>().FirstOrDefault() ?? e.Message.Answers.OfType<ARecord>().FirstOrDefault();
+                        lock(_connectedServers)
                         {
-                            var aRecord = e.Message.AdditionalRecords.OfType<ARecord>().FirstOrDefault() ?? e.Message.Answers.OfType<ARecord>().FirstOrDefault();
-                            if(aRecord != null)
+                            if(aRecord != null && !_connectedServers.ContainsKey( server.Name.ToString() ))
                             {
                                 try
                                 {
                                     var channel = _serverConnector.Connect( aRecord.Address, server.Port );
-                                    serverFoundCallback( channel );
                                     _connectedServers[server.Name.ToString()] = channel;
+                                    serverFoundCallback( channel );
                                 }
                                 catch(Exception exception)
                                 {
@@ -99,16 +101,16 @@ namespace Tecan.Sila2.Discovery
                                 }
                             }
                         }
-                    } );
+                    }
+                } );
 
-                    mdns.AnswerReceived += handler;
+                mdns.AnswerReceived += handler;
 
-                    mdns.Start();
-                    ResendQueryTillTimeoutOrCancel( timeout, mdns, cancellationToken );
+                mdns.Start();
+                ResendQueryTillTimeoutOrCancel( timeout, mdns, cancellationToken );
 
-                    mdns.Stop();
-                    mdns.AnswerReceived -= handler;
-                }
+                mdns.Stop();
+                mdns.AnswerReceived -= handler;
             }
         }
 

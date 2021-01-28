@@ -22,7 +22,7 @@ namespace Client
             var discovery = new ServerDiscovery(logging, connector);
             var executionManagerFactory = new ExecutionManagerFactory(new IClientRequestInterceptor[] { new LockingInterceptor() } );
             // we simply collect all servers that respond within 10 seconds. Other options exist if you know which server you are looking for.
-            var servers = discovery.GetServers(TimeSpan.FromSeconds(10));
+            var servers = discovery.GetServers(TimeSpan.FromSeconds(10), nic => true );
             foreach (var s in servers)
             {
                 Console.WriteLine($"Found server {s.Config.Name} ({s.Info.Type})");
