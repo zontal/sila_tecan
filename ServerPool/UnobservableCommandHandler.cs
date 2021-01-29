@@ -23,7 +23,7 @@ namespace Tecan.Sila2.ServerPooling
                     _responseTask.SetResult( true );
                     return true;
                 case SilaServerMessageType.CommandError:
-                    _responseTask.SetException( new TemporaryException( serverMessage.CommandError.SilaError ) );
+                    _responseTask.SetException( new TemporaryException( serverMessage.CommandError ) );
                     return true;
                 default:
                     return false;
@@ -57,7 +57,7 @@ namespace Tecan.Sila2.ServerPooling
                     _responseTask.SetResult( _responseSerializer( serverMessage.CommandResponse.Result ) );
                     return true;
                 case SilaServerMessageType.CommandError:
-                    _responseTask.SetException( new TemporaryException(serverMessage.CommandError.SilaError) );
+                    _responseTask.SetException( new TemporaryException(serverMessage.CommandError) );
                     return true;
                 default:
                     return false;

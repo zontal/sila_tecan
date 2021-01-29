@@ -60,7 +60,7 @@ namespace Tecan.Sila2.ServerPooling
                     _completionSource.TrySetResult( true );
                     return true;
                 case SilaServerMessageType.CommandError:
-                    _completionSource.TrySetException( ErrorHandling.ConvertException( serverMessage.CommandError?.SilaError, _errorConverter ) );
+                    _completionSource.TrySetException( ErrorHandling.ConvertException( serverMessage.CommandError, _errorConverter ) );
                     return true;
                 default:
                     return false;
@@ -195,7 +195,7 @@ namespace Tecan.Sila2.ServerPooling
                     _completionSource.SetResult( result );
                     return true;
                 case SilaServerMessageType.CommandError:
-                    _completionSource.SetException( ErrorHandling.ConvertException(serverMessage.CommandError.SilaError, _errorConverter) );
+                    _completionSource.SetException( ErrorHandling.ConvertException(serverMessage.CommandError, _errorConverter) );
                     return true;
                 default:
                     return false;

@@ -36,7 +36,7 @@ namespace Tecan.Sila2.ServerPooling
                     _responseAction( _responseSerializer( serverMessage.ObservablePropertyValue.Result ) );
                     return true;
                 case SilaServerMessageType.PropertyError:
-                    _responseTask.SetException( new TemporaryException( serverMessage.PropertyError.SilaError ) );
+                    _responseTask.SetException( new TemporaryException( serverMessage.PropertyError ) );
                     return true;
                 default:
                     return false;

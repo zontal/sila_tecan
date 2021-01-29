@@ -57,10 +57,6 @@ namespace Tecan.Sila2.ServerPooling
                         _loggingChannel.LogException( $"Error processing message of type {message.Type}".ToString, exception );
                     }
                 }
-                else if (message.Type != SilaServerMessageType.ConnectMessage)
-                {
-                    _loggingChannel.Log( $"Request identifier {message.RequestUuid} is unknown to this client.".ToString, Severity.Warning );
-                }
             }
         }
 

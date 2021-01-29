@@ -23,173 +23,163 @@ namespace Tecan.Sila2.ServerPooling
         public string RequestUuid { get; set; } = "";
 
         /// <summary>
-        /// Gets or sets the message details of a connect message
-        /// </summary>
-        [ProtoMember( 2 )]
-        public ConnectMessage ConnectMessage
-        {
-            get => __pbn__message.Is( 2 ) ? ((ConnectMessage)__pbn__message.Object) : default;
-            set => __pbn__message = new DiscriminatedUnionObject( 2, value );
-        }
-
-        /// <summary>
         /// Gets or sets the message details for a command response
         /// </summary>
-        [ProtoMember( 3 )]
+        [ProtoMember( 2 )]
         public CommandResponse CommandResponse
         {
-            get => __pbn__message.Is( 3 ) ? ((CommandResponse)__pbn__message.Object) : default;
-            set => __pbn__message = new DiscriminatedUnionObject( 3, value );
+            get => __pbn__message.Is( 2 ) ? ((CommandResponse)__pbn__message.Object) : default;
+            set => __pbn__message = new DiscriminatedUnionObject( 2, value );
         }
 
         /// <summary>
         /// Gets or sets the observable command confirmation details
         /// </summary>
-        [ProtoMember( 4 )]
+        [ProtoMember( 3 )]
         public ObservableCommandConfirmation ObservableCommandConfirmation
         {
-            get => __pbn__message.Is( 4 ) ? ((ObservableCommandConfirmation)__pbn__message.Object) : default;
-            set => __pbn__message = new DiscriminatedUnionObject( 4, value );
+            get => __pbn__message.Is( 3 ) ? ((ObservableCommandConfirmation)__pbn__message.Object) : default;
+            set => __pbn__message = new DiscriminatedUnionObject( 3, value );
         }
 
         /// <summary>
         /// Gets or sets the observable command execution info details
         /// </summary>
-        [ProtoMember( 5 )]
+        [ProtoMember( 4 )]
         public ObservableCommandExecutionInfo ObservableCommandExecutionInfo
         {
-            get => __pbn__message.Is( 5 ) ? ((ObservableCommandExecutionInfo)__pbn__message.Object) : default;
-            set => __pbn__message = new DiscriminatedUnionObject( 5, value );
+            get => __pbn__message.Is( 4 ) ? ((ObservableCommandExecutionInfo)__pbn__message.Object) : default;
+            set => __pbn__message = new DiscriminatedUnionObject( 4, value );
         }
 
         /// <summary>
         /// Gets or sets the message details for an observable command intermediate response
         /// </summary>
-        [ProtoMember( 6 )]
+        [ProtoMember( 5 )]
         public ObservableCommandResponse ObservableCommandIntermediateResponse
+        {
+            get => __pbn__message.Is( 5 ) ? ((ObservableCommandResponse)__pbn__message.Object) : default;
+            set => __pbn__message = new DiscriminatedUnionObject( 5, value );
+        }
+
+        /// <summary>
+        /// Gets or sets the observable command response details
+        /// </summary>
+        [ProtoMember( 6 )]
+        public ObservableCommandResponse ObservableCommandResponse
         {
             get => __pbn__message.Is( 6 ) ? ((ObservableCommandResponse)__pbn__message.Object) : default;
             set => __pbn__message = new DiscriminatedUnionObject( 6, value );
         }
 
         /// <summary>
-        /// Gets or sets the observable command response details
-        /// </summary>
-        [ProtoMember( 7 )]
-        public ObservableCommandResponse ObservableCommandResponse
-        {
-            get => __pbn__message.Is( 7 ) ? ((ObservableCommandResponse)__pbn__message.Object) : default;
-            set => __pbn__message = new DiscriminatedUnionObject( 7, value );
-        }
-
-        /// <summary>
         /// Gets or sets the metadata response details
         /// </summary>
-        [ProtoMember( 8 )]
+        [ProtoMember( 7 )]
         public GetFCPAffectedByMetadataResponse MetadataResponse
         {
-            get => __pbn__message.Is( 8 ) ? ((GetFCPAffectedByMetadataResponse)__pbn__message.Object) : default;
-            set => __pbn__message = new DiscriminatedUnionObject( 8, value );
+            get => __pbn__message.Is( 7 ) ? ((GetFCPAffectedByMetadataResponse)__pbn__message.Object) : default;
+            set => __pbn__message = new DiscriminatedUnionObject( 7, value );
         }
 
         /// <summary>
         /// Gets or sets the property value details
         /// </summary>
-        [ProtoMember( 9 )]
+        [ProtoMember( 8 )]
         public PropertyValue PropertyValue
+        {
+            get => __pbn__message.Is( 8 ) ? ((PropertyValue)__pbn__message.Object) : default;
+            set => __pbn__message = new DiscriminatedUnionObject( 8, value );
+        }
+
+        /// <summary>
+        /// Gets or sets the observable property value details
+        /// </summary>
+        [ProtoMember( 9 )]
+        public PropertyValue ObservablePropertyValue
         {
             get => __pbn__message.Is( 9 ) ? ((PropertyValue)__pbn__message.Object) : default;
             set => __pbn__message = new DiscriminatedUnionObject( 9, value );
         }
 
         /// <summary>
-        /// Gets or sets the observable property value details
-        /// </summary>
-        [ProtoMember( 10 )]
-        public PropertyValue ObservablePropertyValue
-        {
-            get => __pbn__message.Is( 10 ) ? ((PropertyValue)__pbn__message.Object) : default;
-            set => __pbn__message = new DiscriminatedUnionObject( 10, value );
-        }
-
-        /// <summary>
         /// Gets or sets the command error details
         /// </summary>
-        [ProtoMember( 11 )]
-        public CommandError CommandError
+        [ProtoMember( 10 )]
+        public SiLAErrorDto CommandError
         {
-            get => __pbn__message.Is( 11 ) ? ((CommandError)__pbn__message.Object) : default;
-            set => __pbn__message = new DiscriminatedUnionObject( 11, value );
+            get => __pbn__message.Is( 10 ) ? ((SiLAErrorDto)__pbn__message.Object) : default;
+            set => __pbn__message = new DiscriminatedUnionObject( 10, value );
         }
 
         /// <summary>
         /// Gets or sets the property error details
         /// </summary>
-        [ProtoMember( 12 )]
-        public PropertyError PropertyError
+        [ProtoMember( 11 )]
+        public SiLAErrorDto PropertyError
         {
-            get => __pbn__message.Is( 12 ) ? ((PropertyError)__pbn__message.Object) : default;
-            set => __pbn__message = new DiscriminatedUnionObject( 12, value );
+            get => __pbn__message.Is( 11 ) ? ((SiLAErrorDto)__pbn__message.Object) : default;
+            set => __pbn__message = new DiscriminatedUnionObject( 11, value );
         }
 
         /// <summary>
         /// Gets or sets the create binary response details
         /// </summary>
-        [ProtoMember( 13 )]
+        [ProtoMember( 12 )]
         public CreateBinaryResponseDto CreateBinaryResponse
         {
-            get => __pbn__message.Is( 13 ) ? ((CreateBinaryResponseDto)__pbn__message.Object) : default;
-            set => __pbn__message = new DiscriminatedUnionObject( 13, value );
+            get => __pbn__message.Is( 12 ) ? ((CreateBinaryResponseDto)__pbn__message.Object) : default;
+            set => __pbn__message = new DiscriminatedUnionObject( 12, value );
         }
 
         /// <summary>
         /// Gets or sets the upload chunk message details
         /// </summary>
-        [ProtoMember( 14 )]
+        [ProtoMember( 13 )]
         public UploadChunkResponseDto UploadChunkResponse
         {
-            get => __pbn__message.Is( 14 ) ? ((UploadChunkResponseDto)__pbn__message.Object) : default;
-            set => __pbn__message = new DiscriminatedUnionObject( 14, value );
+            get => __pbn__message.Is( 13 ) ? ((UploadChunkResponseDto)__pbn__message.Object) : default;
+            set => __pbn__message = new DiscriminatedUnionObject( 13, value );
         }
 
         /// <summary>
         /// Gets or sets the delete binary response details
         /// </summary>
-        [ProtoMember( 15 )]
+        [ProtoMember( 14 )]
         public EmptyMessage DeleteBinaryResponse
         {
-            get => __pbn__message.Is( 15 ) ? ((EmptyMessage)__pbn__message.Object) : default;
-            set => __pbn__message = new DiscriminatedUnionObject( 15, value );
+            get => __pbn__message.Is( 14 ) ? ((EmptyMessage)__pbn__message.Object) : default;
+            set => __pbn__message = new DiscriminatedUnionObject( 14, value );
         }
 
         /// <summary>
         /// Gets or sets the get binary response details
         /// </summary>
-        [ProtoMember( 16 )]
+        [ProtoMember( 15 )]
         public GetBinaryInfoResponseDto GetBinaryResponse
         {
-            get => __pbn__message.Is( 16 ) ? ((GetBinaryInfoResponseDto)__pbn__message.Object) : default;
-            set => __pbn__message = new DiscriminatedUnionObject( 16, value );
+            get => __pbn__message.Is( 15 ) ? ((GetBinaryInfoResponseDto)__pbn__message.Object) : default;
+            set => __pbn__message = new DiscriminatedUnionObject( 15, value );
         }
 
         /// <summary>
         /// Gets the get chunk response details
         /// </summary>
-        [ProtoMember( 17 )]
+        [ProtoMember( 16 )]
         public GetChunkResponseDto GetChunkResponse
         {
-            get => __pbn__message.Is( 17 ) ? ((GetChunkResponseDto)__pbn__message.Object) : default;
-            set => __pbn__message = new DiscriminatedUnionObject( 17, value );
+            get => __pbn__message.Is( 16 ) ? ((GetChunkResponseDto)__pbn__message.Object) : default;
+            set => __pbn__message = new DiscriminatedUnionObject( 16, value );
         }
 
         /// <summary>
         /// Gets the binary error information
         /// </summary>
-        [ProtoMember( 18 )]
+        [ProtoMember( 17 )]
         public BinaryTransferError BinaryError
         {
-            get => __pbn__message.Is( 18 ) ? ((BinaryTransferError)__pbn__message.Object) : default;
-            set => __pbn__message = new DiscriminatedUnionObject( 18, value );
+            get => __pbn__message.Is( 17 ) ? ((BinaryTransferError)__pbn__message.Object) : default;
+            set => __pbn__message = new DiscriminatedUnionObject( 17, value );
         }
 
         /// <summary>
@@ -209,73 +199,69 @@ namespace Tecan.Sila2.ServerPooling
         /// </summary>
         None = 0,
         /// <summary>
-        /// Server just connected
-        /// </summary>
-        ConnectMessage = 2,
-        /// <summary>
         /// Server reports command execution successful
         /// </summary>
-        CommandResponse = 3,
+        CommandResponse = 2,
         /// <summary>
         /// Server confirms execution of observable command
         /// </summary>
-        ObservableCommandConfirmation = 4,
+        ObservableCommandConfirmation = 3,
         /// <summary>
         /// Server reports state of observable command execution
         /// </summary>
-        ObservableCommandExecutionInfo = 5,
+        ObservableCommandExecutionInfo = 4,
         /// <summary>
         /// Server reports intermediate response of observable command
         /// </summary>
-        ObservableCommandIntermediateResponse = 6,
+        ObservableCommandIntermediateResponse = 5,
         /// <summary>
         /// Server reports result of observable command
         /// </summary>
-        ObservableCommandResponse = 7,
+        ObservableCommandResponse = 6,
         /// <summary>
         /// Server reports metadata usage
         /// </summary>
-        MetadataResponse = 8,
+        MetadataResponse = 7,
         /// <summary>
         /// Server reports property value
         /// </summary>
-        PropertyValue = 9,
+        PropertyValue = 8,
         /// <summary>
         /// Server reports observable property value
         /// </summary>
-        ObservablePropertyValue = 10,
+        ObservablePropertyValue = 9,
         /// <summary>
         /// Server reports error of command
         /// </summary>
-        CommandError = 11,
+        CommandError = 10,
         /// <summary>
         /// Server reports error of property
         /// </summary>
-        PropertyError = 12,
+        PropertyError = 11,
         /// <summary>
         /// Server reports binary created
         /// </summary>
-        CreateBinaryResponse = 13,
+        CreateBinaryResponse = 12,
         /// <summary>
         /// Server reports chunk uploaded
         /// </summary>
-        UploadChunkResponse = 14,
+        UploadChunkResponse = 13,
         /// <summary>
         /// Server reports binary deleted
         /// </summary>
-        DeleteBinaryResponse = 15,
+        DeleteBinaryResponse = 14,
         /// <summary>
         /// Server reports binary details
         /// </summary>
-        GetBinaryResponse = 16,
+        GetBinaryResponse = 15,
         /// <summary>
         /// Server responds chunk of binary
         /// </summary>
-        GetChunkResponse = 17,
+        GetChunkResponse = 16,
         /// <summary>
         /// Messages that there was an error transferring binaries
         /// </summary>
-        BinaryError = 18
+        BinaryError = 17
     }
 
     /// <summary>
@@ -718,33 +704,6 @@ namespace Tecan.Sila2.ServerPooling
     }
 
     /// <summary>
-    /// Denotes an error of a command execution
-    /// </summary>
-    [ProtoContract()]
-    public partial class CommandError
-    {
-        /// <summary>
-        /// Gets or sets the actual error
-        /// </summary>
-        [ProtoMember( 1 )]
-        public SiLAErrorDto SilaError { get; set; }
-    }
-
-    /// <summary>
-    /// Denotes an error of a property
-    /// </summary>
-    [ProtoContract()]
-    public partial class PropertyError
-    {
-        /// <summary>
-        /// Gets or sets the actual error
-        /// </summary>
-        [ProtoMember( 1 )]
-        public SiLAErrorDto SilaError { get; set; }
-
-    }
-
-    /// <summary>
     /// Denotes the request for a list of affected metadata
     /// </summary>
     [ProtoContract()]
@@ -893,19 +852,6 @@ namespace Tecan.Sila2.ServerPooling
         /// </summary>
         [ProtoMember( 1, Name = @"result" )]
         public byte[] Result { get; set; }
-
-    }
-
-    /// <summary>
-    /// Denotes the server message to be sent when the connection is established
-    /// </summary>
-    [ProtoContract()]
-    public partial class ConnectMessage
-    {
-
-        [ProtoMember( 1 )]
-        [System.ComponentModel.DefaultValue( "" )]
-        public string ServerName { get; set; } = "";
 
     }
 }

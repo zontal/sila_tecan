@@ -148,10 +148,7 @@ namespace Tecan.Sila2.Server.ServiceDefinition
                 await responseWriter.WriteAsync( new SilaServerMessage
                 {
                     RequestUuid = message.RequestUuid,
-                    CommandError = new CommandError
-                    {
-                        SilaError = error
-                    }
+                    CommandError = error
                 } );
             }
         }
@@ -170,10 +167,7 @@ namespace Tecan.Sila2.Server.ServiceDefinition
                 await responseWriter.WriteAsync( new SilaServerMessage
                 {
                     RequestUuid = uuid,
-                    CommandError = new CommandError
-                    {
-                        SilaError = error
-                    }
+                    CommandError = error
                 } );
             }
             catch (Exception exception)
@@ -204,15 +198,12 @@ namespace Tecan.Sila2.Server.ServiceDefinition
                 _ = responseWriter.WriteAsync( new SilaServerMessage
                 {
                     RequestUuid = uuid,
-                    CommandError = new CommandError
+                    CommandError = new SiLAErrorDto
                     {
-                        SilaError = new SiLAErrorDto
+                        FrameworkError = new FrameworkErrorDto
                         {
-                            FrameworkError = new FrameworkErrorDto
-                            {
-                                Type = FrameworkErrorType.InvalidCommandExecutionUuid,
-                                Message = "The command does not support intermediate values"
-                            }
+                            Type = FrameworkErrorType.InvalidCommandExecutionUuid,
+                            Message = "The command does not support intermediate values"
                         }
                     }
                 } );
@@ -240,10 +231,7 @@ namespace Tecan.Sila2.Server.ServiceDefinition
                 await responseWriter.WriteAsync( new SilaServerMessage
                 {
                     RequestUuid = uuid,
-                    CommandError = new CommandError
-                    {
-                        SilaError = error
-                    }
+                    CommandError = error
                 } );
             }
         }
@@ -345,10 +333,7 @@ namespace Tecan.Sila2.Server.ServiceDefinition
                 await responseWriter.WriteAsync( new SilaServerMessage
                 {
                     RequestUuid = uuid,
-                    CommandError = new CommandError
-                    {
-                        SilaError = error
-                    }
+                    CommandError = error
                 } );
             }
         }

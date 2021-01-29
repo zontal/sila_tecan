@@ -113,10 +113,7 @@ namespace Tecan.Sila2.Server.ServiceDefinition
                 await responseWriter.WriteAsync( new SilaServerMessage
                 {
                     RequestUuid = message.RequestUuid,
-                    PropertyError = new PropertyError
-                    {
-                        SilaError = error
-                    }
+                    PropertyError = error
                 } );
             }
             finally

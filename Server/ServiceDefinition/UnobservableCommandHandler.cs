@@ -49,10 +49,7 @@ namespace Tecan.Sila2.Server.ServiceDefinition
                 await responseWriter.WriteAsync( new SilaServerMessage
                 {
                     RequestUuid = message.RequestUuid,
-                    CommandError = new CommandError
-                    {
-                        SilaError = error
-                    }
+                    CommandError = error
                 } );
             }
         }
