@@ -276,7 +276,7 @@ namespace Tecan.Sila2.DynamicClient
                     ProtoWriter.WriteString((string)value, writer);
                     break;
                 case BasicType.Integer:
-                    ProtoWriter.WriteFieldHeader(1, WireType.Fixed64, writer);
+                    ProtoWriter.WriteFieldHeader(1, WireType.Variant, writer);
                     ProtoWriter.WriteInt64((long)value, writer);
                     break;
                 case BasicType.Real:
