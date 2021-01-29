@@ -197,6 +197,7 @@ namespace Tecan.Sila2.IntegrationTests
 
             Assert.That( testClient.PassLong( 0 ), Is.EqualTo( 0L ) );
             Assert.That( testClient.PassLong( 42 ), Is.EqualTo( 42L ) );
+            Assert.That( testClient.PassLong( 42000 ), Is.EqualTo( 42000L ) );
 
             Unlock( lockId, token );
             Logout( token );
@@ -215,6 +216,7 @@ namespace Tecan.Sila2.IntegrationTests
 
             PassAndAssertEquals( commandClient, 0L );
             PassAndAssertEquals( commandClient, 42L );
+            PassAndAssertEquals( commandClient, 42000L );
 
             Unlock( lockId, token );
             Logout( token );
