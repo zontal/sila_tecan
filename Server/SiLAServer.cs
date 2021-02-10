@@ -282,8 +282,8 @@ namespace Tecan.Sila2.Server
                 for( int i = _commandExecutions.Count - 1; i >= 0; i-- )
                 {
                     var commandExecution = _commandExecutions[i];
-                    var responseTask = commandExecution.Command.Response;
-                    if( responseTask.IsCanceled || responseTask.IsCompleted || responseTask.IsFaulted )
+                    var responseTask = commandExecution.Command?.Response;
+                    if( responseTask != null && ( responseTask.IsCanceled || responseTask.IsCompleted || responseTask.IsFaulted ) )
                     {
                         if( !commandExecution.Expiration.HasValue )
                         {
