@@ -42,7 +42,7 @@ namespace Tecan.Sila2
         protected override void Cleanup( Exception exception )
         {
             base.Cleanup(exception);
-            _intermediatesChannel.Writer.Complete(exception);
+            _intermediatesChannel.Writer.TryComplete(exception);
         }
 
         /// <inheritdoc />
@@ -87,7 +87,7 @@ namespace Tecan.Sila2
         protected override void Cleanup( Exception exception )
         {
             base.Cleanup( exception );
-            _intermediatesChannel.Writer.Complete( exception );
+            _intermediatesChannel.Writer.TryComplete( exception );
         }
 
         /// <inheritdoc />

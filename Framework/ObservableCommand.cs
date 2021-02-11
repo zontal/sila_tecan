@@ -102,7 +102,7 @@ namespace Tecan.Sila2
         /// <param name="exception">An exception that caused the command to terminate or null, if the command completed successfully</param>
         protected virtual void Cleanup( Exception exception )
         {
-            _stateUpdateChannel.Writer.Complete( exception );
+            _stateUpdateChannel.Writer.TryComplete( exception );
             _cancellationTokenSource?.Dispose();
         }
 
@@ -223,7 +223,7 @@ namespace Tecan.Sila2
         /// <param name="exception">An exception that caused the command to terminate or null, if the command completed successfully</param>
         protected virtual void Cleanup( Exception exception )
         {
-            _stateUpdateChannel.Writer.Complete( exception );
+            _stateUpdateChannel.Writer.TryComplete( exception );
             _cancellationTokenSource?.Dispose();
         }
 

@@ -54,7 +54,7 @@ namespace Tecan.Sila2.ServerPooling
         protected override void Cleanup( Exception exception )
         {
             base.Cleanup( exception );
-            _intermediateValuesChannel.Writer.Complete( exception );
+            _intermediateValuesChannel.Writer.TryComplete( exception );
         }
     }
 
