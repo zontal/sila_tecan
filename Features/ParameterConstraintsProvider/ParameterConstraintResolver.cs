@@ -6,13 +6,13 @@ namespace Tecan.Sila2.ParameterConstraintsProvider
     /// Implements an abstract constraint resolver for a given type of constraint attribute
     /// </summary>
     /// <typeparam name="T">The type of constraint providing attribute</typeparam>
-    public abstract class ParameterConstraintResolver<T> : IParameterConstraintResolver where T : ConstraintProviderAttribute
+    public abstract class ParameterConstraintResolver<T> : IParameterConstraintResolver where T : Attribute
     {
         /// <inheritdoc cref="IParameterConstraintResolver"/>
         public Type ConstraintAttributeType => typeof(T);
 
         /// <inheritdoc cref="IParameterConstraintResolver"/>
-        public ConstrainedType ResolveConstraint( ConstraintProviderAttribute attribute )
+        public ConstrainedType ResolveConstraint( Attribute attribute )
         {
             if( attribute is T casted )
             {

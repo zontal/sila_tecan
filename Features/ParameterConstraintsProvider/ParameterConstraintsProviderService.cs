@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.Composition;
 using System.Linq;
 using System.Reflection;
@@ -10,47 +11,60 @@ namespace Tecan.Sila2.ParameterConstraintsProvider
 {
     [Export(typeof( IParameterConstraintsProvider ) )]
     [PartCreationPolicy(CreationPolicy.Shared)]
-    internal class ParameterConstraintsProviderService : IParameterConstraintsProvider
+    internal class ParameterConstraintsProviderService : IParameterConstraintsProvider, INotifyPropertyChanged
     {
 
         private readonly Lazy<ISiLAServer> _server;
-        private readonly Lazy<Dictionary<string, KeyValuePair<ConstraintProviderAttribute, IParameterConstraintResolver>>> _constraintsSource;
+        private readonly Lazy<Dictionary<string, ConstrainedType>> _constraintsSource;
         private readonly Dictionary<Type, IParameterConstraintResolver> _resolvers;
         private readonly ILoggingChannel _loggingChannel;
+
+        public event PropertyChangedEventHandler PropertyChanged;
 
         [ImportingConstructor]
         public ParameterConstraintsProviderService( Lazy<ISiLAServer> server, [ImportMany] IEnumerable<IParameterConstraintResolver> resolvers, ILoggingChannelFactory loggingChannelFactory )
         {
             _server = server;
-            _constraintsSource = new Lazy<Dictionary<string, KeyValuePair<ConstraintProviderAttribute, IParameterConstraintResolver>>>(InitializeConstraintsSource);
+            _constraintsSource = new Lazy<Dictionary<string, ConstrainedType>>(InitializeConstraintsSource);
             _resolvers = resolvers.ToDictionary( r => r.ConstraintAttributeType );
             _loggingChannel = loggingChannelFactory.CreateChannel( typeof(ParameterConstraintsProviderService) );
         }
 
-        private Dictionary<string, KeyValuePair<ConstraintProviderAttribute, IParameterConstraintResolver>> InitializeConstraintsSource()
+        private Dictionary<string, ConstrainedType> InitializeConstraintsSource()
         {
-            var source = new Dictionary<string, KeyValuePair<ConstraintProviderAttribute, IParameterConstraintResolver>>();
-            foreach( var featureProvider in _server.Value.Features )
+            var source = new Dictionary<string, ConstrainedType>();
+            foreach(var featureProvider in _server.Value.Features)
             {
                 var feature = featureProvider.FeatureDefinition;
-                foreach( var command in featureProvider.FeatureDefinition.Items.OfType<FeatureCommand>() )
+                foreach(var command in featureProvider.FeatureDefinition.Items.OfType<FeatureCommand>())
                 {
                     var method = featureProvider.GetCommand( feature.GetFullyQualifiedIdentifier( command ) );
 
-                    foreach( var parameterInfo in method.GetParameters() )
+                    foreach(var parameterInfo in method.GetParameters())
                     {
-                        if(parameterInfo.GetCustomAttributes( typeof( ConstraintProviderAttribute ), false ).FirstOrDefault() is ConstraintProviderAttribute attribute)
+                        foreach(var attribute in parameterInfo.GetCustomAttributes( false ))
                         {
-                            var parameterIdentifier = parameterInfo.GetCustomAttribute<SilaIdentifierAttribute>()?.Identifier ?? parameterInfo.Name;
-                            var fullyQualifiedIdentifier = feature.GetFullyQualifiedParameterIdentifier( command, parameterIdentifier );
+                            if(_resolvers.TryGetValue( attribute.GetType(), out var resolver ))
+                            {
+                                var parameterIdentifier = parameterInfo.GetCustomAttribute<SilaIdentifierAttribute>()?.Identifier ?? parameterInfo.Name;
+                                var fullyQualifiedIdentifier = feature.GetFullyQualifiedParameterIdentifier( command, parameterIdentifier );
 
-                            if( _resolvers.TryGetValue( attribute.GetType(), out var resolver ) )
-                            {
-                                source.Add( fullyQualifiedIdentifier, new KeyValuePair<ConstraintProviderAttribute, IParameterConstraintResolver>(attribute, resolver));
-                            }
-                            else
-                            {
-                                _loggingChannel.Log($"Found constraint with type {attribute.GetType().FullName} but no suitable resolver.".ToString, Severity.Warning);   
+                                try
+                                {
+                                    var constrained = resolver.ResolveConstraint( attribute as Attribute );
+                                    if(constrained != null)
+                                    {
+                                        source.Add( fullyQualifiedIdentifier, constrained );
+                                    }
+                                }
+                                catch(Exception e)
+                                {
+                                    _loggingChannel.LogException( "Failed to obtain runtime constraint.".ToString, e );
+                                }
+                                if(resolver is INotifyParameterConstraintResolver notifyResolver)
+                                {
+                                    notifyResolver.SubscribeTo( attribute as Attribute, constraint => UpdateConstraint( fullyQualifiedIdentifier, constraint ) );
+                                }
                             }
                         }
                     }
@@ -60,25 +74,25 @@ namespace Tecan.Sila2.ParameterConstraintsProvider
             return source;
         }
 
-        private string GetConstraintString( ConstraintProviderAttribute attribute, IParameterConstraintResolver resolver )
+        private void UpdateConstraint( string fullyQualifiedIdentifier, ConstrainedType constraint )
         {
-            try
+            if (constraint != null)
             {
-                var constraint = resolver.ResolveConstraint( attribute );
-                if( constraint != null )
-                {
-                    return DataTypeSerializer.SaveToString( new DataTypeType()
-                    {
-                        Item = constraint
-                    } );
-                }
+                _constraintsSource.Value[fullyQualifiedIdentifier] = constraint;
+                PropertyChanged?.Invoke( this, new PropertyChangedEventArgs( nameof( ParametersConstraints ) ) );
             }
-            catch( Exception e )
+            else if (_constraintsSource.Value.Remove(fullyQualifiedIdentifier))
             {
-                _loggingChannel.LogException( "Failed to obtain runtime constraint.".ToString, e );
+                PropertyChanged?.Invoke( this, new PropertyChangedEventArgs( nameof( ParametersConstraints ) ) );
             }
+        }
 
-            return null;
+        private string GetConstraintString( ConstrainedType constraint )
+        {
+            return DataTypeSerializer.SaveToString( new DataTypeType()
+            {
+                Item = constraint
+            } );
         }
 
         public ICollection<ParametersConstraint> ParametersConstraints
@@ -88,7 +102,7 @@ namespace Tecan.Sila2.ParameterConstraintsProvider
                 var constraints = new List<ParametersConstraint>();
                 foreach( var entry in _constraintsSource.Value )
                 {
-                    var constraint = GetConstraintString(entry.Value.Key, entry.Value.Value);
+                    var constraint = GetConstraintString(entry.Value);
                     if( constraint != null )
                     {
                         constraints.Add( new ParametersConstraint( entry.Key, constraint ) );

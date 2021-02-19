@@ -20,6 +20,19 @@ namespace Tecan.Sila2.ParameterConstraintsProvider
         /// </summary>
         /// <param name="attribute">The attribute instance</param>
         /// <returns>A runtime type constraint or null, if no constraint should be applied.</returns>
-        ConstrainedType ResolveConstraint( ConstraintProviderAttribute attribute );
+        ConstrainedType ResolveConstraint( Attribute attribute );
+    }
+
+    /// <summary>
+    /// Denotes a component that can resolve parameter constraints of a given type and notify changes
+    /// </summary>
+    public interface INotifyParameterConstraintResolver : IParameterConstraintResolver
+    {
+        /// <summary>
+        /// Subscribes to changes specified by the given attribute
+        /// </summary>
+        /// <param name="attribute">The attribute instance</param>
+        /// <param name="callback">A method that should be called when the constraints represented by this attribute change</param>
+        void SubscribeTo( Attribute attribute, Action<ConstrainedType> callback );
     }
 }

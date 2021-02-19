@@ -8,7 +8,7 @@ namespace Tecan.Sila2.ParameterConstraintsProvider
     /// Defines that the parameter must be constrained to a set whose values are dynamic and are retrieved by a given static method.
     /// </summary>
     [AttributeUsage(AttributeTargets.Parameter)]
-    public class SetProviderAttribute : ConstraintProviderAttribute
+    public class SetProviderAttribute : Attribute
     {
         /// <summary>
         /// Creates a new instance

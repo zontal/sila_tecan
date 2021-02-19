@@ -6,7 +6,7 @@ namespace Tecan.Sila2.ParameterConstraintsProvider
     /// Defines that a parameter is constrained to the file names that exist in a given folder
     /// </summary>
     [AttributeUsage(AttributeTargets.Parameter)]
-    public class FileConstraintAttribute : ConstraintProviderAttribute
+    public class FileConstraintAttribute : Attribute
     {
 
         /// <summary>
