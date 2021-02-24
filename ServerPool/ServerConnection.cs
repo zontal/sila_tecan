@@ -112,7 +112,7 @@ namespace Tecan.Sila2.ServerPooling
                      handler.Complete();
                  } );
             }
-            return SendAndGetResponse( new SilaClientMessage
+            var subscriptionTask = SendAndGetResponse( new SilaClientMessage
             {
                 RequestUuid = requestId,
                 PropertySubscription = SetMetadata( new PropertyRead
@@ -120,6 +120,8 @@ namespace Tecan.Sila2.ServerPooling
                     FullyQualifiedPropertyId = propertyIdentifier,
                 }, callInfo )
             }, handler );
+            handler.WaitForFirstResponse( cancellationToken );
+            return subscriptionTask;
         }
 
         /// <inheritdoc />

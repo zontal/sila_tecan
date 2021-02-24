@@ -55,7 +55,18 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             {
                 if((_currentTemperatureUpdateTask == null))
                 {
-                    _currentTemperatureUpdateTask = _channel.SubscribeProperty<CurrentTemperatureResponseDto>( _serviceName, "CurrentTemperature", "tecan.sila.generator/test/TemperatureController/v3/Property/CurrentTemperature", ReceiveNewCurrentTemperature, _executionManager.CreateCallOptions( "tecan.sila.generator/test/TemperatureController/v3/Property/CurrentTemperature" ), _cancellationTokenSource.Token );
+                    try
+                    {
+                        System.Threading.Monitor.Enter( _cancellationTokenSource );
+                        if((_currentTemperatureUpdateTask == null))
+                        {
+                            _currentTemperatureUpdateTask = _channel.SubscribeProperty<CurrentTemperatureResponseDto>( _serviceName, "CurrentTemperature", "tecan.sila.generator/test/TemperatureController/v3/Property/CurrentTemperature", ReceiveNewCurrentTemperature, _executionManager.CreateCallOptions( "tecan.sila.generator/test/TemperatureController/v3/Property/CurrentTemperature" ), _cancellationTokenSource.Token );
+                        }
+                    }
+                    finally
+                    {
+                        System.Threading.Monitor.Exit( _cancellationTokenSource );
+                    }
                 }
                 return _currentTemperature;
             }

@@ -777,7 +777,8 @@ namespace Tecan.Sila2.Generator.Generators
                 new CodeFieldReferenceExpression( null, ChannelFieldName ),
                 nameof( IClientChannel.SubscribeProperty ),
                 _nameProvider.GetPropertyResponseType( featureProperty, _translationProvider ) );
-            
+
+            var tokenSource = new CodeFieldReferenceExpression( null, CancellationTokenSourceFieldName );
             var subscription = new CodeMethodInvokeExpression(
                 subscriptionMethod,
                 new CodeFieldReferenceExpression(null, ServiceNameFieldName),
@@ -785,12 +786,25 @@ namespace Tecan.Sila2.Generator.Generators
                 new CodePrimitiveExpression( feature.GetFullyQualifiedIdentifier(featureProperty) ),
                 new CodeMethodReferenceExpression(null, receiveValueMethod.Name),
                 new CodeMethodInvokeExpression(new CodeFieldReferenceExpression(null, ExecutionManagerFieldName), nameof(IClientExecutionManager.CreateCallOptions), new CodePrimitiveExpression(feature.GetFullyQualifiedIdentifier(featureProperty))),
-                new CodePropertyReferenceExpression(new CodeFieldReferenceExpression(null, CancellationTokenSourceFieldName), nameof(CancellationTokenSource.Token)));
-            var ifUpdateTaskNull = new CodeConditionStatement(
-                new CodeBinaryOperatorExpression(updateTask, CodeBinaryOperatorType.IdentityEquality,
-                    new CodePrimitiveExpression()),
-                new CodeAssignStatement(updateTask, subscription));
-            property.GetStatements.Add(ifUpdateTaskNull);
+                new CodePropertyReferenceExpression( tokenSource, nameof(CancellationTokenSource.Token)));
+            var ifSubscriptionNull = new CodeBinaryOperatorExpression( updateTask, CodeBinaryOperatorType.IdentityEquality, new CodePrimitiveExpression() );
+            var ifUpdateTaskNull = new CodeConditionStatement( ifSubscriptionNull, new CodeAssignStatement( updateTask, subscription ) ); ;
+            var monitor = new CodeTypeReferenceExpression( typeof( Monitor ) );
+            var ifUpdateTaskNullLock = new CodeConditionStatement( ifSubscriptionNull,
+                new CodeTryCatchFinallyStatement
+                {
+                    TryStatements =
+                    {
+                        new CodeMethodInvokeExpression(monitor, nameof(Monitor.Enter), tokenSource),
+                        ifUpdateTaskNull
+                    },
+                    FinallyStatements =
+                    {
+                        new CodeMethodInvokeExpression(monitor, nameof(Monitor.Exit), tokenSource)
+                    }
+                } );
+            
+            property.GetStatements.Add(ifUpdateTaskNullLock);
             property.GetStatements.Add(new CodeMethodReturnStatement(fieldRef));
             client.Members.Add(receiveValueMethod);
         }

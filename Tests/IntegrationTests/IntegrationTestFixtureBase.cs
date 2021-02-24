@@ -850,7 +850,8 @@ namespace Tecan.Sila2.IntegrationTests
             var executionManager = new TestAuthLockingExecutionManager( lockId, token, _server.Channel );
             var testClient = new TestServerClient( _server.Channel, executionManager );
 
-            Assert.That(testClient.DummyValue, Is.EqualTo(0L));
+            testClient.SetDummy( -1 );
+            Assert.That(testClient.DummyValue, Is.EqualTo(-1L));
 
             var receivedValues = new List<long>();
             testClient.PropertyChanged += ( o, e ) =>
@@ -887,7 +888,9 @@ namespace Tecan.Sila2.IntegrationTests
             var propertyClient = new PropertyClient( feature.Items.OfType<FeatureProperty>().FirstOrDefault( p => p.Identifier == nameof(ITestServer.DummyValue) ),
                 featureContext );
 
-            Assert.That( propertyClient.RequestValue().Value, Is.EqualTo( 0L ) );
+            testClient.SetDummy( -1 );
+
+            Assert.That( propertyClient.RequestValue().Value, Is.EqualTo( -1L ) );
 
             var cts = new CancellationTokenSource();
             var receivedValues = new List<long>();
@@ -904,7 +907,7 @@ namespace Tecan.Sila2.IntegrationTests
 
             testClient.SetDummy( 99 );
 
-            Assert.That( receivedValues, Is.EquivalentTo( new long[] { 0, 8, 15, 42 } ) );
+            Assert.That( receivedValues, Is.EquivalentTo( new long[] { -1, 8, 15, 42 } ) );
 
             Unlock( lockId, token );
             Logout( token );

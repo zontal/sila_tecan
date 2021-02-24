@@ -60,16 +60,16 @@ namespace Tecan.Sila2.Discovery
         /// <inheritdoc />
         public Task SubscribeProperty<T>( string serviceName, string propertyName, string propertyIdentifier, Action<T> newValueReceived, IClientCallInfo callInfo, CancellationToken cancellationToken = default ) where T : class, ISilaTransferObject
         {
-            return SubscribeProperty( serviceName, propertyName, propertyIdentifier, newValueReceived, callInfo, ProtobufMarshaller<T>.Default, cancellationToken );
+            return SubscribeProperty( serviceName, propertyName, newValueReceived, callInfo, ProtobufMarshaller<T>.Default, cancellationToken );
         }
 
         /// <inheritdoc />
         public Task SubscribeProperty<T>( string serviceName, string propertyName, string propertyIdentifier, Action<T> newValueReceived, IClientCallInfo callInfo, ByteSerializer<T> serializer, CancellationToken cancellationToken = default ) where T : class, ISilaTransferObject
         {
-            return SubscribeProperty( serviceName, propertyName, propertyIdentifier, newValueReceived, callInfo, ToMarshaller( serializer ), cancellationToken );
+            return SubscribeProperty( serviceName, propertyName, newValueReceived, callInfo, ToMarshaller( serializer ), cancellationToken );
         }
 
-        private async Task SubscribeProperty<T>( string serviceName, string propertyName, string propertyIdentifier, Action<T> newValueReceived, IClientCallInfo callInfo, Marshaller<T> serializer,
+        private Task SubscribeProperty<T>( string serviceName, string propertyName, Action<T> newValueReceived, IClientCallInfo callInfo, Marshaller<T> serializer,
             CancellationToken cancellationToken ) where T : class, ISilaTransferObject
         {
             var subscribeMethod = new Method<EmptyRequest, T>( MethodType.ServerStreaming, serviceName, "Subscribe_" + propertyName, EmptyRequestMarshaller.Instance, serializer );
@@ -78,6 +78,21 @@ namespace Tecan.Sila2.Discovery
                 callInfo.ToCallOptions().WithCancellationToken( cancellationToken ), EmptyRequest.Instance );
             var responseStream = asyncCall.ResponseStream;
 
+            var firstResponse = responseStream.MoveNext( cancellationToken );
+
+            if ( firstResponse.ConfigureAwait(false).GetAwaiter().GetResult() )
+            {
+                newValueReceived( responseStream.Current );
+                return ContinueSubscription( newValueReceived, responseStream, cancellationToken );
+            }
+            else
+            {
+                return Task.CompletedTask;
+            }
+        }
+
+        private static async Task ContinueSubscription<T>( Action<T> newValueReceived, IAsyncStreamReader<T> responseStream, CancellationToken cancellationToken ) where T : class, ISilaTransferObject
+        {
             try
             {
                 while(await responseStream.MoveNext( cancellationToken ))
@@ -85,9 +100,9 @@ namespace Tecan.Sila2.Discovery
                     newValueReceived?.Invoke( responseStream.Current );
                 }
             }
-            catch( RpcException e )
+            catch(RpcException e)
             {
-                if( e.StatusCode != StatusCode.Cancelled || !cancellationToken.IsCancellationRequested )
+                if(e.StatusCode != StatusCode.Cancelled || !cancellationToken.IsCancellationRequested)
                 {
                     throw;
                 }
