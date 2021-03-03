@@ -76,7 +76,7 @@ namespace Tecan.Sila2.Server.ConnectionConfiguration
             }
         }
 
-        public void DisconnectSiLAClient( [MaximalLength( 255 )] string clientName, [MaximalLength( 255 ), SilaDisplayName( "SiLA Client Host" )] string siLAClientHost, [MaximalInclusive( 65536 ), MinimalExclusive( 0 ), SilaDisplayName( "SiLA Client Port" )] long siLAClientPort, [SilaDisplayName( "Remove connection" )] bool remove )
+        public void DisconnectSiLAClient( [MaximalLength( 255 )] string clientName, [SilaDisplayName( "Remove connection" )] bool remove )
         {
             if(_connections.TryGetValue( clientName, out var channel ))
             {

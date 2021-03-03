@@ -103,82 +103,82 @@ namespace Tecan.Sila2.ServerPooling
         }
 
         /// <summary>
-        /// Gets or sets the command error details
-        /// </summary>
-        [ProtoMember( 10 )]
-        public SiLAErrorDto CommandError
-        {
-            get => __pbn__message.Is( 10 ) ? ((SiLAErrorDto)__pbn__message.Object) : default;
-            set => __pbn__message = new DiscriminatedUnionObject( 10, value );
-        }
-
-        /// <summary>
-        /// Gets or sets the property error details
-        /// </summary>
-        [ProtoMember( 11 )]
-        public SiLAErrorDto PropertyError
-        {
-            get => __pbn__message.Is( 11 ) ? ((SiLAErrorDto)__pbn__message.Object) : default;
-            set => __pbn__message = new DiscriminatedUnionObject( 11, value );
-        }
-
-        /// <summary>
         /// Gets or sets the create binary response details
         /// </summary>
-        [ProtoMember( 12 )]
+        [ProtoMember( 10 )]
         public CreateBinaryResponseDto CreateBinaryResponse
         {
-            get => __pbn__message.Is( 12 ) ? ((CreateBinaryResponseDto)__pbn__message.Object) : default;
-            set => __pbn__message = new DiscriminatedUnionObject( 12, value );
+            get => __pbn__message.Is( 10 ) ? ((CreateBinaryResponseDto)__pbn__message.Object) : default;
+            set => __pbn__message = new DiscriminatedUnionObject( 10, value );
         }
 
         /// <summary>
         /// Gets or sets the upload chunk message details
         /// </summary>
-        [ProtoMember( 13 )]
+        [ProtoMember( 11 )]
         public UploadChunkResponseDto UploadChunkResponse
         {
-            get => __pbn__message.Is( 13 ) ? ((UploadChunkResponseDto)__pbn__message.Object) : default;
-            set => __pbn__message = new DiscriminatedUnionObject( 13, value );
+            get => __pbn__message.Is( 11 ) ? ((UploadChunkResponseDto)__pbn__message.Object) : default;
+            set => __pbn__message = new DiscriminatedUnionObject( 11, value );
         }
 
         /// <summary>
         /// Gets or sets the delete binary response details
         /// </summary>
-        [ProtoMember( 14 )]
+        [ProtoMember( 12 )]
         public EmptyMessage DeleteBinaryResponse
         {
-            get => __pbn__message.Is( 14 ) ? ((EmptyMessage)__pbn__message.Object) : default;
-            set => __pbn__message = new DiscriminatedUnionObject( 14, value );
+            get => __pbn__message.Is( 12 ) ? ((EmptyMessage)__pbn__message.Object) : default;
+            set => __pbn__message = new DiscriminatedUnionObject( 12, value );
         }
 
         /// <summary>
         /// Gets or sets the get binary response details
         /// </summary>
-        [ProtoMember( 15 )]
+        [ProtoMember( 13 )]
         public GetBinaryInfoResponseDto GetBinaryResponse
         {
-            get => __pbn__message.Is( 15 ) ? ((GetBinaryInfoResponseDto)__pbn__message.Object) : default;
-            set => __pbn__message = new DiscriminatedUnionObject( 15, value );
+            get => __pbn__message.Is( 13 ) ? ((GetBinaryInfoResponseDto)__pbn__message.Object) : default;
+            set => __pbn__message = new DiscriminatedUnionObject( 13, value );
         }
 
         /// <summary>
         /// Gets the get chunk response details
         /// </summary>
-        [ProtoMember( 16 )]
+        [ProtoMember( 14 )]
         public GetChunkResponseDto GetChunkResponse
         {
-            get => __pbn__message.Is( 16 ) ? ((GetChunkResponseDto)__pbn__message.Object) : default;
-            set => __pbn__message = new DiscriminatedUnionObject( 16, value );
+            get => __pbn__message.Is( 14 ) ? ((GetChunkResponseDto)__pbn__message.Object) : default;
+            set => __pbn__message = new DiscriminatedUnionObject( 14, value );
         }
 
         /// <summary>
         /// Gets the binary error information
         /// </summary>
-        [ProtoMember( 17 )]
+        [ProtoMember( 15 )]
         public BinaryTransferError BinaryError
         {
-            get => __pbn__message.Is( 17 ) ? ((BinaryTransferError)__pbn__message.Object) : default;
+            get => __pbn__message.Is( 15 ) ? ((BinaryTransferError)__pbn__message.Object) : default;
+            set => __pbn__message = new DiscriminatedUnionObject( 15, value );
+        }
+
+        /// <summary>
+        /// Gets or sets the command error details
+        /// </summary>
+        [ProtoMember( 16 )]
+        public SiLAErrorDto CommandError
+        {
+            get => __pbn__message.Is( 16 ) ? ((SiLAErrorDto)__pbn__message.Object) : default;
+            set => __pbn__message = new DiscriminatedUnionObject( 16, value );
+        }
+
+        /// <summary>
+        /// Gets or sets the property error details
+        /// </summary>
+        [ProtoMember( 17 )]
+        public SiLAErrorDto PropertyError
+        {
+            get => __pbn__message.Is( 17 ) ? ((SiLAErrorDto)__pbn__message.Object) : default;
             set => __pbn__message = new DiscriminatedUnionObject( 17, value );
         }
 
@@ -231,37 +231,37 @@ namespace Tecan.Sila2.ServerPooling
         /// </summary>
         ObservablePropertyValue = 9,
         /// <summary>
-        /// Server reports error of command
-        /// </summary>
-        CommandError = 10,
-        /// <summary>
-        /// Server reports error of property
-        /// </summary>
-        PropertyError = 11,
-        /// <summary>
         /// Server reports binary created
         /// </summary>
-        CreateBinaryResponse = 12,
+        CreateBinaryResponse = 10,
         /// <summary>
         /// Server reports chunk uploaded
         /// </summary>
-        UploadChunkResponse = 13,
+        UploadChunkResponse = 11,
         /// <summary>
         /// Server reports binary deleted
         /// </summary>
-        DeleteBinaryResponse = 14,
+        DeleteBinaryResponse = 12,
         /// <summary>
         /// Server reports binary details
         /// </summary>
-        GetBinaryResponse = 15,
+        GetBinaryResponse = 13,
         /// <summary>
         /// Server responds chunk of binary
         /// </summary>
-        GetChunkResponse = 16,
+        GetChunkResponse = 14,
         /// <summary>
         /// Messages that there was an error transferring binaries
         /// </summary>
-        BinaryError = 17
+        BinaryError = 15,
+        /// <summary>
+        /// Server reports error of command
+        /// </summary>
+        CommandError = 16,
+        /// <summary>
+        /// Server reports error of property
+        /// </summary>
+        PropertyError = 17
     }
 
     /// <summary>

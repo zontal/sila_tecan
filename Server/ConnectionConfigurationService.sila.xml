@@ -7,6 +7,8 @@
     <DisplayName>Connection Configuration Service</DisplayName>
     <Description>
         This Feature MUST be implemented by each SiLA Server that offers a Server-initiated connection.
+
+        The server-initiated connection mode is persistent, it keeps the state after a restart. Connect to a SiLA Client passing the required information and optionally keep the connection details persistent, so the SiLA Server will reconnect after a restart.
     </Description>
     <Command>
         <Identifier>EnableServerInitiatedConnectionMode</Identifier>
@@ -28,7 +30,7 @@
         <Parameter>
             <Identifier>ClientName</Identifier>
             <DisplayName>Client Name</DisplayName>
-            <Description>Human readable name of the SiLA Client.</Description>
+            <Description>Human readable name of the SiLA Client. Has to be unique.</Description>
             <DataType>
                 <Constrained>
                     <DataType>
@@ -96,37 +98,6 @@
                     </DataType>
                     <Constraints>
                         <MaximalLength>255</MaximalLength>
-                    </Constraints>
-                </Constrained>
-            </DataType>
-        </Parameter>
-        <Parameter>
-            <Identifier>SiLAClientHost</Identifier>
-            <DisplayName>SiLA Client Host</DisplayName>
-            <Description>Host Address of the new SiLA Client.</Description>
-            <DataType>
-                <Constrained>
-                    <DataType>
-                        <Basic>String</Basic>
-                    </DataType>
-                    <Constraints>
-                        <MaximalLength>255</MaximalLength>
-                    </Constraints>
-                </Constrained>
-            </DataType>
-        </Parameter>
-        <Parameter>
-            <Identifier>SiLAClientPort</Identifier>
-            <DisplayName>SiLA Client Port</DisplayName>
-            <Description>Port of the new SiLA Client.</Description>
-            <DataType>
-                <Constrained>
-                    <DataType>
-                        <Basic>Integer</Basic>
-                    </DataType>
-                    <Constraints>
-                        <MinimalExclusive>0</MinimalExclusive>
-                        <MaximalInclusive>65536</MaximalInclusive>
                     </Constraints>
                 </Constrained>
             </DataType>

@@ -137,7 +137,7 @@ namespace Tecan.Sila2.Server.ConnectionConfiguration
         {
             try
             {
-                _implementation.DisconnectSiLAClient(request.ClientName.Extract(_server), request.SiLAClientHost.Extract(_server), request.SiLAClientPort.Extract(_server), request.Remove.Extract(_server));
+                _implementation.DisconnectSiLAClient(request.ClientName.Extract(_server), request.Remove.Extract(_server));
                 return EmptyRequest.Instance;
             } catch (System.ArgumentException ex)
             {
@@ -145,16 +145,6 @@ namespace Tecan.Sila2.Server.ConnectionConfiguration
                 {
                     throw _server.ErrorHandling.CreateValidationError("org.silastandard/core/ConnectionConfigurationService/v1/Command/DisconnectSiLACli" +
                             "ent/Parameter/ClientName", ex.Message);
-                }
-                if ((ex.ParamName == "siLAClientHost"))
-                {
-                    throw _server.ErrorHandling.CreateValidationError("org.silastandard/core/ConnectionConfigurationService/v1/Command/DisconnectSiLACli" +
-                            "ent/Parameter/SiLAClientHost", ex.Message);
-                }
-                if ((ex.ParamName == "siLAClientPort"))
-                {
-                    throw _server.ErrorHandling.CreateValidationError("org.silastandard/core/ConnectionConfigurationService/v1/Command/DisconnectSiLACli" +
-                            "ent/Parameter/SiLAClientPort", ex.Message);
                 }
                 if ((ex.ParamName == "remove"))
                 {

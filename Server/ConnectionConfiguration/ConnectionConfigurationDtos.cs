@@ -246,10 +246,6 @@ namespace Tecan.Sila2.Server.ConnectionConfiguration
         
         private Tecan.Sila2.StringDto _clientName;
         
-        private Tecan.Sila2.StringDto _siLAClientHost;
-        
-        private Tecan.Sila2.IntegerDto _siLAClientPort;
-        
         private Tecan.Sila2.BooleanDto _remove;
         
         ///  <summary>
@@ -264,14 +260,10 @@ namespace Tecan.Sila2.Server.ConnectionConfiguration
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
         ///  <param name="clientName">Human readable name of the SiLA Client.</param>
-        ///  <param name="siLAClientHost">Host Address of the new SiLA Client.</param>
-        ///  <param name="siLAClientPort">Port of the new SiLA Client.</param>
         ///  <param name="remove">Whether or not to remove the connection details.</param>
-        public DisconnectSiLAClientRequestDto(string clientName, string siLAClientHost, long siLAClientPort, bool remove, Tecan.Sila2.IBinaryStore store)
+        public DisconnectSiLAClientRequestDto(string clientName, bool remove, Tecan.Sila2.IBinaryStore store)
         {
             ClientName = new Tecan.Sila2.StringDto(clientName, store);
-            SiLAClientHost = new Tecan.Sila2.StringDto(siLAClientHost, store);
-            SiLAClientPort = new Tecan.Sila2.IntegerDto(siLAClientPort, store);
             Remove = new Tecan.Sila2.BooleanDto(remove, store);
         }
         
@@ -292,41 +284,9 @@ namespace Tecan.Sila2.Server.ConnectionConfiguration
         }
         
         ///  <summary>
-        /// Host Address of the new SiLA Client.
-        /// </summary>
-        [ProtoBuf.ProtoMemberAttribute(2)]
-        public Tecan.Sila2.StringDto SiLAClientHost
-        {
-            get
-            {
-                return _siLAClientHost;
-            }
-            set
-            {
-                _siLAClientHost = value;
-            }
-        }
-        
-        ///  <summary>
-        /// Port of the new SiLA Client.
-        /// </summary>
-        [ProtoBuf.ProtoMemberAttribute(3)]
-        public Tecan.Sila2.IntegerDto SiLAClientPort
-        {
-            get
-            {
-                return _siLAClientPort;
-            }
-            set
-            {
-                _siLAClientPort = value;
-            }
-        }
-        
-        ///  <summary>
         /// Whether or not to remove the connection details.
         /// </summary>
-        [ProtoBuf.ProtoMemberAttribute(4)]
+        [ProtoBuf.ProtoMemberAttribute(2)]
         public Tecan.Sila2.BooleanDto Remove
         {
             get
@@ -362,10 +322,6 @@ namespace Tecan.Sila2.Server.ConnectionConfiguration
             if ((ClientName.Value.Length <= 255))
             {
                 errors = (errors + string.Format("ClientName \'{0}\' is longer than allowed length 255.", ClientName.Value));
-            }
-            if ((SiLAClientHost.Value.Length <= 255))
-            {
-                errors = (errors + string.Format("SiLAClientHost \'{0}\' is longer than allowed length 255.", SiLAClientHost.Value));
             }
             return errors;
         }

@@ -184,12 +184,10 @@ namespace Tecan.Sila2.ConnectionConfiguration.ConnectionConfigurationService
         /// Disconnect a configured SiLA Client.
         /// </summary>
         /// <param name="clientName">Human readable name of the SiLA Client.</param>
-        /// <param name="siLAClientHost">Host Address of the new SiLA Client.</param>
-        /// <param name="siLAClientPort">Port of the new SiLA Client.</param>
         /// <param name="remove">Whether or not to remove the connection details.</param>
-        public virtual void DisconnectSiLAClient(string clientName, string siLAClientHost, long siLAClientPort, bool remove)
+        public virtual void DisconnectSiLAClient(string clientName, bool remove)
         {
-            DisconnectSiLAClientRequestDto request = new DisconnectSiLAClientRequestDto(clientName, siLAClientHost, siLAClientPort, remove, null);
+            DisconnectSiLAClientRequestDto request = new DisconnectSiLAClientRequestDto(clientName, remove, null);
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/core/ConnectionConfigurationService/v1/Command/DisconnectSiLACli" +
                     "ent");
             try

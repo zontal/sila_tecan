@@ -63,11 +63,9 @@ namespace Tecan.Sila2.Server.ConnectionConfiguration
         /// Disconnect a configured SiLA Client.
         /// </summary>
         /// <param name="clientName">Human readable name of the SiLA Client.</param>
-        /// <param name="siLAClientHost">Host Address of the new SiLA Client.</param>
-        /// <param name="siLAClientPort">Port of the new SiLA Client.</param>
         /// <param name="remove">Whether or not to remove the connection details.</param>
         [Tecan.Sila2.SilaDisplayNameAttribute("Disconnect SiLA Client")]
-        void DisconnectSiLAClient([Tecan.Sila2.MaximalLengthAttribute(255)] string clientName, [Tecan.Sila2.MaximalLengthAttribute(255)] [Tecan.Sila2.SilaDisplayNameAttribute("SiLA Client Host")] string siLAClientHost, [Tecan.Sila2.MaximalInclusiveAttribute(65536D)] [Tecan.Sila2.MinimalExclusiveAttribute(0D)] [Tecan.Sila2.SilaDisplayNameAttribute("SiLA Client Port")] long siLAClientPort, [Tecan.Sila2.SilaDisplayNameAttribute("Remove connection")] bool remove);
+        void DisconnectSiLAClient([Tecan.Sila2.MaximalLengthAttribute(255)] string clientName, [Tecan.Sila2.SilaDisplayNameAttribute("Remove connection")] bool remove);
     }
     
     ///  <summary>
