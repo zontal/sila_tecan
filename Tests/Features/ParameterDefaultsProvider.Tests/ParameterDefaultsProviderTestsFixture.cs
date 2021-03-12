@@ -47,13 +47,10 @@ namespace Tecan.Sila2.ParameterDefaultsProvider.Tests
             var constraint = constraints.Single();
             
             Assert.That(constraint.CommandParameterIdentifier, Is.EqualTo( "tecan.sila.parameterdefaultsprovider/tests/ExampleSetProviderService/v1/Command/ExampleMethod/Parameter/parameter" ) );
-            var dataType = DataTypeSerializer.LoadType( constraint.Constraints );
-            Assert.That(dataType.Item, Is.InstanceOf<ConstrainedType>());
-            var constrained = (ConstrainedType)dataType.Item;
-            Assert.That(constrained.DataType.Item, Is.EqualTo(BasicType.String));
-            Assert.That(constrained.Constraints.Set, Is.Not.Null);
-            Assert.That(constrained.Constraints.Set.Length, Is.EqualTo(2));
-            var set = constrained.Constraints.Set;
+            var constraintParsed = ConstraintSerializer.LoadConstraints( constraint.Constraints );
+            Assert.That( constraintParsed.Set, Is.Not.Null);
+            Assert.That( constraintParsed.Set.Length, Is.EqualTo(2));
+            var set = constraintParsed.Set;
             Assert.That(set[0], Is.EqualTo("Foo"));
             Assert.That(set[1], Is.EqualTo("Bar"));
         }
@@ -71,13 +68,10 @@ namespace Tecan.Sila2.ParameterDefaultsProvider.Tests
             var constraint = constraints.Single();
 
             Assert.That( constraint.CommandParameterIdentifier, Is.EqualTo( "tecan.sila.parameterdefaultsprovider/tests/ExampleFileConstraintProviderService/v1/Command/FileExampleMethod/Parameter/parameter" ) );
-            var dataType = DataTypeSerializer.LoadType( constraint.Constraints );
-            Assert.That( dataType.Item, Is.InstanceOf<ConstrainedType>() );
-            var constrained = (ConstrainedType)dataType.Item;
-            Assert.That( constrained.DataType.Item, Is.EqualTo( BasicType.String ) );
-            Assert.That( constrained.Constraints.Set, Is.Not.Null );
-            Assert.That( constrained.Constraints.Set.Length, Is.EqualTo( 2 ) );
-            var set = constrained.Constraints.Set;
+            var constraintParsed = ConstraintSerializer.LoadConstraints( constraint.Constraints );
+            Assert.That( constraintParsed.Set, Is.Not.Null );
+            Assert.That( constraintParsed.Set.Length, Is.EqualTo( 2 ) );
+            var set = constraintParsed.Set;
             Assert.That( set, Contains.Item("Foo.txt") );
             Assert.That( set, Contains.Item( "Bar.txt" ) );
         }

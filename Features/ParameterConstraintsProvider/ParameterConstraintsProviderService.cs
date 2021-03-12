@@ -89,10 +89,12 @@ namespace Tecan.Sila2.ParameterConstraintsProvider
 
         private string GetConstraintString( ConstrainedType constraint )
         {
-            return DataTypeSerializer.SaveToString( new DataTypeType()
+            var constraints = constraint?.Constraints;
+            if (constraints == null)
             {
-                Item = constraint
-            } );
+                return null;
+            }
+            return ConstraintSerializer.SaveToString( constraints );
         }
 
         public ICollection<ParametersConstraint> ParametersConstraints

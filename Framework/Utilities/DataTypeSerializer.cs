@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Xml.Serialization;
 
 namespace Tecan.Sila2
@@ -6,7 +7,7 @@ namespace Tecan.Sila2
     /// <summary>
     /// Utility class to serialize and deserialize data types
     /// </summary>
-    public class DataTypeSerializer
+    public static class DataTypeSerializer
     {
         private static readonly XmlSerializer Serializer = new XmlSerializer( typeof(DataTypeType) );
 
