@@ -11,6 +11,7 @@
             <xs:attribute name="Port" use="required" type="xs:int" />
             <xs:attribute name="Name" use="required" type="xs:string" />
             <xs:attribute name="InterfaceFilter" use="required" type="xs:string" />
+            <xs:attribute name="EnableServerConnections" use="optional" type="xs:boolean" />
         </xs:complexType>
     </xs:element>
 </xs:schema>

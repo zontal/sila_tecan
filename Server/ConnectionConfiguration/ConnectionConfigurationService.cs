@@ -64,15 +64,19 @@ namespace Tecan.Sila2.Server.ConnectionConfiguration
 
         public void DisableServerInitiatedConnectionMode()
         {
-            lock(_connections)
+            if(_isEnabled)
             {
-                _loggingChannel.Log( "Disconnecting all clients".ToString, Severity.Info );
-                foreach(var connection in _connections.Values)
+                lock(_connections)
                 {
-                    connection.Channel.Dispose();
+                    _loggingChannel.Log( "Disconnecting all clients".ToString, Severity.Info );
+                    foreach(var connection in _connections.Values)
+                    {
+                        connection.Channel.Dispose();
+                    }
+                    _connections.Clear();
+                    _isEnabled = false;
                 }
-                _connections.Clear();
-                _isEnabled = false;
+                TrySetConnectionmodeEnabled( false );
             }
         }
 
@@ -99,11 +103,33 @@ namespace Tecan.Sila2.Server.ConnectionConfiguration
 
         public void EnableServerInitiatedConnectionMode()
         {
-            _isEnabled = true;
-            foreach(var configName in _configurationStore.GetNames(typeof(ClientConnection)))
+            if(!_isEnabled)
             {
-                var configuration = _configurationStore.Read<ClientConnection>( configName );
-                ConnectSiLAClient( configuration.Name, configuration.Host, configuration.Port, false );
+                _isEnabled = true;
+                foreach(var configName in _configurationStore.GetNames( typeof( ClientConnection ) ))
+                {
+                    var configuration = _configurationStore.Read<ClientConnection>( configName );
+                    ConnectSiLAClient( configuration.Name, configuration.Host, configuration.Port, false );
+                }
+
+                TrySetConnectionmodeEnabled( true );
+            }
+        }
+
+        private void TrySetConnectionmodeEnabled(bool enabled)
+        {
+            try
+            {
+                var currentConfiguration = _configurationStore.Read<ServerConfiguration>( SiLAServer.ServerConfigurationName );
+                if(currentConfiguration.EnableServerConnections != enabled)
+                {
+                    currentConfiguration.EnableServerConnections = enabled;
+                    _configurationStore.Write<ServerConfiguration>( SiLAServer.ServerConfigurationName, currentConfiguration );
+                }
+            }
+            catch(Exception ex)
+            {
+                _loggingChannel.LogException( "Could not persist connection mode".ToString, ex );
             }
         }
 

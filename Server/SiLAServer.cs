@@ -53,7 +53,7 @@ namespace Tecan.Sila2.Server
 
         private readonly ServerPoolDispatcher _poolDispatcher;
 
-        private const string ServerConfigurationName = "default";
+        internal const string ServerConfigurationName = "default";
 
         #endregion
 

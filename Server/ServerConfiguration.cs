@@ -33,7 +33,9 @@ namespace Tecan.Sila2.Server {
         private string nameField;
         
         private string interfaceFilterField;
-        
+
+        private bool enableServerConnectionsField;
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public string Identifier {
@@ -75,6 +77,17 @@ namespace Tecan.Sila2.Server {
             }
             set {
                 this.interfaceFilterField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public bool EnableServerConnections {
+            get {
+                return this.enableServerConnectionsField;
+            }
+            set {
+                this.enableServerConnectionsField = value;
             }
         }
     }
