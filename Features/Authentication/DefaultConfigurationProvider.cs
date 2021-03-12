@@ -6,25 +6,24 @@ using Tecan.MAP.Contracts.Services.Logging;
 namespace Tecan.Sila2
 {
     [Export]
+    [PartCreationPolicy(CreationPolicy.Shared)]
     internal class DefaultConfigurationProvider : AuthConfigurationProviderBase
     {
-        private const string ConfigName = "Auth.config";
-        private readonly XmlSerializer _serializer = new XmlSerializer( typeof( AuthConfiguration ) );
+        private const string ConfigName = "Auth";
+        private readonly IConfigurationStore _configurationStore;
 
         [ImportingConstructor]
-        public DefaultConfigurationProvider(ILoggingChannelFactory loggingChannelFactory, IServerConnector serverConnector, IServerDiscovery discovery)
+        public DefaultConfigurationProvider(ILoggingChannelFactory loggingChannelFactory, IServerConnector serverConnector, IServerDiscovery discovery, IConfigurationStore configurationStore)
             : base(loggingChannelFactory, discovery, serverConnector)
         {
+            _configurationStore = configurationStore;
         }
 
         protected override AuthConfiguration LoadConfiguration()
         {
             if(File.Exists( ConfigName ))
             {
-                using(var stream = File.OpenRead( ConfigName ))
-                {
-                    return _serializer.Deserialize( stream ) as AuthConfiguration;
-                }
+                return _configurationStore.Read<AuthConfiguration>( ConfigName );
             }
 
             return new AuthConfiguration()
@@ -43,10 +42,7 @@ namespace Tecan.Sila2
 
         protected override void SaveConfiguration( AuthConfiguration configuration )
         {
-            using( var stream = File.OpenWrite(ConfigName) )
-            {
-                _serializer.Serialize(stream, configuration);
-            }
+            _configurationStore.Write( ConfigName, configuration );
         }
     }
 }

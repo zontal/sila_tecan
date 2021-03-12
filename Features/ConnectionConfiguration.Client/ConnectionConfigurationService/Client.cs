@@ -158,7 +158,7 @@ namespace Tecan.Sila2.ConnectionConfiguration.ConnectionConfigurationService
         ///  <summary>
         /// Connect a new SiLA Client.
         /// </summary>
-        /// <param name="clientName">Human readable name of the SiLA Client.</param>
+        /// <param name="clientName">Human readable name of the SiLA Client. Has to be unique.</param>
         /// <param name="siLAClientHost">Host Address of the new SiLA Client.</param>
         /// <param name="siLAClientPort">Port of the new SiLA Client.</param>
         /// <param name="persist">Whether or not the connection should be persisted.</param>

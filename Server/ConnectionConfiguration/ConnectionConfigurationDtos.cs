@@ -129,7 +129,7 @@ namespace Tecan.Sila2.Server.ConnectionConfiguration
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
-        ///  <param name="clientName">Human readable name of the SiLA Client.</param>
+        ///  <param name="clientName">Human readable name of the SiLA Client. Has to be unique.</param>
         ///  <param name="siLAClientHost">Host Address of the new SiLA Client.</param>
         ///  <param name="siLAClientPort">Port of the new SiLA Client.</param>
         ///  <param name="persist">Whether or not the connection should be persisted.</param>
@@ -142,7 +142,7 @@ namespace Tecan.Sila2.Server.ConnectionConfiguration
         }
         
         ///  <summary>
-        /// Human readable name of the SiLA Client.
+        /// Human readable name of the SiLA Client. Has to be unique.
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute(1)]
         public Tecan.Sila2.StringDto ClientName

@@ -20,12 +20,14 @@ namespace Tecan.Sila2.Interop.Client.ObservablePropertyTest
     ///  <summary>
     /// Class that implements the IObservablePropertyTest interface through SiLA2
     /// </summary>
-    public partial class ObservablePropertyTestClient : IObservablePropertyTest, System.ComponentModel.INotifyPropertyChanged
+    public partial class ObservablePropertyTestClient : IObservablePropertyTest, System.ComponentModel.INotifyPropertyChanged, System.IDisposable
     {
         
         private long _upTime;
         
         private System.Threading.Tasks.Task _upTimeUpdateTask;
+        
+        private System.Threading.CancellationTokenSource _cancellationTokenSource = new System.Threading.CancellationTokenSource();
         
         private IClientExecutionManager _executionManager;
         
@@ -53,7 +55,17 @@ namespace Tecan.Sila2.Interop.Client.ObservablePropertyTest
             {
                 if ((_upTimeUpdateTask == null))
                 {
-                    _upTimeUpdateTask = _channel.SubscribeProperty<PropertyResponse<Tecan.Sila2.IntegerDto>>(_serviceName, "UpTime", "org.silastandard/test/ObservablePropertyTest/v1/Property/UpTime", ReceiveNewUpTime, _executionManager.CreateCallOptions("org.silastandard/test/ObservablePropertyTest/v1/Property/UpTime"));
+                    try
+                    {
+                        System.Threading.Monitor.Enter(_cancellationTokenSource);
+                        if ((_upTimeUpdateTask == null))
+                        {
+                            _upTimeUpdateTask = _channel.SubscribeProperty<PropertyResponse<Tecan.Sila2.IntegerDto>>(_serviceName, "UpTime", "org.silastandard/test/ObservablePropertyTest/v1/Property/UpTime", ReceiveNewUpTime, _executionManager.CreateCallOptions("org.silastandard/test/ObservablePropertyTest/v1/Property/UpTime"), _cancellationTokenSource.Token);
+                        }
+                    } finally
+                    {
+                        System.Threading.Monitor.Exit(_cancellationTokenSource);
+                    }
                 }
                 return _upTime;
             }
@@ -73,6 +85,15 @@ namespace Tecan.Sila2.Interop.Client.ObservablePropertyTest
                     handler.Invoke(this, new System.ComponentModel.PropertyChangedEventArgs("UpTime"));
                 }
             }
+        }
+        
+        ///  <summary>
+        /// Disposes the current client and cancels all subscriptions
+        /// </summary>
+        public void Dispose()
+        {
+            _cancellationTokenSource.Cancel();
+            _cancellationTokenSource.Dispose();
         }
         
         private T Extract<T>(Tecan.Sila2.ISilaTransferObject<T> dto)

@@ -20,12 +20,14 @@ namespace Tecan.Sila2.ParameterConstraintsProvider.ParameterConstraintsProvider
     ///  <summary>
     /// Class that implements the IParameterConstraintsProvider interface through SiLA2
     /// </summary>
-    public partial class ParameterConstraintsProviderClient : IParameterConstraintsProvider, System.ComponentModel.INotifyPropertyChanged
+    public partial class ParameterConstraintsProviderClient : IParameterConstraintsProvider, System.ComponentModel.INotifyPropertyChanged, System.IDisposable
     {
         
         private System.Collections.Generic.ICollection<ParametersConstraint> _parametersConstraints;
         
         private System.Threading.Tasks.Task _parametersConstraintsUpdateTask;
+        
+        private System.Threading.CancellationTokenSource _cancellationTokenSource = new System.Threading.CancellationTokenSource();
         
         private IClientExecutionManager _executionManager;
         
@@ -54,9 +56,19 @@ namespace Tecan.Sila2.ParameterConstraintsProvider.ParameterConstraintsProvider
             {
                 if ((_parametersConstraintsUpdateTask == null))
                 {
-                    _parametersConstraintsUpdateTask = _channel.SubscribeProperty<PropertyResponse<System.Collections.Generic.List<ParametersConstraintDto>>>(_serviceName, "ParametersConstraints", "org.silastandard/core.commands/ParameterConstraintsProvider/v1/Property/Parameter" +
-                            "sConstraints", ReceiveNewParametersConstraints, _executionManager.CreateCallOptions("org.silastandard/core.commands/ParameterConstraintsProvider/v1/Property/Parameter" +
-                                "sConstraints"));
+                    try
+                    {
+                        System.Threading.Monitor.Enter(_cancellationTokenSource);
+                        if ((_parametersConstraintsUpdateTask == null))
+                        {
+                            _parametersConstraintsUpdateTask = _channel.SubscribeProperty<PropertyResponse<System.Collections.Generic.List<ParametersConstraintDto>>>(_serviceName, "ParametersConstraints", "org.silastandard/core.commands/ParameterConstraintsProvider/v1/Property/Parameter" +
+                                    "sConstraints", ReceiveNewParametersConstraints, _executionManager.CreateCallOptions("org.silastandard/core.commands/ParameterConstraintsProvider/v1/Property/Parameter" +
+                                        "sConstraints"), _cancellationTokenSource.Token);
+                        }
+                    } finally
+                    {
+                        System.Threading.Monitor.Exit(_cancellationTokenSource);
+                    }
                 }
                 return _parametersConstraints;
             }
@@ -76,6 +88,15 @@ namespace Tecan.Sila2.ParameterConstraintsProvider.ParameterConstraintsProvider
                     handler.Invoke(this, new System.ComponentModel.PropertyChangedEventArgs("ParametersConstraints"));
                 }
             }
+        }
+        
+        ///  <summary>
+        /// Disposes the current client and cancels all subscriptions
+        /// </summary>
+        public void Dispose()
+        {
+            _cancellationTokenSource.Cancel();
+            _cancellationTokenSource.Dispose();
         }
         
         private T Extract<T>(Tecan.Sila2.ISilaTransferObject<T> dto)

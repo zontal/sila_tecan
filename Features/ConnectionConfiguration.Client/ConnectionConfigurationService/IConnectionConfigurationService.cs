@@ -14,6 +14,7 @@ namespace Tecan.Sila2.ConnectionConfiguration
     
     ///  <summary>
     /// This Feature MUST be implemented by each SiLA Server that offers a Server-initiated connection.
+    /// The server-initiated connection mode is persistent, it keeps the state after a restart. Connect to a SiLA Client passing the required information and optionally keep the connection details persistent, so the SiLA Server will reconnect after a restart.
     /// </summary>
     [Tecan.Sila2.SilaFeatureAttribute(false, "core")]
     [Tecan.Sila2.SilaIdentifierAttribute("ConnectionConfigurationService")]
@@ -52,7 +53,7 @@ namespace Tecan.Sila2.ConnectionConfiguration
         ///  <summary>
         /// Connect a new SiLA Client.
         /// </summary>
-        /// <param name="clientName">Human readable name of the SiLA Client.</param>
+        /// <param name="clientName">Human readable name of the SiLA Client. Has to be unique.</param>
         /// <param name="siLAClientHost">Host Address of the new SiLA Client.</param>
         /// <param name="siLAClientPort">Port of the new SiLA Client.</param>
         /// <param name="persist">Whether or not the connection should be persisted.</param>
@@ -63,8 +64,6 @@ namespace Tecan.Sila2.ConnectionConfiguration
         /// Disconnect a configured SiLA Client.
         /// </summary>
         /// <param name="clientName">Human readable name of the SiLA Client.</param>
-        /// <param name="siLAClientHost">Host Address of the new SiLA Client.</param>
-        /// <param name="siLAClientPort">Port of the new SiLA Client.</param>
         /// <param name="remove">Whether or not to remove the connection details.</param>
         [Tecan.Sila2.SilaDisplayNameAttribute("Disconnect SiLA Client")]
         void DisconnectSiLAClient([Tecan.Sila2.MaximalLengthAttribute(255)] string clientName, [Tecan.Sila2.SilaDisplayNameAttribute("Remove connection")] bool remove);

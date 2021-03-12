@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using Tecan.Sila2.Server;
 
@@ -11,6 +12,21 @@ namespace Tecan.Sila2.Locking
     {
         private DateTime _expiry;
         private string _lock;
+        private readonly HashSet<string> _commandsToLock;
+
+        [ImportingConstructor]
+        public LockControllerService(IConfigurationStore configurationStore)
+        {
+            if (configurationStore.Exists(nameof(LockControllerService), typeof(LockingConfiguration)))
+            {
+                var config = configurationStore.Read<LockingConfiguration>( nameof( LockControllerService ) );
+                _commandsToLock = new HashSet<string>( config.Command );
+            }
+        }
+
+        public LockControllerService()
+        {
+        }
 
         public bool IsLocked => DateTime.Now < _expiry;
 
@@ -24,6 +40,10 @@ namespace Tecan.Sila2.Locking
 
         public override bool IsInterceptRequired(Feature feature, string commandIdentifier)
         {
+            if (_commandsToLock != null)
+            {
+                return _commandsToLock.Contains( commandIdentifier );
+            }
             return !commandIdentifier.StartsWith("org.silastandard/core");
         }
 
