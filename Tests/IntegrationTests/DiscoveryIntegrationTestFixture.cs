@@ -8,7 +8,8 @@ using Tecan.Sila2.Tests;
 
 namespace Tecan.Sila2.IntegrationTests
 {
-    [TestFixture]
+    // Integration tests do not work on CI server, unfortunately
+    [TestFixture( Category = "IntegrationTests" )]
     public class DiscoveryIntegrationTestFixture : IntegrationTestFixtureBase
     {
         protected override ServerData FindServer(Guid serverUuid)

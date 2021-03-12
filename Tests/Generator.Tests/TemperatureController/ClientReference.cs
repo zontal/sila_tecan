@@ -15,37 +15,37 @@ using Tecan.Sila2.Server;
 
 namespace Tecan.Sila2.Generator.Test.TestReference
 {
-
-
+    
+    
     ///  <summary>
     /// Class that implements the ITemperatureController interface through SiLA2
     /// </summary>
     public partial class TemperatureControllerClient : ITemperatureController, System.ComponentModel.INotifyPropertyChanged, System.IDisposable
     {
-
+        
         private double _currentTemperature;
-
+        
         private System.Threading.Tasks.Task _currentTemperatureUpdateTask;
-
+        
         private System.Threading.CancellationTokenSource _cancellationTokenSource = new System.Threading.CancellationTokenSource();
-
+        
         private IClientExecutionManager _executionManager;
-
+        
         private IClientChannel _channel;
-
+        
         private const string _serviceName = "sila2.tecan.sila.generator.test.temperaturecontroller.v3.TemperatureController";
-
+        
         ///  <summary>
         /// Creates a new instance
         /// </summary>
         /// <param name="channel">The channel through which calls should be executed</param>
         /// <param name="executionManager">A component to determine metadata to attach to any requests</param>
-        public TemperatureControllerClient( IClientChannel channel, IClientExecutionManager executionManager )
+        public TemperatureControllerClient(IClientChannel channel, IClientExecutionManager executionManager)
         {
             _executionManager = executionManager;
             _channel = channel;
         }
-
+        
         ///  <summary>
         /// Current Temperature as measured by the controller.
         /// </summary>
@@ -53,41 +53,40 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         {
             get
             {
-                if((_currentTemperatureUpdateTask == null))
+                if ((_currentTemperatureUpdateTask == null))
                 {
                     try
                     {
-                        System.Threading.Monitor.Enter( _cancellationTokenSource );
-                        if((_currentTemperatureUpdateTask == null))
+                        System.Threading.Monitor.Enter(_cancellationTokenSource);
+                        if ((_currentTemperatureUpdateTask == null))
                         {
-                            _currentTemperatureUpdateTask = _channel.SubscribeProperty<CurrentTemperatureResponseDto>( _serviceName, "CurrentTemperature", "tecan.sila.generator/test/TemperatureController/v3/Property/CurrentTemperature", ReceiveNewCurrentTemperature, _executionManager.CreateCallOptions( "tecan.sila.generator/test/TemperatureController/v3/Property/CurrentTemperature" ), _cancellationTokenSource.Token );
+                            _currentTemperatureUpdateTask = _channel.SubscribeProperty<CurrentTemperatureResponseDto>(_serviceName, "CurrentTemperature", "tecan.sila.generator/test/TemperatureController/v3/Property/CurrentTemperature", ReceiveNewCurrentTemperature, _executionManager.CreateCallOptions("tecan.sila.generator/test/TemperatureController/v3/Property/CurrentTemperature"), _cancellationTokenSource.Token);
                         }
-                    }
-                    finally
+                    } finally
                     {
-                        System.Threading.Monitor.Exit( _cancellationTokenSource );
+                        System.Threading.Monitor.Exit(_cancellationTokenSource);
                     }
                 }
                 return _currentTemperature;
             }
         }
-
+        
         public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-
-        private void ReceiveNewCurrentTemperature( CurrentTemperatureResponseDto currentTemperature )
+        
+        private void ReceiveNewCurrentTemperature(CurrentTemperatureResponseDto currentTemperature)
         {
-            double inner = currentTemperature.Value.Extract( _executionManager.DownloadBinaryStore );
-            if((_currentTemperature != inner))
+            double inner = currentTemperature.Value.Extract(_executionManager.DownloadBinaryStore);
+            if ((_currentTemperature != inner))
             {
                 _currentTemperature = inner;
                 System.ComponentModel.PropertyChangedEventHandler handler = PropertyChanged;
-                if((handler != null))
+                if ((handler != null))
                 {
-                    handler.Invoke( this, new System.ComponentModel.PropertyChangedEventArgs( "CurrentTemperature" ) );
+                    handler.Invoke(this, new System.ComponentModel.PropertyChangedEventArgs("CurrentTemperature"));
                 }
             }
         }
-
+        
         ///  <summary>
         /// Disposes the current client and cancels all subscriptions
         /// </summary>
@@ -96,54 +95,54 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             _cancellationTokenSource.Cancel();
             _cancellationTokenSource.Dispose();
         }
-
+        
         ///  <summary>
         /// Control the Temperature gradually to a set target,
         /// </summary>
         /// <param name="targetTemperature">The target temperature that the device will try to reach. Note that the command might
         ///be completed at a temperature that is close enough.</param>
-        public virtual Tecan.Sila2.IObservableCommand ControlTemperature( double targetTemperature )
+        public virtual Tecan.Sila2.IObservableCommand ControlTemperature(double targetTemperature)
         {
-            ControlTemperatureRequestDto request = new ControlTemperatureRequestDto( targetTemperature, null );
-            return _channel.ExecuteObservableCommand<ControlTemperatureRequestDto>( _serviceName, "ControlTemperature", request, ConvertControlTemperatureException, _executionManager.CreateCallOptions( request.CommandIdentifier ) );
+            ControlTemperatureRequestDto request = new ControlTemperatureRequestDto(targetTemperature, null);
+            return _channel.ExecuteObservableCommand<ControlTemperatureRequestDto>(_serviceName, "ControlTemperature", request, ConvertControlTemperatureException, _executionManager.CreateCallOptions(request.CommandIdentifier));
         }
-
+        
         ///  <summary>
         /// Converts the error ocurred during execution of ControlTemperature to a proper exception
         /// </summary>
         /// <param name="errorIdentifier">The identifier of the error that has happened</param>
         /// <param name="errorMessage">The original error message from the server</param>
         /// <returns>The converted exception or null, if the error is not understood</returns>
-        private static System.Exception ConvertControlTemperatureException( string errorIdentifier, string errorMessage )
+        private static System.Exception ConvertControlTemperatureException(string errorIdentifier, string errorMessage)
         {
-            if((errorIdentifier == "tecan.sila.generator/test/TemperatureController/v3/DefinedError/TemperatureNotRea" +
+            if ((errorIdentifier == "tecan.sila.generator/test/TemperatureController/v3/DefinedError/TemperatureNotRea" +
                 "chable"))
             {
-                return new TemperatureNotReachableException( errorMessage );
+                return new TemperatureNotReachableException(errorMessage);
             }
-            if((errorIdentifier == "tecan.sila.generator/test/TemperatureController/v3/DefinedError/ControlInterrupte" +
+            if ((errorIdentifier == "tecan.sila.generator/test/TemperatureController/v3/DefinedError/ControlInterrupte" +
                 "d"))
             {
-                return new ControlInterruptedException( errorMessage );
+                return new ControlInterruptedException(errorMessage);
             }
             return null;
         }
-
-        private T Extract<T>( Tecan.Sila2.ISilaTransferObject<T> dto )
-
+        
+        private T Extract<T>(Tecan.Sila2.ISilaTransferObject<T> dto)
+        
         {
-            return dto.Extract( _executionManager.DownloadBinaryStore );
+            return dto.Extract(_executionManager.DownloadBinaryStore);
         }
     }
-
+    
     ///  <summary>
     /// Factory to instantiate clients for the Temperature Controller.
     /// </summary>
-    [System.ComponentModel.Composition.ExportAttribute( typeof( IClientFactory ) )]
-    [System.ComponentModel.Composition.PartCreationPolicyAttribute( System.ComponentModel.Composition.CreationPolicy.Shared )]
+    [System.ComponentModel.Composition.ExportAttribute(typeof(IClientFactory))]
+    [System.ComponentModel.Composition.PartCreationPolicyAttribute(System.ComponentModel.Composition.CreationPolicy.Shared)]
     public partial class TemperatureControllerClientFactory : IClientFactory
     {
-
+        
         ///  <summary>
         /// Gets the fully-qualified identifier of the feature for which clients can be generated
         /// </summary>
@@ -154,7 +153,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
                 return "tecan.sila.generator/test/TemperatureController/v3";
             }
         }
-
+        
         ///  <summary>
         /// Gets the interface type for which clients can be generated
         /// </summary>
@@ -162,19 +161,19 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         {
             get
             {
-                return typeof( ITemperatureController );
+                return typeof(ITemperatureController);
             }
         }
-
+        
         ///  <summary>
         /// Creates a strongly typed client for the given execution channel and execution manager
         /// </summary>
         /// <param name="channel">The channel that should be used for communication with the server</param>
         /// <param name="executionManager">The execution manager to manage metadata</param>
         /// <returns>A strongly typed client. This object will be an instance of the InterfaceType property</returns>
-        public object CreateClient( IClientChannel channel, IClientExecutionManager executionManager )
+        public object CreateClient(IClientChannel channel, IClientExecutionManager executionManager)
         {
-            return new TemperatureControllerClient( channel, executionManager );
+            return new TemperatureControllerClient(channel, executionManager);
         }
     }
 }

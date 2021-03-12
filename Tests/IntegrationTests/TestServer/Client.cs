@@ -20,12 +20,14 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
     ///  <summary>
     /// Class that implements the ITestServer interface through SiLA2
     /// </summary>
-    public partial class TestServerClient : ITestServer, System.ComponentModel.INotifyPropertyChanged
+    public partial class TestServerClient : ITestServer, System.ComponentModel.INotifyPropertyChanged, System.IDisposable
     {
         
         private long _dummyValue;
         
         private System.Threading.Tasks.Task _dummyValueUpdateTask;
+        
+        private System.Threading.CancellationTokenSource _cancellationTokenSource = new System.Threading.CancellationTokenSource();
         
         private IClientExecutionManager _executionManager;
         
@@ -52,7 +54,17 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             {
                 if ((_dummyValueUpdateTask == null))
                 {
-                    _dummyValueUpdateTask = _channel.SubscribeProperty<PropertyResponse<Tecan.Sila2.IntegerDto>>(_serviceName, "DummyValue", "tecan.sila/integrationtests/TestServer/v1/Property/DummyValue", ReceiveNewDummyValue, _executionManager.CreateCallOptions("tecan.sila/integrationtests/TestServer/v1/Property/DummyValue"));
+                    try
+                    {
+                        System.Threading.Monitor.Enter(_cancellationTokenSource);
+                        if ((_dummyValueUpdateTask == null))
+                        {
+                            _dummyValueUpdateTask = _channel.SubscribeProperty<PropertyResponse<Tecan.Sila2.IntegerDto>>(_serviceName, "DummyValue", "tecan.sila/integrationtests/TestServer/v1/Property/DummyValue", ReceiveNewDummyValue, _executionManager.CreateCallOptions("tecan.sila/integrationtests/TestServer/v1/Property/DummyValue"), _cancellationTokenSource.Token);
+                        }
+                    } finally
+                    {
+                        System.Threading.Monitor.Exit(_cancellationTokenSource);
+                    }
                 }
                 return _dummyValue;
             }
@@ -72,6 +84,15 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
                     handler.Invoke(this, new System.ComponentModel.PropertyChangedEventArgs("DummyValue"));
                 }
             }
+        }
+        
+        ///  <summary>
+        /// Disposes the current client and cancels all subscriptions
+        /// </summary>
+        public void Dispose()
+        {
+            _cancellationTokenSource.Cancel();
+            _cancellationTokenSource.Dispose();
         }
         
         ///  <summary>
