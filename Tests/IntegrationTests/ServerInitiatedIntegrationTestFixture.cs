@@ -1,7 +1,6 @@
 ﻿using NUnit.Framework;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using Tecan.Sila2.Authentication.AuthenticationService;
 using Tecan.Sila2.ConnectionConfiguration.ConnectionConfigurationService;
@@ -16,15 +15,19 @@ namespace Tecan.Sila2.IntegrationTests
     public class ServerInitiatedIntegrationTestFixture : IntegrationTestFixtureBase
     {
         private PoolServer _poolServer;
+        private ServerProvider _serverProvider;
 
-        protected override ServerData FindServer()
+        protected override ServerData FindServer(Guid serverUuid)
         {
-            _poolServer = new PoolServer( new TestLoggingFactory() );
+            var logging = new TestLoggingFactory();
+            _serverProvider = new ServerProvider( logging , new FileCertificateProvider() );
+            _poolServer = new PoolServer( logging, _serverProvider );
             var tcs = new TaskCompletionSource<ServerData>();
             _poolServer.ServerConnected += ( o, e ) => tcs.SetResult( e.Server );
-            _poolServer.Start("127.0.0.1", 50053);
+            _serverProvider.Configure("127.0.0.1", 50053);
+            _serverProvider.Start();
 
-            var testServer = base.FindServer();
+            var testServer = base.FindServer(serverUuid);
 
             var authenticationClient = new AuthenticationServiceClient( testServer.Channel, new DiscoveryExecutionManager() );
             var token = authenticationClient.Login( "admin", "admin", testServer.Config.Uuid.ToString(), new List<string>() );
@@ -40,7 +43,7 @@ namespace Tecan.Sila2.IntegrationTests
         public override void StopTestServer()
         {
             base.StopTestServer();
-            _poolServer?.Shutdown();
+            _serverProvider?.ShutdownAsync().Wait();
         }
     }
 }

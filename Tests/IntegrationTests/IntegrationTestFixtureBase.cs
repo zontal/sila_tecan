@@ -28,7 +28,7 @@ namespace Tecan.Sila2.IntegrationTests
         public virtual void StartTestServer()
         {
             var dir = Path.Combine( AppDomain.CurrentDomain.BaseDirectory, "..", "TestServer" );
-            var serverId = Guid.NewGuid();
+            var serverId = Guid.Parse( "397D289C-40D3-4D03-8A15-7EA4856ED9D1" );
             var payloadArguments = $"-u {serverId} -i 127.0.0.1";
             var attachDebugger = false; // Debugger.IsAttached;
             if(attachDebugger)
@@ -39,7 +39,7 @@ namespace Tecan.Sila2.IntegrationTests
             {
 #if NETCOREAPP
                 FileName = "dotnet",
-                Arguments = Path.Combine( dir, "netcoreapp2.1", "TestServer.dll" ) + " " + payloadArguments,
+                Arguments = Path.Combine( dir, "netcoreapp3.1", "TestServer.dll" ) + " " + payloadArguments,
 #elif NET461
                 FileName = Path.Combine(dir, "net461", "TestServer.exe"),
                 Arguments = payloadArguments,
@@ -65,11 +65,11 @@ namespace Tecan.Sila2.IntegrationTests
             {
                 Thread.Sleep( TimeSpan.FromSeconds( 1 ) );
             }
-            _server = FindServer();
+            _server = FindServer(serverId);
             Assert.That( _server, Is.Not.Null );
         }
 
-        protected virtual ServerData FindServer()
+        protected virtual ServerData FindServer(Guid serverUuid)
         {
             var testLogging = new TestLoggingFactory();
             var connector = new ServerConnector( new DiscoveryExecutionManager(), testLogging );
