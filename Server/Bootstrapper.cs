@@ -4,14 +4,11 @@ using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
 using System.ComponentModel.Composition.Primitives;
 using System.IO;
-using System.Linq;
-using System.Net;
-using System.Net.NetworkInformation;
 using System.Reflection;
 using System.Text;
-using System.Text.RegularExpressions;
 using CommandLine;
 using Tecan.MAP.Contracts.Services.Logging;
+using Tecan.Sila2.Security;
 using Tecan.Sila2.Server.Binary;
 
 namespace Tecan.Sila2.Server
@@ -23,6 +20,7 @@ namespace Tecan.Sila2.Server
     {
         private CompositionContainer _container;
         private ISiLAServer _server;
+        private IServerProvider _grpcServer;
         private ILoggingChannel _channel;
 
         /// <summary>
@@ -67,6 +65,7 @@ namespace Tecan.Sila2.Server
                 var startup = new ServerStartInformation( selfInfo, args.Port, args.InterfaceFilter, args.ServerUuid, args.Name );
                 _container.ComposeExportedValue( startup );
                 _server = _container.GetExportedValue<ISiLAServer>();
+                _grpcServer = _container.GetExportedValue<IServerProvider>();
 
                 var features = _container.GetExportedValues<IFeatureProvider>();
                 foreach( var feature in features )
@@ -74,6 +73,7 @@ namespace Tecan.Sila2.Server
                     _server.AddFeature( feature );
                 }
 
+                _grpcServer.Start();
                 _server.StartServer();
             }
             catch( CompositionException e )
@@ -94,6 +94,11 @@ namespace Tecan.Sila2.Server
                 LogError(_channel, e);
             }
         }
+
+        /// <summary>
+        /// The composition container used by this bootstrapper
+        /// </summary>
+        public CompositionContainer Container => _container;
 
         private static void LogError(ILoggingChannel channel, Exception e)
         {
@@ -134,6 +139,7 @@ namespace Tecan.Sila2.Server
             try
             {
                 _server?.ShutdownServer();
+                _grpcServer.ShutdownAsync().Wait();
             }
             catch( Exception exception )
             {
@@ -150,30 +156,44 @@ namespace Tecan.Sila2.Server
         protected virtual CompositionContainer CreateContainer()
         {
             var assemblyLocation = Assembly.GetEntryAssembly().Location;
-            ComposablePartCatalog catalog = new DirectoryCatalog(Path.GetDirectoryName(assemblyLocation));
-            if (assemblyLocation.EndsWith(".exe"))
+            ComposablePartCatalog catalog = new DirectoryCatalog( Path.GetDirectoryName( assemblyLocation ) );
+            if(assemblyLocation.EndsWith( ".exe" ))
             {
-                catalog = new AggregateCatalog(catalog, new AssemblyCatalog(Assembly.GetEntryAssembly()));
+                catalog = new AggregateCatalog( catalog, new AssemblyCatalog( Assembly.GetEntryAssembly() ) );
             }
 
-            var container = new CompositionContainer(catalog);
+            var container = new CompositionContainer( catalog );
 
-            if (container.GetExportedValueOrDefault<ILoggingChannelFactory>() == null)
+            ApplyDefaultsIfMissing( container );
+
+            return container;
+        }
+
+        /// <summary>
+        /// Registers default implementations for commonly required interfaces, if the composition container does not already contain implementations
+        /// </summary>
+        /// <param name="container">The composition container</param>
+        protected void ApplyDefaultsIfMissing( CompositionContainer container )
+        {
+            if(container.GetExportedValueOrDefault<ILoggingChannelFactory>() == null)
             {
                 container.ComposeExportedValue<ILoggingChannelFactory>( new ConsoleLogging() );
             }
 
-            if (container.GetExportedValueOrDefault<IFileManagement>() == null)
+            if(container.GetExportedValueOrDefault<IFileManagement>() == null)
             {
-                container.ComposeExportedValue<IFileManagement>(new FileManagement());
+                container.ComposeExportedValue<IFileManagement>( new FileManagement() );
             }
 
-            if( container.GetExportedValueOrDefault<IConfigurationStore>() == null )
+            if(container.GetExportedValueOrDefault<IConfigurationStore>() == null)
             {
-                container.ComposeExportedValue<IConfigurationStore>(new FileConfigurationStore());
+                container.ComposeExportedValue<IConfigurationStore>( new FileConfigurationStore() );
             }
 
-            return container;
+            if(container.GetExportedValueOrDefault<IServerCertificateProvider>() == null)
+            {
+                container.ComposeExportedValue<IServerCertificateProvider>( new FileCertificateProvider() );
+            }
         }
 
         /// <summary>

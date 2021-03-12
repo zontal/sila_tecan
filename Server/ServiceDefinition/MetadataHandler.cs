@@ -19,7 +19,7 @@ namespace Tecan.Sila2.Server.ServiceDefinition
             _requestInterceptor = requestInterceptor;
         }
 
-        public Task<List<StringDto>> GetAffectedBy( EmptyRequest request, Grpc.Core.ServerCallContext context )
+        public Task<List<StringDto>> GetAffectedBy( EmptyRequest request, ServerCallContext context )
         {
             List<StringDto> affected = DtoExtensions.Encapsulate( GetAffected(), StringDto.Create, null );
 

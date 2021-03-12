@@ -17,7 +17,8 @@ namespace Tecan.Sila2.ServerPooling
     {
         private readonly IAsyncStreamReader<SilaServerMessage> _responseStream;
         private readonly IServerStreamWriter<SilaClientMessage> _requestStream;
-        private readonly CancellationToken _cancellationToken;
+        private readonly CancellationTokenSource _cancellationToken = new CancellationTokenSource();
+        private readonly CancellationToken _originalCancellationToken;
         private readonly ILoggingChannel _loggingChannel;
         private readonly ConcurrentDictionary<string, IResponseHandler> _responseHandlers = new ConcurrentDictionary<string, IResponseHandler>();
 
@@ -26,8 +27,9 @@ namespace Tecan.Sila2.ServerPooling
             _loggingChannel = loggingChannelFactory.CreateChannel( typeof( ServerConnection ) );
             _requestStream = requestStream;
             _responseStream = responseStream;
-            _cancellationToken = cancellationToken;
+            cancellationToken.Register( _cancellationToken.Cancel );
             cancellationToken.Register( CancelAll );
+            _originalCancellationToken = cancellationToken;
         }
 
         public void CancelAll()
@@ -38,9 +40,11 @@ namespace Tecan.Sila2.ServerPooling
             }
         }
 
+        public CancellationToken CancellationToken => _cancellationToken.Token;
+
         public async Task Run()
         {
-            while (await _responseStream.MoveNext(_cancellationToken))
+            while (await _responseStream.MoveNext(CancellationToken))
             {
                 var message = _responseStream.Current;
                 if (_responseHandlers.TryGetValue(message.RequestUuid, out var handler))
@@ -572,6 +576,15 @@ namespace Tecan.Sila2.ServerPooling
                     DeleteBinaryRequest = deleteBinaryRequestDto
                 }
             } ); ;
+        }
+
+        public void Dispose()
+        {
+            if (!_cancellationToken.IsCancellationRequested)
+            {
+                _cancellationToken.Cancel();
+            }
+            _cancellationToken.Dispose();
         }
     }
 }

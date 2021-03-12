@@ -4,9 +4,7 @@ using System.ComponentModel.Composition;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Net.NetworkInformation;
 using System.Net.Sockets;
-using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using Grpc.Core;
@@ -31,9 +29,7 @@ namespace Tecan.Sila2.Server
 
         private readonly ILoggingChannel _logger;
         private readonly ILoggingChannelFactory _loggingChannelFactory;
-
-        /// <summary>The gRPC server.</summary>
-        public Grpc.Core.Server GrpcServer { get; }
+        private readonly IServerProvider _serverProvider;
 
         /// <summary>The list of implmented features.</summary>
         private readonly List<IFeatureProvider> _implementedFeatures;
@@ -55,7 +51,7 @@ namespace Tecan.Sila2.Server
 
         private readonly Timer _cleanupTimer;
 
-        private readonly ServerPooling.ServerPoolDispatcher _poolDispatcher;
+        private readonly ServerPoolDispatcher _poolDispatcher;
 
         private const string ServerConfigurationName = "default";
 
@@ -132,91 +128,6 @@ namespace Tecan.Sila2.Server
 
         #region Constructors and destructors
 
-        /// <summary>
-        /// Creates a new instance of the SiLA2Server class, adds the SiLAService Feature implementation, creates a gRPC Server and registers the server for Server discovery.
-        /// </summary>
-        /// <param name="startupInfo">The information the server requires to start up</param>
-        /// <param name="configurationStore">An object to read and write server configuration</param>
-        /// <param name="loggingChannelFactory">The factory for logging</param>
-        /// <param name="interceptors">Interceptors to intercept any commands issued to the server</param>
-        /// <param name="fileManagement">The file management used by this server</param>
-        public SiLAServer( ServerStartInformation startupInfo, IConfigurationStore configurationStore, ILoggingChannelFactory loggingChannelFactory, IEnumerable<IRequestInterceptor> interceptors, IFileManagement fileManagement, Grpc.Core.Server server, ServerCredentials credentials )
-            : this(startupInfo, configurationStore, loggingChannelFactory, loggingChannelFactory.CreateChannel(typeof(SiLAServer)), interceptors, fileManagement, server, credentials )
-        {
-        }
-
-        private SiLAServer( ServerStartInformation startupInfo, IConfigurationStore configurationStore, ILoggingChannelFactory loggingChannelFactory, ILoggingChannel loggingChannel, IEnumerable<IRequestInterceptor> interceptors, IFileManagement fileManagement, Grpc.Core.Server server, ServerCredentials credentials )
-        {
-            _loggingChannelFactory = loggingChannelFactory;
-            _logger = loggingChannel;
-            _interceptors = interceptors;
-            _configurationStore = configurationStore;
-            _upload = new BinaryUpload( fileManagement, this );
-            _download = new BinaryDownload( fileManagement );
-            _fileManagement = fileManagement;
-            _poolDispatcher = new ServerPoolDispatcher( loggingChannelFactory, _upload, _download, this );
-
-            var configuration = configurationStore.Read<ServerConfiguration>( ServerConfigurationName );
-            var port = (startupInfo.Port ?? configuration?.Port).GetValueOrDefault( 50052 );
-            EnsurePortIsAvailable( port );
-
-            var uuid = startupInfo.ServerUuid;
-            if (uuid == Guid.Empty)
-            {
-                if (!(configuration?.Identifier != null && Guid.TryParse(configuration.Identifier, out uuid) && uuid != Guid.Empty))
-                {
-                    uuid = Guid.NewGuid();
-                }
-            }
-
-            _logger.Log( $"Starting server {uuid} on port {port}.".ToString, Severity.Info );
-
-            ServerType = startupInfo.Info.Type;
-            ServerDescription = startupInfo.Info.Description;
-            ServerVendorURL = startupInfo.Info.VendorUri;
-            ServerVersion = startupInfo.Info.Version;
-            ServerUUID = uuid.ToString();
-            ServerName = startupInfo.Name ?? configuration?.Name ?? ServerType;
-            _implementedFeatures = new List<IFeatureProvider>();
-            _loggingInterceptor = new LoggingInterceptor( _logger );
-
-            GrpcServer = server;
-
-            // create gRPC server such that it uses only the specified network interfaces
-            if((startupInfo.NetworkInterfaces ?? configuration?.InterfaceFilter) != null)
-            {
-                var networking = new Networking( loggingChannelFactory );
-                var filter = networking.CreateNetworkInterfaceFilter( startupInfo.NetworkInterfaces ?? configuration?.InterfaceFilter );
-                _logger.Log( "Running on the following addresses:".ToString, Severity.Info );
-                foreach(var v4addr in NetworkInterface.GetAllNetworkInterfaces()
-                    .Where( nic => filter( nic ) )
-                    .SelectMany( nic => nic.GetIPProperties().UnicastAddresses.Select( ua => ua.Address ) )
-                    .Where( a => a.AddressFamily == AddressFamily.InterNetwork ))
-                {
-                    _logger.Log( v4addr.ToString, Severity.Info );
-                    GrpcServer.Ports.Add( new ServerPort( v4addr.ToString(), port, credentials ) );
-                }
-                _announcer = new ServiceAnnouncer( ServerUUID, (ushort)port, filter, loggingChannelFactory );
-            }
-            else
-            {
-                _logger.Log( "Server is running without Discovery!".ToString, Severity.Warning );
-                // if no interface was specified, the SiLA server will (try to) run on all of them
-                GrpcServer.Ports.Add( new ServerPort( "0.0.0.0", port, credentials ) );
-            }
-
-            GrpcServer.Services.Add( _upload.CreateServiceDefinition() );
-            GrpcServer.Services.Add( _download.CreateServiceDefinition() );
-
-            var cleanupInterval = TimeSpan.FromSeconds( 30 );
-            _cleanupTimer = new Timer( Cleanup, null, cleanupInterval, cleanupInterval );
-
-            if (configuration == null)
-            {
-                TryPersistConfiguration( startupInfo, configurationStore, port );
-            }
-        }
-
         private void TryPersistConfiguration( ServerStartInformation startupInfo, IConfigurationStore configurationStore, int port )
         {
             try
@@ -235,32 +146,6 @@ namespace Tecan.Sila2.Server
             }
         }
 
-        private SiLAServer( ServerStartInformation startupInfo, IConfigurationStore configurationStore, ILoggingChannelFactory loggingChannelFactory, ILoggingChannel loggingChannel, IEnumerable<IRequestInterceptor> interceptors, IFileManagement fileManagements )
-            : this(startupInfo, configurationStore, loggingChannelFactory, loggingChannel, interceptors, fileManagements, new Grpc.Core.Server(), CreateDefaultCredentials(loggingChannel))
-        { 
-        }
-
-        private static ServerCredentials CreateDefaultCredentials(ILoggingChannel logger)
-        {
-            ServerCredentials credentials;
-            if(File.Exists( "server.crt" ) && File.Exists( "ca.crt" ) && File.Exists( "server.key" ))
-            {
-                var cacert = File.ReadAllText( @"ca.crt" );
-                var servercert = File.ReadAllText( @"server.crt" );
-                var serverkey = File.ReadAllText( @"server.key" );
-                var keypair = new KeyCertificatePair( servercert, serverkey );
-                logger.Log( "Found certificates, starting server with TLS.".ToString, Severity.Info );
-                credentials = new SslServerCredentials( new List<KeyCertificatePair>() { keypair }, cacert, SslClientCertificateRequestType.DontRequest );
-            }
-            else
-            {
-                logger.Log( $"No certificates found in folder {Environment.CurrentDirectory}. Server will start with plain-text communication".ToString, Severity.Warning );
-                credentials = ServerCredentials.Insecure;
-            }
-
-            return credentials;
-        }
-
         /// <summary>
         /// Creates a new instance of the SiLA2Server class, adds the SiLAService Feature implementation, creates a gRPC Server and registers the server for Server discovery.
         /// </summary>
@@ -269,10 +154,84 @@ namespace Tecan.Sila2.Server
         /// <param name="loggingChannelFactory">The factory for logging</param>
         /// <param name="interceptors">Interceptors to intercept any commands issued to the server</param>
         /// <param name="fileManagement">The file management used by this server</param>
+        /// <param name="serverProvider">The actual gRPC server the SiLA2 server should be running on</param>
         [ImportingConstructor]
-        public SiLAServer(ServerStartInformation startupInfo, IConfigurationStore configurationStore, ILoggingChannelFactory loggingChannelFactory, [ImportMany] IEnumerable<IRequestInterceptor> interceptors, IFileManagement fileManagement)
-            : this( startupInfo, configurationStore, loggingChannelFactory, loggingChannelFactory.CreateChannel( typeof( SiLAServer ) ), interceptors, fileManagement )
+        public SiLAServer(ServerStartInformation startupInfo, IConfigurationStore configurationStore, ILoggingChannelFactory loggingChannelFactory, [ImportMany] IEnumerable<IRequestInterceptor> interceptors, IFileManagement fileManagement, IServerProvider serverProvider)
         {
+            _loggingChannelFactory = loggingChannelFactory;
+            _logger = loggingChannelFactory.CreateChannel( typeof( SiLAServer ) );
+            _interceptors = interceptors;
+            _configurationStore = configurationStore;
+            _upload = new BinaryUpload( fileManagement, this );
+            _download = new BinaryDownload( fileManagement );
+            _fileManagement = fileManagement;
+            _poolDispatcher = new ServerPoolDispatcher( loggingChannelFactory, _upload, _download, this );
+            _serverProvider = serverProvider;
+
+            var configuration = configurationStore.Read<ServerConfiguration>( ServerConfigurationName );
+            var port = (startupInfo.Port ?? configuration?.Port).GetValueOrDefault( 50052 );
+            EnsurePortIsAvailable( port );
+
+            var uuid = startupInfo.ServerUuid;
+            if(uuid == Guid.Empty)
+            {
+                if(!(configuration?.Identifier != null && Guid.TryParse( configuration.Identifier, out uuid ) && uuid != Guid.Empty))
+                {
+                    uuid = Guid.NewGuid();
+                }
+            }
+
+            _logger.Log( $"Starting server {uuid} on port {port}.".ToString, Severity.Info );
+
+            ServerType = startupInfo.Info.Type;
+            ServerDescription = startupInfo.Info.Description;
+            ServerVendorURL = startupInfo.Info.VendorUri;
+            ServerVersion = startupInfo.Info.Version;
+            ServerUUID = uuid.ToString();
+            ServerName = startupInfo.Name ?? configuration?.Name ?? ServerType;
+            _implementedFeatures = new List<IFeatureProvider>();
+            _loggingInterceptor = new LoggingInterceptor( _logger );
+
+            // create gRPC server such that it uses only the specified network interfaces
+            if((startupInfo.NetworkInterfaces ?? configuration?.InterfaceFilter) != null)
+            {
+                var networking = new Networking( loggingChannelFactory );
+                var filter = networking.CreateNetworkInterfaceFilter( startupInfo.NetworkInterfaces ?? configuration?.InterfaceFilter );
+                
+                _announcer = new ServiceAnnouncer( ServerUUID, (ushort)port, filter, loggingChannelFactory );
+
+                _serverProvider.ConfigureForServer( uuid, port, filter );
+
+                if(_serverProvider.Credentials is SslServerCredentials secureCredentials)
+                {
+                    var lines = secureCredentials.RootCertificates.Split( new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries );
+                    for(int i = 0; i < lines.Length; i++)
+                    {
+                        _announcer.SetProperty( "ca" + i, lines[i] );
+                    }
+                }
+                else
+                {
+                    _announcer.SetProperty( "encrypted", "false" );
+                }
+            }
+            else
+            {
+                _logger.Log( "Server is running without Discovery!".ToString, Severity.Warning );
+                // if no interface was specified, the SiLA server will (try to) run on all of them
+                _serverProvider.ConfigureForServer( uuid, port, null );
+            }
+
+            _serverProvider.AddService( _upload.CreateServiceDefinition() );
+            _serverProvider.AddService( _download.CreateServiceDefinition() );
+
+            var cleanupInterval = TimeSpan.FromSeconds( 30 );
+            _cleanupTimer = new Timer( Cleanup, null, cleanupInterval, cleanupInterval );
+
+            if(configuration == null)
+            {
+                TryPersistConfiguration( startupInfo, configurationStore, port );
+            }
         }
 
         private void Cleanup( object state )
@@ -313,7 +272,6 @@ namespace Tecan.Sila2.Server
         public void StartServer()
         {
             _logger.Log("Starting server".ToString, Severity.Info);
-            GrpcServer.Start();
             if (_announcer != null)
             {
                 _announcer.Start();
@@ -325,22 +283,23 @@ namespace Tecan.Sila2.Server
         /// Shuts down the server
         /// </summary>
         /// <returns>An awaitable task that shuts down the server</returns>
-        public async Task ShutdownServer()
+        public Task ShutdownServer()
         {
-            lock( _commandExecutions )
-            {
-                foreach( var execution in _commandExecutions )
-                {
-                    if( execution.Command.IsCancellationSupported )
-                    {
-                        execution.Command.Cancel();
-                    }
-                }
-            }
-            _announcer?.Dispose();
-            _cleanupTimer.Dispose();
-            _logger.Log("Shutting down Grpc server".ToString, Severity.Info);
-            await GrpcServer.ShutdownAsync();
+            return Task.Factory.StartNew( () =>
+             {
+                 lock(_commandExecutions)
+                 {
+                     foreach(var execution in _commandExecutions)
+                     {
+                         if(execution.Command.IsCancellationSupported)
+                         {
+                             execution.Command.Cancel();
+                         }
+                     }
+                 }
+                 _announcer?.Dispose();
+                 _cleanupTimer.Dispose();
+             });
         }
 
         #endregion
@@ -356,7 +315,7 @@ namespace Tecan.Sila2.Server
             _implementedFeatures.Add(feature);
             var builder = new ServerBuilder( this, feature.FeatureDefinition, _poolDispatcher );
             feature.Register( builder );
-            GrpcServer.Services.Add( builder.CreateServiceDefinition().Intercept(_loggingInterceptor) );
+            _serverProvider.AddService( builder.CreateServiceDefinition().Intercept(_loggingInterceptor) );
             _logger.Log( $"Exposing feature {feature.FeatureDefinition.FullyQualifiedIdentifier}".ToString, Severity.Info );
         }
 

@@ -486,5 +486,10 @@ namespace Tecan.Sila2.Discovery
         {
             return ClientErrorHandling.ConvertException( ex, executionErrorConversion );
         }
+
+        public async void Dispose()
+        {
+            await _channel.ShutdownAsync();
+        }
     }
 }

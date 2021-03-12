@@ -40,7 +40,7 @@ namespace Tecan.Sila2.Generator.CommandLine
         [Option('u', "unit", HelpText = "The organizational unit where the certificate comes from.")]
         public string OrganizationUnit { get; set; }
 
-        [Value(0, HelpText = "The target name for which the certificate is issued.", Required = true)]
+        [Value(0, HelpText = "The target server UUID for which the certificate is issued.", Required = true)]
         public string TargetName { get; set; }
 
         public override void Execute(CompositionContainer container)
@@ -56,10 +56,40 @@ namespace Tecan.Sila2.Generator.CommandLine
             // force create new server key
             var serverTempPassword = "pass:1111";
             OpenSsl(channel, $"genrsa -passout {serverTempPassword} -des3 -out server.key", "Generate server key");
-            var subject = CreateSubject(TargetName);
-            OpenSsl( channel, $"req -passin {serverTempPassword} -new -key server.key -out server.csr -subj {subject}", "Create server signing request");
-            OpenSsl( channel, $"x509 -req -passin {CAPassword} -days {Duration} -in server.csr -CA ca.crt -CAkey \"{CAPath}\" -set_serial 01 -out server.crt", "Create server certificate");
+            var subject = CreateSubject("SiLA2");
+            var config = CreateConfig( TargetName );
+            try
+            {
+                OpenSsl( channel, $"req -passin {serverTempPassword} -new -key server.key -out server.csr -subj {subject} -config \"{config}\"", "Create server signing request" );
+                OpenSsl( channel, $"x509 -req -passin {CAPassword} -days {Duration} -in server.csr -CA ca.crt -CAkey \"{CAPath}\" -set_serial 01 -out server.crt -extfile \"{config}\" -extensions v3_req", "Create server certificate" );
+            }
+            finally
+            {
+                File.Delete( config );
+            }
             OpenSsl( channel, $"rsa -passin {serverTempPassword} -in server.key -out server.key", "Remove passphrase from server key");
+        }
+
+        private string CreateConfig(string serverUUID)
+        {
+            var fileName = Path.GetTempFileName();
+            using(var writer = new StreamWriter( fileName ))
+            {
+                writer.WriteLine( "[req]" );
+                writer.WriteLine( "req_extensions = v3_req" );
+                writer.WriteLine( "x509_extensions = v3_req" );
+                writer.WriteLine( "distinguished_name = req_distinguished_name" );
+                writer.WriteLine( "[req_distinguished_name]" );
+                writer.WriteLine( "[v3_req]" );
+                writer.WriteLine( "basicConstraints = CA:FALSE" );
+                writer.WriteLine( "keyUsage = digitalSignature, keyEncipherment" );
+                if(!string.IsNullOrEmpty( serverUUID ))
+                {
+                    writer.WriteLine( $"1.3.536=critical,ASN1:UTF8String:{serverUUID}" );
+                    writer.WriteLine( $"1.3.536=ASN1:UTF8String:{serverUUID}" );
+                }
+            }
+            return fileName;
         }
 
         private void EnsureCaExists(ILoggingChannel channel)
@@ -76,8 +106,15 @@ namespace Tecan.Sila2.Generator.CommandLine
             if (!File.Exists(caCrt))
             {
                 var subject = CreateSubject("CA");
-
-                OpenSsl( channel, $"req -passin {CAPassword} -new -x509 -days {Duration} -key \"{CAPath}\" -out \"{caCrt}\" -subj \"{subject}\"", "Create CA certificate");
+                var config = CreateConfig( null );
+                try
+                {
+                    OpenSsl( channel, $"req -passin {CAPassword} -new -x509 -days {Duration} -key \"{CAPath}\" -out \"{caCrt}\" -subj \"{subject}\" -config \"{config}\"", "Create CA certificate" );
+                }
+                finally
+                {
+                    File.Delete( config );
+                }
             }
             else
             {

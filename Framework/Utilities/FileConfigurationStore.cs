@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Xml.Serialization;
 
-namespace Tecan.Sila2.Server
+namespace Tecan.Sila2
 {
     /// <summary>
     /// Default implementation of a configuration store

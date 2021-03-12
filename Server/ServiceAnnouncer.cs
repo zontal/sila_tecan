@@ -60,6 +60,16 @@ namespace Tecan.Sila2
         }
 
         /// <summary>
+        /// Adds a property to the announced profile
+        /// </summary>
+        /// <param name="key">The name of the property</param>
+        /// <param name="value">The value of the property</param>
+        public void SetProperty(string key, string value)
+        {
+            Profile.AddProperty( key, value );
+        }
+
+        /// <summary>
         /// Starts advertising the SiLA server on mDNS.
         /// </summary>
         public void Start()

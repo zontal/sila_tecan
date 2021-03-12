@@ -18,16 +18,5 @@ namespace Tecan.Sila2.Client
         /// Gets fired when a new server gets connected
         /// </summary>
         event EventHandler<ServerDataEventArgs> ServerConnected;
-
-        /// <summary>
-        /// Starts the server pool
-        /// </summary>
-        void Start(string host, int port);
-
-        /// <summary>
-        /// Shuts down the server pool
-        /// </summary>
-        /// <returns>Gets an awaitable that completes when the server pool is shut down</returns>
-        Task Shutdown();
     }
 }

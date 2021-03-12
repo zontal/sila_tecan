@@ -8,7 +8,7 @@ namespace Tecan.Sila2.Client
     /// <summary>
     /// Denotes a component that can execute SiLA2 commands
     /// </summary>
-    public interface IClientChannel
+    public interface IClientChannel : IDisposable
     {
         /// <summary>
         /// Gets the state of the channel

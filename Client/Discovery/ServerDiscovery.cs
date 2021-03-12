@@ -22,6 +22,8 @@ namespace Tecan.Sila2.Discovery
         private readonly IServerConnector _serverConnector;
         private readonly Networking _networking;
 
+        private const int GuidLength = 36;
+
         private readonly Dictionary<string, ServerData> _connectedServers = new Dictionary<string, ServerData>();
 
         /// <summary>
@@ -87,12 +89,15 @@ namespace Tecan.Sila2.Discovery
                         var aRecord = e.Message.AdditionalRecords.OfType<ARecord>().FirstOrDefault() ?? e.Message.Answers.OfType<ARecord>().FirstOrDefault();
                         lock(_connectedServers)
                         {
-                            if(aRecord != null && !_connectedServers.ContainsKey( server.Name.ToString() ))
+                            var serverName = server.Name.ToString();
+                            if(aRecord != null && !_connectedServers.ContainsKey( serverName ))
                             {
+                                // see whether there are TXT records
+                                var details = ReadDetails( e.Message.Answers.Concat( e.Message.AdditionalRecords ) );
                                 try
                                 {
-                                    var channel = _serverConnector.Connect( aRecord.Address, server.Port );
-                                    _connectedServers[server.Name.ToString()] = channel;
+                                    var channel = _serverConnector.Connect( aRecord.Address, server.Port, Guid.TryParse( serverName.Substring( 0, GuidLength ), out var serverUuid ) ? serverUuid : null, details );
+                                    _connectedServers[serverName] = channel;
                                     serverFoundCallback( channel );
                                 }
                                 catch(Exception exception)
@@ -112,6 +117,27 @@ namespace Tecan.Sila2.Discovery
                 mdns.Stop();
                 mdns.AnswerReceived -= handler;
             }
+        }
+
+        private IReadOnlyDictionary<string, string> ReadDetails( IEnumerable<ResourceRecord> records )
+        {
+            Dictionary<string, string> result = null;
+            foreach(var item in records.OfType<TXTRecord>().SelectMany(txt => txt.Strings))
+            {
+                if (!string.IsNullOrEmpty(item))
+                {
+                    var equalsPos = item.IndexOf( '=' );
+                    if (equalsPos > 0)
+                    {
+                        if (result == null)
+                        {
+                            result = new Dictionary<string, string>();
+                        }
+                        result[item.Substring( 0, equalsPos )] = item.Substring( equalsPos + 1 );
+                    }
+                }
+            }
+            return result;
         }
 
         private void NotifyKnownServers( Action<ServerData> serverFoundCallback )

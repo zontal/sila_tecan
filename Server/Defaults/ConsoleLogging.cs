@@ -4,35 +4,45 @@ using Tecan.MAP.Contracts.Services.Logging.Configuration;
 
 namespace Tecan.Sila2.Server
 {
-    internal class ConsoleLogging : ILoggingChannelFactory, ILoggingChannel
+    /// <summary>
+    /// Denotes a simple logging implementation that logs to the console
+    /// </summary>
+    public class ConsoleLogging : ILoggingChannelFactory, ILoggingChannel
     {
+        /// <inheritdoc />
         public void Dispose()
         {
 
         }
 
+        /// <inheritdoc />
         public ILoggingChannel CreateChannel(Type type)
         {
             return this;
         }
 
+        /// <inheritdoc />
         public LoggingConfiguration Configuration => null;
 
+        /// <inheritdoc />
         public void Log(Func<string> messageProvider, Severity severity = Severity.Debug)
         {
             Log(messageProvider, null, null, severity);
         }
 
+        /// <inheritdoc />
         public void Log(Func<string> messageProvider, Action<IDataBuilder> dataProvider, Severity severity = Severity.Debug)
         {
             Log(messageProvider, null, dataProvider, severity);
         }
 
+        /// <inheritdoc />
         public void Log(Func<string> messageProvider, ActivityId activityId, Severity severity = Severity.Debug)
         {
             Log(messageProvider, activityId, null, severity);
         }
 
+        /// <inheritdoc />
         public void Log(Func<string> messageProvider, ActivityId activityId, Action<IDataBuilder> dataProvider, Severity severity = Severity.Debug)
         {
             switch (severity)
@@ -57,6 +67,7 @@ namespace Tecan.Sila2.Server
             Console.ResetColor();
         }
 
+        /// <inheritdoc />
         public void LogException(Func<string> messageProvider, Exception exception)
         {
             Console.ForegroundColor = ConsoleColor.Red;
