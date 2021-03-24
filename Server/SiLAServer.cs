@@ -393,6 +393,7 @@ namespace Tecan.Sila2.Server
         {
             using( new ActivityBlock( "Request of " + request.CommandIdentifier ) )
             {
+                _logger.Log( $"Executing command {request.CommandIdentifier}".ToString, Severity.Info );
                 var interceptions = RequestInterceptions( request.CommandIdentifier, metadataRepository );
                 try
                 {
@@ -409,6 +410,7 @@ namespace Tecan.Sila2.Server
                 }
                 catch( Exception exception )
                 {
+                    _logger.LogException( $"Error while executing command {request.CommandIdentifier}".ToString, exception );
                     if( interceptions != null )
                     {
                         foreach( var interception in interceptions )
@@ -444,6 +446,7 @@ namespace Tecan.Sila2.Server
             using( new ActivityBlock( "Request of " + commandIdentifier ) )
             {
                 var interceptions = RequestInterceptions( commandIdentifier, metadataRepository );
+                _logger.Log( $"Executing command {commandIdentifier}".ToString, Severity.Info );
                 try
                 {
                     var result = await command();
@@ -459,6 +462,7 @@ namespace Tecan.Sila2.Server
                 }
                 catch( Exception exception )
                 {
+                    _logger.LogException( $"Error while executing command {commandIdentifier}".ToString, exception );
                     if( interceptions != null )
                     {
                         foreach( var interception in interceptions )
@@ -559,6 +563,7 @@ namespace Tecan.Sila2.Server
             var interceptors = RequestInterceptions( propertyIdentifier, metadataRepository );
             try
             {
+                _logger.Log( $"Obtaining value for property {propertyIdentifier}".ToString, Severity.Info );
                 var result = value();
                 if( interceptors != null )
                 {
@@ -572,6 +577,7 @@ namespace Tecan.Sila2.Server
             }
             catch( Exception exception )
             {
+                _logger.LogException( $"Exception happened obtaining the value for {propertyIdentifier}".ToString, exception );
                 if( interceptors != null )
                 {
                     foreach( var interceptor in interceptors )
@@ -647,6 +653,7 @@ namespace Tecan.Sila2.Server
         /// <inheritdoc />
         public IDisposable ConnectToPool( string poolAddress )
         {
+            _logger.Log( $"Connecting to server pool {poolAddress}".ToString, Severity.Info );
             var channel = new Channel( poolAddress, ChannelCredentials.Insecure );
             var connection = new PoolConnection( _poolDispatcher, _loggingChannelFactory, channel.CreateCallInvoker().AsyncDuplexStreamingCall( PoolingConstants.ConnectSilaServerMethod, null, new CallOptions() ) );
             connection.Start();

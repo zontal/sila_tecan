@@ -39,7 +39,11 @@ namespace Tecan.Sila2.ParameterConstraintsProvider
                 foreach(var command in featureProvider.FeatureDefinition.Items.OfType<FeatureCommand>())
                 {
                     var method = featureProvider.GetCommand( feature.GetFullyQualifiedIdentifier( command ) );
-
+                    if (method == null)
+                    {
+                        _loggingChannel.Log( $"Could not identify method for command {command.Identifier}, please make sure your interface and feature are in sync".ToString, Severity.Error );
+                        continue;
+                    }
                     foreach(var parameterInfo in method.GetParameters())
                     {
                         foreach(var attribute in parameterInfo.GetCustomAttributes( false ))

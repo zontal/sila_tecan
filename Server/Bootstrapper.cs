@@ -43,7 +43,7 @@ namespace Tecan.Sila2.Server
         /// Starts the server with the given parsed command line parameters
         /// </summary>
         /// <param name="args">The parsed command line parameters</param>
-        public void StartServer(ServerCommandLineArguments args)
+        public virtual void StartServer(ServerCommandLineArguments args)
         {
             AppDomain.CurrentDomain.ProcessExit += TryShutdownServer;
             var selfInfo = GetServerInformation();

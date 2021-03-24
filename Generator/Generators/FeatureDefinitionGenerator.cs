@@ -141,6 +141,10 @@ namespace Tecan.Sila2.Generator.Generators
                 if( originator == null )
                 {
                     _loggingChannel.Log("Assign originator based on the namespace because no originator has been provided.".ToString);
+                    if (useCaseStartIndex < 2)
+                    {
+                        throw new InvalidOperationException( "The namespace is too short to derive originator and use case from it. Please provide them explicitly or chose a different namespace." );
+                    }
                     originator = ns.Substring( 0, useCaseStartIndex - 1 );
                 }
 

@@ -61,26 +61,43 @@ namespace Tecan.Sila2.Generator.Generators
 
         public void TryLoadDocumentation( Assembly assembly )
         {
-            var documentationPath = Path.ChangeExtension( assembly.Location, ".xml" );
-            if(File.Exists( documentationPath ) && !_loadedDocumentation.ContainsKey( assembly.FullName ))
+            if (_loadedDocumentation.ContainsKey(assembly.FullName))
             {
-                try
+                return;
+            }
+            var documentationPath = Path.ChangeExtension( assembly.Location, ".xml" );
+            if(File.Exists( documentationPath ))
+            {
+                TryLoadDocumentation( assembly, documentationPath );
+            }
+            else
+            {
+                var parentFolderPath = Path.Combine( Path.GetDirectoryName( documentationPath ), "..", Path.GetFileName( documentationPath ) );
+                if (File.Exists(parentFolderPath))
                 {
-                    var docs = new Dictionary<string, XElement>();
-                    var doc = XDocument.Load( documentationPath );
-                    foreach(var element in doc.Root.Element( XName.Get( "members" ) ).Elements())
-                    {
-                        var reference = element.Attribute( XName.Get( "name" ) ).Value;
-                        docs.Add( reference, element );
-                    }
+                    TryLoadDocumentation( assembly, parentFolderPath );
+                }
+            }
+        }
 
-                    _loadedDocumentation.Add( assembly.FullName, docs );
-                    _loggingChannel.Log($"Documentation for {assembly.FullName} successfully loaded.".ToString, Severity.Info);
-                }
-                catch(Exception e)
+        private void TryLoadDocumentation( Assembly assembly, string documentationPath )
+        {
+            try
+            {
+                var docs = new Dictionary<string, XElement>();
+                var doc = XDocument.Load( documentationPath );
+                foreach(var element in doc.Root.Element( XName.Get( "members" ) ).Elements())
                 {
-                    _loggingChannel.Log( $"Loading documentation for assembly {assembly.FullName} failed: {e.Message}.".ToString, Severity.Warning );
+                    var reference = element.Attribute( XName.Get( "name" ) ).Value;
+                    docs.Add( reference, element );
                 }
+
+                _loadedDocumentation.Add( assembly.FullName, docs );
+                _loggingChannel.Log( $"Documentation for {assembly.FullName} successfully loaded.".ToString, Severity.Info );
+            }
+            catch(Exception e)
+            {
+                _loggingChannel.Log( $"Loading documentation for assembly {assembly.FullName} failed: {e.Message}.".ToString, Severity.Warning );
             }
         }
 
