@@ -12,7 +12,7 @@
         <projectUrl>https://gitlab.com/SiLA2/vendors/sila_tecan</projectUrl>
         <repository type="git" url="https://gitlab.com/SiLA2/vendors/sila_tecan.git" />
         <dependencies>
-            <dependency id="Tecan.Sila2" version="[3.1,4.0)" />
+            <dependency id="Tecan.Sila2" version="[3.2,4.0)" />
         </dependencies>
     </metadata>
     <files>

@@ -12,7 +12,7 @@
         <projectUrl>https://gitlab.com/SiLA2/vendors/sila_tecan</projectUrl>
         <repository type="git" url="https://gitlab.com/SiLA2/vendors/sila_tecan.git" />
         <dependencies>
-            <dependency id="Tecan.Sila2.Server" version="[3.1,4.0)" />
+            <dependency id="Tecan.Sila2.Server" version="[3.2,4.0)" />
             <dependency id="Common.Logging" version="3.4.1" />
             <dependency id="Microsoft.Extensions.Configuration" version="2.1.1" />
             <dependency id="Microsoft.Extensions.Configuration.Binder" version="2.1.1" />
