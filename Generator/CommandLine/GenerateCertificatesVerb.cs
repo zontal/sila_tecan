@@ -16,6 +16,9 @@ namespace Tecan.Sila2.Generator.CommandLine
     internal class GenerateCertificatesVerb : VerbBase
     {
         [Option('a', "ca-path", Required = true, HelpText = "The path to the certificate authority key file")]
+        public string CAKeyPath { get; set; }
+
+        [Option("ca-cert", Required = false, HelpText = "The path to the certificate authority certificate, if this is created from scratch")]
         public string CAPath { get; set; }
 
         [Option('p', "ca-password", Required = true, HelpText = "The pass-phrase for the certificate authority")]
@@ -57,11 +60,11 @@ namespace Tecan.Sila2.Generator.CommandLine
             var serverTempPassword = "pass:1111";
             OpenSsl(channel, $"genrsa -passout {serverTempPassword} -des3 -out server.key", "Generate server key");
             var subject = CreateSubject("SiLA2");
-            var config = CreateConfig( TargetName );
+            var config = CreateConfig( TargetName, false );
             try
             {
                 OpenSsl( channel, $"req -passin {serverTempPassword} -new -key server.key -out server.csr -subj {subject} -config \"{config}\"", "Create server signing request" );
-                OpenSsl( channel, $"x509 -req -passin {CAPassword} -days {Duration} -in server.csr -CA ca.crt -CAkey \"{CAPath}\" -set_serial 01 -out server.crt -extfile \"{config}\" -extensions v3_req", "Create server certificate" );
+                OpenSsl( channel, $"x509 -req -passin {CAPassword} -days {Duration} -in server.csr -CA ca.crt -CAkey \"{CAKeyPath}\" -set_serial 01 -out server.crt -extfile \"{config}\" -extensions v3_req", "Create server certificate" );
             }
             finally
             {
@@ -70,23 +73,29 @@ namespace Tecan.Sila2.Generator.CommandLine
             OpenSsl( channel, $"rsa -passin {serverTempPassword} -in server.key -out server.key", "Remove passphrase from server key");
         }
 
-        private string CreateConfig(string serverUUID)
+        private string CreateConfig(string serverUUID, bool isCa)
         {
             var fileName = Path.GetTempFileName();
             using(var writer = new StreamWriter( fileName ))
             {
                 writer.WriteLine( "[req]" );
-                writer.WriteLine( "req_extensions = v3_req" );
-                writer.WriteLine( "x509_extensions = v3_req" );
+                if(!isCa)
+                {
+                    writer.WriteLine( "req_extensions = v3_req" );
+                    writer.WriteLine( "x509_extensions = v3_req" );
+                }
                 writer.WriteLine( "distinguished_name = req_distinguished_name" );
                 writer.WriteLine( "[req_distinguished_name]" );
-                writer.WriteLine( "[v3_req]" );
-                writer.WriteLine( "basicConstraints = CA:FALSE" );
-                writer.WriteLine( "keyUsage = digitalSignature, keyEncipherment" );
-                if(!string.IsNullOrEmpty( serverUUID ))
+                if(!isCa)
                 {
-                    writer.WriteLine( $"1.3.536=critical,ASN1:UTF8String:{serverUUID}" );
-                    writer.WriteLine( $"1.3.536=ASN1:UTF8String:{serverUUID}" );
+                    writer.WriteLine( "[v3_req]" );
+                    writer.WriteLine( "basicConstraints = CA:FALSE" );
+                    writer.WriteLine( "keyUsage = digitalSignature, keyEncipherment" );
+                    if(!string.IsNullOrEmpty( serverUUID ))
+                    {
+                        writer.WriteLine( $"1.3.536=critical,ASN1:UTF8String:{serverUUID}" );
+                        writer.WriteLine( $"1.3.536=ASN1:UTF8String:{serverUUID}" );
+                    }
                 }
             }
             return fileName;
@@ -94,22 +103,26 @@ namespace Tecan.Sila2.Generator.CommandLine
 
         private void EnsureCaExists(ILoggingChannel channel)
         {
-            if (!File.Exists(CAPath))
+            if (Path.GetExtension(CAKeyPath).EndsWith("crt"))
             {
-                OpenSsl( channel, $"genrsa -passout {CAPassword} -des3 -out \"{CAPath}\" 4096", "Creating CA key");
+                channel.Log( "The key file for the certificate authority looks like a certificate (.crt). Key files by convention carry the .key extension.".ToString, Severity.Warning );
+            }
+            if (!File.Exists(CAKeyPath))
+            {
+                OpenSsl( channel, $"genrsa -passout {CAPassword} -des3 -out \"{CAKeyPath}\" 4096", "Creating CA key");
             }
             else
             {
-                channel.Log("CA found".ToString);
+                channel.Log("CA key found".ToString);
             }
-            var caCrt = Path.ChangeExtension(CAPath, ".crt");
+            var caCrt = CAPath ?? Path.ChangeExtension(CAKeyPath, ".crt");
             if (!File.Exists(caCrt))
             {
                 var subject = CreateSubject("CA");
-                var config = CreateConfig( null );
+                var config = CreateConfig( null, true );
                 try
                 {
-                    OpenSsl( channel, $"req -passin {CAPassword} -new -x509 -days {Duration} -key \"{CAPath}\" -out \"{caCrt}\" -subj \"{subject}\" -config \"{config}\"", "Create CA certificate" );
+                    OpenSsl( channel, $"req -passin {CAPassword} -new -x509 -days {Duration} -key \"{CAKeyPath}\" -out \"{caCrt}\" -subj \"{subject}\" -config \"{config}\"", "Create CA certificate" );
                 }
                 finally
                 {

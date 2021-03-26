@@ -71,7 +71,8 @@ namespace Tecan.Sila2.Discovery
                     {
                         var ca = RestoreCa( details );
                         var channel = new Channel( target, new SslCredentials( ca, null, verify ), _defaultChannelOptions );
-                        return CheckExpectedGuid( CheckCertificate( GetServerData( channel ), ExtractCertificate(certificate) ), expectedGuid);
+                        var server = GetServerData( channel );
+                        return CheckExpectedGuid( CheckCertificate( server, ExtractCertificate(certificate) ), expectedGuid);
                     }
                     catch(Exception e)
                     {

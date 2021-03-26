@@ -46,14 +46,14 @@ namespace Tecan.Sila2.Discovery
             cancellationToken.Register( cts.SetCanceled );
             var found = false;
 
-            DiscoverServers( channel =>
+            DiscoverServersCore( channel =>
             {
                 if( channel.Config.Uuid == serverUuid )
                 {
                     cts.SetResult(channel);
                     found = true;
                 }
-            }, timeout, networkFilter, cancellationToken );
+            }, timeout, networkFilter, cancellationToken, $"{serverUuid}.{DiscoveryConstants.ServiceName}.{DiscoveryConstants.ServiceDomainName}" );
 
             if (!found)
             {
@@ -66,14 +66,27 @@ namespace Tecan.Sila2.Discovery
         /// <inheritdoc />
         public void DiscoverServers( Action<ServerData> serverFoundCallback, TimeSpan timeout = default, Predicate<NetworkInterface> networkInterfaceFilter = null, CancellationToken cancellationToken = default )
         {
-            if (serverFoundCallback == null)
+            if(serverFoundCallback == null)
             {
                 throw new ArgumentNullException( nameof( serverFoundCallback ) );
             }
 
+            DiscoverServersCore( serverFoundCallback, timeout, networkInterfaceFilter, cancellationToken, null );
+        }
+
+        private void DiscoverServersCore( Action<ServerData> serverFoundCallback, TimeSpan timeout, Predicate<NetworkInterface> networkInterfaceFilter, CancellationToken cancellationToken, string expected )
+        {
             lock(_connectedServers)
             {
-                NotifyKnownServers( serverFoundCallback );
+                if(expected == null)
+                {
+                    NotifyKnownServers( serverFoundCallback );
+                }
+                else if (_connectedServers.TryGetValue(expected, out var serverData))
+                {
+                    serverFoundCallback( serverData );
+                    return;
+                }
             }
             using(var mdns = new MulticastService( _networking.CreateFilter( networkInterfaceFilter ) ))
             {
@@ -83,14 +96,14 @@ namespace Tecan.Sila2.Discovery
                     RequestSrvForPtrRecord( e.Message, mdns );
 
                     // The second Answer will be a SRVRecord (also contain A and AAAA records or as separate answers)
-                    var servers = e.Message.Answers.OfType<SRVRecord>().Where( p => p.Name.ToString().Contains( DiscoveryConstants.ServiceName ) );
+                    var servers = e.Message.Answers.Concat( e.Message.AdditionalRecords ).OfType<SRVRecord>().Where( p => p.Name.ToString().Contains( DiscoveryConstants.ServiceName ) );
                     foreach(var server in servers)
                     {
                         var aRecord = e.Message.AdditionalRecords.OfType<ARecord>().FirstOrDefault() ?? e.Message.Answers.OfType<ARecord>().FirstOrDefault();
                         lock(_connectedServers)
                         {
                             var serverName = server.Name.ToString();
-                            if(aRecord != null && !_connectedServers.ContainsKey( serverName ))
+                            if(aRecord != null && !_connectedServers.ContainsKey( serverName ) && (expected == null || expected == serverName))
                             {
                                 // see whether there are TXT records
                                 var details = ReadDetails( e.Message.Answers.Concat( e.Message.AdditionalRecords ) );
@@ -162,7 +175,7 @@ namespace Tecan.Sila2.Discovery
             var pointers = message.Answers.OfType<PTRRecord>().Where( p => p.Name.ToString().Contains( DiscoveryConstants.ServiceName ) );
             foreach(var pointer in pointers)
             {
-                if(!_connectedServers.ContainsKey( pointer.DomainName.ToString() ) && !message.Answers.OfType<SRVRecord>().Any() )
+                if(!_connectedServers.ContainsKey( pointer.DomainName.ToString() ) && !message.Answers.Concat(message.AdditionalRecords).OfType<SRVRecord>().Any() )
                 {
                     // Ask for the service instance details
                     mdns.SendQuery( pointer.DomainName, type: DnsType.SRV );
