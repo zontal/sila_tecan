@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
+using Tecan.Sila2.DynamicClient;
 
 namespace Tecan.Sila2.IntegrationTests
 {
@@ -28,6 +29,8 @@ namespace Tecan.Sila2.IntegrationTests
         FileInfo PassFile( FileInfo file );
 
         byte[] PassBytes( byte[] bytes );
+
+        DynamicObjectProperty PassDynamic( DynamicObjectProperty dynamic );
 
         ICollection<string> PassCollection( ICollection<string> strings );
 

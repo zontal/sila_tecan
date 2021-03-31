@@ -59,7 +59,7 @@ namespace Tecan.Sila2.DynamicClient
 
             var type = DataTypeSerializer.LoadType( Type );
             var property = new DynamicObjectProperty( Identifier, DisplayName, Description, type );
-            Serializer.Deserialize( property, Payload, true, resolver );
+            Serializer.Deserialize( property, Payload, false, resolver );
             return property;
         }
 

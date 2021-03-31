@@ -30,7 +30,7 @@ namespace Tecan.Sila2.IntegrationTests
             var dir = Path.Combine( AppDomain.CurrentDomain.BaseDirectory, "..", "TestServer" );
             var serverId = Guid.Parse( "397D289C-40D3-4D03-8A15-7EA4856ED9D1" );
             var payloadArguments = $"-u {serverId} -i 127.0.0.1";
-            var attachDebugger = false; // Debugger.IsAttached;
+            var attachDebugger = Debugger.IsAttached;
             if(attachDebugger)
             {
                 payloadArguments = "debug " + payloadArguments;
@@ -550,6 +550,83 @@ namespace Tecan.Sila2.IntegrationTests
 
             Unlock( lockId, token );
             Logout( token );
+        }
+
+        [Test]
+        public void PassAny_TransmittedSuccessfully()
+        {
+            var token = Login();
+            var lockId = Lock( token );
+            var executionManager = new TestAuthLockingExecutionManager( lockId, token, _server.Channel );
+            var testClient = new TestServerClient( _server.Channel, executionManager );
+
+            PassAnyAndAssert( testClient, "Client", BasicType.String );
+            PassAnyAndAssert( testClient, double.NaN, BasicType.Real );
+            PassAnyAndAssert( testClient, true, BasicType.Boolean );
+            PassAnyAndAssert( testClient, DateTime.Today, BasicType.Date );
+
+            Unlock( lockId, token );
+            Logout( token );
+        }
+
+        private static void PassAnyAndAssert( TestServerClient testClient, object input, BasicType type )
+        {
+            var testInput = new DynamicObjectProperty( "Test", null, null, new DataTypeType
+            {
+                Item = type
+            } );
+            testInput.Value = input;
+
+            var response = testClient.PassDynamic( testInput );
+
+            Assert.That( response.Type.Item, Is.EqualTo( type ) );
+            Assert.That( response.Value, Is.EqualTo( input ) );
+        }
+
+        [Test]
+        public void PassAnyDynamic_TransmittedSuccessFully()
+        {
+            var token = Login();
+            var lockId = Lock( token );
+            var executionManager = new TestAuthLockingExecutionManager( lockId, token, _server.Channel );
+
+            var feature = _server.Features.Single( f => f.Identifier == "TestServer" );
+            var featureContext = new FeatureContext( feature, _server, executionManager );
+            var testClient = new NonObservableCommandClient( feature.Items.OfType<FeatureCommand>().Single( c => c.Identifier == "PassDynamic" ), featureContext );
+
+            PassAnyAndAssert( testClient, "Client", BasicType.String );
+            PassAnyAndAssert( testClient, double.NaN, BasicType.Real );
+            PassAnyAndAssert( testClient, true, BasicType.Boolean );
+            PassAnyAndAssert( testClient, DateTime.Today, BasicType.Date );
+
+            Unlock( lockId, token );
+            Logout( token );
+        }
+
+        private static void PassAnyAndAssert( NonObservableCommandClient testClient, object input, BasicType type )
+        {
+            var testInput = new DynamicObjectProperty( "Test", null, null, new DataTypeType
+            {
+                Item = type
+            } );
+            testInput.Value = input;
+
+            var request = testClient.CreateRequest();
+            request.Value = new DynamicObject
+            {
+                Elements =
+                {
+                    new DynamicObjectProperty(((StructureType)(request.Type.Item)).Element[0])
+                    {
+                        Value = testInput
+                    }
+                }
+            };
+
+            var response = (testClient.Invoke( request ).Value as DynamicObject).Elements[0].Value as DynamicObjectProperty;
+
+            Assert.That( response.Type.Item, Is.EqualTo( type ) );
+            Assert.That( response.Value, Is.EqualTo( input ) );
         }
 
         private static void PassAndAssertEquivalent(NonObservableCommandClient commandClient, List<string> listOfItems)

@@ -100,6 +100,13 @@ namespace Tecan.Sila2.IntegrationTests
         
         ///  <summary>
         /// </summary>
+        /// <param name="dynamic"></param>
+        /// <returns></returns>
+        [return: Tecan.Sila2.SilaIdentifierAttribute("ReturnValue")]
+        Tecan.Sila2.DynamicClient.DynamicObjectProperty PassDynamic(Tecan.Sila2.DynamicClient.DynamicObjectProperty dynamic);
+        
+        ///  <summary>
+        /// </summary>
         /// <param name="strings"></param>
         /// <returns></returns>
         [return: Tecan.Sila2.SilaIdentifierAttribute("ReturnValue")]

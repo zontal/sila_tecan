@@ -42,17 +42,25 @@ namespace Tecan.Sila2.DynamicClient
 
             using (var ms = new MemoryStream(data))
             {
-                using (var reader = ProtoReader.Create(ms, null))
+                using(var reader = ProtoReader.Create( ms, null ))
                 {
-                    if (readFieldHeader) reader.ReadFieldHeader();
-                    Read(reader, new Action<object>(property.SetValue), binaryStore, (dynamic)property.Type.Item);
+                    if(readFieldHeader)
+                    {
+                        reader.ReadFieldHeader();
+                        var token = ProtoReader.StartSubItem( reader );
+                        Read( reader, new Action<object>( property.SetValue ), binaryStore, (dynamic)property.Type.Item );
+                        ProtoReader.EndSubItem( token, reader );
+                    }
+                    else
+                    {
+                        Read( reader, new Action<object>( property.SetValue ), binaryStore, (dynamic)property.Type.Item );
+                    }
                 }
             }
         }
 
         private void Read(ProtoReader reader, Action<object> setProperty, IBinaryStore binaryStore, BasicType type)
         {
-            var token = ProtoReader.StartSubItem(reader);
             switch (type)
             {
                 case BasicType.Any:
@@ -95,7 +103,6 @@ namespace Tecan.Sila2.DynamicClient
                 default:
                     throw new ArgumentOutOfRangeException( nameof(type), type, $"Type {type} is not a supported basic type." );
             }
-            ProtoReader.EndSubItem(token, reader);
         }
 
         private static int ReadIntOfField( ProtoReader reader, int field )
@@ -181,36 +188,69 @@ namespace Tecan.Sila2.DynamicClient
             return reader.TryReadFieldHeader( field );
         }
 
-        private void Read(ProtoReader reader, Action<object> setProperty, IBinaryStore binaryStore, ListType type)
+        private void Read( ProtoReader reader, Action<object> setProperty, IBinaryStore binaryStore, ListType type )
         {
+            var readSubItems = false;
+            SubItemToken token = default;
+            if(reader.Position == 0)
+            {
+                readSubItems = true;
+                reader.ReadFieldHeader();
+                token = ProtoReader.StartSubItem( reader );
+            }
             var field = reader.FieldNumber;
             var list = new ObservableCollection<object>();
-            var action = new Action<object>(list.Add);
-            Read(reader, action, binaryStore,(dynamic)type.DataType.Item);
-            while (reader.TryReadFieldHeader(field))
+            var action = new Action<object>( list.Add );
+            Read( reader, action, binaryStore, (dynamic)type.DataType.Item );
+            if(readSubItems)
             {
-                Read(reader, action, binaryStore, (dynamic)type.DataType.Item);
+                ProtoReader.EndSubItem( token, reader );
+            }
+            while(reader.TryReadFieldHeader( field ))
+            {
+                if(readSubItems)
+                {
+                    token = ProtoReader.StartSubItem( reader );
+                }
+                Read( reader, action, binaryStore, (dynamic)type.DataType.Item );
+
+                if(readSubItems)
+                {
+                    ProtoReader.EndSubItem( token, reader );
+                }
             }
 
-            setProperty(list);
+            setProperty( list );
         }
 
         private void Read(ProtoReader reader, Action<object> setProperty, IBinaryStore binaryStore, StructureType type)
         {
             int field;
             var dynamicObject = new DynamicObject();
-            var first = reader.LongPosition == 0;
-            var token = default(SubItemToken);
-            if (!first) token = ProtoReader.StartSubItem(reader);
+            var lastField = -1;
+            DynamicObjectProperty lastProperty = null;
             while ((field = reader.ReadFieldHeader()) > 0)
             {
-                if (field <= type.Element.Length)
+                if(field <= type.Element.Length)
                 {
                     var element = type.Element[field - 1];
                     var fieldType = element.DataType;
-                    var child = new DynamicObjectProperty(element);
-                    dynamicObject.Elements.Add(child);
-                    Read(reader, new Action<object>(child.SetValue), binaryStore, (dynamic) (fieldType.Item));
+                    Action<object> readAction;
+                    if(field == lastField)
+                    {
+                        readAction = lastProperty.MergeValue;
+                    }
+                    else
+                    {
+                        var child = new DynamicObjectProperty( element );
+                        dynamicObject.Elements.Add( child );
+                        readAction = child.SetValue;
+                        lastField = field;
+                        lastProperty = child;
+                    }
+                    var token = ProtoReader.StartSubItem( reader );
+                    Read( reader, new Action<object>( readAction ), binaryStore, (dynamic)(fieldType.Item) );
+                    ProtoReader.EndSubItem( token, reader );
                 }
                 else
                 {
@@ -218,12 +258,7 @@ namespace Tecan.Sila2.DynamicClient
                 }
             }
 
-            if( !first )
-            {
-                ProtoReader.EndSubItem( token, reader );
-            }
-
-            if( first || dynamicObject.Elements.Count > 0)
+            if( dynamicObject.Elements.Count > 0)
             {
                 setProperty( dynamicObject );
             }
@@ -234,12 +269,12 @@ namespace Tecan.Sila2.DynamicClient
             Read(reader, setProperty, binaryStore, (dynamic)(type.DataType.Item));
         }
 
-        private void Read(ProtoReader reader, Action<object> setProperty, IBinaryStore binaryStore, string typeName)
+        private void Read( ProtoReader reader, Action<object> setProperty, IBinaryStore binaryStore, string typeName )
         {
-            var type = DataTypeResolver?.Invoke(typeName)?.Item;
-            var token = ProtoReader.StartSubItem( reader );
             reader.ReadFieldHeader();
-            Read(reader, setProperty, binaryStore, (dynamic)(type));
+            var type = DataTypeResolver?.Invoke( typeName )?.Item;
+            var token = ProtoReader.StartSubItem( reader );
+            Read( reader, setProperty, binaryStore, (dynamic)(type) );
             ProtoReader.EndSubItem( token, reader );
         }
 
@@ -267,8 +302,12 @@ namespace Tecan.Sila2.DynamicClient
 
         private void Write(ProtoWriter writer, object value, int fieldNumber, IBinaryStore store, BasicType type)
         {
-            ProtoWriter.WriteFieldHeader(fieldNumber, WireType.String, writer);
-            var token = ProtoWriter.StartSubItem(value, writer);
+            SubItemToken token = default;
+            if(fieldNumber > 0)
+            {
+                ProtoWriter.WriteFieldHeader( fieldNumber, WireType.String, writer );
+                token = ProtoWriter.StartSubItem( value, writer );
+            }
             switch (type)
             {
                 case BasicType.String:
@@ -305,7 +344,10 @@ namespace Tecan.Sila2.DynamicClient
                 default:
                     throw new ArgumentOutOfRangeException( nameof(type), type, $"Type {type} is not a supported basic type" );
             }
-            ProtoWriter.EndSubItem(token, writer);
+            if(fieldNumber > 0)
+            {
+                ProtoWriter.EndSubItem( token, writer );
+            }
         }
 
         private void WriteAny( ProtoWriter writer, object value, IBinaryStore store )
@@ -440,34 +482,38 @@ namespace Tecan.Sila2.DynamicClient
 
                 return;
             }
-            var token = default(SubItemToken);
-            if (fieldNumber > 0)
+            var token = default( SubItemToken );
+            if(fieldNumber > 0)
             {
-                ProtoWriter.WriteFieldHeader(fieldNumber, WireType.String, writer);
-                token = ProtoWriter.StartSubItem(dynamicObject, writer);
+                ProtoWriter.WriteFieldHeader( fieldNumber, WireType.String, writer );
+                token = ProtoWriter.StartSubItem( dynamicObject, writer );
             }
 
-            if (type.Element != null)
+            if(type.Element != null)
             {
-                for (var i = 0; i < type.Element.Length; i++)
+                for(var i = 0; i < type.Element.Length; i++)
                 {
                     var element = type.Element[i];
-                    var prop = dynamicObject.Elements.FirstOrDefault(p => p.Identifier == element.Identifier);
-                    if (prop != null)
+                    var prop = dynamicObject.Elements.FirstOrDefault( p => p.Identifier == element.Identifier );
+                    if(prop != null)
                     {
-                        Write(writer, prop.Value, i + 1, store, (dynamic) element.DataType.Item);
+                        Write( writer, prop.Value, i + 1, store, (dynamic)element.DataType.Item );
                     }
                 }
             }
 
-            if (fieldNumber > 0)
+            if(fieldNumber > 0)
             {
-                ProtoWriter.EndSubItem(token, writer);
+                ProtoWriter.EndSubItem( token, writer );
             }
         }
 
         private void Write(ProtoWriter writer, object value, int fieldNumber, IBinaryStore store, ListType type)
         {
+            if (fieldNumber == 0)
+            {
+                fieldNumber = 1;
+            }
             if (value is IEnumerable collection)
             {
                 foreach (var element in collection)
@@ -485,11 +531,17 @@ namespace Tecan.Sila2.DynamicClient
         private void Write(ProtoWriter writer, object value, int fieldNumber, IBinaryStore store, string typeName)
         {
             var type = DataTypeResolver?.Invoke(typeName)?.Item;
-
-            ProtoWriter.WriteFieldHeader( fieldNumber, WireType.String, writer );
-            var token = ProtoWriter.StartSubItem( value, writer );
-            Write(writer, value, 1, store, (dynamic)type);
-            ProtoWriter.EndSubItem( token, writer );
+            if (fieldNumber == 0)
+            {
+                Write( writer, value, 1, store, (dynamic)type );
+            }
+            else
+            {
+                ProtoWriter.WriteFieldHeader( fieldNumber, WireType.String, writer );
+                var token = ProtoWriter.StartSubItem( value, writer );
+                Write( writer, value, 1, store, (dynamic)type );
+                ProtoWriter.EndSubItem( token, writer );
+            }
         }
     }
 }

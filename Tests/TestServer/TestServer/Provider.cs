@@ -102,6 +102,7 @@ namespace Tecan.Sila2.IntegrationTests
             registration.RegisterUnobservableCommand<PassStreamRequestDto, PassStreamResponseDto>("PassStream", PassStream);
             registration.RegisterUnobservableCommand<PassFileRequestDto, PassFileResponseDto>("PassFile", PassFile);
             registration.RegisterUnobservableCommand<PassBytesRequestDto, PassBytesResponseDto>("PassBytes", PassBytes);
+            registration.RegisterUnobservableCommand<PassDynamicRequestDto, PassDynamicResponseDto>("PassDynamic", PassDynamic);
             registration.RegisterUnobservableCommand<PassCollectionRequestDto, PassCollectionResponseDto>("PassCollection", PassCollection);
             registration.RegisterUnobservableCommand<PassStructureRequestDto, PassStructureResponseDto>("PassStructure", PassStructure);
             registration.RegisterObservableCommand<RunObservableRequestDto, int, RunObservableResponseDto>("RunObservable", RunObservable, ConvertRunObservableResponse, null);
@@ -311,6 +312,26 @@ namespace Tecan.Sila2.IntegrationTests
                 if ((ex.ParamName == "bytes"))
                 {
                     throw _server.ErrorHandling.CreateValidationError("tecan.sila/integrationtests/TestServer/v1/Command/PassBytes/Parameter/Bytes", ex.Message);
+                }
+                throw _server.ErrorHandling.CreateUnknownValidationError(ex);
+            }
+        }
+        
+        ///  <summary>
+        /// Executes the Pass Dynamic command
+        /// </summary>
+        /// <param name="request">A data transfer object that contains the command parameters</param>
+        /// <returns>The command response wrapped in a data transfer object</returns>
+        protected virtual PassDynamicResponseDto PassDynamic(PassDynamicRequestDto request)
+        {
+            try
+            {
+                return new PassDynamicResponseDto(_implementation.PassDynamic(request.Dynamic.Extract(_server)), _server);
+            } catch (System.ArgumentException ex)
+            {
+                if ((ex.ParamName == "dynamic"))
+                {
+                    throw _server.ErrorHandling.CreateValidationError("tecan.sila/integrationtests/TestServer/v1/Command/PassDynamic/Parameter/Dynamic", ex.Message);
                 }
                 throw _server.ErrorHandling.CreateUnknownValidationError(ex);
             }
@@ -533,6 +554,10 @@ namespace Tecan.Sila2.IntegrationTests
             if ((commandIdentifier == "tecan.sila/integrationtests/TestServer/v1/Command/PassBytes"))
             {
                 return typeof(ITestServer).GetMethod("PassBytes");
+            }
+            if ((commandIdentifier == "tecan.sila/integrationtests/TestServer/v1/Command/PassDynamic"))
+            {
+                return typeof(ITestServer).GetMethod("PassDynamic");
             }
             if ((commandIdentifier == "tecan.sila/integrationtests/TestServer/v1/Command/PassCollection"))
             {

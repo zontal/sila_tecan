@@ -224,6 +224,28 @@
     </Response>
   </Command>
   <Command>
+    <Identifier>PassDynamic</Identifier>
+    <DisplayName>Pass Dynamic</DisplayName>
+    <Description />
+    <Observable>No</Observable>
+    <Parameter>
+      <Identifier>Dynamic</Identifier>
+      <DisplayName>Dynamic</DisplayName>
+      <Description />
+      <DataType>
+        <Basic>Any</Basic>
+      </DataType>
+    </Parameter>
+    <Response>
+      <Identifier>ReturnValue</Identifier>
+      <DisplayName>Return Value</DisplayName>
+      <Description />
+      <DataType>
+        <Basic>Any</Basic>
+      </DataType>
+    </Response>
+  </Command>
+  <Command>
     <Identifier>PassCollection</Identifier>
     <DisplayName>Pass Collection</DisplayName>
     <Description />

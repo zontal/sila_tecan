@@ -1,0 +1,35 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>netcoreapp3.1;net472;net461</TargetFrameworks>
+    <RootNamespace>Tecan.Sila2.DynamicClient.Test</RootNamespace>
+    <AssemblyName>Tecan.Sila2.DynamicClient.Test</AssemblyName>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\Generator.Tests\Logging\DtoReference.cs" Link="Logging\DtoReference.cs" />
+    <Compile Include="..\Generator.Tests\Logging\ServiceReference.cs" Link="Logging\ServiceReference.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="..\Generator.Tests\Logging\Feature.xml" Link="Logging\Feature.xml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="NUnit" Version="3.13.1" />
+    <PackageReference Include="NUnit3TestAdapter" Version="3.17.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.9.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\DynamicClient\DynamicClient.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Logging\" />
+    <Folder Include="Properties\" />
+  </ItemGroup>
+
+</Project>

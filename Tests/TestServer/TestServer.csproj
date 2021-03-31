@@ -25,6 +25,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Client\Client.csproj" />
     <ProjectReference Include="..\..\Contracts\Contracts.csproj" />
+    <ProjectReference Include="..\..\DynamicClient\DynamicClient.csproj" />
     <ProjectReference Include="..\..\Features\Authentication\Authentication.csproj" />
     <ProjectReference Include="..\..\Features\Cancellation\Cancellation.csproj" />
     <ProjectReference Include="..\..\Features\Locking\Locking.csproj" />

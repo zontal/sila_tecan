@@ -1154,6 +1154,120 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
     }
     
     ///  <summary>
+    /// Data transfer object for the request of the Pass Dynamic command
+    /// </summary>
+    [ProtoBuf.ProtoContractAttribute()]
+    public class PassDynamicRequestDto : Tecan.Sila2.ISilaTransferObject, Tecan.Sila2.ISilaRequestObject
+    {
+        
+        private Tecan.Sila2.DynamicClient.AnyTypeDto _dynamic;
+        
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        public PassDynamicRequestDto()
+        {
+        }
+        
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        /// <param name="store">An object to organize binaries.</param>
+        ///  <param name="dynamic"></param>
+        public PassDynamicRequestDto(Tecan.Sila2.DynamicClient.DynamicObjectProperty dynamic, Tecan.Sila2.IBinaryStore store)
+        {
+            Dynamic = new Tecan.Sila2.DynamicClient.AnyTypeDto(dynamic, store);
+        }
+        
+        ///  <summary>
+        /// </summary>
+        [ProtoBuf.ProtoMemberAttribute(1)]
+        public Tecan.Sila2.DynamicClient.AnyTypeDto Dynamic
+        {
+            get
+            {
+                return _dynamic;
+            }
+            set
+            {
+                _dynamic = value;
+            }
+        }
+        
+        ///  <summary>
+        /// Gets the command identifier for this command
+        /// </summary>
+        /// <returns>The fully qualified command identifier</returns>
+        public string CommandIdentifier
+        {
+            get
+            {
+                return "tecan.sila/integrationtests/TestServer/v1/Command/PassDynamic";
+            }
+        }
+        
+        ///  <summary>
+        /// Validates the contents of this transfer object
+        /// </summary>
+        /// <returns>A validation error or null, if no validation error occurred.</returns>
+        public string GetValidationErrors()
+        {
+            return null;
+        }
+    }
+    
+    ///  <summary>
+    /// Data transfer object for the response of the Pass Dynamic command
+    /// </summary>
+    [ProtoBuf.ProtoContractAttribute()]
+    public class PassDynamicResponseDto : Tecan.Sila2.ISilaTransferObject
+    {
+        
+        private Tecan.Sila2.DynamicClient.AnyTypeDto _returnValue;
+        
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        public PassDynamicResponseDto()
+        {
+        }
+        
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        /// <param name="store">An object to organize binaries.</param>
+        ///  <param name="returnValue"></param>
+        public PassDynamicResponseDto(Tecan.Sila2.DynamicClient.DynamicObjectProperty returnValue, Tecan.Sila2.IBinaryStore store)
+        {
+            ReturnValue = new Tecan.Sila2.DynamicClient.AnyTypeDto(returnValue, store);
+        }
+        
+        ///  <summary>
+        /// </summary>
+        [ProtoBuf.ProtoMemberAttribute(1)]
+        public Tecan.Sila2.DynamicClient.AnyTypeDto ReturnValue
+        {
+            get
+            {
+                return _returnValue;
+            }
+            set
+            {
+                _returnValue = value;
+            }
+        }
+        
+        ///  <summary>
+        /// Validates the contents of this transfer object
+        /// </summary>
+        /// <returns>A validation error or null, if no validation error occurred.</returns>
+        public string GetValidationErrors()
+        {
+            return null;
+        }
+    }
+    
+    ///  <summary>
     /// Data transfer object for the request of the Pass Collection command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]

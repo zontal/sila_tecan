@@ -297,6 +297,26 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         
         ///  <summary>
         /// </summary>
+        /// <param name="dynamic"></param>
+        public virtual Tecan.Sila2.DynamicClient.DynamicObjectProperty PassDynamic(Tecan.Sila2.DynamicClient.DynamicObjectProperty dynamic)
+        {
+            PassDynamicRequestDto request = new PassDynamicRequestDto(dynamic, null);
+            Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("tecan.sila/integrationtests/TestServer/v1/Command/PassDynamic");
+            try
+            {
+                Tecan.Sila2.DynamicClient.DynamicObjectProperty response = _channel.ExecuteUnobservableCommand<PassDynamicRequestDto, PassDynamicResponseDto>(_serviceName, "PassDynamic", request, callInfo).ReturnValue.Extract(_executionManager.DownloadBinaryStore);
+                callInfo.FinishSuccessful();
+                return response;
+            } catch (System.Exception ex)
+            {
+                System.Exception exception = _channel.ConvertException(ex);
+                callInfo.FinishWithErrors(exception);
+                throw exception;
+            }
+        }
+        
+        ///  <summary>
+        /// </summary>
         /// <param name="strings"></param>
         public virtual System.Collections.Generic.ICollection<string> PassCollection(System.Collections.Generic.ICollection<string> strings)
         {

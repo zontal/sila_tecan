@@ -94,7 +94,7 @@ namespace Tecan.Sila2.DynamicClient
         /// </summary>
         /// <param name="obj"></param>
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public void SetValue(object obj)
+        internal void SetValue(object obj)
         {
             Value = obj;
         }
@@ -109,6 +109,29 @@ namespace Tecan.Sila2.DynamicClient
         public string GetValidationErrors()
         {
             return null;
+        }
+
+        [EditorBrowsable( EditorBrowsableState.Never )]
+        internal void MergeValue( object obj )
+        {
+            if (Value is ICollection<object> collection)
+            {
+                if (obj is IEnumerable<object> collectionToMerge)
+                {
+                    foreach(var item in collectionToMerge)
+                    {
+                        collection.Add( item );
+                    }
+                }
+                else
+                {
+                    collection.Add( obj );
+                }
+            }
+            else
+            {
+                Value = obj;
+            }
         }
     }
 }

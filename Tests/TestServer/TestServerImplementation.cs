@@ -5,6 +5,7 @@ using System.ComponentModel.Composition;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
+using Tecan.Sila2.DynamicClient;
 using Tecan.Sila2.Server;
 
 namespace Tecan.Sila2.IntegrationTests
@@ -147,6 +148,11 @@ namespace Tecan.Sila2.IntegrationTests
         {
             _dummy = value;
             PropertyChanged?.Invoke( this, new PropertyChangedEventArgs( nameof(DummyValue) ) );
+        }
+
+        public DynamicObjectProperty PassDynamic( DynamicObjectProperty dynamic )
+        {
+            return dynamic;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
