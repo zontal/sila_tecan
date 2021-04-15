@@ -34,6 +34,16 @@ namespace Tecan.Sila2.DynamicClient
         }
 
         /// <summary>
+        /// Creates a new dto with the given content
+        /// </summary>
+        /// <param name="value">The inner value</param>
+        /// <param name="store">A binary store to resolve binary data</param>
+        public AnyTypeDto(object value, IBinaryStore store = null)
+            : this(RuntimeObjectConverter.Convert(value, "RuntimeData", null), store)
+        {
+        }
+
+        /// <summary>
         /// The type of the content
         /// </summary>
         [ProtoMember( 1, Name = @"type" )]

@@ -42,6 +42,30 @@ namespace Tecan.Sila2.DynamicClient.Test
         }
 
         [Test]
+        public void DynamicSerializer_Date_RoundtripWorks()
+        {
+            var input = new DateTimeOffset( 2021, 4, 14, 0, 0, 0, TimeSpan.FromHours(2) );
+            var expectedBytes = ByteSerializer.ToByteArray( new DateDto( input ) );
+            Assert.That( Roundtrip( BasicType.Date, input, expectedBytes ), Is.EqualTo( input ) );
+        }
+
+        [Test]
+        public void DynamicSerializer_Timestamp_RoundtripWorks()
+        {
+            var input = new DateTimeOffset( 2021, 4, 14, 8, 42, 23, TimeSpan.FromHours(2) );
+            var expectedBytes = ByteSerializer.ToByteArray( new TimestampDto( input ) );
+            Assert.That( Roundtrip( BasicType.Timestamp, input, expectedBytes ), Is.EqualTo( input ) );
+        }
+
+        [Test]
+        public void DynamicSerializer_Time_RoundtripWorks()
+        {
+            var input = new TimeSpan( 8, 42, 23 );
+            var expectedBytes = ByteSerializer.ToByteArray( new TimeDto( input ) );
+            Assert.That( Roundtrip( BasicType.Time, input, expectedBytes ), Is.EqualTo( input ) );
+        }
+
+        [Test]
         public void DynamicSerializer_StringList_RoundtripWorks()
         {
             var list = new List<string>()
@@ -72,6 +96,26 @@ namespace Tecan.Sila2.DynamicClient.Test
             var expectedBytes = ByteSerializer.ToByteArray( new AnyTypeDto(inputProperty, null) );
             var result = (DynamicObjectProperty)Roundtrip( BasicType.Any, inputProperty, expectedBytes );
             Assert.That( result.Value, Is.EqualTo( input ) );
+        }
+
+        [Test]
+        public void DynamicSerializer_AnyTypeWithDateWorks()
+        {
+            var inputProperty = new DynamicObjectProperty( null, null, null, new DataTypeType { Item = BasicType.Date } );
+            inputProperty.Value = new DateTimeOffset(2014, 4, 14, 0, 0, 0, TimeSpan.FromHours(-1));
+            var expectedBytes = ByteSerializer.ToByteArray( new AnyTypeDto( inputProperty, null ) );
+            var result = (DynamicObjectProperty)Roundtrip( BasicType.Any, inputProperty, expectedBytes );
+            Assert.That( result.Value, Is.EqualTo( inputProperty.Value ) );
+        }
+
+        [Test]
+        public void DynamicSerializer_AnyTypeWithDate()
+        {
+            var inputProperty = new DynamicObjectProperty( null, null, null, new DataTypeType { Item = BasicType.Date } );
+            inputProperty.Value = new DateTimeOffset( 2014, 4, 14, 0, 0, 0, TimeSpan.FromHours( -1 ) );
+            var anytype = new AnyTypeDto( inputProperty, null );
+            var result = anytype.Extract( null );
+            Assert.That( result.Value, Is.EqualTo( inputProperty.Value ) );
         }
 
         [TestCase( "Test" )]

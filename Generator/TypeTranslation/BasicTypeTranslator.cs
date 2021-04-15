@@ -52,6 +52,7 @@ namespace Tecan.Sila2.Generator.TypeTranslation
             { typeof(float?), (BasicType.Real, true) },
             { typeof(double?), (BasicType.Real, true) },
             { typeof(bool?), (BasicType.Boolean, true) },
+            { typeof(object), (BasicType.Any, false) }
         };
 
         public int Priority => 1;

@@ -563,7 +563,7 @@ namespace Tecan.Sila2.IntegrationTests
             PassAnyAndAssert( testClient, "Client", BasicType.String );
             PassAnyAndAssert( testClient, double.NaN, BasicType.Real );
             PassAnyAndAssert( testClient, true, BasicType.Boolean );
-            PassAnyAndAssert( testClient, DateTime.Today, BasicType.Date );
+            PassAnyAndAssert( testClient, new DateTimeOffset( DateTime.Today ), BasicType.Date );
 
             Unlock( lockId, token );
             Logout( token );
@@ -595,9 +595,9 @@ namespace Tecan.Sila2.IntegrationTests
             var testClient = new NonObservableCommandClient( feature.Items.OfType<FeatureCommand>().Single( c => c.Identifier == "PassDynamic" ), featureContext );
 
             PassAnyAndAssert( testClient, "Client", BasicType.String );
-            PassAnyAndAssert( testClient, double.NaN, BasicType.Real );
             PassAnyAndAssert( testClient, true, BasicType.Boolean );
-            PassAnyAndAssert( testClient, DateTime.Today, BasicType.Date );
+            PassAnyAndAssert( testClient, new DateTimeOffset( DateTime.Today ), BasicType.Date );
+            PassAnyAndAssert( testClient, double.NaN, BasicType.Real );
 
             Unlock( lockId, token );
             Logout( token );
