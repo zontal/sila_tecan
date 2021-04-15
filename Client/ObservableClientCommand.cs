@@ -16,6 +16,8 @@ namespace Tecan.Sila2.Client
 
         public CommandExecutionUuid CommandId { get; }
 
+        public Method<CommandExecutionUuid, EmptyRequest> ResultMethod { get; }
+
         public Method<CommandExecutionUuid, ExecutionState> StateMethod { get; }
 
         public Func<string, string, Exception> ErrorConverter { get; }
@@ -24,13 +26,13 @@ namespace Tecan.Sila2.Client
 
         protected override bool SendLastUpdate => false;
 
-        public ObservableClientCommand(IClientCallInfo callInfo, CallInvoker callInvoker, CommandExecutionUuid commandId, Method<CommandExecutionUuid, ExecutionState> stateMethod, Func<string, string, Exception> errorConverter) : base(new CancellationTokenSource())
+        public ObservableClientCommand(IClientCallInfo callInfo, CallInvoker callInvoker, CommandExecutionUuid commandId, Method<CommandExecutionUuid, ExecutionState> stateMethod, Method<CommandExecutionUuid, EmptyRequest> resultMethod, Func<string, string, Exception> errorConverter) : base(new CancellationTokenSource())
         {
             CallInfo = callInfo;
             CallInvoker = callInvoker;
             CommandId = commandId;
             StateMethod = stateMethod;
-
+            ResultMethod = resultMethod;
             ErrorConverter = errorConverter;
         }
 
@@ -47,7 +49,13 @@ namespace Tecan.Sila2.Client
                         var estimated = responseStream.Current.EstimatedRemainingTime.Extract( null );
                         var progress = responseStream.Current.Progress.Value;
                         PushStateUpdate( progress, estimated, state );
+                        if(state == CommandState.FinishedSuccess || state == CommandState.FinishedWithErrors)
+                        {
+                            break;
+                        }
                     }
+                    var resultCall = CallInvoker.AsyncUnaryCall( ResultMethod, null, new CallOptions(), CommandId );
+                    await resultCall.ResponseAsync;
                 }
                 CallInfo.FinishSuccessful();
             }
@@ -139,6 +147,10 @@ namespace Tecan.Sila2.Client
                         var estimated = responseStream.Current.EstimatedRemainingTime.Extract( null );
                         var progress = responseStream.Current.Progress.Value;
                         PushStateUpdate( progress, estimated, state );
+                        if (state == CommandState.FinishedSuccess || state == CommandState.FinishedWithErrors)
+                        {
+                            break;
+                        }
                     }
                 }
 

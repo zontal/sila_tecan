@@ -20,10 +20,11 @@ namespace Tecan.Sila2.Client
             CallInvoker callInvoker,
             CommandExecutionUuid commandId,
             Method<CommandExecutionUuid, ExecutionState> stateMethod,
+            Method<CommandExecutionUuid, EmptyRequest> resultMethod,
             Method<CommandExecutionUuid, TIntermediateResponse> intermediateMethod,
             Func<TIntermediateResponse, TIntermediate> intermediateConverter,
             Func<string, string, Exception> errorConverter)
-            : base(executionManager, callInvoker, commandId, stateMethod, errorConverter)
+            : base(executionManager, callInvoker, commandId, stateMethod, resultMethod, errorConverter)
         {
             IntermediateConverter = intermediateConverter;
             IntermediateMethod = intermediateMethod;
