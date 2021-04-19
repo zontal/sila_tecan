@@ -32,5 +32,15 @@ namespace Tecan.Sila2
         {
             return ByteSerializer.ToByteArray( instance );
         }
+
+        /// <summary>
+        /// Converts the given byte serializer to a Marshaller
+        /// </summary>
+        /// <param name="serializer">The serializer</param>
+        /// <returns>A Marshaller</returns>
+        public static Marshaller<T> FromByteSerializer(ByteSerializer<T> serializer)
+        {
+            return new Marshaller<T>( serializer.Serializer, serializer.Deserializer );
+        }
     }
 }
