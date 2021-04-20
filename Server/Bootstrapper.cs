@@ -27,23 +27,20 @@ namespace Tecan.Sila2.Server
         /// Starts the server with the given command line parameters
         /// </summary>
         /// <param name="args">The command line parameters</param>
-        public static void Start(string[] args )
+        public static bool Start(string[] args )
         {
             var bootstrapper = new Bootstrapper();
 
-            Parser.Default.ParseArguments<ServerCommandLineArguments>(args)
-                .WithNotParsed(bootstrapper.HandleError)
-                .WithParsed(parsedArgs =>
-                {
-                    bootstrapper.StartServer(parsedArgs);
-                });
+            return Parser.Default.ParseArguments<ServerCommandLineArguments>( args )
+                .MapResult( bootstrapper.StartServer, bootstrapper.HandleError );
         }
 
         /// <summary>
         /// Starts the server with the given parsed command line parameters
         /// </summary>
         /// <param name="args">The parsed command line parameters</param>
-        public virtual void StartServer(ServerCommandLineArguments args)
+        /// <returns>True, if the server was started successfully, otherwise False</returns>
+        public virtual bool StartServer(ServerCommandLineArguments args)
         {
             AppDomain.CurrentDomain.ProcessExit += TryShutdownServer;
             var selfInfo = GetServerInformation();
@@ -75,6 +72,7 @@ namespace Tecan.Sila2.Server
 
                 _grpcServer.Start();
                 _server.StartServer();
+                return true;
             }
             catch( CompositionException e )
             {
@@ -93,6 +91,7 @@ namespace Tecan.Sila2.Server
             {
                 LogError(_channel, e);
             }
+            return false;
         }
 
         /// <summary>
@@ -245,9 +244,10 @@ namespace Tecan.Sila2.Server
         /// Handles errors at server startup
         /// </summary>
         /// <param name="obj"></param>
-        public virtual void HandleError(IEnumerable<Error> obj)
+        public virtual bool HandleError(IEnumerable<Error> obj)
         {
-            Environment.Exit(1);
+            Environment.ExitCode = 1;
+            return false;
         }
     }
 }
