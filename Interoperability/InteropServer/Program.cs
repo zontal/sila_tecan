@@ -10,23 +10,24 @@ namespace Tecan.Sila2.Interop.Server
         {
             var bootstrapper = new Bootstrapper();
 
-            Parser.Default.ParseArguments<ServerCommandLineArguments>( args )
-                .WithNotParsed( bootstrapper.HandleError )
-                .WithParsed( parsedArgs =>
+            if(Parser.Default.ParseArguments<ServerCommandLineArguments>( args )
+                .MapResult( parsedArgs =>
                 {
                     var serverId = Environment.GetEnvironmentVariable( "ServerID" );
-                    if( Guid.TryParse( serverId, out var serverUuid ) )
+                    if(Guid.TryParse( serverId, out var serverUuid ))
                     {
                         parsedArgs.ServerUuid = serverUuid;
                     }
 
-                    if( int.TryParse( Environment.GetEnvironmentVariable( "Port"), out var port ) )
+                    if(int.TryParse( Environment.GetEnvironmentVariable( "Port" ), out var port ))
                     {
                         parsedArgs.Port = port;
                     }
-                    bootstrapper.StartServer( parsedArgs );
-                } );
-            Console.ReadLine();
+                    return bootstrapper.StartServer( parsedArgs );
+                }, bootstrapper.HandleError ))
+            {
+                Console.ReadLine();
+            }
         }
     }
 }
