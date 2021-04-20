@@ -37,7 +37,7 @@ namespace Tecan.Sila2
         /// <typeparam name="T">The type of the configuration</typeparam>
         /// <param name="name">The name of the configuration file</param>
         /// <returns>The deserialized configuration</returns>
-        T Read<T>( string name );
+        T Read<T>( string name ) where T : class;
 
         /// <summary>
         /// Writes the configuration with the given name
@@ -45,6 +45,6 @@ namespace Tecan.Sila2
         /// <typeparam name="T">The data type of the configuration</typeparam>
         /// <param name="name">The name of the configuration file</param>
         /// <param name="value">The configuration to store</param>
-        void Write<T>( string name, T value );
+        void Write<T>( string name, T value ) where T : class;
     }
 }

@@ -38,7 +38,7 @@ namespace Tecan.Sila2
         }
 
         /// <inheritdoc />
-        public T Read<T>( string name )
+        public T Read<T>( string name ) where T : class
         {
             var path = GetFileName( name, typeof( T ) );
             if( File.Exists( path ) )
@@ -60,7 +60,7 @@ namespace Tecan.Sila2
         }
 
         /// <inheritdoc />
-        public void Write<T>( string name, T value )
+        public void Write<T>( string name, T value ) where T : class
         {
             var path = GetFileName( name, typeof( T ) );
 
