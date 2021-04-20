@@ -3,7 +3,7 @@
     <metadata>
         <id>Tecan.Sila2.Generator</id>
         <description>The code generator of the Tecan SiLA2 SDK for customization purposes</description>
-        <version>3.1.0-local</version>
+        <version>$version$</version>
         <authors>Tecan Trading AG, Switzerland</authors>
         <owners>Tecan Trading AG, Switzerland</owners>
         <copyright>Copyright 2019 by Tecan Trading AG, Switzerland</copyright>
@@ -12,8 +12,8 @@
         <projectUrl>https://gitlab.com/SiLA2/vendors/sila_tecan</projectUrl>
         <repository type="git" url="https://gitlab.com/SiLA2/vendors/sila_tecan.git" />
         <dependencies>
-            <dependency id="Tecan.Sila2" version="[3.2,4.0)" />
-            <dependency id="Tecan.Sila2.DynamicClient" version="[3.2,4.0)" />
+            <dependency id="Tecan.Sila2" version="[$version$,4.0)" />
+            <dependency id="Tecan.Sila2.DynamicClient" version="[$version$,4.0)" />
             <dependency id="CommandLineParser" version="2.6.0" />
             <dependency id="Microsoft.Build" version="16.3.0" />
             <dependency id="Microsoft.Build.Locator" version="1.2.6" />
