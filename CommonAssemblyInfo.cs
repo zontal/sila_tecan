@@ -5,6 +5,6 @@
 [assembly: AssemblyProduct("Tecan SiLA2 SDK")]
 
 // those entries will be overridden by the build
-[assembly: AssemblyVersion("3.2.0")]
-[assembly: AssemblyFileVersion("3.2.0")]
-[assembly: AssemblyInformationalVersion("3.2.0")]
+[assembly: AssemblyVersion("3.3.0")]
+[assembly: AssemblyFileVersion("3.3.0")]
+[assembly: AssemblyInformationalVersion("3.3.0")]
