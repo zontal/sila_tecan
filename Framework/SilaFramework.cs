@@ -247,6 +247,83 @@ namespace Tecan.Sila2
         {
             return new IntegerDto( (long?)value );
         }
+
+        /// <summary>
+        /// Creates a new dto for the given value
+        /// </summary>
+        /// <param name="value">The actual value</param>
+        /// <param name="store">A binary store</param>
+        /// <returns>The encapsulated value</returns>
+        public static int ExtractToInt32( IntegerDto value, IBinaryStore store = null )
+        {
+            return (int)value.Value;
+        }
+
+        /// <summary>
+        /// Creates a new dto for the given value
+        /// </summary>
+        /// <param name="value">The actual value</param>
+        /// <param name="store">A binary store</param>
+        /// <returns>The encapsulated value</returns>
+        public static long? ExtractToNullableInt64( IntegerDto value, IBinaryStore store = null )
+        {
+            return value?.Value;
+        }
+
+        /// <summary>
+        /// Creates a new dto for the given value
+        /// </summary>
+        /// <param name="value">The actual value</param>
+        /// <param name="store">A binary store</param>
+        /// <returns>The encapsulated value</returns>
+        public static int? ExtractToNullableInt32( IntegerDto value, IBinaryStore store = null )
+        {
+            return (int)value.Value;
+        }
+
+        /// <summary>
+        /// Creates a new dto for the given value
+        /// </summary>
+        /// <param name="value">The actual value</param>
+        /// <param name="store">A binary store</param>
+        /// <returns>The encapsulated value</returns>
+        public static ulong ExtractToUInt64( IntegerDto value, IBinaryStore store = null )
+        {
+            return (ulong)value.Value;
+        }
+
+        /// <summary>
+        /// Creates a new dto for the given value
+        /// </summary>
+        /// <param name="value">The actual value</param>
+        /// <param name="store">A binary store</param>
+        /// <returns>The encapsulated value</returns>
+        public static uint ExtractToUInt32( IntegerDto value, IBinaryStore store = null )
+        {
+            return (uint)value.Value;
+        }
+
+        /// <summary>
+        /// Creates a new dto for the given value
+        /// </summary>
+        /// <param name="value">The actual value</param>
+        /// <param name="store">A binary store</param>
+        /// <returns>The encapsulated value</returns>
+        public static ulong? ExtractToNullableUInt64( IntegerDto value, IBinaryStore store = null )
+        {
+            return (ulong)value.Value;
+        }
+
+        /// <summary>
+        /// Creates a new dto for the given value
+        /// </summary>
+        /// <param name="value">The actual value</param>
+        /// <param name="store">A binary store</param>
+        /// <returns>The encapsulated value</returns>
+        public static uint? ExtractToNullableUInt32( IntegerDto value, IBinaryStore store = null )
+        {
+            return (uint)value.Value;
+        }
     }
 
     /// <summary>

@@ -131,7 +131,14 @@ namespace Tecan.Sila2.Generator.Generators
                 else if(originator != null)
                 {
                     var originatorStartIndex = ns.IndexOf( originator, StringComparison.OrdinalIgnoreCase );
-                    useCaseStartIndex = originatorStartIndex + originator.Length + 1;
+                    if(originatorStartIndex == -1)
+                    {
+                        useCaseStartIndex = 0;
+                    }
+                    else
+                    {
+                        useCaseStartIndex = originatorStartIndex + originator.Length + 1;
+                    }
                 }
                 else
                 {
