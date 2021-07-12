@@ -99,7 +99,8 @@ namespace Tecan.Sila2.Generator.CommandLine
                 FeaturePath = FeaturePath,
                 DtoPath = Path.Combine( directory, feature.Identifier, "Dtos.cs" ),
                 ProviderPath = Path.Combine( directory, feature.Identifier, "Client.cs" ),
-                Namespace = Namespace + "." + feature.Identifier
+                Namespace = Namespace + "." + feature.Identifier,
+                MinimumSeverity = MinimumSeverity
             };
             generateProvider.Execute(container);
         }

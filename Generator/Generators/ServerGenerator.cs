@@ -60,9 +60,12 @@ namespace Tecan.Sila2.Generator.Generators
             var serverClass = GenerateServerClass( feature );
             nSpace.Types.Add( serverClass );
 
-            foreach(var metadata in feature.Items.OfType<FeatureMetadata>())
+            if(feature.Items != null)
             {
-                nSpace.Types.Add( GenerateMetadataInterceptorBase( feature, metadata ) );
+                foreach(var metadata in feature.Items.OfType<FeatureMetadata>())
+                {
+                    nSpace.Types.Add( GenerateMetadataInterceptorBase( feature, metadata ) );
+                }
             }
 
             var usingNs = new CodeNamespace();

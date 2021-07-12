@@ -179,7 +179,8 @@ namespace Tecan.Sila2.Generator.CommandLine
                     ImportedNamespaces = AddImports(ImportedNamespaces, importNamespaces),
                     Namespace = Namespace ?? rootNamespace + "." + feature.Identifier,
                     ProviderPath = Path.Combine(directory, feature.Identifier, ProviderPath),
-                    ServerOnly = !Client
+                    ServerOnly = !Client,
+                    MinimumSeverity = MinimumSeverity
                 };
                 channel.Log("Generate provider".ToString);
                 generateProvider.Execute(container);
