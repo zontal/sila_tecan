@@ -100,6 +100,10 @@ namespace Tecan.Sila2.Generator.Generators
                     _translationProvider.GetDtoTypeReference( metadata.DataType, metadata.Identifier, structHandler );
                 }
             }
+            else
+            {
+                _loggingChannel.Log( $"The feature {feature.Identifier} has no items.".ToString, Severity.Warning );
+            }
 
             structureHelper.ProcessAll( ( name, anonymousType ) =>
             {

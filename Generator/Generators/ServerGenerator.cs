@@ -121,6 +121,10 @@ namespace Tecan.Sila2.Generator.Generators
                     GenerateServerProperty( feature, featureProperty, server, implementation, id => FindError( feature, id ) );
                 }
             }
+            else
+            {
+                _loggingChannel.Log( $"The feature {feature.Identifier} has no items.".ToString, Severity.Warning );
+            }
 
 
             _loggingChannel.Log( "Generating provider shared code".ToString );

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Feature xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" SiLA2Version="1.0" FeatureVersion="3.3" Originator="tecan.sila.generator" Category="test" xmlns="http://www.sila-standard.org">
+  <Identifier>EmptyService</Identifier>
+  <DisplayName>Empty Service</DisplayName>
+  <Description />
+</Feature>

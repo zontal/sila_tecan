@@ -46,25 +46,28 @@ namespace Tecan.Sila2.Generator.Generators
             var interfaceType = GenerateInterface( feature, structHelper );
             nSpace.Types.Add( interfaceType );
 
-            foreach( var dataTypeDefinition in feature.Items.OfType<SiLAElement>() )
+            if(feature.Items != null)
             {
-                _loggingChannel.Log($"Generate domain structure for {dataTypeDefinition.Identifier}".ToString);
-                var type = GenerateDataTypeDefinition( dataTypeDefinition, structHelper.RegisterAnonymousType );
-                if( type != null )
+                foreach(var dataTypeDefinition in feature.Items.OfType<SiLAElement>())
                 {
-                    nSpace.Types.Add( type );
+                    _loggingChannel.Log( $"Generate domain structure for {dataTypeDefinition.Identifier}".ToString );
+                    var type = GenerateDataTypeDefinition( dataTypeDefinition, structHelper.RegisterAnonymousType );
+                    if(type != null)
+                    {
+                        nSpace.Types.Add( type );
+                    }
                 }
-            }
 
-            foreach( var error in feature.Items.OfType<FeatureDefinedExecutionError>() )
-            {
-                _loggingChannel.Log( $"Generate exception class for {error.Identifier}".ToString );
-                nSpace.Types.Add( GenerateStandardExecutionError( error ) );
-            }
+                foreach(var error in feature.Items.OfType<FeatureDefinedExecutionError>())
+                {
+                    _loggingChannel.Log( $"Generate exception class for {error.Identifier}".ToString );
+                    nSpace.Types.Add( GenerateStandardExecutionError( error ) );
+                }
 
-            foreach( var metadata in feature.Items.OfType<FeatureMetadata>() )
-            {
-                _translationProvider.ExtractType( metadata.DataType, metadata.Identifier, null, structHelper.RegisterStruct );
+                foreach(var metadata in feature.Items.OfType<FeatureMetadata>())
+                {
+                    _translationProvider.ExtractType( metadata.DataType, metadata.Identifier, null, structHelper.RegisterStruct );
+                }
             }
 
             if( Hooks != null )
@@ -452,18 +455,21 @@ namespace Tecan.Sila2.Generator.Generators
                     feature.DisplayName );
             }
 
-            foreach( var featureItem in feature.Items )
+            if(feature.Items != null)
             {
-                if( featureItem is FeatureCommand command && !CodeGenerationHelper.IsSetterCommand( command, feature.Items.OfType<FeatureProperty>()) )
+                foreach(var featureItem in feature.Items)
                 {
-                    _loggingChannel.Log($"Generating method for command {command.Identifier}".ToString);
-                    contract.Members.Add( GenerateCommandMethod( command, typeManagement ) );
-                }
-                else if( featureItem is FeatureProperty property )
-                {
-                    _loggingChannel.Log( $"Generating property for property {property.Identifier}".ToString );
-                    contract.Members.Add( GenerateProperty( property, typeManagement.RegisterAnonymousType,
-                        feature.Items.OfType<FeatureCommand>().Any( c => CodeGenerationHelper.IsSetterCommand( c, property ) ) ) );
+                    if(featureItem is FeatureCommand command && !CodeGenerationHelper.IsSetterCommand( command, feature.Items.OfType<FeatureProperty>() ))
+                    {
+                        _loggingChannel.Log( $"Generating method for command {command.Identifier}".ToString );
+                        contract.Members.Add( GenerateCommandMethod( command, typeManagement ) );
+                    }
+                    else if(featureItem is FeatureProperty property)
+                    {
+                        _loggingChannel.Log( $"Generating property for property {property.Identifier}".ToString );
+                        contract.Members.Add( GenerateProperty( property, typeManagement.RegisterAnonymousType,
+                            feature.Items.OfType<FeatureCommand>().Any( c => CodeGenerationHelper.IsSetterCommand( c, property ) ) ) );
+                    }
                 }
             }
 

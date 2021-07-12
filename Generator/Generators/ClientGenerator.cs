@@ -162,17 +162,24 @@ namespace Tecan.Sila2.Generator.Generators
             };
             client.BaseTypes.Add(_nameProvider.CreateFeatureInterfaceReference(feature));
             GenerateClientBaseImplementation(feature, client);
-            foreach (var featureCommand in feature.Items.OfType<FeatureCommand>())
+            if(feature.Items != null)
             {
-                if( !CodeGenerationHelper.IsSetterCommand( featureCommand, feature.Items.OfType<FeatureProperty>() ) )
+                foreach(var featureCommand in feature.Items.OfType<FeatureCommand>())
                 {
-                    _loggingChannel.Log($"Generate client command for {featureCommand.Identifier}".ToString);
-                    GenerateClientCommand( feature, featureCommand, client );
+                    if(!CodeGenerationHelper.IsSetterCommand( featureCommand, feature.Items.OfType<FeatureProperty>() ))
+                    {
+                        _loggingChannel.Log( $"Generate client command for {featureCommand.Identifier}".ToString );
+                        GenerateClientCommand( feature, featureCommand, client );
+                    }
+                    else
+                    {
+                        _loggingChannel.Log( $"Skipping {featureCommand.Identifier} because it is a property setter".ToString );
+                    }
                 }
-                else
-                {
-                    _loggingChannel.Log($"Skipping {featureCommand.Identifier} because it is a property setter".ToString);
-                }
+            }
+            else
+            {
+                _loggingChannel.Log( $"The feature {feature.Identifier} has no items.".ToString, Severity.Warning );
             }
             GenerateClientServiceNameField( feature, client );
             GenerateClientExtractMethod(client);
@@ -191,13 +198,16 @@ namespace Tecan.Sila2.Generator.Generators
             initLazyRequests.WriteDocumentation("Initializes lazies for non-observable properties.");
             var anyLazy = false;
             var anyDynamic = false;
-            foreach (var featureProperty in feature.Items.OfType<FeatureProperty>())
+            if(feature.Items != null)
             {
-                _loggingChannel.Log($"Generate property {featureProperty.Identifier}".ToString);
-                var setterCommand = feature.Items.OfType<FeatureCommand>().FirstOrDefault( c => CodeGenerationHelper.IsSetterCommand( c, featureProperty ) );
-                anyLazy |= featureProperty.Observable == FeaturePropertyObservable.No && setterCommand == null;
-                anyDynamic |= featureProperty.Observable == FeaturePropertyObservable.Yes && setterCommand == null;
-                GenerateClientProperty( feature, featureProperty, client, initLazyRequests, setterCommand );
+                foreach(var featureProperty in feature.Items.OfType<FeatureProperty>())
+                {
+                    _loggingChannel.Log( $"Generate property {featureProperty.Identifier}".ToString );
+                    var setterCommand = feature.Items.OfType<FeatureCommand>().FirstOrDefault( c => CodeGenerationHelper.IsSetterCommand( c, featureProperty ) );
+                    anyLazy |= featureProperty.Observable == FeaturePropertyObservable.No && setterCommand == null;
+                    anyDynamic |= featureProperty.Observable == FeaturePropertyObservable.Yes && setterCommand == null;
+                    GenerateClientProperty( feature, featureProperty, client, initLazyRequests, setterCommand );
+                }
             }
 
             if (anyDynamic)
