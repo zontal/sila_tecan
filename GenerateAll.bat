@@ -47,6 +47,9 @@ Build\Generator\net472\SilaGen.exe generate-interface Tests\Generator.Tests\Empt
 Build\Generator\net472\SilaGen.exe generate-provider Tests\Generator.Tests\Empty\Feature.xml Tests\Generator.Tests\Empty\DtoReference.cs Tests\Generator.Tests\Empty\ProviderReference.cs Tests\Generator.Tests\Empty\ClientReference.cs -n Tecan.Sila2.Generator.Test.TestReference
 Build\Generator\net472\SilaGen.exe generate-feature Build\Test\net472\Tecan.Sila2Generator.Test.dll -i Tecan.Sila2.Generator.Test.Empty.IEmptyService Tests\Generator.Tests\Empty\Feature.xml
 
+Build\Generator\net472\SilaGen.exe generate-interface Tests\Generator.Tests\Rx\Feature.xml Tests\Generator.Tests\Rx\ServiceReference.cs -n Tecan.Sila2.Generator.Test.TestReference
+Build\Generator\net472\SilaGen.exe generate-feature Build\Test\net472\Tecan.Sila2Generator.Test.dll -i Tecan.Sila2.Generator.Test.TestReference.IRxService Tests\Generator.Tests\Rx\Feature.xml
+
 Build\Generator\net472\SilaGen.exe generate-server Build\Test\Features\ParameterDefaultsProvider\net472\Tecan.Sila2.ParameterDefaultsProvider.Tests.dll Tests\Features\ParameterDefaultsProvider.Tests\ParameterDefaultsProvider.Tests.csproj -n Tecan.Sila2.ParameterDefaultsProvider.Tests
 
 Build\Generator\net472\SilaGen.exe generate-server Build\Test\TestServer\net472\TestServer.exe Tests\TestServer\TestServer.csproj -n Tecan.Sila2.IntegrationTests

@@ -329,6 +329,12 @@ namespace Tecan.Sila2.Generator.Generators
             {
                 actualCall = GenerateCommandImplementationCall( featureCommand, implementationRef, requestRef, serverRef );
             }
+            else if (method.ReturnType.IsGenericType && method.ReturnType.GetGenericTypeDefinition() == typeof(IObservable<>))
+            {
+                actualCall = new CodeObjectCreateExpression(
+                    new CodeTypeReference( typeof( ObservableRxCommand<> ).Name, new CodeTypeReference( method.ReturnType.GetGenericArguments()[0] ) ),
+                    GenerateCommandImplementationCall( featureCommand, implementationRef, requestRef, serverRef ) );
+            }
             else
             {
                 actualCall = GenerateCreateCommand( feature, featureCommand, method, server, implementationRef, serverRef, requestRef );

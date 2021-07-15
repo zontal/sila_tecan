@@ -1007,6 +1007,12 @@ namespace Tecan.Sila2.Generator.Generators
                     _nameRegistry?.RegisterMethod( identifier, commandMethod );
                     return (returnType.GetGenericArguments()[0], null, true);
                 }
+
+                if (typeDefinition == typeof(IObservable<>))
+                {
+                    _nameRegistry?.RegisterMethod( identifier, commandMethod );
+                    return (typeof( void ), returnType.GetGenericArguments()[0], true);
+                }
             }
             else if(returnType == typeof( IObservableCommand ))
             {

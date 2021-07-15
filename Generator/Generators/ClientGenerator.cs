@@ -290,20 +290,7 @@ namespace Tecan.Sila2.Generator.Generators
             var requestRef = new CodeVariableReferenceExpression(nameof(request));
             string binaryParameterIdentifier = null;
             var method = _nameProvider.GetNonstandardMethod( featureCommand );
-            if( method != null )
-            {
-                var parameters = method.GetParameters();
-                foreach( var parameterInfo in parameters )
-                {
-                    requestMethod.Parameters.Add( new CodeParameterDeclarationExpression( parameterInfo.ParameterType, parameterInfo.Name ) );
-                    if( parameterInfo.ParameterType != typeof(CancellationToken) )
-                    {
-                        request.Parameters.Add( new CodeArgumentReferenceExpression( parameterInfo.Name ) );
-                    }
-                }
-                requestMethod.WriteInheritDoc();
-            }
-            else
+            if( method == null )
             {
                 if( featureCommand.Parameter != null )
                 {
@@ -327,6 +314,19 @@ namespace Tecan.Sila2.Generator.Generators
 
                 requestMethod.WriteDocumentation(featureCommand.Description, parameters: parameterDictionary);
             }
+            else
+            {
+                var parameters = method.GetParameters();
+                foreach( var parameterInfo in parameters )
+                {
+                    requestMethod.Parameters.Add( new CodeParameterDeclarationExpression( parameterInfo.ParameterType, parameterInfo.Name ) );
+                    if( parameterInfo.ParameterType != typeof(CancellationToken) )
+                    {
+                        request.Parameters.Add( new CodeArgumentReferenceExpression( parameterInfo.Name ) );
+                    }
+                }
+                requestMethod.WriteInheritDoc();
+            }
             
             request.Parameters.Add(GenerateCreateBinaryStore(binaryParameterIdentifier));
             requestMethod.Statements.Add(new CodeVariableDeclarationStatement(requestType, nameof(request), request));
@@ -340,15 +340,26 @@ namespace Tecan.Sila2.Generator.Generators
             else
             {
                 var commandCall = GenerateClientObservableCommandImplementation( feature, featureCommand, client, requestRef );
-                if( method == null )
+                if(method == null)
                 {
                     requestMethod.ReturnType = _nameProvider?.GetObservableCommandReturnType( featureCommand, _translationProvider );
                     requestMethod.Statements.Add( new CodeMethodReturnStatement( commandCall ) );
                 }
                 else
                 {
-                    requestMethod.ReturnType = new CodeTypeReference(method.ReturnType);
-                    GenerateNonstandardObservableCommandBody(featureCommand, requestMethod, commandCall, method);
+                    requestMethod.ReturnType = new CodeTypeReference( method.ReturnType );
+
+                    if(method.ReturnType.IsGenericType && method.ReturnType.GetGenericTypeDefinition() == typeof( IObservable<> ))
+                    {
+                        var createCommand = new CodeObjectCreateExpression(
+                            new CodeTypeReference( typeof( CommandObservable<> ).Name, new CodeTypeReference( method.ReturnType.GetGenericArguments()[0] ) ),
+                            commandCall );
+                        requestMethod.Statements.Add( new CodeMethodReturnStatement( createCommand ) );
+                    }
+                    else
+                    {
+                        GenerateNonstandardObservableCommandBody( featureCommand, requestMethod, commandCall, method );
+                    }
                 }
             }
         }

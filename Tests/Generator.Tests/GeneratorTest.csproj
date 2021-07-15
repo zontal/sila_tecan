@@ -24,6 +24,7 @@
     </PropertyGroup>
     <ItemGroup>
       <Compile Remove="InlineObservable\ServiceReference.cs" />
+      <Compile Remove="Rx\ServiceReference.cs" />
     </ItemGroup>
     <ItemGroup>
         <Compile Include="..\..\CommonAssemblyInfo.cs" Link="Properties\CommonAssemblyInfo.cs" />
@@ -103,6 +104,15 @@
         <Compile Update="Logging\ServiceReference.cs">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Compile>
+        <Compile Update="Rx\ClientReference.cs">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Compile>
+        <Compile Update="Rx\DtoReference.cs">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Compile>
+        <Compile Update="Rx\ProviderReference.cs">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Compile>
         <Compile Update="SilaService\ClientReference.cs">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Compile>
@@ -135,6 +145,9 @@
       <None Include="InlineObservable\ServiceReference.cs">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
+      <None Include="Rx\ServiceReference.cs">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
     </ItemGroup>
     <ItemGroup>
         <None Update="AmbiguityResolver\AmbiguityResolver.xml">
@@ -154,6 +167,9 @@
         </None>
         <None Update="Logging\Feature.xml">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Rx\Feature.xml">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
         <None Update="SilaService\Feature.xml">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
