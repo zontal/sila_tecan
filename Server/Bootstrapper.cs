@@ -164,7 +164,7 @@ namespace Tecan.Sila2.Server
             var container = new CompositionContainer( catalog );
 
             ApplyDefaultsIfMissing( container );
-
+            
             return container;
         }
 

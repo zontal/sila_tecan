@@ -150,7 +150,7 @@ namespace Tecan.Sila2.Server.ServiceDefinition
             where TRequest : class, ISilaRequestObject
             where TIntermediateDto : class
         {
-            var intermediateResults = new Method<CommandExecutionUuid, TIntermediateDto>( MethodType.ServerStreaming, ServiceName, commandName + "_IntermediateResults", ProtobufMarshaller<CommandExecutionUuid>.Default, ProtobufMarshaller<TIntermediateDto>.Default );
+            var intermediateResults = new Method<CommandExecutionUuid, TIntermediateDto>( MethodType.ServerStreaming, ServiceName, commandName + "_Intermediate", ProtobufMarshaller<CommandExecutionUuid>.Default, ProtobufMarshaller<TIntermediateDto>.Default );
             var builder = new IntermediateCommandHandler<TIntermediate, TIntermediateDto>( _server, intermediateConverter, exceptionConverter );
             RegisterObservableCommandCore( commandName, implementation, exceptionConverter, ProtobufMarshaller<TRequest>.Default, builder );
             _serviceDefinitionBuilder.AddMethod( intermediateResults, builder.GetIntermediateResponses );
@@ -160,7 +160,7 @@ namespace Tecan.Sila2.Server.ServiceDefinition
             where TRequest : class, ISilaRequestObject
             where TIntermediateDto : class
         {
-            var intermediateResults = new Method<CommandExecutionUuid, TIntermediateDto>( MethodType.ServerStreaming, ServiceName, commandName + "_IntermediateResults", ProtobufMarshaller<CommandExecutionUuid>.Default, ProtobufMarshaller<TIntermediateDto>.FromByteSerializer(intermediatesSerializer) );
+            var intermediateResults = new Method<CommandExecutionUuid, TIntermediateDto>( MethodType.ServerStreaming, ServiceName, commandName + "_Intermediate", ProtobufMarshaller<CommandExecutionUuid>.Default, ProtobufMarshaller<TIntermediateDto>.FromByteSerializer(intermediatesSerializer) );
             var builder = new IntermediateCommandHandler<TIntermediate, TIntermediateDto>( _server, intermediateConverter, exceptionConverter );
             RegisterObservableCommandCore( commandName, implementation, exceptionConverter, ProtobufMarshaller<TRequest>.FromByteSerializer(requestSerializer), builder );
             _serviceDefinitionBuilder.AddMethod( intermediateResults, builder.GetIntermediateResponses );
@@ -172,7 +172,7 @@ namespace Tecan.Sila2.Server.ServiceDefinition
             where TIntermediateDto : class 
             where TResponseDto : class
         {
-            var intermediateResults = new Method<CommandExecutionUuid, TIntermediateDto>( MethodType.ServerStreaming, ServiceName, commandName + "_IntermediateResults", ProtobufMarshaller<CommandExecutionUuid>.Default, ProtobufMarshaller<TIntermediateDto>.Default );
+            var intermediateResults = new Method<CommandExecutionUuid, TIntermediateDto>( MethodType.ServerStreaming, ServiceName, commandName + "_Intermediate", ProtobufMarshaller<CommandExecutionUuid>.Default, ProtobufMarshaller<TIntermediateDto>.Default );
             var builder = new IntermediateCommandHandler<TIntermediate, TIntermediateDto>( _server, intermediateConverter, exceptionConverter );
             RegisterObservableCommandCore( commandName, implementation, responseConverter, exceptionConverter, ProtobufMarshaller<TRequest>.Default, ProtobufMarshaller<TResponseDto>.Default, builder );
             _serviceDefinitionBuilder.AddMethod( intermediateResults, builder.GetIntermediateResponses );
@@ -183,7 +183,7 @@ namespace Tecan.Sila2.Server.ServiceDefinition
             where TIntermediateDto : class
             where TResponseDto : class
         {
-            var intermediateResults = new Method<CommandExecutionUuid, TIntermediateDto>( MethodType.ServerStreaming, ServiceName, commandName + "_IntermediateResults", ProtobufMarshaller<CommandExecutionUuid>.Default, ProtobufMarshaller<TIntermediateDto>.FromByteSerializer(intermediatesSerializer) );
+            var intermediateResults = new Method<CommandExecutionUuid, TIntermediateDto>( MethodType.ServerStreaming, ServiceName, commandName + "_Intermediate", ProtobufMarshaller<CommandExecutionUuid>.Default, ProtobufMarshaller<TIntermediateDto>.FromByteSerializer(intermediatesSerializer) );
             var builder = new IntermediateCommandHandler<TIntermediate, TIntermediateDto>( _server, intermediateConverter, exceptionConverter );
             RegisterObservableCommandCore( commandName, implementation, responseConverter, exceptionConverter, ProtobufMarshaller<TRequest>.FromByteSerializer(requestSerializer), ProtobufMarshaller<TResponseDto>.FromByteSerializer(responseSerializer), builder );
             _serviceDefinitionBuilder.AddMethod( intermediateResults, builder.GetIntermediateResponses );
