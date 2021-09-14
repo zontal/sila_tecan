@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Feature xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" SiLA2Version="1.0" FeatureVersion="3.3" Originator="tecan.sila.generator.test" Category="testreference" xmlns="http://www.sila-standard.org">
+  <Identifier>Centrifuge</Identifier>
+  <DisplayName>Centrifuge</DisplayName>
+  <Description />
+  <Property>
+    <Identifier>Speed</Identifier>
+    <DisplayName>Speed</DisplayName>
+    <Description />
+    <Observable>No</Observable>
+    <DataType>
+      <Basic>Integer</Basic>
+    </DataType>
+  </Property>
+  <Command>
+    <Identifier>SetSpeed</Identifier>
+    <DisplayName>Set Speed</DisplayName>
+    <Description />
+    <Observable>No</Observable>
+    <Parameter>
+      <Identifier>Value</Identifier>
+      <DisplayName>Value</DisplayName>
+      <Description>The new Speed</Description>
+      <DataType>
+        <Basic>Integer</Basic>
+      </DataType>
+    </Parameter>
+  </Command>
+</Feature>

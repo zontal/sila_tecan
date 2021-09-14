@@ -166,14 +166,14 @@ namespace Tecan.Sila2.Generator.Generators
             {
                 foreach(var featureCommand in feature.Items.OfType<FeatureCommand>())
                 {
-                    if(!CodeGenerationHelper.IsSetterCommand( featureCommand, feature.Items.OfType<FeatureProperty>() ))
+                    if(!CodeGenerationHelper.IsSetterCommand( featureCommand, feature.Items.OfType<FeatureProperty>(), out var property ))
                     {
                         _loggingChannel.Log( $"Generate client command for {featureCommand.Identifier}".ToString );
                         GenerateClientCommand( feature, featureCommand, client );
                     }
                     else
                     {
-                        _loggingChannel.Log( $"Skipping {featureCommand.Identifier} because it is a property setter".ToString );
+                        _loggingChannel.Log( $"Skipping {featureCommand.Identifier} because it is a property setter of property {property.Identifier}".ToString );
                     }
                 }
             }

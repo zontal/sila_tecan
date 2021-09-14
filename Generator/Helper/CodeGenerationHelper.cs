@@ -99,7 +99,7 @@ namespace Tecan.Sila2.Generator.Helper
         /// <returns>True if the command is a setter</returns>
         public static bool IsSetterCommand( FeatureCommand command, params FeatureProperty[] possibleProperties )
         {
-            return IsSetterCommand( command, possibleProperties as IEnumerable<FeatureProperty> );
+            return IsSetterCommand( command, possibleProperties as IEnumerable<FeatureProperty>, out var _ );
         }
 
         /// <summary>
@@ -107,9 +107,11 @@ namespace Tecan.Sila2.Generator.Helper
         /// </summary>
         /// <param name="command">The command</param>
         /// <param name="possibleProperties">A collection of possible properties</param>
+        /// <param name="property">Returns the property</param>
         /// <returns>True if the command is a setter</returns>
-        public static bool IsSetterCommand( FeatureCommand command, IEnumerable<FeatureProperty> possibleProperties )
+        public static bool IsSetterCommand( FeatureCommand command, IEnumerable<FeatureProperty> possibleProperties, out FeatureProperty property )
         {
+            property = null;
             if(command.Identifier == null || command.Identifier.Length <= 3 || !command.Identifier.StartsWith( "Set" ) ||
                command.Parameter == null || command.Parameter.Length != 1 || possibleProperties == null)
             {
@@ -119,6 +121,7 @@ namespace Tecan.Sila2.Generator.Helper
             {
                 if(command.Identifier == "Set" + featureProperty.Identifier && IsSameType( featureProperty.DataType, command.Parameter[0].DataType ))
                 {
+                    property = featureProperty;
                     return true;
                 }
             }

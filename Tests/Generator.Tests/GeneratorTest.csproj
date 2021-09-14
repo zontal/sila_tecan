@@ -23,6 +23,7 @@
         <OutputPath>..\..\Build\Test\</OutputPath>
     </PropertyGroup>
     <ItemGroup>
+      <Compile Remove="Centrifuge\ServiceReference.cs" />
       <Compile Remove="InlineObservable\ServiceReference.cs" />
       <Compile Remove="Rx\ServiceReference.cs" />
     </ItemGroup>
@@ -54,6 +55,15 @@
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Compile>
         <Compile Update="AmbiguityResolver\ServiceReference.cs">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Compile>
+        <Compile Update="Centrifuge\ClientReference.cs">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Compile>
+        <Compile Update="Centrifuge\DtoReference.cs">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Compile>
+        <Compile Update="Centrifuge\ProviderReference.cs">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Compile>
         <Compile Update="Dictionary\ClientReference.cs">
@@ -142,6 +152,9 @@
         <Folder Include="Properties\" />
     </ItemGroup>
     <ItemGroup>
+      <None Include="Centrifuge\ServiceReference.cs">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
       <None Include="InlineObservable\ServiceReference.cs">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
@@ -154,6 +167,9 @@
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
         <None Update="AmbiguityResolver\Feature.xml">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Centrifuge\Feature.xml">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
         <None Update="Dictionary\Feature.xml">

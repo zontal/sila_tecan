@@ -459,7 +459,7 @@ namespace Tecan.Sila2.Generator.Generators
             {
                 foreach(var featureItem in feature.Items)
                 {
-                    if(featureItem is FeatureCommand command && !CodeGenerationHelper.IsSetterCommand( command, feature.Items.OfType<FeatureProperty>() ))
+                    if(featureItem is FeatureCommand command && !CodeGenerationHelper.IsSetterCommand( command, feature.Items.OfType<FeatureProperty>(), out var _ ))
                     {
                         _loggingChannel.Log( $"Generating method for command {command.Identifier}".ToString );
                         contract.Members.Add( GenerateCommandMethod( command, typeManagement ) );

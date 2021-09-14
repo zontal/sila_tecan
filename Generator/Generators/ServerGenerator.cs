@@ -501,10 +501,16 @@ namespace Tecan.Sila2.Generator.Generators
             commandMethod.ReturnType = _nameProvider.GenerateCommandResponseType( featureCommand );
             CodeStatementCollection statements = GenerateExceptionHandling( feature, featureCommand, commandMethod, serverRef );
             var actualImplementation = GenerateCommandImplementationCall( featureCommand, implementationRef, requestRef, new CodeFieldReferenceExpression( null, ServerFieldName ) );
-            if(CodeGenerationHelper.IsSetterCommand( featureCommand, feature.Items.OfType<FeatureProperty>() ))
+            if(CodeGenerationHelper.IsSetterCommand( featureCommand, feature.Items.OfType<FeatureProperty>(), out var property ))
             {
+                var valueExpression = actualImplementation.Parameters[0];
+                var propertyType = _nameProvider.GetMemberType( property.Identifier );
+                if (propertyType != null)
+                {
+                    valueExpression = new CodeCastExpression( propertyType, valueExpression );
+                }
                 statements.Add( new CodeAssignStatement( new CodePropertyReferenceExpression( implementationRef, featureCommand.Identifier.Substring( 3 ) ),
-                    actualImplementation.Parameters[0] ) );
+                    valueExpression ) );
                 statements.Add( new CodeMethodReturnStatement( new CodeFieldReferenceExpression(
                     new CodeTypeReferenceExpression( nameof( EmptyRequest ) ), "Instance" ) ) );
             }
