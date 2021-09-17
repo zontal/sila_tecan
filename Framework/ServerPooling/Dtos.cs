@@ -403,9 +403,9 @@ namespace Tecan.Sila2.ServerPooling
         /// Gets or sets the request to delete a binary
         /// </summary>
         [ProtoMember( 14 )]
-        public DeleteBinaryUploadRequest DeleteBinaryRequest
+        public DeleteBinaryRequestDto DeleteUploadedBinaryRequest
         {
-            get => __pbn__message.Is( 14 ) ? ((DeleteBinaryUploadRequest)__pbn__message.Object) : default;
+            get => __pbn__message.Is( 14 ) ? ((DeleteBinaryRequestDto)__pbn__message.Object) : default;
             set => __pbn__message = new DiscriminatedUnionObject( 14, value );
         }
 
@@ -437,6 +437,16 @@ namespace Tecan.Sila2.ServerPooling
         {
             get => __pbn__message.Is( 17 ) ? ((GetChunkRequestDto)__pbn__message.Object) : default;
             set => __pbn__message = new DiscriminatedUnionObject( 17, value );
+        }
+
+        /// <summary>
+        /// Gets or sets the request to delete a binary
+        /// </summary>
+        [ProtoMember( 18 )]
+        public DeleteBinaryRequestDto DeleteDownloadedBinaryRequest
+        {
+            get => __pbn__message.Is( 18 ) ? ((DeleteBinaryRequestDto)__pbn__message.Object) : default;
+            set => __pbn__message = new DiscriminatedUnionObject( 14, value );
         }
 
         /// <summary>
@@ -504,9 +514,9 @@ namespace Tecan.Sila2.ServerPooling
         /// </summary>
         CreateBinaryRequest = 13,
         /// <summary>
-        /// Requests to delete a binary
+        /// Requests to delete an uploaded binary
         /// </summary>
-        DeleteBinaryRequest = 14,
+        DeleteUploadedBinaryRequest = 14,
         /// <summary>
         /// Requests to upload a binary chunk
         /// </summary>
@@ -519,6 +529,10 @@ namespace Tecan.Sila2.ServerPooling
         /// Requests to obtain a chunk of a binary file
         /// </summary>
         GetChunkRequest = 17,
+        /// <summary>
+        /// Requests to delete a binary after download
+        /// </summary>
+        DeleteDownloadedBinaryRequest = 18,
     }
 
     /// <summary>
@@ -812,32 +826,6 @@ namespace Tecan.Sila2.ServerPooling
             }
             metadata = null;
             return false;
-        }
-    }
-
-    /// <summary>
-    /// Denotes the transfer information for a request to create binary data
-    /// </summary>
-    [ProtoContract]
-    public partial class DeleteBinaryUploadRequest
-    {
-        /// <summary>
-        /// Gets the list of metadata entries for the delete binary request
-        /// </summary>
-        [ProtoMember( 1 )]
-        public List<Metadata> Metadata
-        {
-            get;
-        } = new List<Metadata>();
-
-        /// <summary>
-        /// Gets or sets the actual delete binary request
-        /// </summary>
-        [ProtoMember( 2 )]
-        public DeleteBinaryRequestDto DeleteBinaryRequest
-        {
-            get;
-            set;
         }
     }
 

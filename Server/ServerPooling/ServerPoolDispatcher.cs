@@ -74,14 +74,17 @@ namespace Tecan.Sila2.ServerPooling
                     case SilaClientMessageType.UploadChunkRequest:
                         _upload.UploadChunk( message.UploadChunkRequest, message.RequestUuid, responseStream );
                         break;
-                    case SilaClientMessageType.DeleteBinaryRequest:
-                        _upload.DeleteBinary( message.DeleteBinaryRequest, message.RequestUuid, responseStream );
+                    case SilaClientMessageType.DeleteUploadedBinaryRequest:
+                        _upload.DeleteBinary( message.DeleteUploadedBinaryRequest, message.RequestUuid, responseStream );
                         break;
                     case SilaClientMessageType.GetBinaryInfoRequest:
                         _download.GetBinaryInfo( message.GetBinaryInfoRequest, message.RequestUuid, responseStream );
                         break;
                     case SilaClientMessageType.GetChunkRequest:
                         _download.GetChunk( message.GetChunkRequest, message.RequestUuid, responseStream );
+                        break;
+                    case SilaClientMessageType.DeleteDownloadedBinaryRequest:
+                        _download.DeleteBinary( message.DeleteDownloadedBinaryRequest, message.RequestUuid, responseStream );
                         break;
                 }
             }

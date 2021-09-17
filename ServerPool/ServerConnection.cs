@@ -448,12 +448,6 @@ namespace Tecan.Sila2.ServerPooling
             return parameter;
         }
 
-        private static DeleteBinaryUploadRequest SetMetadata(DeleteBinaryUploadRequest parameter, IClientCallInfo callInfo)
-        {
-            CopyMetadata( callInfo, parameter.Metadata );
-            return parameter;
-        }
-
         private static void CopyMetadata(IClientCallInfo source, List<Metadata> target)
         {
             if(source?.Metadata != null)
@@ -571,10 +565,7 @@ namespace Tecan.Sila2.ServerPooling
             return _requestStream.WriteAsync( new SilaClientMessage
             {
                 RequestUuid = requestId,
-                DeleteBinaryRequest = new DeleteBinaryUploadRequest
-                {
-                    DeleteBinaryRequest = deleteBinaryRequestDto
-                }
+                DeleteDownloadedBinaryRequest = deleteBinaryRequestDto
             } ); ;
         }
 

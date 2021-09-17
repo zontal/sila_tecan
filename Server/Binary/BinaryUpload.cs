@@ -387,11 +387,11 @@ namespace Tecan.Sila2.Server.Binary
         }
 
         /// <inheritdoc />
-        public async void DeleteBinary( DeleteBinaryUploadRequest deleteBinaryRequest, string requestUuid, IClientStreamWriter<SilaServerMessage> responseStream )
+        public async void DeleteBinary( DeleteBinaryRequestDto deleteBinaryRequest, string requestUuid, IClientStreamWriter<SilaServerMessage> responseStream )
         {
             try
             {
-                await DeleteBinary( deleteBinaryRequest.DeleteBinaryRequest, null );
+                await DeleteBinary( deleteBinaryRequest, null );
                 await responseStream.WriteAsync( new SilaServerMessage
                 {
                     RequestUuid = requestUuid,

@@ -249,6 +249,46 @@ namespace Tecan.Sila2.Server.Binary
                 } );
             }
         }
+
+
+
+        /// <inheritdoc />
+        public async void DeleteBinary( DeleteBinaryRequestDto deleteBinaryRequest, string requestUuid, IClientStreamWriter<SilaServerMessage> responseStream )
+        {
+            try
+            {
+                await DeleteBinary( deleteBinaryRequest, null );
+                await responseStream.WriteAsync( new SilaServerMessage
+                {
+                    RequestUuid = requestUuid,
+                    DeleteBinaryResponse = new EmptyMessage()
+                } );
+            }
+            catch(InvalidBinaryTransferIdException transferException)
+            {
+                await responseStream.WriteAsync( new SilaServerMessage
+                {
+                    RequestUuid = requestUuid,
+                    BinaryError = new BinaryTransferError
+                    {
+                        Type = BinaryTransferError.ErrorType.InvalidBinaryTransferUuid,
+                        Message = transferException.Message
+                    }
+                } );
+            }
+            catch(Exception exception)
+            {
+                await responseStream.WriteAsync( new SilaServerMessage
+                {
+                    RequestUuid = requestUuid,
+                    BinaryError = new BinaryTransferError
+                    {
+                        Type = BinaryTransferError.ErrorType.BinaryUploadFailed,
+                        Message = exception.Message
+                    }
+                } );
+            }
+        }
     }
 
 }

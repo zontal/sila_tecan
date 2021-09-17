@@ -28,12 +28,13 @@ namespace Tecan.Sila2.ServerPooling
     {
         void CreateBinary( CreateBinaryUploadRequest createBinaryRequest, string requestUuid, IClientStreamWriter<SilaServerMessage> responseStream );
         void UploadChunk( UploadChunkRequestDto uploadChunkRequest, string requestUuid, IClientStreamWriter<SilaServerMessage> responseStream );
-        void DeleteBinary( DeleteBinaryUploadRequest deleteBinaryRequest, string requestUuid, IClientStreamWriter<SilaServerMessage> responseStream );
+        void DeleteBinary( DeleteBinaryRequestDto deleteBinaryRequest, string requestUuid, IClientStreamWriter<SilaServerMessage> responseStream );
     }
 
     internal interface IBinaryDownloadHandler
     {
         void GetBinaryInfo( GetBinaryInfoRequestDto getBinaryInfoRequest, string requestUuid, IClientStreamWriter<SilaServerMessage> responseStream );
         void GetChunk( GetChunkRequestDto getChunkRequest, string requestUuid, IClientStreamWriter<SilaServerMessage> responseStream );
+        void DeleteBinary( DeleteBinaryRequestDto deleteBinaryRequest, string requestUuid, IClientStreamWriter<SilaServerMessage> responseStream );
     }
 }
