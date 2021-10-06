@@ -313,9 +313,10 @@ namespace Tecan.Sila2.Server
         public void AddFeature(IFeatureProvider feature)
         {
             _implementedFeatures.Add(feature);
-            var builder = new ServerBuilder( this, feature.FeatureDefinition, _poolDispatcher );
+            var definitionBuilder = new ServiceDefinitionBuilder();
+            var builder = new ServerBuilder( this, feature.FeatureDefinition, _poolDispatcher, definitionBuilder );
             feature.Register( builder );
-            _serverProvider.AddService( builder.CreateServiceDefinition().Intercept(_loggingInterceptor) );
+            _serverProvider.AddService( definitionBuilder.Build().Intercept(_loggingInterceptor) );
             _logger.Log( $"Exposing feature {feature.FeatureDefinition.FullyQualifiedIdentifier}".ToString, Severity.Info );
         }
 

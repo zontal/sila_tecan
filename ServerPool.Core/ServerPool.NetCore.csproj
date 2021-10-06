@@ -1,0 +1,43 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <RootNamespace>Tecan.Sila2.ServerPooling</RootNamespace>
+    <AssemblyName>Tecan.Sila2.ServerPool</AssemblyName>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+
+    <PropertyGroup>
+        <OutputPath>..\Build\</OutputPath>
+        <DocumentationFile>..\Build\Tecan.Sila2.ServerPool.xml</DocumentationFile>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <Compile Include="..\CommonAssemblyInfo.cs" Link="Properties\CommonAssemblyInfo.cs" />
+        <Compile Include="..\ServerPool\BufferedStreamWriter.cs" Link="BufferedStreamWriter.cs" />
+        <Compile Include="..\ServerPool\CreateBinaryHandler.cs" Link="CreateBinaryHandler.cs" />
+        <Compile Include="..\ServerPool\ErrorHandling.cs" Link="ErrorHandling.cs" />
+        <Compile Include="..\ServerPool\GetBinaryInfoHandler.cs" Link="GetBinaryInfoHandler.cs" />
+        <Compile Include="..\ServerPool\GetChunkHandler.cs" Link="GetChunkHandler.cs" />
+        <Compile Include="..\ServerPool\IBinaryStoreChannel.cs" Link="IBinaryStoreChannel.cs" />
+        <Compile Include="..\ServerPool\IntermediateCommandHandler.cs" Link="IntermediateCommandHandler.cs" />
+        <Compile Include="..\ServerPool\IResponseHandler.cs" Link="IResponseHandler.cs" />
+        <Compile Include="..\ServerPool\MetadataHandler.cs" Link="MetadataHandler.cs" />
+        <Compile Include="..\ServerPool\ObservableCommandHandler.cs" Link="ObservableCommandHandler.cs" />
+        <Compile Include="..\ServerPool\PoolBinaryStore.cs" Link="PoolBinaryStore.cs" />
+        <Compile Include="..\ServerPool\PropertySubscriptionHandler.cs" Link="PropertySubscriptionHandler.cs" />
+        <Compile Include="..\ServerPool\ServerConnection.cs" Link="ServerConnection.cs" />
+        <Compile Include="..\ServerPool\TemporaryException.cs" Link="TemporaryException.cs" />
+        <Compile Include="..\ServerPool\UnobservableCommandHandler.cs" Link="UnobservableCommandHandler.cs" />
+        <Compile Include="..\ServerPool\UnobservablePropertyHandler.cs" Link="UnobservablePropertyHandler.cs" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\Contracts\Contracts.csproj" />
+        <ProjectReference Include="..\Framework.NetCore\Framework.NetCore.csproj" />
+        <ProjectReference Include="..\Framework\Framework.csproj" />
+        <PackageReference Include="Grpc.AspNetCore.Server" Version="2.27.0" />
+    </ItemGroup>
+
+</Project>

@@ -1,0 +1,49 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+        <RootNamespace>Tecan.Sila2.Client</RootNamespace>
+        <AssemblyName>Tecan.Sila2.Client</AssemblyName>
+        <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+        <LangVersion>latest</LangVersion>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <OutputPath>..\Build\</OutputPath>
+        <DocumentationFile>..\Build\Tecan.Sila2.Client.xml</DocumentationFile>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+      <DefineConstants>TRACE;ManagedGrpc</DefineConstants>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <Compile Include="..\Client\ClientBinaryStore.cs" Link="ClientBinaryStore.cs" />
+        <Compile Include="..\Client\ClientErrorHandling.cs" Link="ClientErrorHandling.cs" />
+        <Compile Include="..\Client\ClientProvider.cs" Link="ClientProvider.cs" />
+        <Compile Include="..\Client\Discovery\ServerDiscovery.cs" Link="Discovery\ServerDiscovery.cs" />
+        <Compile Include="..\Client\ExecutionManagement\CallInfo.cs" Link="ExecutionManagement\CallInfo.cs" />
+        <Compile Include="..\Client\ExecutionManagement\ExecutionManager.cs" Link="ExecutionManagement\ExecutionManager.cs" />
+        <Compile Include="..\Client\ExecutionManagement\ExecutionManagerFactory.cs" Link="ExecutionManagement\ExecutionManagerFactory.cs" />
+        <Compile Include="..\Client\ExecutionManagement\InterceptionRepository.cs" Link="ExecutionManagement\InterceptionRepository.cs" />
+        <Compile Include="..\Client\MetadataAffectedResponse.cs" Link="MetadataAffectedResponse.cs" />
+        <Compile Include="..\Client\ObservableClientCommand.cs" Link="ObservableClientCommand.cs" />
+        <Compile Include="..\Client\ObservableIntermediateClientCommand.cs" Link="ObservableIntermediateClientCommand.cs" />
+        <Compile Include="..\CommonAssemblyInfo.cs" Link="Properties\CommonAssemblyInfo.cs" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\Contracts\Contracts.csproj" />
+        <ProjectReference Include="..\Framework.NetCore\Framework.NetCore.csproj" />
+        <ProjectReference Include="..\Framework\Framework.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Grpc.Net.Client" Version="2.27.0" />
+        <PackageReference Include="Makaretu.Dns.Multicast" Version="0.25.0" />
+    </ItemGroup>
+    <ItemGroup>
+      <Folder Include="ExecutionManagement\" />
+    </ItemGroup>
+
+</Project>

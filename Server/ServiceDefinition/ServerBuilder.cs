@@ -12,13 +12,13 @@ namespace Tecan.Sila2.Server.ServiceDefinition
         private readonly SiLAServer _server;
         private readonly Feature _feature;
         private readonly ServerPoolDispatcher _dispatcher;
-        private readonly ServerServiceDefinition.Builder _serviceDefinitionBuilder;
+        private readonly ServiceBinderBase _serviceDefinitionBuilder;
 
-        public ServerBuilder(SiLAServer server, Feature feature, ServerPoolDispatcher dispatcher)
+        public ServerBuilder(SiLAServer server, Feature feature, ServerPoolDispatcher dispatcher, ServiceBinderBase serviceBinder)
         {
             _server = server;
             _feature = feature;
-            _serviceDefinitionBuilder = ServerServiceDefinition.CreateBuilder();
+            _serviceDefinitionBuilder = serviceBinder;
             _dispatcher = dispatcher;
         }
 
@@ -187,11 +187,6 @@ namespace Tecan.Sila2.Server.ServiceDefinition
             var builder = new IntermediateCommandHandler<TIntermediate, TIntermediateDto>( _server, intermediateConverter, exceptionConverter );
             RegisterObservableCommandCore( commandName, implementation, responseConverter, exceptionConverter, ProtobufMarshaller<TRequest>.FromByteSerializer(requestSerializer), ProtobufMarshaller<TResponseDto>.FromByteSerializer(responseSerializer), builder );
             _serviceDefinitionBuilder.AddMethod( intermediateResults, builder.GetIntermediateResponses );
-        }
-
-        public ServerServiceDefinition CreateServiceDefinition()
-        {
-            return _serviceDefinitionBuilder.Build();
         }
     }
 }

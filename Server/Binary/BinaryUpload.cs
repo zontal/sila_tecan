@@ -15,6 +15,9 @@ namespace Tecan.Sila2.Server.Binary
     /// Helper class to implement upload of binary data
     /// </summary>
     public class BinaryUpload : IDisposable, IBinaryUploadHandler
+#if ManagedGrpc
+        , IServiceHandler<ISiLAServer>
+#endif
     {
         private readonly IFileManagement _fileManagement;
         private readonly SiLAServer _server;
@@ -266,6 +269,29 @@ namespace Tecan.Sila2.Server.Binary
             builder.AddMethod(BinaryStorageConstants.UploadChunk, UploadChunk);
             return builder.Build();
         }
+#if ManagedGrpc
+        private Task<EmptyRequest> DeleteBinary( ISiLAServer server, DeleteBinaryRequestDto request, ServerCallContext context )
+        {
+            return DeleteBinary( request, context );
+        }
+
+        private Task<CreateBinaryResponseDto> CreateBinary( ISiLAServer server, CreateBinaryRequestDto request, ServerCallContext context )
+        {
+            return CreateBinary( request, context );
+        }
+
+        private Task UploadChunk( ISiLAServer server, IAsyncStreamReader<UploadChunkRequestDto> requestStream, IServerStreamWriter<UploadChunkResponseDto> responseStream, ServerCallContext context )
+        {
+            return UploadChunk( requestStream, responseStream, context );
+        }
+
+        public void Register( Grpc.AspNetCore.Server.Model.ServiceMethodProviderContext<ISiLAServer> context )
+        {
+            context.AddUnaryMethod( BinaryStorageConstants.DeleteBinaryUpload, null, DeleteBinary );
+            context.AddUnaryMethod( BinaryStorageConstants.CreateBinary, null, CreateBinary );
+            context.AddDuplexStreamingMethod( BinaryStorageConstants.UploadChunk, null, UploadChunk );
+        }
+#endif
 
         private class InternalCreateBinaryRequest : ISilaRequestObject
         {

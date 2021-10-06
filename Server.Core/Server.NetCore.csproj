@@ -1,0 +1,79 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <RootNamespace>Tecan.Sila2.Server</RootNamespace>
+    <AssemblyName>Tecan.Sila2.Server</AssemblyName>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+        <OutputPath>..\Build</OutputPath>
+        <DocumentationFile>..\Build\Tecan.Sila2.Server.xml</DocumentationFile>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+        <OutputPath>..\Build</OutputPath>
+        <DocumentationFile>..\Build\Tecan.Sila2.Server.xml</DocumentationFile>
+        <DefineConstants>TRACE;ManagedGrpc</DefineConstants>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="CommandLineParser" Version="2.6.0" />
+        <PackageReference Include="Grpc.AspNetCore.Server.ClientFactory" Version="2.27.0" />
+        <PackageReference Include="IPNetwork2" Version="2.1.2" />
+
+        <PackageReference Include="Makaretu.Dns.Multicast" Version="0.25.0" />
+        <PackageReference Include="System.Threading.Channels" Version="4.7.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Compile Include="..\CommonAssemblyInfo.cs" Link="Properties\CommonAssemblyInfo.cs" />
+        <Compile Include="..\Server\Binary\BinaryDownload.cs" Link="Binary\BinaryDownload.cs" />
+        <Compile Include="..\Server\Binary\BinaryUpload.cs" Link="Binary\BinaryUpload.cs" />
+        <Compile Include="..\Server\Binary\FileUploadData.cs" Link="Binary\FileUploadData.cs" />
+        <Compile Include="..\Server\Binary\IFileManagement.cs" Link="Binary\IFileManagement.cs" />
+        <Compile Include="..\Server\ConnectionConfiguration\ClientConnection.cs" Link="ConnectionConfiguration\ClientConnection.cs" />
+        <Compile Include="..\Server\ConnectionConfiguration\ConnectionConfigurationDtos.cs" Link="ConnectionConfiguration\ConnectionConfigurationDtos.cs" />
+        <Compile Include="..\Server\ConnectionConfiguration\ConnectionConfigurationProvider.cs" Link="ConnectionConfiguration\ConnectionConfigurationProvider.cs" />
+        <Compile Include="..\Server\ConnectionConfiguration\ConnectionConfigurationService.cs" Link="ConnectionConfiguration\ConnectionConfigurationService.cs" />
+        <Compile Include="..\Server\ConnectionConfiguration\IConnectionConfigurationService.cs" Link="ConnectionConfiguration\IConnectionConfigurationService.cs" />
+        <Compile Include="..\Server\Defaults\CheckNoMetadataAllowedInterceptor.cs" Link="Defaults\CheckNoMetadataAllowedInterceptor.cs" />
+        <Compile Include="..\Server\Defaults\ConsoleLogging.cs" Link="Defaults\ConsoleLogging.cs" />
+        <Compile Include="..\Server\Defaults\FileManagement.cs" Link="Defaults\FileManagement.cs" />
+        <Compile Include="..\Server\Discovery\SiLAServiceProvider.cs" Link="Discovery\SiLAServiceProvider.cs" />
+        <Compile Include="..\Server\LoggerChannelAdapter.cs" Link="LoggerChannelAdapter.cs" />
+        <Compile Include="..\Server\LoggerFactoryAdapter.cs" Link="LoggerFactoryAdapter.cs" />
+        <Compile Include="..\Server\LoggingInterceptor.cs" Link="LoggingInterceptor.cs" />
+        <Compile Include="..\Server\Metadata\MetadataRepository.cs" Link="Metadata\MetadataRepository.cs" />
+        <Compile Include="..\Server\ServerCommandlineArguments.cs" Link="ServerCommandlineArguments.cs" />
+        <Compile Include="..\Server\ServerConfiguration.cs" Link="ServerConfiguration.cs" />
+        <Compile Include="..\Server\ServerErrorHandling.cs" Link="ServerErrorHandling.cs" />
+        <Compile Include="..\Server\ServerPooling\IRequestHandler.cs" Link="ServerPooling\IRequestHandler.cs" />
+        <Compile Include="..\Server\ServerPooling\PoolConnection.cs" Link="ServerPooling\PoolConnection.cs" />
+        <Compile Include="..\Server\ServerPooling\ServerPoolDispatcher.cs" Link="ServerPooling\ServerPoolDispatcher.cs" />
+        <Compile Include="..\Server\ServerStartInformation.cs" Link="ServerStartInformation.cs" />
+        <Compile Include="..\Server\ServerTypeAttribute.cs" Link="ServerTypeAttribute.cs" />
+        <Compile Include="..\Server\ServiceAnnouncer.cs" Link="ServiceAnnouncer.cs" />
+        <Compile Include="..\Server\ServiceDefinition\IntermediateCommandHandler.cs" Link="ServiceDefinition\IntermediateCommandHandler.cs" />
+        <Compile Include="..\Server\ServiceDefinition\MetadataHandler.cs" Link="ServiceDefinition\MetadataHandler.cs" />
+        <Compile Include="..\Server\ServiceDefinition\ObservableCommandHandler.cs" Link="ServiceDefinition\ObservableCommandHandler.cs" />
+        <Compile Include="..\Server\ServiceDefinition\ObservablePropertyHandler.cs" Link="ServiceDefinition\ObservablePropertyHandler.cs" />
+        <Compile Include="..\Server\ServiceDefinition\ServerBuilder.cs" Link="ServiceDefinition\ServerBuilder.cs" />
+        <Compile Include="..\Server\ServiceDefinition\UnobservableCommandHandler.cs" Link="ServiceDefinition\UnobservableCommandHandler.cs" />
+        <Compile Include="..\Server\ServiceDefinition\UnobservablePropertyHandler.cs" Link="ServiceDefinition\UnobservablePropertyHandler.cs" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Include="..\Server\ConnectionConfiguration\ClientConnection.xsd" Link="ConnectionConfiguration\ClientConnection.xsd" />
+      <None Include="..\Server\ServerConfiguration.xsd" Link="ServerConfiguration.xsd" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\Contracts\Contracts.csproj" />
+        <ProjectReference Include="..\Framework.NetCore\Framework.NetCore.csproj" />
+        <ProjectReference Include="..\Framework\Framework.csproj" />
+    </ItemGroup>
+
+</Project>

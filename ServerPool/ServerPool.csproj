@@ -22,7 +22,6 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Client\Client.csproj" />
         <ProjectReference Include="..\Contracts\Contracts.csproj" />
         <ProjectReference Include="..\Framework.Grpc\Framework.Grpc.csproj" />
         <ProjectReference Include="..\Framework\Framework.csproj" />

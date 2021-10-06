@@ -1,0 +1,35 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+        <AssemblyName>Tecan.Sila2.NetCore</AssemblyName>
+        <RootNamespace>Tecan.Sila2</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Grpc.Core.Api" Version="2.27.0" />
+        <PackageReference Include="Grpc.AspNetCore.Server.ClientFactory" Version="2.27.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\Contracts\Contracts.csproj" />
+        <ProjectReference Include="..\Framework\Framework.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Include="..\CommonAssemblyInfo.cs" Link="Properties\CommonAssemblyInfo.cs" />
+      <Compile Include="..\Framework.Grpc\Binary\BinaryStorageConstants.cs" Link="Binary\BinaryStorageConstants.cs" />
+      <Compile Include="..\Framework.Grpc\ClientMetadata.cs" Link="ClientMetadata.cs" />
+      <Compile Include="..\Framework.Grpc\Common\EmptyRequestMarshaller.cs" Link="Common\EmptyRequestMarshaller.cs" />
+      <Compile Include="..\Framework.Grpc\Common\ProtobufMarshaller.cs" Link="Common\ProtobufMarshaller.cs" />
+      <Compile Include="..\Framework.Grpc\ServerPooling\PoolingConstants.cs" Link="ServerPooling\PoolingConstants.cs" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Binary\" />
+      <Folder Include="Common\" />
+      <Folder Include="ServerPooling\" />
+    </ItemGroup>
+
+</Project>

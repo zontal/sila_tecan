@@ -3,6 +3,9 @@ using System.IO;
 using System.Threading.Tasks;
 using Grpc.Core;
 using Tecan.Sila2.Client;
+#if ManagedGrpc
+using Channel = Grpc.Net.Client.GrpcChannel;
+#endif
 
 namespace Tecan.Sila2.Binary
 {

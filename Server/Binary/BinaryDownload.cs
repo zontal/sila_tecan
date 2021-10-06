@@ -13,6 +13,9 @@ namespace Tecan.Sila2.Server.Binary
     /// A helper class to implement binary download functionality based on a given file management implementation
     /// </summary>
     public class BinaryDownload : IBinaryDownloadHandler
+#if ManagedGrpc
+        , IServiceHandler<ISiLAServer>
+#endif
     {
         private readonly Timer _disposeTimer;
         private readonly IFileManagement _server;
@@ -172,6 +175,34 @@ namespace Tecan.Sila2.Server.Binary
             builder.AddMethod(BinaryStorageConstants.GetChunk, GetChunk);
             return builder.Build();
         }
+
+#if ManagedGrpc
+        private Task<EmptyRequest> DeleteBinary(ISiLAServer server, DeleteBinaryRequestDto request, ServerCallContext context)
+        {
+            return DeleteBinary( request, context );
+        }
+
+        private Task<GetBinaryInfoResponseDto> GetBinaryInfo( ISiLAServer server, GetBinaryInfoRequestDto request, ServerCallContext context )
+        {
+            return GetBinaryInfo( request, context );
+        }
+
+        private Task GetChunk( ISiLAServer server, IAsyncStreamReader<GetChunkRequestDto> requestStream, IServerStreamWriter<GetChunkResponseDto> responseStream, ServerCallContext context )
+        {
+            return GetChunk( requestStream, responseStream, context );
+        }
+
+
+
+        /// <inheritdoc />
+        public void Register( Grpc.AspNetCore.Server.Model.ServiceMethodProviderContext<ISiLAServer> context )
+        {
+            context.AddUnaryMethod( BinaryStorageConstants.DeleteBinaryDownload, null, DeleteBinary );
+            context.AddUnaryMethod( BinaryStorageConstants.GetBinaryInfo, null, GetBinaryInfo );
+            context.AddDuplexStreamingMethod( BinaryStorageConstants.GetChunk, null, GetChunk );
+        }
+
+#endif
 
         /// <inheritdoc />
         public async void GetBinaryInfo( GetBinaryInfoRequestDto getBinaryInfoRequest, string requestUuid, IClientStreamWriter<SilaServerMessage> responseStream )
