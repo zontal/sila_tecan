@@ -7,11 +7,19 @@
     <DockerfileContext>..\..</DockerfileContext>
   </PropertyGroup>
 
+    <PropertyGroup>
+        <OutputPath>..\..\Build\Test\TestServerManaged</OutputPath>
+    </PropertyGroup>
+
   <ItemGroup>
     <Compile Include="..\TestServer\ITestServer.cs" Link="ITestServer.cs" />
     <Compile Include="..\TestServer\TestServerImplementation.cs" Link="TestServerImplementation.cs" />
     <Compile Include="..\TestServer\TestServer\Dtos.cs" Link="TestServer\Dtos.cs" />
     <Compile Include="..\TestServer\TestServer\Provider.cs" Link="TestServer\Provider.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="..\TestServer\TestServer.sila.xml" Link="TestServer.sila.xml" />
   </ItemGroup>
 
   <ItemGroup>

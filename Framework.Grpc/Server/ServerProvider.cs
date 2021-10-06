@@ -50,11 +50,11 @@ namespace Tecan.Sila2
             if(Credentials == null)
             {
                 var context = _certificateProvider.CreateContext();
-                if(context != null)
+                if(context is PemCertificateContext pemContext)
                 {
-                    var keypair = new KeyCertificatePair( context.Certificate, context.Key );
+                    var keypair = new KeyCertificatePair( pemContext.Certificate, pemContext.Key );
                     _logger.Log( "Found certificates, starting server with TLS.".ToString, Severity.Info );
-                    Credentials = new SslServerCredentials( new List<KeyCertificatePair>() { keypair }, context.CA, SslClientCertificateRequestType.DontRequest );
+                    Credentials = new SslServerCredentials( new List<KeyCertificatePair>() { keypair }, pemContext.CA, SslClientCertificateRequestType.DontRequest );
                 }
                 else
                 {
@@ -72,11 +72,11 @@ namespace Tecan.Sila2
             if(Credentials == null)
             {
                 var context = _certificateProvider.CreateContext( guid );
-                if(context != null)
+                if(context is PemCertificateContext pemContext)
                 {
-                    var keypair = new KeyCertificatePair( context.Certificate, context.Key );
+                    var keypair = new KeyCertificatePair( pemContext.Certificate, pemContext.Key );
                     _logger.Log( "Found certificates, starting server with TLS.".ToString, Severity.Info );
-                    Credentials = new SslServerCredentials( new List<KeyCertificatePair>() { keypair }, context.CA, SslClientCertificateRequestType.DontRequest );
+                    Credentials = new SslServerCredentials( new List<KeyCertificatePair>() { keypair }, pemContext.CA, SslClientCertificateRequestType.DontRequest );
                 }
                 else
                 {

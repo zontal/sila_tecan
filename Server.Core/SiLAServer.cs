@@ -202,6 +202,14 @@ namespace Tecan.Sila2.Server
                 var filter = networking.CreateNetworkInterfaceFilter( startupInfo.NetworkInterfaces ?? configuration?.InterfaceFilter );
 
                 _announcer = new ServiceAnnouncer( ServerUUID, (ushort)port, filter, loggingChannelFactory );
+
+                serviceHandlerRepository.ConfigureForServer( uuid, port, filter );
+            }
+            else
+            {
+                _logger.Log( "Server is running without Discovery!".ToString, Severity.Warning );
+                // if no interface was specified, the SiLA server will (try to) run on all of them
+                serviceHandlerRepository.ConfigureForServer( uuid, port, null );
             }
 
             var cleanupInterval = TimeSpan.FromSeconds( 30 );

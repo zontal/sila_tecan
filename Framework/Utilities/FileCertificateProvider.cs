@@ -25,7 +25,11 @@ namespace Tecan.Sila2
                 var cacert = File.ReadAllText( @"ca.crt" );
                 var servercert = File.ReadAllText( @"server.crt" );
                 var serverkey = File.ReadAllText( @"server.key" );
-                return new CertificateContext( servercert, serverkey, cacert );
+                return new PemCertificateContext( servercert, serverkey, cacert );
+            }
+            else if (File.Exists("server.pfx"))
+            {
+                return new PfxCertificateContext( Path.GetFullPath( "server.pfx" ) );
             }
             else
             {

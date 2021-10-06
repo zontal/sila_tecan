@@ -66,6 +66,14 @@
     </ItemGroup>
 
     <ItemGroup>
+      <EmbeddedResource Include="..\Server\ConnectionConfigurationService.sila.xml" Link="ConnectionConfigurationService.sila.xml" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Include="..\Server\Discovery\SiLAService.sila.xml" Link="Discovery\SiLAService.sila.xml" />
+    </ItemGroup>
+
+    <ItemGroup>
       <None Include="..\Server\ConnectionConfiguration\ClientConnection.xsd" Link="ConnectionConfiguration\ClientConnection.xsd" />
       <None Include="..\Server\ServerConfiguration.xsd" Link="ServerConfiguration.xsd" />
     </ItemGroup>

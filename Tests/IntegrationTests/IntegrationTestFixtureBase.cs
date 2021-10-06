@@ -27,7 +27,6 @@ namespace Tecan.Sila2.IntegrationTests
         [SetUp]
         public virtual void StartTestServer()
         {
-            var dir = Path.Combine( AppDomain.CurrentDomain.BaseDirectory, "..", "TestServer" );
             var serverId = Guid.Parse( "397D289C-40D3-4D03-8A15-7EA4856ED9D1" );
             var payloadArguments = $"-u {serverId} -i 127.0.0.1";
             var attachDebugger = Debugger.IsAttached;
@@ -35,6 +34,24 @@ namespace Tecan.Sila2.IntegrationTests
             {
                 payloadArguments = "debug " + payloadArguments;
             }
+            ProcessStartInfo processStartInfo = GetTestServerStartInfo( payloadArguments );
+            _serverProcess = Process.Start( processStartInfo );
+
+            if(attachDebugger)
+            {
+                Debugger.Break();
+            }
+            else
+            {
+                Thread.Sleep( TimeSpan.FromSeconds( 1 ) );
+            }
+            _server = FindServer( serverId );
+            Assert.That( _server, Is.Not.Null );
+        }
+
+        protected virtual ProcessStartInfo GetTestServerStartInfo( string payloadArguments )
+        {
+            var dir = Path.Combine( AppDomain.CurrentDomain.BaseDirectory, "..", "TestServer" );
             var processStartInfo = new ProcessStartInfo()
             {
 #if NETCOREAPP
@@ -55,18 +72,7 @@ namespace Tecan.Sila2.IntegrationTests
                 UseShellExecute = false,
                 WorkingDirectory = dir
             };
-            _serverProcess = Process.Start( processStartInfo );
-
-            if(attachDebugger)
-            {
-                Debugger.Break();
-            }
-            else
-            {
-                Thread.Sleep( TimeSpan.FromSeconds( 1 ) );
-            }
-            _server = FindServer(serverId);
-            Assert.That( _server, Is.Not.Null );
+            return processStartInfo;
         }
 
         protected virtual ServerData FindServer(Guid serverUuid)

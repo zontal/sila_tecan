@@ -67,7 +67,7 @@ namespace Tecan.Sila2.Server
                 }
                 var startup = new ServerStartInformation( selfInfo, args.Port, args.InterfaceFilter, args.ServerUuid, args.Name );
                 _container.ComposeExportedValue( startup );
-                var serviceHandlerRepository = new ServiceHandlerRepository();
+                var serviceHandlerRepository = new ServiceHandlerRepository(_channel, _container.GetExportedValue<IServerCertificateProvider>());
                 _container.ComposeExportedValue<IServiceHandlerRepository<ISiLAServer>>( serviceHandlerRepository );
                 _server = _container.GetExportedValue<ISiLAServer>();
 
@@ -77,14 +77,26 @@ namespace Tecan.Sila2.Server
                     .ConfigureServices((_,services) =>
                     {
                         services.AddSingleton( _server );
-                        services.AddSingleton( serviceHandlerRepository );
+                        services.AddSingleton<IServiceHandlerRepository<ISiLAServer>>( serviceHandlerRepository );
                         var features = _container.GetExportedValues<IFeatureProvider>();
                         foreach(var featureProvider in features)
                         {
                             services.AddSingleton( featureProvider );
                         }
+                        services.AddSila2();
                     })
-                    .ConfigureWebHostDefaults( webHostBuilder => webHostBuilder.UseStartup<Startup>() )
+                    .ConfigureWebHostDefaults(webHostBuilder =>
+                    {
+                        webHostBuilder.ConfigureKestrel( options =>
+                         {
+                             serviceHandlerRepository.ConfigureKestrel( options );
+                         } );
+                        webHostBuilder.Configure( appBuilder =>
+                         {
+                             appBuilder.UseRouting();
+                             appBuilder.UseEndpoints( endpoints => endpoints.MapSila2() );
+                         } );
+                    } )
                     .Build();
                 _host.Start();
                 return true;
@@ -153,11 +165,15 @@ namespace Tecan.Sila2.Server
             try
             {
                 _server?.ShutdownServer();
-                _host.StopAsync().Wait();
+                _host?.StopAsync().Wait();
             }
             catch(Exception exception)
             {
                 _channel?.LogException( "Error shutting down server".ToString, exception );
+            }
+            finally
+            {
+                _host?.Dispose();
             }
 
             _container?.Dispose();
@@ -263,35 +279,6 @@ namespace Tecan.Sila2.Server
         {
             Environment.ExitCode = 1;
             return false;
-        }
-        private class Startup
-        {
-            // This method gets called by the runtime. Use this method to add services to the container.
-            // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
-            public void ConfigureServices( IServiceCollection services )
-            {
-                services.AddSila2();
-            }
-
-            // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-            public void Configure( IApplicationBuilder app, IWebHostEnvironment env )
-            {
-                if(env.IsDevelopment())
-                {
-                    app.UseDeveloperExceptionPage();
-                }
-
-                app.UseRouting();
-
-                app.UseEndpoints( endpoints =>
-                {
-                    endpoints.MapGet( "/", async context =>
-                    {
-                        await context.Response.WriteAsync( "This is a SiLA2 server built using the Tecan SiLA2 SDK." );
-                    } );
-                    endpoints.MapSila2();
-                } );
-            }
         }
     }
 }
