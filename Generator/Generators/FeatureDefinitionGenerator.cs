@@ -1,10 +1,10 @@
-﻿using System;
+﻿using Common.Logging;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using Tecan.MAP.Contracts.Services.Logging;
 using Tecan.Sila2.Generator.Contracts;
 
 namespace Tecan.Sila2.Generator.Generators
@@ -24,24 +24,22 @@ namespace Tecan.Sila2.Generator.Generators
 
         private IEnumerable<IGeneratorHook> Hooks { get; }
         private readonly ITypeTranslationProvider _translationProvider;
-        private readonly ILoggingChannel _loggingChannel;
+        private readonly ILog _loggingChannel = LogManager.GetLogger<FeatureDefinitionGenerator>();
         private readonly IAmbiguityResolver _ambiguityResolver;
         /// <summary>
         /// Creates a new feature definition generator for the provided registry
         /// </summary>
         /// <param name="nameRegistry">A component that accepts rename reports</param>
         /// <param name="translationProvider">A component that translates types between SiLA2 and .NET</param>
-        /// <param name="loggingChannelFactory">A factory for logging channels</param>
         /// <param name="hooks">Generator hooks</param>
         /// <param name="ambiguityResolver">A component that resolves ambiguous properties</param>
         [ImportingConstructor]
-        public FeatureDefinitionGenerator( ICodeNameRegistry nameRegistry, ITypeTranslationProvider translationProvider, ILoggingChannelFactory loggingChannelFactory, 
+        public FeatureDefinitionGenerator( ICodeNameRegistry nameRegistry, ITypeTranslationProvider translationProvider, 
             [ImportMany] IEnumerable<IGeneratorHook> hooks , IAmbiguityResolver ambiguityResolver)
         {
             NameRegistry = nameRegistry;
             Hooks = hooks;
             _translationProvider = translationProvider;
-            _loggingChannel = loggingChannelFactory.CreateChannel( typeof(FeatureDefinitionGenerator) );
             _ambiguityResolver = ambiguityResolver;
         }
 
@@ -51,7 +49,7 @@ namespace Tecan.Sila2.Generator.Generators
         {
             if(interfaceType == null) throw new ArgumentNullException( nameof( interfaceType ) );
 
-            _loggingChannel.Log($"Generating feature definition for type {interfaceType.FullName}".ToString, Severity.Info);
+            _loggingChannel.Info($"Generating feature definition for type {interfaceType.FullName}");
             var annotation = interfaceType.GetCustomAttribute<SilaFeatureAttribute>();
 
             var versionV = version == null ? interfaceType.Assembly.GetName().Version : Version.Parse( version );
@@ -69,13 +67,13 @@ namespace Tecan.Sila2.Generator.Generators
                     }
                     else
                     {
-                        _loggingChannel.Log($"No constraint for element {origin} found, creating only constraints based on annotations.".ToString, Severity.Warning);
+                        _loggingChannel.Warn($"No constraint for element {origin} found, creating only constraints based on annotations.");
                         return null;
                     }
                 };
             }
 
-            var context = new FeatureDefinitionGeneratorContext(_loggingChannel, NameRegistry, constraintResolver, _translationProvider, _ambiguityResolver, featureGeneratorConfig);
+            var context = new FeatureDefinitionGeneratorContext(NameRegistry, constraintResolver, _translationProvider, _ambiguityResolver, featureGeneratorConfig);
             context.TryLoadDocumentation( interfaceType.Assembly );
 
             var (identifier, displayName, description) = context.ParseElementData( interfaceType, prefix: "I" );
@@ -98,7 +96,7 @@ namespace Tecan.Sila2.Generator.Generators
             {
                 foreach(var hook in Hooks)
                 {
-                    _loggingChannel.Log($"Executing hook {hook} after generating feature".ToString);
+                    _loggingChannel.Debug($"Executing hook {hook} after generating feature");
                     hook?.OnFeatureGenerated( interfaceType, feature );
                 }
             }
@@ -147,7 +145,7 @@ namespace Tecan.Sila2.Generator.Generators
 
                 if( originator == null )
                 {
-                    _loggingChannel.Log("Assign originator based on the namespace because no originator has been provided.".ToString);
+                    _loggingChannel.Debug("Assign originator based on the namespace because no originator has been provided.");
                     if (useCaseStartIndex < 2)
                     {
                         throw new InvalidOperationException( "The namespace is too short to derive originator and use case from it. Please provide them explicitly or chose a different namespace." );
@@ -157,7 +155,7 @@ namespace Tecan.Sila2.Generator.Generators
 
                 if( category == null )
                 {
-                    _loggingChannel.Log("Assign category based on namespace because no category has been provided.".ToString);
+                    _loggingChannel.Debug("Assign category based on namespace because no category has been provided.");
                     category = ns.Substring( useCaseStartIndex, endIndex - useCaseStartIndex );
                 }
             }

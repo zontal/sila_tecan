@@ -7,7 +7,8 @@ using System.IO;
 using System.Reflection;
 using System.Text;
 using CommandLine;
-using Tecan.MAP.Contracts.Services.Logging;
+using Common.Logging;
+using Common.Logging.Simple;
 using Tecan.Sila2.Security;
 using Tecan.Sila2.Server.Binary;
 
@@ -21,7 +22,7 @@ namespace Tecan.Sila2.Server
         private CompositionContainer _container;
         private ISiLAServer _server;
         private IServerProvider _grpcServer;
-        private ILoggingChannel _channel;
+        private ILog _channel;
 
         /// <summary>
         /// Starts the server with the given command line parameters
@@ -47,13 +48,12 @@ namespace Tecan.Sila2.Server
             try
             {
                 _container = CreateContainer();
-                var logging = _container.GetExportedValue<ILoggingChannelFactory>();
-                if( Common.Logging.LogManager.Adapter is Common.Logging.Simple.NoOpLoggerFactoryAdapter || Common.Logging.LogManager.Adapter == null )
+                if(LogManager.Adapter is NoOpLoggerFactoryAdapter || LogManager.Adapter == null )
                 {
-                    Common.Logging.LogManager.Adapter = new LoggerFactoryAdapter( logging );
+                    LogManager.Adapter = new ConsoleLogging( LogLevel.Debug );
                 }
 
-                _channel = logging.CreateChannel( typeof(Bootstrapper) );
+                _channel = LogManager.GetLogger<Bootstrapper>();
                 var interfaceFilter = args.InterfaceFilter;
                 if (interfaceFilter == "None")
                 {
@@ -99,11 +99,11 @@ namespace Tecan.Sila2.Server
         /// </summary>
         public CompositionContainer Container => _container;
 
-        private static void LogError(ILoggingChannel channel, Exception e)
+        private static void LogError(ILog channel, Exception e)
         {
             if (channel != null)
             {
-                channel.LogException("Server creation/initialization exception: ".ToString, e);
+                channel.Error("Server creation/initialization exception: ", e);
             }
             else
             {
@@ -121,7 +121,7 @@ namespace Tecan.Sila2.Server
             {
                 if(_channel != null)
                 {
-                    _channel.LogException( "Error shutting down server".ToString, exception );
+                    _channel.Error( "Error shutting down server", exception );
                 }
                 else
                 {
@@ -142,7 +142,7 @@ namespace Tecan.Sila2.Server
             }
             catch( Exception exception )
             {
-                _channel?.LogException( "Error shutting down server".ToString, exception );
+                _channel?.Error( "Error shutting down server", exception );
             }
 
             _container?.Dispose();
@@ -174,11 +174,6 @@ namespace Tecan.Sila2.Server
         /// <param name="container">The composition container</param>
         protected void ApplyDefaultsIfMissing( CompositionContainer container )
         {
-            if(container.GetExportedValueOrDefault<ILoggingChannelFactory>() == null)
-            {
-                container.ComposeExportedValue<ILoggingChannelFactory>( new ConsoleLogging() );
-            }
-
             if(container.GetExportedValueOrDefault<IFileManagement>() == null)
             {
                 container.ComposeExportedValue<IFileManagement>( new FileManagement() );

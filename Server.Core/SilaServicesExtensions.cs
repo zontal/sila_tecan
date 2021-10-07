@@ -7,7 +7,6 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Tecan.MAP.Contracts.Services.Logging;
 using Tecan.Sila2.Server;
 
 namespace Microsoft.Extensions.DependencyInjection

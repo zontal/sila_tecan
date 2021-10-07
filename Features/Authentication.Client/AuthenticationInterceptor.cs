@@ -1,9 +1,9 @@
-﻿using System;
+﻿using Common.Logging;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using Tecan.MAP.Contracts.Services.Logging;
 using Tecan.Sila2.Authentication.AuthenticationService;
 using Tecan.Sila2.Authorization.AuthorizationConfigurationService;
 using Tecan.Sila2.Client;
@@ -21,7 +21,7 @@ namespace Tecan.Sila2.Authentication
         /// <inheritdoc />
         public string MetadataIdentifier => "org.silastandard/core/AuthorizationService/v1/Metadata/AccessToken";
         private readonly IAuthenticationHandler _authenticationHandler;
-        private readonly ILoggingChannel _loggingChannel;
+        private readonly ILog _loggingChannel = LogManager.GetLogger<AuthenticationInterceptor>();
         private readonly IServerDiscovery _discovery;
         private readonly Lazy<IExecutionManagerFactory> _executionManagerFactory;
         private readonly ConditionalWeakTable<ServerData, AuthTokenHandle> _cachedTokens = new ConditionalWeakTable<ServerData, AuthTokenHandle>();
@@ -33,12 +33,10 @@ namespace Tecan.Sila2.Authentication
         /// Create new instance
         /// </summary>
         /// <param name="authenticationHandler">An object that handles the authentication internally</param>
-        /// <param name="loggingChannelFactory">A logging channel factory</param>
         /// <param name="discovery">A server discovery agent</param>
         /// <param name="executionManagerFactory">A factory to create client execution managers</param>
-        public AuthenticationInterceptor( IAuthenticationHandler authenticationHandler, ILoggingChannelFactory loggingChannelFactory, IServerDiscovery discovery, Lazy<IExecutionManagerFactory> executionManagerFactory )
+        public AuthenticationInterceptor( IAuthenticationHandler authenticationHandler, IServerDiscovery discovery, Lazy<IExecutionManagerFactory> executionManagerFactory )
         {
-            _loggingChannel = loggingChannelFactory.CreateChannel( typeof(AuthenticationInterceptor) );
             _authenticationHandler = authenticationHandler;
             _discovery = discovery;
             _executionManagerFactory = executionManagerFactory;
@@ -113,7 +111,7 @@ namespace Tecan.Sila2.Authentication
                 }
                 catch( Exception exception )
                 {
-                    _loggingChannel.LogException("Authentication using integrated authentication failed.".ToString, exception);
+                    _loggingChannel.Error("Authentication using integrated authentication failed.", exception);
                 }
             }
 
@@ -134,8 +132,7 @@ namespace Tecan.Sila2.Authentication
             var credentials = _authenticationHandler.CreateAuthorizationToken(server);
             if (credentials.HasValue)
             {
-                _loggingChannel.Log($"Using integrated authentication for server {server.Config.Name}.".ToString,
-                    Severity.Info);
+                _loggingChannel.Info($"Using integrated authentication for server {server.Config.Name}.");
                 var providerString = _authenticationHandler.AuthorizationProvider.Config.Uuid.ToString("D");
                 if (client.AuthorizationProvider != providerString)
                 {
@@ -165,8 +162,7 @@ namespace Tecan.Sila2.Authentication
                 var credentials = _authenticationHandler.GetCredentials(server);
                 if (credentials != null)
                 {
-                    _loggingChannel.Log($"Authenticating with provider {provider.Config.Name} using username and password.".ToString,
-                        Severity.Info);
+                    _loggingChannel.Info($"Authenticating with provider {provider.Config.Name} using username and password.");
                     var providerClient = new AuthenticationServiceClient( provider.Channel, _executionManagerFactory.Value.CreateExecutionManager(provider) );
                     try
                     {
@@ -180,7 +176,7 @@ namespace Tecan.Sila2.Authentication
                     }
                     catch (Exception exception)
                     {
-                        _loggingChannel.LogException("Authentication failed".ToString, exception);
+                        _loggingChannel.Error("Authentication failed", exception);
                     }
                 }
             }
@@ -193,8 +189,7 @@ namespace Tecan.Sila2.Authentication
             var credentials = _authenticationHandler.GetCredentials(server);
             if (credentials != null)
             {
-                _loggingChannel.Log($"Authenticating with {server.Config.Name} using username and password.".ToString,
-                    Severity.Info);
+                _loggingChannel.Info($"Authenticating with {server.Config.Name} using username and password.");
                 var client = new AuthenticationServiceClient( server.Channel, executionManager );
                 try
                 {
@@ -208,7 +203,7 @@ namespace Tecan.Sila2.Authentication
                 }
                 catch (Exception exception)
                 {
-                    _loggingChannel.LogException("Authentication failed".ToString, exception);
+                    _loggingChannel.Error("Authentication failed", exception);
                 }
             }
             tokenHandle = null;
@@ -294,7 +289,7 @@ namespace Tecan.Sila2.Authentication
                 }
                 catch( Exception exception )
                 {
-                    parent._loggingChannel.LogException( "Authentication failed, retry with fresh credentials.".ToString, exception );
+                    parent._loggingChannel.Error( "Authentication failed, retry with fresh credentials.", exception );
                     var newCredentials = parent._authenticationHandler.GetCredentials( server );
                     try
                     {
@@ -308,7 +303,7 @@ namespace Tecan.Sila2.Authentication
                     }
                     catch( Exception newAttemptException )
                     {
-                        parent._loggingChannel.LogException("New authentication attempt failed as well. Falling back to old credentials.".ToString, newAttemptException);
+                        parent._loggingChannel.Error("New authentication attempt failed as well. Falling back to old credentials.", newAttemptException);
                         return false;
                     }
                 }

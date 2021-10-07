@@ -1,7 +1,6 @@
 ﻿using Grpc.Core;
 using System;
 using System.Threading;
-using Tecan.MAP.Contracts.Services.Logging;
 using Tecan.Sila2.Binary;
 using Tecan.Sila2.Server;
 
@@ -14,9 +13,9 @@ namespace Tecan.Sila2.ServerPooling
 
     internal interface ICommandRequestHandler : IRequestHandler
     {
-        void HandleExecutionStateSubscription( string requestUuid, ILoggingChannel loggingChannel, ObservableCommandExecution command, IClientStreamWriter<SilaServerMessage> responseWriter, ServerPoolDispatcher dispatcher );
-        void HandleIntermediatesSubscription( string requestUuid, ILoggingChannel loggingChannel, ObservableCommandExecution command, IClientStreamWriter<SilaServerMessage> responseWriter, ServerPoolDispatcher dispatcher );
-        void HandleResultRequest( string requestUuid, ILoggingChannel loggingChannel, ObservableCommandExecution command, IClientStreamWriter<SilaServerMessage> responseWriter, ServerPoolDispatcher dispatcher );
+        void HandleExecutionStateSubscription( string requestUuid, ObservableCommandExecution command, IClientStreamWriter<SilaServerMessage> responseWriter, ServerPoolDispatcher dispatcher );
+        void HandleIntermediatesSubscription( string requestUuid, ObservableCommandExecution command, IClientStreamWriter<SilaServerMessage> responseWriter, ServerPoolDispatcher dispatcher );
+        void HandleResultRequest( string requestUuid, ObservableCommandExecution command, IClientStreamWriter<SilaServerMessage> responseWriter, ServerPoolDispatcher dispatcher );
     }
 
     internal interface IIntermediateRequestHandler

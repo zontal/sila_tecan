@@ -5,8 +5,8 @@ using System.Linq;
 using System.Net.NetworkInformation;
 using System.Threading;
 using System.Threading.Tasks;
+using Common.Logging;
 using Makaretu.Dns;
-using Tecan.MAP.Contracts.Services.Logging;
 
 namespace Tecan.Sila2.Discovery
 {
@@ -18,7 +18,7 @@ namespace Tecan.Sila2.Discovery
     [PartCreationPolicy(CreationPolicy.Shared)]
     public class ServerDiscovery : IServerDiscovery
     {
-        private readonly ILoggingChannel _loggingChannel;
+        private readonly ILog _loggingChannel = LogManager.GetLogger<ServerDiscovery>();
         private readonly IServerConnector _serverConnector;
         private readonly Networking _networking;
 
@@ -29,14 +29,12 @@ namespace Tecan.Sila2.Discovery
         /// <summary>
         /// Create a new sila discovery object
         /// </summary>
-        /// <param name="factory">A logging factory</param>
         /// <param name="serverConnector">A component that creates channels</param>
         [ImportingConstructor]
-        public ServerDiscovery( ILoggingChannelFactory factory, IServerConnector serverConnector )
+        public ServerDiscovery( IServerConnector serverConnector )
         {
-            _loggingChannel = factory.CreateChannel( typeof(ServerDiscovery) );
             _serverConnector = serverConnector;
-            _networking = new Networking( factory );
+            _networking = new Networking();
         }
 
         /// <inheritdoc />
@@ -115,7 +113,7 @@ namespace Tecan.Sila2.Discovery
                                 }
                                 catch(Exception exception)
                                 {
-                                    _loggingChannel.LogException( $"Failed to create channel to {aRecord.Address} on port {server.Port}".ToString, exception );
+                                    _loggingChannel.Error( $"Failed to create channel to {aRecord.Address} on port {server.Port}", exception );
                                 }
                             }
                         }
@@ -160,7 +158,7 @@ namespace Tecan.Sila2.Discovery
                 var server = _connectedServers[knownServer];
                 if(server.Channel.State == Client.ChannelState.Shutdown)
                 {
-                    _loggingChannel.Log( $"Removing server {server.Config.Name} because the connection is lost".ToString, Severity.Info );
+                    _loggingChannel.Info( $"Removing server {server.Config.Name} because the connection is lost" );
                     _connectedServers.Remove( knownServer );
                 }
                 else

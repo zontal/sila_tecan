@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
 using System.Threading.Tasks;
-using Tecan.MAP.Contracts.Services.Logging;
 using Tecan.Sila2.Client;
 using Tecan.Sila2.Discovery;
 using Tecan.Sila2.Server;
@@ -20,7 +19,6 @@ namespace Tecan.Sila2.ServerPooling
     [PartCreationPolicy( CreationPolicy.Shared )]
     public class PoolServer : IServerPool, IServiceHandler<IServerPool>
     {
-        private readonly ILoggingChannelFactory _loggingChannelFactory;
         private readonly ConcurrentBag<ServerData> _pooledServers = new ConcurrentBag<ServerData>();
 
         private static readonly IClientExecutionManager _discoveryExecutionManager = new DiscoveryExecutionManager();
@@ -28,13 +26,10 @@ namespace Tecan.Sila2.ServerPooling
         /// <summary>
         /// Initialize a new pool server with default credentials
         /// </summary>
-        /// <param name="loggingChannelFactory">The logging channel factory to be used for logging</param>
         /// <param name="serverProvider">The actual gRPC server</param>
         [ImportingConstructor]
-        public PoolServer( ILoggingChannelFactory loggingChannelFactory, IServiceHandlerRepository<IServerPool> serverProvider )
+        public PoolServer( IServiceHandlerRepository<IServerPool> serverProvider )
         {
-            _loggingChannelFactory = loggingChannelFactory;
-
             serverProvider.AddServiceHandler( this );
         }
 
@@ -47,7 +42,7 @@ namespace Tecan.Sila2.ServerPooling
         private Task ConnectServer( IAsyncStreamReader<SilaServerMessage> requestStream, IServerStreamWriter<SilaClientMessage> responseStream, ServerCallContext context )
         {
             var bufferedWriter = new BufferedStreamWriter<SilaClientMessage>( responseStream );
-            var channel = new ServerConnection( _loggingChannelFactory, bufferedWriter, requestStream, context.CancellationToken );
+            var channel = new ServerConnection( bufferedWriter, requestStream, context.CancellationToken );
             var runTask = Task.WhenAll( channel.Run(), bufferedWriter.StartWriting( channel.CancellationToken ) );
             var server = CreateServerData( channel );
             _pooledServers.Add( server );

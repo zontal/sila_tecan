@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using Common.Logging;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using System;
 using System.Collections.Generic;
@@ -7,7 +8,6 @@ using System.Net;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Text;
-using Tecan.MAP.Contracts.Services.Logging;
 using Tecan.Sila2.Security;
 
 namespace Tecan.Sila2.Server
@@ -17,14 +17,13 @@ namespace Tecan.Sila2.Server
         private readonly List<IServiceHandler<ISiLAServer>> _handlers = new List<IServiceHandler<ISiLAServer>>();
         private readonly Dictionary<IPAddress, int> _networkAddresses = new Dictionary<IPAddress, int>();
         private readonly IServerCertificateProvider _certificateProvider;
+        private readonly ILog _loggingChannel = LogManager.GetLogger<ServiceHandlerRepository>();
 
         public IEnumerable<IServiceHandler<ISiLAServer>> ServiceHandlers => _handlers;
-        private readonly ILoggingChannel _loggingChannel;
         private PfxCertificateContext _certificateContext;
 
-        public ServiceHandlerRepository(ILoggingChannel loggingChannel, IServerCertificateProvider certificateProvider)
+        public ServiceHandlerRepository(IServerCertificateProvider certificateProvider)
         {
-            _loggingChannel = loggingChannel;
             _certificateProvider = certificateProvider;
         }
 
@@ -44,12 +43,12 @@ namespace Tecan.Sila2.Server
                 var context = _certificateProvider.CreateContext();
                 if(context is PfxCertificateContext pfxContext)
                 {
-                    _loggingChannel.Log( "Found certificates, starting server with TLS.".ToString, Severity.Info );
+                    _loggingChannel.Info( "Found certificates, starting server with TLS." );
                     _certificateContext = pfxContext;
                 }
                 else
                 {
-                    _loggingChannel.Log( $"No certificates found. Server will start with plain-text communication".ToString, Severity.Warning );
+                    _loggingChannel.Warn( $"No certificates found. Server will start with plain-text communication" );
                     _certificateContext = null;
                 }
             }
@@ -71,25 +70,25 @@ namespace Tecan.Sila2.Server
                 var context = _certificateProvider.CreateContext( guid );
                 if(context is PfxCertificateContext pfxContext)
                 {
-                    _loggingChannel.Log( "Found certificates, starting server with TLS.".ToString, Severity.Info );
+                    _loggingChannel.Info( "Found certificates, starting server with TLS." );
                     _certificateContext = pfxContext;
                 }
                 else
                 {
-                    _loggingChannel.Log( $"No certificates found. Server will start with plain-text communication".ToString, Severity.Warning );
+                    _loggingChannel.Warn( $"No certificates found. Server will start with plain-text communication" );
                     _certificateContext = null;
                 }
             }
 
             if(networkInterfaceFilter != null)
             {
-                _loggingChannel.Log( "Running on the following addresses:".ToString, Severity.Info );
+                _loggingChannel.Info( "Running on the following addresses:" );
                 foreach(var v4addr in NetworkInterface.GetAllNetworkInterfaces()
                     .Where( nic => networkInterfaceFilter( nic ) )
                     .SelectMany( nic => nic.GetIPProperties().UnicastAddresses.Select( ua => ua.Address ) )
                     .Where( a => a.AddressFamily == AddressFamily.InterNetwork ))
                 {
-                    _loggingChannel.Log( v4addr.ToString, Severity.Info );
+                    _loggingChannel.Info( v4addr.ToString() );
                     _networkAddresses.Add( v4addr, port );
                 }
             }

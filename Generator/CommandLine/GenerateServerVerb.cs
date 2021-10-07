@@ -6,7 +6,6 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using CommandLine;
-using Tecan.MAP.Contracts.Services.Logging;
 using Tecan.Sila2.Generator.Contracts;
 using Tecan.Sila2.Generator.Helper;
 
@@ -126,7 +125,7 @@ namespace Tecan.Sila2.Generator.CommandLine
 #if NET472
             if( Namespace == null && rootNamespace == null )
             {
-                channel.Log("Finding namespace from project file".ToString);
+                channel.Debug("Finding namespace from project file");
                 var project = new Project( ProviderProject );
                 rootNamespace = project.Properties.FirstOrDefault( p => p.Name == "RootNamespace" )?.EvaluatedValue;
             }
@@ -150,12 +149,12 @@ namespace Tecan.Sila2.Generator.CommandLine
             var configProvider = FeatureDefinitionConfigHelper.LoadConfigMappingFile( ConfigFile );
             if(!string.IsNullOrEmpty( ConfigFile ) && configProvider != null)
             {
-                channel.Log( "Feature definition config file could not be loaded.".ToString, Severity.Warning );
+                channel.Warn( "Feature definition config file could not be loaded." );
             }
             bool foundFeature = false;
             foreach (var featureType in featureTypes)
             {
-                channel.Log($"Processing interface {featureType.FullName}".ToString, Severity.Info);
+                channel.Info($"Processing interface {featureType.FullName}");
                 if (InterfaceName != null && !string.Equals(InterfaceName, featureType.Name, StringComparison.OrdinalIgnoreCase) && !string.Equals(InterfaceName, featureType.FullName, StringComparison.OrdinalIgnoreCase))
                 {
                     continue;
@@ -169,7 +168,7 @@ namespace Tecan.Sila2.Generator.CommandLine
                     Version, importNamespaces, configProvider);
                 // ReSharper disable once AssignNullToNotNullAttribute
                 var featurePath = Path.Combine(directory, FeaturePath ?? feature.Identifier + ".sila.xml");
-                channel.Log("Saving feature".ToString);
+                channel.Info("Saving feature");
                 FeatureSerializer.Save(feature, featurePath);
                 // Second, generate the provider (server only)
                 var generateProvider = new GenerateProviderVerb
@@ -182,7 +181,7 @@ namespace Tecan.Sila2.Generator.CommandLine
                     ServerOnly = !Client,
                     MinimumSeverity = MinimumSeverity
                 };
-                channel.Log("Generate provider".ToString);
+                channel.Info("Generate provider");
                 generateProvider.Execute(container);
             }
 
@@ -190,11 +189,11 @@ namespace Tecan.Sila2.Generator.CommandLine
             {
                 if( InterfaceName != null )
                 {
-                    channel.Log( $"No interface with the name {InterfaceName} could be found.".ToString, Severity.Error );
+                    channel.Error( $"No interface with the name {InterfaceName} could be found." );
                 }
                 else
                 {
-                    channel.Log( "No interface with SilaFeature attribute has been found.".ToString, Severity.Warning );
+                    channel.Warn( "No interface with SilaFeature attribute has been found." );
                 }
             }
         }

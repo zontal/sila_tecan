@@ -34,7 +34,7 @@
         <PackageReference Include="protobuf-net" Version="2.4.0" />
         <PackageReference Include="System.ComponentModel.Composition" Version="4.6.0" />
         <PackageReference Include="System.Threading.Channels" Version="4.7.0" />
-        <PackageReference Include="Tecan.MAP.Contracts.Services.Logging" Version="2.1.0.14695" />
+        <PackageReference Include="Common.Logging" Version="3.4.1" />
     </ItemGroup>
 
     <ItemGroup>

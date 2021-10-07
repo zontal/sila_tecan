@@ -7,13 +7,13 @@ using System.IO;
 using System.Reflection;
 using System.Text;
 using CommandLine;
+using Common.Logging;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
-using Tecan.MAP.Contracts.Services.Logging;
 using Tecan.Sila2.Security;
 using Tecan.Sila2.Server.Binary;
 
@@ -26,7 +26,7 @@ namespace Tecan.Sila2.Server
     {
         private CompositionContainer _container;
         private ISiLAServer _server;
-        private ILoggingChannel _channel;
+        private ILog _channel;
         private IHost _host;
 
         /// <summary>
@@ -52,14 +52,13 @@ namespace Tecan.Sila2.Server
             var selfInfo = GetServerInformation();
             try
             {
-                _container = CreateContainer();
-                var logging = _container.GetExportedValue<ILoggingChannelFactory>();
-                if(Common.Logging.LogManager.Adapter is Common.Logging.Simple.NoOpLoggerFactoryAdapter || Common.Logging.LogManager.Adapter == null)
+                if(LogManager.Adapter is Common.Logging.Simple.NoOpLoggerFactoryAdapter || LogManager.Adapter == null)
                 {
-                    Common.Logging.LogManager.Adapter = new LoggerFactoryAdapter( logging );
+                    LogManager.Adapter = new ConsoleLogging( LogLevel.Debug );
                 }
+                _container = CreateContainer();
 
-                _channel = logging.CreateChannel( typeof( Bootstrapper ) );
+                _channel = LogManager.GetLogger<Bootstrapper>();
                 var interfaceFilter = args.InterfaceFilter;
                 if(interfaceFilter == "None")
                 {
@@ -67,7 +66,7 @@ namespace Tecan.Sila2.Server
                 }
                 var startup = new ServerStartInformation( selfInfo, args.Port, args.InterfaceFilter, args.ServerUuid, args.Name );
                 _container.ComposeExportedValue( startup );
-                var serviceHandlerRepository = new ServiceHandlerRepository(_channel, _container.GetExportedValue<IServerCertificateProvider>());
+                var serviceHandlerRepository = new ServiceHandlerRepository( _container.GetExportedValue<IServerCertificateProvider>());
                 _container.ComposeExportedValue<IServiceHandlerRepository<ISiLAServer>>( serviceHandlerRepository );
                 _server = _container.GetExportedValue<ISiLAServer>();
 
@@ -126,11 +125,11 @@ namespace Tecan.Sila2.Server
         /// </summary>
         public CompositionContainer Container => _container;
 
-        private static void LogError( ILoggingChannel channel, Exception e )
+        private static void LogError( ILog channel, Exception e )
         {
             if(channel != null)
             {
-                channel.LogException( "Server creation/initialization exception: ".ToString, e );
+                channel.Error( "Server creation/initialization exception: ", e );
             }
             else
             {
@@ -148,7 +147,7 @@ namespace Tecan.Sila2.Server
             {
                 if(_channel != null)
                 {
-                    _channel.LogException( "Error shutting down server".ToString, exception );
+                    _channel.Error( "Error shutting down server", exception );
                 }
                 else
                 {
@@ -169,7 +168,7 @@ namespace Tecan.Sila2.Server
             }
             catch(Exception exception)
             {
-                _channel?.LogException( "Error shutting down server".ToString, exception );
+                _channel?.Error( "Error shutting down server", exception );
             }
             finally
             {
@@ -205,11 +204,6 @@ namespace Tecan.Sila2.Server
         /// <param name="container">The composition container</param>
         protected void ApplyDefaultsIfMissing( CompositionContainer container )
         {
-            if(container.GetExportedValueOrDefault<ILoggingChannelFactory>() == null)
-            {
-                container.ComposeExportedValue<ILoggingChannelFactory>( new ConsoleLogging() );
-            }
-
             if(container.GetExportedValueOrDefault<IFileManagement>() == null)
             {
                 container.ComposeExportedValue<IFileManagement>( new FileManagement() );

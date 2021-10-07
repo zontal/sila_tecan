@@ -1,9 +1,9 @@
-﻿using System;
+﻿using Common.Logging;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
 using System.Text;
-using Tecan.MAP.Contracts.Services.Logging;
 
 namespace Tecan.Sila2.Server.ConnectionConfiguration
 {
@@ -13,14 +13,13 @@ namespace Tecan.Sila2.Server.ConnectionConfiguration
     {
         private readonly ISiLAServer _server;
         private readonly Dictionary<string, ClientEntry> _connections = new Dictionary<string, ClientEntry>();
-        private readonly ILoggingChannel _loggingChannel;
+        private readonly ILog _loggingChannel = LogManager.GetLogger<ConnectionConfigurationService>();
         private readonly IConfigurationStore _configurationStore;
         private bool _isEnabled;
 
         [ImportingConstructor]
-        public ConnectionConfigurationService(ISiLAServer server, ILoggingChannelFactory loggingChannelFactory, IConfigurationStore configurationStore)
+        public ConnectionConfigurationService(ISiLAServer server, IConfigurationStore configurationStore)
         {
-            _loggingChannel = loggingChannelFactory.CreateChannel( typeof( ConnectionConfigurationService ) );
             _configurationStore = configurationStore;
             _server = server;
         }
@@ -41,9 +40,9 @@ namespace Tecan.Sila2.Server.ConnectionConfiguration
                 {
                     throw new Exception( $"A client with the name {clientName} already exists." );
                 }
-                _loggingChannel.Log( $"Connecting to {clientName}...".ToString, Severity.Info );
+                _loggingChannel.Info( $"Connecting to {clientName}..." );
                 var channel = _server.ConnectToPool( $"{siLAClientHost}:{siLAClientPort}" );
-                _loggingChannel.Log( $"Connection to {clientName} ({siLAClientHost}:{siLAClientPort}) established successfully".ToString, Severity.Info );
+                _loggingChannel.Info( $"Connection to {clientName} ({siLAClientHost}:{siLAClientPort}) established successfully" );
                 _connections.Add( clientName, new ClientEntry( siLAClientHost, (int)siLAClientPort, channel ) );
             }
             if (persist)
@@ -68,7 +67,7 @@ namespace Tecan.Sila2.Server.ConnectionConfiguration
             {
                 lock(_connections)
                 {
-                    _loggingChannel.Log( "Disconnecting all clients".ToString, Severity.Info );
+                    _loggingChannel.Info( "Disconnecting all clients" );
                     foreach(var connection in _connections.Values)
                     {
                         connection.Channel.Dispose();
@@ -86,14 +85,14 @@ namespace Tecan.Sila2.Server.ConnectionConfiguration
             {
                 lock(_connections)
                 {
-                    _loggingChannel.Log( $"Disconnecting client {clientName}".ToString, Severity.Info );
+                    _loggingChannel.Info( $"Disconnecting client {clientName}" );
                     channel.Channel.Dispose();
                     _connections.Remove( clientName );
                 }
             }
             else
             {
-                _loggingChannel.Log( $"No client '{clientName}' connected.".ToString, Severity.Warning );
+                _loggingChannel.Warn( $"No client '{clientName}' connected." );
             }
             if (remove)
             {
@@ -129,7 +128,7 @@ namespace Tecan.Sila2.Server.ConnectionConfiguration
             }
             catch(Exception ex)
             {
-                _loggingChannel.LogException( "Could not persist connection mode".ToString, ex );
+                _loggingChannel.Error( "Could not persist connection mode", ex );
             }
         }
 

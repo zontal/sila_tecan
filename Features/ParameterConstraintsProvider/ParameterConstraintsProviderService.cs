@@ -1,10 +1,10 @@
-﻿using System;
+﻿using Common.Logging;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.Composition;
 using System.Linq;
 using System.Reflection;
-using Tecan.MAP.Contracts.Services.Logging;
 using Tecan.Sila2.Server;
 
 namespace Tecan.Sila2.ParameterConstraintsProvider
@@ -17,17 +17,16 @@ namespace Tecan.Sila2.ParameterConstraintsProvider
         private readonly Lazy<ISiLAServer> _server;
         private readonly Lazy<Dictionary<string, ConstrainedType>> _constraintsSource;
         private readonly Dictionary<Type, IParameterConstraintResolver> _resolvers;
-        private readonly ILoggingChannel _loggingChannel;
+        private readonly ILog _loggingChannel = LogManager.GetLogger<ParameterConstraintsProviderService>();
 
         public event PropertyChangedEventHandler PropertyChanged;
 
         [ImportingConstructor]
-        public ParameterConstraintsProviderService( Lazy<ISiLAServer> server, [ImportMany] IEnumerable<IParameterConstraintResolver> resolvers, ILoggingChannelFactory loggingChannelFactory )
+        public ParameterConstraintsProviderService( Lazy<ISiLAServer> server, [ImportMany] IEnumerable<IParameterConstraintResolver> resolvers )
         {
             _server = server;
             _constraintsSource = new Lazy<Dictionary<string, ConstrainedType>>(InitializeConstraintsSource);
             _resolvers = resolvers.ToDictionary( r => r.ConstraintAttributeType );
-            _loggingChannel = loggingChannelFactory.CreateChannel( typeof(ParameterConstraintsProviderService) );
         }
 
         private Dictionary<string, ConstrainedType> InitializeConstraintsSource()
@@ -41,7 +40,7 @@ namespace Tecan.Sila2.ParameterConstraintsProvider
                     var method = featureProvider.GetCommand( feature.GetFullyQualifiedIdentifier( command ) );
                     if (method == null)
                     {
-                        _loggingChannel.Log( $"Could not identify method for command {command.Identifier}, please make sure your interface and feature are in sync".ToString, Severity.Error );
+                        _loggingChannel.Error( $"Could not identify method for command {command.Identifier}, please make sure your interface and feature are in sync" );
                         continue;
                     }
                     foreach(var parameterInfo in method.GetParameters())
@@ -63,7 +62,7 @@ namespace Tecan.Sila2.ParameterConstraintsProvider
                                 }
                                 catch(Exception e)
                                 {
-                                    _loggingChannel.LogException( "Failed to obtain runtime constraint.".ToString, e );
+                                    _loggingChannel.Error( "Failed to obtain runtime constraint.", e );
                                 }
                                 if(resolver is INotifyParameterConstraintResolver notifyResolver)
                                 {

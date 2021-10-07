@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.NetworkInformation;
+using Common.Logging;
 using Makaretu.Dns;
-using Tecan.MAP.Contracts.Services.Logging;
 using Tecan.Sila2.Discovery;
 
 namespace Tecan.Sila2
@@ -14,7 +14,7 @@ namespace Tecan.Sila2
     /// </summary>
     public class ServiceAnnouncer : IDisposable
     {
-        private readonly ILoggingChannel _logger;
+        private readonly ILog _logger = LogManager.GetLogger<ServiceAnnouncer>();
         private MulticastService _multicastService;
         private ServiceDiscovery _serviceDiscoverer;
 
@@ -48,12 +48,9 @@ namespace Tecan.Sila2
         /// <param name="instanceName">Unique name of the SiLA device service</param>
         /// <param name="portNumber">Listening port of the gRPC server</param>
         /// <param name="networkFilter">A predicate that filters network interfaces to advertise on</param>
-        /// <param name="loggingChannelFactory">A factory to create logging channels</param>
-        public ServiceAnnouncer( string instanceName, ushort portNumber, Predicate<NetworkInterface> networkFilter, ILoggingChannelFactory loggingChannelFactory )
+        public ServiceAnnouncer( string instanceName, ushort portNumber, Predicate<NetworkInterface> networkFilter )
         {
-            _logger = loggingChannelFactory.CreateChannel( typeof(ServiceAnnouncer) );
-
-            var networking = new Networking( loggingChannelFactory );
+            var networking = new Networking( );
             var selectedAddresses = networking.ListInterNetworkAddresses( networkFilter );
             Profile = new ServiceProfile( instanceName, DiscoveryConstants.ServiceName, portNumber, selectedAddresses );
             _multicastService = new MulticastService( networking.CreateFilter(networkFilter) );
@@ -75,10 +72,10 @@ namespace Tecan.Sila2
         public void Start()
         {
             _serviceDiscoverer?.Dispose();
-            _logger.Log("Starting multicast service".ToString, Severity.Info);
+            _logger.Info("Starting multicast service");
             _multicastService.Start();
             _serviceDiscoverer = new ServiceDiscovery(_multicastService);
-            _logger.Log("Starting to advertise".ToString, Severity.Info);
+            _logger.Info("Starting to advertise");
             _serviceDiscoverer.Advertise(Profile);
         }
 

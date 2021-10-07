@@ -16,9 +16,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Features", "Features", "{0E82C9E0-FD04-401F-9BB9-4C9E6419FA47}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{D20F3DDF-CC13-45C3-95F5-F48B1EFFBB82}"
-	ProjectSection(SolutionItems) = preProject
-		TestLoggingFactory.cs = TestLoggingFactory.cs
-	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeneratorTest", "Tests\Generator.Tests\GeneratorTest.csproj", "{B4E54C24-A011-4375-A1FF-0918F21CBE02}"
 EndProject
@@ -121,7 +118,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Framework.NetCore", "Framew
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestServer.NetCore", "Tests\TestServer.NetCore\TestServer.NetCore.csproj", "{3083B15F-DBB8-4C50-A610-E0771D3CA163}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntegrationTests.NetCore", "Tests\IntegrationTests.NetCore\IntegrationTests.NetCore.csproj", "{D66CBAD3-CB10-451A-8F68-D098ADA91D20}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IntegrationTests.NetCore", "Tests\IntegrationTests.NetCore\IntegrationTests.NetCore.csproj", "{D66CBAD3-CB10-451A-8F68-D098ADA91D20}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

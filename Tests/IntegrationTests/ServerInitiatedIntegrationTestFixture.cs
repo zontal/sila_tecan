@@ -6,7 +6,6 @@ using Tecan.Sila2.Authentication.AuthenticationService;
 using Tecan.Sila2.ConnectionConfiguration.ConnectionConfigurationService;
 using Tecan.Sila2.Discovery;
 using Tecan.Sila2.ServerPooling;
-using Tecan.Sila2.Tests;
 
 namespace Tecan.Sila2.IntegrationTests
 {
@@ -19,9 +18,8 @@ namespace Tecan.Sila2.IntegrationTests
 
         protected override ServerData FindServer(Guid serverUuid)
         {
-            var logging = new TestLoggingFactory();
-            _serverProvider = new ServerProvider( logging , new FileCertificateProvider() );
-            _poolServer = new PoolServer( logging, _serverProvider );
+            _serverProvider = new ServerProvider( new FileCertificateProvider() );
+            _poolServer = new PoolServer( _serverProvider );
             var tcs = new TaskCompletionSource<ServerData>();
             _poolServer.ServerConnected += ( o, e ) => tcs.SetResult( e.Server );
             _serverProvider.Configure("127.0.0.1", 50053);

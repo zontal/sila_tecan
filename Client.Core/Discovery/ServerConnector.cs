@@ -1,4 +1,5 @@
-﻿using Grpc.Core;
+﻿using Common.Logging;
+using Grpc.Core;
 using Grpc.Net.Client;
 using System;
 using System.Collections.Generic;
@@ -6,7 +7,6 @@ using System.Linq;
 using System.Net;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
-using Tecan.MAP.Contracts.Services.Logging;
 using Tecan.Sila2.Client;
 
 namespace Tecan.Sila2.Discovery
@@ -17,7 +17,7 @@ namespace Tecan.Sila2.Discovery
     public class ServerConnector : IServerConnector
     {
         private readonly IClientExecutionManager _executionManager;
-        private readonly ILoggingChannel _loggingChannel;
+        private readonly ILog _loggingChannel = LogManager.GetLogger<ServerConnector>();
 
         private const string BeginCertPhrase = "-----BEGIN CERTIFICATE-----";
         private const string EndCertPhrase = "-----END CERTIFICATE-----";
@@ -27,10 +27,9 @@ namespace Tecan.Sila2.Discovery
         /// </summary>
         /// <param name="executionManager">A client execution manager</param>
         /// <param name="loggingChannelFactory">A factory used for logging</param>
-        public ServerConnector( IClientExecutionManager executionManager, ILoggingChannelFactory loggingChannelFactory )
+        public ServerConnector( IClientExecutionManager executionManager )
         {
             _executionManager = executionManager ?? new DiscoveryExecutionManager();
-            _loggingChannel = loggingChannelFactory.CreateChannel( typeof(ServerConnector) );
         }
 
         /// <inheritdoc />
@@ -44,7 +43,7 @@ namespace Tecan.Sila2.Discovery
             var connection = ConnectCore( target, expectedGuid, details );
             if (expectedGuid.HasValue && connection != null && connection.Config.Uuid != expectedGuid.Value)
             {
-                _loggingChannel.Log( $"Connection to {target} was successful, but the server UUID {connection.Config.Uuid} does not match the expected {expectedGuid.Value}.".ToString, Severity.Warning );
+                _loggingChannel.Warn( $"Connection to {target} was successful, but the server UUID {connection.Config.Uuid} does not match the expected {expectedGuid.Value}." );
                 connection.Channel.Dispose();
                 return null;
             }
@@ -53,7 +52,7 @@ namespace Tecan.Sila2.Discovery
 
         private ServerData ConnectCore( string target, Guid? expectedGuid, IReadOnlyDictionary<string, string> details )
         {
-            _loggingChannel.Log( $"Connecting to {target}".ToString, Severity.Info );
+            _loggingChannel.Info( $"Connecting to {target}" );
             if(details == null || !details.TryGetValue( "encrypted", out var encryption ) || encryption != "false")
             {
                 string certificate = null;
@@ -71,8 +70,8 @@ namespace Tecan.Sila2.Discovery
                     }
                     catch(Exception e)
                     {
-                        _loggingChannel.LogException(
-                            $"Secure connection to {target} failed, falling back to unsecure connection".ToString, e );
+                        _loggingChannel.Error(
+                            $"Secure connection to {target} failed, falling back to unsecure connection", e );
                     }
                 }
                 else
@@ -84,8 +83,8 @@ namespace Tecan.Sila2.Discovery
                     }
                     catch(Exception e)
                     {
-                        _loggingChannel.LogException(
-                            $"Secure connection to {target} failed, falling back to unsecure connection".ToString, e );
+                        _loggingChannel.Error(
+                            $"Secure connection to {target} failed, falling back to unsecure connection", e );
                     }
                 }
             }
@@ -153,7 +152,7 @@ namespace Tecan.Sila2.Discovery
         /// <returns>The connected server or null, if the connection should be refused</returns>
         protected virtual ServerData ServerUuidDoesNotMatchDnsEntry(ServerData server, Guid dnsGuid)
         {
-            _loggingChannel.Log( $"Server UUID does not match expected value from Discovery. Expected {dnsGuid} but the actual server id is {server.Config.Uuid}".ToString, Severity.Warning );
+            _loggingChannel.Warn( $"Server UUID does not match expected value from Discovery. Expected {dnsGuid} but the actual server id is {server.Config.Uuid}" );
             return server;
         }
 
@@ -166,7 +165,7 @@ namespace Tecan.Sila2.Discovery
         /// <returns>The connected server or null, if the connection should be refused</returns>
         protected virtual ServerData ServerUuidDoesNotMatchCertificate(ServerData server, Guid serverIdFromCertificate, X509Certificate2 serverCertificate)
         {
-            _loggingChannel.Log( $"Server UUID does not match expected value from certificate. Expected {serverIdFromCertificate} but the actual server id is {server.Config.Uuid}".ToString, Severity.Warning );
+            _loggingChannel.Warn( $"Server UUID does not match expected value from certificate. Expected {serverIdFromCertificate} but the actual server id is {server.Config.Uuid}" );
             return server;
         }
 
@@ -178,7 +177,7 @@ namespace Tecan.Sila2.Discovery
         /// <returns>The connected server or null, if the connection should be refused</returns>
         protected virtual ServerData ServerUuidNotContainedInCertificate(ServerData server, X509Certificate2 serverCertificate)
         {
-            _loggingChannel.Log( $"No server uuid could be found in the certificate for server {server.Config.Uuid}".ToString, Severity.Warning );
+            _loggingChannel.Warn( $"No server uuid could be found in the certificate for server {server.Config.Uuid}" );
             return server;
         }
 
@@ -210,7 +209,7 @@ namespace Tecan.Sila2.Discovery
             }
             catch(Exception ex)
             {
-                _loggingChannel.LogException( "Failed to read certificate".ToString, ex );
+                _loggingChannel.Error( "Failed to read certificate", ex );
                 return null;
             }
         }

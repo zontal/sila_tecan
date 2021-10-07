@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.Composition;
-using Tecan.MAP.Contracts.Services.Logging;
 using Tecan.Sila2.Discovery;
 
 namespace Tecan.Sila2.IntegrationTests
@@ -8,7 +7,7 @@ namespace Tecan.Sila2.IntegrationTests
     internal class DefaultConnector : ServerConnector
     {
         [ImportingConstructor]
-        public DefaultConnector( ILoggingChannelFactory loggingChannelFactory ) : base( new DiscoveryExecutionManager(), loggingChannelFactory )
+        public DefaultConnector() : base( new DiscoveryExecutionManager() )
         {
         }
     }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Common.Logging;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
@@ -7,7 +8,6 @@ using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
-using Tecan.MAP.Contracts.Services.Logging;
 using Tecan.Sila2.Generator.Contracts;
 using Tecan.Sila2.Generator.Helper;
 using Tecan.Sila2.Server;
@@ -21,7 +21,7 @@ namespace Tecan.Sila2.Generator.Generators
         private readonly Dictionary<string, Dictionary<string, XElement>> _loadedDocumentation = new Dictionary<string, Dictionary<string, XElement>>();
         private readonly Func<string, Constraints> _constraintResolver;
         private readonly ITypeTranslationProvider _translationProvider;
-        private readonly ILoggingChannel _loggingChannel;
+        private readonly ILog _loggingChannel = LogManager.GetLogger<FeatureDefinitionGeneratorContext>();
         private readonly IAmbiguityResolver _ambiguityResolver;
         private readonly PredefinedFeatureGenerationConfigModel _predefinedFeatureGenerationConfigModel;
 
@@ -32,14 +32,13 @@ namespace Tecan.Sila2.Generator.Generators
             typeof(ArgumentOutOfRangeException).FullName
         };
 
-        public FeatureDefinitionGeneratorContext( ILoggingChannel loggingChannel, ICodeNameRegistry nameRegistry, Func<string, Constraints> constraintResolver, 
+        public FeatureDefinitionGeneratorContext( ICodeNameRegistry nameRegistry, Func<string, Constraints> constraintResolver, 
             ITypeTranslationProvider translationProvider, IAmbiguityResolver ambiguityResolver, 
             PredefinedFeatureGenerationConfigModel predefinedFeatureGenerationConfigModel)
         {
             _nameRegistry = nameRegistry;
             _constraintResolver = constraintResolver;
             _translationProvider = translationProvider;
-            _loggingChannel = loggingChannel;
             _ambiguityResolver = ambiguityResolver;
             _predefinedFeatureGenerationConfigModel = predefinedFeatureGenerationConfigModel;
         }
@@ -93,11 +92,11 @@ namespace Tecan.Sila2.Generator.Generators
                 }
 
                 _loadedDocumentation.Add( assembly.FullName, docs );
-                _loggingChannel.Log( $"Documentation for {assembly.FullName} successfully loaded.".ToString, Severity.Info );
+                _loggingChannel.Info( $"Documentation for {assembly.FullName} successfully loaded." );
             }
             catch(Exception e)
             {
-                _loggingChannel.Log( $"Loading documentation for assembly {assembly.FullName} failed: {e.Message}.".ToString, Severity.Warning );
+                _loggingChannel.Warn( $"Loading documentation for assembly {assembly.FullName} failed: {e.Message}." );
             }
         }
 
@@ -158,7 +157,7 @@ namespace Tecan.Sila2.Generator.Generators
 
         private FeatureMetadata GenerateMetadata( PropertyInfo propertyInfo, ICollection<Type> definedExceptions, ICollection<Type> dataTypes )
         {
-            _loggingChannel.Log( $"Generate SiLA2 metadata for property {propertyInfo.Name}".ToString );
+            _loggingChannel.Debug( $"Generate SiLA2 metadata for property {propertyInfo.Name}" );
             var (identifier, displayName, description) = ParseElementData( propertyInfo );
             var exceptionIdentifiers = ParseExceptionNamesAndRegister( propertyInfo, definedExceptions );
 
@@ -209,7 +208,7 @@ namespace Tecan.Sila2.Generator.Generators
         private FeatureProperty GenerateProperty( PropertyInfo propertyInfo, ICollection<Type> readExceptions,
             ICollection<Type> dataTypes, out FeatureCommand setterCommand )
         {
-            _loggingChannel.Log( $"Generate SiLA2 property for {propertyInfo.Name}".ToString );
+            _loggingChannel.Debug( $"Generate SiLA2 property for {propertyInfo.Name}" );
             var (identifier, displayName, description) = ParseElementData( propertyInfo );
 
             var definedErrors = ParseExceptionNamesAndRegister( propertyInfo, readExceptions );
@@ -227,7 +226,7 @@ namespace Tecan.Sila2.Generator.Generators
             };
             if( propertyInfo.CanWrite )
             {
-                _loggingChannel.Log($"Property {propertyInfo.Name} is writable, generating setter command.".ToString);
+                _loggingChannel.Debug($"Property {propertyInfo.Name} is writable, generating setter command.");
                 setterCommand = new FeatureCommand()
                 {
                     Identifier = "Set" + identifier,
@@ -261,7 +260,7 @@ namespace Tecan.Sila2.Generator.Generators
             var docEntry = GetDocEntry( member );
             if(docEntry != null)
             {
-                _loggingChannel.Log($"Found documentation for {member.Name}, extracting exceptions.".ToString);
+                _loggingChannel.Debug($"Found documentation for {member.Name}, extracting exceptions.");
                 var assembly = member.DeclaringType.Assembly;
 
                 foreach(var exceptionElement in docEntry.Elements( XName.Get( "exception" ) ))
@@ -271,7 +270,7 @@ namespace Tecan.Sila2.Generator.Generators
                     {
                         if( ArgumentExceptionTypeNames.Contains( typeName ) || typeof(Exception).FullName.Equals(typeName))
                         {
-                            _loggingChannel.Log($"Ignoring exception {typeName} because it is covered by SiLA2 validation errors.".ToString);
+                            _loggingChannel.Debug($"Ignoring exception {typeName} because it is covered by SiLA2 validation errors.");
                             continue;
                         }
                         var exceptionType = assembly.GetType( typeName, false );
@@ -290,12 +289,12 @@ namespace Tecan.Sila2.Generator.Generators
                         }
                         if (exceptionType != null)
                         {
-                            _loggingChannel.Log($"Found exception type {exceptionType.Name}".ToString);
+                            _loggingChannel.Debug($"Found exception type {exceptionType.Name}");
                             AddError( exceptions, exceptionType, errors );
                             continue;
                         }
                     }
-                    _loggingChannel.Log($"Exception {typeName} could not be found.".ToString, Severity.Warning);
+                    _loggingChannel.Warn($"Exception {typeName} could not be found.");
                 }
             }
 
@@ -653,7 +652,7 @@ namespace Tecan.Sila2.Generator.Generators
                                select cons).FirstOrDefault();
             if(constructor != null)
             {
-                _loggingChannel.Log("Found constructor that can be used to create the domain object.".ToString);
+                _loggingChannel.Debug("Found constructor that can be used to create the domain object.");
 
                 return from par in constructor.GetParameters()
                        select GetMemberInfo(type, par.Name); 
@@ -664,7 +663,7 @@ namespace Tecan.Sila2.Generator.Generators
                                 select staticMethod).FirstOrDefault();
             if(createMethod != null)
             {
-                _loggingChannel.Log($"Found static create method {createMethod.Name}".ToString);
+                _loggingChannel.Debug($"Found static create method {createMethod.Name}");
                 _nameRegistry.RegisterConstructionMethod( type, createMethod );
                 return DetermineStructurePropertiesForConstructionMethod( type, createMethod );
             }
@@ -699,7 +698,7 @@ namespace Tecan.Sila2.Generator.Generators
 
         private MemberInfo GetPropertyFunction( Type type, string expectedName )
         {
-            _loggingChannel.Log($"Could not find a property for {expectedName}, looking for methods without parameters now. Code generated for this may not compile.".ToString, Severity.Warning);
+            _loggingChannel.Warn($"Could not find a property for {expectedName}, looking for methods without parameters now. Code generated for this may not compile.");
             var exactFunction = type.GetMethod( expectedName );
             if( exactFunction != null && exactFunction.GetParameters().Length == 0 )
             {
@@ -710,7 +709,7 @@ namespace Tecan.Sila2.Generator.Generators
                 .FirstOrDefault( m => m.Name.EndsWith( expectedName ) && m.GetParameters().Length == 0 );
             if( candidateFunction != null )
             {
-                _loggingChannel.Log($"Chosen function {candidateFunction.Name}. This is highly speculative. Expect compile errors. Please refactor your code.".ToString, Severity.Warning);
+                _loggingChannel.Warn($"Chosen function {candidateFunction.Name}. This is highly speculative. Expect compile errors. Please refactor your code.");
                 return candidateFunction;
             }
 
@@ -754,7 +753,7 @@ namespace Tecan.Sila2.Generator.Generators
         {
             if(GetDocEntry( parameter.Member ) is var actualDoc && actualDoc != null )
             {
-                _loggingChannel.Log($"Found description for parameter {parameter.Name} in documentation".ToString);
+                _loggingChannel.Debug($"Found description for parameter {parameter.Name} in documentation");
                 if( parameter.Position == -1 ) // parameter is method return value
                 {
                     return actualDoc.Element( XName.Get( "returns" ) )?.Value?.Trim();
@@ -866,7 +865,7 @@ namespace Tecan.Sila2.Generator.Generators
         private FeatureCommand GenerateCommand( MethodInfo methodInfo, ICollection<Type> executeExceptions,
             ICollection<Type> dataTypes )
         {
-            _loggingChannel.Log( $"Generate SiLA2 command for method {methodInfo.Name}".ToString );
+            _loggingChannel.Debug( $"Generate SiLA2 command for method {methodInfo.Name}" );
             var (identifier, displayName, description) = ParseElementData( methodInfo );
 
             var exceptionIdentifiers = ParseExceptionNamesAndRegister( methodInfo, executeExceptions );
@@ -919,14 +918,14 @@ namespace Tecan.Sila2.Generator.Generators
                 {
                     if( !isObservable )
                     {
-                        _loggingChannel.Log($"The method {methodInfo.Name} has a parameter with a cancellation token but is not marked observable.".ToString, Severity.Warning );
+                        _loggingChannel.Warn($"The method {methodInfo.Name} has a parameter with a cancellation token but is not marked observable." );
                         isObservable = true;
                         _nameRegistry.RegisterMethod(identifier, methodInfo);
                     }
 
                     if( parameterInfo.Position < methodInfo.GetParameters().Length - 1 )
                     {
-                        _loggingChannel.Log("The cancellation token should be the last parameter. Generated code for this feature may not compile.".ToString, Severity.Warning);
+                        _loggingChannel.Warn("The cancellation token should be the last parameter. Generated code for this feature may not compile.");
                     }
                     continue;
                 }
@@ -1038,7 +1037,7 @@ namespace Tecan.Sila2.Generator.Generators
         {
             if (!isObservable)
             {
-                _loggingChannel.Log( $"Warning: The method {commandMethod.Name} seems observable but is not marked observable.".ToString, Severity.Warning);
+                _loggingChannel.Warn( $"Warning: The method {commandMethod.Name} seems observable but is not marked observable.");
                 isObservable = true;
             }
         }

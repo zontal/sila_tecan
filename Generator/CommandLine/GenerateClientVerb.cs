@@ -55,7 +55,7 @@ namespace Tecan.Sila2.Generator.CommandLine
 #if !NETCOREAPP2_1
                 if( Namespace == null )
                 {
-                    channel.Log("Finding root namespace in project file".ToString);
+                    channel.Debug("Finding root namespace in project file");
                     var project = new Project( ProviderProject );
                     Namespace = project.GetPropertyValue( "RootNamespace" );
                 }
@@ -67,7 +67,7 @@ namespace Tecan.Sila2.Generator.CommandLine
 #if !NETCOREAPP2_1
                 if( type == null )
                 {
-                    channel.Log( "Finding output path and assembly name in project file".ToString );
+                    channel.Debug( "Finding output path and assembly name in project file" );
                     var project = new Project( ProviderProject );
                     var target = project.GetPropertyValue( "OutputPath" );
                     var fileName = project.GetPropertyValue( "AssemblyName" );

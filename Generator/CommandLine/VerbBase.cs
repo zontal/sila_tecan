@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
 using CommandLine;
-using Tecan.MAP.Contracts.Services.Logging;
+using Common.Logging;
 using Tecan.Sila2.Generator.Contracts;
 using Tecan.Sila2.Generator.Generators;
 using Tecan.Sila2.Generator.Logging;
@@ -16,8 +16,8 @@ namespace Tecan.Sila2.Generator.CommandLine
         /// <summary>
         /// Sets the minimum severity of the log level. Allowed values are Debug, Info, Warning, Error.
         /// </summary>
-        [Option("verbosity", Required = false, Default = Severity.Info, HelpText = "Sets the minimum severity of the log level. Allowed values are Debug, Info, Warning, Error.")]
-        public Severity MinimumSeverity
+        [Option("verbosity", Required = false, Default = LogLevel.Info, HelpText = "Sets the minimum severity of the log level. Allowed values are Debug, Info, Warning, Error.")]
+        public LogLevel MinimumSeverity
         {
             get;
             set;
@@ -27,22 +27,15 @@ namespace Tecan.Sila2.Generator.CommandLine
         /// Set up the logging according to the command line
         /// </summary>
         /// <param name="container"></param>
-        protected ILoggingChannel SetupLogging( CompositionContainer container )
+        protected ILog SetupLogging( CompositionContainer container )
         {
             if( container.GetExportedValueOrDefault<IDependencyInjectionGenerator>() == null )
             {
                 container.ComposeExportedValue<IDependencyInjectionGenerator>( new MefGenerator() );
             }
+            LogManager.Adapter = new ConsoleLogging( MinimumSeverity );
 
-            Program.MinimumSeverity = MinimumSeverity;
-            var loggingFactory = container.GetExportedValueOrDefault<ILoggingChannelFactory>();
-            if( loggingFactory == null )
-            {
-                loggingFactory = new ConsoleLogging( MinimumSeverity );
-                container.ComposeExportedValue<ILoggingChannelFactory>( loggingFactory );
-            }
-
-            return loggingFactory.CreateChannel( GetType() );
+            return LogManager.GetLogger( GetType() );
         }
 
         /// <inheritdoc cref="ICommandLineVerb"/>

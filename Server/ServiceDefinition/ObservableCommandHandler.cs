@@ -1,8 +1,8 @@
-﻿using Grpc.Core;
+﻿using Common.Logging;
+using Grpc.Core;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Tecan.MAP.Contracts.Services.Logging;
 using Tecan.Sila2.ServerPooling;
 
 namespace Tecan.Sila2.Server.ServiceDefinition
@@ -10,6 +10,7 @@ namespace Tecan.Sila2.Server.ServiceDefinition
     internal class ObservableCommandHandler<TRequest> : IRequestHandler, ICommandRequestHandler where TRequest : ISilaRequestObject
     {
         protected readonly SiLAServer _server;
+        private static ILog _loggingChannel = LogManager.GetLogger<ObservableCommandHandler<TRequest>>();
         private readonly Func<TRequest, IObservableCommand> _implementation;
         protected readonly Func<Exception, Exception> _errorConverter;
         private readonly IIntermediateRequestHandler _intermediateHandler;
@@ -153,7 +154,7 @@ namespace Tecan.Sila2.Server.ServiceDefinition
             }
         }
 
-        public async void HandleExecutionStateSubscription( string uuid, ILoggingChannel loggingChannel, ObservableCommandExecution command, IClientStreamWriter<SilaServerMessage> responseWriter, ServerPoolDispatcher dispatcher )
+        public async void HandleExecutionStateSubscription( string uuid, ObservableCommandExecution command, IClientStreamWriter<SilaServerMessage> responseWriter, ServerPoolDispatcher dispatcher )
         {
             try
             {
@@ -174,11 +175,11 @@ namespace Tecan.Sila2.Server.ServiceDefinition
             {
                 if (command.Command.Response.IsCanceled)
                 {
-                    loggingChannel.Log( $"Cancelling execution subscription of command {command.CommandExecutionID} because command has been cancelled".ToString, Severity.Info );
+                    _loggingChannel.Info( $"Cancelling execution subscription of command {command.CommandExecutionID} because command has been cancelled" );
                 }
                 else
                 {
-                    loggingChannel.LogException( $"Subscription to execution states of command {command.CommandExecutionID} unexpectedly cancelled".ToString, exception );
+                    _loggingChannel.Error( $"Subscription to execution states of command {command.CommandExecutionID} unexpectedly cancelled", exception );
                 }
             }
             finally
@@ -187,7 +188,7 @@ namespace Tecan.Sila2.Server.ServiceDefinition
             }
         }
 
-        public void HandleIntermediatesSubscription( string uuid, ILoggingChannel loggingChannel, ObservableCommandExecution command, IClientStreamWriter<SilaServerMessage> responseWriter, ServerPoolDispatcher dispatcher )
+        public void HandleIntermediatesSubscription( string uuid, ObservableCommandExecution command, IClientStreamWriter<SilaServerMessage> responseWriter, ServerPoolDispatcher dispatcher )
         {
             if (_intermediateHandler != null)
             {
@@ -210,7 +211,7 @@ namespace Tecan.Sila2.Server.ServiceDefinition
             }
         }
 
-        public virtual async void HandleResultRequest( string uuid, ILoggingChannel loggingChannel, ObservableCommandExecution command, IClientStreamWriter<SilaServerMessage> responseWriter, ServerPoolDispatcher dispatcher )
+        public virtual async void HandleResultRequest( string uuid, ObservableCommandExecution command, IClientStreamWriter<SilaServerMessage> responseWriter, ServerPoolDispatcher dispatcher )
         {
             try
             {
@@ -312,7 +313,7 @@ namespace Tecan.Sila2.Server.ServiceDefinition
             }
         }
 
-        public override async void HandleResultRequest( string uuid, ILoggingChannel loggingChannel, ObservableCommandExecution command, IClientStreamWriter<SilaServerMessage> responseWriter, ServerPoolDispatcher dispatcher )
+        public override async void HandleResultRequest( string uuid, ObservableCommandExecution command, IClientStreamWriter<SilaServerMessage> responseWriter, ServerPoolDispatcher dispatcher )
         {
             try
             {

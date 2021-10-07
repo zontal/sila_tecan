@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Net.NetworkInformation;
 using System.Text;
 using Tecan.Sila2.Discovery;
-using Tecan.Sila2.Tests;
 
 namespace Tecan.Sila2.IntegrationTests
 {
@@ -14,9 +13,8 @@ namespace Tecan.Sila2.IntegrationTests
     {
         protected override ServerData FindServer(Guid serverUuid)
         {
-            var testLogging = new TestLoggingFactory();
-            var connector = new ServerConnector( new DiscoveryExecutionManager(), testLogging );
-            var discovery = new ServerDiscovery( testLogging, connector );
+            var connector = new ServerConnector( new DiscoveryExecutionManager() );
+            var discovery = new ServerDiscovery( connector );
             return discovery.Connect( serverUuid, TimeSpan.FromSeconds( 5 ), AcceptNetworkInterface );
         }
 

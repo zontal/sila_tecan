@@ -1,4 +1,5 @@
-﻿using Grpc.Core;
+﻿using Common.Logging;
+using Grpc.Core;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
@@ -6,7 +7,6 @@ using System.Linq;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Threading.Tasks;
-using Tecan.MAP.Contracts.Services.Logging;
 using Tecan.Sila2.Security;
 using GrpcServer = Grpc.Core.Server;
 
@@ -19,19 +19,17 @@ namespace Tecan.Sila2
     [PartCreationPolicy(CreationPolicy.Shared)]
     public class ServerProvider : IServerProvider
     {
-        private readonly ILoggingChannel _logger;
+        private readonly ILog _logger = LogManager.GetLogger<ServerProvider>();
         private readonly GrpcServer _server = new GrpcServer();
         private readonly IServerCertificateProvider _certificateProvider;
 
         /// <summary>
         /// Creates a new instance
         /// </summary>
-        /// <param name="loggingChannelFactory">the logging channel factory</param>
         /// <param name="certificateProvider">the certificate provider</param>
         [ImportingConstructor]
-        public ServerProvider(ILoggingChannelFactory loggingChannelFactory, IServerCertificateProvider certificateProvider)
+        public ServerProvider(IServerCertificateProvider certificateProvider)
         {
-            _logger = loggingChannelFactory.CreateChannel( typeof( ServerProvider ) );
             _certificateProvider = certificateProvider;
         }
 
@@ -53,12 +51,12 @@ namespace Tecan.Sila2
                 if(context is PemCertificateContext pemContext)
                 {
                     var keypair = new KeyCertificatePair( pemContext.Certificate, pemContext.Key );
-                    _logger.Log( "Found certificates, starting server with TLS.".ToString, Severity.Info );
+                    _logger.Info( "Found certificates, starting server with TLS." );
                     Credentials = new SslServerCredentials( new List<KeyCertificatePair>() { keypair }, pemContext.CA, SslClientCertificateRequestType.DontRequest );
                 }
                 else
                 {
-                    _logger.Log( $"No certificates found. Server will start with plain-text communication".ToString, Severity.Warning );
+                    _logger.Warn( $"No certificates found. Server will start with plain-text communication" );
                     Credentials = ServerCredentials.Insecure;
                 }
             }
@@ -75,25 +73,25 @@ namespace Tecan.Sila2
                 if(context is PemCertificateContext pemContext)
                 {
                     var keypair = new KeyCertificatePair( pemContext.Certificate, pemContext.Key );
-                    _logger.Log( "Found certificates, starting server with TLS.".ToString, Severity.Info );
+                    _logger.Info( "Found certificates, starting server with TLS." );
                     Credentials = new SslServerCredentials( new List<KeyCertificatePair>() { keypair }, pemContext.CA, SslClientCertificateRequestType.DontRequest );
                 }
                 else
                 {
-                    _logger.Log( $"No certificates found. Server will start with plain-text communication".ToString, Severity.Warning );
+                    _logger.Warn( $"No certificates found. Server will start with plain-text communication" );
                     Credentials = ServerCredentials.Insecure;
                 }
             }
 
             if(networkInterfaceFilter != null)
             {
-                _logger.Log( "Running on the following addresses:".ToString, Severity.Info );
+                _logger.Info( "Running on the following addresses:" );
                 foreach(var v4addr in NetworkInterface.GetAllNetworkInterfaces()
                     .Where( nic => networkInterfaceFilter( nic ) )
                     .SelectMany( nic => nic.GetIPProperties().UnicastAddresses.Select( ua => ua.Address ) )
                     .Where( a => a.AddressFamily == AddressFamily.InterNetwork ))
                 {
-                    _logger.Log( v4addr.ToString, Severity.Info );
+                    _logger.Info( v4addr.ToString() );
                     _server.Ports.Add( new ServerPort( v4addr.ToString(), port, Credentials ) );
                 }
             }
@@ -107,14 +105,14 @@ namespace Tecan.Sila2
         /// <inheritdoc />
         public Task ShutdownAsync()
         {
-            _logger.Log( "Shutting down gRPC server".ToString, Severity.Info );
+            _logger.Info( "Shutting down gRPC server" );
             return _server.ShutdownAsync();
         }
 
         /// <inheritdoc />
         public void Start()
         {
-            _logger.Log( "Starting gRPC server".ToString, Severity.Info );
+            _logger.Info( "Starting gRPC server" );
             _server.Start();
         }
     }

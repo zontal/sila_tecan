@@ -6,7 +6,6 @@ using Tecan.Sila2.Authentication.AuthenticationService;
 using Tecan.Sila2.ConnectionConfiguration.ConnectionConfigurationService;
 using Tecan.Sila2.Discovery;
 using Tecan.Sila2.ServerPooling;
-using Tecan.Sila2.Tests;
 
 namespace Tecan.Sila2.IntegrationTests
 {

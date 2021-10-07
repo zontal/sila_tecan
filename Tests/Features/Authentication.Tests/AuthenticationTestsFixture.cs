@@ -4,7 +4,6 @@ using Moq;
 using NUnit.Framework;
 using Tecan.Sila2.AuthorizationProvider;
 using Tecan.Sila2.Discovery;
-using Tecan.Sila2.Tests;
 using AuthorizationInvalidAccessTokenException = Tecan.Sila2.Authorization.InvalidAccessTokenException;
 
 namespace Tecan.Sila2.Authentication.Tests
@@ -21,7 +20,6 @@ namespace Tecan.Sila2.Authentication.Tests
         [SetUp]
         public void InitializeTest()
         {
-            var logging = new TestLoggingFactory();
             _serverMock = new Mock<ISiLAService>( MockBehavior.Strict );
             _serverId = Guid.NewGuid().ToString();
             _serverMock.Setup( s => s.ServerUUID ).Returns( _serverId );
@@ -49,7 +47,7 @@ namespace Tecan.Sila2.Authentication.Tests
 
             _serverConnectorMock = new Mock<IServerConnector>( MockBehavior.Strict );
 
-            _authService = new AuthenticationAuthorizationService(logging, new Lazy<ISiLAService>(() => _serverMock.Object), _configProviderMock.Object, _serverConnectorMock.Object, null);
+            _authService = new AuthenticationAuthorizationService(new Lazy<ISiLAService>(() => _serverMock.Object), _configProviderMock.Object, _serverConnectorMock.Object, null);
         }
 
         [TestCase("test", "test-pwd", "org.silastandard/core/SiLAService/v1" )]

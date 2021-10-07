@@ -5,7 +5,6 @@ using System.ComponentModel.Composition.Hosting;
 using System.IO;
 using System.Linq;
 using CommandLine;
-using Tecan.MAP.Contracts.Services.Logging;
 using Tecan.Sila2.Generator.Contracts;
 using Tecan.Sila2.Generator.Helper;
 
@@ -89,7 +88,7 @@ namespace Tecan.Sila2.Generator.CommandLine
         public override void Execute( CompositionContainer container )
         {
             var channel = SetupLogging( container );
-            channel.Log( "Loading feature".ToString );
+            channel.Info( "Loading feature" );
             var feature = FeatureSerializer.Load( FeaturePath );
             var ns = Namespace ?? feature.Namespace;
 
@@ -103,13 +102,13 @@ namespace Tecan.Sila2.Generator.CommandLine
             var imports = ImportedNamespaces == null
                 ? new string[0]
                 : ImportedNamespaces.Split( new[] { ';' }, StringSplitOptions.RemoveEmptyEntries );
-            channel.Log( "Adding additional import statements".ToString );
+            channel.Debug( "Adding additional import statements" );
             AddUsingStatements( dtoUnit, imports );
             AddUsingStatements( providerUnit, imports );
             AddUsingStatements( clientUnit, imports );
-            channel.Log( "Generating code for data transfer objects".ToString, Severity.Info );
+            channel.Info( "Generating code for data transfer objects" );
             CodeGenerationHelper.GenerateCSharp( dtoUnit, Path.GetFullPath( DtoPath ) );
-            channel.Log( "Generating code for provider".ToString, Severity.Info );
+            channel.Info( "Generating code for provider" );
             if(GenerateServer)
             {
                 CodeGenerationHelper.GenerateCSharp( providerUnit, Path.GetFullPath( ProviderPath ) );

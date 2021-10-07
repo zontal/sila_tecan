@@ -1,11 +1,11 @@
-﻿using Grpc.Core;
+﻿using Common.Logging;
+using Grpc.Core;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading;
 using System.Threading.Channels;
 using System.Threading.Tasks;
-using Tecan.MAP.Contracts.Services.Logging;
 using Tecan.Sila2.Server;
 using Channel = System.Threading.Channels.Channel;
 
@@ -16,15 +16,14 @@ namespace Tecan.Sila2.ServerPooling
         private readonly ServerPoolDispatcher _dispatcher;
         private readonly AsyncDuplexStreamingCall<SilaServerMessage, SilaClientMessage> _call;
         private readonly Channel<SilaServerMessage> _channel;
-        private readonly ILoggingChannel _log;
+        private readonly ILog _log = LogManager.GetLogger<PoolConnection>();
 
         public WriteOptions WriteOptions { get => _call.RequestStream.WriteOptions; set => _call.RequestStream.WriteOptions = value; }
 
-        public PoolConnection( ServerPoolDispatcher dispatcher, ILoggingChannelFactory loggingChannelFactory, AsyncDuplexStreamingCall<SilaServerMessage, SilaClientMessage> call )
+        public PoolConnection( ServerPoolDispatcher dispatcher, AsyncDuplexStreamingCall<SilaServerMessage, SilaClientMessage> call )
         {
             _dispatcher = dispatcher;
             _call = call;
-            _log = loggingChannelFactory.CreateChannel( typeof( PoolConnection ) );
             _channel = Channel.CreateUnbounded<SilaServerMessage>( new UnboundedChannelOptions
             {
                 AllowSynchronousContinuations = true,
@@ -50,7 +49,7 @@ namespace Tecan.Sila2.ServerPooling
             }
             catch (Exception exception)
             {
-                _log.LogException( "Error reading message from client".ToString, exception );
+                _log.Error( "Error reading message from client", exception );
             }
             await _call.RequestStream.CompleteAsync();
         }
@@ -67,7 +66,7 @@ namespace Tecan.Sila2.ServerPooling
             }
             catch (Exception exception)
             {
-                _log.LogException( "Error sending message to client, aborting connection".ToString, exception );
+                _log.Error( "Error sending message to client, aborting connection", exception );
                 await _call.RequestStream.CompleteAsync();
             }
         }

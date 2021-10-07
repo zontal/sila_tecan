@@ -1,12 +1,7 @@
 ﻿using NUnit.Framework;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Net;
-using System.Text;
-using Tecan.Sila2.Discovery;
-using Tecan.Sila2.Tests;
 
 namespace Tecan.Sila2.IntegrationTests
 {

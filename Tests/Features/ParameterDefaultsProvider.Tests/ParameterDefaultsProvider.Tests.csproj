@@ -16,10 +16,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Include="..\..\TestLoggingFactory.cs" Link="TestLoggingFactory.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <EmbeddedResource Include="ExampleFileConstraintProviderService.sila.xml" />
     <EmbeddedResource Include="ExampleSetProviderService.sila.xml" />
   </ItemGroup>

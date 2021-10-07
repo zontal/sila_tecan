@@ -1,78 +1,69 @@
-﻿using System;
-using Tecan.MAP.Contracts.Services.Logging;
-using Tecan.MAP.Contracts.Services.Logging.Configuration;
+﻿using Common.Logging;
+using Common.Logging.Factory;
+using System;
 
 namespace Tecan.Sila2.Generator.Logging
 {
-    internal class ConsoleLogging : ILoggingChannelFactory, ILoggingChannel
+    internal class ConsoleLogging : AbstractLogger, ILoggerFactoryAdapter, ILog
     {
-        private readonly Severity _minimumSeverity;
+        private readonly LogLevel _minimumSeverity;
 
-        public ConsoleLogging( Severity minimumSeverity )
+        public ConsoleLogging( LogLevel minimumSeverity )
         {
             _minimumSeverity = minimumSeverity;
         }
 
-        public void Dispose()
-        {
+        public override bool IsTraceEnabled => _minimumSeverity <= LogLevel.Trace;
 
-        }
+        public override bool IsDebugEnabled => _minimumSeverity <= LogLevel.Debug;
 
-        public ILoggingChannel CreateChannel(Type type)
+        public override bool IsErrorEnabled => _minimumSeverity <= LogLevel.Error;
+
+        public override bool IsFatalEnabled => _minimumSeverity <= LogLevel.Fatal;
+
+        public override bool IsInfoEnabled => _minimumSeverity <= LogLevel.Info;
+
+        public override bool IsWarnEnabled => _minimumSeverity <= LogLevel.Warn;
+
+        public ILog GetLogger( Type type )
         {
             return this;
         }
 
-        public LoggingConfiguration Configuration => null;
-
-        public void Log(Func<string> messageProvider, Severity severity = Severity.Debug)
+        public ILog GetLogger( string key )
         {
-            Log(messageProvider, null, null, severity);
+            return this;
         }
 
-        public void Log(Func<string> messageProvider, Action<IDataBuilder> dataProvider, Severity severity = Severity.Debug)
+        protected override void WriteInternal( LogLevel level, object message, Exception exception )
         {
-            Log(messageProvider, null, dataProvider, severity);
-        }
-
-        public void Log(Func<string> messageProvider, ActivityId activityId, Severity severity = Severity.Debug)
-        {
-            Log(messageProvider, activityId, null, severity);
-        }
-
-        public void Log(Func<string> messageProvider, ActivityId activityId, Action<IDataBuilder> dataProvider, Severity severity = Severity.Debug)
-        {
-            if( severity >= _minimumSeverity )
+            switch(level)
             {
-                switch( severity )
-                {
-                    case Severity.Debug:
-                        Console.ForegroundColor = ConsoleColor.Gray;
-                        break;
-                    case Severity.Info:
-                        Console.ForegroundColor = ConsoleColor.White;
-                        break;
-                    case Severity.Warning:
-                        Console.ForegroundColor = ConsoleColor.Yellow;
-                        break;
-                    case Severity.Error:
-                        Console.ForegroundColor = ConsoleColor.DarkRed;
-                        break;
-                    case Severity.Critical:
-                        Console.ForegroundColor = ConsoleColor.Red;
-                        break;
-                }
-
-                Console.Error.WriteLine( messageProvider() );
-                Console.ResetColor();
+                case LogLevel.All:
+                case LogLevel.Trace:
+                case LogLevel.Debug:
+                    Console.ForegroundColor = ConsoleColor.Gray;
+                    break;
+                case LogLevel.Info:
+                    Console.ForegroundColor = ConsoleColor.White;
+                    break;
+                case LogLevel.Warn:
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    break;
+                case LogLevel.Error:
+                    Console.ForegroundColor = ConsoleColor.DarkRed;
+                    break;
+                case LogLevel.Fatal:
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    break;
+                case LogLevel.Off:
+                    return;
             }
-        }
-
-        public void LogException(Func<string> messageProvider, Exception exception)
-        {
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.Error.WriteLine(messageProvider());
-            Console.Error.WriteLine(exception);
+            Console.Error.WriteLine( message );
+            if (exception != null)
+            {
+                Console.Error.WriteLine( exception );
+            }
             Console.ResetColor();
         }
     }

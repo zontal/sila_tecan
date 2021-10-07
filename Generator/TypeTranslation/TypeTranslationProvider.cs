@@ -1,9 +1,9 @@
-﻿using System;
+﻿using Common.Logging;
+using System;
 using System.CodeDom;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
-using Tecan.MAP.Contracts.Services.Logging;
 using Tecan.Sila2.Generator.Contracts;
 
 namespace Tecan.Sila2.Generator.TypeTranslation
@@ -13,13 +13,12 @@ namespace Tecan.Sila2.Generator.TypeTranslation
     internal class TypeTranslationProvider : ITypeTranslationProvider
     {
         private readonly IReadOnlyList<ITypeTranslator> _translators;
-        private readonly ILoggingChannel _loggingChannel;
+        private readonly ILog _loggingChannel = LogManager.GetLogger<TypeTranslationProvider>();
 
         [ImportingConstructor]
-        public TypeTranslationProvider( ILoggingChannelFactory loggingChannelFactory, [ImportMany] IEnumerable<ITypeTranslator> translators )
+        public TypeTranslationProvider( [ImportMany] IEnumerable<ITypeTranslator> translators )
         {
             _translators = translators.OrderByDescending(t => t.Priority).ToList();
-            _loggingChannel = loggingChannelFactory.CreateChannel( typeof(TypeTranslationProvider) );
         }
 
         public CodeExpression EncapsulateAsDto( CodeExpression argument, DataTypeType dataType, CodeExpression binaryStoreArgument, string suggestedName )
@@ -65,7 +64,7 @@ namespace Tecan.Sila2.Generator.TypeTranslation
             {
                 if( typeTranslator.TryTranslate( this, interfaceType, origin, out silaType ) )
                 {
-                    _loggingChannel.Log( $"Type {interfaceType.FullName} translated using {typeTranslator}".ToString );
+                    _loggingChannel.Debug( $"Type {interfaceType.FullName} translated using {typeTranslator}" );
                     return true;
                 }
             }
@@ -80,7 +79,7 @@ namespace Tecan.Sila2.Generator.TypeTranslation
             {
                 if( typeTranslator.TryTranslate( this, dataType, suggestedName, out translationInfo, constraintHandler, structHandler ) && translationInfo != null )
                 {
-                    _loggingChannel.Log($"SiLA2 Type {dataType.Item} translated using {typeTranslator}".ToString);
+                    _loggingChannel.Debug($"SiLA2 Type {dataType.Item} translated using {typeTranslator}");
                     return true;
                 }
             }

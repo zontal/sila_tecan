@@ -1,7 +1,5 @@
 ﻿using System.ComponentModel.Composition;
 using System.IO;
-using System.Xml.Serialization;
-using Tecan.MAP.Contracts.Services.Logging;
 
 namespace Tecan.Sila2
 {
@@ -13,8 +11,8 @@ namespace Tecan.Sila2
         private readonly IConfigurationStore _configurationStore;
 
         [ImportingConstructor]
-        public DefaultConfigurationProvider(ILoggingChannelFactory loggingChannelFactory, IServerConnector serverConnector, IServerDiscovery discovery, IConfigurationStore configurationStore)
-            : base(loggingChannelFactory, discovery, serverConnector)
+        public DefaultConfigurationProvider(IServerConnector serverConnector, IServerDiscovery discovery, IConfigurationStore configurationStore)
+            : base( discovery, serverConnector)
         {
             _configurationStore = configurationStore;
         }

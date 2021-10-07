@@ -6,8 +6,6 @@ using System.ComponentModel.Composition.Hosting;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Xml.Serialization;
-using Tecan.MAP.Contracts.Services.Logging;
 using Tecan.Sila2.Generator.Contracts;
 using Tecan.Sila2.Generator.Helper;
 // ReSharper disable PossibleMultipleEnumeration
@@ -86,18 +84,18 @@ namespace Tecan.Sila2.Generator.CommandLine
             }
             catch( InvalidOperationException )
             {
-                channel.Log($"Could not find interface {InterfaceName}".ToString, Severity.Error);
+                channel.Error($"Could not find interface {InterfaceName}");
                 return;
             }
             var featureGenerator = container.GetExportedValue<IFeatureDefinitionGenerator>();
             var preDefinedFeatureGenerationConfigModel = FeatureDefinitionConfigHelper.LoadConfigMappingFile(ConfigFile);
             if (!string.IsNullOrEmpty(ConfigFile) && preDefinedFeatureGenerationConfigModel != null)
             {
-                channel.Log( "Feature definition config file could not be loaded.".ToString, Severity.Warning );
+                channel.Warn( "Feature definition config file could not be loaded." );
             }
             var feature = featureGenerator.GenerateFeature(featureType, Originator, Category,
                 Version, namespaces, preDefinedFeatureGenerationConfigModel);
-            channel.Log( $"Saving generated feature to {OutputPath}".ToString, Severity.Info );
+            channel.Info( $"Saving generated feature to {OutputPath}" );
             FeatureSerializer.Save(feature, Path.GetFullPath(OutputPath));
         }
 

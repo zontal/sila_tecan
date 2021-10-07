@@ -7,12 +7,12 @@ using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
+using Common.Logging;
 using Grpc.Core;
 using Grpc.Core.Interceptors;
 using Grpc.Net.Client;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Routing;
-using Tecan.MAP.Contracts.Services.Logging;
 using Tecan.Sila2.Discovery;
 using Tecan.Sila2.Server.Binary;
 using Tecan.Sila2.Server.ServiceDefinition;
@@ -30,8 +30,7 @@ namespace Tecan.Sila2.Server
     {
         #region Members
 
-        private readonly ILoggingChannel _logger;
-        private readonly ILoggingChannelFactory _loggingChannelFactory;
+        private readonly ILog _logger = LogManager.GetLogger<SiLAServer>();
 
         /// <summary>The list of implmented features.</summary>
         private readonly List<IFeatureProvider> _implementedFeatures;
@@ -121,7 +120,7 @@ namespace Tecan.Sila2.Server
                 }
                 catch(Exception exception)
                 {
-                    _logger.LogException( "Could not save server configuration".ToString, exception );
+                    _logger.Error( "Could not save server configuration", exception );
                 }
             }
         }
@@ -144,7 +143,7 @@ namespace Tecan.Sila2.Server
             }
             catch(Exception exception)
             {
-                _logger.Log( $"Could not save server configuration: {exception.Message}".ToString, Severity.Warning );
+                _logger.Warn( $"Could not save server configuration: {exception.Message}" );
             }
         }
 
@@ -153,22 +152,19 @@ namespace Tecan.Sila2.Server
         /// </summary>
         /// <param name="startupInfo">The information the server requires to start up</param>
         /// <param name="configurationStore">An object to read and write server configuration</param>
-        /// <param name="loggingChannelFactory">The factory for logging</param>
         /// <param name="interceptors">Interceptors to intercept any commands issued to the server</param>
         /// <param name="fileManagement">The file management used by this server</param>
         /// <param name="serviceHandlerRepository">A repository of service handlers</param>
         [ImportingConstructor]
-        public SiLAServer( ServerStartInformation startupInfo, IConfigurationStore configurationStore, ILoggingChannelFactory loggingChannelFactory, [ImportMany] IEnumerable<IRequestInterceptor> interceptors, IFileManagement fileManagement, IServiceHandlerRepository<ISiLAServer> serviceHandlerRepository )
+        public SiLAServer( ServerStartInformation startupInfo, IConfigurationStore configurationStore, [ImportMany] IEnumerable<IRequestInterceptor> interceptors, IFileManagement fileManagement, IServiceHandlerRepository<ISiLAServer> serviceHandlerRepository )
         {
-            _loggingChannelFactory = loggingChannelFactory;
-            _logger = loggingChannelFactory.CreateChannel( typeof( SiLAServer ) );
             _interceptors = interceptors;
             _configurationStore = configurationStore;
             _upload = new BinaryUpload( fileManagement, this );
             _download = new BinaryDownload( fileManagement );
             _fileManagement = fileManagement;
-            _poolDispatcher = new ServerPoolDispatcher( loggingChannelFactory, _upload, _download, this );
-            _serviceBinder = new SilaServiceBinder( serviceHandlerRepository, _logger );
+            _poolDispatcher = new ServerPoolDispatcher( _upload, _download, this );
+            _serviceBinder = new SilaServiceBinder( serviceHandlerRepository );
 
             var configuration = configurationStore.Read<ServerConfiguration>( ServerConfigurationName );
             var port = (startupInfo.Port ?? configuration?.Port).GetValueOrDefault( 50052 );
@@ -183,7 +179,7 @@ namespace Tecan.Sila2.Server
                 }
             }
 
-            _logger.Log( $"Starting server {uuid} on port {port}.".ToString, Severity.Info );
+            _logger.Info( $"Starting server {uuid} on port {port}." );
 
             ServerType = startupInfo.Info.Type;
             ServerDescription = startupInfo.Info.Description;
@@ -198,16 +194,16 @@ namespace Tecan.Sila2.Server
 
             if((startupInfo.NetworkInterfaces ?? configuration?.InterfaceFilter) != null)
             {
-                var networking = new Networking( loggingChannelFactory );
+                var networking = new Networking();
                 var filter = networking.CreateNetworkInterfaceFilter( startupInfo.NetworkInterfaces ?? configuration?.InterfaceFilter );
 
-                _announcer = new ServiceAnnouncer( ServerUUID, (ushort)port, filter, loggingChannelFactory );
+                _announcer = new ServiceAnnouncer( ServerUUID, (ushort)port, filter );
 
                 serviceHandlerRepository.ConfigureForServer( uuid, port, filter );
             }
             else
             {
-                _logger.Log( "Server is running without Discovery!".ToString, Severity.Warning );
+                _logger.Warn( "Server is running without Discovery!" );
                 // if no interface was specified, the SiLA server will (try to) run on all of them
                 serviceHandlerRepository.ConfigureForServer( uuid, port, null );
             }
@@ -237,7 +233,7 @@ namespace Tecan.Sila2.Server
                         }
                         else if(commandExecution.Expiration.Value < DateTime.Now)
                         {
-                            _logger.Log( $"Forgetting command execution {commandExecution.CommandExecutionID} ({commandExecution.CommandIdentifier}).".ToString );
+                            _logger.Debug( $"Forgetting command execution {commandExecution.CommandExecutionID} ({commandExecution.CommandIdentifier})." );
                             if(commandExecution.Command is IDisposable disposable)
                             {
                                 disposable.Dispose();
@@ -258,11 +254,11 @@ namespace Tecan.Sila2.Server
         /// </summary>
         public void StartServer()
         {
-            _logger.Log( "Starting server".ToString, Severity.Info );
+            _logger.Info( "Starting server" );
             if(_announcer != null)
             {
                 _announcer.Start();
-                _logger.Log( $"Announcing as '{_announcer.Profile.FullyQualifiedName}'".ToString, Severity.Info );
+                _logger.Info( $"Announcing as '{_announcer.Profile.FullyQualifiedName}'" );
             }
         }
 
@@ -302,7 +298,7 @@ namespace Tecan.Sila2.Server
             _implementedFeatures.Add( feature );
             var builder = new ServerBuilder( this, feature.FeatureDefinition, _poolDispatcher, _serviceBinder );
             feature.Register( builder );
-            _logger.Log( $"Exposing feature {feature.FeatureDefinition.FullyQualifiedIdentifier}".ToString, Severity.Info );
+            _logger.Info( $"Exposing feature {feature.FeatureDefinition.FullyQualifiedIdentifier}" );
         }
 
         /// <summary>
@@ -377,45 +373,42 @@ namespace Tecan.Sila2.Server
             IMetadataRepository metadataRepository )
             where TRequest : ISilaRequestObject
         {
-            using(new ActivityBlock( "Request of " + request.CommandIdentifier ))
+            _logger.Info( $"Executing command {request.CommandIdentifier}" );
+            var interceptions = RequestInterceptions( request.CommandIdentifier, metadataRepository );
+            try
             {
-                _logger.Log( $"Executing command {request.CommandIdentifier}".ToString, Severity.Info );
-                var interceptions = RequestInterceptions( request.CommandIdentifier, metadataRepository );
-                try
+                var result = command( request );
+                if(interceptions != null)
                 {
-                    var result = command( request );
-                    if(interceptions != null)
+                    foreach(var interception in interceptions)
                     {
-                        foreach(var interception in interceptions)
-                        {
-                            interception.ReportSuccess();
-                        }
+                        interception.ReportSuccess();
                     }
-
-                    return result;
                 }
-                catch(Exception exception)
+
+                return result;
+            }
+            catch(Exception exception)
+            {
+                _logger.Error( $"Error while executing command {request.CommandIdentifier}", exception );
+                if(interceptions != null)
                 {
-                    _logger.LogException( $"Error while executing command {request.CommandIdentifier}".ToString, exception );
-                    if(interceptions != null)
+                    foreach(var interception in interceptions)
                     {
-                        foreach(var interception in interceptions)
-                        {
-                            interception.ReportException( exception );
-                        }
+                        interception.ReportException( exception );
                     }
-
-                    if(exception is OperationCanceledException)
-                    {
-                        throw ErrorHandling.CreateCancellationError( exception.Message );
-                    }
-                    else if(!(exception is RpcException))
-                    {
-                        throw ErrorHandling.CreateUndefinedExecutionError( exception );
-                    }
-
-                    throw;
                 }
+
+                if(exception is OperationCanceledException)
+                {
+                    throw ErrorHandling.CreateCancellationError( exception.Message );
+                }
+                else if(!(exception is RpcException))
+                {
+                    throw ErrorHandling.CreateUndefinedExecutionError( exception );
+                }
+
+                throw;
             }
         }
 
@@ -429,45 +422,42 @@ namespace Tecan.Sila2.Server
         /// <returns>An awaitable task with the command response</returns>
         public async Task<TResponse> InvokeCommand<TResponse>( Func<Task<TResponse>> command, string commandIdentifier, IMetadataRepository metadataRepository )
         {
-            using(new ActivityBlock( "Request of " + commandIdentifier ))
+            var interceptions = RequestInterceptions( commandIdentifier, metadataRepository );
+            _logger.Info( $"Executing command {commandIdentifier}" );
+            try
             {
-                var interceptions = RequestInterceptions( commandIdentifier, metadataRepository );
-                _logger.Log( $"Executing command {commandIdentifier}".ToString, Severity.Info );
-                try
+                var result = await command();
+                if(interceptions != null)
                 {
-                    var result = await command();
-                    if(interceptions != null)
+                    foreach(var interception in interceptions)
                     {
-                        foreach(var interception in interceptions)
-                        {
-                            interception.ReportSuccess();
-                        }
+                        interception.ReportSuccess();
                     }
-
-                    return result;
                 }
-                catch(Exception exception)
+
+                return result;
+            }
+            catch(Exception exception)
+            {
+                _logger.Error( $"Error while executing command {commandIdentifier}", exception );
+                if(interceptions != null)
                 {
-                    _logger.LogException( $"Error while executing command {commandIdentifier}".ToString, exception );
-                    if(interceptions != null)
+                    foreach(var interception in interceptions)
                     {
-                        foreach(var interception in interceptions)
-                        {
-                            interception.ReportException( exception );
-                        }
+                        interception.ReportException( exception );
                     }
-
-                    if(exception is OperationCanceledException)
-                    {
-                        throw ErrorHandling.CreateCancellationError( exception.Message );
-                    }
-                    else if(!(exception is RpcException))
-                    {
-                        throw ErrorHandling.CreateUndefinedExecutionError( exception );
-                    }
-
-                    throw;
                 }
+
+                if(exception is OperationCanceledException)
+                {
+                    throw ErrorHandling.CreateCancellationError( exception.Message );
+                }
+                else if(!(exception is RpcException))
+                {
+                    throw ErrorHandling.CreateUndefinedExecutionError( exception );
+                }
+
+                throw;
             }
         }
 
@@ -549,7 +539,7 @@ namespace Tecan.Sila2.Server
             var interceptors = RequestInterceptions( propertyIdentifier, metadataRepository );
             try
             {
-                _logger.Log( $"Obtaining value for property {propertyIdentifier}".ToString, Severity.Info );
+                _logger.Info( $"Obtaining value for property {propertyIdentifier}" );
                 var result = value();
                 if(interceptors != null)
                 {
@@ -563,7 +553,7 @@ namespace Tecan.Sila2.Server
             }
             catch(Exception exception)
             {
-                _logger.LogException( $"Exception happened obtaining the value for {propertyIdentifier}".ToString, exception );
+                _logger.Error( $"Exception happened obtaining the value for {propertyIdentifier}", exception );
                 if(interceptors != null)
                 {
                     foreach(var interceptor in interceptors)
@@ -639,9 +629,9 @@ namespace Tecan.Sila2.Server
         /// <inheritdoc />
         public IDisposable ConnectToPool( string poolAddress )
         {
-            _logger.Log( $"Connecting to server pool {poolAddress}".ToString, Severity.Info );
+            _logger.Info( $"Connecting to server pool {poolAddress}" );
             var channel = GrpcChannel.ForAddress( poolAddress );
-            var connection = new PoolConnection( _poolDispatcher, _loggingChannelFactory, channel.CreateCallInvoker().AsyncDuplexStreamingCall( PoolingConstants.ConnectSilaServerMethod, null, new CallOptions() ) );
+            var connection = new PoolConnection( _poolDispatcher, channel.CreateCallInvoker().AsyncDuplexStreamingCall( PoolingConstants.ConnectSilaServerMethod, null, new CallOptions() ) );
             connection.Start();
             return connection;
         }

@@ -1,7 +1,7 @@
-﻿using System;
+﻿using Common.Logging;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using Tecan.MAP.Contracts.Services.Logging;
 using Tecan.Sila2.AuthorizationProvider;
 using Tecan.Sila2.Discovery;
 
@@ -21,12 +21,10 @@ namespace Tecan.Sila2
         /// <summary>
         /// Creates a new instance
         /// </summary>
-        /// <param name="loggingChannelFactory">The logging channel factory</param>
         /// <param name="serverConnector">A component that can connect to servers</param>
         /// <param name="discovery">The discovery that should be used by this auth config</param>
-        protected AuthConfigurationProviderBase( ILoggingChannelFactory loggingChannelFactory, IServerDiscovery discovery, IServerConnector serverConnector )
+        protected AuthConfigurationProviderBase( IServerDiscovery discovery, IServerConnector serverConnector )
         {
-            var loggingChannel = loggingChannelFactory.CreateChannel( typeof(AuthConfigurationProviderBase) );
             _discovery = discovery;
             _serverConnector = serverConnector;
             _configuration = LoadConfiguration();
@@ -44,7 +42,7 @@ namespace Tecan.Sila2
             }
             catch( Exception e )
             {
-                loggingChannel.LogException("Restoring authorization provider failed".ToString, e);
+                LogManager.GetLogger<AuthConfigurationProviderBase>().Error("Restoring authorization provider failed", e);
             }
         }
 

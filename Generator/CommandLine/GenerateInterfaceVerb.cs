@@ -2,7 +2,6 @@
 using System.ComponentModel.Composition.Hosting;
 using System.IO;
 using CommandLine;
-using Tecan.MAP.Contracts.Services.Logging;
 using Tecan.Sila2.Generator.Contracts;
 using Tecan.Sila2.Generator.Helper;
 
@@ -37,10 +36,10 @@ namespace Tecan.Sila2.Generator.CommandLine
         public override void Execute(CompositionContainer container)
         {
             var channel = SetupLogging( container );
-            channel.Log("Loading feature".ToString, Severity.Info );
+            channel.Info("Loading feature" );
             var feature = FeatureSerializer.Load(Path.GetFullPath(FeaturePath));
             var unit = container.GetExportedValue<IInterfaceGenerator>().GenerateInterfaceUnit(feature, Namespace ?? feature.Namespace);
-            channel.Log("Generate code for the interface".ToString, Severity.Info);
+            channel.Info("Generate code for the interface");
             CodeGenerationHelper.GenerateCSharp(unit, DestinationPath);
         }
     }

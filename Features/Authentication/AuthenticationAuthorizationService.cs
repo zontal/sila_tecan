@@ -3,7 +3,6 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
-using Tecan.MAP.Contracts.Services.Logging;
 using Tecan.Sila2.Authentication;
 using Tecan.Sila2.Authorization;
 using Tecan.Sila2.Discovery;
@@ -23,7 +22,7 @@ namespace Tecan.Sila2
         private readonly Lazy<ISiLAService> _silaService;
 
         [ImportingConstructor]
-        public AuthenticationAuthorizationService( ILoggingChannelFactory loggingChannelFactory, Lazy<ISiLAService> silaService, [Import(AllowDefault = true)] IAuthConfigurationProvider configurationProvider, IServerConnector serverConnector, DefaultConfigurationProvider defaultProvider)
+        public AuthenticationAuthorizationService( Lazy<ISiLAService> silaService, [Import(AllowDefault = true)] IAuthConfigurationProvider configurationProvider, IServerConnector serverConnector, DefaultConfigurationProvider defaultProvider)
         {
             _silaService = silaService;
             _configurationProvider = configurationProvider ?? defaultProvider;

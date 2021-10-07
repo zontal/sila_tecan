@@ -15,7 +15,6 @@ using Tecan.Sila2.Discovery;
 using Tecan.Sila2.DynamicClient;
 using Tecan.Sila2.IntegrationTests.TestServer;
 using Tecan.Sila2.Locking.LockController;
-using Tecan.Sila2.Tests;
 
 namespace Tecan.Sila2.IntegrationTests
 {
@@ -77,8 +76,7 @@ namespace Tecan.Sila2.IntegrationTests
 
         protected virtual ServerData FindServer(Guid serverUuid)
         {
-            var testLogging = new TestLoggingFactory();
-            var connector = new ServerConnector( new DiscoveryExecutionManager(), testLogging );
+            var connector = new ServerConnector( new DiscoveryExecutionManager() );
 
             return connector.Connect( IPAddress.Loopback, 50052 );
         }

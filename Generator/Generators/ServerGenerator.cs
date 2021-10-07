@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Common.Logging;
+using System;
 using System.CodeDom;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
@@ -6,7 +7,6 @@ using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
-using Tecan.MAP.Contracts.Services.Logging;
 using Tecan.Sila2.Generator.Contracts;
 using Tecan.Sila2.Generator.Helper;
 using Tecan.Sila2.Server;
@@ -26,7 +26,7 @@ namespace Tecan.Sila2.Generator.Generators
         private readonly ICodeNameProvider _nameProvider;
         private readonly IEnumerable<IGeneratorHook> _hooks;
         private readonly ITypeTranslationProvider _translationProvider;
-        private readonly ILoggingChannel _loggingChannel;
+        private readonly ILog _loggingChannel = LogManager.GetLogger<ServerGenerator>();
         private readonly IDependencyInjectionGenerator _diGenerator;
 
         /// <summary>
@@ -38,12 +38,11 @@ namespace Tecan.Sila2.Generator.Generators
         /// <param name="diGenerator">A component the generates the necessary DI registration</param>
         /// <param name="hooks">Generator hooks</param>
         [ImportingConstructor]
-        public ServerGenerator( ITypeTranslationProvider translationProvider, ICodeNameProvider nameProvider, ILoggingChannelFactory loggingChannelFactory, IDependencyInjectionGenerator diGenerator, [ImportMany] IEnumerable<IGeneratorHook> hooks )
+        public ServerGenerator( ITypeTranslationProvider translationProvider, ICodeNameProvider nameProvider, IDependencyInjectionGenerator diGenerator, [ImportMany] IEnumerable<IGeneratorHook> hooks )
         {
             _translationProvider = translationProvider;
             _nameProvider = nameProvider;
             _hooks = hooks;
-            _loggingChannel = loggingChannelFactory.CreateChannel( typeof(ServerGenerator) );
             _diGenerator = diGenerator;
         }
 
@@ -52,7 +51,7 @@ namespace Tecan.Sila2.Generator.Generators
         /// <inheritdoc />
         public CodeCompileUnit GenerateServer( Feature feature, string ns )
         {
-            _loggingChannel.Log( $"Generating server for {feature.FullyQualifiedIdentifier}".ToString, Severity.Info );
+            _loggingChannel.Info( $"Generating server for {feature.FullyQualifiedIdentifier}" );
             var unit = new CodeCompileUnit();
             var nSpace = new CodeNamespace( ns );
             unit.Namespaces.Add( nSpace );
@@ -79,7 +78,7 @@ namespace Tecan.Sila2.Generator.Generators
             {
                 foreach(var generatorHook in _hooks)
                 {
-                    _loggingChannel.Log( $"Executing hook {generatorHook} after code generation completed".ToString );
+                    _loggingChannel.Debug( $"Executing hook {generatorHook} after code generation completed" );
                     generatorHook?.OnServerGenerated( feature, serverClass, unit );
                 }
             }
@@ -91,7 +90,7 @@ namespace Tecan.Sila2.Generator.Generators
         /// <inheritdoc />
         public CodeTypeDeclaration GenerateServerClass( Feature feature )
         {
-            _loggingChannel.Log( $"Generating feature provider for {feature.FullyQualifiedIdentifier}".ToString, Severity.Info );
+            _loggingChannel.Info( $"Generating feature provider for {feature.FullyQualifiedIdentifier}" );
             var server = new CodeTypeDeclaration( feature.Identifier + "Provider" )
             {
                 Attributes = MemberAttributes.Public,
@@ -111,23 +110,23 @@ namespace Tecan.Sila2.Generator.Generators
 
                 foreach( var featureCommand in feature.Items.OfType<FeatureCommand>() )
                 {
-                    _loggingChannel.Log($"Generating provider for command {featureCommand.Identifier}".ToString);
+                    _loggingChannel.Debug($"Generating provider for command {featureCommand.Identifier}");
                     GenerateServerCommand( feature, featureCommand, server, implementation, serverRef );
                 }
 
                 foreach( var featureProperty in feature.Items.OfType<FeatureProperty>() )
                 {
-                    _loggingChannel.Log( $"Generating property for {featureProperty.Identifier}".ToString );
+                    _loggingChannel.Debug( $"Generating property for {featureProperty.Identifier}" );
                     GenerateServerProperty( feature, featureProperty, server, implementation, id => FindError( feature, id ) );
                 }
             }
             else
             {
-                _loggingChannel.Log( $"The feature {feature.Identifier} has no items.".ToString, Severity.Warning );
+                _loggingChannel.Warn( $"The feature {feature.Identifier} has no items." );
             }
 
 
-            _loggingChannel.Log( "Generating provider shared code".ToString );
+            _loggingChannel.Debug( "Generating provider shared code" );
             GenerateServerFeatureProperty( server, feature );
 
             GenerateServerGetCommand( server, feature );

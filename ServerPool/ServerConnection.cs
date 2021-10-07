@@ -1,4 +1,5 @@
-﻿using Grpc.Core;
+﻿using Common.Logging;
+using Grpc.Core;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -6,7 +7,6 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Tecan.MAP.Contracts.Services.Logging;
 using Tecan.Sila2.Binary;
 using Tecan.Sila2.Client;
 using Tecan.Sila2.Discovery;
@@ -19,12 +19,11 @@ namespace Tecan.Sila2.ServerPooling
         private readonly IServerStreamWriter<SilaClientMessage> _requestStream;
         private readonly CancellationTokenSource _cancellationToken = new CancellationTokenSource();
         private readonly CancellationToken _originalCancellationToken;
-        private readonly ILoggingChannel _loggingChannel;
+        private readonly ILog _loggingChannel = LogManager.GetLogger<ServerConnection>();
         private readonly ConcurrentDictionary<string, IResponseHandler> _responseHandlers = new ConcurrentDictionary<string, IResponseHandler>();
 
-        public ServerConnection( ILoggingChannelFactory loggingChannelFactory, IServerStreamWriter<SilaClientMessage> requestStream, IAsyncStreamReader<SilaServerMessage> responseStream, CancellationToken cancellationToken )
+        public ServerConnection( IServerStreamWriter<SilaClientMessage> requestStream, IAsyncStreamReader<SilaServerMessage> responseStream, CancellationToken cancellationToken )
         {
-            _loggingChannel = loggingChannelFactory.CreateChannel( typeof( ServerConnection ) );
             _requestStream = requestStream;
             _responseStream = responseStream;
             cancellationToken.Register( _cancellationToken.Cancel );
@@ -53,12 +52,12 @@ namespace Tecan.Sila2.ServerPooling
                     {
                         if(!handler.ProcessMessage( message ))
                         {
-                            _loggingChannel.Log( $"Server message of type {message.Type} came unexpected for request id {message.RequestUuid}.".ToString, Severity.Warning );
+                            _loggingChannel.Warn( $"Server message of type {message.Type} came unexpected for request id {message.RequestUuid}." );
                         }
                     }
                     catch (Exception exception)
                     {
-                        _loggingChannel.LogException( $"Error processing message of type {message.Type}".ToString, exception );
+                        _loggingChannel.Error( $"Error processing message of type {message.Type}", exception );
                     }
                 }
             }

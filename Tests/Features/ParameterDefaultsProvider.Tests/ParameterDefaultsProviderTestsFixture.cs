@@ -6,7 +6,6 @@ using NUnit.Framework;
 using Tecan.Sila2.Discovery;
 using Tecan.Sila2.ParameterConstraintsProvider;
 using Tecan.Sila2.Server;
-using Tecan.Sila2.Tests;
 
 namespace Tecan.Sila2.ParameterDefaultsProvider.Tests
 {
@@ -19,14 +18,12 @@ namespace Tecan.Sila2.ParameterDefaultsProvider.Tests
         [SetUp]
         public void Initialize()
         {
-            var testLogging = new TestLoggingFactory();
             var setProviderResolver = new SetProviderResolver();
             var fileNameResolver = new FileConstraintResolver();
             _serverMock = new Mock<ISiLAServer>(MockBehavior.Strict);
             _constraintsProvider = new ParameterConstraintsProviderService(
                 new Lazy<ISiLAServer>( () => _serverMock.Object ),
-                new IParameterConstraintResolver[] { setProviderResolver, fileNameResolver },
-                testLogging );
+                new IParameterConstraintResolver[] { setProviderResolver, fileNameResolver } );
         }
 
         public static IEnumerable<string> GetPossibleParameters()

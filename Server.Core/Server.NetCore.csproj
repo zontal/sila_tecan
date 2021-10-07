@@ -43,8 +43,6 @@
         <Compile Include="..\Server\Defaults\ConsoleLogging.cs" Link="Defaults\ConsoleLogging.cs" />
         <Compile Include="..\Server\Defaults\FileManagement.cs" Link="Defaults\FileManagement.cs" />
         <Compile Include="..\Server\Discovery\SiLAServiceProvider.cs" Link="Discovery\SiLAServiceProvider.cs" />
-        <Compile Include="..\Server\LoggerChannelAdapter.cs" Link="LoggerChannelAdapter.cs" />
-        <Compile Include="..\Server\LoggerFactoryAdapter.cs" Link="LoggerFactoryAdapter.cs" />
         <Compile Include="..\Server\LoggingInterceptor.cs" Link="LoggingInterceptor.cs" />
         <Compile Include="..\Server\Metadata\MetadataRepository.cs" Link="Metadata\MetadataRepository.cs" />
         <Compile Include="..\Server\ServerCommandlineArguments.cs" Link="ServerCommandlineArguments.cs" />

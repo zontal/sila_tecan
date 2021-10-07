@@ -1,3 +1,4 @@
+using Common.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -5,7 +6,6 @@ using System.Net;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Text.RegularExpressions;
-using Tecan.MAP.Contracts.Services.Logging;
 
 namespace Tecan.Sila2
 {
@@ -15,16 +15,7 @@ namespace Tecan.Sila2
     /// </summary>
     public class Networking
     {
-        private readonly ILoggingChannel _loggingChannel;
-
-        /// <summary>
-        /// Initializes a new instance
-        /// </summary>
-        /// <param name="loggingChannelFactory">A factory to create logging channels</param>
-        public Networking(ILoggingChannelFactory loggingChannelFactory)
-        {
-            _loggingChannel = loggingChannelFactory.CreateChannel( typeof( Networking ) );
-        }
+        private static readonly ILog _loggingChannel = LogManager.GetLogger<Networking>();
 
         /// <summary>
         /// Enumerates the InterNetwork Unicast addresses for a given network interface.
@@ -82,7 +73,7 @@ namespace Tecan.Sila2
         {
             if(nic.OperationalStatus != OperationalStatus.Up || !nic.SupportsMulticast)
             {
-                _loggingChannel.Log( $"Network {nic.Name} matches the filter criteria but is {nic.OperationalStatus}.".ToString, Severity.Warning );
+                _loggingChannel.Warn( $"Network {nic.Name} matches the filter criteria but is {nic.OperationalStatus}." );
                 return false;
             }
             return true;
@@ -108,13 +99,13 @@ namespace Tecan.Sila2
                     {
                         if(CheckOperationalStatus( nic ))
                         {
-                            _loggingChannel.Log( $"Advertising service on network interface {nic.Name}".ToString, Severity.Info );
+                            _loggingChannel.Info( $"Advertising service on network interface {nic.Name}" );
                             yield return nic;
                         }
                     }
                     else
                     {
-                        _loggingChannel.Log( $"Skipping network interface {nic.Name}".ToString, Severity.Debug );
+                        _loggingChannel.Debug( $"Skipping network interface {nic.Name}" );
                     }
                 }
             }

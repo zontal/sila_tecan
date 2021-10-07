@@ -1,9 +1,9 @@
-﻿using Grpc.Core;
+﻿using Common.Logging;
+using Grpc.Core;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading;
-using Tecan.MAP.Contracts.Services.Logging;
 using Tecan.Sila2.Server;
 
 namespace Tecan.Sila2.ServerPooling
@@ -13,13 +13,12 @@ namespace Tecan.Sila2.ServerPooling
         private readonly Dictionary<string, IRequestHandler> _handlers = new Dictionary<string, IRequestHandler>();
         private readonly Dictionary<string, CancellationTokenSource> _cancellationSources = new Dictionary<string, CancellationTokenSource>();
         private readonly ISiLAServer _server;
-        private readonly ILoggingChannel _loggingChannel;
+        private readonly ILog _loggingChannel = LogManager.GetLogger<ServerPoolDispatcher>();
         private readonly IBinaryUploadHandler _upload;
         private readonly IBinaryDownloadHandler _download;
 
-        public ServerPoolDispatcher(ILoggingChannelFactory loggingChannelFactory, IBinaryUploadHandler upload, IBinaryDownloadHandler download, ISiLAServer server)
+        public ServerPoolDispatcher(IBinaryUploadHandler upload, IBinaryDownloadHandler download, ISiLAServer server)
         {
-            _loggingChannel = loggingChannelFactory.CreateChannel( typeof( ServerPoolDispatcher ) );
             _upload = upload;
             _download = download;
             _server = server;
@@ -44,15 +43,15 @@ namespace Tecan.Sila2.ServerPooling
                         break;
                     case SilaClientMessageType.CommandExecutionInfoSubscription:
                         var execution = _server.GetCommandExecution( message.CommandExecutionInfoSubscription.ExecutionUUID.CommandId );
-                        GetCommandHandler( execution )?.HandleExecutionStateSubscription( message.RequestUuid, _loggingChannel, execution, responseStream, this );
+                        GetCommandHandler( execution )?.HandleExecutionStateSubscription( message.RequestUuid, execution, responseStream, this );
                         break;
                     case SilaClientMessageType.CommandIntermediateResponseSubscription:
                         var execution2 = _server.GetCommandExecution( message.CommandIntermediateResponseSubscription.ExecutionUUID.CommandId );
-                        GetCommandHandler( execution2 )?.HandleIntermediatesSubscription( message.RequestUuid, _loggingChannel, execution2, responseStream, this );
+                        GetCommandHandler( execution2 )?.HandleIntermediatesSubscription( message.RequestUuid, execution2, responseStream, this );
                         break;
                     case SilaClientMessageType.CommandGetResponse:
                         var execution3 = _server.GetCommandExecution( message.CommandGetResponse.ExecutionUUID.CommandId );
-                        GetCommandHandler( execution3 )?.HandleResultRequest( message.RequestUuid, _loggingChannel, execution3, responseStream, this );
+                        GetCommandHandler( execution3 )?.HandleResultRequest( message.RequestUuid, execution3, responseStream, this );
                         break;
                     case SilaClientMessageType.MetadataRequest:
                         HandleClientRequestCore( message.MetadataRequest.FullyQualifiedMetadataId, message, responseStream );
@@ -90,7 +89,7 @@ namespace Tecan.Sila2.ServerPooling
             }
             catch (Exception exception)
             {
-                _loggingChannel.LogException( $"Handling of {message.Type} ran into an unexpected error.".ToString, exception );
+                _loggingChannel.Error( $"Handling of {message.Type} ran into an unexpected error.", exception );
             }
         }
 
@@ -100,7 +99,7 @@ namespace Tecan.Sila2.ServerPooling
             {
                 return commandHandler;
             }
-            _loggingChannel.Log( $"No handler was found to handle command execution {command.CommandExecutionID}".ToString, Severity.Warning );
+            _loggingChannel.Warn( $"No handler was found to handle command execution {command.CommandExecutionID}" );
             return null;
         }
 
@@ -112,7 +111,7 @@ namespace Tecan.Sila2.ServerPooling
             }
             else
             {
-                _loggingChannel.Log( $"No handler was found to handle {id}.".ToString, Severity.Warning );
+                _loggingChannel.Warn( $"No handler was found to handle {id}." );
             }
         }
 

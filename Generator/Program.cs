@@ -5,8 +5,8 @@ using System.ComponentModel.Composition.Primitives;
 using System.IO;
 using System.Linq;
 using CommandLine;
+using Common.Logging;
 using Microsoft.Build.Locator;
-using Tecan.MAP.Contracts.Services.Logging;
 using Tecan.Sila2.Generator.Contracts;
 
 namespace Tecan.Sila2.Generator
@@ -16,14 +16,6 @@ namespace Tecan.Sila2.Generator
     /// </summary>
     public class Program
     {
-        /// <summary>
-        /// Sets the minimum severity of the log level. Allowed values are Debug, Info, Warning, Error.
-        /// </summary>
-        public static Severity MinimumSeverity
-        {
-            get;
-            internal set;
-        }
 
         private static CompositionContainer _container;
 
@@ -65,18 +57,7 @@ namespace Tecan.Sila2.Generator
                     }
                     catch( Exception e )
                     {
-                        var oldColor = Console.ForegroundColor;
-                        Console.ForegroundColor = ConsoleColor.Red;
-                        if(MinimumSeverity == Severity.Debug)
-                        {
-                            Console.Error.WriteLine( e );
-                        }
-                        else
-                        {
-                            Console.Error.WriteLine( e.Message );
-                        }
-                        Console.Error.WriteLine( "Code generation failed." );
-                        Console.ForegroundColor = oldColor;
+                        LogManager.GetLogger<Program>().Error( "Code generation failed", e );
                         Environment.Exit( 1 );
                     }
                 } );
