@@ -87,7 +87,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// <returns>A method object or null, if the command is not supported</returns>
         public System.Reflection.MethodInfo GetCommand(string commandIdentifier)
         {
-            if ((commandIdentifier == "tecan.sila.generator.test.logging/infrastructure/LoggingService/v3/Command/Listen" +
+            if ((commandIdentifier == "tecan.sila.generator.test.logging/infrastructure/LoggingService/v4/Command/Listen" +
                 "ForLogEntries"))
             {
                 return typeof(ILoggingService).GetMethod("ListenForLogEntries");
@@ -164,7 +164,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// <returns>A request interception or null, if this is not necessary</returns>
         public Tecan.Sila2.Server.IRequestInterception Intercept(string commandIdentifier, Tecan.Sila2.Server.ISiLAServer server, Tecan.Sila2.Server.IMetadataRepository metadata)
         {
-            return Intercept(commandIdentifier, Tecan.Sila2.Server.Metadata.Extract<Tecan.Sila2.StringDto>(metadata, "tecan.sila.generator.test.logging/infrastructure/LoggingService/v3/Metadata/Loggi" +
+            return Intercept(commandIdentifier, Tecan.Sila2.Server.Metadata.Extract<Tecan.Sila2.StringDto>(metadata, "tecan.sila.generator.test.logging/infrastructure/LoggingService/v4/Metadata/Loggi" +
                         "ngActivity").Extract(server));
         }
     }

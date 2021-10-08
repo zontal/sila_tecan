@@ -33,7 +33,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         
         private IClientChannel _channel;
         
-        private const string _serviceName = "sila2.tecan.sila.generator.test.temperaturecontroller.v3.TemperatureController";
+        private const string _serviceName = "sila2.tecan.sila.generator.test.temperaturecontroller.v4.TemperatureController";
         
         ///  <summary>
         /// Creates a new instance
@@ -60,7 +60,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
                         System.Threading.Monitor.Enter(_cancellationTokenSource);
                         if ((_currentTemperatureUpdateTask == null))
                         {
-                            _currentTemperatureUpdateTask = _channel.SubscribeProperty<CurrentTemperatureResponseDto>(_serviceName, "CurrentTemperature", "tecan.sila.generator/test/TemperatureController/v3/Property/CurrentTemperature", ReceiveNewCurrentTemperature, _executionManager.CreateCallOptions("tecan.sila.generator/test/TemperatureController/v3/Property/CurrentTemperature"), _cancellationTokenSource.Token);
+                            _currentTemperatureUpdateTask = _channel.SubscribeProperty<CurrentTemperatureResponseDto>(_serviceName, "CurrentTemperature", "tecan.sila.generator/test/TemperatureController/v4/Property/CurrentTemperature", ReceiveNewCurrentTemperature, _executionManager.CreateCallOptions("tecan.sila.generator/test/TemperatureController/v4/Property/CurrentTemperature"), _cancellationTokenSource.Token);
                         }
                     } finally
                     {
@@ -115,12 +115,12 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// <returns>The converted exception or null, if the error is not understood</returns>
         private static System.Exception ConvertControlTemperatureException(string errorIdentifier, string errorMessage)
         {
-            if ((errorIdentifier == "tecan.sila.generator/test/TemperatureController/v3/DefinedError/TemperatureNotRea" +
+            if ((errorIdentifier == "tecan.sila.generator/test/TemperatureController/v4/DefinedError/TemperatureNotRea" +
                 "chable"))
             {
                 return new TemperatureNotReachableException(errorMessage);
             }
-            if ((errorIdentifier == "tecan.sila.generator/test/TemperatureController/v3/DefinedError/ControlInterrupte" +
+            if ((errorIdentifier == "tecan.sila.generator/test/TemperatureController/v4/DefinedError/ControlInterrupte" +
                 "d"))
             {
                 return new ControlInterruptedException(errorMessage);
@@ -150,7 +150,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         {
             get
             {
-                return "tecan.sila.generator/test/TemperatureController/v3";
+                return "tecan.sila.generator/test/TemperatureController/v4";
             }
         }
         

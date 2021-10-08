@@ -34,7 +34,6 @@ namespace Tecan.Sila2.Generator.Generators
         /// </summary>
         /// <param name="translationProvider">A component that translates types between SiLA2 and .NET</param>
         /// <param name="nameProvider">The name provider used to generate feature names</param>
-        /// <param name="loggingChannelFactory">The logging implementation</param>
         /// <param name="diGenerator">A component the generates the necessary DI registration</param>
         /// <param name="hooks">Generator hooks</param>
         [ImportingConstructor]

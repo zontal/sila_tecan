@@ -29,10 +29,6 @@ namespace Tecan.Sila2.Generator.CommandLine
         /// <param name="container"></param>
         protected ILog SetupLogging( CompositionContainer container )
         {
-            if( container.GetExportedValueOrDefault<IDependencyInjectionGenerator>() == null )
-            {
-                container.ComposeExportedValue<IDependencyInjectionGenerator>( new MefGenerator() );
-            }
             LogManager.Adapter = new ConsoleLogging( MinimumSeverity );
 
             return LogManager.GetLogger( GetType() );

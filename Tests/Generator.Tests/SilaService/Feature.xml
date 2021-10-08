@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Feature xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" SiLA2Version="1.0" FeatureVersion="3.3" Originator="tecan.sila.generator.test" Category="silaservice" xmlns="http://www.sila-standard.org">
+<Feature xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" SiLA2Version="1.0" FeatureVersion="4.0" Originator="tecan.sila.generator.test" Category="silaservice" xmlns="http://www.sila-standard.org">
   <Identifier>SiLAService</Identifier>
   <DisplayName>SiLA Service</DisplayName>
   <Description>The Feature each SiLA Server MUST implement. It is the entry point to a SiLA Server and helps to discover the Features it implements.</Description>

@@ -43,7 +43,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         {
             get
             {
-                return "tecan.sila.generator.test/testreference/RxService/v3/Command/RunRxObservable";
+                return "tecan.sila.generator.test/testreference/RxService/v4/Command/RunRxObservable";
             }
         }
         

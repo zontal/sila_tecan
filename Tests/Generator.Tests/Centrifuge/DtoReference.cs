@@ -63,7 +63,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         {
             get
             {
-                return "tecan.sila.generator.test/testreference/Centrifuge/v3/Command/SetSpeed";
+                return "tecan.sila.generator.test/testreference/Centrifuge/v4/Command/SetSpeed";
             }
         }
 

@@ -12,8 +12,8 @@
         <projectUrl>https://gitlab.com/SiLA2/vendors/sila_tecan</projectUrl>
         <repository type="git" url="https://gitlab.com/SiLA2/vendors/sila_tecan.git" />
         <dependencies>
-            <dependency id="Tecan.Sila2" version="[$version$,4.0)" />
-            <dependency id="Tecan.Sila2.DynamicClient" version="[$version$,4.0)" />
+            <dependency id="Tecan.Sila2" version="[$version$,5.0)" />
+            <dependency id="Tecan.Sila2.DynamicClient" version="[$version$,5.0)" />
             <dependency id="CommandLineParser" version="2.6.0" />
             <dependency id="Microsoft.Build" version="16.3.0" />
             <dependency id="Microsoft.Build.Locator" version="1.2.6" />

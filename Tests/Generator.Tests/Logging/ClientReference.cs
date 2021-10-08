@@ -27,7 +27,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         
         private IClientChannel _channel;
         
-        private const string _serviceName = "sila2.tecan.sila.generator.test.logging.infrastructure.loggingservice.v3.LoggingS" +
+        private const string _serviceName = "sila2.tecan.sila.generator.test.logging.infrastructure.loggingservice.v4.LoggingS" +
             "ervice";
         
         ///  <summary>
@@ -93,7 +93,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         {
             get
             {
-                return "tecan.sila.generator.test.logging/infrastructure/LoggingService/v3";
+                return "tecan.sila.generator.test.logging/infrastructure/LoggingService/v4";
             }
         }
         

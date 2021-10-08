@@ -43,7 +43,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         {
             get
             {
-                return "tecan.sila.generator.test/ambiguityresolver/AmbiguityResolverService/v3/Command/C" +
+                return "tecan.sila.generator.test/ambiguityresolver/AmbiguityResolverService/v4/Command/C" +
                     "heckAmbiguousEntries";
             }
         }

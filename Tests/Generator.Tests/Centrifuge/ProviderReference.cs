@@ -81,7 +81,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             {
                 if((ex.ParamName == "value"))
                 {
-                    throw _server.ErrorHandling.CreateValidationError( "tecan.sila.generator.test/testreference/Centrifuge/v3/Command/SetSpeed/Parameter/" +
+                    throw _server.ErrorHandling.CreateValidationError( "tecan.sila.generator.test/testreference/Centrifuge/v4/Command/SetSpeed/Parameter/" +
                             "Value", ex.Message );
                 }
                 throw _server.ErrorHandling.CreateUnknownValidationError( ex );
@@ -104,7 +104,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// <returns>A method object or null, if the command is not supported</returns>
         public System.Reflection.MethodInfo GetCommand( string commandIdentifier )
         {
-            if((commandIdentifier == "tecan.sila.generator.test/testreference/Centrifuge/v3/Command/SetSpeed"))
+            if((commandIdentifier == "tecan.sila.generator.test/testreference/Centrifuge/v4/Command/SetSpeed"))
             {
                 return typeof( ICentrifuge ).GetMethod( "SetSpeed" );
             }
@@ -118,7 +118,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// <returns>A property object or null, if the property is not supported</returns>
         public System.Reflection.PropertyInfo GetProperty( string propertyIdentifier )
         {
-            if((propertyIdentifier == "tecan.sila.generator.test/testreference/Centrifuge/v3/Property/Speed"))
+            if((propertyIdentifier == "tecan.sila.generator.test/testreference/Centrifuge/v4/Property/Speed"))
             {
                 return typeof( ICentrifuge ).GetProperty( "Speed" );
             }

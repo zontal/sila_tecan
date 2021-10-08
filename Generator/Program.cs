@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
 using System.ComponentModel.Composition.Primitives;
 using System.IO;
@@ -8,6 +9,7 @@ using CommandLine;
 using Common.Logging;
 using Microsoft.Build.Locator;
 using Tecan.Sila2.Generator.Contracts;
+using Tecan.Sila2.Generator.Generators;
 
 namespace Tecan.Sila2.Generator
 {
@@ -31,6 +33,11 @@ namespace Tecan.Sila2.Generator
                 catalogs.Add( new DirectoryCatalog( silaGenExtensions, "SilaGen.*.dll" ) );
             }
             _container = new CompositionContainer( new AggregateCatalog(catalogs) );
+
+            if(_container.GetExportedValueOrDefault<IDependencyInjectionGenerator>() == null)
+            {
+                _container.ComposeExportedValue<IDependencyInjectionGenerator>( new MefGenerator() );
+            }
         }
 
         /// <summary>

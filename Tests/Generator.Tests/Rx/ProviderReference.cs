@@ -86,7 +86,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// <returns>A method object or null, if the command is not supported</returns>
         public System.Reflection.MethodInfo GetCommand(string commandIdentifier)
         {
-            if ((commandIdentifier == "tecan.sila.generator.test/testreference/RxService/v3/Command/RunRxObservable"))
+            if ((commandIdentifier == "tecan.sila.generator.test/testreference/RxService/v4/Command/RunRxObservable"))
             {
                 return typeof(IRxService).GetMethod("RunRxObservable");
             }

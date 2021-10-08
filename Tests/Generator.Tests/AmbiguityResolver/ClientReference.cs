@@ -27,7 +27,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         
         private IClientChannel _channel;
         
-        private const string _serviceName = "sila2.tecan.sila.generator.test.ambiguityresolver.ambiguityresolverservice.v3.Amb" +
+        private const string _serviceName = "sila2.tecan.sila.generator.test.ambiguityresolver.ambiguityresolverservice.v4.Amb" +
             "iguityResolverService";
         
         ///  <summary>
@@ -92,7 +92,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         {
             get
             {
-                return "tecan.sila.generator.test/ambiguityresolver/AmbiguityResolverService/v3";
+                return "tecan.sila.generator.test/ambiguityresolver/AmbiguityResolverService/v4";
             }
         }
         

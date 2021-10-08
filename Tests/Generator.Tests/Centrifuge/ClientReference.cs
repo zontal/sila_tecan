@@ -27,7 +27,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
 
         private IClientChannel _channel;
 
-        private const string _serviceName = "sila2.tecan.sila.generator.test.testreference.centrifuge.v3.Centrifuge";
+        private const string _serviceName = "sila2.tecan.sila.generator.test.testreference.centrifuge.v4.Centrifuge";
 
         ///  <summary>
         /// Creates a new instance
@@ -46,10 +46,10 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         {
             get
             {
-                Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions( "tecan.sila.generator.test/testreference/Centrifuge/v3/Property/Speed" );
+                Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions( "tecan.sila.generator.test/testreference/Centrifuge/v4/Property/Speed" );
                 try
                 {
-                    int response = ((int)(_channel.ReadProperty<PropertyResponse<Tecan.Sila2.IntegerDto>>( _serviceName, "Speed", "tecan.sila.generator.test/testreference/Centrifuge/v3/Property/Speed", callInfo ).Value.Extract( _executionManager.DownloadBinaryStore )));
+                    int response = ((int)(_channel.ReadProperty<PropertyResponse<Tecan.Sila2.IntegerDto>>( _serviceName, "Speed", "tecan.sila.generator.test/testreference/Centrifuge/v4/Property/Speed", callInfo ).Value.Extract( _executionManager.DownloadBinaryStore )));
                     callInfo.FinishSuccessful();
                     return response;
                 }
@@ -63,7 +63,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             set
             {
                 SetSpeedRequestDto request = new SetSpeedRequestDto( value, null );
-                Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions( "tecan.sila.generator.test/testreference/Centrifuge/v3/Command/SetSpeed" );
+                Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions( "tecan.sila.generator.test/testreference/Centrifuge/v4/Command/SetSpeed" );
                 try
                 {
                     _channel.ExecuteUnobservableCommand<SetSpeedRequestDto>( _serviceName, "SetSpeed", request, callInfo );
@@ -101,7 +101,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         {
             get
             {
-                return "tecan.sila.generator.test/testreference/Centrifuge/v3";
+                return "tecan.sila.generator.test/testreference/Centrifuge/v4";
             }
         }
 

@@ -64,17 +64,17 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             {
                 if ((ex.ParamName == "targetTemperature"))
                 {
-                    throw _server.ErrorHandling.CreateValidationError("tecan.sila.generator/test/TemperatureController/v3/Command/ControlTemperature/Par" +
+                    throw _server.ErrorHandling.CreateValidationError("tecan.sila.generator/test/TemperatureController/v4/Command/ControlTemperature/Par" +
                             "ameter/TargetTemperature", ex.Message);
                 }
                 throw _server.ErrorHandling.CreateUnknownValidationError(ex);
             } catch (TemperatureNotReachableException ex)
             {
-                throw _server.ErrorHandling.CreateExecutionError("tecan.sila.generator/test/TemperatureController/v3/DefinedError/TemperatureNotRea" +
+                throw _server.ErrorHandling.CreateExecutionError("tecan.sila.generator/test/TemperatureController/v4/DefinedError/TemperatureNotRea" +
                         "chable", "The ambient conditions prohibit the device from reaching the target temperature.", ex.Message);
             } catch (ControlInterruptedException ex)
             {
-                throw _server.ErrorHandling.CreateExecutionError("tecan.sila.generator/test/TemperatureController/v3/DefinedError/ControlInterrupte" +
+                throw _server.ErrorHandling.CreateExecutionError("tecan.sila.generator/test/TemperatureController/v4/DefinedError/ControlInterrupte" +
                         "d", "The control of temperature couldn\'t be finished as it was interrupted by another " +
                         "target temperature.", ex.Message);
             }
@@ -116,7 +116,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// <returns>A method object or null, if the command is not supported</returns>
         public System.Reflection.MethodInfo GetCommand(string commandIdentifier)
         {
-            if ((commandIdentifier == "tecan.sila.generator/test/TemperatureController/v3/Command/ControlTemperature"))
+            if ((commandIdentifier == "tecan.sila.generator/test/TemperatureController/v4/Command/ControlTemperature"))
             {
                 return typeof(ITemperatureController).GetMethod("ControlTemperature");
             }
@@ -130,7 +130,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// <returns>A property object or null, if the property is not supported</returns>
         public System.Reflection.PropertyInfo GetProperty(string propertyIdentifier)
         {
-            if ((propertyIdentifier == "tecan.sila.generator/test/TemperatureController/v3/Property/CurrentTemperature"))
+            if ((propertyIdentifier == "tecan.sila.generator/test/TemperatureController/v4/Property/CurrentTemperature"))
             {
                 return typeof(ITemperatureController).GetProperty("CurrentTemperature");
             }

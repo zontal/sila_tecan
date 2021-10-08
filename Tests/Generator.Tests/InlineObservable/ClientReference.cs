@@ -26,7 +26,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
 
         private IClientChannel _channel;
 
-        private const string _serviceName = "sila2.tecan.sila.generator.test.testreference.inlineobservableservice.v3.InlineOb" +
+        private const string _serviceName = "sila2.tecan.sila.generator.test.testreference.inlineobservableservice.v4.InlineOb" +
             "servableService";
 
         ///  <summary>
@@ -94,7 +94,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         {
             get
             {
-                return "tecan.sila.generator.test/testreference/InlineObservableService/v3";
+                return "tecan.sila.generator.test/testreference/InlineObservableService/v4";
             }
         }
 

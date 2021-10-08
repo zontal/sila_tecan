@@ -27,7 +27,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         
         private IClientChannel _channel;
         
-        private const string _serviceName = "sila2.tecan.sila.generator.test.emptyservice.v3.EmptyService";
+        private const string _serviceName = "sila2.tecan.sila.generator.test.emptyservice.v4.EmptyService";
         
         ///  <summary>
         /// Creates a new instance
@@ -62,7 +62,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         {
             get
             {
-                return "tecan.sila.generator/test/EmptyService/v3";
+                return "tecan.sila.generator/test/EmptyService/v4";
             }
         }
         

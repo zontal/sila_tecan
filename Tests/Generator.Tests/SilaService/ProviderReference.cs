@@ -86,13 +86,13 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             {
                 if ((ex.ParamName == "qualifiedFeatureIdentifier"))
                 {
-                    throw _server.ErrorHandling.CreateValidationError("tecan.sila.generator.test/silaservice/SiLAService/v3/Command/GetFeatureDefinition" +
+                    throw _server.ErrorHandling.CreateValidationError("tecan.sila.generator.test/silaservice/SiLAService/v4/Command/GetFeatureDefinition" +
                             "/Parameter/QualifiedFeatureIdentifier", ex.Message);
                 }
                 throw _server.ErrorHandling.CreateUnknownValidationError(ex);
             } catch (UnimplementedFeatureException ex)
             {
-                throw _server.ErrorHandling.CreateExecutionError("tecan.sila.generator.test/silaservice/SiLAService/v3/DefinedError/UnimplementedFe" +
+                throw _server.ErrorHandling.CreateExecutionError("tecan.sila.generator.test/silaservice/SiLAService/v4/DefinedError/UnimplementedFe" +
                         "ature", "The feature specified by the given feature identifier is not implemented by the s" +
                         "erver.", ex.Message);
             }
@@ -113,7 +113,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             {
                 if ((ex.ParamName == "serverName"))
                 {
-                    throw _server.ErrorHandling.CreateValidationError("tecan.sila.generator.test/silaservice/SiLAService/v3/Command/SetServerName/Parame" +
+                    throw _server.ErrorHandling.CreateValidationError("tecan.sila.generator.test/silaservice/SiLAService/v4/Command/SetServerName/Parame" +
                             "ter/ServerName", ex.Message);
                 }
                 throw _server.ErrorHandling.CreateUnknownValidationError(ex);
@@ -190,12 +190,12 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// <returns>A method object or null, if the command is not supported</returns>
         public System.Reflection.MethodInfo GetCommand(string commandIdentifier)
         {
-            if ((commandIdentifier == "tecan.sila.generator.test/silaservice/SiLAService/v3/Command/GetFeatureDefinition" +
+            if ((commandIdentifier == "tecan.sila.generator.test/silaservice/SiLAService/v4/Command/GetFeatureDefinition" +
                 ""))
             {
                 return typeof(ISiLAService).GetMethod("GetFeatureDefinition");
             }
-            if ((commandIdentifier == "tecan.sila.generator.test/silaservice/SiLAService/v3/Command/SetServerName"))
+            if ((commandIdentifier == "tecan.sila.generator.test/silaservice/SiLAService/v4/Command/SetServerName"))
             {
                 return typeof(ISiLAService).GetMethod("SetServerName");
             }
@@ -209,31 +209,31 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// <returns>A property object or null, if the property is not supported</returns>
         public System.Reflection.PropertyInfo GetProperty(string propertyIdentifier)
         {
-            if ((propertyIdentifier == "tecan.sila.generator.test/silaservice/SiLAService/v3/Property/ServerName"))
+            if ((propertyIdentifier == "tecan.sila.generator.test/silaservice/SiLAService/v4/Property/ServerName"))
             {
                 return typeof(ISiLAService).GetProperty("ServerName");
             }
-            if ((propertyIdentifier == "tecan.sila.generator.test/silaservice/SiLAService/v3/Property/ServerType"))
+            if ((propertyIdentifier == "tecan.sila.generator.test/silaservice/SiLAService/v4/Property/ServerType"))
             {
                 return typeof(ISiLAService).GetProperty("ServerType");
             }
-            if ((propertyIdentifier == "tecan.sila.generator.test/silaservice/SiLAService/v3/Property/ServerUUID"))
+            if ((propertyIdentifier == "tecan.sila.generator.test/silaservice/SiLAService/v4/Property/ServerUUID"))
             {
                 return typeof(ISiLAService).GetProperty("ServerUUID");
             }
-            if ((propertyIdentifier == "tecan.sila.generator.test/silaservice/SiLAService/v3/Property/ServerDescription"))
+            if ((propertyIdentifier == "tecan.sila.generator.test/silaservice/SiLAService/v4/Property/ServerDescription"))
             {
                 return typeof(ISiLAService).GetProperty("ServerDescription");
             }
-            if ((propertyIdentifier == "tecan.sila.generator.test/silaservice/SiLAService/v3/Property/ServerVersion"))
+            if ((propertyIdentifier == "tecan.sila.generator.test/silaservice/SiLAService/v4/Property/ServerVersion"))
             {
                 return typeof(ISiLAService).GetProperty("ServerVersion");
             }
-            if ((propertyIdentifier == "tecan.sila.generator.test/silaservice/SiLAService/v3/Property/ServerVendorURL"))
+            if ((propertyIdentifier == "tecan.sila.generator.test/silaservice/SiLAService/v4/Property/ServerVendorURL"))
             {
                 return typeof(ISiLAService).GetProperty("ServerVendorURL");
             }
-            if ((propertyIdentifier == "tecan.sila.generator.test/silaservice/SiLAService/v3/Property/ImplementedFeatures" +
+            if ((propertyIdentifier == "tecan.sila.generator.test/silaservice/SiLAService/v4/Property/ImplementedFeatures" +
                 ""))
             {
                 return typeof(ISiLAService).GetProperty("ImplementedFeatures");

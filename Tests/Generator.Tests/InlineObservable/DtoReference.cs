@@ -62,7 +62,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         {
             get
             {
-                return "tecan.sila.generator.test/testreference/InlineObservableService/v3/Command/TestIn" +
+                return "tecan.sila.generator.test/testreference/InlineObservableService/v4/Command/TestIn" +
                     "lineObservable";
             }
         }

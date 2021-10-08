@@ -86,7 +86,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// <returns>A method object or null, if the command is not supported</returns>
         public System.Reflection.MethodInfo GetCommand(string commandIdentifier)
         {
-            if ((commandIdentifier == "tecan.sila.generator.test/ambiguityresolver/AmbiguityResolverService/v3/Command/C" +
+            if ((commandIdentifier == "tecan.sila.generator.test/ambiguityresolver/AmbiguityResolverService/v4/Command/C" +
                 "heckAmbiguousEntries"))
             {
                 return typeof(IAmbiguityResolverService).GetMethod("CheckAmbiguousEntries");

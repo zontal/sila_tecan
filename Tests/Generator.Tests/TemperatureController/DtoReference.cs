@@ -65,7 +65,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         {
             get
             {
-                return "tecan.sila.generator/test/TemperatureController/v3/Command/ControlTemperature";
+                return "tecan.sila.generator/test/TemperatureController/v4/Command/ControlTemperature";
             }
         }
         
