@@ -12,6 +12,7 @@
     </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="..\TestServer\DefaultConnector.cs" Link="DefaultConnector.cs" />
     <Compile Include="..\TestServer\ITestServer.cs" Link="ITestServer.cs" />
     <Compile Include="..\TestServer\TestServerImplementation.cs" Link="TestServerImplementation.cs" />
     <Compile Include="..\TestServer\TestServer\Dtos.cs" Link="TestServer\Dtos.cs" />

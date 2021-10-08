@@ -156,7 +156,7 @@ namespace Tecan.Sila2.Server
         /// <param name="fileManagement">The file management used by this server</param>
         /// <param name="serviceHandlerRepository">A repository of service handlers</param>
         [ImportingConstructor]
-        public SiLAServer( ServerStartInformation startupInfo, IConfigurationStore configurationStore, [ImportMany] IEnumerable<IRequestInterceptor> interceptors, IFileManagement fileManagement, IServiceHandlerRepository<ISiLAServer> serviceHandlerRepository )
+        public SiLAServer( ServerStartInformation startupInfo, IConfigurationStore configurationStore, [ImportMany] IEnumerable<IRequestInterceptor> interceptors, IFileManagement fileManagement, IServiceConfigurationBuilder<ISiLAServer> serviceHandlerRepository )
         {
             _interceptors = interceptors;
             _configurationStore = configurationStore;
@@ -630,7 +630,7 @@ namespace Tecan.Sila2.Server
         public IDisposable ConnectToPool( string poolAddress )
         {
             _logger.Info( $"Connecting to server pool {poolAddress}" );
-            var channel = GrpcChannel.ForAddress( poolAddress );
+            var channel = GrpcChannel.ForAddress( poolAddress.StartsWith("http") ? poolAddress : "http://" + poolAddress );
             var connection = new PoolConnection( _poolDispatcher, channel.CreateCallInvoker().AsyncDuplexStreamingCall( PoolingConstants.ConnectSilaServerMethod, null, new CallOptions() ) );
             connection.Start();
             return connection;

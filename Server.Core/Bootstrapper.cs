@@ -66,8 +66,8 @@ namespace Tecan.Sila2.Server
                 }
                 var startup = new ServerStartInformation( selfInfo, args.Port, args.InterfaceFilter, args.ServerUuid, args.Name );
                 _container.ComposeExportedValue( startup );
-                var serviceHandlerRepository = new ServiceHandlerRepository( _container.GetExportedValue<IServerCertificateProvider>());
-                _container.ComposeExportedValue<IServiceHandlerRepository<ISiLAServer>>( serviceHandlerRepository );
+                var configurationBuilder = new ServiceConfigurationBuilder( _container.GetExportedValue<IServerCertificateProvider>());
+                _container.ComposeExportedValue<IServiceConfigurationBuilder<ISiLAServer>>( configurationBuilder );
                 _server = _container.GetExportedValue<ISiLAServer>();
 
                 _server.StartServer();
@@ -76,7 +76,7 @@ namespace Tecan.Sila2.Server
                     .ConfigureServices((_,services) =>
                     {
                         services.AddSingleton( _server );
-                        services.AddSingleton<IServiceHandlerRepository<ISiLAServer>>( serviceHandlerRepository );
+                        services.AddSingleton<IServiceConfigurationBuilder<ISiLAServer>>( configurationBuilder );
                         var features = _container.GetExportedValues<IFeatureProvider>();
                         foreach(var featureProvider in features)
                         {
@@ -88,7 +88,7 @@ namespace Tecan.Sila2.Server
                     {
                         webHostBuilder.ConfigureKestrel( options =>
                          {
-                             serviceHandlerRepository.ConfigureKestrel( options );
+                             configurationBuilder.ConfigureKestrel( options );
                          } );
                         webHostBuilder.Configure( appBuilder =>
                          {

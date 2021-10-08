@@ -287,9 +287,9 @@ namespace Tecan.Sila2.Server.Binary
 
         public void Register( Grpc.AspNetCore.Server.Model.ServiceMethodProviderContext<ISiLAServer> context )
         {
-            context.AddUnaryMethod( BinaryStorageConstants.DeleteBinaryUpload, null, DeleteBinary );
-            context.AddUnaryMethod( BinaryStorageConstants.CreateBinary, null, CreateBinary );
-            context.AddDuplexStreamingMethod( BinaryStorageConstants.UploadChunk, null, UploadChunk );
+            context.AddUnaryMethod( BinaryStorageConstants.DeleteBinaryUpload, new List<object>(), DeleteBinary );
+            context.AddUnaryMethod( BinaryStorageConstants.CreateBinary, new List<object>(), CreateBinary );
+            context.AddDuplexStreamingMethod( BinaryStorageConstants.UploadChunk, new List<object>(), UploadChunk );
         }
 #endif
 

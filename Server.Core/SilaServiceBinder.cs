@@ -12,9 +12,9 @@ namespace Tecan.Sila2.Server
     {
         private static readonly ILog _loggingChannel = LogManager.GetLogger<SilaServiceBinder>();
         private static readonly IList<object> _emptyMetadata = new List<object>().AsReadOnly();
-        private readonly IServiceHandlerRepository<ISiLAServer> _serviceHandlerRepository;
+        private readonly IServiceConfigurationBuilder<ISiLAServer> _serviceHandlerRepository;
 
-        public SilaServiceBinder( IServiceHandlerRepository<ISiLAServer> serviceHandlerRepository )
+        public SilaServiceBinder( IServiceConfigurationBuilder<ISiLAServer> serviceHandlerRepository )
         {
             _serviceHandlerRepository = serviceHandlerRepository;
         }

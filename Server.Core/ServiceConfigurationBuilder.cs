@@ -12,30 +12,41 @@ using Tecan.Sila2.Security;
 
 namespace Tecan.Sila2.Server
 {
-    internal class ServiceHandlerRepository : IServiceHandlerRepository<ISiLAServer>
+    /// <summary>
+    /// Denotes a service configuration builder for Kestrel
+    /// </summary>
+    public class ServiceConfigurationBuilder : IServiceConfigurationBuilder<ISiLAServer>
     {
         private readonly List<IServiceHandler<ISiLAServer>> _handlers = new List<IServiceHandler<ISiLAServer>>();
         private readonly Dictionary<IPAddress, int> _networkAddresses = new Dictionary<IPAddress, int>();
         private readonly IServerCertificateProvider _certificateProvider;
-        private readonly ILog _loggingChannel = LogManager.GetLogger<ServiceHandlerRepository>();
+        private readonly ILog _loggingChannel = LogManager.GetLogger<ServiceConfigurationBuilder>();
 
+        /// <inheritdoc />
         public IEnumerable<IServiceHandler<ISiLAServer>> ServiceHandlers => _handlers;
         private PfxCertificateContext _certificateContext;
 
-        public ServiceHandlerRepository(IServerCertificateProvider certificateProvider)
+        /// <summary>
+        /// Creates a new instance
+        /// </summary>
+        /// <param name="certificateProvider">A server certificate provider</param>
+        public ServiceConfigurationBuilder(IServerCertificateProvider certificateProvider)
         {
             _certificateProvider = certificateProvider;
         }
 
+        /// <summary>
+        /// Gets a dictionary of network interfaces that the server should be running on
+        /// </summary>
         public IReadOnlyDictionary<IPAddress, int> NetworkAddresses => _networkAddresses;
 
-        public string PathToPfx => _certificateContext?.PathToPfx;
-
+        /// <inheritdoc />
         public void AddServiceHandler( IServiceHandler<ISiLAServer> serviceHandler )
         {
             _handlers.Add( serviceHandler );
         }
 
+        /// <inheritdoc />
         public void Configure( string host, int port )
         {
             if(_certificateContext == null)
@@ -63,6 +74,7 @@ namespace Tecan.Sila2.Server
 
         private int AnyPort => _networkAddresses[IPAddress.Any];
 
+        /// <inheritdoc />
         public void ConfigureForServer( Guid guid, int port, Predicate<NetworkInterface> networkInterfaceFilter )
         {
             if(_certificateContext == null)
@@ -98,6 +110,10 @@ namespace Tecan.Sila2.Server
             }
         }
 
+        /// <summary>
+        /// Configures the provided Kestrel server
+        /// </summary>
+        /// <param name="options">The Kestrel configuration</param>
         public void ConfigureKestrel(KestrelServerOptions options)
         {
             Action<ListenOptions> listenOptions = ( ListenOptions opts ) =>

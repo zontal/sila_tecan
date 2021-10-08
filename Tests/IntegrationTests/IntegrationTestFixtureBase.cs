@@ -28,13 +28,16 @@ namespace Tecan.Sila2.IntegrationTests
         {
             var serverId = Guid.Parse( "397D289C-40D3-4D03-8A15-7EA4856ED9D1" );
             var payloadArguments = $"-u {serverId} -i 127.0.0.1";
-            var attachDebugger = Debugger.IsAttached;
+            var attachDebugger = false; // Debugger.IsAttached;
             if(attachDebugger)
             {
                 payloadArguments = "debug " + payloadArguments;
             }
             ProcessStartInfo processStartInfo = GetTestServerStartInfo( payloadArguments );
-            _serverProcess = Process.Start( processStartInfo );
+            if(processStartInfo != null)
+            {
+                _serverProcess = Process.Start( processStartInfo );
+            }
 
             if(attachDebugger)
             {
@@ -78,7 +81,7 @@ namespace Tecan.Sila2.IntegrationTests
         {
             var connector = new ServerConnector( new DiscoveryExecutionManager() );
 
-            return connector.Connect( IPAddress.Loopback, 50052 );
+            return connector.Connect( IPAddress.Loopback, 50052);
         }
 
         [TearDown]

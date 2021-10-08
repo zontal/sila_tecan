@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
@@ -197,9 +198,9 @@ namespace Tecan.Sila2.Server.Binary
         /// <inheritdoc />
         public void Register( Grpc.AspNetCore.Server.Model.ServiceMethodProviderContext<ISiLAServer> context )
         {
-            context.AddUnaryMethod( BinaryStorageConstants.DeleteBinaryDownload, null, DeleteBinary );
-            context.AddUnaryMethod( BinaryStorageConstants.GetBinaryInfo, null, GetBinaryInfo );
-            context.AddDuplexStreamingMethod( BinaryStorageConstants.GetChunk, null, GetChunk );
+            context.AddUnaryMethod( BinaryStorageConstants.DeleteBinaryDownload, new List<object>(), DeleteBinary );
+            context.AddUnaryMethod( BinaryStorageConstants.GetBinaryInfo, new List<object>(), GetBinaryInfo );
+            context.AddDuplexStreamingMethod( BinaryStorageConstants.GetChunk, new List<object>(), GetChunk );
         }
 
 #endif

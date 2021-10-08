@@ -27,7 +27,7 @@ namespace Tecan.Sila2.Server
     {
         #region Members
 
-        private readonly ILog _logger;
+        private readonly ILog _logger = LogManager.GetLogger<SiLAServer>();
         private readonly IServerProvider _serverProvider;
 
         /// <summary>The list of implmented features.</summary>

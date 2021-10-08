@@ -35,12 +35,12 @@ namespace Tecan.Sila2.Discovery
         /// <inheritdoc />
         public virtual ServerData Connect( IPAddress host, int port )
         {
-            return Connect( $"{host}:{port}", null, null );
+            return Connect( $"{host}:{port}", null, null, true );
         }
 
-        private ServerData Connect(string target, Guid? expectedGuid, IReadOnlyDictionary<string, string> details)
+        private ServerData Connect(string target, Guid? expectedGuid, IReadOnlyDictionary<string, string> details, bool prependScheme)
         {
-            var connection = ConnectCore( target, expectedGuid, details );
+            var connection = ConnectCore( target, expectedGuid, details, prependScheme );
             if (expectedGuid.HasValue && connection != null && connection.Config.Uuid != expectedGuid.Value)
             {
                 _loggingChannel.Warn( $"Connection to {target} was successful, but the server UUID {connection.Config.Uuid} does not match the expected {expectedGuid.Value}." );
@@ -50,7 +50,7 @@ namespace Tecan.Sila2.Discovery
             return connection;
         }
 
-        private ServerData ConnectCore( string target, Guid? expectedGuid, IReadOnlyDictionary<string, string> details )
+        private ServerData ConnectCore( string target, Guid? expectedGuid, IReadOnlyDictionary<string, string> details, bool prependScheme )
         {
             _loggingChannel.Info( $"Connecting to {target}" );
             if(details == null || !details.TryGetValue( "encrypted", out var encryption ) || encryption != "false")
@@ -61,7 +61,7 @@ namespace Tecan.Sila2.Discovery
                     try
                     {
                         var ca = RestoreCa( details );
-                        var channel = GrpcChannel.ForAddress( target, new GrpcChannelOptions
+                        var channel = GrpcChannel.ForAddress( prependScheme ? "https://" + target : target, new GrpcChannelOptions
                         {
 
                         } );
@@ -78,7 +78,7 @@ namespace Tecan.Sila2.Discovery
                 {
                     try
                     {
-                        var channel = GrpcChannel.ForAddress( target );
+                        var channel = GrpcChannel.ForAddress( prependScheme ? "https://" + target : target );
                         return CheckExpectedGuid( CheckCertificate( GetServerData( channel ), ExtractCertificate( certificate ) ), expectedGuid );
                     }
                     catch(Exception e)
@@ -88,7 +88,7 @@ namespace Tecan.Sila2.Discovery
                     }
                 }
             }
-            return GetServerData( GrpcChannel.ForAddress(target, new GrpcChannelOptions
+            return GetServerData( GrpcChannel.ForAddress( prependScheme ? "http://" + target : target, new GrpcChannelOptions
             {
                 Credentials = ChannelCredentials.Insecure
             } ));
@@ -229,7 +229,7 @@ namespace Tecan.Sila2.Discovery
         /// <inheritdoc />
         public virtual ServerData Connect( string host, int port )
         {
-            return Connect( $"{host}:{port}", null, null );
+            return Connect( $"{host}:{port}", null, null, !host.StartsWith("http") );
         }
 
 
@@ -273,13 +273,13 @@ namespace Tecan.Sila2.Discovery
         /// <inheritdoc />
         public ServerData Connect( IPAddress host, int port, Guid? expectedServer, IReadOnlyDictionary<string, string> details )
         {
-            return Connect( $"{host}:{port}", expectedServer, details );
+            return Connect( $"{host}:{port}", expectedServer, details, true );
         }
 
         /// <inheritdoc />
         public ServerData Connect( string host, int port, Guid? expectedServer, IReadOnlyDictionary<string, string> details )
         {
-            return Connect( $"{host}:{port}", expectedServer, details );
+            return Connect( $"{host}:{port}", expectedServer, details, !host.StartsWith("http") );
         }
     }
 }

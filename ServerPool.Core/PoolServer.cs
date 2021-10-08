@@ -28,7 +28,7 @@ namespace Tecan.Sila2.ServerPooling
         /// </summary>
         /// <param name="serverProvider">The actual gRPC server</param>
         [ImportingConstructor]
-        public PoolServer( IServiceHandlerRepository<IServerPool> serverProvider )
+        public PoolServer( IServiceConfigurationBuilder<IServerPool> serverProvider )
         {
             serverProvider.AddServiceHandler( this );
         }
