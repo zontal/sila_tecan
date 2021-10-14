@@ -50,9 +50,7 @@ namespace Tecan.Sila2
                 var context = _certificateProvider.CreateContext();
                 if(context is PemCertificateContext pemContext)
                 {
-                    var keypair = new KeyCertificatePair( pemContext.Certificate, pemContext.Key );
-                    _logger.Info( "Found certificates, starting server with TLS." );
-                    Credentials = new SslServerCredentials( new List<KeyCertificatePair>() { keypair }, pemContext.CA, SslClientCertificateRequestType.DontRequest );
+                    Credentials = CreateCredentials( pemContext ) ?? ServerCredentials.Insecure;
                 }
                 else
                 {
@@ -64,6 +62,18 @@ namespace Tecan.Sila2
             _server.Ports.Add( new ServerPort( host, port, Credentials ) );
         }
 
+        /// <summary>
+        /// Creates the server credentials for the given PEM-encoded certificates
+        /// </summary>
+        /// <param name="pemContext">The PEM-encoded context</param>
+        /// <returns>the server credentials to be used</returns>
+        protected virtual ServerCredentials CreateCredentials( PemCertificateContext pemContext )
+        {
+            var keypair = new KeyCertificatePair( pemContext.Certificate, pemContext.Key );
+            _logger.Info( "Found certificates, starting server with TLS." );
+            return new SslServerCredentials( new List<KeyCertificatePair>() { keypair }, pemContext.CA, SslClientCertificateRequestType.DontRequest );
+        }
+
         /// <inheritdoc />
         public void ConfigureForServer( Guid guid, int port, Predicate<NetworkInterface> networkInterfaceFilter )
         {
@@ -72,9 +82,7 @@ namespace Tecan.Sila2
                 var context = _certificateProvider.CreateContext( guid );
                 if(context is PemCertificateContext pemContext)
                 {
-                    var keypair = new KeyCertificatePair( pemContext.Certificate, pemContext.Key );
-                    _logger.Info( "Found certificates, starting server with TLS." );
-                    Credentials = new SslServerCredentials( new List<KeyCertificatePair>() { keypair }, pemContext.CA, SslClientCertificateRequestType.DontRequest );
+                    Credentials = CreateCredentials( pemContext ) ?? ServerCredentials.Insecure;
                 }
                 else
                 {
