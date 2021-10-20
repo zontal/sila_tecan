@@ -47,100 +47,104 @@ namespace Tecan.Sila2.WorktableIntegration
     }
     
     ///  <summary>
-    /// Denotes a bounding box for a device
+    /// Denotes a positional offset
     /// </summary>
-    public struct BoundingBox
+    public struct Offset
     {
         
-        private Rectangle _rectangle;
+        private double _x;
         
-        private double _height;
+        private double _y;
+        
+        private double _z;
         
         ///  <summary>
         /// Initializes a new instance
         /// </summary>
-        public BoundingBox(Rectangle rectangle, double height)
+        public Offset(double x, double y, double z)
         {
-            _rectangle = rectangle;
-            _height = height;
+            _x = x;
+            _y = y;
+            _z = z;
         }
         
         ///  <summary>
-        /// The ground rectangle
+        /// The X offset
         /// </summary>
-        public Rectangle Rectangle
+        [Tecan.Sila2.UnitAttribute("mm", Meter=1, Factor=0.001D)]
+        public double X
         {
             get
             {
-                return _rectangle;
+                return _x;
             }
         }
         
         ///  <summary>
-        /// The height of the bounding box
+        /// The Y offset
         /// </summary>
         [Tecan.Sila2.UnitAttribute("mm", Meter=1, Factor=0.001D)]
-        public double Height
+        public double Y
         {
             get
             {
-                return _height;
+                return _y;
+            }
+        }
+        
+        ///  <summary>
+        /// The Z offset
+        /// </summary>
+        [Tecan.Sila2.UnitAttribute("mm", Meter=1, Factor=0.001D)]
+        public double Z
+        {
+            get
+            {
+                return _z;
             }
         }
     }
     
     ///  <summary>
-    /// Defines a template for a site
+    /// Denotes a rectangle on the ground
     /// </summary>
-    public struct SiteTemplate
+    public struct Rectangle
     {
         
-        private string _name;
+        private double _width;
         
-        private Rectangle _siteRectangle;
-        
-        private System.Collections.Generic.ICollection<string> _tags;
+        private double _depth;
         
         ///  <summary>
         /// Initializes a new instance
         /// </summary>
-        public SiteTemplate(string name, Rectangle siteRectangle, System.Collections.Generic.ICollection<string> tags)
+        public Rectangle(double width, double depth)
         {
-            _name = name;
-            _siteRectangle = siteRectangle;
-            _tags = tags;
+            _width = width;
+            _depth = depth;
         }
         
         ///  <summary>
-        /// Gets the name of the site template
+        /// The width of the rectangle
         /// </summary>
-        public string Name
+        [Tecan.Sila2.UnitAttribute("mm", Meter=1, Factor=0.001D)]
+        public double Width
         {
             get
             {
-                return _name;
+                return _width;
             }
         }
         
         ///  <summary>
-        /// Gets the size of the site
+        /// The depth of the rectangle
         /// </summary>
-        public Rectangle SiteRectangle
+        [Tecan.Sila2.UnitAttribute("mm", Meter=1, Factor=0.001D)]
+        public double Depth
         {
             get
             {
-                return _siteRectangle;
-            }
-        }
-        
-        ///  <summary>
-        /// Gets a collection of custom tags
-        /// </summary>
-        public System.Collections.Generic.ICollection<string> Tags
-        {
-            get
-            {
-                return _tags;
+                return _depth;
             }
         }
     }
@@ -217,104 +221,100 @@ namespace Tecan.Sila2.WorktableIntegration
     }
     
     ///  <summary>
-    /// Denotes a rectangle on the ground
+    /// Defines a template for a site
     /// </summary>
-    public struct Rectangle
+    public struct SiteTemplate
     {
         
-        private double _width;
+        private string _name;
         
-        private double _depth;
+        private Rectangle _siteRectangle;
+        
+        private System.Collections.Generic.ICollection<string> _tags;
         
         ///  <summary>
         /// Initializes a new instance
         /// </summary>
-        public Rectangle(double width, double depth)
+        public SiteTemplate(string name, Rectangle siteRectangle, System.Collections.Generic.ICollection<string> tags)
         {
-            _width = width;
-            _depth = depth;
+            _name = name;
+            _siteRectangle = siteRectangle;
+            _tags = tags;
         }
         
         ///  <summary>
-        /// The width of the rectangle
+        /// Gets the name of the site template
         /// </summary>
-        [Tecan.Sila2.UnitAttribute("mm", Meter=1, Factor=0.001D)]
-        public double Width
+        public string Name
         {
             get
             {
-                return _width;
+                return _name;
             }
         }
         
         ///  <summary>
-        /// The depth of the rectangle
+        /// Gets the size of the site
         /// </summary>
-        [Tecan.Sila2.UnitAttribute("mm", Meter=1, Factor=0.001D)]
-        public double Depth
+        public Rectangle SiteRectangle
         {
             get
             {
-                return _depth;
+                return _siteRectangle;
+            }
+        }
+        
+        ///  <summary>
+        /// Gets a collection of custom tags
+        /// </summary>
+        public System.Collections.Generic.ICollection<string> Tags
+        {
+            get
+            {
+                return _tags;
             }
         }
     }
     
     ///  <summary>
-    /// Denotes a positional offset
+    /// Denotes a bounding box for a device
     /// </summary>
-    public struct Offset
+    public struct BoundingBox
     {
         
-        private double _x;
+        private Rectangle _rectangle;
         
-        private double _y;
-        
-        private double _z;
+        private double _height;
         
         ///  <summary>
         /// Initializes a new instance
         /// </summary>
-        public Offset(double x, double y, double z)
+        public BoundingBox(Rectangle rectangle, double height)
         {
-            _x = x;
-            _y = y;
-            _z = z;
+            _rectangle = rectangle;
+            _height = height;
         }
         
         ///  <summary>
-        /// The X offset
+        /// The ground rectangle
         /// </summary>
-        [Tecan.Sila2.UnitAttribute("mm", Meter=1, Factor=0.001D)]
-        public double X
+        public Rectangle Rectangle
         {
             get
             {
-                return _x;
+                return _rectangle;
             }
         }
         
         ///  <summary>
-        /// The Y offset
+        /// The height of the bounding box
         /// </summary>
         [Tecan.Sila2.UnitAttribute("mm", Meter=1, Factor=0.001D)]
-        public double Y
+        public double Height
         {
             get
             {
-                return _y;
-            }
-        }
-        
-        ///  <summary>
-        /// The Z offset
-        /// </summary>
-        [Tecan.Sila2.UnitAttribute("mm", Meter=1, Factor=0.001D)]
-        public double Z
-        {
-            get
-            {
-                return _z;
+                return _height;
             }
         }
     }

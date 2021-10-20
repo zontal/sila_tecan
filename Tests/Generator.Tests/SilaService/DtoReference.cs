@@ -321,18 +321,23 @@ namespace Tecan.Sila2.Generator.Test.TestReference
     }
     
     ///  <summary>
-    /// The data transfer object for Feature Identifier
+    /// The data transfer object for URL
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
-    public class FeatureIdentifierDto : Tecan.Sila2.ISilaTransferObject<FeatureIdentifier>
+    public class UrlDto : Tecan.Sila2.ISilaTransferObject<Url>
     {
         
-        private Tecan.Sila2.StringDto _featureIdentifier;
+        private Tecan.Sila2.StringDto _uRL;
+        
+        ///  <summary>
+        /// A regular expression to check the validity of URL
+        /// </summary>
+        public static System.Text.RegularExpressions.Regex URLPattern = new System.Text.RegularExpressions.Regex("https?://.+");
         
         ///  <summary>
         /// Initializes a new instance (to be used by the serializer)
         /// </summary>
-        public FeatureIdentifierDto()
+        public UrlDto()
         {
         }
         
@@ -341,24 +346,24 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// </summary>
         /// <param name="inner">The business object that should be transferred</param>
         /// <param name="store">A component to handle binary data</param>
-        public FeatureIdentifierDto(FeatureIdentifier inner, Tecan.Sila2.IBinaryStore store)
+        public UrlDto(Url inner, Tecan.Sila2.IBinaryStore store)
         {
-            FeatureIdentifier = new Tecan.Sila2.StringDto(inner.Value, store);
+            URL = new Tecan.Sila2.StringDto(inner.Value, store);
         }
         
         ///  <summary>
-        /// Qualified Feature Identifier as provided by the ImplementedFeatures property.
+        /// Uniform Resource Locator as defined in RFC 1738.
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute(1)]
-        public Tecan.Sila2.StringDto FeatureIdentifier
+        public Tecan.Sila2.StringDto URL
         {
             get
             {
-                return _featureIdentifier;
+                return _uRL;
             }
             set
             {
-                _featureIdentifier = value;
+                _uRL = value;
             }
         }
         
@@ -367,9 +372,9 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// </summary>
         /// <param name="store">The binary store in which to store binary data</param>
         /// <returns>the inner value</returns>
-        public FeatureIdentifier Extract(Tecan.Sila2.IBinaryStore store)
+        public Url Extract(Tecan.Sila2.IBinaryStore store)
         {
-            return new FeatureIdentifier(FeatureIdentifier.Extract(store));
+            return new Url(URL.Extract(store));
         }
         
         ///  <summary>
@@ -377,9 +382,9 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// </summary>
         /// <param name="inner">The object to transfer</param>
         /// <param name="store">An object to store binary data</param>
-        public static FeatureIdentifierDto Create(FeatureIdentifier inner, Tecan.Sila2.IBinaryStore store)
+        public static UrlDto Create(Url inner, Tecan.Sila2.IBinaryStore store)
         {
-            return new FeatureIdentifierDto(inner, store);
+            return new UrlDto(inner, store);
         }
         
         ///  <summary>
@@ -389,9 +394,9 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         public string GetValidationErrors()
         {
             string errors = "";
-            if ((FeatureIdentifier.Value.Length <= 255))
+            if (URLPattern.IsMatch(URL.Value))
             {
-                errors = (errors + string.Format("FeatureIdentifier \'{0}\' is longer than allowed length 255.", FeatureIdentifier.Value));
+                errors = (errors + string.Format("URL \'{0}\' does not match pattern \'https?://.+\'", URL.Value));
             }
             return errors;
         }
@@ -470,23 +475,18 @@ namespace Tecan.Sila2.Generator.Test.TestReference
     }
     
     ///  <summary>
-    /// The data transfer object for URL
+    /// The data transfer object for Feature Identifier
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
-    public class UrlDto : Tecan.Sila2.ISilaTransferObject<Url>
+    public class FeatureIdentifierDto : Tecan.Sila2.ISilaTransferObject<FeatureIdentifier>
     {
         
-        private Tecan.Sila2.StringDto _uRL;
-        
-        ///  <summary>
-        /// A regular expression to check the validity of URL
-        /// </summary>
-        public static System.Text.RegularExpressions.Regex URLPattern = new System.Text.RegularExpressions.Regex("https?://.+");
+        private Tecan.Sila2.StringDto _featureIdentifier;
         
         ///  <summary>
         /// Initializes a new instance (to be used by the serializer)
         /// </summary>
-        public UrlDto()
+        public FeatureIdentifierDto()
         {
         }
         
@@ -495,24 +495,24 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// </summary>
         /// <param name="inner">The business object that should be transferred</param>
         /// <param name="store">A component to handle binary data</param>
-        public UrlDto(Url inner, Tecan.Sila2.IBinaryStore store)
+        public FeatureIdentifierDto(FeatureIdentifier inner, Tecan.Sila2.IBinaryStore store)
         {
-            URL = new Tecan.Sila2.StringDto(inner.Value, store);
+            FeatureIdentifier = new Tecan.Sila2.StringDto(inner.Value, store);
         }
         
         ///  <summary>
-        /// Uniform Resource Locator as defined in RFC 1738.
+        /// Qualified Feature Identifier as provided by the ImplementedFeatures property.
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute(1)]
-        public Tecan.Sila2.StringDto URL
+        public Tecan.Sila2.StringDto FeatureIdentifier
         {
             get
             {
-                return _uRL;
+                return _featureIdentifier;
             }
             set
             {
-                _uRL = value;
+                _featureIdentifier = value;
             }
         }
         
@@ -521,9 +521,9 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// </summary>
         /// <param name="store">The binary store in which to store binary data</param>
         /// <returns>the inner value</returns>
-        public Url Extract(Tecan.Sila2.IBinaryStore store)
+        public FeatureIdentifier Extract(Tecan.Sila2.IBinaryStore store)
         {
-            return new Url(URL.Extract(store));
+            return new FeatureIdentifier(FeatureIdentifier.Extract(store));
         }
         
         ///  <summary>
@@ -531,9 +531,9 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// </summary>
         /// <param name="inner">The object to transfer</param>
         /// <param name="store">An object to store binary data</param>
-        public static UrlDto Create(Url inner, Tecan.Sila2.IBinaryStore store)
+        public static FeatureIdentifierDto Create(FeatureIdentifier inner, Tecan.Sila2.IBinaryStore store)
         {
-            return new UrlDto(inner, store);
+            return new FeatureIdentifierDto(inner, store);
         }
         
         ///  <summary>
@@ -543,9 +543,9 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         public string GetValidationErrors()
         {
             string errors = "";
-            if (URLPattern.IsMatch(URL.Value))
+            if ((FeatureIdentifier.Value.Length <= 255))
             {
-                errors = (errors + string.Format("URL \'{0}\' does not match pattern \'https?://.+\'", URL.Value));
+                errors = (errors + string.Format("FeatureIdentifier \'{0}\' is longer than allowed length 255.", FeatureIdentifier.Value));
             }
             return errors;
         }

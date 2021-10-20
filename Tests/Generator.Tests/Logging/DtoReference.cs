@@ -110,6 +110,295 @@ namespace Tecan.Sila2.Generator.Test.TestReference
     }
     
     ///  <summary>
+    /// The data transfer object for Log Entry Data
+    /// </summary>
+    [ProtoBuf.ProtoContractAttribute()]
+    public class LogEntryDataDto : Tecan.Sila2.ISilaTransferObject<LogEntryData>
+    {
+        
+        private InnerStruct _inner;
+        
+        ///  <summary>
+        /// Initializes a new instance (to be used by the serializer)
+        /// </summary>
+        public LogEntryDataDto()
+        {
+            _inner = new InnerStruct();
+        }
+        
+        ///  <summary>
+        /// Initializes a new data transfer object from the business object
+        /// </summary>
+        /// <param name="inner">The business object that should be transferred</param>
+        /// <param name="store">A component to handle binary data</param>
+        public LogEntryDataDto(LogEntryData inner, Tecan.Sila2.IBinaryStore store)
+        {
+            _inner = new InnerStruct(inner, store);
+        }
+        
+        ///  <summary>
+        /// </summary>
+        public Tecan.Sila2.StringDto Key
+        {
+            get
+            {
+                if ((_inner == null))
+                {
+                    _inner = new InnerStruct();
+                }
+                return Inner.Key;
+            }
+            set
+            {
+                if ((_inner == null))
+                {
+                    _inner = new InnerStruct();
+                }
+                Inner.Key = value;
+            }
+        }
+        
+        ///  <summary>
+        /// </summary>
+        public Tecan.Sila2.StringDto Value
+        {
+            get
+            {
+                if ((_inner == null))
+                {
+                    _inner = new InnerStruct();
+                }
+                return Inner.Value;
+            }
+            set
+            {
+                if ((_inner == null))
+                {
+                    _inner = new InnerStruct();
+                }
+                Inner.Value = value;
+            }
+        }
+        
+        ///  <summary>
+        /// </summary>
+        public System.Collections.Generic.List<LogEntryDataDto> Children
+        {
+            get
+            {
+                if ((_inner == null))
+                {
+                    _inner = new InnerStruct();
+                }
+                return Inner.Children;
+            }
+            set
+            {
+                if ((_inner == null))
+                {
+                    _inner = new InnerStruct();
+                }
+                Inner.Children = value;
+            }
+        }
+        
+        ///  <summary>
+        /// The actual contents of the data transfer object.
+        /// </summary>
+        [ProtoBuf.ProtoMemberAttribute(1)]
+        public InnerStruct Inner
+        {
+            get
+            {
+                return _inner;
+            }
+            set
+            {
+                _inner = value;
+            }
+        }
+        
+        ///  <summary>
+        /// Extracts the transferred value
+        /// </summary>
+        /// <param name="store">The binary store in which to store binary data</param>
+        /// <returns>the inner value</returns>
+        public LogEntryData Extract(Tecan.Sila2.IBinaryStore store)
+        {
+            return new LogEntryData(Key.Extract(store), Value.Extract(store), Children.Extract(store));
+        }
+        
+        ///  <summary>
+        /// Creates the data transfer object from the given object to transport
+        /// </summary>
+        /// <param name="inner">The object to transfer</param>
+        /// <param name="store">An object to store binary data</param>
+        public static LogEntryDataDto Create(LogEntryData inner, Tecan.Sila2.IBinaryStore store)
+        {
+            return new LogEntryDataDto(inner, store);
+        }
+        
+        ///  <summary>
+        /// Validates the contents of this transfer object
+        /// </summary>
+        /// <returns>A validation error or null, if no validation error occurred.</returns>
+        public string GetValidationErrors()
+        {
+            return null;
+        }
+        
+        ///  <summary>
+        /// Represents the inner structure for actual content
+        /// </summary>
+        [ProtoBuf.ProtoContractAttribute()]
+        public class InnerStruct
+        {
+            
+            private Tecan.Sila2.StringDto _key;
+            
+            private Tecan.Sila2.StringDto _value;
+            
+            private System.Collections.Generic.List<LogEntryDataDto> _children;
+            
+            ///  <summary>
+            /// Initializes a new instance (to be used by the serializer)
+            /// </summary>
+            public InnerStruct()
+            {
+            }
+            
+            ///  <summary>
+            /// Initializes a new data transfer object from the business object
+            /// </summary>
+            /// <param name="inner">The business object that should be transferred</param>
+            /// <param name="store">A component to handle binary data</param>
+            public InnerStruct(LogEntryData inner, Tecan.Sila2.IBinaryStore store)
+            {
+                Key = new Tecan.Sila2.StringDto(inner.Key, store);
+                Value = new Tecan.Sila2.StringDto(inner.Value, store);
+                Children = Tecan.Sila2.DtoExtensions.Encapsulate(inner.Children, LogEntryDataDto.Create, store);
+            }
+            
+            ///  <summary>
+            /// </summary>
+            [ProtoBuf.ProtoMemberAttribute(1)]
+            public Tecan.Sila2.StringDto Key
+            {
+                get
+                {
+                    return _key;
+                }
+                set
+                {
+                    _key = value;
+                }
+            }
+            
+            ///  <summary>
+            /// </summary>
+            [ProtoBuf.ProtoMemberAttribute(2)]
+            public Tecan.Sila2.StringDto Value
+            {
+                get
+                {
+                    return _value;
+                }
+                set
+                {
+                    _value = value;
+                }
+            }
+            
+            ///  <summary>
+            /// </summary>
+            [ProtoBuf.ProtoMemberAttribute(3)]
+            public System.Collections.Generic.List<LogEntryDataDto> Children
+            {
+                get
+                {
+                    return _children;
+                }
+                set
+                {
+                    _children = value;
+                }
+            }
+        }
+    }
+    
+    ///  <summary>
+    /// The data transfer object for the Severity enumeration
+    /// </summary>
+    [ProtoBuf.ProtoContractAttribute()]
+    public class SeverityDto : Tecan.Sila2.ISilaTransferObject<Severity>
+    {
+        
+        private Tecan.Sila2.StringDto _value;
+        
+        ///  <summary>
+        /// Initializes a new instance (to be used by the serializer)
+        /// </summary>
+        public SeverityDto()
+        {
+        }
+        
+        ///  <summary>
+        /// Initializes a new data transfer object from the business object
+        /// </summary>
+        /// <param name="inner">The business object that should be transferred</param>
+        /// <param name="store">A component to handle binary data</param>
+        public SeverityDto(Severity inner, Tecan.Sila2.IBinaryStore store)
+        {
+            Value = inner.ToString();
+        }
+        
+        ///  <summary>
+        /// The string representation of the given enum member
+        /// </summary>
+        [ProtoBuf.ProtoMemberAttribute(1)]
+        public Tecan.Sila2.StringDto Value
+        {
+            get
+            {
+                return _value;
+            }
+            set
+            {
+                _value = value;
+            }
+        }
+        
+        ///  <summary>
+        /// Extracts the transferred value
+        /// </summary>
+        /// <param name="store">The binary store in which to store binary data</param>
+        /// <returns>the inner value</returns>
+        public Severity Extract(Tecan.Sila2.IBinaryStore store)
+        {
+            return ((Severity)(System.Enum.Parse(typeof(Severity), Value.Value)));
+        }
+        
+        ///  <summary>
+        /// Creates the data transfer object from the given object to transport
+        /// </summary>
+        /// <param name="inner">The object to transfer</param>
+        /// <param name="store">An object to store binary data</param>
+        public static SeverityDto Create(Severity inner, Tecan.Sila2.IBinaryStore store)
+        {
+            return new SeverityDto(inner, store);
+        }
+        
+        ///  <summary>
+        /// Validates the contents of this transfer object
+        /// </summary>
+        /// <returns>A validation error or null, if no validation error occurred.</returns>
+        public string GetValidationErrors()
+        {
+            return null;
+        }
+    }
+    
+    ///  <summary>
     /// The data transfer object for Log Entry
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
@@ -361,295 +650,6 @@ namespace Tecan.Sila2.Generator.Test.TestReference
                 set
                 {
                     _data = value;
-                }
-            }
-        }
-    }
-    
-    ///  <summary>
-    /// The data transfer object for the Severity enumeration
-    /// </summary>
-    [ProtoBuf.ProtoContractAttribute()]
-    public class SeverityDto : Tecan.Sila2.ISilaTransferObject<Severity>
-    {
-        
-        private Tecan.Sila2.StringDto _value;
-        
-        ///  <summary>
-        /// Initializes a new instance (to be used by the serializer)
-        /// </summary>
-        public SeverityDto()
-        {
-        }
-        
-        ///  <summary>
-        /// Initializes a new data transfer object from the business object
-        /// </summary>
-        /// <param name="inner">The business object that should be transferred</param>
-        /// <param name="store">A component to handle binary data</param>
-        public SeverityDto(Severity inner, Tecan.Sila2.IBinaryStore store)
-        {
-            Value = inner.ToString();
-        }
-        
-        ///  <summary>
-        /// The string representation of the given enum member
-        /// </summary>
-        [ProtoBuf.ProtoMemberAttribute(1)]
-        public Tecan.Sila2.StringDto Value
-        {
-            get
-            {
-                return _value;
-            }
-            set
-            {
-                _value = value;
-            }
-        }
-        
-        ///  <summary>
-        /// Extracts the transferred value
-        /// </summary>
-        /// <param name="store">The binary store in which to store binary data</param>
-        /// <returns>the inner value</returns>
-        public Severity Extract(Tecan.Sila2.IBinaryStore store)
-        {
-            return ((Severity)(System.Enum.Parse(typeof(Severity), Value.Value)));
-        }
-        
-        ///  <summary>
-        /// Creates the data transfer object from the given object to transport
-        /// </summary>
-        /// <param name="inner">The object to transfer</param>
-        /// <param name="store">An object to store binary data</param>
-        public static SeverityDto Create(Severity inner, Tecan.Sila2.IBinaryStore store)
-        {
-            return new SeverityDto(inner, store);
-        }
-        
-        ///  <summary>
-        /// Validates the contents of this transfer object
-        /// </summary>
-        /// <returns>A validation error or null, if no validation error occurred.</returns>
-        public string GetValidationErrors()
-        {
-            return null;
-        }
-    }
-    
-    ///  <summary>
-    /// The data transfer object for Log Entry Data
-    /// </summary>
-    [ProtoBuf.ProtoContractAttribute()]
-    public class LogEntryDataDto : Tecan.Sila2.ISilaTransferObject<LogEntryData>
-    {
-        
-        private InnerStruct _inner;
-        
-        ///  <summary>
-        /// Initializes a new instance (to be used by the serializer)
-        /// </summary>
-        public LogEntryDataDto()
-        {
-            _inner = new InnerStruct();
-        }
-        
-        ///  <summary>
-        /// Initializes a new data transfer object from the business object
-        /// </summary>
-        /// <param name="inner">The business object that should be transferred</param>
-        /// <param name="store">A component to handle binary data</param>
-        public LogEntryDataDto(LogEntryData inner, Tecan.Sila2.IBinaryStore store)
-        {
-            _inner = new InnerStruct(inner, store);
-        }
-        
-        ///  <summary>
-        /// </summary>
-        public Tecan.Sila2.StringDto Key
-        {
-            get
-            {
-                if ((_inner == null))
-                {
-                    _inner = new InnerStruct();
-                }
-                return Inner.Key;
-            }
-            set
-            {
-                if ((_inner == null))
-                {
-                    _inner = new InnerStruct();
-                }
-                Inner.Key = value;
-            }
-        }
-        
-        ///  <summary>
-        /// </summary>
-        public Tecan.Sila2.StringDto Value
-        {
-            get
-            {
-                if ((_inner == null))
-                {
-                    _inner = new InnerStruct();
-                }
-                return Inner.Value;
-            }
-            set
-            {
-                if ((_inner == null))
-                {
-                    _inner = new InnerStruct();
-                }
-                Inner.Value = value;
-            }
-        }
-        
-        ///  <summary>
-        /// </summary>
-        public System.Collections.Generic.List<LogEntryDataDto> Children
-        {
-            get
-            {
-                if ((_inner == null))
-                {
-                    _inner = new InnerStruct();
-                }
-                return Inner.Children;
-            }
-            set
-            {
-                if ((_inner == null))
-                {
-                    _inner = new InnerStruct();
-                }
-                Inner.Children = value;
-            }
-        }
-        
-        ///  <summary>
-        /// The actual contents of the data transfer object.
-        /// </summary>
-        [ProtoBuf.ProtoMemberAttribute(1)]
-        public InnerStruct Inner
-        {
-            get
-            {
-                return _inner;
-            }
-            set
-            {
-                _inner = value;
-            }
-        }
-        
-        ///  <summary>
-        /// Extracts the transferred value
-        /// </summary>
-        /// <param name="store">The binary store in which to store binary data</param>
-        /// <returns>the inner value</returns>
-        public LogEntryData Extract(Tecan.Sila2.IBinaryStore store)
-        {
-            return new LogEntryData(Key.Extract(store), Value.Extract(store), Children.Extract(store));
-        }
-        
-        ///  <summary>
-        /// Creates the data transfer object from the given object to transport
-        /// </summary>
-        /// <param name="inner">The object to transfer</param>
-        /// <param name="store">An object to store binary data</param>
-        public static LogEntryDataDto Create(LogEntryData inner, Tecan.Sila2.IBinaryStore store)
-        {
-            return new LogEntryDataDto(inner, store);
-        }
-        
-        ///  <summary>
-        /// Validates the contents of this transfer object
-        /// </summary>
-        /// <returns>A validation error or null, if no validation error occurred.</returns>
-        public string GetValidationErrors()
-        {
-            return null;
-        }
-        
-        ///  <summary>
-        /// Represents the inner structure for actual content
-        /// </summary>
-        [ProtoBuf.ProtoContractAttribute()]
-        public class InnerStruct
-        {
-            
-            private Tecan.Sila2.StringDto _key;
-            
-            private Tecan.Sila2.StringDto _value;
-            
-            private System.Collections.Generic.List<LogEntryDataDto> _children;
-            
-            ///  <summary>
-            /// Initializes a new instance (to be used by the serializer)
-            /// </summary>
-            public InnerStruct()
-            {
-            }
-            
-            ///  <summary>
-            /// Initializes a new data transfer object from the business object
-            /// </summary>
-            /// <param name="inner">The business object that should be transferred</param>
-            /// <param name="store">A component to handle binary data</param>
-            public InnerStruct(LogEntryData inner, Tecan.Sila2.IBinaryStore store)
-            {
-                Key = new Tecan.Sila2.StringDto(inner.Key, store);
-                Value = new Tecan.Sila2.StringDto(inner.Value, store);
-                Children = Tecan.Sila2.DtoExtensions.Encapsulate(inner.Children, LogEntryDataDto.Create, store);
-            }
-            
-            ///  <summary>
-            /// </summary>
-            [ProtoBuf.ProtoMemberAttribute(1)]
-            public Tecan.Sila2.StringDto Key
-            {
-                get
-                {
-                    return _key;
-                }
-                set
-                {
-                    _key = value;
-                }
-            }
-            
-            ///  <summary>
-            /// </summary>
-            [ProtoBuf.ProtoMemberAttribute(2)]
-            public Tecan.Sila2.StringDto Value
-            {
-                get
-                {
-                    return _value;
-                }
-                set
-                {
-                    _value = value;
-                }
-            }
-            
-            ///  <summary>
-            /// </summary>
-            [ProtoBuf.ProtoMemberAttribute(3)]
-            public System.Collections.Generic.List<LogEntryDataDto> Children
-            {
-                get
-                {
-                    return _children;
-                }
-                set
-                {
-                    _children = value;
                 }
             }
         }

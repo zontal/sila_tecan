@@ -3,6 +3,55 @@
   <Identifier>SiLAService</Identifier>
   <DisplayName>SiLA Service</DisplayName>
   <Description>The Feature each SiLA Server MUST implement. It is the entry point to a SiLA Server and helps to discover the Features it implements.</Description>
+  <DataTypeDefinition>
+    <Identifier>URL</Identifier>
+    <DisplayName>URL</DisplayName>
+    <Description>Uniform Resource Locator as defined in RFC 1738.</Description>
+    <DataType>
+      <Constrained>
+        <DataType>
+          <Basic>String</Basic>
+        </DataType>
+        <Constraints>
+          <Pattern>https?://.+</Pattern>
+        </Constraints>
+      </Constrained>
+    </DataType>
+  </DataTypeDefinition>
+  <DataTypeDefinition>
+    <Identifier>FeatureDefinition</Identifier>
+    <DisplayName>Feature Definition</DisplayName>
+    <Description>The content of a Feature Definition conforming with the XML Schema.</Description>
+    <DataType>
+      <Constrained>
+        <DataType>
+          <Basic>String</Basic>
+        </DataType>
+        <Constraints>
+          <Schema>
+            <Type>Xml</Type>
+            <Url>https://gitlab.com/SiLA2/sila_base/raw/master/schema/FeatureDefinition.xsd</Url>
+          </Schema>
+        </Constraints>
+      </Constrained>
+    </DataType>
+  </DataTypeDefinition>
+  <DataTypeDefinition>
+    <Identifier>FeatureIdentifier</Identifier>
+    <DisplayName>Feature Identifier</DisplayName>
+    <Description>Qualified Feature Identifier as provided by the ImplementedFeatures property.</Description>
+    <DataType>
+      <Constrained>
+        <DataType>
+          <Basic>String</Basic>
+        </DataType>
+        <Constraints>
+          <MaximalLength>255</MaximalLength>
+          <FullyQualifiedIdentifier>FeatureIdentifier</FullyQualifiedIdentifier>
+        </Constraints>
+      </Constrained>
+    </DataType>
+  </DataTypeDefinition>
   <Command>
     <Identifier>GetFeatureDefinition</Identifier>
     <DisplayName>Get Feature Definition</DisplayName>
@@ -133,53 +182,4 @@ implemented Features of this SiLA Server.</Description>
     <DisplayName>Unimplemented Feature</DisplayName>
     <Description>The feature specified by the given feature identifier is not implemented by the server.</Description>
   </DefinedExecutionError>
-  <DataTypeDefinition>
-    <Identifier>FeatureIdentifier</Identifier>
-    <DisplayName>Feature Identifier</DisplayName>
-    <Description>Qualified Feature Identifier as provided by the ImplementedFeatures property.</Description>
-    <DataType>
-      <Constrained>
-        <DataType>
-          <Basic>String</Basic>
-        </DataType>
-        <Constraints>
-          <MaximalLength>255</MaximalLength>
-          <FullyQualifiedIdentifier>FeatureIdentifier</FullyQualifiedIdentifier>
-        </Constraints>
-      </Constrained>
-    </DataType>
-  </DataTypeDefinition>
-  <DataTypeDefinition>
-    <Identifier>FeatureDefinition</Identifier>
-    <DisplayName>Feature Definition</DisplayName>
-    <Description>The content of a Feature Definition conforming with the XML Schema.</Description>
-    <DataType>
-      <Constrained>
-        <DataType>
-          <Basic>String</Basic>
-        </DataType>
-        <Constraints>
-          <Schema>
-            <Type>Xml</Type>
-            <Url>https://gitlab.com/SiLA2/sila_base/raw/master/schema/FeatureDefinition.xsd</Url>
-          </Schema>
-        </Constraints>
-      </Constrained>
-    </DataType>
-  </DataTypeDefinition>
-  <DataTypeDefinition>
-    <Identifier>URL</Identifier>
-    <DisplayName>URL</DisplayName>
-    <Description>Uniform Resource Locator as defined in RFC 1738.</Description>
-    <DataType>
-      <Constrained>
-        <DataType>
-          <Basic>String</Basic>
-        </DataType>
-        <Constraints>
-          <Pattern>https?://.+</Pattern>
-        </Constraints>
-      </Constrained>
-    </DataType>
-  </DataTypeDefinition>
 </Feature>

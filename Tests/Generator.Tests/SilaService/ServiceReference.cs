@@ -97,11 +97,10 @@ namespace Tecan.Sila2.Generator.Test.TestReference
     }
     
     ///  <summary>
-    /// Qualified Feature Identifier as provided by the ImplementedFeatures property.
+    /// Uniform Resource Locator as defined in RFC 1738.
     /// </summary>
-    [Tecan.Sila2.MaximalLengthAttribute(255)]
-    [Tecan.Sila2.SilaIdentifierTypeAttribute(Tecan.Sila2.IdentifierType.FeatureIdentifier)]
-    public struct FeatureIdentifier
+    [Tecan.Sila2.PatternConstraintAttribute("https?://.+")]
+    public struct Url
     {
         
         private string _value;
@@ -109,7 +108,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         ///  <summary>
         /// Initializes a new instance
         /// </summary>
-        public FeatureIdentifier(string value)
+        public Url(string value)
         {
             _value = value;
         }
@@ -156,10 +155,11 @@ namespace Tecan.Sila2.Generator.Test.TestReference
     }
     
     ///  <summary>
-    /// Uniform Resource Locator as defined in RFC 1738.
+    /// Qualified Feature Identifier as provided by the ImplementedFeatures property.
     /// </summary>
-    [Tecan.Sila2.PatternConstraintAttribute("https?://.+")]
-    public struct Url
+    [Tecan.Sila2.MaximalLengthAttribute(255)]
+    [Tecan.Sila2.SilaIdentifierTypeAttribute(Tecan.Sila2.IdentifierType.FeatureIdentifier)]
+    public struct FeatureIdentifier
     {
         
         private string _value;
@@ -167,7 +167,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         ///  <summary>
         /// Initializes a new instance
         /// </summary>
-        public Url(string value)
+        public FeatureIdentifier(string value)
         {
             _value = value;
         }

@@ -3,225 +3,6 @@
   <Identifier>WorktableService</Identifier>
   <DisplayName>Worktable Service</DisplayName>
   <Description>Denotes a service to describe dimensions of a device in order to integrate it into a worktable</Description>
-  <Property>
-    <Identifier>BoundingBox</Identifier>
-    <DisplayName>Bounding Box</DisplayName>
-    <Description>The outer hull of the device</Description>
-    <Observable>No</Observable>
-    <DataType>
-      <DataTypeIdentifier>BoundingBox</DataTypeIdentifier>
-    </DataType>
-  </Property>
-  <Property>
-    <Identifier>SiteTemplates</Identifier>
-    <DisplayName>Site Templates</DisplayName>
-    <Description>The templates for sites used by this device</Description>
-    <Observable>No</Observable>
-    <DataType>
-      <List>
-        <DataType>
-          <DataTypeIdentifier>SiteTemplate</DataTypeIdentifier>
-        </DataType>
-      </List>
-    </DataType>
-  </Property>
-  <Property>
-    <Identifier>Sites</Identifier>
-    <DisplayName>Sites</DisplayName>
-    <Description>The sites that this device offers</Description>
-    <Observable>No</Observable>
-    <DataType>
-      <List>
-        <DataType>
-          <DataTypeIdentifier>Site</DataTypeIdentifier>
-        </DataType>
-      </List>
-    </DataType>
-  </Property>
-  <DataTypeDefinition>
-    <Identifier>BoundingBox</Identifier>
-    <DisplayName>Bounding Box</DisplayName>
-    <Description>Denotes a bounding box for a device</Description>
-    <DataType>
-      <Structure>
-        <Element>
-          <Identifier>Rectangle</Identifier>
-          <DisplayName>Rectangle</DisplayName>
-          <Description>The ground rectangle</Description>
-          <DataType>
-            <DataTypeIdentifier>Rectangle</DataTypeIdentifier>
-          </DataType>
-        </Element>
-        <Element>
-          <Identifier>Height</Identifier>
-          <DisplayName>Height</DisplayName>
-          <Description>The height of the bounding box</Description>
-          <DataType>
-            <Constrained>
-              <DataType>
-                <Basic>Real</Basic>
-              </DataType>
-              <Constraints>
-                <Unit>
-                  <Label>mm</Label>
-                  <Factor>0.001</Factor>
-                  <Offset>0</Offset>
-                  <UnitComponent>
-                    <SIUnit>Meter</SIUnit>
-                    <Exponent>1</Exponent>
-                  </UnitComponent>
-                </Unit>
-              </Constraints>
-            </Constrained>
-          </DataType>
-        </Element>
-      </Structure>
-    </DataType>
-  </DataTypeDefinition>
-  <DataTypeDefinition>
-    <Identifier>SiteTemplate</Identifier>
-    <DisplayName>Site Template</DisplayName>
-    <Description>Defines a template for a site</Description>
-    <DataType>
-      <Structure>
-        <Element>
-          <Identifier>Name</Identifier>
-          <DisplayName>Name</DisplayName>
-          <Description>Gets the name of the site template</Description>
-          <DataType>
-            <Basic>String</Basic>
-          </DataType>
-        </Element>
-        <Element>
-          <Identifier>SiteRectangle</Identifier>
-          <DisplayName>SiteRectangle</DisplayName>
-          <Description>Gets the size of the site</Description>
-          <DataType>
-            <DataTypeIdentifier>Rectangle</DataTypeIdentifier>
-          </DataType>
-        </Element>
-        <Element>
-          <Identifier>Tags</Identifier>
-          <DisplayName>Tags</DisplayName>
-          <Description>Gets a collection of custom tags</Description>
-          <DataType>
-            <List>
-              <DataType>
-                <Basic>String</Basic>
-              </DataType>
-            </List>
-          </DataType>
-        </Element>
-      </Structure>
-    </DataType>
-  </DataTypeDefinition>
-  <DataTypeDefinition>
-    <Identifier>Site</Identifier>
-    <DisplayName>Site</DisplayName>
-    <Description>Denotes a site on the worktable</Description>
-    <DataType>
-      <Structure>
-        <Element>
-          <Identifier>Name</Identifier>
-          <DisplayName>Name</DisplayName>
-          <Description>The name of the site</Description>
-          <DataType>
-            <Basic>String</Basic>
-          </DataType>
-        </Element>
-        <Element>
-          <Identifier>Template</Identifier>
-          <DisplayName>Template</DisplayName>
-          <Description>The site template</Description>
-          <DataType>
-            <Basic>String</Basic>
-          </DataType>
-        </Element>
-        <Element>
-          <Identifier>Offset</Identifier>
-          <DisplayName>Offset</DisplayName>
-          <Description>The offset from the device</Description>
-          <DataType>
-            <DataTypeIdentifier>Offset</DataTypeIdentifier>
-          </DataType>
-        </Element>
-        <Element>
-          <Identifier>Rotation</Identifier>
-          <DisplayName>Rotation</DisplayName>
-          <Description>The rotation</Description>
-          <DataType>
-            <Constrained>
-              <DataType>
-                <Basic>Real</Basic>
-              </DataType>
-              <Constraints>
-                <Unit>
-                  <Label>Degree</Label>
-                  <Factor>57.2957795130823</Factor>
-                  <Offset>0</Offset>
-                </Unit>
-              </Constraints>
-            </Constrained>
-          </DataType>
-        </Element>
-      </Structure>
-    </DataType>
-  </DataTypeDefinition>
-  <DataTypeDefinition>
-    <Identifier>Rectangle</Identifier>
-    <DisplayName>Rectangle</DisplayName>
-    <Description>Denotes a rectangle on the ground</Description>
-    <DataType>
-      <Structure>
-        <Element>
-          <Identifier>Width</Identifier>
-          <DisplayName>Width</DisplayName>
-          <Description>The width of the rectangle</Description>
-          <DataType>
-            <Constrained>
-              <DataType>
-                <Basic>Real</Basic>
-              </DataType>
-              <Constraints>
-                <Unit>
-                  <Label>mm</Label>
-                  <Factor>0.001</Factor>
-                  <Offset>0</Offset>
-                  <UnitComponent>
-                    <SIUnit>Meter</SIUnit>
-                    <Exponent>1</Exponent>
-                  </UnitComponent>
-                </Unit>
-              </Constraints>
-            </Constrained>
-          </DataType>
-        </Element>
-        <Element>
-          <Identifier>Depth</Identifier>
-          <DisplayName>Depth</DisplayName>
-          <Description>The depth of the rectangle</Description>
-          <DataType>
-            <Constrained>
-              <DataType>
-                <Basic>Real</Basic>
-              </DataType>
-              <Constraints>
-                <Unit>
-                  <Label>mm</Label>
-                  <Factor>0.001</Factor>
-                  <Offset>0</Offset>
-                  <UnitComponent>
-                    <SIUnit>Meter</SIUnit>
-                    <Exponent>1</Exponent>
-                  </UnitComponent>
-                </Unit>
-              </Constraints>
-            </Constrained>
-          </DataType>
-        </Element>
-      </Structure>
-    </DataType>
-  </DataTypeDefinition>
   <DataTypeDefinition>
     <Identifier>Offset</Identifier>
     <DisplayName>Offset</DisplayName>
@@ -300,4 +81,223 @@
       </Structure>
     </DataType>
   </DataTypeDefinition>
+  <DataTypeDefinition>
+    <Identifier>Rectangle</Identifier>
+    <DisplayName>Rectangle</DisplayName>
+    <Description>Denotes a rectangle on the ground</Description>
+    <DataType>
+      <Structure>
+        <Element>
+          <Identifier>Width</Identifier>
+          <DisplayName>Width</DisplayName>
+          <Description>The width of the rectangle</Description>
+          <DataType>
+            <Constrained>
+              <DataType>
+                <Basic>Real</Basic>
+              </DataType>
+              <Constraints>
+                <Unit>
+                  <Label>mm</Label>
+                  <Factor>0.001</Factor>
+                  <Offset>0</Offset>
+                  <UnitComponent>
+                    <SIUnit>Meter</SIUnit>
+                    <Exponent>1</Exponent>
+                  </UnitComponent>
+                </Unit>
+              </Constraints>
+            </Constrained>
+          </DataType>
+        </Element>
+        <Element>
+          <Identifier>Depth</Identifier>
+          <DisplayName>Depth</DisplayName>
+          <Description>The depth of the rectangle</Description>
+          <DataType>
+            <Constrained>
+              <DataType>
+                <Basic>Real</Basic>
+              </DataType>
+              <Constraints>
+                <Unit>
+                  <Label>mm</Label>
+                  <Factor>0.001</Factor>
+                  <Offset>0</Offset>
+                  <UnitComponent>
+                    <SIUnit>Meter</SIUnit>
+                    <Exponent>1</Exponent>
+                  </UnitComponent>
+                </Unit>
+              </Constraints>
+            </Constrained>
+          </DataType>
+        </Element>
+      </Structure>
+    </DataType>
+  </DataTypeDefinition>
+  <DataTypeDefinition>
+    <Identifier>Site</Identifier>
+    <DisplayName>Site</DisplayName>
+    <Description>Denotes a site on the worktable</Description>
+    <DataType>
+      <Structure>
+        <Element>
+          <Identifier>Name</Identifier>
+          <DisplayName>Name</DisplayName>
+          <Description>The name of the site</Description>
+          <DataType>
+            <Basic>String</Basic>
+          </DataType>
+        </Element>
+        <Element>
+          <Identifier>Template</Identifier>
+          <DisplayName>Template</DisplayName>
+          <Description>The site template</Description>
+          <DataType>
+            <Basic>String</Basic>
+          </DataType>
+        </Element>
+        <Element>
+          <Identifier>Offset</Identifier>
+          <DisplayName>Offset</DisplayName>
+          <Description>The offset from the device</Description>
+          <DataType>
+            <DataTypeIdentifier>Offset</DataTypeIdentifier>
+          </DataType>
+        </Element>
+        <Element>
+          <Identifier>Rotation</Identifier>
+          <DisplayName>Rotation</DisplayName>
+          <Description>The rotation</Description>
+          <DataType>
+            <Constrained>
+              <DataType>
+                <Basic>Real</Basic>
+              </DataType>
+              <Constraints>
+                <Unit>
+                  <Label>Degree</Label>
+                  <Factor>57.2957795130823</Factor>
+                  <Offset>0</Offset>
+                </Unit>
+              </Constraints>
+            </Constrained>
+          </DataType>
+        </Element>
+      </Structure>
+    </DataType>
+  </DataTypeDefinition>
+  <DataTypeDefinition>
+    <Identifier>SiteTemplate</Identifier>
+    <DisplayName>Site Template</DisplayName>
+    <Description>Defines a template for a site</Description>
+    <DataType>
+      <Structure>
+        <Element>
+          <Identifier>Name</Identifier>
+          <DisplayName>Name</DisplayName>
+          <Description>Gets the name of the site template</Description>
+          <DataType>
+            <Basic>String</Basic>
+          </DataType>
+        </Element>
+        <Element>
+          <Identifier>SiteRectangle</Identifier>
+          <DisplayName>SiteRectangle</DisplayName>
+          <Description>Gets the size of the site</Description>
+          <DataType>
+            <DataTypeIdentifier>Rectangle</DataTypeIdentifier>
+          </DataType>
+        </Element>
+        <Element>
+          <Identifier>Tags</Identifier>
+          <DisplayName>Tags</DisplayName>
+          <Description>Gets a collection of custom tags</Description>
+          <DataType>
+            <List>
+              <DataType>
+                <Basic>String</Basic>
+              </DataType>
+            </List>
+          </DataType>
+        </Element>
+      </Structure>
+    </DataType>
+  </DataTypeDefinition>
+  <DataTypeDefinition>
+    <Identifier>BoundingBox</Identifier>
+    <DisplayName>Bounding Box</DisplayName>
+    <Description>Denotes a bounding box for a device</Description>
+    <DataType>
+      <Structure>
+        <Element>
+          <Identifier>Rectangle</Identifier>
+          <DisplayName>Rectangle</DisplayName>
+          <Description>The ground rectangle</Description>
+          <DataType>
+            <DataTypeIdentifier>Rectangle</DataTypeIdentifier>
+          </DataType>
+        </Element>
+        <Element>
+          <Identifier>Height</Identifier>
+          <DisplayName>Height</DisplayName>
+          <Description>The height of the bounding box</Description>
+          <DataType>
+            <Constrained>
+              <DataType>
+                <Basic>Real</Basic>
+              </DataType>
+              <Constraints>
+                <Unit>
+                  <Label>mm</Label>
+                  <Factor>0.001</Factor>
+                  <Offset>0</Offset>
+                  <UnitComponent>
+                    <SIUnit>Meter</SIUnit>
+                    <Exponent>1</Exponent>
+                  </UnitComponent>
+                </Unit>
+              </Constraints>
+            </Constrained>
+          </DataType>
+        </Element>
+      </Structure>
+    </DataType>
+  </DataTypeDefinition>
+  <Property>
+    <Identifier>BoundingBox</Identifier>
+    <DisplayName>Bounding Box</DisplayName>
+    <Description>The outer hull of the device</Description>
+    <Observable>No</Observable>
+    <DataType>
+      <DataTypeIdentifier>BoundingBox</DataTypeIdentifier>
+    </DataType>
+  </Property>
+  <Property>
+    <Identifier>SiteTemplates</Identifier>
+    <DisplayName>Site Templates</DisplayName>
+    <Description>The templates for sites used by this device</Description>
+    <Observable>No</Observable>
+    <DataType>
+      <List>
+        <DataType>
+          <DataTypeIdentifier>SiteTemplate</DataTypeIdentifier>
+        </DataType>
+      </List>
+    </DataType>
+  </Property>
+  <Property>
+    <Identifier>Sites</Identifier>
+    <DisplayName>Sites</DisplayName>
+    <Description>The sites that this device offers</Description>
+    <Observable>No</Observable>
+    <DataType>
+      <List>
+        <DataType>
+          <DataTypeIdentifier>Site</DataTypeIdentifier>
+        </DataType>
+      </List>
+    </DataType>
+  </Property>
 </Feature>

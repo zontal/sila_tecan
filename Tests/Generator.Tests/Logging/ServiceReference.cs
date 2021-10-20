@@ -30,6 +30,77 @@ namespace Tecan.Sila2.Generator.Test.TestReference
     }
     
     ///  <summary>
+    /// </summary>
+    public struct LogEntryData
+    {
+        
+        private string _key;
+        
+        private string _value;
+        
+        private System.Collections.Generic.ICollection<LogEntryData> _children;
+        
+        ///  <summary>
+        /// Initializes a new instance
+        /// </summary>
+        public LogEntryData(string key, string value, System.Collections.Generic.ICollection<LogEntryData> children)
+        {
+            _key = key;
+            _value = value;
+            _children = children;
+        }
+        
+        ///  <summary>
+        /// </summary>
+        public string Key
+        {
+            get
+            {
+                return _key;
+            }
+        }
+        
+        ///  <summary>
+        /// </summary>
+        public string Value
+        {
+            get
+            {
+                return _value;
+            }
+        }
+        
+        ///  <summary>
+        /// </summary>
+        public System.Collections.Generic.ICollection<LogEntryData> Children
+        {
+            get
+            {
+                return _children;
+            }
+        }
+    }
+    
+    ///  <summary>
+    /// Severity
+    /// </summary>
+    public enum Severity
+    {
+        
+        None,
+        
+        Debug,
+        
+        Info,
+        
+        Warning,
+        
+        Error,
+        
+        Critical,
+    }
+    
+    ///  <summary>
     /// Describes a log entry
     /// </summary>
     public struct LogEntry
@@ -91,77 +162,6 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             get
             {
                 return _data;
-            }
-        }
-    }
-    
-    ///  <summary>
-    /// Severity
-    /// </summary>
-    public enum Severity
-    {
-        
-        None,
-        
-        Debug,
-        
-        Info,
-        
-        Warning,
-        
-        Error,
-        
-        Critical,
-    }
-    
-    ///  <summary>
-    /// </summary>
-    public struct LogEntryData
-    {
-        
-        private string _key;
-        
-        private string _value;
-        
-        private System.Collections.Generic.ICollection<LogEntryData> _children;
-        
-        ///  <summary>
-        /// Initializes a new instance
-        /// </summary>
-        public LogEntryData(string key, string value, System.Collections.Generic.ICollection<LogEntryData> children)
-        {
-            _key = key;
-            _value = value;
-            _children = children;
-        }
-        
-        ///  <summary>
-        /// </summary>
-        public string Key
-        {
-            get
-            {
-                return _key;
-            }
-        }
-        
-        ///  <summary>
-        /// </summary>
-        public string Value
-        {
-            get
-            {
-                return _value;
-            }
-        }
-        
-        ///  <summary>
-        /// </summary>
-        public System.Collections.Generic.ICollection<LogEntryData> Children
-        {
-            get
-            {
-                return _children;
             }
         }
     }

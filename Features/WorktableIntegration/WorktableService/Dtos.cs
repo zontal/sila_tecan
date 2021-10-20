@@ -16,10 +16,10 @@ namespace Tecan.Sila2.WorktableIntegration
     
     
     ///  <summary>
-    /// The data transfer object for Bounding Box
+    /// The data transfer object for Offset
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
-    public class BoundingBoxDto : Tecan.Sila2.ISilaTransferObject<BoundingBox>
+    public class OffsetDto : Tecan.Sila2.ISilaTransferObject<Offset>
     {
         
         private InnerStruct _inner;
@@ -27,7 +27,7 @@ namespace Tecan.Sila2.WorktableIntegration
         ///  <summary>
         /// Initializes a new instance (to be used by the serializer)
         /// </summary>
-        public BoundingBoxDto()
+        public OffsetDto()
         {
             _inner = new InnerStruct();
         }
@@ -37,15 +37,15 @@ namespace Tecan.Sila2.WorktableIntegration
         /// </summary>
         /// <param name="inner">The business object that should be transferred</param>
         /// <param name="store">A component to handle binary data</param>
-        public BoundingBoxDto(BoundingBox inner, Tecan.Sila2.IBinaryStore store)
+        public OffsetDto(Offset inner, Tecan.Sila2.IBinaryStore store)
         {
             _inner = new InnerStruct(inner, store);
         }
         
         ///  <summary>
-        /// The ground rectangle
+        /// The X offset
         /// </summary>
-        public RectangleDto Rectangle
+        public Tecan.Sila2.RealDto X
         {
             get
             {
@@ -53,7 +53,7 @@ namespace Tecan.Sila2.WorktableIntegration
                 {
                     _inner = new InnerStruct();
                 }
-                return Inner.Rectangle;
+                return Inner.X;
             }
             set
             {
@@ -61,14 +61,14 @@ namespace Tecan.Sila2.WorktableIntegration
                 {
                     _inner = new InnerStruct();
                 }
-                Inner.Rectangle = value;
+                Inner.X = value;
             }
         }
         
         ///  <summary>
-        /// The height of the bounding box
+        /// The Y offset
         /// </summary>
-        public Tecan.Sila2.RealDto Height
+        public Tecan.Sila2.RealDto Y
         {
             get
             {
@@ -76,7 +76,7 @@ namespace Tecan.Sila2.WorktableIntegration
                 {
                     _inner = new InnerStruct();
                 }
-                return Inner.Height;
+                return Inner.Y;
             }
             set
             {
@@ -84,7 +84,30 @@ namespace Tecan.Sila2.WorktableIntegration
                 {
                     _inner = new InnerStruct();
                 }
-                Inner.Height = value;
+                Inner.Y = value;
+            }
+        }
+        
+        ///  <summary>
+        /// The Z offset
+        /// </summary>
+        public Tecan.Sila2.RealDto Z
+        {
+            get
+            {
+                if ((_inner == null))
+                {
+                    _inner = new InnerStruct();
+                }
+                return Inner.Z;
+            }
+            set
+            {
+                if ((_inner == null))
+                {
+                    _inner = new InnerStruct();
+                }
+                Inner.Z = value;
             }
         }
         
@@ -109,9 +132,9 @@ namespace Tecan.Sila2.WorktableIntegration
         /// </summary>
         /// <param name="store">The binary store in which to store binary data</param>
         /// <returns>the inner value</returns>
-        public BoundingBox Extract(Tecan.Sila2.IBinaryStore store)
+        public Offset Extract(Tecan.Sila2.IBinaryStore store)
         {
-            return new BoundingBox(Rectangle.Extract(store), Height.Extract(store));
+            return new Offset(X.Extract(store), Y.Extract(store), Z.Extract(store));
         }
         
         ///  <summary>
@@ -119,9 +142,9 @@ namespace Tecan.Sila2.WorktableIntegration
         /// </summary>
         /// <param name="inner">The object to transfer</param>
         /// <param name="store">An object to store binary data</param>
-        public static BoundingBoxDto Create(BoundingBox inner, Tecan.Sila2.IBinaryStore store)
+        public static OffsetDto Create(Offset inner, Tecan.Sila2.IBinaryStore store)
         {
-            return new BoundingBoxDto(inner, store);
+            return new OffsetDto(inner, store);
         }
         
         ///  <summary>
@@ -140,9 +163,11 @@ namespace Tecan.Sila2.WorktableIntegration
         public class InnerStruct
         {
             
-            private RectangleDto _rectangle;
+            private Tecan.Sila2.RealDto _x;
             
-            private Tecan.Sila2.RealDto _height;
+            private Tecan.Sila2.RealDto _y;
+            
+            private Tecan.Sila2.RealDto _z;
             
             ///  <summary>
             /// Initializes a new instance (to be used by the serializer)
@@ -156,51 +181,68 @@ namespace Tecan.Sila2.WorktableIntegration
             /// </summary>
             /// <param name="inner">The business object that should be transferred</param>
             /// <param name="store">A component to handle binary data</param>
-            public InnerStruct(BoundingBox inner, Tecan.Sila2.IBinaryStore store)
+            public InnerStruct(Offset inner, Tecan.Sila2.IBinaryStore store)
             {
-                Rectangle = new RectangleDto(inner.Rectangle, store);
-                Height = new Tecan.Sila2.RealDto(inner.Height, store);
+                X = new Tecan.Sila2.RealDto(inner.X, store);
+                Y = new Tecan.Sila2.RealDto(inner.Y, store);
+                Z = new Tecan.Sila2.RealDto(inner.Z, store);
             }
             
             ///  <summary>
-            /// The ground rectangle
+            /// The X offset
             /// </summary>
             [ProtoBuf.ProtoMemberAttribute(1)]
-            public RectangleDto Rectangle
+            public Tecan.Sila2.RealDto X
             {
                 get
                 {
-                    return _rectangle;
+                    return _x;
                 }
                 set
                 {
-                    _rectangle = value;
+                    _x = value;
                 }
             }
             
             ///  <summary>
-            /// The height of the bounding box
+            /// The Y offset
             /// </summary>
             [ProtoBuf.ProtoMemberAttribute(2)]
-            public Tecan.Sila2.RealDto Height
+            public Tecan.Sila2.RealDto Y
             {
                 get
                 {
-                    return _height;
+                    return _y;
                 }
                 set
                 {
-                    _height = value;
+                    _y = value;
+                }
+            }
+            
+            ///  <summary>
+            /// The Z offset
+            /// </summary>
+            [ProtoBuf.ProtoMemberAttribute(3)]
+            public Tecan.Sila2.RealDto Z
+            {
+                get
+                {
+                    return _z;
+                }
+                set
+                {
+                    _z = value;
                 }
             }
         }
     }
     
     ///  <summary>
-    /// The data transfer object for Site Template
+    /// The data transfer object for Rectangle
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
-    public class SiteTemplateDto : Tecan.Sila2.ISilaTransferObject<SiteTemplate>
+    public class RectangleDto : Tecan.Sila2.ISilaTransferObject<Rectangle>
     {
         
         private InnerStruct _inner;
@@ -208,7 +250,7 @@ namespace Tecan.Sila2.WorktableIntegration
         ///  <summary>
         /// Initializes a new instance (to be used by the serializer)
         /// </summary>
-        public SiteTemplateDto()
+        public RectangleDto()
         {
             _inner = new InnerStruct();
         }
@@ -218,15 +260,15 @@ namespace Tecan.Sila2.WorktableIntegration
         /// </summary>
         /// <param name="inner">The business object that should be transferred</param>
         /// <param name="store">A component to handle binary data</param>
-        public SiteTemplateDto(SiteTemplate inner, Tecan.Sila2.IBinaryStore store)
+        public RectangleDto(Rectangle inner, Tecan.Sila2.IBinaryStore store)
         {
             _inner = new InnerStruct(inner, store);
         }
         
         ///  <summary>
-        /// Gets the name of the site template
+        /// The width of the rectangle
         /// </summary>
-        public Tecan.Sila2.StringDto Name
+        public Tecan.Sila2.RealDto Width
         {
             get
             {
@@ -234,7 +276,7 @@ namespace Tecan.Sila2.WorktableIntegration
                 {
                     _inner = new InnerStruct();
                 }
-                return Inner.Name;
+                return Inner.Width;
             }
             set
             {
@@ -242,14 +284,14 @@ namespace Tecan.Sila2.WorktableIntegration
                 {
                     _inner = new InnerStruct();
                 }
-                Inner.Name = value;
+                Inner.Width = value;
             }
         }
         
         ///  <summary>
-        /// Gets the size of the site
+        /// The depth of the rectangle
         /// </summary>
-        public RectangleDto SiteRectangle
+        public Tecan.Sila2.RealDto Depth
         {
             get
             {
@@ -257,7 +299,7 @@ namespace Tecan.Sila2.WorktableIntegration
                 {
                     _inner = new InnerStruct();
                 }
-                return Inner.SiteRectangle;
+                return Inner.Depth;
             }
             set
             {
@@ -265,30 +307,7 @@ namespace Tecan.Sila2.WorktableIntegration
                 {
                     _inner = new InnerStruct();
                 }
-                Inner.SiteRectangle = value;
-            }
-        }
-        
-        ///  <summary>
-        /// Gets a collection of custom tags
-        /// </summary>
-        public System.Collections.Generic.List<Tecan.Sila2.StringDto> Tags
-        {
-            get
-            {
-                if ((_inner == null))
-                {
-                    _inner = new InnerStruct();
-                }
-                return Inner.Tags;
-            }
-            set
-            {
-                if ((_inner == null))
-                {
-                    _inner = new InnerStruct();
-                }
-                Inner.Tags = value;
+                Inner.Depth = value;
             }
         }
         
@@ -313,9 +332,9 @@ namespace Tecan.Sila2.WorktableIntegration
         /// </summary>
         /// <param name="store">The binary store in which to store binary data</param>
         /// <returns>the inner value</returns>
-        public SiteTemplate Extract(Tecan.Sila2.IBinaryStore store)
+        public Rectangle Extract(Tecan.Sila2.IBinaryStore store)
         {
-            return new SiteTemplate(Name.Extract(store), SiteRectangle.Extract(store), Tags.Extract(store));
+            return new Rectangle(Width.Extract(store), Depth.Extract(store));
         }
         
         ///  <summary>
@@ -323,9 +342,9 @@ namespace Tecan.Sila2.WorktableIntegration
         /// </summary>
         /// <param name="inner">The object to transfer</param>
         /// <param name="store">An object to store binary data</param>
-        public static SiteTemplateDto Create(SiteTemplate inner, Tecan.Sila2.IBinaryStore store)
+        public static RectangleDto Create(Rectangle inner, Tecan.Sila2.IBinaryStore store)
         {
-            return new SiteTemplateDto(inner, store);
+            return new RectangleDto(inner, store);
         }
         
         ///  <summary>
@@ -344,11 +363,9 @@ namespace Tecan.Sila2.WorktableIntegration
         public class InnerStruct
         {
             
-            private Tecan.Sila2.StringDto _name;
+            private Tecan.Sila2.RealDto _width;
             
-            private RectangleDto _siteRectangle;
-            
-            private System.Collections.Generic.List<Tecan.Sila2.StringDto> _tags;
+            private Tecan.Sila2.RealDto _depth;
             
             ///  <summary>
             /// Initializes a new instance (to be used by the serializer)
@@ -362,58 +379,41 @@ namespace Tecan.Sila2.WorktableIntegration
             /// </summary>
             /// <param name="inner">The business object that should be transferred</param>
             /// <param name="store">A component to handle binary data</param>
-            public InnerStruct(SiteTemplate inner, Tecan.Sila2.IBinaryStore store)
+            public InnerStruct(Rectangle inner, Tecan.Sila2.IBinaryStore store)
             {
-                Name = new Tecan.Sila2.StringDto(inner.Name, store);
-                SiteRectangle = new RectangleDto(inner.SiteRectangle, store);
-                Tags = Tecan.Sila2.DtoExtensions.Encapsulate(inner.Tags, Tecan.Sila2.StringDto.Create, store);
+                Width = new Tecan.Sila2.RealDto(inner.Width, store);
+                Depth = new Tecan.Sila2.RealDto(inner.Depth, store);
             }
             
             ///  <summary>
-            /// Gets the name of the site template
+            /// The width of the rectangle
             /// </summary>
             [ProtoBuf.ProtoMemberAttribute(1)]
-            public Tecan.Sila2.StringDto Name
+            public Tecan.Sila2.RealDto Width
             {
                 get
                 {
-                    return _name;
+                    return _width;
                 }
                 set
                 {
-                    _name = value;
+                    _width = value;
                 }
             }
             
             ///  <summary>
-            /// Gets the size of the site
+            /// The depth of the rectangle
             /// </summary>
             [ProtoBuf.ProtoMemberAttribute(2)]
-            public RectangleDto SiteRectangle
+            public Tecan.Sila2.RealDto Depth
             {
                 get
                 {
-                    return _siteRectangle;
+                    return _depth;
                 }
                 set
                 {
-                    _siteRectangle = value;
-                }
-            }
-            
-            ///  <summary>
-            /// Gets a collection of custom tags
-            /// </summary>
-            [ProtoBuf.ProtoMemberAttribute(3)]
-            public System.Collections.Generic.List<Tecan.Sila2.StringDto> Tags
-            {
-                get
-                {
-                    return _tags;
-                }
-                set
-                {
-                    _tags = value;
+                    _depth = value;
                 }
             }
         }
@@ -685,10 +685,10 @@ namespace Tecan.Sila2.WorktableIntegration
     }
     
     ///  <summary>
-    /// The data transfer object for Rectangle
+    /// The data transfer object for Site Template
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
-    public class RectangleDto : Tecan.Sila2.ISilaTransferObject<Rectangle>
+    public class SiteTemplateDto : Tecan.Sila2.ISilaTransferObject<SiteTemplate>
     {
         
         private InnerStruct _inner;
@@ -696,7 +696,7 @@ namespace Tecan.Sila2.WorktableIntegration
         ///  <summary>
         /// Initializes a new instance (to be used by the serializer)
         /// </summary>
-        public RectangleDto()
+        public SiteTemplateDto()
         {
             _inner = new InnerStruct();
         }
@@ -706,15 +706,15 @@ namespace Tecan.Sila2.WorktableIntegration
         /// </summary>
         /// <param name="inner">The business object that should be transferred</param>
         /// <param name="store">A component to handle binary data</param>
-        public RectangleDto(Rectangle inner, Tecan.Sila2.IBinaryStore store)
+        public SiteTemplateDto(SiteTemplate inner, Tecan.Sila2.IBinaryStore store)
         {
             _inner = new InnerStruct(inner, store);
         }
         
         ///  <summary>
-        /// The width of the rectangle
+        /// Gets the name of the site template
         /// </summary>
-        public Tecan.Sila2.RealDto Width
+        public Tecan.Sila2.StringDto Name
         {
             get
             {
@@ -722,7 +722,7 @@ namespace Tecan.Sila2.WorktableIntegration
                 {
                     _inner = new InnerStruct();
                 }
-                return Inner.Width;
+                return Inner.Name;
             }
             set
             {
@@ -730,14 +730,14 @@ namespace Tecan.Sila2.WorktableIntegration
                 {
                     _inner = new InnerStruct();
                 }
-                Inner.Width = value;
+                Inner.Name = value;
             }
         }
         
         ///  <summary>
-        /// The depth of the rectangle
+        /// Gets the size of the site
         /// </summary>
-        public Tecan.Sila2.RealDto Depth
+        public RectangleDto SiteRectangle
         {
             get
             {
@@ -745,7 +745,7 @@ namespace Tecan.Sila2.WorktableIntegration
                 {
                     _inner = new InnerStruct();
                 }
-                return Inner.Depth;
+                return Inner.SiteRectangle;
             }
             set
             {
@@ -753,7 +753,30 @@ namespace Tecan.Sila2.WorktableIntegration
                 {
                     _inner = new InnerStruct();
                 }
-                Inner.Depth = value;
+                Inner.SiteRectangle = value;
+            }
+        }
+        
+        ///  <summary>
+        /// Gets a collection of custom tags
+        /// </summary>
+        public System.Collections.Generic.List<Tecan.Sila2.StringDto> Tags
+        {
+            get
+            {
+                if ((_inner == null))
+                {
+                    _inner = new InnerStruct();
+                }
+                return Inner.Tags;
+            }
+            set
+            {
+                if ((_inner == null))
+                {
+                    _inner = new InnerStruct();
+                }
+                Inner.Tags = value;
             }
         }
         
@@ -778,9 +801,9 @@ namespace Tecan.Sila2.WorktableIntegration
         /// </summary>
         /// <param name="store">The binary store in which to store binary data</param>
         /// <returns>the inner value</returns>
-        public Rectangle Extract(Tecan.Sila2.IBinaryStore store)
+        public SiteTemplate Extract(Tecan.Sila2.IBinaryStore store)
         {
-            return new Rectangle(Width.Extract(store), Depth.Extract(store));
+            return new SiteTemplate(Name.Extract(store), SiteRectangle.Extract(store), Tags.Extract(store));
         }
         
         ///  <summary>
@@ -788,9 +811,9 @@ namespace Tecan.Sila2.WorktableIntegration
         /// </summary>
         /// <param name="inner">The object to transfer</param>
         /// <param name="store">An object to store binary data</param>
-        public static RectangleDto Create(Rectangle inner, Tecan.Sila2.IBinaryStore store)
+        public static SiteTemplateDto Create(SiteTemplate inner, Tecan.Sila2.IBinaryStore store)
         {
-            return new RectangleDto(inner, store);
+            return new SiteTemplateDto(inner, store);
         }
         
         ///  <summary>
@@ -809,9 +832,11 @@ namespace Tecan.Sila2.WorktableIntegration
         public class InnerStruct
         {
             
-            private Tecan.Sila2.RealDto _width;
+            private Tecan.Sila2.StringDto _name;
             
-            private Tecan.Sila2.RealDto _depth;
+            private RectangleDto _siteRectangle;
+            
+            private System.Collections.Generic.List<Tecan.Sila2.StringDto> _tags;
             
             ///  <summary>
             /// Initializes a new instance (to be used by the serializer)
@@ -825,51 +850,68 @@ namespace Tecan.Sila2.WorktableIntegration
             /// </summary>
             /// <param name="inner">The business object that should be transferred</param>
             /// <param name="store">A component to handle binary data</param>
-            public InnerStruct(Rectangle inner, Tecan.Sila2.IBinaryStore store)
+            public InnerStruct(SiteTemplate inner, Tecan.Sila2.IBinaryStore store)
             {
-                Width = new Tecan.Sila2.RealDto(inner.Width, store);
-                Depth = new Tecan.Sila2.RealDto(inner.Depth, store);
+                Name = new Tecan.Sila2.StringDto(inner.Name, store);
+                SiteRectangle = new RectangleDto(inner.SiteRectangle, store);
+                Tags = Tecan.Sila2.DtoExtensions.Encapsulate(inner.Tags, Tecan.Sila2.StringDto.Create, store);
             }
             
             ///  <summary>
-            /// The width of the rectangle
+            /// Gets the name of the site template
             /// </summary>
             [ProtoBuf.ProtoMemberAttribute(1)]
-            public Tecan.Sila2.RealDto Width
+            public Tecan.Sila2.StringDto Name
             {
                 get
                 {
-                    return _width;
+                    return _name;
                 }
                 set
                 {
-                    _width = value;
+                    _name = value;
                 }
             }
             
             ///  <summary>
-            /// The depth of the rectangle
+            /// Gets the size of the site
             /// </summary>
             [ProtoBuf.ProtoMemberAttribute(2)]
-            public Tecan.Sila2.RealDto Depth
+            public RectangleDto SiteRectangle
             {
                 get
                 {
-                    return _depth;
+                    return _siteRectangle;
                 }
                 set
                 {
-                    _depth = value;
+                    _siteRectangle = value;
+                }
+            }
+            
+            ///  <summary>
+            /// Gets a collection of custom tags
+            /// </summary>
+            [ProtoBuf.ProtoMemberAttribute(3)]
+            public System.Collections.Generic.List<Tecan.Sila2.StringDto> Tags
+            {
+                get
+                {
+                    return _tags;
+                }
+                set
+                {
+                    _tags = value;
                 }
             }
         }
     }
     
     ///  <summary>
-    /// The data transfer object for Offset
+    /// The data transfer object for Bounding Box
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
-    public class OffsetDto : Tecan.Sila2.ISilaTransferObject<Offset>
+    public class BoundingBoxDto : Tecan.Sila2.ISilaTransferObject<BoundingBox>
     {
         
         private InnerStruct _inner;
@@ -877,7 +919,7 @@ namespace Tecan.Sila2.WorktableIntegration
         ///  <summary>
         /// Initializes a new instance (to be used by the serializer)
         /// </summary>
-        public OffsetDto()
+        public BoundingBoxDto()
         {
             _inner = new InnerStruct();
         }
@@ -887,15 +929,15 @@ namespace Tecan.Sila2.WorktableIntegration
         /// </summary>
         /// <param name="inner">The business object that should be transferred</param>
         /// <param name="store">A component to handle binary data</param>
-        public OffsetDto(Offset inner, Tecan.Sila2.IBinaryStore store)
+        public BoundingBoxDto(BoundingBox inner, Tecan.Sila2.IBinaryStore store)
         {
             _inner = new InnerStruct(inner, store);
         }
         
         ///  <summary>
-        /// The X offset
+        /// The ground rectangle
         /// </summary>
-        public Tecan.Sila2.RealDto X
+        public RectangleDto Rectangle
         {
             get
             {
@@ -903,7 +945,7 @@ namespace Tecan.Sila2.WorktableIntegration
                 {
                     _inner = new InnerStruct();
                 }
-                return Inner.X;
+                return Inner.Rectangle;
             }
             set
             {
@@ -911,14 +953,14 @@ namespace Tecan.Sila2.WorktableIntegration
                 {
                     _inner = new InnerStruct();
                 }
-                Inner.X = value;
+                Inner.Rectangle = value;
             }
         }
         
         ///  <summary>
-        /// The Y offset
+        /// The height of the bounding box
         /// </summary>
-        public Tecan.Sila2.RealDto Y
+        public Tecan.Sila2.RealDto Height
         {
             get
             {
@@ -926,7 +968,7 @@ namespace Tecan.Sila2.WorktableIntegration
                 {
                     _inner = new InnerStruct();
                 }
-                return Inner.Y;
+                return Inner.Height;
             }
             set
             {
@@ -934,30 +976,7 @@ namespace Tecan.Sila2.WorktableIntegration
                 {
                     _inner = new InnerStruct();
                 }
-                Inner.Y = value;
-            }
-        }
-        
-        ///  <summary>
-        /// The Z offset
-        /// </summary>
-        public Tecan.Sila2.RealDto Z
-        {
-            get
-            {
-                if ((_inner == null))
-                {
-                    _inner = new InnerStruct();
-                }
-                return Inner.Z;
-            }
-            set
-            {
-                if ((_inner == null))
-                {
-                    _inner = new InnerStruct();
-                }
-                Inner.Z = value;
+                Inner.Height = value;
             }
         }
         
@@ -982,9 +1001,9 @@ namespace Tecan.Sila2.WorktableIntegration
         /// </summary>
         /// <param name="store">The binary store in which to store binary data</param>
         /// <returns>the inner value</returns>
-        public Offset Extract(Tecan.Sila2.IBinaryStore store)
+        public BoundingBox Extract(Tecan.Sila2.IBinaryStore store)
         {
-            return new Offset(X.Extract(store), Y.Extract(store), Z.Extract(store));
+            return new BoundingBox(Rectangle.Extract(store), Height.Extract(store));
         }
         
         ///  <summary>
@@ -992,9 +1011,9 @@ namespace Tecan.Sila2.WorktableIntegration
         /// </summary>
         /// <param name="inner">The object to transfer</param>
         /// <param name="store">An object to store binary data</param>
-        public static OffsetDto Create(Offset inner, Tecan.Sila2.IBinaryStore store)
+        public static BoundingBoxDto Create(BoundingBox inner, Tecan.Sila2.IBinaryStore store)
         {
-            return new OffsetDto(inner, store);
+            return new BoundingBoxDto(inner, store);
         }
         
         ///  <summary>
@@ -1013,11 +1032,9 @@ namespace Tecan.Sila2.WorktableIntegration
         public class InnerStruct
         {
             
-            private Tecan.Sila2.RealDto _x;
+            private RectangleDto _rectangle;
             
-            private Tecan.Sila2.RealDto _y;
-            
-            private Tecan.Sila2.RealDto _z;
+            private Tecan.Sila2.RealDto _height;
             
             ///  <summary>
             /// Initializes a new instance (to be used by the serializer)
@@ -1031,58 +1048,41 @@ namespace Tecan.Sila2.WorktableIntegration
             /// </summary>
             /// <param name="inner">The business object that should be transferred</param>
             /// <param name="store">A component to handle binary data</param>
-            public InnerStruct(Offset inner, Tecan.Sila2.IBinaryStore store)
+            public InnerStruct(BoundingBox inner, Tecan.Sila2.IBinaryStore store)
             {
-                X = new Tecan.Sila2.RealDto(inner.X, store);
-                Y = new Tecan.Sila2.RealDto(inner.Y, store);
-                Z = new Tecan.Sila2.RealDto(inner.Z, store);
+                Rectangle = new RectangleDto(inner.Rectangle, store);
+                Height = new Tecan.Sila2.RealDto(inner.Height, store);
             }
             
             ///  <summary>
-            /// The X offset
+            /// The ground rectangle
             /// </summary>
             [ProtoBuf.ProtoMemberAttribute(1)]
-            public Tecan.Sila2.RealDto X
+            public RectangleDto Rectangle
             {
                 get
                 {
-                    return _x;
+                    return _rectangle;
                 }
                 set
                 {
-                    _x = value;
+                    _rectangle = value;
                 }
             }
             
             ///  <summary>
-            /// The Y offset
+            /// The height of the bounding box
             /// </summary>
             [ProtoBuf.ProtoMemberAttribute(2)]
-            public Tecan.Sila2.RealDto Y
+            public Tecan.Sila2.RealDto Height
             {
                 get
                 {
-                    return _y;
+                    return _height;
                 }
                 set
                 {
-                    _y = value;
-                }
-            }
-            
-            ///  <summary>
-            /// The Z offset
-            /// </summary>
-            [ProtoBuf.ProtoMemberAttribute(3)]
-            public Tecan.Sila2.RealDto Z
-            {
-                get
-                {
-                    return _z;
-                }
-                set
-                {
-                    _z = value;
+                    _height = value;
                 }
             }
         }

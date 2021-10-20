@@ -1,5 +1,6 @@
 ﻿using Common.Logging;
 using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
@@ -53,9 +54,9 @@ namespace Tecan.Sila2.Generator.Generators
             namespaceCollector?.Add( interfaceType.Namespace );
 
             GenerateExceptions( executeExceptions, items, namespaceCollector );
-            GenerateDataTypes( dataTypes, items, namespaceCollector );
+            var dataTypeItems = GenerateDataTypes( dataTypes, namespaceCollector );
 
-            return items.ToArray();
+            return dataTypeItems.Concat(items).ToArray();
         }
 
         public void TryLoadDocumentation( Assembly assembly )
@@ -100,21 +101,54 @@ namespace Tecan.Sila2.Generator.Generators
             }
         }
 
-        private void GenerateDataTypes( HashSet<Type> dataTypes, List<object> items,
+        private List<object> GenerateDataTypes( HashSet<Type> dataTypes, 
             ICollection<string> namespaceCollector )
         {
+            // to keep the unitelabs browser happy we want to define types in order if we can
+            // if the type refers to other types then we want to put it before those types
+            var dependsOn = new List<Tuple<Type, Type>>();
+            var newItems = new List<Tuple<Type, SiLAElement>>();
             var processQueue = new Queue<Type>(dataTypes);
             while( processQueue.Any() && processQueue.Dequeue() is var dataType && dataType != null )
             {
-                items.Add( GenerateDataType( dataType, t =>
+                var newItem = GenerateDataType( dataType, t =>
                 {
+                    dependsOn.Add(Tuple.Create(dataType, t));
                     if( dataTypes.Add( t ) )
                     {
                         processQueue.Enqueue( t );
                     }
-                } ) );
+                } );
+                newItems.Add(Tuple.Create(dataType, newItem));
                 namespaceCollector?.Add( dataType.Namespace );
             }
+
+            // sort the items as best we can
+            // (since we are presented with the types in random order we cannot guarantee that if A depends on B we 
+            // will not have seen B for another reason before we got to A. So A and B could be either way round within
+            // newItems and we need to sort that out)
+            var sortedElements = new List<Tuple<Type, SiLAElement>>();
+            foreach (var typeAndItem in newItems)
+            {
+                var thisType = typeAndItem.Item1;
+                int insertPosition = sortedElements.Count;
+                for (var i = insertPosition-1; i >= 0; --i)
+                {
+                    var whatElementDependsOn = dependsOn.Where(dep => dep.Item1 == thisType).Select(dep => dep.Item2)
+                        .Distinct();
+                    if (whatElementDependsOn.Contains(thisType))
+                    {
+                        insertPosition = i;
+                    }
+                }
+                sortedElements.Insert(insertPosition, typeAndItem);
+            }
+
+            return sortedElements.Select(typeAndItem =>
+                                         {
+                                             object item = typeAndItem.Item2;
+                                             return item;
+                                         }).ToList();
         }
 
         private void GenerateExceptions( ICollection<Type> exceptions, ICollection<object> items,

@@ -3,6 +3,63 @@
   <Identifier>TestServer</Identifier>
   <DisplayName>Test Server</DisplayName>
   <Description />
+  <DataTypeDefinition>
+    <Identifier>SomeStructure</Identifier>
+    <DisplayName>Some Structure</DisplayName>
+    <Description />
+    <DataType>
+      <Structure>
+        <Element>
+          <Identifier>Boolean</Identifier>
+          <DisplayName>Boolean</DisplayName>
+          <Description />
+          <DataType>
+            <Basic>Boolean</Basic>
+          </DataType>
+        </Element>
+        <Element>
+          <Identifier>Real</Identifier>
+          <DisplayName>Real</DisplayName>
+          <Description />
+          <DataType>
+            <Basic>Real</Basic>
+          </DataType>
+        </Element>
+        <Element>
+          <Identifier>Long</Identifier>
+          <DisplayName>Long</DisplayName>
+          <Description />
+          <DataType>
+            <Basic>Integer</Basic>
+          </DataType>
+        </Element>
+        <Element>
+          <Identifier>Int</Identifier>
+          <DisplayName>Int</DisplayName>
+          <Description />
+          <DataType>
+            <Basic>Integer</Basic>
+          </DataType>
+        </Element>
+        <Element>
+          <Identifier>Timestamp</Identifier>
+          <DisplayName>Timestamp</DisplayName>
+          <Description />
+          <DataType>
+            <Basic>Timestamp</Basic>
+          </DataType>
+        </Element>
+        <Element>
+          <Identifier>Time</Identifier>
+          <DisplayName>Time</DisplayName>
+          <Description />
+          <DataType>
+            <Basic>Time</Basic>
+          </DataType>
+        </Element>
+      </Structure>
+    </DataType>
+  </DataTypeDefinition>
   <Command>
     <Identifier>PassBool</Identifier>
     <DisplayName>Pass Bool</DisplayName>
@@ -421,61 +478,4 @@
     <DisplayName>Fake</DisplayName>
     <Description />
   </DefinedExecutionError>
-  <DataTypeDefinition>
-    <Identifier>SomeStructure</Identifier>
-    <DisplayName>Some Structure</DisplayName>
-    <Description />
-    <DataType>
-      <Structure>
-        <Element>
-          <Identifier>Boolean</Identifier>
-          <DisplayName>Boolean</DisplayName>
-          <Description />
-          <DataType>
-            <Basic>Boolean</Basic>
-          </DataType>
-        </Element>
-        <Element>
-          <Identifier>Real</Identifier>
-          <DisplayName>Real</DisplayName>
-          <Description />
-          <DataType>
-            <Basic>Real</Basic>
-          </DataType>
-        </Element>
-        <Element>
-          <Identifier>Long</Identifier>
-          <DisplayName>Long</DisplayName>
-          <Description />
-          <DataType>
-            <Basic>Integer</Basic>
-          </DataType>
-        </Element>
-        <Element>
-          <Identifier>Int</Identifier>
-          <DisplayName>Int</DisplayName>
-          <Description />
-          <DataType>
-            <Basic>Integer</Basic>
-          </DataType>
-        </Element>
-        <Element>
-          <Identifier>Timestamp</Identifier>
-          <DisplayName>Timestamp</DisplayName>
-          <Description />
-          <DataType>
-            <Basic>Timestamp</Basic>
-          </DataType>
-        </Element>
-        <Element>
-          <Identifier>Time</Identifier>
-          <DisplayName>Time</DisplayName>
-          <Description />
-          <DataType>
-            <Basic>Time</Basic>
-          </DataType>
-        </Element>
-      </Structure>
-    </DataType>
-  </DataTypeDefinition>
 </Feature>
