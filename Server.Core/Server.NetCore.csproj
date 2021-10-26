@@ -11,6 +11,7 @@
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
         <OutputPath>..\Build</OutputPath>
         <DocumentationFile>..\Build\netcoreapp3.1\Tecan.Sila2.Server.xml</DocumentationFile>
+        <DefineConstants>TRACE;ManagedGrpc</DefineConstants>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

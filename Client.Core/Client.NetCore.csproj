@@ -17,6 +17,10 @@
       <DefineConstants>TRACE;ManagedGrpc</DefineConstants>
     </PropertyGroup>
 
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+      <DefineConstants>TRACE;ManagedGrpc</DefineConstants>
+    </PropertyGroup>
+
     <ItemGroup>
         <Compile Include="..\Client\ClientBinaryStore.cs" Link="ClientBinaryStore.cs" />
         <Compile Include="..\Client\ClientErrorHandling.cs" Link="ClientErrorHandling.cs" />
