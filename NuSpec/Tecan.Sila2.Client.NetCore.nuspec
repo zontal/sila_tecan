@@ -2,7 +2,7 @@
 
 <package>
     <metadata>
-        <id>Tecan.Sila2.Client</id>
+        <id>Tecan.Sila2.Client.NetCore</id>
         <description>The client base library of the Tecan SiLA2 SDK using managed gRPC</description>
         <version>$version$</version>
         <authors>Tecan Trading Ltd., Switzerland</authors>

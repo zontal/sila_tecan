@@ -84,10 +84,12 @@ namespace Tecan.Sila2.ServerPooling
             return info;
         }
 
+        /// <inheritdoc />
         public void Register( ServiceMethodProviderContext<IServerPool> context )
         {
-            context.AddDuplexStreamingMethod( PoolingConstants.ConnectSilaServerMethod, null, ConnectServer );
+            context.AddDuplexStreamingMethod( PoolingConstants.ConnectSilaServerMethod, new List<object>(), ConnectServer );
         }
+
         private Task ConnectServer( IServerPool server, IAsyncStreamReader<SilaServerMessage> requestStream, IServerStreamWriter<SilaClientMessage> responseStream, ServerCallContext context )
         {
             return ConnectServer( requestStream, responseStream, context );

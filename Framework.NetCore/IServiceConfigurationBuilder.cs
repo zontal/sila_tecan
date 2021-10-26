@@ -5,10 +5,21 @@ using System.Text;
 
 namespace Tecan.Sila2.Server
 {
+    /// <summary>
+    /// Denotes an interface to build a server configuration for a given type
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public interface IServiceConfigurationBuilder<T> where T : class
     {
+        /// <summary>
+        /// Adds a service handler for the given type
+        /// </summary>
+        /// <param name="serviceHandler">The service handler</param>
         void AddServiceHandler( IServiceHandler<T> serviceHandler );
 
+        /// <summary>
+        /// Gets the registered service handlers
+        /// </summary>
         IEnumerable<IServiceHandler<T>> ServiceHandlers { get; }
 
         /// <summary>

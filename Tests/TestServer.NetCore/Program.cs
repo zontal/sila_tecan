@@ -15,6 +15,7 @@ namespace TestServer.NetCore
     {
         public static void Main(string[] args)
         {
+            AppContext.SetSwitch( "System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport", true );
             if(args.Length > 0 && args[0] == "debug")
             {
                 Debugger.Launch();

@@ -39,6 +39,7 @@ namespace Tecan.Sila2.Generator.Generators
         /// <param name="nameProvider">The name provider used to generate feature names</param>
         /// <param name="translationProvider">A component used to translate types between SiLA2 and .NET</param>
         /// <param name="hooks">Generator hooks</param>
+        /// <param name="diGenerator">A generator for the dependency injection registration</param>
         [ImportingConstructor]
         public ClientGenerator(ICodeNameProvider nameProvider, ITypeTranslationProvider translationProvider, [ImportMany] IEnumerable<IGeneratorHook> hooks, IDependencyInjectionGenerator diGenerator )
         {

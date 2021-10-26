@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package>
     <metadata>
-        <id>Tecan.Sila2.Grpc</id>
+        <id>Tecan.Sila2.NetCore</id>
         <description>The common gRPC implementation of the Tecan SiLA2 SDK</description>
         <version>$version$</version>
         <authors>Tecan Trading Ltd., Switzerland</authors>

@@ -26,7 +26,6 @@ namespace Tecan.Sila2.Discovery
         /// Create a new instance
         /// </summary>
         /// <param name="executionManager">A client execution manager</param>
-        /// <param name="loggingChannelFactory">A factory used for logging</param>
         public ServerConnector( IClientExecutionManager executionManager )
         {
             _executionManager = executionManager ?? new DiscoveryExecutionManager();

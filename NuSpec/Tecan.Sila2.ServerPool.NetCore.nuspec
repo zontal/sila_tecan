@@ -2,7 +2,7 @@
 
 <package>
     <metadata>
-        <id>Tecan.Sila2.ServerPool</id>
+        <id>Tecan.Sila2.ServerPool.NetCore</id>
         <description>The base library for server pools of the Tecan SiLA2 SDK</description>
         <version>3.0.0-local</version>
         <authors>Tecan Trading Ltd., Switzerland</authors>
