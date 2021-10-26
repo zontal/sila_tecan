@@ -31,7 +31,7 @@ namespace Tecan.Sila2.IntegrationTests
             _host = Host.CreateDefaultBuilder()
                     .ConfigureServices( ( _, services ) =>
                     {
-                        services.AddSingleton( _poolServer );
+                        services.AddSingleton<IServerPool>( _poolServer );
                         services.AddSingleton<IServiceConfigurationBuilder<IServerPool>>( configurationBuilder );
                         services.AddSila2ServerPool();
                     } )
