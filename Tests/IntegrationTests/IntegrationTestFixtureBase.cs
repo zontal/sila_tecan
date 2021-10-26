@@ -28,7 +28,7 @@ namespace Tecan.Sila2.IntegrationTests
         {
             var serverId = Guid.Parse( "397D289C-40D3-4D03-8A15-7EA4856ED9D1" );
             var payloadArguments = $"-u {serverId} -i 127.0.0.1";
-            var attachDebugger = false; // Debugger.IsAttached;
+            var attachDebugger = Debugger.IsAttached;
             if(attachDebugger)
             {
                 payloadArguments = "debug " + payloadArguments;

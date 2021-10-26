@@ -68,11 +68,6 @@ namespace Tecan.Sila2.IntegrationTests
             tcs.Task.Wait( 1000 );
             return tcs.Task.Result;
         }
-        //protected override ProcessStartInfo GetTestServerStartInfo( string payloadArguments )
-        //{
-        //    AppContext.SetSwitch( "System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport", true );
-        //    return null;
-        //}
 
         public override void StopTestServer()
         {
