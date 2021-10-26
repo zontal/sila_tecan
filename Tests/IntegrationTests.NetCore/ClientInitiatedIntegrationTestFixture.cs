@@ -41,4 +41,27 @@ namespace Tecan.Sila2.IntegrationTests
             } );
         }
     }
+
+    [TestFixture( Category = "IntegrationTests" )]
+    public class ClientInitiatedIntegrationTestAgainstLegacyGrpcFixture : ClientInitiatedIntegrationTestFixture
+    {
+        protected override ProcessStartInfo GetTestServerStartInfo( string payloadArguments )
+        {
+            AppContext.SetSwitch( "System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport", true );
+            var dir = Path.Combine( AppDomain.CurrentDomain.BaseDirectory, "..", "TestServer" );
+            var processStartInfo = new ProcessStartInfo()
+            {
+                FileName = Path.Combine(dir, "net472", "TestServer.exe"),
+                Arguments = payloadArguments,
+                CreateNoWindow = true,
+                ErrorDialog = false,
+                RedirectStandardInput = true,
+                RedirectStandardError = false,
+                RedirectStandardOutput = false,
+                UseShellExecute = false,
+                WorkingDirectory = dir
+            };
+            return processStartInfo;
+        }
+    }
 }

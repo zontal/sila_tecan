@@ -1,0 +1,31 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <RootNamespace>Tecan.Sila2.Server</RootNamespace>
+    <AssemblyName>Tecan.Sila2.Server.DryIoC</AssemblyName>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+
+    <PropertyGroup>
+        <OutputPath>..\Build</OutputPath>
+        <DocumentationFile>..\Build\netcoreapp3.1\Tecan.Sila2.Server.DryIoC.xml</DocumentationFile>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="CommandLineParser" Version="2.6.0" />
+        <PackageReference Include="DryIoc.MefAttributedModel.dll" Version="6.1.0" />
+        <PackageReference Include="DryIoc.Microsoft.DependencyInjection" Version="5.1.0" />
+        <PackageReference Include="Grpc.AspNetCore.Server" Version="2.27.0" />
+        <PackageReference Include="IPNetwork2" Version="2.1.2" />
+
+        <PackageReference Include="Makaretu.Dns.Multicast" Version="0.25.0" />
+        <PackageReference Include="System.Threading.Channels" Version="4.7.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Server.Core\Server.NetCore.csproj" />
+    </ItemGroup>
+
+</Project>

@@ -14,6 +14,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using Tecan.Sila2.Logging;
 using Tecan.Sila2.Security;
 using Tecan.Sila2.Server.Binary;
 
@@ -52,29 +54,35 @@ namespace Tecan.Sila2.Server
             var selfInfo = GetServerInformation();
             try
             {
+                var replaceLogging = false;
                 if(LogManager.Adapter is Common.Logging.Simple.NoOpLoggerFactoryAdapter || LogManager.Adapter == null)
                 {
-                    LogManager.Adapter = new ConsoleLogging( LogLevel.Debug );
+                    LogManager.Adapter = new ConsoleLogging( Common.Logging.LogLevel.Debug );
+                    replaceLogging = true;
                 }
-                _container = CreateContainer();
 
                 _channel = LogManager.GetLogger<Bootstrapper>();
-                var interfaceFilter = args.InterfaceFilter;
-                if(interfaceFilter == "None")
-                {
-                    interfaceFilter = null;
-                }
-                var startup = new ServerStartInformation( selfInfo, args.Port, args.InterfaceFilter, args.ServerUuid, args.Name );
-                _container.ComposeExportedValue( startup );
-                var configurationBuilder = new ServiceConfigurationBuilder( _container.GetExportedValue<IServerCertificateProvider>());
-                _container.ComposeExportedValue<IServiceConfigurationBuilder<ISiLAServer>>( configurationBuilder );
-                _server = _container.GetExportedValue<ISiLAServer>();
 
-                _server.StartServer();
+                ServiceConfigurationBuilder configurationBuilder = null;
 
                 _host = Host.CreateDefaultBuilder()
-                    .ConfigureServices((_,services) =>
+                    .ConfigureServices(services =>
                     {
+
+                        _container = CreateContainer();
+                        var interfaceFilter = args.InterfaceFilter;
+                        if(interfaceFilter == "None")
+                        {
+                            interfaceFilter = null;
+                        }
+                        var startup = new ServerStartInformation( selfInfo, args.Port, args.InterfaceFilter, args.ServerUuid, args.Name );
+                        _container.ComposeExportedValue( startup );
+                        configurationBuilder = new ServiceConfigurationBuilder( _container.GetExportedValue<IServerCertificateProvider>() );
+                        _container.ComposeExportedValue<IServiceConfigurationBuilder<ISiLAServer>>( configurationBuilder );
+                        _server = _container.GetExportedValue<ISiLAServer>();
+
+                        _server.StartServer();
+
                         services.AddSingleton( _server );
                         services.AddSingleton<IServiceConfigurationBuilder<ISiLAServer>>( configurationBuilder );
                         var features = _container.GetExportedValues<IFeatureProvider>();
@@ -88,7 +96,7 @@ namespace Tecan.Sila2.Server
                     {
                         webHostBuilder.ConfigureKestrel( options =>
                          {
-                             configurationBuilder.ConfigureKestrel( options );
+                             configurationBuilder?.ConfigureKestrel( options );
                          } );
                         webHostBuilder.Configure( appBuilder =>
                          {
@@ -97,6 +105,14 @@ namespace Tecan.Sila2.Server
                          } );
                     } )
                     .Build();
+
+                if(LogManager.Adapter is Common.Logging.Simple.NoOpLoggerFactoryAdapter || LogManager.Adapter == null || replaceLogging)
+                {
+                    var loggerFactory = _host.Services.GetRequiredService<ILoggerFactory>();
+                    LogManager.Adapter = new AspNetAdapter( loggerFactory );
+                    _channel = LogManager.GetLogger<Bootstrapper>();
+                }
+
                 _host.Start();
                 return true;
             }

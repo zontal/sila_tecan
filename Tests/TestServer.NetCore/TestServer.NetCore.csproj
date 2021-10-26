@@ -38,6 +38,7 @@
     <ProjectReference Include="..\..\Framework.NetCore\Framework.NetCore.csproj" />
     <ProjectReference Include="..\..\Framework\Framework.csproj" />
     <ProjectReference Include="..\..\Server.Core\Server.NetCore.csproj" />
+    <ProjectReference Include="..\..\Server.DryIoC\Server.DryIoC.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -22,7 +22,7 @@ namespace TestServer.NetCore
                 args = args.Skip( 1 ).ToArray();
             }
 
-            Bootstrapper.Start( args );
+            DryBootstrapper.Start( args );
             Console.ReadLine();
         }
     }

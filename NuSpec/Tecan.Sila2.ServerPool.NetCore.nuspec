@@ -22,8 +22,8 @@
         </dependencies>
     </metadata>
     <files>
-        <file src="..\Build\netstandard2.0\Tecan.Sila2.ServerPool.dll" target="lib\netstandard2.0\" />
-        <file src="..\Build\netstandard2.0\Tecan.Sila2.ServerPool.pdb" target="lib\netstandard2.0\" />
-        <file src="..\Build\Tecan.Sila2.ServerPool.xml" target="lib\netstandard2.0\" />
+        <file src="..\Build\netcoreapp3.1\Tecan.Sila2.ServerPool.dll" target="lib\netcoreapp3.1\" />
+        <file src="..\Build\netcoreapp3.1\Tecan.Sila2.ServerPool.pdb" target="lib\netcoreapp3.1\" />
+        <file src="..\Build\netcoreapp3.1\Tecan.Sila2.ServerPool.xml" target="lib\netcoreapp3.1\" />
     </files>
 </package>

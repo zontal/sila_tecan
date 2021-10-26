@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<package>
+    <metadata>
+        <id>Tecan.Sila2.Server.DryIoC</id>
+        <description>DryIoC bindings for the server part of the Tecan SiLA2 SDK</description>
+        <version>$version$</version>
+        <authors>Tecan Trading Ltd., Switzerland</authors>
+        <owners>Tecan Trading Ltd., Switzerland</owners>
+        <copyright>Copyright 2019 by Tecan Trading Ltd., Switzerland</copyright>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <license type="expression">BSD-3-Clause</license>
+        <projectUrl>https://gitlab.com/SiLA2/vendors/sila_tecan</projectUrl>
+        <repository type="git" url="https://gitlab.com/SiLA2/vendors/sila_tecan.git" />
+        <dependencies>
+            <dependency id="Tecan.Sila2" version="[$version$,4.0)" />
+            <dependency id="Tecan.Sila2.Server.NetCore" version="[$version$,4.0)" />
+            <dependency id="DryIoc.MefAttributedModel.dll" version="6.1.0" />
+            <dependency id="DryIoc.Microsoft.DependencyInjection" version="5.1.0" />
+            <dependency id="CommandLineParser" version="2.6.0" />
+        </dependencies>
+    </metadata>
+    <files>
+        <file src="..\Build\netcoreapp3.1\Tecan.Sila2.Server.DryIoC.dll" target="lib\netcoreapp3.1\" />
+        <file src="..\Build\netcoreapp3.1\Tecan.Sila2.Server.DryIoC.pdb" target="lib\netcoreapp3.1\" />
+        <file src="..\Build\netcoreapp3.1\Tecan.Sila2.Server.DryIoC.xml" target="lib\netcoreapp3.1\" />
+    </files>
+</package>

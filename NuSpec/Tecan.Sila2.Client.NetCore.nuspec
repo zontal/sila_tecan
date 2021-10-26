@@ -23,6 +23,6 @@
     <files>
         <file src="..\Build\netcoreapp3.1\Tecan.Sila2.Client.dll" target="lib\netcoreapp3.1\" />
         <file src="..\Build\netcoreapp3.1\Tecan.Sila2.Client.pdb" target="lib\netcoreapp3.1\" />
-        <file src="..\Build\Tecan.Sila2.Client.xml" target="lib\netcoreapp3.1\" />
+        <file src="..\Build\netcoreapp3.1\Tecan.Sila2.Client.xml" target="lib\netcoreapp3.1\" />
     </files>
 </package>

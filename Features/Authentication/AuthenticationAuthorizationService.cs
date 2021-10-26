@@ -14,6 +14,7 @@ namespace Tecan.Sila2
 {
     [Export(typeof(IAuthorizationService))]
     [Export(typeof(IAuthenticationService))]
+    [Export(typeof(IAuthorizationConfigurationService))]
     [Export(typeof(IRequestInterceptor))]
     [PartCreationPolicy(CreationPolicy.Shared)]
     internal class AuthenticationAuthorizationService : AccessTokenInterceptorBase, IAuthorizationService, IAuthenticationService, IAuthorizationConfigurationService, IRequestInterceptor
@@ -22,10 +23,10 @@ namespace Tecan.Sila2
         private readonly Lazy<ISiLAService> _silaService;
 
         [ImportingConstructor]
-        public AuthenticationAuthorizationService( Lazy<ISiLAService> silaService, [Import(AllowDefault = true)] IAuthConfigurationProvider configurationProvider, IServerConnector serverConnector, DefaultConfigurationProvider defaultProvider)
+        public AuthenticationAuthorizationService( Lazy<ISiLAService> silaService, [ImportMany] IEnumerable<IAuthConfigurationProvider> configurationProviders, IServerConnector serverConnector, DefaultConfigurationProvider defaultProvider)
         {
             _silaService = silaService;
-            _configurationProvider = configurationProvider ?? defaultProvider;
+            _configurationProvider = configurationProviders?.SingleOrDefault() ?? defaultProvider;
         }
 
         private readonly ConcurrentDictionary<string, AuthToken> _currentAuthorizations = new ConcurrentDictionary<string, AuthToken>();

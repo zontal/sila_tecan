@@ -285,6 +285,7 @@ namespace Tecan.Sila2.Server.Binary
             return UploadChunk( requestStream, responseStream, context );
         }
 
+        /// <inheritdoc />
         public void Register( Grpc.AspNetCore.Server.Model.ServiceMethodProviderContext<ISiLAServer> context )
         {
             context.AddUnaryMethod( BinaryStorageConstants.DeleteBinaryUpload, new List<object>(), DeleteBinary );

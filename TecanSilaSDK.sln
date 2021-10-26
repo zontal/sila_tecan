@@ -45,6 +45,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NuSpec", "NuSpec", "{B34C24
 		NuSpec\Tecan.Sila2.Grpc.nuspec = NuSpec\Tecan.Sila2.Grpc.nuspec
 		NuSpec\Tecan.Sila2.NetCore.nuspec = NuSpec\Tecan.Sila2.NetCore.nuspec
 		NuSpec\Tecan.Sila2.nuspec = NuSpec\Tecan.Sila2.nuspec
+		NuSpec\Tecan.Sila2.Server.DryIoC.nuspec = NuSpec\Tecan.Sila2.Server.DryIoC.nuspec
 		NuSpec\Tecan.Sila2.Server.NetCore.nuspec = NuSpec\Tecan.Sila2.Server.NetCore.nuspec
 		NuSpec\Tecan.Sila2.Server.nuspec = NuSpec\Tecan.Sila2.Server.nuspec
 		NuSpec\Tecan.Sila2.ServerPool.NetCore.nuspec = NuSpec\Tecan.Sila2.ServerPool.NetCore.nuspec
@@ -121,6 +122,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestServer.NetCore", "Tests\TestServer.NetCore\TestServer.NetCore.csproj", "{3083B15F-DBB8-4C50-A610-E0771D3CA163}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IntegrationTests.NetCore", "Tests\IntegrationTests.NetCore\IntegrationTests.NetCore.csproj", "{D66CBAD3-CB10-451A-8F68-D098ADA91D20}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Server.DryIoC", "Server.DryIoC\Server.DryIoC.csproj", "{B35B2AE8-FF24-4778-A47F-4B90F9F64912}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -268,6 +271,10 @@ Global
 		{D66CBAD3-CB10-451A-8F68-D098ADA91D20}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D66CBAD3-CB10-451A-8F68-D098ADA91D20}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D66CBAD3-CB10-451A-8F68-D098ADA91D20}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B35B2AE8-FF24-4778-A47F-4B90F9F64912}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B35B2AE8-FF24-4778-A47F-4B90F9F64912}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B35B2AE8-FF24-4778-A47F-4B90F9F64912}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B35B2AE8-FF24-4778-A47F-4B90F9F64912}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -306,6 +313,7 @@ Global
 		{DAF1E8E2-2BCF-464F-BC87-296063D7A008} = {E27A5F4F-AFCB-4BAD-B2EE-5A88300C1169}
 		{3083B15F-DBB8-4C50-A610-E0771D3CA163} = {D20F3DDF-CC13-45C3-95F5-F48B1EFFBB82}
 		{D66CBAD3-CB10-451A-8F68-D098ADA91D20} = {D20F3DDF-CC13-45C3-95F5-F48B1EFFBB82}
+		{B35B2AE8-FF24-4778-A47F-4B90F9F64912} = {98D6F41E-A727-4CF4-99C6-8D95BAEB3BB4}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F2AE9C9D-34E5-4A2A-8AAA-5EEA105AF08F}

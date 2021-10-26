@@ -10,7 +10,7 @@
 
     <PropertyGroup>
         <OutputPath>..\Build\</OutputPath>
-        <DocumentationFile>..\Build\Tecan.Sila2.Client.xml</DocumentationFile>
+        <DocumentationFile>..\Build\netcoreapp3.1\Tecan.Sila2.Client.xml</DocumentationFile>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

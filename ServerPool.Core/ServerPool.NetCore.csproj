@@ -10,7 +10,7 @@
 
     <PropertyGroup>
         <OutputPath>..\Build\</OutputPath>
-        <DocumentationFile>..\Build\Tecan.Sila2.ServerPool.xml</DocumentationFile>
+        <DocumentationFile>..\Build\netcoreapp3.1\Tecan.Sila2.ServerPool.xml</DocumentationFile>
     </PropertyGroup>
 
     <ItemGroup>
