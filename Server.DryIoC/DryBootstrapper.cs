@@ -24,7 +24,6 @@ namespace Tecan.Sila2.Server
     /// </summary>
     public class DryBootstrapper
     {
-        private IContainer _container;
         private ISiLAServer _server;
         private ILog _channel;
         private IHost _host;
@@ -57,13 +56,13 @@ namespace Tecan.Sila2.Server
                 ServiceConfigurationBuilder configurationBuilder = null;
                 var startup = new ServerStartInformation( selfInfo, args.Port, args.InterfaceFilter, args.ServerUuid, args.Name );
 
-                _container = CreateContainer();
-
-                _container.Register<IServiceConfigurationBuilder<ISiLAServer>, ServiceConfigurationBuilder>();
-                _container.RegisterInstance( startup );
-
                 _host = Host.CreateDefaultBuilder()
-                    .UseServiceProviderFactory(new DryIocServiceProviderFactory(_container))
+                    .UseDryIoc(container =>
+                    {
+                        container.RegisterInstance( startup );
+                        OnLoadComponents( container );
+                        ApplyDefaultsIfMissing( container );
+                    } )
                     .ConfigureServices( services =>
                     {
                         services.AddSila2();
@@ -89,8 +88,8 @@ namespace Tecan.Sila2.Server
                     _channel = LogManager.GetLogger<Bootstrapper>();
                 }
 
-                configurationBuilder = _container.Resolve<IServiceConfigurationBuilder<ISiLAServer>>() as ServiceConfigurationBuilder;
-                _server = _container.Resolve<ISiLAServer>();
+                configurationBuilder = _host.Services.GetRequiredService<IServiceConfigurationBuilder<ISiLAServer>>() as ServiceConfigurationBuilder;
+                _server = _host.Services.GetRequiredService<ISiLAServer>();
 
                 _server.StartServer();
 
@@ -126,11 +125,6 @@ namespace Tecan.Sila2.Server
                 Console.Error.WriteLine( $"Error starting server: {e.Message}" );
             }
         }
-
-        /// <summary>
-        /// The composition container used by this bootstrapper
-        /// </summary>
-        public IContainer Container => _container;
 
 
 
@@ -171,66 +165,17 @@ namespace Tecan.Sila2.Server
             {
                 _host?.Dispose();
             }
-
-            _container?.Dispose();
-        }
-
-        /// <summary>
-        /// Creates the container for the created server
-        /// </summary>
-        /// <returns>A MEF composition container</returns>
-        protected virtual IContainer CreateContainer()
-        {
-            var assemblyLocation = Assembly.GetEntryAssembly().Location;
-
-            var container = new Container().WithMef();
-
-            OnLoadComponents( container, Path.GetDirectoryName( assemblyLocation ) );
-
-            ApplyDefaultsIfMissing( container );
-
-            return container;
         }
 
         /// <summary>
         /// Instructs to load the default contents of the container
         /// </summary>
         /// <param name="container">The container that needs to be filled</param>
-        /// <param name="path">The default path where to look for components</param>
-        protected virtual void OnLoadComponents( IContainer container, string path)
+        protected virtual void OnLoadComponents( IContainer container)
         {
-            LoadComponents( container, path, null );
-        }
-
-        /// <summary>
-        /// Loads the exports contained in assemblies in the given folder into the provided container
-        /// </summary>
-        /// <param name="container">The DryIoc container</param>
-        /// <param name="path">The folder path</param>
-        /// <param name="filter">A filter or null to use the default filter *.dll</param>
-        protected void LoadComponents( IContainer container, string path, string filter)
-        {
-            foreach(var assemblyFile in Directory.EnumerateFiles( path, filter ?? "*.dll" ))
-            {
-                try
-                {
-                    LoadComponentsFromAssembly( container, Assembly.LoadFrom( Path.Combine( path, assemblyFile ) ) );
-                }
-                catch(BadImageFormatException)
-                {
-                    // assembly is not a .NET DLL and therefore safe to ignore
-                }
-            }
-        }
-
-        /// <summary>
-        /// Loads the exports from the given assembly into the provided container
-        /// </summary>
-        /// <param name="container">The container</param>
-        /// <param name="assembly">The assembly that contains the components</param>
-        protected void LoadComponentsFromAssembly( IContainer container, Assembly assembly )
-        {
-            container.RegisterExports( assembly );
+            var assemblyLocation = Assembly.GetEntryAssembly().Location;
+            var path = Path.GetDirectoryName( assemblyLocation );
+            container.LoadComponents( path, null );
         }
 
         /// <summary>

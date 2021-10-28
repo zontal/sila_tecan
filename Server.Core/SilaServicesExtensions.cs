@@ -33,6 +33,7 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <returns>A gRPC server builder</returns>
         public static IGrpcServerBuilder AddSila2( this IServiceCollection services, Action<GrpcServiceOptions> configureOptions )
         {
+            services.AddSingleton<IServiceConfigurationBuilder<ISiLAServer>, ServiceConfigurationBuilder>();
             var builder = configureOptions != null ? services.AddGrpc(configureOptions) : services.AddGrpc();
             services.TryAddEnumerable( ServiceDescriptor.Singleton( typeof( IServiceMethodProvider<> ), typeof( ServiceMethodProvider<> ) ) );
             return builder;
