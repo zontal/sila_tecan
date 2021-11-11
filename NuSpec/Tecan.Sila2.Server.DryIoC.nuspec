@@ -16,16 +16,16 @@
             <dependency id="Tecan.Sila2.Server.NetCore" version="[$version$,5.0)" />
             <dependency id="DryIoc.MefAttributedModel.dll" version="6.1.0" />
             <dependency id="DryIoc.Microsoft.DependencyInjection" version="5.1.0" />
-            <dependency id="CommandLineParser" version="2.6.0" />
+            <dependency id="CommandLineParser" version="2.8.0" />
         </dependencies>
     </metadata>
     <files>
-        <file src="..\Build\netcoreapp3.1\Tecan.Sila2.Server.DryIoC.dll" target="lib\netcoreapp3.1\" />
-        <file src="..\Build\netcoreapp3.1\Tecan.Sila2.Server.DryIoC.pdb" target="lib\netcoreapp3.1\" />
-        <file src="..\Build\netcoreapp3.1\Tecan.Sila2.Server.DryIoC.xml" target="lib\netcoreapp3.1\" />
+        <file src="..\Build\ManagedGrpc\netcoreapp3.1\Tecan.Sila2.Server.DryIoC.dll" target="lib\netcoreapp3.1\" />
+        <file src="..\Build\ManagedGrpc\netcoreapp3.1\Tecan.Sila2.Server.DryIoC.pdb" target="lib\netcoreapp3.1\" />
+        <file src="..\Build\ManagedGrpc\netcoreapp3.1\Tecan.Sila2.Server.DryIoC.xml" target="lib\netcoreapp3.1\" />
 
-        <file src="..\Build\net6.0\Tecan.Sila2.Server.DryIoC.dll" target="lib\net6.0\" />
-        <file src="..\Build\net6.0\Tecan.Sila2.Server.DryIoC.pdb" target="lib\net6.0\" />
-        <file src="..\Build\net6.0\Tecan.Sila2.Server.DryIoC.xml" target="lib\net6.0\" />
+        <file src="..\Build\ManagedGrpc\net6.0\Tecan.Sila2.Server.DryIoC.dll" target="lib\net6.0\" />
+        <file src="..\Build\ManagedGrpc\net6.0\Tecan.Sila2.Server.DryIoC.pdb" target="lib\net6.0\" />
+        <file src="..\Build\ManagedGrpc\net6.0\Tecan.Sila2.Server.DryIoC.xml" target="lib\net6.0\" />
     </files>
 </package>
