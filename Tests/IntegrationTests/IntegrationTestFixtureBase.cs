@@ -58,7 +58,11 @@ namespace Tecan.Sila2.IntegrationTests
             {
 #if NETCOREAPP
                 FileName = "dotnet",
+#if NET6_0
+                Arguments = Path.Combine( dir, "net6.0", "TestServer.dll" ) + " " + payloadArguments,
+#else
                 Arguments = Path.Combine( dir, "netcoreapp3.1", "TestServer.dll" ) + " " + payloadArguments,
+#endif
 #elif NET461
                 FileName = Path.Combine(dir, "net461", "TestServer.exe"),
                 Arguments = payloadArguments,

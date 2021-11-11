@@ -1,22 +1,16 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+      <TargetFrameworks>netcoreapp3.1;net6.0</TargetFrameworks>
     <RootNamespace>Tecan.Sila2.Server</RootNamespace>
     <AssemblyName>Tecan.Sila2.Server</AssemblyName>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
-    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-        <OutputPath>..\Build</OutputPath>
-        <DocumentationFile>..\Build\netcoreapp3.1\Tecan.Sila2.Server.xml</DocumentationFile>
-        <DefineConstants>TRACE;ManagedGrpc</DefineConstants>
-    </PropertyGroup>
-
-    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-        <OutputPath>..\Build</OutputPath>
-        <DocumentationFile>..\Build\netcoreapp3.1\Tecan.Sila2.Server.xml</DocumentationFile>
+    <PropertyGroup>
+        <OutputPath>..\Build\ManagedGrpc</OutputPath>
+        <DocumentationFile>..\Build\ManagedGrpc\Tecan.Sila2.Server.xml</DocumentationFile>
         <DefineConstants>TRACE;ManagedGrpc</DefineConstants>
     </PropertyGroup>
 

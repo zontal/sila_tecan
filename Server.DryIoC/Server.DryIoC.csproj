@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFrameworks>netcoreapp3.1;net6.0</TargetFrameworks>
     <RootNamespace>Tecan.Sila2.Server</RootNamespace>
     <AssemblyName>Tecan.Sila2.Server.DryIoC</AssemblyName>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
@@ -9,8 +9,8 @@
   </PropertyGroup>
 
     <PropertyGroup>
-        <OutputPath>..\Build</OutputPath>
-        <DocumentationFile>..\Build\netcoreapp3.1\Tecan.Sila2.Server.DryIoC.xml</DocumentationFile>
+        <OutputPath>..\Build\ManagedGrpc</OutputPath>
+        <DocumentationFile>..\Build\ManagedGrpc\Tecan.Sila2.Server.DryIoC.xml</DocumentationFile>
     </PropertyGroup>
 
     <ItemGroup>

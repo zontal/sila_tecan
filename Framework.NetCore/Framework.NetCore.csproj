@@ -2,19 +2,14 @@
 
     <PropertyGroup>
         <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFrameworks>netcoreapp3.1;net6.0</TargetFrameworks>
         <AssemblyName>Tecan.Sila2.NetCore</AssemblyName>
         <RootNamespace>Tecan.Sila2</RootNamespace>
     </PropertyGroup>
 
-    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-        <OutputPath>..\Build\</OutputPath>
-        <DocumentationFile>..\Build\Tecan.Sila2.NetCore.xml</DocumentationFile>
-    </PropertyGroup>
-
-    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-        <OutputPath>..\Build\</OutputPath>
-        <DocumentationFile>..\Build\Tecan.Sila2.NetCore.xml</DocumentationFile>
+    <PropertyGroup>
+        <OutputPath>..\Build\ManagedGrpc</OutputPath>
+        <DocumentationFile>..\Build\ManagedGrpc\Tecan.Sila2.NetCore.xml</DocumentationFile>
     </PropertyGroup>
 
     <ItemGroup>
