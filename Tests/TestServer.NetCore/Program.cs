@@ -22,8 +22,7 @@ namespace TestServer.NetCore
                 args = args.Skip( 1 ).ToArray();
             }
 
-            DryBootstrapper.Start( args );
-            Console.ReadLine();
+            DryBootstrapper.Start( args ).RunUntilReadline();
         }
     }
 }

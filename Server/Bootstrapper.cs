@@ -24,13 +24,37 @@ namespace Tecan.Sila2.Server
         private IServerProvider _grpcServer;
         private ILog _channel;
 
+
         /// <summary>
         /// Starts the server with the given command line parameters
         /// </summary>
         /// <param name="args">The command line parameters</param>
-        public static bool Start(string[] args )
+        public static Bootstrapper Start( string[] args )
         {
             var bootstrapper = new Bootstrapper();
+            if(!Start( args, bootstrapper ))
+            {
+                throw new InvalidOperationException( "Server could not be started." );
+            }
+            return bootstrapper;
+        }
+
+        /// <summary>
+        /// Runs the server
+        /// </summary>
+        public void RunUntilReadline()
+        {
+            Console.ReadLine();
+        }
+
+        /// <summary>
+        /// Starts the server with the given command line parameters
+        /// </summary>
+        /// <param name="args">The command line parameters</param>
+        /// <param name="bootstrapper">The bootstrapper instance that should be used</param>
+        public static bool Start( string[] args, Bootstrapper bootstrapper )
+        {
+            if(bootstrapper == null) throw new ArgumentNullException( nameof( bootstrapper ) );
 
             return Parser.Default.ParseArguments<ServerCommandLineArguments>( args )
                 .MapResult( bootstrapper.StartServer, bootstrapper.HandleError );

@@ -1,8 +1,6 @@
 ﻿using CommandLine;
 using Common.Logging;
 using DryIoc;
-using DryIoc.MefAttributedModel;
-using DryIoc.Microsoft.DependencyInjection;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
@@ -32,9 +30,32 @@ namespace Tecan.Sila2.Server
         /// Starts the server with the given command line parameters
         /// </summary>
         /// <param name="args">The command line parameters</param>
-        public static bool Start( string[] args )
+        public static DryBootstrapper Start( string[] args )
         {
             var bootstrapper = new DryBootstrapper();
+            if (!Start( args, bootstrapper ))
+            {
+                throw new InvalidOperationException( "Server could not be started." );
+            }
+            return bootstrapper;
+        }
+
+        /// <summary>
+        /// Runs the server
+        /// </summary>
+        public void RunUntilReadline()
+        {
+            Console.ReadLine();
+        }
+
+        /// <summary>
+        /// Starts the server with the given command line parameters
+        /// </summary>
+        /// <param name="args">The command line parameters</param>
+        /// <param name="bootstrapper">The bootstrapper instance that should be used</param>
+        public static bool Start( string[] args, DryBootstrapper bootstrapper )
+        {
+            if (bootstrapper == null) throw new ArgumentNullException( nameof( bootstrapper ) );
 
             return Parser.Default.ParseArguments<ServerCommandLineArguments>( args )
                 .MapResult( bootstrapper.StartServer, bootstrapper.HandleError );
@@ -66,6 +87,7 @@ namespace Tecan.Sila2.Server
                     .ConfigureServices( services =>
                     {
                         services.AddSila2();
+                        OnConfigureServices(services);
                     } )
                     .ConfigureWebHostDefaults( webHostBuilder =>
                     {
@@ -76,6 +98,7 @@ namespace Tecan.Sila2.Server
                         webHostBuilder.Configure( appBuilder =>
                         {
                             appBuilder.UseRouting();
+                            OnConfigureApplication(appBuilder);
                             appBuilder.UseEndpoints( endpoints => endpoints.MapSila2() );
                         } );
                     } )
@@ -112,6 +135,27 @@ namespace Tecan.Sila2.Server
                 LogError( _channel, e );
             }
             return false;
+        }
+
+        /// <summary>
+        /// Gets the service provider used by the ASP.NET Core server
+        /// </summary>
+        public IServiceProvider ServiceProvider => _host?.Services;
+
+        /// <summary>
+        /// Gets called when the server configures services
+        /// </summary>
+        /// <param name="serviceCollection">The service collection to configure</param>
+        protected virtual void OnConfigureServices(IServiceCollection serviceCollection)
+        {
+        }
+
+        /// <summary>
+        /// Gets called when the server is configured
+        /// </summary>
+        /// <param name="applicationBuilder">The application builder</param>
+        protected virtual void OnConfigureApplication(IApplicationBuilder applicationBuilder)
+        {
         }
 
         private static void LogError( ILog channel, Exception e )

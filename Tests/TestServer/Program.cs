@@ -15,8 +15,7 @@ namespace Tecan.Sila2.IntegrationTests
                 args = args.Skip( 1 ).ToArray();
             }
             
-            Bootstrapper.Start(args);
-            Console.ReadLine();
+            Bootstrapper.Start(args).RunUntilReadline();
         }
     }
 }

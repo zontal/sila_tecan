@@ -31,13 +31,37 @@ namespace Tecan.Sila2.Server
         private ILog _channel;
         private IHost _host;
 
+
         /// <summary>
         /// Starts the server with the given command line parameters
         /// </summary>
         /// <param name="args">The command line parameters</param>
-        public static bool Start( string[] args )
+        public static Bootstrapper Start( string[] args )
         {
             var bootstrapper = new Bootstrapper();
+            if(!Start( args, bootstrapper ))
+            {
+                throw new InvalidOperationException( "Server could not be started." );
+            }
+            return bootstrapper;
+        }
+
+        /// <summary>
+        /// Runs the server
+        /// </summary>
+        public void RunUntilReadline()
+        {
+            Console.ReadLine();
+        }
+
+        /// <summary>
+        /// Starts the server with the given command line parameters
+        /// </summary>
+        /// <param name="args">The command line parameters</param>
+        /// <param name="bootstrapper">The bootstrapper instance that should be used</param>
+        public static bool Start( string[] args, Bootstrapper bootstrapper )
+        {
+            if(bootstrapper == null) throw new ArgumentNullException( nameof( bootstrapper ) );
 
             return Parser.Default.ParseArguments<ServerCommandLineArguments>( args )
                 .MapResult( bootstrapper.StartServer, bootstrapper.HandleError );
@@ -91,6 +115,7 @@ namespace Tecan.Sila2.Server
                             services.AddSingleton( featureProvider );
                         }
                         services.AddSila2();
+                        OnConfigureServices(services);
                     })
                     .ConfigureWebHostDefaults(webHostBuilder =>
                     {
@@ -101,6 +126,7 @@ namespace Tecan.Sila2.Server
                         webHostBuilder.Configure( appBuilder =>
                          {
                              appBuilder.UseRouting();
+                             OnConfigureApplication( appBuilder );
                              appBuilder.UseEndpoints( endpoints => endpoints.MapSila2() );
                          } );
                     } )
@@ -134,6 +160,27 @@ namespace Tecan.Sila2.Server
                 LogError( _channel, e );
             }
             return false;
+        }
+
+        /// <summary>
+        /// Gets the service provider used by the ASP.NET Core server
+        /// </summary>
+        public IServiceProvider ServiceProvider => _host?.Services;
+
+        /// <summary>
+        /// Gets called when the server configures services
+        /// </summary>
+        /// <param name="serviceCollection">The service collection to configure</param>
+        protected virtual void OnConfigureServices( IServiceCollection serviceCollection )
+        {
+        }
+
+        /// <summary>
+        /// Gets called when the server is configured
+        /// </summary>
+        /// <param name="applicationBuilder">The application builder</param>
+        protected virtual void OnConfigureApplication( IApplicationBuilder applicationBuilder )
+        {
         }
 
         /// <summary>
