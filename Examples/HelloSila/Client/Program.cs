@@ -16,10 +16,9 @@ namespace Client
     {
         static void Main(string[] args)
         {
-            var logging = new ConsoleLogging();
             // by default, SiLA2 uses trusted connections, but as we are to lazy to setup certificates, we create a custom connector that accepts plaintext
-            var connector = new PlaintextConnector(new DiscoveryExecutionManager(), logging);
-            var discovery = new ServerDiscovery(logging, connector);
+            var connector = new PlaintextConnector(new DiscoveryExecutionManager());
+            var discovery = new ServerDiscovery(connector);
             var executionManagerFactory = new ExecutionManagerFactory(new IClientRequestInterceptor[] { new LockingInterceptor() } );
             // we simply collect all servers that respond within 10 seconds. Other options exist if you know which server you are looking for.
             var servers = discovery.GetServers(TimeSpan.FromSeconds(10), nic => true );

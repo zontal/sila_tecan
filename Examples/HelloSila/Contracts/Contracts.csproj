@@ -10,8 +10,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Tecan.Sila2.Annotations" Version="3.1.0" />
-    <PackageReference Include="Tecan.Sila2.Contracts" Version="3.1.0" />
+    <PackageReference Include="Tecan.Sila2.Annotations" Version="4.0.1" />
+    <PackageReference Include="Tecan.Sila2.Contracts" Version="4.0.1" />
   </ItemGroup>
 
 </Project>

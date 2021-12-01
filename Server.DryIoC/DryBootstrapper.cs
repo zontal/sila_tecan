@@ -217,9 +217,7 @@ namespace Tecan.Sila2.Server
         /// <param name="container">The container that needs to be filled</param>
         protected virtual void OnLoadComponents( IContainer container)
         {
-            var assemblyLocation = Assembly.GetEntryAssembly().Location;
-            var path = Path.GetDirectoryName( assemblyLocation );
-            container.LoadComponents( path, null );
+            container.LoadComponentsFromApplicationDirectory();
         }
 
         /// <summary>

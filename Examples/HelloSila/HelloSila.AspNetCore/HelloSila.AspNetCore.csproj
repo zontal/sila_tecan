@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="GreetingService.sila.xml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="GreetingService.sila.xml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Tecan.Sila2.Server.DryIoC" Version="4.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Contracts\Contracts.csproj" />
+    <ProjectReference Include="..\Implementation\Implementation.csproj" />
+  </ItemGroup>
+
+</Project>
