@@ -70,12 +70,12 @@ namespace Tecan.Sila2.Generator.Test.TestReference
                 throw _server.ErrorHandling.CreateUnknownValidationError(ex);
             } catch (TemperatureNotReachableException ex)
             {
-                throw _server.ErrorHandling.CreateExecutionError("tecan.sila.generator/test/TemperatureController/v3/DefinedError/TemperatureNotRea" +
-                        "chable", "The ambient conditions prohibit the device from reaching the target temperature.", ex.Message);
+                throw _server.ErrorHandling.CreateExecutionError("tecan.sila.generator/test/TemperatureController/v3/DefinedExecutionError/Temperat" +
+                        "ureNotReachable", "The ambient conditions prohibit the device from reaching the target temperature.", ex.Message);
             } catch (ControlInterruptedException ex)
             {
-                throw _server.ErrorHandling.CreateExecutionError("tecan.sila.generator/test/TemperatureController/v3/DefinedError/ControlInterrupte" +
-                        "d", "The control of temperature couldn\'t be finished as it was interrupted by another " +
+                throw _server.ErrorHandling.CreateExecutionError("tecan.sila.generator/test/TemperatureController/v3/DefinedExecutionError/ControlI" +
+                        "nterrupted", "The control of temperature couldn\'t be finished as it was interrupted by another " +
                         "target temperature.", ex.Message);
             }
         }

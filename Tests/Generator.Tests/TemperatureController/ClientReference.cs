@@ -115,13 +115,13 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// <returns>The converted exception or null, if the error is not understood</returns>
         private static System.Exception ConvertControlTemperatureException(string errorIdentifier, string errorMessage)
         {
-            if ((errorIdentifier == "tecan.sila.generator/test/TemperatureController/v3/DefinedError/TemperatureNotRea" +
-                "chable"))
+            if ((errorIdentifier == "tecan.sila.generator/test/TemperatureController/v3/DefinedExecutionError/Temperat" +
+                "ureNotReachable"))
             {
                 return new TemperatureNotReachableException(errorMessage);
             }
-            if ((errorIdentifier == "tecan.sila.generator/test/TemperatureController/v3/DefinedError/ControlInterrupte" +
-                "d"))
+            if ((errorIdentifier == "tecan.sila.generator/test/TemperatureController/v3/DefinedExecutionError/ControlI" +
+                "nterrupted"))
             {
                 return new ControlInterruptedException(errorMessage);
             }
