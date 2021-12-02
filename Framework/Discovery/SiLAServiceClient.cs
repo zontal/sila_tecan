@@ -15,46 +15,46 @@ using Tecan.Sila2.Server;
 
 namespace Tecan.Sila2.Discovery
 {
-    
-    
+
+
     ///  <summary>
     /// Class that implements the ISiLAService interface through SiLA2
     /// </summary>
     public partial class SiLAServiceClient : ISiLAService
     {
-        
+
         private System.Lazy<string> _serverName;
-        
+
         private System.Lazy<string> _serverType;
-        
+
         private System.Lazy<string> _serverUUID;
-        
+
         private System.Lazy<string> _serverDescription;
-        
+
         private System.Lazy<string> _serverVersion;
-        
+
         private System.Lazy<string> _serverVendorURL;
-        
+
         private System.Lazy<System.Collections.Generic.ICollection<string>> _implementedFeatures;
-        
+
         private IClientExecutionManager _executionManager;
-        
+
         private IClientChannel _channel;
-        
+
         private const string _serviceName = "sila2.org.silastandard.core.silaservice.v1.SiLAService";
-        
+
         ///  <summary>
         /// Creates a new instance
         /// </summary>
         /// <param name="channel">The channel through which calls should be executed</param>
         /// <param name="executionManager">A component to determine metadata to attach to any requests</param>
-        public SiLAServiceClient(IClientChannel channel, IClientExecutionManager executionManager)
+        public SiLAServiceClient( IClientChannel channel, IClientExecutionManager executionManager )
         {
             _executionManager = executionManager;
             _channel = channel;
             InitLazyRequests();
         }
-        
+
         ///  <summary>
         /// Human readable name of the SiLA Server. The name can be set using the 'Set Server Name' command.
         /// </summary>
@@ -65,7 +65,7 @@ namespace Tecan.Sila2.Discovery
                 return _serverName.Value;
             }
         }
-        
+
         ///  <summary>
         /// The type of this server. It, could be, e.g., in the case of a SiLA Device the model name.
         /// It is specified by the implementer of the SiLA Server and MAY not be unique.
@@ -77,7 +77,7 @@ namespace Tecan.Sila2.Discovery
                 return _serverType.Value;
             }
         }
-        
+
         ///  <summary>
         /// Globally unique identifier that identifies a SiLA Server. The Server UUID MUST be generated once
         /// and remain the same for all times.
@@ -89,7 +89,7 @@ namespace Tecan.Sila2.Discovery
                 return _serverUUID.Value;
             }
         }
-        
+
         ///  <summary>
         /// Description of the SiLA Server. This should include the use and purpose of this SiLA Server.
         /// </summary>
@@ -100,7 +100,7 @@ namespace Tecan.Sila2.Discovery
                 return _serverDescription.Value;
             }
         }
-        
+
         ///  <summary>
         /// Returns the version of the SiLA Server. A "Major" and a "Minor" version number (e.g. 1.0) MUST be provided,
         /// a Patch version number MAY be provided. Optionally, an arbitrary text, separated by an underscore MAY be
@@ -113,7 +113,7 @@ namespace Tecan.Sila2.Discovery
                 return _serverVersion.Value;
             }
         }
-        
+
         ///  <summary>
         /// Returns the URL to the website of the vendor or the website of the product of this SiLA Server.
         /// This URL SHOULD be accessible at all times.
@@ -126,7 +126,7 @@ namespace Tecan.Sila2.Discovery
                 return _serverVendorURL.Value;
             }
         }
-        
+
         ///  <summary>
         /// Returns a list of fully qualified Feature identifiers of all implemented Features of this SiLA Server.
         /// This list SHOULD remain the same throughout the lifetime of the SiLA Server.
@@ -138,133 +138,140 @@ namespace Tecan.Sila2.Discovery
                 return _implementedFeatures.Value;
             }
         }
-        
+
         private string RequestServerName()
         {
-            Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/core/SiLAService/v1/Property/ServerName");
+            Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions( "org.silastandard/core/SiLAService/v1/Property/ServerName" );
             try
             {
-                string response = _channel.ReadProperty<ServerNameResponseDto>(_serviceName, "ServerName", "org.silastandard/core/SiLAService/v1/Property/ServerName", callInfo).Value.Extract(_executionManager.DownloadBinaryStore);
+                string response = _channel.ReadProperty<ServerNameResponseDto>( _serviceName, "ServerName", "org.silastandard/core/SiLAService/v1/Property/ServerName", callInfo ).Value.Extract( _executionManager.DownloadBinaryStore );
                 callInfo.FinishSuccessful();
                 return response;
-            } catch (System.Exception ex)
+            }
+            catch(System.Exception ex)
             {
-                System.Exception exception = _channel.ConvertException(ex);
-                callInfo.FinishWithErrors(exception);
+                System.Exception exception = _channel.ConvertException( ex );
+                callInfo.FinishWithErrors( exception );
                 throw exception;
             }
         }
-        
+
         private string RequestServerType()
         {
-            Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/core/SiLAService/v1/Property/ServerType");
+            Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions( "org.silastandard/core/SiLAService/v1/Property/ServerType" );
             try
             {
-                string response = _channel.ReadProperty<ServerTypeResponseDto>(_serviceName, "ServerType", "org.silastandard/core/SiLAService/v1/Property/ServerType", callInfo).Value.Extract(_executionManager.DownloadBinaryStore);
+                string response = _channel.ReadProperty<ServerTypeResponseDto>( _serviceName, "ServerType", "org.silastandard/core/SiLAService/v1/Property/ServerType", callInfo ).Value.Extract( _executionManager.DownloadBinaryStore );
                 callInfo.FinishSuccessful();
                 return response;
-            } catch (System.Exception ex)
+            }
+            catch(System.Exception ex)
             {
-                System.Exception exception = _channel.ConvertException(ex);
-                callInfo.FinishWithErrors(exception);
+                System.Exception exception = _channel.ConvertException( ex );
+                callInfo.FinishWithErrors( exception );
                 throw exception;
             }
         }
-        
+
         private string RequestServerUUID()
         {
-            Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/core/SiLAService/v1/Property/ServerUUID");
+            Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions( "org.silastandard/core/SiLAService/v1/Property/ServerUUID" );
             try
             {
-                string response = _channel.ReadProperty<ServerUUIDResponseDto>(_serviceName, "ServerUUID", "org.silastandard/core/SiLAService/v1/Property/ServerUUID", callInfo).Value.Extract(_executionManager.DownloadBinaryStore);
+                string response = _channel.ReadProperty<ServerUUIDResponseDto>( _serviceName, "ServerUUID", "org.silastandard/core/SiLAService/v1/Property/ServerUUID", callInfo ).Value.Extract( _executionManager.DownloadBinaryStore );
                 callInfo.FinishSuccessful();
                 return response;
-            } catch (System.Exception ex)
+            }
+            catch(System.Exception ex)
             {
-                System.Exception exception = _channel.ConvertException(ex);
-                callInfo.FinishWithErrors(exception);
+                System.Exception exception = _channel.ConvertException( ex );
+                callInfo.FinishWithErrors( exception );
                 throw exception;
             }
         }
-        
+
         private string RequestServerDescription()
         {
-            Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/core/SiLAService/v1/Property/ServerDescription");
+            Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions( "org.silastandard/core/SiLAService/v1/Property/ServerDescription" );
             try
             {
-                string response = _channel.ReadProperty<PropertyResponse<Tecan.Sila2.StringDto>>(_serviceName, "ServerDescription", "org.silastandard/core/SiLAService/v1/Property/ServerDescription", callInfo).Value.Extract(_executionManager.DownloadBinaryStore);
+                string response = _channel.ReadProperty<PropertyResponse<Tecan.Sila2.StringDto>>( _serviceName, "ServerDescription", "org.silastandard/core/SiLAService/v1/Property/ServerDescription", callInfo ).Value.Extract( _executionManager.DownloadBinaryStore );
                 callInfo.FinishSuccessful();
                 return response;
-            } catch (System.Exception ex)
+            }
+            catch(System.Exception ex)
             {
-                System.Exception exception = _channel.ConvertException(ex);
-                callInfo.FinishWithErrors(exception);
+                System.Exception exception = _channel.ConvertException( ex );
+                callInfo.FinishWithErrors( exception );
                 throw exception;
             }
         }
-        
+
         private string RequestServerVersion()
         {
-            Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/core/SiLAService/v1/Property/ServerVersion");
+            Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions( "org.silastandard/core/SiLAService/v1/Property/ServerVersion" );
             try
             {
-                string response = _channel.ReadProperty<ServerVersionResponseDto>(_serviceName, "ServerVersion", "org.silastandard/core/SiLAService/v1/Property/ServerVersion", callInfo).Value.Extract(_executionManager.DownloadBinaryStore);
+                string response = _channel.ReadProperty<ServerVersionResponseDto>( _serviceName, "ServerVersion", "org.silastandard/core/SiLAService/v1/Property/ServerVersion", callInfo ).Value.Extract( _executionManager.DownloadBinaryStore );
                 callInfo.FinishSuccessful();
                 return response;
-            } catch (System.Exception ex)
+            }
+            catch(System.Exception ex)
             {
-                System.Exception exception = _channel.ConvertException(ex);
-                callInfo.FinishWithErrors(exception);
+                System.Exception exception = _channel.ConvertException( ex );
+                callInfo.FinishWithErrors( exception );
                 throw exception;
             }
         }
-        
+
         private string RequestServerVendorURL()
         {
-            Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/core/SiLAService/v1/Property/ServerVendorURL");
+            Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions( "org.silastandard/core/SiLAService/v1/Property/ServerVendorURL" );
             try
             {
-                string response = _channel.ReadProperty<ServerVendorURLResponseDto>(_serviceName, "ServerVendorURL", "org.silastandard/core/SiLAService/v1/Property/ServerVendorURL", callInfo).Value.Extract(_executionManager.DownloadBinaryStore);
+                string response = _channel.ReadProperty<ServerVendorURLResponseDto>( _serviceName, "ServerVendorURL", "org.silastandard/core/SiLAService/v1/Property/ServerVendorURL", callInfo ).Value.Extract( _executionManager.DownloadBinaryStore );
                 callInfo.FinishSuccessful();
                 return response;
-            } catch (System.Exception ex)
+            }
+            catch(System.Exception ex)
             {
-                System.Exception exception = _channel.ConvertException(ex);
-                callInfo.FinishWithErrors(exception);
+                System.Exception exception = _channel.ConvertException( ex );
+                callInfo.FinishWithErrors( exception );
                 throw exception;
             }
         }
-        
+
         private System.Collections.Generic.ICollection<string> RequestImplementedFeatures()
         {
-            Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/core/SiLAService/v1/Property/ImplementedFeatures");
+            Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions( "org.silastandard/core/SiLAService/v1/Property/ImplementedFeatures" );
             try
             {
-                System.Collections.Generic.ICollection<string> response = _channel.ReadProperty<PropertyResponse<System.Collections.Generic.List<Tecan.Sila2.StringDto>>>(_serviceName, "ImplementedFeatures", "org.silastandard/core/SiLAService/v1/Property/ImplementedFeatures", callInfo).Value.Extract(_executionManager.DownloadBinaryStore);
+                System.Collections.Generic.ICollection<string> response = _channel.ReadProperty<PropertyResponse<System.Collections.Generic.List<Tecan.Sila2.StringDto>>>( _serviceName, "ImplementedFeatures", "org.silastandard/core/SiLAService/v1/Property/ImplementedFeatures", callInfo ).Value.Extract( _executionManager.DownloadBinaryStore );
                 callInfo.FinishSuccessful();
                 return response;
-            } catch (System.Exception ex)
+            }
+            catch(System.Exception ex)
             {
-                System.Exception exception = _channel.ConvertException(ex);
-                callInfo.FinishWithErrors(exception);
+                System.Exception exception = _channel.ConvertException( ex );
+                callInfo.FinishWithErrors( exception );
                 throw exception;
             }
         }
-        
+
         ///  <summary>
         /// Initializes lazies for non-observable properties.
         /// </summary>
         private void InitLazyRequests()
         {
-            _serverName = new System.Lazy<string>(RequestServerName);
-            _serverType = new System.Lazy<string>(RequestServerType);
-            _serverUUID = new System.Lazy<string>(RequestServerUUID);
-            _serverDescription = new System.Lazy<string>(RequestServerDescription);
-            _serverVersion = new System.Lazy<string>(RequestServerVersion);
-            _serverVendorURL = new System.Lazy<string>(RequestServerVendorURL);
-            _implementedFeatures = new System.Lazy<System.Collections.Generic.ICollection<string>>(RequestImplementedFeatures);
+            _serverName = new System.Lazy<string>( RequestServerName );
+            _serverType = new System.Lazy<string>( RequestServerType );
+            _serverUUID = new System.Lazy<string>( RequestServerUUID );
+            _serverDescription = new System.Lazy<string>( RequestServerDescription );
+            _serverVersion = new System.Lazy<string>( RequestServerVersion );
+            _serverVendorURL = new System.Lazy<string>( RequestServerVendorURL );
+            _implementedFeatures = new System.Lazy<System.Collections.Generic.ICollection<string>>( RequestImplementedFeatures );
         }
-        
+
         ///  <summary>
         /// Get the Feature Definition of an implemented Feature by its fully qualified Feature Identifier.
         /// This command has no preconditions and no further dependencies and can be called at any time.
@@ -272,75 +279,77 @@ namespace Tecan.Sila2.Discovery
         /// <param name="featureIdentifier">
         ///        The fully qualified Feature identifier for which the Feature definition shall be retrieved.
         ///      </param>
-        public virtual string GetFeatureDefinition(string featureIdentifier)
+        public virtual string GetFeatureDefinition( string featureIdentifier )
         {
-            GetFeatureDefinitionRequestDto request = new GetFeatureDefinitionRequestDto(featureIdentifier, null);
-            Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/core/SiLAService/v1/Command/GetFeatureDefinition");
+            GetFeatureDefinitionRequestDto request = new GetFeatureDefinitionRequestDto( featureIdentifier, null );
+            Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions( "org.silastandard/core/SiLAService/v1/Command/GetFeatureDefinition" );
             try
             {
-                string response = _channel.ExecuteUnobservableCommand<GetFeatureDefinitionRequestDto, GetFeatureDefinitionResponseDto>(_serviceName, "GetFeatureDefinition", request, callInfo).FeatureDefinition.Extract(_executionManager.DownloadBinaryStore);
+                string response = _channel.ExecuteUnobservableCommand<GetFeatureDefinitionRequestDto, GetFeatureDefinitionResponseDto>( _serviceName, "GetFeatureDefinition", request, callInfo ).FeatureDefinition.Extract( _executionManager.DownloadBinaryStore );
                 callInfo.FinishSuccessful();
                 return response;
-            } catch (System.Exception ex)
+            }
+            catch(System.Exception ex)
             {
-                System.Exception exception = _channel.ConvertException(ex, ConvertGetFeatureDefinitionException);
-                callInfo.FinishWithErrors(exception);
+                System.Exception exception = _channel.ConvertException( ex, ConvertGetFeatureDefinitionException );
+                callInfo.FinishWithErrors( exception );
                 throw exception;
             }
         }
-        
+
         ///  <summary>
         /// Converts the error ocurred during execution of GetFeatureDefinition to a proper exception
         /// </summary>
         /// <param name="errorIdentifier">The identifier of the error that has happened</param>
         /// <param name="errorMessage">The original error message from the server</param>
         /// <returns>The converted exception or null, if the error is not understood</returns>
-        private static System.Exception ConvertGetFeatureDefinitionException(string errorIdentifier, string errorMessage)
+        private static System.Exception ConvertGetFeatureDefinitionException( string errorIdentifier, string errorMessage )
         {
-            if ((errorIdentifier == "org.silastandard/core/SiLAService/v1/DefinedError/UnimplementedFeature"))
+            if((errorIdentifier == "org.silastandard/core/SiLAService/v1/DefinedExecutionError/UnimplementedFeature"))
             {
-                return new UnimplementedFeatureException(errorMessage);
+                return new UnimplementedFeatureException( errorMessage );
             }
             return null;
         }
-        
+
         ///  <summary>
         /// Sets a human readable name to the Server Name Property.Command has no preconditions and
         /// no further dependencies and can be called at any time.
         /// </summary>
         /// <param name="serverName">The human readable name to assign to the SiLA Server.</param>
-        public virtual void SetServerName(string serverName)
+        public virtual void SetServerName( string serverName )
         {
-            SetServerNameRequestDto request = new SetServerNameRequestDto(serverName, null);
-            Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/core/SiLAService/v1/Command/SetServerName");
+            SetServerNameRequestDto request = new SetServerNameRequestDto( serverName, null );
+            Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions( "org.silastandard/core/SiLAService/v1/Command/SetServerName" );
             try
             {
-                _channel.ExecuteUnobservableCommand<SetServerNameRequestDto>(_serviceName, "SetServerName", request, callInfo);
+                _channel.ExecuteUnobservableCommand<SetServerNameRequestDto>( _serviceName, "SetServerName", request, callInfo );
                 callInfo.FinishSuccessful();
                 return;
-            } catch (System.Exception ex)
+            }
+            catch(System.Exception ex)
             {
-                System.Exception exception = _channel.ConvertException(ex);
-                callInfo.FinishWithErrors(exception);
+                System.Exception exception = _channel.ConvertException( ex );
+                callInfo.FinishWithErrors( exception );
                 throw exception;
             }
         }
-        
-        private T Extract<T>(Tecan.Sila2.ISilaTransferObject<T> dto)
-        
+
+        private T Extract<T>( Tecan.Sila2.ISilaTransferObject<T> dto )
+
         {
-            return dto.Extract(_executionManager.DownloadBinaryStore);
+            return dto.Extract( _executionManager.DownloadBinaryStore );
         }
     }
-    
+
     ///  <summary>
     /// Factory to instantiate clients for the SiLA Service.
     /// </summary>
-    [System.ComponentModel.Composition.ExportAttribute(typeof(IClientFactory))]
-    [System.ComponentModel.Composition.PartCreationPolicyAttribute(System.ComponentModel.Composition.CreationPolicy.Shared)]
+    [System.ComponentModel.Composition.ExportAttribute( typeof( IClientFactory ) )]
+    [System.ComponentModel.Composition.PartCreationPolicyAttribute( System.ComponentModel.Composition.CreationPolicy.Shared )]
     public partial class SiLAServiceClientFactory : IClientFactory
     {
-        
+
         ///  <summary>
         /// Gets the fully-qualified identifier of the feature for which clients can be generated
         /// </summary>
@@ -351,7 +360,7 @@ namespace Tecan.Sila2.Discovery
                 return "org.silastandard/core/SiLAService/v1";
             }
         }
-        
+
         ///  <summary>
         /// Gets the interface type for which clients can be generated
         /// </summary>
@@ -359,19 +368,19 @@ namespace Tecan.Sila2.Discovery
         {
             get
             {
-                return typeof(ISiLAService);
+                return typeof( ISiLAService );
             }
         }
-        
+
         ///  <summary>
         /// Creates a strongly typed client for the given execution channel and execution manager
         /// </summary>
         /// <param name="channel">The channel that should be used for communication with the server</param>
         /// <param name="executionManager">The execution manager to manage metadata</param>
         /// <returns>A strongly typed client. This object will be an instance of the InterfaceType property</returns>
-        public object CreateClient(IClientChannel channel, IClientExecutionManager executionManager)
+        public object CreateClient( IClientChannel channel, IClientExecutionManager executionManager )
         {
-            return new SiLAServiceClient(channel, executionManager);
+            return new SiLAServiceClient( channel, executionManager );
         }
     }
 }

@@ -92,8 +92,8 @@ namespace Tecan.Sila2.Generator.Test.TestReference
                 throw _server.ErrorHandling.CreateUnknownValidationError(ex);
             } catch (UnimplementedFeatureException ex)
             {
-                throw _server.ErrorHandling.CreateExecutionError("tecan.sila.generator.test/silaservice/SiLAService/v4/DefinedError/UnimplementedFe" +
-                        "ature", "The feature specified by the given feature identifier is not implemented by the s" +
+                throw _server.ErrorHandling.CreateExecutionError("tecan.sila.generator.test/silaservice/SiLAService/v4/DefinedExecutionError/Unimpl" +
+                        "ementedFeature", "The feature specified by the given feature identifier is not implemented by the s" +
                         "erver.", ex.Message);
             }
         }

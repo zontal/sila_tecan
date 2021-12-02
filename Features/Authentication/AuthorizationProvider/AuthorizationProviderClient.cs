@@ -72,13 +72,13 @@ namespace Tecan.Sila2.AuthorizationProvider
         /// <returns>The converted exception or null, if the error is not understood</returns>
         private static System.Exception ConvertVerifyException(string errorIdentifier, string errorMessage)
         {
-            if ((errorIdentifier == "org.silastandard/core/AuthorizationProviderService/v1/DefinedError/AuthorizationF" +
-                "ailed"))
+            if ((errorIdentifier == "org.silastandard/core/AuthorizationProviderService/v1/DefinedExecutionError/Autho" +
+                "rizationFailed"))
             {
                 return new AuthorizationFailedException(errorMessage);
             }
-            if ((errorIdentifier == "org.silastandard/core/AuthorizationProviderService/v1/DefinedError/InvalidAccessT" +
-                "oken"))
+            if ((errorIdentifier == "org.silastandard/core/AuthorizationProviderService/v1/DefinedExecutionError/Inval" +
+                "idAccessToken"))
             {
                 return new InvalidAccessTokenException(errorMessage);
             }

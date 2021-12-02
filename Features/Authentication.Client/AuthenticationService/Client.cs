@@ -72,7 +72,8 @@ namespace Tecan.Sila2.Authentication.AuthenticationService
         /// <returns>The converted exception or null, if the error is not understood</returns>
         private static System.Exception ConvertLoginException(string errorIdentifier, string errorMessage)
         {
-            if ((errorIdentifier == "org.silastandard/core/AuthenticationService/v1/DefinedError/AuthenticationFailed"))
+            if ((errorIdentifier == "org.silastandard/core/AuthenticationService/v1/DefinedExecutionError/Authenticati" +
+                "onFailed"))
             {
                 return new AuthenticationFailedException(errorMessage);
             }
@@ -108,7 +109,8 @@ namespace Tecan.Sila2.Authentication.AuthenticationService
         /// <returns>The converted exception or null, if the error is not understood</returns>
         private static System.Exception ConvertLogoutException(string errorIdentifier, string errorMessage)
         {
-            if ((errorIdentifier == "org.silastandard/core/AuthenticationService/v1/DefinedError/InvalidAccessToken"))
+            if ((errorIdentifier == "org.silastandard/core/AuthenticationService/v1/DefinedExecutionError/InvalidAcces" +
+                "sToken"))
             {
                 return new InvalidAccessTokenException(errorMessage);
             }

@@ -92,7 +92,7 @@ namespace Tecan.Sila2.Discovery
                 throw _server.ErrorHandling.CreateUnknownValidationError(ex);
             } catch (UnimplementedFeatureException ex)
             {
-                throw _server.ErrorHandling.CreateExecutionError("org.silastandard/core/SiLAService/v1/DefinedError/UnimplementedFeature", "\n      The Feature specified by the given Feature identifier is not implemented b" +
+                throw _server.ErrorHandling.CreateExecutionError("org.silastandard/core/SiLAService/v1/DefinedExecutionError/UnimplementedFeature", "\n      The Feature specified by the given Feature identifier is not implemented b" +
                         "y the server.\n    ", ex.Message);
             }
         }

@@ -302,8 +302,8 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// <returns>The converted exception or null, if the error is not understood</returns>
         private static System.Exception ConvertGetFeatureDefinitionException(string errorIdentifier, string errorMessage)
         {
-            if ((errorIdentifier == "tecan.sila.generator.test/silaservice/SiLAService/v4/DefinedError/UnimplementedFe" +
-                "ature"))
+            if ((errorIdentifier == "tecan.sila.generator.test/silaservice/SiLAService/v4/DefinedExecutionError/Unimpl" +
+                "ementedFeature"))
             {
                 return new UnimplementedFeatureException(errorMessage);
             }

@@ -148,7 +148,8 @@ namespace Tecan.Sila2.Authorization
                 return Intercept(commandIdentifier, Tecan.Sila2.Server.Metadata.Extract<Tecan.Sila2.StringDto>(metadata, "org.silastandard/core/AuthorizationService/v1/Metadata/AccessToken").Extract(server));
             } catch (InvalidAccessTokenException ex)
             {
-                throw server.ErrorHandling.CreateExecutionError("org.silastandard/core/AuthorizationService/v1/DefinedError/InvalidAccessToken", "The sent access token is not valid.", ex.Message);
+                throw server.ErrorHandling.CreateExecutionError("org.silastandard/core/AuthorizationService/v1/DefinedExecutionError/InvalidAccess" +
+                        "Token", "The sent access token is not valid.", ex.Message);
             }
         }
     }
