@@ -56,7 +56,7 @@ namespace Tecan.Sila2.Authentication
             {
                 token = Renew( server, token, executionManager );
             }
-            metadata.Add( MetadataIdentifier, ByteSerializer.ToByteArray<StringDto>( token.Token ) );
+            metadata.Add( MetadataIdentifier, ByteSerializer.ToByteArray( new PropertyResponse<StringDto>( token.Token ) ) );
             return null;
         }
 

@@ -17,7 +17,7 @@
         {
             if (metadata != null && metadata.TryGetMetadata(metadataIdentifier, out var metadataValue))
             {
-                return ByteSerializer.FromByteArray<TMetadata>( metadataValue );
+                return ByteSerializer.FromByteArray<PropertyResponse<TMetadata>>( metadataValue ).Value;
             }
 
             return new TMetadata();
