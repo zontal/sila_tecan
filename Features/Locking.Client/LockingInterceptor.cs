@@ -31,7 +31,7 @@ namespace Tecan.Sila2.Locking
                 _serverLockData.Add( server, lockData );
             }
             lockData.RegisterCall();
-            metadata.Add( MetadataIdentifier, ByteSerializer.ToByteArray<StringDto>( lockData.LockIdentifier ) );
+            metadata.Add( MetadataIdentifier, ByteSerializer.ToByteArray( new PropertyResponse<StringDto>( lockData.LockIdentifier ) ) );
             return lockData;
         }
 

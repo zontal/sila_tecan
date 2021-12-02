@@ -30,7 +30,7 @@ namespace Tecan.Sila2.IntegrationTests
         {
             if( content != null )
             {
-                metadata.Add(identifier, ProtobufMarshaller<StringDto>.Default.Serializer( content ));
+                metadata.Add(identifier, ProtobufMarshaller<PropertyResponse<StringDto>>.Default.Serializer( new PropertyResponse<StringDto>( content ) ));
             }
         }
 

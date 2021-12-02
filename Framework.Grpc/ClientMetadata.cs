@@ -15,7 +15,12 @@ namespace Tecan.Sila2.Client
         /// <returns>The header name to be used</returns>
         public static string GetHeaderName(string metadataIdentifier)
         {
-            var sb = new StringBuilder();
+            if (string.IsNullOrEmpty(metadataIdentifier))
+            {
+                return null;
+            }
+
+            var sb = new StringBuilder(metadataIdentifier.Length + 9);
             sb.Append("sila-");
             foreach (var character in metadataIdentifier)
             {
