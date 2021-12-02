@@ -71,7 +71,8 @@ namespace Tecan.Sila2.IntegrationTests
                 throw _server.ErrorHandling.CreateUnknownValidationError(ex);
             } catch (ShouldHaveBeenCancelledException ex)
             {
-                throw _server.ErrorHandling.CreateExecutionError("tecan.sila/integrationtests/TestServer/v1/DefinedError/ShouldHaveBeenCancelled", "", ex.Message);
+                throw _server.ErrorHandling.CreateExecutionError("tecan.sila/integrationtests/TestServer/v1/DefinedExecutionError/ShouldHaveBeenCan" +
+                        "celled", "", ex.Message);
             }
         }
         
@@ -82,7 +83,7 @@ namespace Tecan.Sila2.IntegrationTests
                 throw exception;
             } catch (FakeException ex)
             {
-                throw _server.ErrorHandling.CreateExecutionError("tecan.sila/integrationtests/TestServer/v1/DefinedError/Fake", "", ex.Message);
+                throw _server.ErrorHandling.CreateExecutionError("tecan.sila/integrationtests/TestServer/v1/DefinedExecutionError/Fake", "", ex.Message);
             }
         }
         
@@ -432,7 +433,7 @@ namespace Tecan.Sila2.IntegrationTests
                 return EmptyRequest.Instance;
             } catch (FakeException ex)
             {
-                throw _server.ErrorHandling.CreateExecutionError("tecan.sila/integrationtests/TestServer/v1/DefinedError/Fake", "", ex.Message);
+                throw _server.ErrorHandling.CreateExecutionError("tecan.sila/integrationtests/TestServer/v1/DefinedExecutionError/Fake", "", ex.Message);
             }
         }
         

@@ -99,7 +99,8 @@ namespace Tecan.Sila2.Authentication
                 throw _server.ErrorHandling.CreateUnknownValidationError(ex);
             } catch (AuthenticationFailedException ex)
             {
-                throw _server.ErrorHandling.CreateExecutionError("org.silastandard/core/AuthenticationService/v1/DefinedError/AuthenticationFailed", "The provided credentials are not valid.", ex.Message);
+                throw _server.ErrorHandling.CreateExecutionError("org.silastandard/core/AuthenticationService/v1/DefinedExecutionError/Authenticati" +
+                        "onFailed", "The provided credentials are not valid.", ex.Message);
             }
         }
         
@@ -124,7 +125,8 @@ namespace Tecan.Sila2.Authentication
                 throw _server.ErrorHandling.CreateUnknownValidationError(ex);
             } catch (InvalidAccessTokenException ex)
             {
-                throw _server.ErrorHandling.CreateExecutionError("org.silastandard/core/AuthenticationService/v1/DefinedError/InvalidAccessToken", "The sent access token is not valid.", ex.Message);
+                throw _server.ErrorHandling.CreateExecutionError("org.silastandard/core/AuthenticationService/v1/DefinedExecutionError/InvalidAcces" +
+                        "sToken", "The sent access token is not valid.", ex.Message);
             }
         }
         

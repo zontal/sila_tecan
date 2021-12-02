@@ -118,7 +118,8 @@ namespace Tecan.Sila2.Locking.LockController
         /// <returns>The converted exception or null, if the error is not understood</returns>
         private static System.Exception ConvertLockServerException(string errorIdentifier, string errorMessage)
         {
-            if ((errorIdentifier == "org.silastandard/core/LockController/v1/DefinedError/ServerAlreadyLocked"))
+            if ((errorIdentifier == "org.silastandard/core/LockController/v1/DefinedExecutionError/ServerAlreadyLocked" +
+                ""))
             {
                 return new ServerAlreadyLockedException(errorMessage);
             }
@@ -155,11 +156,12 @@ namespace Tecan.Sila2.Locking.LockController
         /// <returns>The converted exception or null, if the error is not understood</returns>
         private static System.Exception ConvertUnlockServerException(string errorIdentifier, string errorMessage)
         {
-            if ((errorIdentifier == "org.silastandard/core/LockController/v1/DefinedError/ServerNotLocked"))
+            if ((errorIdentifier == "org.silastandard/core/LockController/v1/DefinedExecutionError/ServerNotLocked"))
             {
                 return new ServerNotLockedException(errorMessage);
             }
-            if ((errorIdentifier == "org.silastandard/core/LockController/v1/DefinedError/InvalidLockIdentifier"))
+            if ((errorIdentifier == "org.silastandard/core/LockController/v1/DefinedExecutionError/InvalidLockIdentifi" +
+                "er"))
             {
                 return new InvalidLockIdentifierException(errorMessage);
             }

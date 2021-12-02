@@ -74,13 +74,13 @@ namespace Tecan.Sila2.Cancellation.CancelController
         /// <returns>The converted exception or null, if the error is not understood</returns>
         private static System.Exception ConvertCancelCommandException(string errorIdentifier, string errorMessage)
         {
-            if ((errorIdentifier == "org.silastandard/core.commands/CancelController/v1/DefinedError/InvalidCommandExe" +
-                "cutionUUID"))
+            if ((errorIdentifier == "org.silastandard/core.commands/CancelController/v1/DefinedExecutionError/InvalidC" +
+                "ommandExecutionUUID"))
             {
                 return new InvalidCommandExecutionUUIDException(errorMessage);
             }
-            if ((errorIdentifier == "org.silastandard/core.commands/CancelController/v1/DefinedError/OperationNotSuppo" +
-                "rted"))
+            if ((errorIdentifier == "org.silastandard/core.commands/CancelController/v1/DefinedExecutionError/Operatio" +
+                "nNotSupported"))
             {
                 return new OperationNotSupportedException(errorMessage);
             }

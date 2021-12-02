@@ -55,7 +55,7 @@ namespace Tecan.Sila2
         /// <returns>The fully qualified identifier of the error</returns>
         public string GetFullyQualifiedIdentifier(FeatureDefinedExecutionError error)
         {
-            return FullyQualifiedIdentifier + "/DefinedError/" + error.Identifier;
+            return FullyQualifiedIdentifier + "/DefinedExecutionError/" + error.Identifier;
         }
 
         /// <summary>

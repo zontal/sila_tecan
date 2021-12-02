@@ -86,13 +86,13 @@ namespace Tecan.Sila2.Cancellation
                 throw _server.ErrorHandling.CreateUnknownValidationError(ex);
             } catch (InvalidCommandExecutionUUIDException ex)
             {
-                throw _server.ErrorHandling.CreateExecutionError("org.silastandard/core.commands/CancelController/v1/DefinedError/InvalidCommandExe" +
-                        "cutionUUID", "\n      The given Command Execution UUID does not specify a command that is curren" +
+                throw _server.ErrorHandling.CreateExecutionError("org.silastandard/core.commands/CancelController/v1/DefinedExecutionError/InvalidC" +
+                        "ommandExecutionUUID", "\n      The given Command Execution UUID does not specify a command that is curren" +
                         "tly being executed.\n    ", ex.Message);
             } catch (OperationNotSupportedException ex)
             {
-                throw _server.ErrorHandling.CreateExecutionError("org.silastandard/core.commands/CancelController/v1/DefinedError/OperationNotSuppo" +
-                        "rted", "\n      Canceling is not supported for the SiLA 2 Command with the\n      specified" +
+                throw _server.ErrorHandling.CreateExecutionError("org.silastandard/core.commands/CancelController/v1/DefinedExecutionError/Operatio" +
+                        "nNotSupported", "\n      Canceling is not supported for the SiLA 2 Command with the\n      specified" +
                         " CommandExecutionUUID.\n    ", ex.Message);
             }
         }

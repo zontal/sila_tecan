@@ -92,7 +92,8 @@ namespace Tecan.Sila2.Locking
                 throw _server.ErrorHandling.CreateUnknownValidationError(ex);
             } catch (ServerAlreadyLockedException ex)
             {
-                throw _server.ErrorHandling.CreateExecutionError("org.silastandard/core/LockController/v1/DefinedError/ServerAlreadyLocked", "The SiLA Server can not be locked because it is already locked.", ex.Message);
+                throw _server.ErrorHandling.CreateExecutionError("org.silastandard/core/LockController/v1/DefinedExecutionError/ServerAlreadyLocked" +
+                        "", "The SiLA Server can not be locked because it is already locked.", ex.Message);
             }
         }
         
@@ -117,10 +118,11 @@ namespace Tecan.Sila2.Locking
                 throw _server.ErrorHandling.CreateUnknownValidationError(ex);
             } catch (ServerNotLockedException ex)
             {
-                throw _server.ErrorHandling.CreateExecutionError("org.silastandard/core/LockController/v1/DefinedError/ServerNotLocked", "The SiLA Server can not be unlocked because it is not locked.", ex.Message);
+                throw _server.ErrorHandling.CreateExecutionError("org.silastandard/core/LockController/v1/DefinedExecutionError/ServerNotLocked", "The SiLA Server can not be unlocked because it is not locked.", ex.Message);
             } catch (InvalidLockIdentifierException ex)
             {
-                throw _server.ErrorHandling.CreateExecutionError("org.silastandard/core/LockController/v1/DefinedError/InvalidLockIdentifier", "The sent lock identifier is not valid.", ex.Message);
+                throw _server.ErrorHandling.CreateExecutionError("org.silastandard/core/LockController/v1/DefinedExecutionError/InvalidLockIdentifi" +
+                        "er", "The sent lock identifier is not valid.", ex.Message);
             }
         }
         
@@ -229,7 +231,8 @@ namespace Tecan.Sila2.Locking
                 return Intercept(commandIdentifier, Tecan.Sila2.Server.Metadata.Extract<Tecan.Sila2.StringDto>(metadata, "org.silastandard/core/LockController/v1/Metadata/LockIdentifier").Extract(server));
             } catch (InvalidLockIdentifierException ex)
             {
-                throw server.ErrorHandling.CreateExecutionError("org.silastandard/core/LockController/v1/DefinedError/InvalidLockIdentifier", "The sent lock identifier is not valid.", ex.Message);
+                throw server.ErrorHandling.CreateExecutionError("org.silastandard/core/LockController/v1/DefinedExecutionError/InvalidLockIdentifi" +
+                        "er", "The sent lock identifier is not valid.", ex.Message);
             }
         }
     }

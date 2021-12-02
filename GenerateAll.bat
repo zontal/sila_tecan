@@ -1,6 +1,6 @@
 dotnet build Generator\Generator.csproj -c Release
 
-Build\Generator\net472\SilaGen.exe generate-provider Server\Discovery\SiLAService.sila.xml Framework\Discovery\SilaServiceDto.cs Server\Discovery\SiLAServiceProvider.cs Client\Discovery\SiLAServiceClient.cs -n Tecan.Sila2.Discovery
+Build\Generator\net472\SilaGen.exe generate-provider Server\Discovery\SiLAService.sila.xml Framework\Discovery\SilaServiceDto.cs Server\Discovery\SiLAServiceProvider.cs Framework\Discovery\SiLAServiceClient.cs -n Tecan.Sila2.Discovery
 
 Build\Generator\net472\SilaGen.exe generate-interface Server\ConnectionConfigurationService.sila.xml Server\ConnectionConfiguration\IConnectionConfigurationService.cs -n Tecan.Sila2.Server.ConnectionConfiguration
 Build\Generator\net472\SilaGen.exe generate-provider Server\ConnectionConfigurationService.sila.xml Server\ConnectionConfiguration\ConnectionConfigurationDtos.cs Server\ConnectionConfiguration\ConnectionConfigurationProvider.cs -n Tecan.Sila2.Server.ConnectionConfiguration -s

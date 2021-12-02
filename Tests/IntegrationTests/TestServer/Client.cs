@@ -430,7 +430,8 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         /// <returns>The converted exception or null, if the error is not understood</returns>
         private static System.Exception ConvertWaitForCancelOrThrowException(string errorIdentifier, string errorMessage)
         {
-            if ((errorIdentifier == "tecan.sila/integrationtests/TestServer/v1/DefinedError/ShouldHaveBeenCancelled"))
+            if ((errorIdentifier == "tecan.sila/integrationtests/TestServer/v1/DefinedExecutionError/ShouldHaveBeenCan" +
+                "celled"))
             {
                 return new ShouldHaveBeenCancelledException(errorMessage);
             }
@@ -464,7 +465,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         /// <returns>The converted exception or null, if the error is not understood</returns>
         private static System.Exception ConvertRunIntoFailureException(string errorIdentifier, string errorMessage)
         {
-            if ((errorIdentifier == "tecan.sila/integrationtests/TestServer/v1/DefinedError/Fake"))
+            if ((errorIdentifier == "tecan.sila/integrationtests/TestServer/v1/DefinedExecutionError/Fake"))
             {
                 return new FakeException(errorMessage);
             }
@@ -487,7 +488,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         /// <returns>The converted exception or null, if the error is not understood</returns>
         private static System.Exception ConvertRunIntoFailureObservablyException(string errorIdentifier, string errorMessage)
         {
-            if ((errorIdentifier == "tecan.sila/integrationtests/TestServer/v1/DefinedError/Fake"))
+            if ((errorIdentifier == "tecan.sila/integrationtests/TestServer/v1/DefinedExecutionError/Fake"))
             {
                 return new FakeException(errorMessage);
             }
