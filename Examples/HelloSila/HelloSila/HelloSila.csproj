@@ -14,11 +14,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Tecan.Sila2" Version="4.0.1" />
-    <PackageReference Include="Tecan.Sila2.Contracts" Version="4.0.1" />
-    <PackageReference Include="Tecan.Sila2.Grpc" Version="4.0.1" />
-    <PackageReference Include="Tecan.Sila2.Server" Version="4.0.1" />
-    <PackageReference Include="Tecan.Sila2.Features.Locking" Version="4.0.1" />
+    <PackageReference Include="Tecan.Sila2" Version="4.0.2" />
+    <PackageReference Include="Tecan.Sila2.Contracts" Version="4.0.2" />
+    <PackageReference Include="Tecan.Sila2.Grpc" Version="4.0.2" />
+    <PackageReference Include="Tecan.Sila2.Server" Version="4.0.2" />
+    <PackageReference Include="Tecan.Sila2.Features.Locking" Version="4.0.2" />
   </ItemGroup>
 
   <ItemGroup>

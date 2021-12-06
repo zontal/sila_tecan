@@ -15,7 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Tecan.Sila2.Server.DryIoC" Version="4.0.1" />
+    <PackageReference Include="Tecan.Sila2.Server.DryIoC" Version="4.0.2" />
   </ItemGroup>
 
   <ItemGroup>
