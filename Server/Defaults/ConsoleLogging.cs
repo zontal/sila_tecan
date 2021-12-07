@@ -47,9 +47,6 @@ namespace Tecan.Sila2.Server
                 case LogLevel.Debug:
                     Console.ForegroundColor = ConsoleColor.Gray;
                     break;
-                case LogLevel.Info:
-                    Console.ForegroundColor = ConsoleColor.White;
-                    break;
                 case LogLevel.Warn:
                     Console.ForegroundColor = ConsoleColor.Yellow;
                     break;

@@ -37,7 +37,7 @@
         <EmbeddedResource Include="WorktableService.sila.xml" />
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Include="Grpc.Core" Version="2.27.0" />
+        <PackageReference Include="Grpc.Core" Version="2.40.0" />
         <PackageReference Include="protobuf-net" Version="2.4.0" />
     </ItemGroup>
     <ItemGroup>

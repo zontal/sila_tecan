@@ -14,7 +14,7 @@
         <repository type="git" url="https://gitlab.com/SiLA2/vendors/sila_tecan.git" />
         <dependencies>
             <dependency id="Tecan.Sila2.Contracts" version="[$version$,5.0)" />
-            <dependency id="Grpc.Core" version="2.27" />
+            <dependency id="Grpc.Core" version="2.40" />
             <dependency id="IPNetwork2" version="2.1.2" />
             <dependency id="Makaretu.Dns.Multicast" version="0.25.0" />
         </dependencies>
