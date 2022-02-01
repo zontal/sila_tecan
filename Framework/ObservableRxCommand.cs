@@ -18,9 +18,10 @@ namespace Tecan.Sila2
         /// Creates a new command for the given observable
         /// </summary>
         /// <param name="observable">The observable</param>
-        public ObservableRxCommand(IObservable<T> observable) : base()
+        public ObservableRxCommand( IObservable<T> observable ) : base()
         {
             _subscription = observable.Subscribe( this );
+            _taskCompletionSource = new TaskCompletionSource<bool>();
         }
 
         /// <inheritdoc />
