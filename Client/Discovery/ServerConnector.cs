@@ -40,10 +40,10 @@ namespace Tecan.Sila2.Discovery
             return Connect( $"{host}:{port}", null, null );
         }
 
-        private ServerData Connect(string target, Guid? expectedGuid, IReadOnlyDictionary<string, string> details)
+        private ServerData Connect( string target, Guid? expectedGuid, IReadOnlyDictionary<string, string> details )
         {
             var connection = ConnectCore( target, expectedGuid, details );
-            if (expectedGuid.HasValue && connection != null && connection.Config.Uuid != expectedGuid.Value)
+            if(expectedGuid.HasValue && connection != null && connection.Config.Uuid != expectedGuid.Value)
             {
                 _loggingChannel.Warn( $"Connection to {target} was successful, but the server UUID {connection.Config.Uuid} does not match the expected {expectedGuid.Value}." );
                 connection.Channel.Dispose();
@@ -70,7 +70,7 @@ namespace Tecan.Sila2.Discovery
                         var ca = RestoreCa( details );
                         var channel = new Channel( target, new SslCredentials( ca, null, verify ), _defaultChannelOptions );
                         var server = GetServerData( channel );
-                        return CheckExpectedGuid( CheckCertificate( server, ExtractCertificate(certificate) ), expectedGuid);
+                        return CheckExpectedGuid( CheckCertificate( server, ExtractCertificate( certificate ) ), expectedGuid );
                     }
                     catch(Exception e)
                     {
@@ -97,7 +97,7 @@ namespace Tecan.Sila2.Discovery
 
         private ServerData CheckCertificate( ServerData serverData, X509Certificate2 certificate )
         {
-            if (certificate == null)
+            if(certificate == null)
             {
                 return ServerCertificateCouldNotBeRead( serverData );
             }
@@ -123,7 +123,7 @@ namespace Tecan.Sila2.Discovery
         {
             foreach(var extension in certificate.Extensions)
             {
-                if(extension.Oid.Value.ToString() == "1.3.536")
+                if(extension.Oid.Value.ToString() == "2.25.27668953002016836290457026181063785061")
                 {
                     var value = Encoding.ASCII.GetString( extension.RawData );
                     if(value.Length >= 36 && Guid.TryParse( value.Substring( value.Length - 36 ), out var serverUuid ))
@@ -136,7 +136,7 @@ namespace Tecan.Sila2.Discovery
             return null;
         }
 
-        private ServerData CheckExpectedGuid(ServerData serverData, Guid? expectedGuid)
+        private ServerData CheckExpectedGuid( ServerData serverData, Guid? expectedGuid )
         {
             if(expectedGuid.HasValue && serverData.Config.Uuid != expectedGuid.Value)
             {
@@ -151,7 +151,7 @@ namespace Tecan.Sila2.Discovery
         /// <param name="server">The server that was connected</param>
         /// <param name="dnsGuid">The Server UUID found via DNS</param>
         /// <returns>The connected server or null, if the connection should be refused</returns>
-        protected virtual ServerData ServerUuidDoesNotMatchDnsEntry(ServerData server, Guid dnsGuid)
+        protected virtual ServerData ServerUuidDoesNotMatchDnsEntry( ServerData server, Guid dnsGuid )
         {
             _loggingChannel.Warn( $"Server UUID does not match expected value from Discovery. Expected {dnsGuid} but the actual server id is {server.Config.Uuid}" );
             return server;
@@ -164,7 +164,7 @@ namespace Tecan.Sila2.Discovery
         /// <param name="serverIdFromCertificate">The Server UUID from the certificate</param>
         /// <param name="serverCertificate">The server certificate</param>
         /// <returns>The connected server or null, if the connection should be refused</returns>
-        protected virtual ServerData ServerUuidDoesNotMatchCertificate(ServerData server, Guid serverIdFromCertificate, X509Certificate2 serverCertificate)
+        protected virtual ServerData ServerUuidDoesNotMatchCertificate( ServerData server, Guid serverIdFromCertificate, X509Certificate2 serverCertificate )
         {
             _loggingChannel.Warn( $"Server UUID does not match expected value from certificate. Expected {serverIdFromCertificate} but the actual server id is {server.Config.Uuid}" );
             return server;
@@ -176,7 +176,7 @@ namespace Tecan.Sila2.Discovery
         /// <param name="server">The server that was connected</param>
         /// <param name="serverCertificate">The server certificate</param>
         /// <returns>The connected server or null, if the connection should be refused</returns>
-        protected virtual ServerData ServerUuidNotContainedInCertificate(ServerData server, X509Certificate2 serverCertificate)
+        protected virtual ServerData ServerUuidNotContainedInCertificate( ServerData server, X509Certificate2 serverCertificate )
         {
             _loggingChannel.Warn( $"No server uuid could be found in the certificate for server {server.Config.Uuid}" );
             return server;
@@ -187,14 +187,14 @@ namespace Tecan.Sila2.Discovery
         /// </summary>
         /// <param name="server">The connected server</param>
         /// <returns>The connected server or null, if the connection should be refused</returns>
-        protected virtual ServerData ServerCertificateCouldNotBeRead(ServerData server)
+        protected virtual ServerData ServerCertificateCouldNotBeRead( ServerData server )
         {
             return null;
         }
 
         private X509Certificate2 ExtractCertificate( string peerPem )
         {
-            if (string.IsNullOrEmpty(peerPem))
+            if(string.IsNullOrEmpty( peerPem ))
             {
                 return null;
             }
@@ -219,7 +219,7 @@ namespace Tecan.Sila2.Discovery
         {
             var sb = new StringBuilder();
             var line = 0;
-            while(details.TryGetValue("ca" + line, out var caLine))
+            while(details.TryGetValue( "ca" + line, out var caLine ))
             {
                 sb.AppendLine( caLine );
                 line++;
