@@ -1,43 +1,48 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFrameworks>netcoreapp3.1;net6.0</TargetFrameworks>
-    <RootNamespace>Tecan.Sila2.Interop.Server</RootNamespace>
-  </PropertyGroup>
+    <PropertyGroup>
+        <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+        <OutputType>Exe</OutputType>
+        <TargetFrameworks>netcoreapp3.1;net6.0</TargetFrameworks>
+        <RootNamespace>Tecan.Sila2.Interop.Server</RootNamespace>
+    </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <OutputPath>..\..\Build\Interop\Server</OutputPath>
-  </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+        <OutputPath>..\..\Build\Interop\Server</OutputPath>
+    </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <OutputPath>..\..\Build\Interop\Server</OutputPath>
-  </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+        <OutputPath>..\..\Build\Interop\Server</OutputPath>
+    </PropertyGroup>
 
-  <ItemGroup>
-    <None Remove="ComplexDataTypeTest.sila.xml" />
-    <None Remove="DataTypeProvider.sila.xml" />
-    <None Remove="InteropServer.csproj.DotSettings" />
-    <None Remove="ObservableCommandTest.sila.xml" />
-    <None Remove="ObservablePropertyTest.sila.xml" />
-    <None Remove="ParameterConstraintsTest.sila.xml" />
-  </ItemGroup>
+    <ItemGroup>
+        <None Remove="ComplexDataTypeTest.sila.xml" />
+        <None Remove="DataTypeProvider.sila.xml" />
+        <None Remove="InteropServer.csproj.DotSettings" />
+        <None Remove="ObservableCommandTest.sila.xml" />
+        <None Remove="ObservablePropertyTest.sila.xml" />
+        <None Remove="ParameterConstraintsTest.sila.xml" />
+    </ItemGroup>
 
-  <ItemGroup>
-    <EmbeddedResource Include="ComplexDataTypeTest.sila.xml" />
-    <EmbeddedResource Include="DataTypeProvider.sila.xml" />
-    <EmbeddedResource Include="InteropServer.csproj.DotSettings" />
-    <EmbeddedResource Include="ObservableCommandTest.sila.xml" />
-    <EmbeddedResource Include="ObservablePropertyTest.sila.xml" />
-    <EmbeddedResource Include="ParameterConstraintsTest.sila.xml" />
-  </ItemGroup>
+    <ItemGroup>
+        <Compile Include="..\..\CommonAssemblyInfo.cs" Link="Properties\CommonAssemblyInfo.cs" />
+    </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\Annotations\Annotations.csproj" />
-    <ProjectReference Include="..\..\Contracts\Contracts.csproj" />
-    <ProjectReference Include="..\..\DynamicClient\DynamicClient.csproj" />
-    <ProjectReference Include="..\..\Framework\Framework.csproj" />
-    <ProjectReference Include="..\..\Server\Server.csproj" />
-  </ItemGroup>
+    <ItemGroup>
+        <EmbeddedResource Include="ComplexDataTypeTest.sila.xml" />
+        <EmbeddedResource Include="DataTypeProvider.sila.xml" />
+        <EmbeddedResource Include="InteropServer.csproj.DotSettings" />
+        <EmbeddedResource Include="ObservableCommandTest.sila.xml" />
+        <EmbeddedResource Include="ObservablePropertyTest.sila.xml" />
+        <EmbeddedResource Include="ParameterConstraintsTest.sila.xml" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\..\Annotations\Annotations.csproj" />
+        <ProjectReference Include="..\..\Contracts\Contracts.csproj" />
+        <ProjectReference Include="..\..\DynamicClient\DynamicClient.csproj" />
+        <ProjectReference Include="..\..\Framework\Framework.csproj" />
+        <ProjectReference Include="..\..\Server\Server.csproj" />
+    </ItemGroup>
 
 </Project>

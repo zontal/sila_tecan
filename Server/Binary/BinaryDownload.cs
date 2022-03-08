@@ -26,53 +26,53 @@ namespace Tecan.Sila2.Server.Binary
         /// Create a new binary download utility for the given local file management
         /// </summary>
         /// <param name="server"></param>
-        public BinaryDownload(IFileManagement server)
+        public BinaryDownload( IFileManagement server )
         {
             _server = server;
-            _disposeTimer = new Timer(DisposeExpiredStreams);
-            _disposeTimer.Change(10000, 10000);
+            _disposeTimer = new Timer( DisposeExpiredStreams );
+            _disposeTimer.Change( 10000, 10000 );
         }
 
-        private void DisposeExpiredStreams(object state)
+        private void DisposeExpiredStreams( object state )
         {
-            foreach (var item in _openStreams.ToArray())
+            foreach(var item in _openStreams.ToArray())
             {
-                if (item.Value.expiration < DateTimeOffset.Now)
+                if(item.Value.expiration < DateTimeOffset.Now)
                 {
-                    if (item.Value.stream != null)
+                    if(item.Value.stream != null)
                     {
                         item.Value.stream.Close();
                         item.Value.stream.Dispose();
                     }
-                    _openStreams.TryRemove(item.Key, out _);
-                    _server.Delete(item.Key, false);
+                    _openStreams.TryRemove( item.Key, out _ );
+                    _server.Delete( item.Key, false );
                 }
             }
         }
 
-        private Task<EmptyRequest> DeleteBinary(DeleteBinaryRequestDto request, ServerCallContext context)
+        private Task<EmptyRequest> DeleteBinary( DeleteBinaryRequestDto request, ServerCallContext context )
         {
-            _server.Delete(request.BinaryTransferUUID, false);
-            return Task.FromResult(EmptyRequest.Instance);
+            _server.Delete( request.BinaryTransferUUID, false );
+            return Task.FromResult( EmptyRequest.Instance );
         }
 
-        private Task<GetBinaryInfoResponseDto> GetBinaryInfo(GetBinaryInfoRequestDto request, ServerCallContext context)
+        private Task<GetBinaryInfoResponseDto> GetBinaryInfo( GetBinaryInfoRequestDto request, ServerCallContext context )
         {
             try
             {
                 return Task.FromResult( GetBinaryInfoCore( request ) );
             }
-            catch (InvalidBinaryTransferIdException transferException)
+            catch(InvalidBinaryTransferIdException transferException)
             {
-                return Task.FromException<GetBinaryInfoResponseDto>( ServerErrorHandling.CreateBinaryError( new BinaryTransferError
+                return Task.FromException<GetBinaryInfoResponseDto>( ServerErrorHandling.Instance.CreateBinaryError( new BinaryTransferError
                 {
                     Type = BinaryTransferError.ErrorType.InvalidBinaryTransferUuid,
                     Message = transferException.Message
                 } ) );
             }
-            catch (Exception exception)
+            catch(Exception exception)
             {
-                return Task.FromException<GetBinaryInfoResponseDto>( ServerErrorHandling.CreateBinaryError( new BinaryTransferError
+                return Task.FromException<GetBinaryInfoResponseDto>( ServerErrorHandling.Instance.CreateBinaryError( new BinaryTransferError
                 {
                     Type = BinaryTransferError.ErrorType.BinaryDownloadFailed,
                     Message = exception.Message
@@ -94,16 +94,16 @@ namespace Tecan.Sila2.Server.Binary
             };
         }
 
-        private (Stream stream, DateTimeOffset expiration) OpenFile(string binaryIdentifier, DateTimeOffset expiration)
+        private (Stream stream, DateTimeOffset expiration) OpenFile( string binaryIdentifier, DateTimeOffset expiration )
         {
-            if (expiration == default(DateTimeOffset))
+            if(expiration == default( DateTimeOffset ))
             {
-                expiration = DateTimeOffset.Now.AddMinutes(5);
+                expiration = DateTimeOffset.Now.AddMinutes( 5 );
             }
-            if (_server.Exists(binaryIdentifier))
+            if(_server.Exists( binaryIdentifier ))
             {
-                var fileData = (_server.OpenRead(binaryIdentifier), expiration);
-                _openStreams.TryAdd(binaryIdentifier, fileData);
+                var fileData = (_server.OpenRead( binaryIdentifier ), expiration);
+                _openStreams.TryAdd( binaryIdentifier, fileData );
                 return fileData;
             }
             else
@@ -112,17 +112,17 @@ namespace Tecan.Sila2.Server.Binary
             }
         }
 
-        private async Task GetChunk(IAsyncStreamReader<GetChunkRequestDto> requestStream, IServerStreamWriter<GetChunkResponseDto> responseStream, ServerCallContext context)
+        private async Task GetChunk( IAsyncStreamReader<GetChunkRequestDto> requestStream, IServerStreamWriter<GetChunkResponseDto> responseStream, ServerCallContext context )
         {
-            while (await requestStream.MoveNext(context.CancellationToken))
+            while(await requestStream.MoveNext( context.CancellationToken ))
             {
                 try
                 {
-                    await responseStream.WriteAsync(await GetChunkCore(requestStream.Current, context));
+                    await responseStream.WriteAsync( await GetChunkCore( requestStream.Current, context ) );
                 }
                 catch(InvalidBinaryTransferIdException transferException)
                 {
-                    throw ServerErrorHandling.CreateBinaryError( new BinaryTransferError
+                    throw ServerErrorHandling.Instance.CreateBinaryError( new BinaryTransferError
                     {
                         Type = BinaryTransferError.ErrorType.InvalidBinaryTransferUuid,
                         Message = transferException.Message
@@ -130,7 +130,7 @@ namespace Tecan.Sila2.Server.Binary
                 }
                 catch(Exception exception)
                 {
-                    throw ServerErrorHandling.CreateBinaryError( new BinaryTransferError
+                    throw ServerErrorHandling.Instance.CreateBinaryError( new BinaryTransferError
                     {
                         Type = BinaryTransferError.ErrorType.BinaryDownloadFailed,
                         Message = exception.Message
@@ -171,9 +171,9 @@ namespace Tecan.Sila2.Server.Binary
         public ServerServiceDefinition CreateServiceDefinition()
         {
             ServerServiceDefinition.Builder builder = ServerServiceDefinition.CreateBuilder();
-            builder.AddMethod(BinaryStorageConstants.DeleteBinaryDownload, DeleteBinary);
-            builder.AddMethod(BinaryStorageConstants.GetBinaryInfo, GetBinaryInfo);
-            builder.AddMethod(BinaryStorageConstants.GetChunk, GetChunk);
+            builder.AddMethod( BinaryStorageConstants.DeleteBinaryDownload, DeleteBinary );
+            builder.AddMethod( BinaryStorageConstants.GetBinaryInfo, GetBinaryInfo );
+            builder.AddMethod( BinaryStorageConstants.GetChunk, GetChunk );
             return builder.Build();
         }
 

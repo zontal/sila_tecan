@@ -1,0 +1,52 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+        <TargetFramework>net6.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <RootNamespace>Tecan.Sila2.Interop.Server</RootNamespace>
+        <AssemblyName>Tecan.Sila2.Interop.Server</AssemblyName>
+        <OutputPath>..\..\Build\Interop\ServerNetCore</OutputPath>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <Compile Include="..\..\CommonAssemblyInfo.cs" Link="Properties\CommonAssemblyInfo.cs" />
+        <Compile Include="..\InteropServer\DataTypeProvider\DataTypeProvider.cs" Link="DataTypeProvider\DataTypeProvider.cs" />
+        <Compile Include="..\InteropServer\DataTypeProvider\Dtos.cs" Link="DataTypeProvider\Dtos.cs" />
+        <Compile Include="..\InteropServer\DataTypeProvider\Interface.cs" Link="DataTypeProvider\Interface.cs" />
+        <Compile Include="..\InteropServer\DataTypeProvider\Provider.cs" Link="DataTypeProvider\Provider.cs" />
+        <Compile Include="..\InteropServer\ObservableCommandTest\Dtos.cs" Link="ObservableCommandTest\Dtos.cs" />
+        <Compile Include="..\InteropServer\ObservableCommandTest\Interface.cs" Link="ObservableCommandTest\Interface.cs" />
+        <Compile Include="..\InteropServer\ObservableCommandTest\ObservableCommandTest.cs" Link="ObservableCommandTest\ObservableCommandTest.cs" />
+        <Compile Include="..\InteropServer\ObservableCommandTest\Provider.cs" Link="ObservableCommandTest\Provider.cs" />
+        <Compile Include="..\InteropServer\ObservablePropertyTest\Dtos.cs" Link="ObservablePropertyTest\Dtos.cs" />
+        <Compile Include="..\InteropServer\ObservablePropertyTest\Interface.cs" Link="ObservablePropertyTest\Interface.cs" />
+        <Compile Include="..\InteropServer\ObservablePropertyTest\ObservablePropertyTest.cs" Link="ObservablePropertyTest\ObservablePropertyTest.cs" />
+        <Compile Include="..\InteropServer\ObservablePropertyTest\Provider.cs" Link="ObservablePropertyTest\Provider.cs" />
+        <Compile Include="..\InteropServer\ParameterConstraintsTest\Dtos.cs" Link="ParameterConstraintsTest\Dtos.cs" />
+        <Compile Include="..\InteropServer\ParameterConstraintsTest\Interface.cs" Link="ParameterConstraintsTest\Interface.cs" />
+        <Compile Include="..\InteropServer\ParameterConstraintsTest\ParameterConstraintsTest.cs" Link="ParameterConstraintsTest\ParameterConstraintsTest.cs" />
+        <Compile Include="..\InteropServer\ParameterConstraintsTest\Provider.cs" Link="ParameterConstraintsTest\Provider.cs" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <EmbeddedResource Include="..\InteropServer\DataTypeProvider.sila.xml" Link="DataTypeProvider.sila.xml" />
+        <EmbeddedResource Include="..\InteropServer\ObservableCommandTest.sila.xml" Link="ObservableCommandTest.sila.xml" />
+        <EmbeddedResource Include="..\InteropServer\ObservablePropertyTest.sila.xml" Link="ObservablePropertyTest.sila.xml" />
+        <EmbeddedResource Include="..\InteropServer\ParameterConstraintsTest.sila.xml" Link="ParameterConstraintsTest.sila.xml" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\..\DynamicClient\DynamicClient.csproj" />
+        <ProjectReference Include="..\..\Server.DryIoC\Server.DryIoC.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Folder Include="DataTypeProvider\" />
+        <Folder Include="ParameterConstraintsTest\" />
+        <Folder Include="ObservablePropertyTest\" />
+        <Folder Include="ObservableCommandTest\" />
+    </ItemGroup>
+
+</Project>

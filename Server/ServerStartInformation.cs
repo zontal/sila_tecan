@@ -14,10 +14,20 @@ namespace Tecan.Sila2.Server
         /// </summary>
         /// <param name="info">The server information</param>
         /// <param name="port">The port the server is running on</param>
+        public ServerStartInformation( ServerInformation info, int port )
+            : this( info, port, null, default, null )
+        {
+        }
+
+        /// <summary>
+        /// Creates a new instance
+        /// </summary>
+        /// <param name="info">The server information</param>
+        /// <param name="port">The port the server is running on</param>
         /// <param name="networkInterfaces">The network interfaces the server uses for discovery</param>
         /// <param name="serverUuid">The unique identifier of the server</param>
         /// <param name="name">the initial name of the server</param>
-        public ServerStartInformation( ServerInformation info, int? port, string networkInterfaces, Guid serverUuid, string name )
+        public ServerStartInformation( ServerInformation info, int? port, string networkInterfaces, Guid? serverUuid, string name )
         {
             Name = name;
             Info = info;
@@ -42,7 +52,7 @@ namespace Tecan.Sila2.Server
         /// <summary>
         /// Gets the port the server is running on
         /// </summary>
-        public int? Port { get; }
+        public int? Port { get; set; }
 
         /// <summary>
         /// Filters the network interface the server uses for discovery
@@ -52,6 +62,11 @@ namespace Tecan.Sila2.Server
         /// <summary>
         /// Gets the unique identifier of the server
         /// </summary>
-        public Guid ServerUuid { get; }
+        public Guid? ServerUuid { get; set; }
+
+        /// <summary>
+        /// Gets the network interfaces used at the start of the server
+        /// </summary>
+        public IEnumerable<NetworkInterface> ActualNetworkInterfaces { get; set; }
     }
 }

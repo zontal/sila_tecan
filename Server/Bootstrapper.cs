@@ -11,6 +11,7 @@ using Common.Logging;
 using Common.Logging.Simple;
 using Tecan.Sila2.Security;
 using Tecan.Sila2.Server.Binary;
+using Tecan.Sila2.Server.ServerPooling;
 
 namespace Tecan.Sila2.Server
 {
@@ -65,21 +66,21 @@ namespace Tecan.Sila2.Server
         /// </summary>
         /// <param name="args">The parsed command line parameters</param>
         /// <returns>True, if the server was started successfully, otherwise False</returns>
-        public virtual bool StartServer(ServerCommandLineArguments args)
+        public virtual bool StartServer( ServerCommandLineArguments args )
         {
             AppDomain.CurrentDomain.ProcessExit += TryShutdownServer;
             var selfInfo = GetServerInformation();
             try
             {
                 _container = CreateContainer();
-                if(LogManager.Adapter is NoOpLoggerFactoryAdapter || LogManager.Adapter == null )
+                if(LogManager.Adapter is NoOpLoggerFactoryAdapter || LogManager.Adapter == null)
                 {
                     LogManager.Adapter = new ConsoleLogging( LogLevel.Debug );
                 }
 
                 _channel = LogManager.GetLogger<Bootstrapper>();
                 var interfaceFilter = args.InterfaceFilter;
-                if (interfaceFilter == "None")
+                if(interfaceFilter == "None")
                 {
                     interfaceFilter = null;
                 }
@@ -89,7 +90,7 @@ namespace Tecan.Sila2.Server
                 _grpcServer = _container.GetExportedValue<IServerProvider>();
 
                 var features = _container.GetExportedValues<IFeatureProvider>();
-                foreach( var feature in features )
+                foreach(var feature in features)
                 {
                     _server.AddFeature( feature );
                 }
@@ -98,22 +99,22 @@ namespace Tecan.Sila2.Server
                 _server.StartServer();
                 return true;
             }
-            catch( CompositionException e )
+            catch(CompositionException e)
             {
-                LogError(_channel, e);
-                foreach( var compositionError in e.Errors )
+                LogError( _channel, e );
+                foreach(var compositionError in e.Errors)
                 {
-                    LogError(_channel, compositionError.Exception );
+                    LogError( _channel, compositionError.Exception );
                 }
 
-                foreach( var rootCause in e.RootCauses )
+                foreach(var rootCause in e.RootCauses)
                 {
-                    LogError(_channel, rootCause );
+                    LogError( _channel, rootCause );
                 }
             }
-            catch( Exception e )
+            catch(Exception e)
             {
-                LogError(_channel, e);
+                LogError( _channel, e );
             }
             return false;
         }
@@ -123,19 +124,19 @@ namespace Tecan.Sila2.Server
         /// </summary>
         public CompositionContainer Container => _container;
 
-        private static void LogError(ILog channel, Exception e)
+        private static void LogError( ILog channel, Exception e )
         {
-            if (channel != null)
+            if(channel != null)
             {
-                channel.Error("Server creation/initialization exception: ", e);
+                channel.Error( "Server creation/initialization exception: ", e );
             }
             else
             {
-                Console.Error.WriteLine($"Error starting server: {e.Message}");
+                Console.Error.WriteLine( $"Error starting server: {e.Message}" );
             }
         }
 
-        private void TryShutdownServer(object sender, EventArgs e)
+        private void TryShutdownServer( object sender, EventArgs e )
         {
             try
             {
@@ -149,7 +150,7 @@ namespace Tecan.Sila2.Server
                 }
                 else
                 {
-                    Console.Error.WriteLine($"Error shutting down server: {exception.Message}.");
+                    Console.Error.WriteLine( $"Error shutting down server: {exception.Message}." );
                 }
             }
         }
@@ -164,7 +165,7 @@ namespace Tecan.Sila2.Server
                 _server?.ShutdownServer();
                 _grpcServer.ShutdownAsync().Wait();
             }
-            catch( Exception exception )
+            catch(Exception exception)
             {
                 _channel?.Error( "Error shutting down server", exception );
             }
@@ -188,7 +189,7 @@ namespace Tecan.Sila2.Server
             var container = new CompositionContainer( catalog );
 
             ApplyDefaultsIfMissing( container );
-            
+
             return container;
         }
 
@@ -212,6 +213,11 @@ namespace Tecan.Sila2.Server
             {
                 container.ComposeExportedValue<IServerCertificateProvider>( new FileCertificateProvider() );
             }
+
+            if(container.GetExportedValueOrDefault<IServerPoolConnectionFactory>() == null)
+            {
+                container.ComposeExportedValue<IServerPoolConnectionFactory>( new PlaintextPoolConnectionFactory() );
+            }
         }
 
         /// <summary>
@@ -220,50 +226,14 @@ namespace Tecan.Sila2.Server
         /// <returns>An object that contains the server information for this server</returns>
         protected virtual ServerInformation GetServerInformation()
         {
-            var entryAssembly = Assembly.GetEntryAssembly();
-            var entryAssemblyName = entryAssembly.GetName();
-            var serverType = entryAssembly.GetCustomAttribute<ServerTypeAttribute>();
-            var product = entryAssembly.GetCustomAttribute<AssemblyProductAttribute>();
-            return new ServerInformation(
-                CreateServerTypeString( serverType?.ServerType ?? product?.Product ?? entryAssemblyName.Name ),
-                entryAssembly.GetCustomAttribute<AssemblyDescriptionAttribute>()?.Description,
-                entryAssembly.GetCustomAttribute<VendorUriAttribute>()?.VendorUri,
-                entryAssemblyName.Version.ToString( 2 ) );
-        }
-
-        private string CreateServerTypeString( string input )
-        {
-            var sb = new StringBuilder();
-            foreach(var character in input)
-            {
-                if((character >= 'a' && character <= 'z') ||
-                   (character >= 'A' && character <= 'Z') ||
-                   char.IsDigit( character ) || character == '.')
-                {
-                    sb.Append( character );
-                }
-                else if(character == 'ä')
-                {
-                    sb.Append( "ae" );
-                }
-                else if(character == 'ö')
-                {
-                    sb.Append( "oe" );
-                }
-                else if(character == 'ü')
-                {
-                    sb.Append( "ue" );
-                }
-            }
-
-            return sb.ToString();
+            return ServerInformationFactory.GetServerInformation();
         }
 
         /// <summary>
         /// Handles errors at server startup
         /// </summary>
         /// <param name="obj"></param>
-        public virtual bool HandleError(IEnumerable<Error> obj)
+        public virtual bool HandleError( IEnumerable<Error> obj )
         {
             Environment.ExitCode = 1;
             return false;

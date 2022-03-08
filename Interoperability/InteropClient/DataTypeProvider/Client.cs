@@ -668,6 +668,8 @@ namespace Tecan.Sila2.Interop.Client.DataTypeProvider
     ///  <summary>
     /// Factory to instantiate clients for the Data Type Provider.
     /// </summary>
+    [System.ComponentModel.Composition.ExportAttribute(typeof(IClientFactory))]
+    [System.ComponentModel.Composition.PartCreationPolicyAttribute(System.ComponentModel.Composition.CreationPolicy.Shared)]
     public partial class DataTypeProviderClientFactory : IClientFactory
     {
         

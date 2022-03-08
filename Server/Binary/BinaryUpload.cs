@@ -29,11 +29,11 @@ namespace Tecan.Sila2.Server.Binary
         /// </summary>
         /// <param name="fileManagement">An object that handles the files locally</param>
         /// <param name="server">The parent server to validate requests</param>
-        public BinaryUpload(IFileManagement fileManagement, SiLAServer server)
+        public BinaryUpload( IFileManagement fileManagement, SiLAServer server )
         {
             _fileManagement = fileManagement;
             _server = server;
-            _cleanupTimer = new Timer(Cleanup, null, TimeSpan.FromMinutes(5), TimeSpan.FromMinutes(5));
+            _cleanupTimer = new Timer( Cleanup, null, TimeSpan.FromMinutes( 5 ), TimeSpan.FromMinutes( 5 ) );
         }
 
         private void Cleanup( object state )
@@ -46,12 +46,12 @@ namespace Tecan.Sila2.Server.Binary
         /// </summary>
         public void Cleanup()
         {
-            foreach( var fileUploadData in _openStreams )
+            foreach(var fileUploadData in _openStreams)
             {
-                if( fileUploadData.Value.ExpirationTime <= DateTimeOffset.Now )
+                if(fileUploadData.Value.ExpirationTime <= DateTimeOffset.Now)
                 {
                     fileUploadData.Value.Completion.SetCanceled();
-                    _fileManagement.Delete(fileUploadData.Key, true);
+                    _fileManagement.Delete( fileUploadData.Key, true );
                     _openStreams.TryRemove( fileUploadData.Key, out _ );
                 }
             }
@@ -69,7 +69,7 @@ namespace Tecan.Sila2.Server.Binary
         /// Resumes the cleanup thread
         /// </summary>
         /// <param name="interval"></param>
-        public void ResumeCleanup(TimeSpan interval)
+        public void ResumeCleanup( TimeSpan interval )
         {
             _cleanupTimer.Change( interval, interval );
         }
@@ -84,7 +84,7 @@ namespace Tecan.Sila2.Server.Binary
             }
             catch(InvalidBinaryTransferIdException transferException)
             {
-                return Task.FromException<CreateBinaryResponseDto>( ServerErrorHandling.CreateBinaryError( new BinaryTransferError
+                return Task.FromException<CreateBinaryResponseDto>( ServerErrorHandling.Instance.CreateBinaryError( new BinaryTransferError
                 {
                     Type = BinaryTransferError.ErrorType.InvalidBinaryTransferUuid,
                     Message = transferException.Message
@@ -92,7 +92,7 @@ namespace Tecan.Sila2.Server.Binary
             }
             catch(Exception exception)
             {
-                return Task.FromException<CreateBinaryResponseDto>( ServerErrorHandling.CreateBinaryError( new BinaryTransferError
+                return Task.FromException<CreateBinaryResponseDto>( ServerErrorHandling.Instance.CreateBinaryError( new BinaryTransferError
                 {
                     Type = BinaryTransferError.ErrorType.BinaryUploadFailed,
                     Message = exception.Message
@@ -118,14 +118,14 @@ namespace Tecan.Sila2.Server.Binary
 
         private string GetCommandIdentifier( string commandIdentifier )
         {
-            if( commandIdentifier == null )
+            if(commandIdentifier == null)
             {
-                throw new ArgumentNullException(nameof(commandIdentifier));
+                throw new ArgumentNullException( nameof( commandIdentifier ) );
             }
             var parameterSeparator = commandIdentifier.LastIndexOf( "/Parameter/", StringComparison.OrdinalIgnoreCase );
-            if( parameterSeparator == -1 )
+            if(parameterSeparator == -1)
             {
-                throw new ArgumentException($"The provided command identifier {commandIdentifier} is not a valid fully qualified command parameter.");
+                throw new ArgumentException( $"The provided command identifier {commandIdentifier} is not a valid fully qualified command parameter." );
             }
 
             return commandIdentifier.Substring( 0, parameterSeparator );
@@ -140,7 +140,7 @@ namespace Tecan.Sila2.Server.Binary
             }
             catch(InvalidBinaryTransferIdException transferException)
             {
-                return Task.FromException<EmptyRequest>( ServerErrorHandling.CreateBinaryError( new BinaryTransferError
+                return Task.FromException<EmptyRequest>( ServerErrorHandling.Instance.CreateBinaryError( new BinaryTransferError
                 {
                     Type = BinaryTransferError.ErrorType.InvalidBinaryTransferUuid,
                     Message = transferException.Message
@@ -148,7 +148,7 @@ namespace Tecan.Sila2.Server.Binary
             }
             catch(Exception exception)
             {
-                return Task.FromException<EmptyRequest>( ServerErrorHandling.CreateBinaryError( new BinaryTransferError
+                return Task.FromException<EmptyRequest>( ServerErrorHandling.Instance.CreateBinaryError( new BinaryTransferError
                 {
                     Type = BinaryTransferError.ErrorType.BinaryUploadFailed,
                     Message = exception.Message
@@ -161,18 +161,18 @@ namespace Tecan.Sila2.Server.Binary
             _fileManagement.Delete( request.BinaryTransferUUID, true );
         }
 
-        private async Task UploadChunk(IAsyncStreamReader<UploadChunkRequestDto> requestStream,IServerStreamWriter<UploadChunkResponseDto> responseStream, ServerCallContext context)
+        private async Task UploadChunk( IAsyncStreamReader<UploadChunkRequestDto> requestStream, IServerStreamWriter<UploadChunkResponseDto> responseStream, ServerCallContext context )
         {
-            while (await requestStream.MoveNext())
+            while(await requestStream.MoveNext())
             {
                 try
                 {
 
-                    await responseStream.WriteAsync(await UploadChunkCore(requestStream.Current, context));
+                    await responseStream.WriteAsync( await UploadChunkCore( requestStream.Current, context ) );
                 }
                 catch(InvalidBinaryTransferIdException transferException)
                 {
-                    throw ServerErrorHandling.CreateBinaryError( new BinaryTransferError
+                    throw ServerErrorHandling.Instance.CreateBinaryError( new BinaryTransferError
                     {
                         Type = BinaryTransferError.ErrorType.InvalidBinaryTransferUuid,
                         Message = transferException.Message
@@ -180,7 +180,7 @@ namespace Tecan.Sila2.Server.Binary
                 }
                 catch(Exception exception)
                 {
-                    throw ServerErrorHandling.CreateBinaryError( new BinaryTransferError
+                    throw ServerErrorHandling.Instance.CreateBinaryError( new BinaryTransferError
                     {
                         Type = BinaryTransferError.ErrorType.BinaryUploadFailed,
                         Message = exception.Message
@@ -189,59 +189,59 @@ namespace Tecan.Sila2.Server.Binary
             }
         }
 
-        private async Task<UploadChunkResponseDto> UploadChunkCore(UploadChunkRequestDto request, ServerCallContext context)
+        private async Task<UploadChunkResponseDto> UploadChunkCore( UploadChunkRequestDto request, ServerCallContext context )
         {
-            if (_openStreams.TryGetValue(request.BinaryTransferUUID, out var uploadData))
+            if(_openStreams.TryGetValue( request.BinaryTransferUUID, out var uploadData ))
             {
-                if (request.ChunkIndex == uploadData.ChunkIndex)
+                if(request.ChunkIndex == uploadData.ChunkIndex)
                 {
-                    await uploadData.FileStream.WriteAsync(request.Payload, 0, request.Payload.Length);
+                    await uploadData.FileStream.WriteAsync( request.Payload, 0, request.Payload.Length );
                     uploadData.ChunkIndex++;
-                    while (true)
+                    while(true)
                     {
                         KeyValuePair<uint, byte[]> cached;
-                        lock (uploadData)
+                        lock(uploadData)
                         {
                             cached = uploadData.Cached.Count > 0 ? uploadData.Cached.First() : default;
-                            if (cached.Key != uploadData.ChunkIndex)
+                            if(cached.Key != uploadData.ChunkIndex)
                             {
                                 break;
                             }
                         }
-                        await uploadData.FileStream.WriteAsync(cached.Value, 0, cached.Value.Length);
+                        await uploadData.FileStream.WriteAsync( cached.Value, 0, cached.Value.Length );
                         uploadData.ChunkIndex++;
                     }
-                    if (uploadData.ChunkIndex == uploadData.ChunkCount)
+                    if(uploadData.ChunkIndex == uploadData.ChunkCount)
                     {
                         uploadData.FileStream.Close();
                         uploadData.FileStream.Dispose();
-                        uploadData.Completion.SetResult(null);
-                        _openStreams.TryRemove(request.BinaryTransferUUID, out _);
+                        uploadData.Completion.SetResult( null );
+                        _openStreams.TryRemove( request.BinaryTransferUUID, out _ );
                     }
                 }
-                else if (request.ChunkIndex > uploadData.ChunkIndex)
+                else if(request.ChunkIndex > uploadData.ChunkIndex)
                 {
-                    lock (uploadData)
+                    lock(uploadData)
                     {
-                        if (uploadData.Cached.ContainsKey(request.ChunkIndex))
+                        if(uploadData.Cached.ContainsKey( request.ChunkIndex ))
                         {
                             uploadData.Cached[request.ChunkIndex] = request.Payload;
                         }
                         else
                         {
-                            uploadData.Cached.Add(request.ChunkIndex, request.Payload);
+                            uploadData.Cached.Add( request.ChunkIndex, request.Payload );
                         }
                     }
                 }
-                uploadData.ExpirationTime = DateTimeOffset.Now.AddMinutes(5);
+                uploadData.ExpirationTime = DateTimeOffset.Now.AddMinutes( 5 );
                 return new UploadChunkResponseDto()
                 {
-                    LifetimeOfBinary = new TimestampDto(uploadData.ExpirationTime)
+                    LifetimeOfBinary = new TimestampDto( uploadData.ExpirationTime )
                 };
             }
             else
             {
-                throw new InvalidOperationException("Unknown file.");
+                throw new InvalidOperationException( "Unknown file." );
             }
         }
 
@@ -249,9 +249,9 @@ namespace Tecan.Sila2.Server.Binary
         /// Waits until the upload of the file with the given binary identifier is complete
         /// </summary>
         /// <param name="binaryIdentifier"></param>
-        public void WaitUploadComplete(string binaryIdentifier)
+        public void WaitUploadComplete( string binaryIdentifier )
         {
-            if (_openStreams.TryGetValue(binaryIdentifier, out var uploadData))
+            if(_openStreams.TryGetValue( binaryIdentifier, out var uploadData ))
             {
                 uploadData.Completion.Task.Wait();
             }
@@ -264,9 +264,9 @@ namespace Tecan.Sila2.Server.Binary
         public ServerServiceDefinition CreateServiceDefinition()
         {
             ServerServiceDefinition.Builder builder = ServerServiceDefinition.CreateBuilder();
-            builder.AddMethod(BinaryStorageConstants.DeleteBinaryUpload, DeleteBinary);
-            builder.AddMethod(BinaryStorageConstants.CreateBinary, CreateBinary);
-            builder.AddMethod(BinaryStorageConstants.UploadChunk, UploadChunk);
+            builder.AddMethod( BinaryStorageConstants.DeleteBinaryUpload, DeleteBinary );
+            builder.AddMethod( BinaryStorageConstants.CreateBinary, CreateBinary );
+            builder.AddMethod( BinaryStorageConstants.UploadChunk, UploadChunk );
             return builder.Build();
         }
 #if ManagedGrpc
@@ -331,7 +331,7 @@ namespace Tecan.Sila2.Server.Binary
         public void DeleteUpload( string binaryStorageIdentifier )
         {
             _openStreams.TryRemove( binaryStorageIdentifier, out _ );
-            _fileManagement.Delete(binaryStorageIdentifier, true);
+            _fileManagement.Delete( binaryStorageIdentifier, true );
         }
 
         /// <inheritdoc />

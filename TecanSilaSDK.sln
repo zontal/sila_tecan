@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29009.5
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Contracts", "Contracts\Contracts.csproj", "{A998329A-5157-4B80-992A-AF904E65CC2F}"
 EndProject
@@ -123,7 +123,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestServer.NetCore", "Tests
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IntegrationTests.NetCore", "Tests\IntegrationTests.NetCore\IntegrationTests.NetCore.csproj", "{D66CBAD3-CB10-451A-8F68-D098ADA91D20}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Server.DryIoC", "Server.DryIoC\Server.DryIoC.csproj", "{B35B2AE8-FF24-4778-A47F-4B90F9F64912}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Server.DryIoC", "Server.DryIoC\Server.DryIoC.csproj", "{B35B2AE8-FF24-4778-A47F-4B90F9F64912}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InteropServer.NetCore", "Interoperability\InteropServer.NetCore\InteropServer.NetCore.csproj", "{5400DBF0-921A-40BE-A7ED-FBD39334B349}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -275,6 +277,10 @@ Global
 		{B35B2AE8-FF24-4778-A47F-4B90F9F64912}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B35B2AE8-FF24-4778-A47F-4B90F9F64912}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B35B2AE8-FF24-4778-A47F-4B90F9F64912}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5400DBF0-921A-40BE-A7ED-FBD39334B349}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5400DBF0-921A-40BE-A7ED-FBD39334B349}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5400DBF0-921A-40BE-A7ED-FBD39334B349}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5400DBF0-921A-40BE-A7ED-FBD39334B349}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -314,6 +320,7 @@ Global
 		{3083B15F-DBB8-4C50-A610-E0771D3CA163} = {D20F3DDF-CC13-45C3-95F5-F48B1EFFBB82}
 		{D66CBAD3-CB10-451A-8F68-D098ADA91D20} = {D20F3DDF-CC13-45C3-95F5-F48B1EFFBB82}
 		{B35B2AE8-FF24-4778-A47F-4B90F9F64912} = {98D6F41E-A727-4CF4-99C6-8D95BAEB3BB4}
+		{5400DBF0-921A-40BE-A7ED-FBD39334B349} = {C552BB03-C50A-4F7F-9B67-A080E13AF7C4}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F2AE9C9D-34E5-4A2A-8AAA-5EEA105AF08F}

@@ -11,6 +11,7 @@ using Tecan.Sila2.Authentication.AuthenticationService;
 using Tecan.Sila2.Client;
 using Tecan.Sila2.ConnectionConfiguration.ConnectionConfigurationService;
 using Tecan.Sila2.Discovery;
+using Tecan.Sila2.Security;
 using Tecan.Sila2.Server;
 using Tecan.Sila2.ServerPooling;
 
@@ -23,9 +24,9 @@ namespace Tecan.Sila2.IntegrationTests
         private PoolServer _poolServer;
         private IHost _host;
 
-        protected override ServerData FindServer(Guid serverUuid)
+        protected override ServerData FindServer( Guid serverUuid )
         {
-            var configurationBuilder = new ServiceConfigurationBuilder( new FileCertificateProvider() );
+            var configurationBuilder = new ServiceConfigurationBuilder( new NoCertificateProvider() );
             _poolServer = new PoolServer( configurationBuilder );
             configurationBuilder.Configure( "127.0.0.1", 50053 );
             _host = Host.CreateDefaultBuilder()
@@ -62,10 +63,13 @@ namespace Tecan.Sila2.IntegrationTests
             var token = authenticationClient.Login( "admin", "admin", testServer.Config.Uuid.ToString(), new List<string>() );
             var client = new ConnectionConfigurationServiceClient( testServer.Channel, new TestAuthLockingExecutionManager( null, token.AccessToken, testServer.Channel ) );
 
+            Console.WriteLine( "Requesting server to connect to pool." );
             client.EnableServerInitiatedConnectionMode();
-            client.ConnectSiLAClient( "TestClient", "127.0.0.1", 50053, false );
+            client.ConnectSiLAClient( "TestClient", "http://127.0.0.1", 50053, false );
 
-            tcs.Task.Wait( 1000 );
+            tcs.Task.Wait( 10000 );
+            Console.WriteLine( "Waiting complete." );
+            Assert.That( tcs.Task.IsCompleted, "Server connected to pool." );
             return tcs.Task.Result;
         }
 
@@ -82,6 +86,19 @@ namespace Tecan.Sila2.IntegrationTests
                 {
                     _host.Dispose();
                 }
+            }
+        }
+
+        private class NoCertificateProvider : IServerCertificateProvider
+        {
+            public CertificateContext CreateContext( Guid serverGuid )
+            {
+                return null;
+            }
+
+            public CertificateContext CreateContext()
+            {
+                return null;
             }
         }
     }

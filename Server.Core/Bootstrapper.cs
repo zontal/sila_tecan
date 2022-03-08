@@ -11,6 +11,7 @@ using Common.Logging;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
@@ -18,6 +19,7 @@ using Microsoft.Extensions.Logging;
 using Tecan.Sila2.Logging;
 using Tecan.Sila2.Security;
 using Tecan.Sila2.Server.Binary;
+using Tecan.Sila2.Server.ServerPooling;
 
 namespace Tecan.Sila2.Server
 {
@@ -68,6 +70,11 @@ namespace Tecan.Sila2.Server
         }
 
         /// <summary>
+        /// The protocols the server should accept
+        /// </summary>
+        protected virtual HttpProtocols Protocols => HttpProtocols.Http2;
+
+        /// <summary>
         /// Starts the server with the given parsed command line parameters
         /// </summary>
         /// <param name="args">The parsed command line parameters</param>
@@ -79,18 +86,14 @@ namespace Tecan.Sila2.Server
             try
             {
                 var replaceLogging = false;
-                if(LogManager.Adapter is Common.Logging.Simple.NoOpLoggerFactoryAdapter || LogManager.Adapter == null)
-                {
-                    LogManager.Adapter = new ConsoleLogging( Common.Logging.LogLevel.Debug );
-                    replaceLogging = true;
-                }
+                replaceLogging = InitializeLogging();
 
                 _channel = LogManager.GetLogger<Bootstrapper>();
 
                 ServiceConfigurationBuilder configurationBuilder = null;
 
                 _host = Host.CreateDefaultBuilder()
-                    .ConfigureServices(services =>
+                    .ConfigureServices( services =>
                     {
 
                         _container = CreateContainer();
@@ -115,27 +118,27 @@ namespace Tecan.Sila2.Server
                             services.AddSingleton( featureProvider );
                         }
                         services.AddSila2();
-                        OnConfigureServices(services);
-                    })
-                    .ConfigureWebHostDefaults(webHostBuilder =>
+                        OnConfigureServices( services );
+                    } )
+                    .ConfigureWebHostDefaults( webHostBuilder =>
                     {
                         webHostBuilder.ConfigureKestrel( options =>
-                         {
-                             configurationBuilder?.ConfigureKestrel( options );
-                         } );
+                        {
+                            configurationBuilder?.ConfigureKestrel( options, Protocols );
+                            OnConfigureKestrel( options );
+                        } );
                         webHostBuilder.Configure( appBuilder =>
-                         {
-                             appBuilder.UseRouting();
-                             OnConfigureApplication( appBuilder );
-                             appBuilder.UseEndpoints( endpoints => endpoints.MapSila2() );
-                         } );
+                        {
+                            appBuilder.UseRouting();
+                            OnConfigureApplication( appBuilder );
+                            appBuilder.UseEndpoints( endpoints => endpoints.MapSila2() );
+                        } );
                     } )
                     .Build();
 
                 if(LogManager.Adapter is Common.Logging.Simple.NoOpLoggerFactoryAdapter || LogManager.Adapter == null || replaceLogging)
                 {
-                    var loggerFactory = _host.Services.GetRequiredService<ILoggerFactory>();
-                    LogManager.Adapter = new AspNetAdapter( loggerFactory );
+                    _host.Services.InitializeLogging();
                     _channel = LogManager.GetLogger<Bootstrapper>();
                 }
 
@@ -161,6 +164,16 @@ namespace Tecan.Sila2.Server
             }
             return false;
         }
+        private static bool InitializeLogging()
+        {
+            if(LogManager.Adapter is Common.Logging.Simple.NoOpLoggerFactoryAdapter || LogManager.Adapter == null)
+            {
+                LogManager.Adapter = new ConsoleLogging( Common.Logging.LogLevel.Debug );
+                return true;
+            }
+
+            return false;
+        }
 
         /// <summary>
         /// Gets the service provider used by the ASP.NET Core server
@@ -180,6 +193,14 @@ namespace Tecan.Sila2.Server
         /// </summary>
         /// <param name="applicationBuilder">The application builder</param>
         protected virtual void OnConfigureApplication( IApplicationBuilder applicationBuilder )
+        {
+        }
+
+        /// <summary>
+        /// Gets called when the Kestrel server is configured
+        /// </summary>
+        /// <param name="kestrelOptions">A Kestrel configuration object</param>
+        protected virtual void OnConfigureKestrel( KestrelServerOptions kestrelOptions )
         {
         }
 
@@ -281,6 +302,11 @@ namespace Tecan.Sila2.Server
             {
                 container.ComposeExportedValue<IServerCertificateProvider>( new FileCertificateProvider() );
             }
+
+            if(container.GetExportedValueOrDefault<IServerPoolConnectionFactory>() == null)
+            {
+                container.ComposeExportedValue<IServerPoolConnectionFactory>( new DefaultServerPoolConnectionFactory() );
+            }
         }
 
         /// <summary>
@@ -289,43 +315,7 @@ namespace Tecan.Sila2.Server
         /// <returns>An object that contains the server information for this server</returns>
         protected virtual ServerInformation GetServerInformation()
         {
-            var entryAssembly = Assembly.GetEntryAssembly();
-            var entryAssemblyName = entryAssembly.GetName();
-            var serverType = entryAssembly.GetCustomAttribute<ServerTypeAttribute>();
-            var product = entryAssembly.GetCustomAttribute<AssemblyProductAttribute>();
-            return new ServerInformation(
-                CreateServerTypeString( serverType?.ServerType ?? product?.Product ?? entryAssemblyName.Name ),
-                entryAssembly.GetCustomAttribute<AssemblyDescriptionAttribute>()?.Description,
-                entryAssembly.GetCustomAttribute<VendorUriAttribute>()?.VendorUri,
-                entryAssemblyName.Version.ToString( 2 ) );
-        }
-
-        private string CreateServerTypeString( string input )
-        {
-            var sb = new StringBuilder();
-            foreach(var character in input)
-            {
-                if((character >= 'a' && character <= 'z') ||
-                   (character >= 'A' && character <= 'Z') ||
-                   char.IsDigit( character ) || character == '.')
-                {
-                    sb.Append( character );
-                }
-                else if(character == 'ä')
-                {
-                    sb.Append( "ae" );
-                }
-                else if(character == 'ö')
-                {
-                    sb.Append( "oe" );
-                }
-                else if(character == 'ü')
-                {
-                    sb.Append( "ue" );
-                }
-            }
-
-            return sb.ToString();
+            return ServerInformationFactory.GetServerInformation();
         }
 
         /// <summary>

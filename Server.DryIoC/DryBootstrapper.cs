@@ -3,6 +3,8 @@ using Common.Logging;
 using DryIoc;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Routing;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -33,7 +35,7 @@ namespace Tecan.Sila2.Server
         public static DryBootstrapper Start( string[] args )
         {
             var bootstrapper = new DryBootstrapper();
-            if (!Start( args, bootstrapper ))
+            if(!Start( args, bootstrapper ))
             {
                 throw new InvalidOperationException( "Server could not be started." );
             }
@@ -49,13 +51,18 @@ namespace Tecan.Sila2.Server
         }
 
         /// <summary>
+        /// The protocols the server should accept
+        /// </summary>
+        protected virtual HttpProtocols Protocols => HttpProtocols.Http2;
+
+        /// <summary>
         /// Starts the server with the given command line parameters
         /// </summary>
         /// <param name="args">The command line parameters</param>
         /// <param name="bootstrapper">The bootstrapper instance that should be used</param>
         public static bool Start( string[] args, DryBootstrapper bootstrapper )
         {
-            if (bootstrapper == null) throw new ArgumentNullException( nameof( bootstrapper ) );
+            if(bootstrapper == null) throw new ArgumentNullException( nameof( bootstrapper ) );
 
             return Parser.Default.ParseArguments<ServerCommandLineArguments>( args )
                 .MapResult( bootstrapper.StartServer, bootstrapper.HandleError );
@@ -78,43 +85,45 @@ namespace Tecan.Sila2.Server
                 var startup = new ServerStartInformation( selfInfo, args.Port, args.InterfaceFilter, args.ServerUuid, args.Name );
 
                 _host = Host.CreateDefaultBuilder()
-                    .UseDryIoc(container =>
-                    {
-                        container.RegisterInstance( startup );
-                        OnLoadComponents( container );
-                        ApplyDefaultsIfMissing( container );
-                    } )
+                    .UseDryIoc( container =>
+                     {
+                         container.RegisterInstance( startup );
+                         OnLoadComponents( container );
+                         ApplyDefaultsIfMissing( container );
+                     } )
                     .ConfigureServices( services =>
                     {
                         services.AddSila2();
-                        OnConfigureServices(services);
+                        OnConfigureServices( services );
                     } )
                     .ConfigureWebHostDefaults( webHostBuilder =>
                     {
                         webHostBuilder.ConfigureKestrel( options =>
                         {
-                            configurationBuilder?.ConfigureKestrel( options );
+                            configurationBuilder?.ConfigureKestrel( options, Protocols );
+                            OnConfigureKestrel( options );
                         } );
                         webHostBuilder.Configure( appBuilder =>
                         {
                             appBuilder.UseRouting();
-                            OnConfigureApplication(appBuilder);
-                            appBuilder.UseEndpoints( endpoints => endpoints.MapSila2() );
+                            OnConfigureApplication( appBuilder );
+                            appBuilder.UseEndpoints( endpoints =>
+                            {
+                                endpoints.MapSila2();
+                                OnConfigureEndpoints( endpoints );
+                            } );
                         } );
                     } )
                     .Build();
 
-                if(LogManager.Adapter is Common.Logging.Simple.NoOpLoggerFactoryAdapter || LogManager.Adapter == null )
+                if(LogManager.Adapter is Common.Logging.Simple.NoOpLoggerFactoryAdapter || LogManager.Adapter == null)
                 {
-                    var loggerFactory = _host.Services.GetRequiredService<ILoggerFactory>();
-                    LogManager.Adapter = new AspNetAdapter( loggerFactory );
+                    _host.Services.InitializeLogging();
                     _channel = LogManager.GetLogger<Bootstrapper>();
                 }
 
                 configurationBuilder = _host.Services.GetRequiredService<IServiceConfigurationBuilder<ISiLAServer>>() as ServiceConfigurationBuilder;
                 _server = _host.Services.GetRequiredService<ISiLAServer>();
-
-                _server.StartServer();
 
                 _host.Start();
                 return true;
@@ -146,7 +155,7 @@ namespace Tecan.Sila2.Server
         /// Gets called when the server configures services
         /// </summary>
         /// <param name="serviceCollection">The service collection to configure</param>
-        protected virtual void OnConfigureServices(IServiceCollection serviceCollection)
+        protected virtual void OnConfigureServices( IServiceCollection serviceCollection )
         {
         }
 
@@ -154,7 +163,22 @@ namespace Tecan.Sila2.Server
         /// Gets called when the server is configured
         /// </summary>
         /// <param name="applicationBuilder">The application builder</param>
-        protected virtual void OnConfigureApplication(IApplicationBuilder applicationBuilder)
+        protected virtual void OnConfigureApplication( IApplicationBuilder applicationBuilder )
+        {
+        }
+
+        /// <summary>
+        /// Gets called when the Kestrel server is configured
+        /// </summary>
+        /// <param name="kestrelOptions">A Kestrel configuration object</param>
+        protected virtual void OnConfigureKestrel( KestrelServerOptions kestrelOptions )
+        {
+        }
+
+        /// <summary>
+        /// Gets called when the endpoints are configured
+        /// </summary>
+        protected virtual void OnConfigureEndpoints( IEndpointRouteBuilder endpoints )
         {
         }
 
@@ -215,7 +239,7 @@ namespace Tecan.Sila2.Server
         /// Instructs to load the default contents of the container
         /// </summary>
         /// <param name="container">The container that needs to be filled</param>
-        protected virtual void OnLoadComponents( IContainer container)
+        protected virtual void OnLoadComponents( IContainer container )
         {
             container.LoadComponentsFromApplicationDirectory();
         }
@@ -226,20 +250,7 @@ namespace Tecan.Sila2.Server
         /// <param name="container">The composition container</param>
         protected void ApplyDefaultsIfMissing( IContainer container )
         {
-            if(!container.IsRegistered<IFileManagement>())
-            {
-                container.RegisterInstance<IFileManagement>( new FileManagement() );
-            }
-
-            if(!container.IsRegistered<IConfigurationStore>())
-            {
-                container.RegisterInstance<IConfigurationStore>( new FileConfigurationStore() );
-            }
-
-            if(!container.IsRegistered<IServerCertificateProvider>())
-            {
-                container.RegisterInstance<IServerCertificateProvider>( new FileCertificateProvider() );
-            }
+            container.AddSila2Defaults();
         }
 
         /// <summary>
@@ -248,43 +259,7 @@ namespace Tecan.Sila2.Server
         /// <returns>An object that contains the server information for this server</returns>
         protected virtual ServerInformation GetServerInformation()
         {
-            var entryAssembly = Assembly.GetEntryAssembly();
-            var entryAssemblyName = entryAssembly.GetName();
-            var serverType = entryAssembly.GetCustomAttribute<ServerTypeAttribute>();
-            var product = entryAssembly.GetCustomAttribute<AssemblyProductAttribute>();
-            return new ServerInformation(
-                CreateServerTypeString( serverType?.ServerType ?? product?.Product ?? entryAssemblyName.Name ),
-                entryAssembly.GetCustomAttribute<AssemblyDescriptionAttribute>()?.Description,
-                entryAssembly.GetCustomAttribute<VendorUriAttribute>()?.VendorUri,
-                entryAssemblyName.Version.ToString( 2 ) );
-        }
-
-        private string CreateServerTypeString( string input )
-        {
-            var sb = new StringBuilder();
-            foreach(var character in input)
-            {
-                if((character >= 'a' && character <= 'z') ||
-                   (character >= 'A' && character <= 'Z') ||
-                   char.IsDigit( character ) || character == '.')
-                {
-                    sb.Append( character );
-                }
-                else if(character == 'ä')
-                {
-                    sb.Append( "ae" );
-                }
-                else if(character == 'ö')
-                {
-                    sb.Append( "oe" );
-                }
-                else if(character == 'ü')
-                {
-                    sb.Append( "ue" );
-                }
-            }
-
-            return sb.ToString();
+            return ServerInformationFactory.GetServerInformation();
         }
 
         /// <summary>

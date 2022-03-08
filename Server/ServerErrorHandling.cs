@@ -9,11 +9,16 @@ namespace Tecan.Sila2.Server
     /// </summary>
     public class ServerErrorHandling : IServerErrorHandling
     {
+        /// <summary>
+        /// The server error handling instance
+        /// </summary>
+        public static readonly ServerErrorHandling Instance = new ServerErrorHandling();
+
         private const string CancellationIdentifier = "OperationCancelled";
 
-        private static string ToBase64String(SiLAErrorDto error)
+        private static string ToBase64String( SiLAErrorDto error )
         {
-            var bytes = ProtobufMarshaller<SiLAErrorDto>.Default.Serializer(error);
+            var bytes = ProtobufMarshaller<SiLAErrorDto>.Default.Serializer( error );
             return Convert.ToBase64String( bytes );
         }
 
@@ -29,16 +34,16 @@ namespace Tecan.Sila2.Server
         /// <param name="parameter">The fully qualified identifier of the erroneous parameter</param>
         /// <param name="message">The error message</param>
         /// <returns>An exception</returns>
-        public Exception CreateValidationError(string parameter, string message )
+        public Exception CreateValidationError( string parameter, string message )
         {
-            return new RpcException(new Status(StatusCode.Aborted, ToBase64String(new SiLAErrorDto
+            return new RpcException( new Status( StatusCode.Aborted, ToBase64String( new SiLAErrorDto
             {
                 ValidationError = new ValidationErrorDto()
                 {
                     Message = message,
                     Parameter = parameter
                 }
-            })));
+            } ) ) );
         }
 
         /// <summary>
@@ -48,14 +53,14 @@ namespace Tecan.Sila2.Server
         /// <returns>An exception</returns>
         public Exception CreateUnknownValidationError( ArgumentException exception )
         {
-            return new RpcException(new Status(StatusCode.Aborted, ToBase64String(new SiLAErrorDto
+            return new RpcException( new Status( StatusCode.Aborted, ToBase64String( new SiLAErrorDto
             {
                 ValidationError = new ValidationErrorDto()
                 {
                     Message = exception.Message,
                     Parameter = exception.ParamName
                 }
-            })));
+            } ) ) );
         }
 
         /// <summary>
@@ -65,13 +70,13 @@ namespace Tecan.Sila2.Server
         /// <returns>An exception</returns>
         public Exception CreateUndefinedExecutionError( Exception exception )
         {
-            return new RpcException(new Status(StatusCode.Aborted, ToBase64String(new SiLAErrorDto
+            return new RpcException( new Status( StatusCode.Aborted, ToBase64String( new SiLAErrorDto
             {
                 UndefinedExecutionError = new UndefinedExecutionErrorDto
                 {
                     Message = $"{exception.GetType().Name}: {exception.Message}"
                 }
-            })));
+            } ) ) );
         }
 
         /// <summary>
@@ -79,7 +84,7 @@ namespace Tecan.Sila2.Server
         /// </summary>
         /// <param name="binaryTransferError">The binary transfer error</param>
         /// <returns>The exception to raise</returns>
-        public static Exception CreateBinaryError( BinaryTransferError binaryTransferError )
+        public Exception CreateBinaryError( BinaryTransferError binaryTransferError )
         {
             return new RpcException( new Status( StatusCode.Aborted, ToBase64String( binaryTransferError ) ) );
         }
@@ -117,15 +122,21 @@ namespace Tecan.Sila2.Server
         /// Creates a server-side framework error
         /// </summary>
         /// <param name="identifier">The type of the error</param>
-        public static Exception CreateFrameworkError(FrameworkErrorType identifier)
+        public static Exception CreateFrameworkError( FrameworkErrorType identifier )
         {
-            return new RpcException(new Status(StatusCode.Aborted, ToBase64String(new SiLAErrorDto
+            return new RpcException( new Status( StatusCode.Aborted, ToBase64String( new SiLAErrorDto
             {
                 FrameworkError = new FrameworkErrorDto()
                 {
                     Type = identifier
                 }
-            })));
+            } ) ) );
+        }
+
+        /// <inheritdoc />
+        public Exception CreateMissingMetadataException( string metadataIdentifier )
+        {
+            return CreateFrameworkError( FrameworkErrorType.InvalidMetadata );
         }
     }
 }

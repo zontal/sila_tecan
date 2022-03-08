@@ -21,6 +21,7 @@ namespace Tecan.Sila2.Server
         private readonly Dictionary<IPAddress, int> _networkAddresses = new Dictionary<IPAddress, int>();
         private readonly IServerCertificateProvider _certificateProvider;
         private readonly ILog _loggingChannel = LogManager.GetLogger<ServiceConfigurationBuilder>();
+        private readonly Dictionary<string, string> _announcementDetails = new Dictionary<string, string>();
 
         /// <inheritdoc />
         public IEnumerable<IServiceHandler<ISiLAServer>> ServiceHandlers => _handlers;
@@ -30,7 +31,7 @@ namespace Tecan.Sila2.Server
         /// Creates a new instance
         /// </summary>
         /// <param name="certificateProvider">A server certificate provider</param>
-        public ServiceConfigurationBuilder(IServerCertificateProvider certificateProvider)
+        public ServiceConfigurationBuilder( IServerCertificateProvider certificateProvider )
         {
             _certificateProvider = certificateProvider;
         }
@@ -52,19 +53,10 @@ namespace Tecan.Sila2.Server
             if(_certificateContext == null)
             {
                 var context = _certificateProvider.CreateContext();
-                if(context is PfxCertificateContext pfxContext)
-                {
-                    _loggingChannel.Info( "Found certificates, starting server with TLS." );
-                    _certificateContext = pfxContext;
-                }
-                else
-                {
-                    _loggingChannel.Warn( $"No certificates found. Server will start with plain-text communication" );
-                    _certificateContext = null;
-                }
+                UseContext( context );
             }
 
-            if (IPAddress.TryParse(host, out var addr))
+            if(IPAddress.TryParse( host, out var addr ))
             {
                 _networkAddresses.Add( addr, port );
             }
@@ -75,21 +67,15 @@ namespace Tecan.Sila2.Server
         private int AnyPort => _networkAddresses[IPAddress.Any];
 
         /// <inheritdoc />
+        public IReadOnlyDictionary<string, string> AnnouncementDetails => _announcementDetails;
+
+        /// <inheritdoc />
         public void ConfigureForServer( Guid guid, int port, Predicate<NetworkInterface> networkInterfaceFilter )
         {
             if(_certificateContext == null)
             {
                 var context = _certificateProvider.CreateContext( guid );
-                if(context is PfxCertificateContext pfxContext)
-                {
-                    _loggingChannel.Info( "Found certificates, starting server with TLS." );
-                    _certificateContext = pfxContext;
-                }
-                else
-                {
-                    _loggingChannel.Warn( $"No certificates found. Server will start with plain-text communication" );
-                    _certificateContext = null;
-                }
+                UseContext( context );
             }
 
             if(networkInterfaceFilter != null)
@@ -110,18 +96,60 @@ namespace Tecan.Sila2.Server
             }
         }
 
+        private void UseContext( CertificateContext context )
+        {
+            if(context is PfxCertificateContext pfxContext)
+            {
+                UsePfx( pfxContext );
+            }
+            else
+            {
+                if(context is PemCertificateContext)
+                {
+                    throw new InvalidOperationException( "Expected Pfx certificate configuration but found a PEM based certificate configuration instead." );
+                }
+
+                _loggingChannel.Warn( $"No certificates found. Server will start with plain-text communication" );
+                _certificateContext = null;
+                _announcementDetails.Add( "encrypted", "false" );
+            }
+        }
+
+        private void UsePfx( PfxCertificateContext pfxContext )
+        {
+            if(string.IsNullOrEmpty( pfxContext.PathToPfx ))
+            {
+                _loggingChannel.Info( "Using default certificate, starting server with TLS." );
+            }
+            else
+            {
+                _loggingChannel.Info( $"Use certificate from {pfxContext.PathToPfx}, starting server with TLS." );
+            }
+            _certificateContext = pfxContext;
+        }
+
+
         /// <summary>
         /// Configures the provided Kestrel server
         /// </summary>
         /// <param name="options">The Kestrel configuration</param>
-        public void ConfigureKestrel(KestrelServerOptions options)
+        public void ConfigureKestrel( KestrelServerOptions options )
+        {
+            ConfigureKestrel( options, HttpProtocols.Http2 );
+        }
+        /// <summary>
+        /// Configures the provided Kestrel server
+        /// </summary>
+        /// <param name="options">The Kestrel configuration</param>
+        /// <param name="protocols">The protocols to connect</param>
+        public void ConfigureKestrel( KestrelServerOptions options, HttpProtocols protocols )
         {
             Action<ListenOptions> listenOptions = ( ListenOptions opts ) =>
                 {
-                    opts.Protocols = HttpProtocols.Http2;
+                    opts.Protocols = protocols;
                     if(_certificateContext != null)
                     {
-                        if(_certificateContext.PathToPfx == null)
+                        if(string.IsNullOrEmpty( _certificateContext.PathToPfx ))
                         {
                             opts.UseHttps();
                         }

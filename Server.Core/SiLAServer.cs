@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Routing;
 using Tecan.Sila2.Discovery;
 using Tecan.Sila2.Server.Binary;
+using Tecan.Sila2.Server.ServerPooling;
 using Tecan.Sila2.Server.ServiceDefinition;
 using Tecan.Sila2.ServerPooling;
 
@@ -53,6 +54,7 @@ namespace Tecan.Sila2.Server
         private readonly Timer _cleanupTimer;
 
         private readonly ServerPoolDispatcher _poolDispatcher;
+        private readonly IServerPoolConnectionFactory _poolConnectionFactory;
 
         internal const string ServerConfigurationName = "default";
 
@@ -155,8 +157,9 @@ namespace Tecan.Sila2.Server
         /// <param name="interceptors">Interceptors to intercept any commands issued to the server</param>
         /// <param name="fileManagement">The file management used by this server</param>
         /// <param name="serviceHandlerRepository">A repository of service handlers</param>
+        /// <param name="serverPoolConnectionFactory">A component that creates a callinvoker for a request to connect to a pool server</param>
         [ImportingConstructor]
-        public SiLAServer( ServerStartInformation startupInfo, IConfigurationStore configurationStore, [ImportMany] IEnumerable<IRequestInterceptor> interceptors, IFileManagement fileManagement, IServiceConfigurationBuilder<ISiLAServer> serviceHandlerRepository )
+        public SiLAServer( ServerStartInformation startupInfo, IConfigurationStore configurationStore, [ImportMany] IEnumerable<IRequestInterceptor> interceptors, IFileManagement fileManagement, IServiceConfigurationBuilder<ISiLAServer> serviceHandlerRepository, IServerPoolConnectionFactory serverPoolConnectionFactory )
         {
             _interceptors = interceptors;
             _configurationStore = configurationStore;
@@ -164,6 +167,7 @@ namespace Tecan.Sila2.Server
             _download = new BinaryDownload( fileManagement );
             _fileManagement = fileManagement;
             _poolDispatcher = new ServerPoolDispatcher( _upload, _download, this );
+            _poolConnectionFactory = serverPoolConnectionFactory;
             _serviceBinder = new SilaServiceBinder( serviceHandlerRepository );
 
             var configuration = configurationStore.Read<ServerConfiguration>( ServerConfigurationName );
@@ -206,6 +210,14 @@ namespace Tecan.Sila2.Server
                 _logger.Warn( "Server is running without Discovery!" );
                 // if no interface was specified, the SiLA server will (try to) run on all of them
                 serviceHandlerRepository.ConfigureForServer( uuid, port, null );
+            }
+
+            if(serviceHandlerRepository.AnnouncementDetails != null)
+            {
+                foreach(var pair in serviceHandlerRepository.AnnouncementDetails)
+                {
+                    _announcer.SetProperty( pair.Key, pair.Value );
+                }
             }
 
             var cleanupInterval = TimeSpan.FromSeconds( 30 );
@@ -331,7 +343,7 @@ namespace Tecan.Sila2.Server
         public IEnumerable<IFeatureProvider> Features => _implementedFeatures.AsReadOnly();
 
         /// <inheritdoc />
-        public IServerErrorHandling ErrorHandling { get; } = new ServerErrorHandling();
+        public IServerErrorHandling ErrorHandling { get; } = ServerErrorHandling.Instance;
 
         /// <inheritdoc />
         public ObservableCommandExecution[] FindCommandExecutions( Predicate<CommandState> stateFilter )
@@ -482,6 +494,11 @@ namespace Tecan.Sila2.Server
                     }
                 }
             }
+            catch(MissingMetadataException missingMetadata)
+            {
+                _logger.Error( $"Request rejected because required metadata {missingMetadata.MetadataIdentifier} was missing." );
+                throw ErrorHandling.CreateMissingMetadataException( missingMetadata.MetadataIdentifier );
+            }
             catch(Exception exception)
             {
                 if(interceptions != null)
@@ -630,8 +647,8 @@ namespace Tecan.Sila2.Server
         public IDisposable ConnectToPool( string poolAddress )
         {
             _logger.Info( $"Connecting to server pool {poolAddress}" );
-            var channel = GrpcChannel.ForAddress( poolAddress.StartsWith("http") ? poolAddress : "http://" + poolAddress );
-            var connection = new PoolConnection( _poolDispatcher, channel.CreateCallInvoker().AsyncDuplexStreamingCall( PoolingConstants.ConnectSilaServerMethod, null, new CallOptions() ) );
+            var channel = _poolConnectionFactory.CreatePoolConnection( poolAddress );
+            var connection = new PoolConnection( _poolDispatcher, channel.AsyncDuplexStreamingCall( PoolingConstants.ConnectSilaServerMethod, null, new CallOptions() ) );
             connection.Start();
             return connection;
         }

@@ -5,6 +5,9 @@ using Microsoft.Extensions.Hosting;
 using System;
 using System.IO;
 using System.Reflection;
+using Tecan.Sila2.Security;
+using Tecan.Sila2.Server.Binary;
+using Tecan.Sila2.Server.ServerPooling;
 
 namespace Tecan.Sila2.Server
 {
@@ -19,7 +22,7 @@ namespace Tecan.Sila2.Server
         /// <param name="builder">The host builder</param>
         /// <param name="configureContainer">A callback that is used to configure the container.</param>
         /// <returns>The host builder for chaining</returns>
-        public static IHostBuilder UseDryIoc(this IHostBuilder builder, Action<IContainer> configureContainer)
+        public static IHostBuilder UseDryIoc( this IHostBuilder builder, Action<IContainer> configureContainer )
         {
             var container = new Container().WithMef();
             configureContainer?.Invoke( container );
@@ -52,7 +55,7 @@ namespace Tecan.Sila2.Server
         /// </summary>
         /// <param name="container">The DryIoc container</param>
         /// <param name="filter">A filter or null to use the default filter *.dll</param>
-        public static void LoadComponentsFromApplicationDirectory( this IContainer container, string filter = null)
+        public static void LoadComponentsFromApplicationDirectory( this IContainer container, string filter = null )
         {
             var assemblyLocation = Assembly.GetEntryAssembly().Location;
             var path = Path.GetDirectoryName( assemblyLocation );
@@ -67,6 +70,33 @@ namespace Tecan.Sila2.Server
         public static void LoadComponentsFromAssembly( this IContainer container, Assembly assembly )
         {
             container.RegisterExports( assembly );
+        }
+
+        /// <summary>
+        /// Adds default implementations for several infrastructure services needed from the SiLA2 SDK in case they are missing
+        /// </summary>
+        /// <param name="container">The container to which the elements should be added</param>
+        public static void AddSila2Defaults( this IContainer container )
+        {
+            if(!container.IsRegistered<IFileManagement>())
+            {
+                container.RegisterInstance<IFileManagement>( new FileManagement() );
+            }
+
+            if(!container.IsRegistered<IConfigurationStore>())
+            {
+                container.RegisterInstance<IConfigurationStore>( new FileConfigurationStore() );
+            }
+
+            if(!container.IsRegistered<IServerCertificateProvider>())
+            {
+                container.RegisterInstance<IServerCertificateProvider>( new FileCertificateProvider() );
+            }
+
+            if(!container.IsRegistered<IServerPoolConnectionFactory>())
+            {
+                container.RegisterInstance<IServerPoolConnectionFactory>( new DefaultServerPoolConnectionFactory() );
+            }
         }
     }
 }

@@ -81,22 +81,22 @@ namespace Tecan.Sila2.IntegrationTests
             return processStartInfo;
         }
 
-        protected virtual ServerData FindServer(Guid serverUuid)
+        protected virtual ServerData FindServer( Guid serverUuid )
         {
             var connector = new ServerConnector( new DiscoveryExecutionManager() );
 
-            return connector.Connect( IPAddress.Loopback, 50052);
+            return connector.Connect( IPAddress.Loopback, 50052 );
         }
 
         [TearDown]
         public virtual void StopTestServer()
         {
-            if( _serverProcess != null && !_serverProcess.HasExited )
+            if(_serverProcess != null && !_serverProcess.HasExited)
             {
                 _serverProcess.StandardInput.WriteLine();
                 _serverProcess.StandardInput.Flush();
                 _serverProcess.WaitForExit( 1000 );
-                if( !_serverProcess.HasExited )
+                if(!_serverProcess.HasExited)
                 {
                     _serverProcess.Kill();
                 }
@@ -110,12 +110,12 @@ namespace Tecan.Sila2.IntegrationTests
             var lockId = Lock( token );
             var executionManager = new TestAuthLockingExecutionManager( lockId, token, _server.Channel );
             var testClient = new TestServerClient( _server.Channel, executionManager );
-            
-            Assert.That(testClient.PassBool(true), Is.True);
-            Assert.That(testClient.PassBool(false), Is.False);
 
-            Unlock(lockId, token);
-            Logout(token);
+            Assert.That( testClient.PassBool( true ), Is.True );
+            Assert.That( testClient.PassBool( false ), Is.False );
+
+            Unlock( lockId, token );
+            Logout( token );
         }
 
         [Test]
@@ -128,8 +128,8 @@ namespace Tecan.Sila2.IntegrationTests
             var feature = _server.Features.Single( f => f.Identifier == "TestServer" );
             var featureContext = new FeatureContext( feature, _server, executionManager );
             var commandClient = new NonObservableCommandClient( feature.Items.OfType<FeatureCommand>().Single( c => c.Identifier == "PassBool" ), featureContext );
-            
-            PassAndAssertEquals(commandClient, true);
+
+            PassAndAssertEquals( commandClient, true );
             PassAndAssertEquals( commandClient, false );
 
             Unlock( lockId, token );
@@ -137,7 +137,7 @@ namespace Tecan.Sila2.IntegrationTests
 
         }
 
-        private static void PassAndAssertEquals(NonObservableCommandClient commandClient, object value)
+        private static void PassAndAssertEquals( NonObservableCommandClient commandClient, object value )
         {
             var request = commandClient.CreateRequest();
             request.Value = new DynamicObject()
@@ -150,8 +150,8 @@ namespace Tecan.Sila2.IntegrationTests
                     }
                 }
             };
-            var response = commandClient.Invoke(request);
-            Assert.That((response.Value as DynamicObject).Elements[0].Value, Is.EqualTo(value));
+            var response = commandClient.Invoke( request );
+            Assert.That( (response.Value as DynamicObject).Elements[0].Value, Is.EqualTo( value ) );
         }
 
         [Test]
@@ -162,7 +162,7 @@ namespace Tecan.Sila2.IntegrationTests
             var executionManager = new TestAuthLockingExecutionManager( lockId, token, _server.Channel );
             var testClient = new TestServerClient( _server.Channel, executionManager );
 
-            Assert.That( testClient.PassDouble(0.0), Is.EqualTo(0.0) );
+            Assert.That( testClient.PassDouble( 0.0 ), Is.EqualTo( 0.0 ) );
             Assert.That( testClient.PassDouble( 8.15 ), Is.EqualTo( 8.15 ) );
             Assert.That( testClient.PassDouble( -1.0 ), Is.EqualTo( -1.0 ) );
             Assert.That( testClient.PassDouble( double.NaN ), Is.EqualTo( double.NaN ) );
@@ -257,12 +257,12 @@ namespace Tecan.Sila2.IntegrationTests
             var testClient = new TestServerClient( _server.Channel, executionManager );
 
             // everything below seconds is not transmitted, so we cannot simply use now
-            var timestamp = new DateTimeOffset(DateTime.Today, DateTimeOffset.Now.Offset);
+            var timestamp = new DateTimeOffset( DateTime.Today, DateTimeOffset.Now.Offset );
 
             Assert.That( testClient.PassTimestamp( timestamp ), Is.EqualTo( timestamp ) );
 
-            var maxTimestamp = new DateTimeOffset(9999, 12, 31, 23, 59, 59, TimeSpan.Zero);
-            Assert.That(testClient.PassTimestamp(maxTimestamp), Is.EqualTo(maxTimestamp)  );
+            var maxTimestamp = new DateTimeOffset( 9999, 12, 31, 23, 59, 59, TimeSpan.Zero );
+            Assert.That( testClient.PassTimestamp( maxTimestamp ), Is.EqualTo( maxTimestamp ) );
 
             Unlock( lockId, token );
             Logout( token );
@@ -298,7 +298,7 @@ namespace Tecan.Sila2.IntegrationTests
             var testClient = new TestServerClient( _server.Channel, executionManager );
 
             Assert.That( testClient.PassTime( TimeSpan.Zero ), Is.EqualTo( TimeSpan.Zero ) );
-            var timespan = new TimeSpan(0, 8, 15, 42);
+            var timespan = new TimeSpan( 0, 8, 15, 42 );
             Assert.That( testClient.PassTime( timespan ), Is.EqualTo( timespan ) );
 
             Unlock( lockId, token );
@@ -333,7 +333,7 @@ namespace Tecan.Sila2.IntegrationTests
             var executionManager = new TestAuthLockingExecutionManager( lockId, token, _server.Channel );
             var testClient = new TestServerClient( _server.Channel, executionManager );
 
-            Assert.That( testClient.PassString( "Foo" ), Is.EqualTo("Foo") );
+            Assert.That( testClient.PassString( "Foo" ), Is.EqualTo( "Foo" ) );
             Assert.That( testClient.PassString( "֍Bar©" ), Is.EqualTo( "֍Bar©" ) );
             Assert.That( testClient.PassString( null ), Is.Null.Or.Empty );
 
@@ -367,8 +367,8 @@ namespace Tecan.Sila2.IntegrationTests
             var executionManager = new TestAuthLockingExecutionManager( lockId, token, _server.Channel );
             var testClient = new TestServerClient( _server.Channel, executionManager );
 
-            var structure = new SomeStructure(true, 8.15, 42L, 23, DateTimeOffset.MinValue, new TimeSpan(0, 8, 15));
-            Assert.That( testClient.PassStructure( structure ), Is.EqualTo(structure) );
+            var structure = new SomeStructure( true, 8.15, 42L, 23, DateTimeOffset.MinValue, new TimeSpan( 0, 8, 15 ) );
+            Assert.That( testClient.PassStructure( structure ), Is.EqualTo( structure ) );
 
             Unlock( lockId, token );
             Logout( token );
@@ -388,7 +388,7 @@ namespace Tecan.Sila2.IntegrationTests
 
             var request = commandClient.CreateRequest();
             var structureParameter = ((StructureType)request.Type.Item).Element[0];
-            var structureType = (StructureType) featureContext.ResolveType( structureParameter.DataType.Item.ToString()).Item;
+            var structureType = (StructureType)featureContext.ResolveType( structureParameter.DataType.Item.ToString() ).Item;
             request.Value = new DynamicObject()
             {
                 Elements =
@@ -413,7 +413,7 @@ namespace Tecan.Sila2.IntegrationTests
             var response = commandClient.Invoke( request );
             var responseStructure = (DynamicObject)((DynamicObject)response.Value).Elements[0].Value;
 
-            Assert.That(responseStructure.Elements[0].Value, Is.EqualTo(true));
+            Assert.That( responseStructure.Elements[0].Value, Is.EqualTo( true ) );
             Assert.That( responseStructure.Elements[1].Value, Is.EqualTo( 8.15 ) );
             Assert.That( responseStructure.Elements[2].Value, Is.EqualTo( 42L ) );
             Assert.That( responseStructure.Elements[3].Value, Is.EqualTo( 23L ) );
@@ -440,33 +440,33 @@ namespace Tecan.Sila2.IntegrationTests
             var executionManager = new TestAuthLockingExecutionManager( lockId, token, _server.Channel );
             var testClient = new TestServerClient( _server.Channel, executionManager );
 
-            PassDataToClientAndTest(testClient, 0, 8, 15);
+            PassDataToClientAndTest( testClient, 0, 8, 15 );
             PassDataToClientAndTest( testClient, CreateLargeByteArray() );
 
             Unlock( lockId, token );
             Logout( token );
         }
 
-        private static void PassDataToClientAndTest(TestServerClient testClient, params byte[] bytes)
+        private static void PassDataToClientAndTest( TestServerClient testClient, params byte[] bytes )
         {
-            using (var ms = new MemoryStream(bytes))
+            using(var ms = new MemoryStream( bytes ))
             {
                 ms.Position = 0;
-                using (var response = testClient.PassBytes(ms))
+                using(var response = testClient.PassBytes( ms ))
                 {
-                    AssertData(bytes, response);
+                    AssertData( bytes, response );
                 }
 
                 ms.Position = 0;
-                using (var response = testClient.PassStream(ms))
+                using(var response = testClient.PassStream( ms ))
                 {
-                    AssertData(bytes, response);
+                    AssertData( bytes, response );
                 }
 
                 ms.Position = 0;
-                using (var response = testClient.PassFile(ms))
+                using(var response = testClient.PassFile( ms ))
                 {
-                    AssertData(bytes, response);
+                    AssertData( bytes, response );
                 }
             }
         }
@@ -482,23 +482,23 @@ namespace Tecan.Sila2.IntegrationTests
             var featureContext = new FeatureContext( feature, _server, executionManager );
             var commandClient = new NonObservableCommandClient( feature.Items.OfType<FeatureCommand>().Single( c => c.Identifier == "PassBytes" ), featureContext );
 
-            PassBytesThroughAndAssert(commandClient, new byte[] {0, 8, 15});
-            PassBytesThroughAndAssert(commandClient, CreateLargeByteArray());
+            PassBytesThroughAndAssert( commandClient, new byte[] { 0, 8, 15 } );
+            PassBytesThroughAndAssert( commandClient, CreateLargeByteArray() );
 
             Unlock( lockId, token );
             Logout( token );
         }
 
-        private static void AssertArraysEqual(byte[] response, byte[] value)
+        private static void AssertArraysEqual( byte[] response, byte[] value )
         {
-            Assert.That(response.Length, Is.EqualTo(value.Length));
-            for (int i = 0; i < response.Length; i++)
+            Assert.That( response.Length, Is.EqualTo( value.Length ) );
+            for(int i = 0; i < response.Length; i++)
             {
-                Assert.That(response[i], Is.EqualTo(value[i]));
+                Assert.That( response[i], Is.EqualTo( value[i] ) );
             }
         }
 
-        private static void PassBytesThroughAndAssert(NonObservableCommandClient commandClient, byte[] value)
+        private static void PassBytesThroughAndAssert( NonObservableCommandClient commandClient, byte[] value )
         {
             var request = commandClient.CreateRequest();
             request.Value = new DynamicObject()
@@ -511,12 +511,12 @@ namespace Tecan.Sila2.IntegrationTests
                     }
                 }
             };
-            var response = commandClient.Invoke(request);
+            var response = commandClient.Invoke( request );
             var returnStream = (response.Value as DynamicObject).Elements[0].Value;
-            Assert.That(returnStream, Is.InstanceOf(typeof(Stream)));
-            using (var responseStream = new MemoryStream())
+            Assert.That( returnStream, Is.InstanceOf( typeof( Stream ) ) );
+            using(var responseStream = new MemoryStream())
             {
-                ((Stream) returnStream).CopyTo(responseStream);
+                ((Stream)returnStream).CopyTo( responseStream );
                 var responseArray = responseStream.ToArray();
 
                 // we cannot use Is.EquivalentTo for larger byte arrays because it is super-slow, rather check sequence equality explicitly
@@ -533,9 +533,9 @@ namespace Tecan.Sila2.IntegrationTests
             var testClient = new TestServerClient( _server.Channel, executionManager );
 
             var listOfItems = new List<string>();
-            Assert.That( testClient.PassCollection(listOfItems), Is.Null.Or.EquivalentTo(listOfItems) );
-            listOfItems.Add("Foo");
-            listOfItems.Add("Bar");
+            Assert.That( testClient.PassCollection( listOfItems ), Is.Null.Or.EquivalentTo( listOfItems ) );
+            listOfItems.Add( "Foo" );
+            listOfItems.Add( "Bar" );
             Assert.That( testClient.PassCollection( listOfItems ), Is.EquivalentTo( listOfItems ) );
 
             Unlock( lockId, token );
@@ -554,9 +554,9 @@ namespace Tecan.Sila2.IntegrationTests
             var commandClient = new NonObservableCommandClient( feature.Items.OfType<FeatureCommand>().Single( c => c.Identifier == "PassCollection" ), featureContext );
 
             var listOfItems = new List<string>();
-            PassAndAssertEquivalent(commandClient, listOfItems);
-            listOfItems.Add("Foo");
-            listOfItems.Add("Bar");
+            PassAndAssertEquivalent( commandClient, listOfItems );
+            listOfItems.Add( "Foo" );
+            listOfItems.Add( "Bar" );
             PassAndAssertEquivalent( commandClient, listOfItems );
 
             Unlock( lockId, token );
@@ -640,7 +640,7 @@ namespace Tecan.Sila2.IntegrationTests
             Assert.That( response.Value, Is.EqualTo( input ) );
         }
 
-        private static void PassAndAssertEquivalent(NonObservableCommandClient commandClient, List<string> listOfItems)
+        private static void PassAndAssertEquivalent( NonObservableCommandClient commandClient, List<string> listOfItems )
         {
             var request = commandClient.CreateRequest();
             request.Value = new DynamicObject()
@@ -653,11 +653,11 @@ namespace Tecan.Sila2.IntegrationTests
                     }
                 }
             };
-            var response = commandClient.Invoke(request);
-            if( listOfItems == null || listOfItems.Count == 0 )
+            var response = commandClient.Invoke( request );
+            if(listOfItems == null || listOfItems.Count == 0)
             {
                 // response may be null
-                if( response.Value != null )
+                if(response.Value != null)
                 {
                     Assert.That( (response.Value as DynamicObject).Elements, Is.Empty );
                 }
@@ -677,13 +677,13 @@ namespace Tecan.Sila2.IntegrationTests
             var lockId = Lock( token );
             var executionManager = new TestAuthLockingExecutionManager( lockId, token, _server.Channel );
             var testClient = new TestServerClient( _server.Channel, executionManager );
-            
+
             var command = testClient.RunObservable();
             var stateUpdates = ReadChannel( command.StateUpdates );
-            command.Response.Wait(TimeSpan.FromMinutes(1));
+            command.Response.Wait( TimeSpan.FromMinutes( 1 ) );
             var result = command.Response.Result;
-            Assert.That(result, Is.EqualTo(42L));
-            Assert.That(stateUpdates.Count, Is.EqualTo(4));
+            Assert.That( result, Is.EqualTo( 42L ) );
+            Assert.That( stateUpdates.Count, Is.EqualTo( 4 ) );
 
             Unlock( lockId, token );
             Logout( token );
@@ -699,7 +699,7 @@ namespace Tecan.Sila2.IntegrationTests
 
             var feature = _server.Features.Single( f => f.Identifier == "TestServer" );
             var featureContext = new FeatureContext( feature, _server, executionManager );
-            var commandClient = new ObservableCommandClient( feature.Items.OfType<FeatureCommand>().Single( c => c.Identifier == nameof(ITestServer.RunObservable) ), featureContext );
+            var commandClient = new ObservableCommandClient( feature.Items.OfType<FeatureCommand>().Single( c => c.Identifier == nameof( ITestServer.RunObservable ) ), featureContext );
 
             var command = commandClient.Invoke( commandClient.CreateRequest() );
             var stateUpdates = ReadChannel( command.StateUpdates );
@@ -721,8 +721,8 @@ namespace Tecan.Sila2.IntegrationTests
             var executionManager = new TestAuthLockingExecutionManager( lockId, token, _server.Channel );
             var testClient = new TestServerClient( _server.Channel, executionManager );
             var command = testClient.WaitForCancelOrThrow( TimeSpan.FromMinutes( 1 ) ) as IClientCommand;
-            Assert.That(command, Is.Not.Null);
-            Assert.That(command.IsCancellationSupported, Is.True);
+            Assert.That( command, Is.Not.Null );
+            Assert.That( command.IsCancellationSupported, Is.True );
 
             var cancelClient = new CancelControllerClient( _server.Channel, executionManager );
             cancelClient.CancelCommand( command.CommandId );
@@ -743,7 +743,7 @@ namespace Tecan.Sila2.IntegrationTests
 
             var feature = _server.Features.Single( f => f.Identifier == "TestServer" );
             var featureContext = new FeatureContext( feature, _server, executionManager );
-            var commandClient = new ObservableCommandClient( feature.Items.OfType<FeatureCommand>().Single( c => c.Identifier == nameof(ITestServer.WaitForCancelOrThrow) ), featureContext );
+            var commandClient = new ObservableCommandClient( feature.Items.OfType<FeatureCommand>().Single( c => c.Identifier == nameof( ITestServer.WaitForCancelOrThrow ) ), featureContext );
             var request = commandClient.CreateRequest();
             request.Value = new DynamicObject()
             {
@@ -759,7 +759,7 @@ namespace Tecan.Sila2.IntegrationTests
             command.Cancel();
 
             Assert.ThrowsAsync<OperationCanceledException>( () => command.Response );
-            Assert.That(testClient.IsCancelled(command.CommandId.CommandId), Is.True);
+            Assert.That( testClient.IsCancelled( command.CommandId.CommandId ), Is.True );
 
             Unlock( lockId, token );
             Logout( token );
@@ -782,7 +782,7 @@ namespace Tecan.Sila2.IntegrationTests
         private static List<T> ReadChannel<T>( ChannelReader<T> channel )
         {
             var task = ReadChannelCore( channel );
-            task.Wait(TimeSpan.FromMinutes(1));
+            task.Wait( TimeSpan.FromMinutes( 1 ) );
             return task.Result;
         }
 
@@ -793,7 +793,7 @@ namespace Tecan.Sila2.IntegrationTests
             var lockId = Lock( token );
             var executionManager = new TestAuthLockingExecutionManager( lockId, token, _server.Channel );
             var testClient = new TestServerClient( _server.Channel, executionManager );
-            
+
             var command = testClient.RunIntermediateObservableCommand();
             var intermediateResults = ReadChannel( command.IntermediateValues );
             command.Response.Wait( TimeSpan.FromMinutes( 1 ) );
@@ -818,7 +818,7 @@ namespace Tecan.Sila2.IntegrationTests
             var command = commandClient.Invoke( commandClient.CreateRequest() );
             var intermediateResults = ReadChannel( command.IntermediateValues );
             command.Response.Wait( TimeSpan.FromMinutes( 1 ) );
-            Assert.That(intermediateResults.Count, Is.EqualTo(3));
+            Assert.That( intermediateResults.Count, Is.EqualTo( 3 ) );
 
             Unlock( lockId, token );
             Logout( token );
@@ -864,11 +864,11 @@ namespace Tecan.Sila2.IntegrationTests
 
             var feature = _server.Features.Single( f => f.Identifier == "TestServer" );
             var featureContext = new FeatureContext( feature, _server, executionManager );
-            var commandClient = new NonObservableCommandClient( feature.Items.OfType<FeatureCommand>().Single( c => c.Identifier == nameof(ITestServer.RunIntoFailure) ), featureContext );
-            
+            var commandClient = new NonObservableCommandClient( feature.Items.OfType<FeatureCommand>().Single( c => c.Identifier == nameof( ITestServer.RunIntoFailure ) ), featureContext );
+
             var exception = Assert.ThrowsAsync<DefinedErrorException>( () => commandClient.InvokeAsync( commandClient.CreateRequest() ) );
             var fake = feature.Items.OfType<FeatureDefinedExecutionError>().Single( e => e.Identifier == "Fake" );
-            Assert.That(exception.ErrorIdentifier, Is.EqualTo(feature.GetFullyQualifiedIdentifier(fake)));
+            Assert.That( exception.ErrorIdentifier, Is.EqualTo( feature.GetFullyQualifiedIdentifier( fake ) ) );
 
             Unlock( lockId, token );
             Logout( token );
@@ -904,7 +904,7 @@ namespace Tecan.Sila2.IntegrationTests
             var testClient = new TestServerClient( _server.Channel, executionManager );
 
             var exception = Assert.Throws<SilaException>( () => testClient.ThrowRuntimeException() );
-            Assert.That(exception.Message, Contains.Substring(nameof(InvalidOperationException)));
+            Assert.That( exception.Message, Contains.Substring( nameof( InvalidOperationException ) ) );
 
             Unlock( lockId, token );
             Logout( token );
@@ -924,7 +924,7 @@ namespace Tecan.Sila2.IntegrationTests
             var command = commandClient.InvokeAsync( commandClient.CreateRequest() );
 
             var exception = Assert.ThrowsAsync<SilaException>( () => command );
-            Assert.That( exception.Message, Contains.Substring( nameof(InvalidOperationException) ) );
+            Assert.That( exception.Message, Contains.Substring( nameof( InvalidOperationException ) ) );
 
             Unlock( lockId, token );
             Logout( token );
@@ -939,12 +939,12 @@ namespace Tecan.Sila2.IntegrationTests
             var testClient = new TestServerClient( _server.Channel, executionManager );
 
             testClient.SetDummy( -1 );
-            Assert.That(testClient.DummyValue, Is.EqualTo(-1L));
+            Assert.That( testClient.DummyValue, Is.EqualTo( -1L ) );
 
             var receivedValues = new List<long>();
             testClient.PropertyChanged += ( o, e ) =>
             {
-                Assert.That( e.PropertyName, Is.EqualTo( nameof(ITestServer.DummyValue) ) );
+                Assert.That( e.PropertyName, Is.EqualTo( nameof( ITestServer.DummyValue ) ) );
                 receivedValues.Add( testClient.DummyValue );
             };
 
@@ -973,7 +973,7 @@ namespace Tecan.Sila2.IntegrationTests
 
             var feature = _server.Features.Single( f => f.Identifier == "TestServer" );
             var featureContext = new FeatureContext( feature, _server, executionManager );
-            var propertyClient = new PropertyClient( feature.Items.OfType<FeatureProperty>().FirstOrDefault( p => p.Identifier == nameof(ITestServer.DummyValue) ),
+            var propertyClient = new PropertyClient( feature.Items.OfType<FeatureProperty>().FirstOrDefault( p => p.Identifier == nameof( ITestServer.DummyValue ) ),
                 featureContext );
 
             testClient.SetDummy( -1 );
@@ -1001,42 +1001,42 @@ namespace Tecan.Sila2.IntegrationTests
             Logout( token );
         }
 
-        private static void AssertData(byte[] expected, Stream response)
+        private static void AssertData( byte[] expected, Stream response )
         {
-            for (int i = 0; i < expected.Length; i++)
+            for(int i = 0; i < expected.Length; i++)
             {
-                Assert.That((byte) response.ReadByte(), Is.EqualTo(expected[i]), $"Data at position {i} is wrong.");
+                Assert.That( (byte)response.ReadByte(), Is.EqualTo( expected[i] ), $"Data at position {i} is wrong." );
             }
 
-            Assert.That(response.ReadByte(), Is.EqualTo(-1));
+            Assert.That( response.ReadByte(), Is.EqualTo( -1 ) );
         }
 
         [Test]
         public void InvalidLogin_ThrowsSilaException()
         {
-            Assert.Throws<DefinedErrorException>( () => Lock( null ) );
+            Assert.Throws<SilaFrameworkException>( () => Lock( null ) );
             Assert.Throws<DefinedErrorException>( () => Lock( "bullshit" ) );
         }
 
         protected string Login()
         {
-            var authenticationClient = new AuthenticationServiceClient(_server.Channel, new DiscoveryExecutionManager() );
+            var authenticationClient = new AuthenticationServiceClient( _server.Channel, new DiscoveryExecutionManager() );
             var token = authenticationClient.Login( "admin", "admin", _server.Config.Uuid.ToString(), new List<string>() );
             return token.AccessToken;
         }
 
         protected string Lock( string token )
         {
-            var lockingClient = new LockControllerClient(_server.Channel, new TestAuthLockingExecutionManager(null, token, _server.Channel) );
+            var lockingClient = new LockControllerClient( _server.Channel, new TestAuthLockingExecutionManager( null, token, _server.Channel ) );
             var lockIdentifier = Guid.NewGuid().ToString();
-            lockingClient.LockServer(lockIdentifier, 3600);
+            lockingClient.LockServer( lockIdentifier, 3600 );
             return lockIdentifier;
         }
 
         private void Unlock( string identifier, string token )
         {
             var lockingClient = new LockControllerClient( _server.Channel, new TestAuthLockingExecutionManager( null, token, _server.Channel ) );
-            lockingClient.UnlockServer(identifier);
+            lockingClient.UnlockServer( identifier );
         }
 
         private void Logout( string token )

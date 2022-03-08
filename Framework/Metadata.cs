@@ -12,15 +12,15 @@
         /// <param name="metadata">The metadata that was used with this request</param>
         /// <param name="metadataIdentifier">The global unique identifier of the metadata</param>
         /// <returns>The deserialized metadata</returns>
-        public static TMetadata Extract<TMetadata>(IMetadataRepository metadata, string metadataIdentifier)
+        public static TMetadata Extract<TMetadata>( IMetadataRepository metadata, string metadataIdentifier )
             where TMetadata : new()
         {
-            if (metadata != null && metadata.TryGetMetadata(metadataIdentifier, out var metadataValue))
+            if(metadata != null && metadata.TryGetMetadata( metadataIdentifier, out var metadataValue ))
             {
                 return ByteSerializer.FromByteArray<PropertyResponse<TMetadata>>( metadataValue ).Value;
             }
 
-            return new TMetadata();
+            throw new MissingMetadataException( metadataIdentifier );
         }
     }
 }

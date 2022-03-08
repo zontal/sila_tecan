@@ -12,6 +12,7 @@ using Grpc.Core;
 using Grpc.Core.Interceptors;
 using Tecan.Sila2.Discovery;
 using Tecan.Sila2.Server.Binary;
+using Tecan.Sila2.Server.ServerPooling;
 using Tecan.Sila2.Server.ServiceDefinition;
 using Tecan.Sila2.ServerPooling;
 
@@ -20,9 +21,9 @@ namespace Tecan.Sila2.Server
     /// <summary>
     /// Base class for all SiLA 2 Servers.
     /// </summary>
-    [Export(typeof(ISiLAServer))]
-    [Export(typeof(ISiLAService))]
-    [PartCreationPolicy(CreationPolicy.Shared)]
+    [Export( typeof( ISiLAServer ) )]
+    [Export( typeof( ISiLAService ) )]
+    [PartCreationPolicy( CreationPolicy.Shared )]
     public class SiLAServer : ISiLAService, ISiLAServer
     {
         #region Members
@@ -51,6 +52,7 @@ namespace Tecan.Sila2.Server
         private readonly Timer _cleanupTimer;
 
         private readonly ServerPoolDispatcher _poolDispatcher;
+        private readonly IServerPoolConnectionFactory _poolConnectionFactory;
 
         internal const string ServerConfigurationName = "default";
 
@@ -62,21 +64,21 @@ namespace Tecan.Sila2.Server
         /// Check if the specified TCP port is available
         /// If the port is already in use, an SocketException is thrown
         /// </summary>
-        private static void EnsurePortIsAvailable(int port)
+        private static void EnsurePortIsAvailable( int port )
         {
-            TcpListener tcpListener = new TcpListener(IPAddress.Parse("0.0.0.0"), port);
+            TcpListener tcpListener = new TcpListener( IPAddress.Parse( "0.0.0.0" ), port );
             tcpListener.Start();
             tcpListener.Stop();
         }
 
-        private IEnumerable<IRequestInterceptor> GetInterceptors(string commandIdentifier)
+        private IEnumerable<IRequestInterceptor> GetInterceptors( string commandIdentifier )
         {
-            if (!_cachedInterceptorList.TryGetValue(commandIdentifier, out var interceptors))
+            if(!_cachedInterceptorList.TryGetValue( commandIdentifier, out var interceptors ))
             {
-                var feature = _implementedFeatures.FirstOrDefault(f => commandIdentifier.StartsWith(f.FeatureDefinition.FullyQualifiedIdentifier))?.FeatureDefinition;
-                interceptors = _interceptors.Where(i => i.IsInterceptRequired(feature, commandIdentifier)).OrderByDescending(r => r.Priority).ToList();
+                var feature = _implementedFeatures.FirstOrDefault( f => commandIdentifier.StartsWith( f.FeatureDefinition.FullyQualifiedIdentifier ) )?.FeatureDefinition;
+                interceptors = _interceptors.Where( i => i.IsInterceptRequired( feature, commandIdentifier ) ).OrderByDescending( r => r.Priority ).ToList();
 
-                _cachedInterceptorList.Add(commandIdentifier, interceptors);
+                _cachedInterceptorList.Add( commandIdentifier, interceptors );
             }
 
             return interceptors;
@@ -105,11 +107,11 @@ namespace Tecan.Sila2.Server
         public string ServerUUID { get; }
 
         /// <inheritdoc />
-        public void SetServerName(string serverName)
+        public void SetServerName( string serverName )
         {
             ServerName = serverName;
             var configuration = _configurationStore.Read<ServerConfiguration>( "default" );
-            if (configuration != null)
+            if(configuration != null)
             {
                 configuration.Name = serverName;
                 try
@@ -153,8 +155,9 @@ namespace Tecan.Sila2.Server
         /// <param name="interceptors">Interceptors to intercept any commands issued to the server</param>
         /// <param name="fileManagement">The file management used by this server</param>
         /// <param name="serverProvider">The actual gRPC server the SiLA2 server should be running on</param>
+        /// <param name="serverPoolConnectionFactory">A component that creates a callinvoker for a request to connect to a pool server</param>
         [ImportingConstructor]
-        public SiLAServer(ServerStartInformation startupInfo, IConfigurationStore configurationStore, [ImportMany] IEnumerable<IRequestInterceptor> interceptors, IFileManagement fileManagement, IServerProvider serverProvider)
+        public SiLAServer( ServerStartInformation startupInfo, IConfigurationStore configurationStore, [ImportMany] IEnumerable<IRequestInterceptor> interceptors, IFileManagement fileManagement, IServerProvider serverProvider, IServerPoolConnectionFactory serverPoolConnectionFactory )
         {
             _interceptors = interceptors;
             _configurationStore = configurationStore;
@@ -163,6 +166,7 @@ namespace Tecan.Sila2.Server
             _fileManagement = fileManagement;
             _poolDispatcher = new ServerPoolDispatcher( _upload, _download, this );
             _serverProvider = serverProvider;
+            _poolConnectionFactory = serverPoolConnectionFactory;
 
             var configuration = configurationStore.Read<ServerConfiguration>( ServerConfigurationName );
             var port = (startupInfo.Port ?? configuration?.Port).GetValueOrDefault( 50052 );
@@ -186,14 +190,14 @@ namespace Tecan.Sila2.Server
             ServerUUID = uuid.ToString();
             ServerName = startupInfo.Name ?? configuration?.Name ?? ServerType;
             _implementedFeatures = new List<IFeatureProvider>();
-            _loggingInterceptor = new LoggingInterceptor(_logger);
+            _loggingInterceptor = new LoggingInterceptor( _logger );
 
             // create gRPC server such that it uses only the specified network interfaces
             if((startupInfo.NetworkInterfaces ?? configuration?.InterfaceFilter) != null)
             {
                 var networking = new Networking();
                 var filter = networking.CreateNetworkInterfaceFilter( startupInfo.NetworkInterfaces ?? configuration?.InterfaceFilter );
-                
+
                 _announcer = new ServiceAnnouncer( ServerUUID, (ushort)port, filter );
 
                 _serverProvider.ConfigureForServer( uuid, port, filter );
@@ -232,26 +236,26 @@ namespace Tecan.Sila2.Server
 
         private void Cleanup( object state )
         {
-            lock( _commandExecutions )
+            lock(_commandExecutions)
             {
-                for( int i = _commandExecutions.Count - 1; i >= 0; i-- )
+                for(int i = _commandExecutions.Count - 1; i >= 0; i--)
                 {
                     var commandExecution = _commandExecutions[i];
                     var responseTask = commandExecution.Command?.Response;
-                    if( responseTask != null && ( responseTask.IsCanceled || responseTask.IsCompleted || responseTask.IsFaulted ) )
+                    if(responseTask != null && (responseTask.IsCanceled || responseTask.IsCompleted || responseTask.IsFaulted))
                     {
-                        if( !commandExecution.Expiration.HasValue )
+                        if(!commandExecution.Expiration.HasValue)
                         {
                             commandExecution.Expiration = DateTime.Now + TimeSpan.FromMinutes( 5 );
                         }
-                        else if (commandExecution.Expiration.Value < DateTime.Now)
+                        else if(commandExecution.Expiration.Value < DateTime.Now)
                         {
-                            _logger.Debug($"Forgetting command execution {commandExecution.CommandExecutionID} ({commandExecution.CommandIdentifier}).");
-                            if (commandExecution.Command is IDisposable disposable)
+                            _logger.Debug( $"Forgetting command execution {commandExecution.CommandExecutionID} ({commandExecution.CommandIdentifier})." );
+                            if(commandExecution.Command is IDisposable disposable)
                             {
                                 disposable.Dispose();
                             }
-                            _commandExecutions.RemoveAt(i);
+                            _commandExecutions.RemoveAt( i );
                         }
                     }
                 }
@@ -267,11 +271,11 @@ namespace Tecan.Sila2.Server
         /// </summary>
         public void StartServer()
         {
-            _logger.Info("Starting server");
-            if (_announcer != null)
+            _logger.Info( "Starting server" );
+            if(_announcer != null)
             {
                 _announcer.Start();
-                _logger.Info($"Announcing as '{_announcer.Profile.FullyQualifiedName}'");
+                _logger.Info( $"Announcing as '{_announcer.Profile.FullyQualifiedName}'" );
             }
         }
 
@@ -295,7 +299,7 @@ namespace Tecan.Sila2.Server
                  }
                  _announcer?.Dispose();
                  _cleanupTimer.Dispose();
-             });
+             } );
         }
 
         #endregion
@@ -306,13 +310,13 @@ namespace Tecan.Sila2.Server
         /// Adds the given feature to the server
         /// </summary>
         /// <param name="feature">The feature to expose</param>
-        public void AddFeature(IFeatureProvider feature)
+        public void AddFeature( IFeatureProvider feature )
         {
-            _implementedFeatures.Add(feature);
+            _implementedFeatures.Add( feature );
             var definitionBuilder = new ServiceDefinitionBuilder();
             var builder = new ServerBuilder( this, feature.FeatureDefinition, _poolDispatcher, definitionBuilder );
             feature.Register( builder );
-            _serverProvider.AddService( definitionBuilder.Build().Intercept(_loggingInterceptor) );
+            _serverProvider.AddService( definitionBuilder.Build().Intercept( _loggingInterceptor ) );
             _logger.Info( $"Exposing feature {feature.FeatureDefinition.FullyQualifiedIdentifier}" );
         }
 
@@ -321,15 +325,15 @@ namespace Tecan.Sila2.Server
         /// </summary>
         /// <param name="qualifiedFeatureIdentifier">The (full qualified) feature identifier.</param>
         /// <returns>The feature description.</returns>
-        public string GetFeatureDefinition(string qualifiedFeatureIdentifier)
+        public string GetFeatureDefinition( string qualifiedFeatureIdentifier )
         {
-            if (!ImplementedFeatures.Contains(qualifiedFeatureIdentifier))
+            if(!ImplementedFeatures.Contains( qualifiedFeatureIdentifier ))
             {
-                throw new UnimplementedFeatureException($"Given Feature identifier: \"{qualifiedFeatureIdentifier}\"");
+                throw new UnimplementedFeatureException( $"Given Feature identifier: \"{qualifiedFeatureIdentifier}\"" );
             }
 
-            var feature = _implementedFeatures.First(f => f.FeatureDefinition.FullyQualifiedIdentifier == qualifiedFeatureIdentifier).FeatureDefinition;
-            return FeatureSerializer.SaveToString(feature).Replace(Environment.NewLine, string.Empty);
+            var feature = _implementedFeatures.First( f => f.FeatureDefinition.FullyQualifiedIdentifier == qualifiedFeatureIdentifier ).FeatureDefinition;
+            return FeatureSerializer.SaveToString( feature ).Replace( Environment.NewLine, string.Empty );
         }
 
         /// <summary>
@@ -337,7 +341,7 @@ namespace Tecan.Sila2.Server
         /// </summary>
         public ICollection<string> ImplementedFeatures
         {
-            get { return _implementedFeatures.Select(feature => feature.FeatureDefinition.FullyQualifiedIdentifier).ToList(); }
+            get { return _implementedFeatures.Select( feature => feature.FeatureDefinition.FullyQualifiedIdentifier ).ToList(); }
         }
 
         /// <summary>
@@ -346,20 +350,20 @@ namespace Tecan.Sila2.Server
         public IEnumerable<IFeatureProvider> Features => _implementedFeatures.AsReadOnly();
 
         /// <inheritdoc />
-        public IServerErrorHandling ErrorHandling { get; } = new ServerErrorHandling();
+        public IServerErrorHandling ErrorHandling { get; } = ServerErrorHandling.Instance;
 
         /// <inheritdoc />
         public ObservableCommandExecution[] FindCommandExecutions( Predicate<CommandState> stateFilter )
         {
-            if (stateFilter == null)
+            if(stateFilter == null)
             {
                 throw new ArgumentNullException( nameof( stateFilter ) );
             }
 
-            lock (_commandExecutions)
+            lock(_commandExecutions)
             {
                 return _commandExecutions
-                    .Where( ex => stateFilter(ex.Command.State.State))
+                    .Where( ex => stateFilter( ex.Command.State.State ) )
                     .ToArray();
             }
         }
@@ -377,8 +381,8 @@ namespace Tecan.Sila2.Server
         /// <param name="request">The request object</param>
         /// <param name="metadataRepository">The metadata entries to consider for the command</param>
         /// <returns>An awaitable task with the command response</returns>
-        public Task<TResponse> InvokeCommand<TRequest, TResponse>(Func<TRequest, TResponse> command, TRequest request,
-            IMetadataRepository metadataRepository)
+        public Task<TResponse> InvokeCommand<TRequest, TResponse>( Func<TRequest, TResponse> command, TRequest request,
+            IMetadataRepository metadataRepository )
             where TRequest : ISilaRequestObject
         {
             return Task.Factory.StartNew( () => InvokeCommandCore( command, request, metadataRepository ) );
@@ -482,28 +486,33 @@ namespace Tecan.Sila2.Server
         /// <param name="commandIdentifier">Unique identifier of a command or property</param>
         /// <param name="metadataRepository">A repository with metadata information</param>
         /// <returns>A stack of request interceptions</returns>
-        public Stack<IRequestInterception> RequestInterceptions(string commandIdentifier, IMetadataRepository metadataRepository )
+        public Stack<IRequestInterception> RequestInterceptions( string commandIdentifier, IMetadataRepository metadataRepository )
         {
             Stack<IRequestInterception> interceptions = null;
             try
             {
-                foreach( var interceptor in GetInterceptors( commandIdentifier ) )
+                foreach(var interceptor in GetInterceptors( commandIdentifier ))
                 {
                     var interception = interceptor.Intercept( commandIdentifier, this, metadataRepository );
-                    if( interception != null )
+                    if(interception != null)
                     {
-                        if( interceptions == null ) interceptions = new Stack<IRequestInterception>();
+                        if(interceptions == null) interceptions = new Stack<IRequestInterception>();
                         interceptions.Push( interception );
                     }
                 }
             }
-            catch( Exception exception )
+            catch(MissingMetadataException missingMetadata)
             {
-                if( interceptions != null )
+                _logger.Error( $"Request rejected because required metadata {missingMetadata.MetadataIdentifier} was missing." );
+                throw ErrorHandling.CreateMissingMetadataException( missingMetadata.MetadataIdentifier );
+            }
+            catch(Exception exception)
+            {
+                if(interceptions != null)
                 {
-                    while( interceptions.Count > 0 )
+                    while(interceptions.Count > 0)
                     {
-                        interceptions.Pop()?.ReportException(exception);
+                        interceptions.Pop()?.ReportException( exception );
                     }
                 }
 
@@ -529,19 +538,19 @@ namespace Tecan.Sila2.Server
         /// <param name="command">The observable command</param>
         /// <param name="metadataRepository">The metadata entries to consider for the command</param>
         /// <returns></returns>
-        public string AddObservableCommandExecution(string commandIdentifier, IObservableCommand command, IMetadataRepository metadataRepository)
+        public string AddObservableCommandExecution( string commandIdentifier, IObservableCommand command, IMetadataRepository metadataRepository )
         {
             var interceptions = RequestInterceptions( commandIdentifier, metadataRepository );
             // create command ID
             var commandExecutionId = Guid.NewGuid().ToString();
 
-            var execution = new ObservableCommandExecution(commandExecutionId, commandIdentifier, command, interceptions);
+            var execution = new ObservableCommandExecution( commandExecutionId, commandIdentifier, command, interceptions );
 
-            lock( _commandExecutions )
+            lock(_commandExecutions)
             {
                 _commandExecutions.Add( execution );
             }
-            if( !command.IsStarted )
+            if(!command.IsStarted)
             {
                 command.Start();
             }
@@ -549,16 +558,16 @@ namespace Tecan.Sila2.Server
             return commandExecutionId;
         }
 
-        internal T GetPropertyValue<T>(string propertyIdentifier, Func<T> value, IMetadataRepository metadataRepository)
+        internal T GetPropertyValue<T>( string propertyIdentifier, Func<T> value, IMetadataRepository metadataRepository )
         {
             var interceptors = RequestInterceptions( propertyIdentifier, metadataRepository );
             try
             {
                 _logger.Info( $"Obtaining value for property {propertyIdentifier}" );
                 var result = value();
-                if( interceptors != null )
+                if(interceptors != null)
                 {
-                    foreach( var interceptor in interceptors )
+                    foreach(var interceptor in interceptors)
                     {
                         interceptor.ReportSuccess();
                     }
@@ -566,14 +575,14 @@ namespace Tecan.Sila2.Server
 
                 return result;
             }
-            catch( Exception exception )
+            catch(Exception exception)
             {
                 _logger.Error( $"Exception happened obtaining the value for {propertyIdentifier}", exception );
-                if( interceptors != null )
+                if(interceptors != null)
                 {
-                    foreach( var interceptor in interceptors )
+                    foreach(var interceptor in interceptors)
                     {
-                        interceptor.ReportException(exception);
+                        interceptor.ReportException( exception );
                     }
                 }
 
@@ -582,34 +591,34 @@ namespace Tecan.Sila2.Server
         }
 
         /// <inheritdoc />
-        public Stream ResolveStoredBinary(string identifier)
+        public Stream ResolveStoredBinary( string identifier )
         {
             _upload.WaitUploadComplete( identifier );
-            return _fileManagement.OpenRead(identifier);
+            return _fileManagement.OpenRead( identifier );
         }
 
         /// <inheritdoc />
-        public bool ShouldStoreBinary(long length)
+        public bool ShouldStoreBinary( long length )
         {
             return length > 200 * 1024;
         }
 
         /// <inheritdoc />
-        public string StoreBinary(Stream data)
+        public string StoreBinary( Stream data )
         {
-            var identifier = _fileManagement.CreateNew(data.Length);
-            using (var stream = _fileManagement.OpenWrite(identifier))
+            var identifier = _fileManagement.CreateNew( data.Length );
+            using(var stream = _fileManagement.OpenWrite( identifier ))
             {
-                data.CopyTo(stream);
+                data.CopyTo( stream );
             }
 
             return identifier;
         }
 
         /// <inheritdoc />
-        public string StoreBinary(FileInfo file)
+        public string StoreBinary( FileInfo file )
         {
-            return _fileManagement.CreateIdentifier(file);
+            return _fileManagement.CreateIdentifier( file );
         }
 
         /// <inheritdoc />
@@ -644,9 +653,7 @@ namespace Tecan.Sila2.Server
         /// <inheritdoc />
         public IDisposable ConnectToPool( string poolAddress )
         {
-            _logger.Info( $"Connecting to server pool {poolAddress}" );
-            var channel = new Channel( poolAddress, ChannelCredentials.Insecure );
-            var connection = new PoolConnection( _poolDispatcher, channel.CreateCallInvoker().AsyncDuplexStreamingCall( PoolingConstants.ConnectSilaServerMethod, null, new CallOptions() ) );
+            var connection = new PoolConnection( _poolDispatcher, _poolConnectionFactory.CreatePoolConnection( poolAddress ).AsyncDuplexStreamingCall( PoolingConstants.ConnectSilaServerMethod, null, new CallOptions() ) );
             connection.Start();
             return connection;
         }

@@ -32,7 +32,7 @@ namespace Tecan.Sila2.ServerPooling
         /// Creates a new instance
         /// </summary>
         /// <param name="certificateProvider">A server certificate provider</param>
-        public ServiceConfigurationBuilder(IServerCertificateProvider certificateProvider)
+        public ServiceConfigurationBuilder( IServerCertificateProvider certificateProvider )
         {
             _certificateProvider = certificateProvider;
         }
@@ -66,7 +66,7 @@ namespace Tecan.Sila2.ServerPooling
                 }
             }
 
-            if (IPAddress.TryParse(host, out var addr))
+            if(IPAddress.TryParse( host, out var addr ))
             {
                 _networkAddresses.Add( addr, port );
             }
@@ -75,6 +75,8 @@ namespace Tecan.Sila2.ServerPooling
         private bool IsJustAny => _networkAddresses.Count == 1 && _networkAddresses.ContainsKey( IPAddress.Any );
 
         private int AnyPort => _networkAddresses[IPAddress.Any];
+
+        public IReadOnlyDictionary<string, string> AnnouncementDetails => null;
 
         /// <inheritdoc />
         public void ConfigureForServer( Guid guid, int port, Predicate<NetworkInterface> networkInterfaceFilter )
@@ -116,7 +118,7 @@ namespace Tecan.Sila2.ServerPooling
         /// Configures the provided Kestrel server
         /// </summary>
         /// <param name="options">The Kestrel configuration</param>
-        public void ConfigureKestrel(KestrelServerOptions options)
+        public void ConfigureKestrel( KestrelServerOptions options )
         {
             Action<ListenOptions> listenOptions = ( ListenOptions opts ) =>
                 {

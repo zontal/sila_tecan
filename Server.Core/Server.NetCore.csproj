@@ -45,10 +45,10 @@
         <Compile Include="..\Server\ServerConfiguration.cs" Link="ServerConfiguration.cs" />
         <Compile Include="..\Server\ServerErrorHandling.cs" Link="ServerErrorHandling.cs" />
         <Compile Include="..\Server\ServerPooling\IRequestHandler.cs" Link="ServerPooling\IRequestHandler.cs" />
+        <Compile Include="..\Server\ServerPooling\IServerPoolConnectionFactory.cs" Link="ServerPooling\IServerPoolConnectionFactory.cs" />
         <Compile Include="..\Server\ServerPooling\PoolConnection.cs" Link="ServerPooling\PoolConnection.cs" />
         <Compile Include="..\Server\ServerPooling\ServerPoolDispatcher.cs" Link="ServerPooling\ServerPoolDispatcher.cs" />
         <Compile Include="..\Server\ServerStartInformation.cs" Link="ServerStartInformation.cs" />
-        <Compile Include="..\Server\ServerTypeAttribute.cs" Link="ServerTypeAttribute.cs" />
         <Compile Include="..\Server\ServiceAnnouncer.cs" Link="ServiceAnnouncer.cs" />
         <Compile Include="..\Server\ServiceDefinition\IntermediateCommandHandler.cs" Link="ServiceDefinition\IntermediateCommandHandler.cs" />
         <Compile Include="..\Server\ServiceDefinition\MetadataHandler.cs" Link="ServiceDefinition\MetadataHandler.cs" />

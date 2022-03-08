@@ -28,6 +28,7 @@ namespace Tecan.Sila2.Server
         /// <param name="guid">The unique identifier of the server</param>
         /// <param name="port">The port on which the server should be running</param>
         /// <param name="networkInterfaceFilter"></param>
+        [Obsolete]
         void ConfigureForServer( Guid guid, int port, Predicate<NetworkInterface> networkInterfaceFilter );
 
         /// <summary>
@@ -35,6 +36,12 @@ namespace Tecan.Sila2.Server
         /// </summary>
         /// <param name="host">The host</param>
         /// <param name="port">The port</param>
+        [Obsolete]
         void Configure( string host, int port );
+
+        /// <summary>
+        /// Gets the announcement details
+        /// </summary>
+        IReadOnlyDictionary<string, string> AnnouncementDetails { get; }
     }
 }

@@ -27,13 +27,13 @@ namespace Tecan.Sila2
                 var serverkey = File.ReadAllText( @"server.key" );
                 return new PemCertificateContext( servercert, serverkey, cacert );
             }
-            else if (File.Exists("server.pfx"))
+            else if(File.Exists( "server.pfx" ))
             {
                 return new PfxCertificateContext( Path.GetFullPath( "server.pfx" ) );
             }
             else
             {
-                return null;
+                return new PfxCertificateContext( null );
             }
         }
     }

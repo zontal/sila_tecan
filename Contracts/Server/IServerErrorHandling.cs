@@ -8,6 +8,13 @@ namespace Tecan.Sila2.Server
     public interface IServerErrorHandling
     {
         /// <summary>
+        /// Creates an exception that a metadata is missing
+        /// </summary>
+        /// <param name="metadataIdentifier">The fully qualified metadata identifier</param>
+        /// <returns>An exception</returns>
+        Exception CreateMissingMetadataException( string metadataIdentifier );
+
+        /// <summary>
         /// Creates a server-side validation error
         /// </summary>
         /// <param name="parameter">The fully qualified identifier of the erroneous parameter</param>
