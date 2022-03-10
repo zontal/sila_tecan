@@ -171,7 +171,8 @@ namespace Tecan.Sila2.Server
             _serviceBinder = new SilaServiceBinder( serviceHandlerRepository );
 
             var configuration = configurationStore.Read<ServerConfiguration>( ServerConfigurationName );
-            var port = (startupInfo.Port ?? configuration?.Port).GetValueOrDefault( 50052 );
+            var port = (startupInfo.Port ?? configuration?.Port).GetValueOrDefault( ServerStartInformation.DefaultPort );
+            startupInfo.Port = port;
             EnsurePortIsAvailable( port );
 
             var uuid = startupInfo.ServerUuid;
@@ -181,6 +182,7 @@ namespace Tecan.Sila2.Server
                 {
                     uuid = Guid.NewGuid();
                 }
+                startupInfo.ServerUuid = uuid;
             }
 
             _logger.Info( $"Starting server {uuid} on port {port}." );
@@ -198,8 +200,7 @@ namespace Tecan.Sila2.Server
 
             if((startupInfo.NetworkInterfaces ?? configuration?.InterfaceFilter) != null)
             {
-                var networking = new Networking();
-                var filter = networking.CreateNetworkInterfaceFilter( startupInfo.NetworkInterfaces ?? configuration?.InterfaceFilter );
+                var filter = Networking.CreateNetworkInterfaceFilter( startupInfo.NetworkInterfaces ?? configuration?.InterfaceFilter );
 
                 _announcer = new ServiceAnnouncer( ServerUUID, (ushort)port, filter );
 

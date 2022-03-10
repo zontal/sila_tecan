@@ -8,8 +8,12 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Tecan.Sila2;
 using Tecan.Sila2.Logging;
+using Tecan.Sila2.Security;
 using Tecan.Sila2.Server;
+using Tecan.Sila2.Server.Binary;
+using Tecan.Sila2.Server.ServerPooling;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -24,7 +28,7 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <param name="services">The service collection to which the SiLA2 services shall be added to</param>
         public static void AddSila2( this IServiceCollection services )
         {
-            services.AddSila2( null );
+            services.AddSila2( null, null );
         }
 
         /// <summary>
@@ -35,9 +39,38 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <returns>A gRPC server builder</returns>
         public static IGrpcServerBuilder AddSila2( this IServiceCollection services, Action<GrpcServiceOptions> configureOptions )
         {
+            return services.AddSila2( null, configureOptions );
+        }
+
+        /// <summary>
+        /// Adds SiLA2 services
+        /// </summary>
+        /// <param name="services">The service collection to which the SiLA2 services shall be added to</param>
+        /// <param name="serverStartInfo">A container for the startup information for the server</param>
+        public static void AddSila2( this IServiceCollection services, ServerStartInformation serverStartInfo )
+        {
+            services.AddSila2( serverStartInfo, null );
+        }
+
+        /// <summary>
+        /// Adds SiLA2 services
+        /// </summary>
+        /// <param name="services">The service collection to which the SiLA2 services shall be added to</param>
+        /// <param name="serverStartInfo">A container for the startup information for the server</param>
+        /// <param name="configureOptions">A callback for gRPC configuration options</param>
+        /// <returns>A gRPC server builder</returns>
+        public static IGrpcServerBuilder AddSila2( this IServiceCollection services, ServerStartInformation serverStartInfo, Action<GrpcServiceOptions> configureOptions )
+        {
             services.AddSingleton<IServiceConfigurationBuilder<ISiLAServer>, ServiceConfigurationBuilder>();
             var builder = configureOptions != null ? services.AddGrpc( configureOptions ) : services.AddGrpc();
             services.TryAddEnumerable( ServiceDescriptor.Singleton( typeof( IServiceMethodProvider<> ), typeof( ServiceMethodProvider<> ) ) );
+
+            if(serverStartInfo == null)
+            {
+                serverStartInfo = ServerConfigReader.ReadServerStartInformation();
+            }
+            services.TryAddSingleton( serverStartInfo );
+
             return builder;
         }
 
@@ -57,20 +90,6 @@ namespace Microsoft.Extensions.DependencyInjection
             silaServer.StartServer();
             return builder.MapGrpcService<ISiLAServer>();
         }
-
-#if NET6_0_OR_GREATER
-
-        /// <summary>
-        /// Maps endpoints created from SiLA2 services
-        /// </summary>
-        /// <param name="builder">The application builder</param>
-        /// <returns>The application builder object for chaining</returns>
-        public static IApplicationBuilder MapSila2( this IApplicationBuilder builder )
-        {
-            return builder.UseEndpoints( endpoints => endpoints.MapSila2() );
-        }
-
-#endif
 
         /// <summary>
         /// Initializes the Common.Logging adapter with the logger factory from the provided service provider

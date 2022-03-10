@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Grpc.Core;
 using NUnit.Framework;
 using Tecan.Sila2.Client;
+using Tecan.Sila2.Discovery;
 using Tecan.Sila2.Interop.Client.DataTypeProvider;
 using Tecan.Sila2.Interop.Client.ObservableCommandTest;
 using Tecan.Sila2.Interop.Client.ParameterConstraintsTest;
@@ -17,30 +18,34 @@ namespace Tecan.Sila2.Interop.Client
         private readonly IClientExecutionManager _executionManager;
         private readonly IClientChannel _channel;
 
-        static void Main(string[] args)
+        static void Main( string[] args )
         {
             var serverId = Environment.GetEnvironmentVariable( "ServerID" );
-            var port = Environment.GetEnvironmentVariable( "Port" );
+            var port = Environment.GetEnvironmentVariable( "Port" ) ?? "50052";
 
             var channel = new Channel( "localhost", int.Parse( port ), ChannelCredentials.Insecure );
-            var executionManager = new ExecutionManager(channel);
-            var program = new Program(channel, executionManager);
-            program.RunTest(Environment.GetEnvironmentVariable("Server"), Environment.GetEnvironmentVariable("Test"));
+            var executionManager = new ExecutionManager( channel );
+
+            var connector = new ServerConnector( executionManager );
+            var server = connector.GetServerData( channel );
+
+            var program = new Program( server.Channel, executionManager );
+            program.RunTest( Environment.GetEnvironmentVariable( "Server" ), Environment.GetEnvironmentVariable( "Test" ) );
         }
 
-        public Program( Channel channel, IClientExecutionManager executionManager )
+        public Program( IClientChannel channel, IClientExecutionManager executionManager )
         {
-            _channel = null;
+            _channel = channel;
             _executionManager = executionManager;
         }
 
-        public void RunTest(string server, string test)
+        public void RunTest( string server, string test )
         {
             var stopwatch = new Stopwatch();
             stopwatch.Start();
             try
             {
-                switch( test )
+                switch(test)
                 {
                     case "datatypes":
                         TestDataTypeProvider();
@@ -58,12 +63,12 @@ namespace Tecan.Sila2.Interop.Client
                         throw new InvalidOperationException( $"Test {test} is not implemented." );
                 }
                 stopwatch.Stop();
-                Console.WriteLine($"{server};{Environment.GetEnvironmentVariable("Client")};{test};pass;{(long)stopwatch.Elapsed.TotalMilliseconds}");
+                Console.WriteLine( $"{server};{Environment.GetEnvironmentVariable( "Client" )};{test};pass;{(long)stopwatch.Elapsed.TotalMilliseconds}" );
             }
-            catch( Exception e )
+            catch(Exception e)
             {
-                Console.WriteLine($"{server};{Environment.GetEnvironmentVariable("Client")};{test};fail;{(long)stopwatch.Elapsed.TotalMilliseconds}");
-                Console.Error.WriteLine($"Execution of test {test} ran into an exception: {e.Message}");
+                Console.WriteLine( $"{server};{Environment.GetEnvironmentVariable( "Client" )};{test};fail;{(long)stopwatch.Elapsed.TotalMilliseconds}" );
+                Console.Error.WriteLine( $"Execution of test {test} ran into an exception: {e.Message}" );
             }
 
         }
@@ -83,7 +88,7 @@ namespace Tecan.Sila2.Interop.Client
             Assert.Throws<ValidationException>( () => client.ExactStringLength( stringLen10, longString, stringLen10, stringLen10, legalOption, legalPatternString ) );
             Assert.Throws<ValidationException>( () => client.ExactStringLength( stringLen10, stringLen10, shortString, stringLen10, legalOption, legalPatternString ) );
             Assert.Throws<ValidationException>( () => client.ExactStringLength( stringLen10, stringLen10, stringLen10, shortString, legalOption, legalPatternString ) );
-            Assert.Throws<ValidationException>( () => client.ExactStringLength( stringLen10, stringLen10, stringLen10,longString , legalOption, legalPatternString ) );
+            Assert.Throws<ValidationException>( () => client.ExactStringLength( stringLen10, stringLen10, stringLen10, longString, legalOption, legalPatternString ) );
             Assert.Throws<ValidationException>( () => client.ExactStringLength( stringLen10, stringLen10, stringLen10, stringLen10, shortString, legalPatternString ) );
             Assert.Throws<ValidationException>( () => client.ExactStringLength( stringLen10, stringLen10, stringLen10, stringLen10, legalOption, longString ) );
         }
@@ -93,57 +98,57 @@ namespace Tecan.Sila2.Interop.Client
             var client = new ObservableCommandTestClient( _channel, _executionManager );
             var response = client.EchoValueAsync( 42, 100 ).Response;
             await response;
-            Assert.That(response.Result, Is.EqualTo(42L));
+            Assert.That( response.Result, Is.EqualTo( 42L ) );
 
             var next = 1;
             var counter = client.ObservableIteration( 20 );
-            while( await counter.IntermediateValues.WaitToReadAsync() )
+            while(await counter.IntermediateValues.WaitToReadAsync())
             {
-                if( counter.IntermediateValues.TryRead( out var current ) )
+                if(counter.IntermediateValues.TryRead( out var current ))
                 {
-                    Assert.That(current, Is.EqualTo(next));
+                    Assert.That( current, Is.EqualTo( next ) );
                     next++;
                 }
             }
-            Assert.That(next, Is.EqualTo(21));
-            Assert.That(await counter.Response, Is.EqualTo(20L));
+            Assert.That( next, Is.EqualTo( 21 ) );
+            Assert.That( await counter.Response, Is.EqualTo( 20L ) );
         }
 
         private void TestEchos()
         {
             var client = new DataTypeProviderClient( _channel, _executionManager );
             Assert.That( client.EchoBooleanValue( true ), Is.True );
-            Assert.That( client.EchoBooleanValue(false), Is.False);
+            Assert.That( client.EchoBooleanValue( false ), Is.False );
 
-            Assert.That(client.EchoStringValue(""), Is.EqualTo(""));
+            Assert.That( client.EchoStringValue( "" ), Is.EqualTo( "" ) );
             Assert.That( client.EchoStringValue( "Foo" ), Is.EqualTo( "Foo" ) );
             Assert.That( client.EchoStringValue( "Dürüm" ), Is.EqualTo( "Dürüm" ) );
             Assert.That( client.EchoStringValue( "20‰" ), Is.EqualTo( "20‰" ) );
 
-            Assert.That(client.EchoIntegerValue(0), Is.EqualTo(0L));
+            Assert.That( client.EchoIntegerValue( 0 ), Is.EqualTo( 0L ) );
             Assert.That( client.EchoIntegerValue( int.MaxValue * 4L ), Is.EqualTo( int.MaxValue * 4L ) );
             Assert.That( client.EchoIntegerValue( -42 ), Is.EqualTo( -42L ) );
 
-            Assert.That(client.EchoRealValue(0.0), Is.EqualTo(0.0));
-            Assert.That(client.EchoRealValue(double.NaN), Is.EqualTo(double.NaN));
-            Assert.That(client.EchoRealValue(double.Epsilon), Is.GreaterThan(0.0));
+            Assert.That( client.EchoRealValue( 0.0 ), Is.EqualTo( 0.0 ) );
+            Assert.That( client.EchoRealValue( double.NaN ), Is.EqualTo( double.NaN ) );
+            Assert.That( client.EchoRealValue( double.Epsilon ), Is.GreaterThan( 0.0 ) );
 
             var stringList = new List<string>();
-            Assert.That(client.EchoStringList(stringList), Is.EquivalentTo(stringList));
-            stringList.Add("SiLA2");
             Assert.That( client.EchoStringList( stringList ), Is.EquivalentTo( stringList ) );
-            stringList.Add("is");
+            stringList.Add( "SiLA2" );
             Assert.That( client.EchoStringList( stringList ), Is.EquivalentTo( stringList ) );
-            stringList.Add("great.");
+            stringList.Add( "is" );
+            Assert.That( client.EchoStringList( stringList ), Is.EquivalentTo( stringList ) );
+            stringList.Add( "great." );
             Assert.That( client.EchoStringList( stringList ), Is.EquivalentTo( stringList ) );
 
             var intList = new List<long>();
-            Assert.That(client.EchoIntegerList(intList), Is.EquivalentTo(intList));
-            intList.Add(0);
             Assert.That( client.EchoIntegerList( intList ), Is.EquivalentTo( intList ) );
-            intList.Add(8);
+            intList.Add( 0 );
             Assert.That( client.EchoIntegerList( intList ), Is.EquivalentTo( intList ) );
-            intList.Add(15);
+            intList.Add( 8 );
+            Assert.That( client.EchoIntegerList( intList ), Is.EquivalentTo( intList ) );
+            intList.Add( 15 );
             Assert.That( client.EchoIntegerList( intList ), Is.EquivalentTo( intList ) );
         }
 

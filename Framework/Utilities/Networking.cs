@@ -22,15 +22,15 @@ namespace Tecan.Sila2
         /// </summary>
         /// <param name="networkInterfaceFilter">A filter of network interfaces to inspect</param>
         /// <returns>list of InterNetwork Unicast IP v4 addresses</returns>
-        public IEnumerable<IPAddress> ListInterNetworkAddresses(Predicate<NetworkInterface> networkInterfaceFilter)
+        public static IEnumerable<IPAddress> ListInterNetworkAddresses( Predicate<NetworkInterface> networkInterfaceFilter )
         {
             IEnumerable<NetworkInterface> networkInterfaces = NetworkInterface.GetAllNetworkInterfaces();
-            if (networkInterfaceFilter != null)
+            if(networkInterfaceFilter != null)
             {
-                networkInterfaces = networkInterfaces.Where( nic => networkInterfaceFilter(nic) );
+                networkInterfaces = networkInterfaces.Where( nic => networkInterfaceFilter( nic ) );
             }
-            var unicastAddresses = networkInterfaces.SelectMany(nic => nic.GetIPProperties().UnicastAddresses.Select(u => u.Address));
-            return unicastAddresses.Where(a => a.AddressFamily == AddressFamily.InterNetwork);
+            var unicastAddresses = networkInterfaces.SelectMany( nic => nic.GetIPProperties().UnicastAddresses.Select( u => u.Address ) );
+            return unicastAddresses.Where( a => a.AddressFamily == AddressFamily.InterNetwork );
         }
 
 
@@ -40,7 +40,7 @@ namespace Tecan.Sila2
         /// </summary>
         /// <param name="filterString">The filter string</param>
         /// <returns>A predicate for network interfaces</returns>
-        public Predicate<NetworkInterface> CreateNetworkInterfaceFilter( string filterString )
+        public static Predicate<NetworkInterface> CreateNetworkInterfaceFilter( string filterString )
         {
             if(string.IsNullOrEmpty( filterString ) || filterString == "*")
             {
@@ -53,11 +53,11 @@ namespace Tecan.Sila2
                 var trimmedPart = part.Trim();
                 if(IPAddress.TryParse( trimmedPart, out var address ))
                 {
-                    parts.Add( new IpFilter(address) );
+                    parts.Add( new IpFilter( address ) );
                 }
                 else if(IPNetwork.TryParse( trimmedPart, out var network ))
                 {
-                    parts.Add( new IpnetFilter(network) );
+                    parts.Add( new IpnetFilter( network ) );
                 }
                 else
                 {
@@ -69,7 +69,7 @@ namespace Tecan.Sila2
             return nic => parts.Any( pred => pred.PassFilter( nic ) ) && CheckOperationalStatus( nic );
         }
 
-        private bool CheckOperationalStatus( NetworkInterface nic )
+        private static bool CheckOperationalStatus( NetworkInterface nic )
         {
             if(nic.OperationalStatus != OperationalStatus.Up || !nic.SupportsMulticast)
             {
@@ -84,7 +84,7 @@ namespace Tecan.Sila2
         /// </summary>
         /// <param name="networkInterfaceFilter">The inner network interface filter function</param>
         /// <returns>A network interface filter function</returns>
-        public Func<IEnumerable<NetworkInterface>, IEnumerable<NetworkInterface>> CreateFilter( Predicate<NetworkInterface> networkInterfaceFilter )
+        public static Func<IEnumerable<NetworkInterface>, IEnumerable<NetworkInterface>> CreateFilter( Predicate<NetworkInterface> networkInterfaceFilter )
         {
             if(networkInterfaceFilter == null)
             {
@@ -122,14 +122,14 @@ namespace Tecan.Sila2
         {
             private IPAddress _filterAddress;
 
-            public IpFilter(IPAddress filterAddress)
+            public IpFilter( IPAddress filterAddress )
             {
                 _filterAddress = filterAddress;
             }
 
             public override bool PassFilter( NetworkInterface nic )
             {
-                return nic.GetIPProperties().UnicastAddresses.Any( ua => ua.Address.Equals(_filterAddress) );
+                return nic.GetIPProperties().UnicastAddresses.Any( ua => ua.Address.Equals( _filterAddress ) );
             }
         }
 
@@ -137,7 +137,7 @@ namespace Tecan.Sila2
         {
             private IPNetwork _filterNetwork;
 
-            public IpnetFilter(IPNetwork filterNetwork)
+            public IpnetFilter( IPNetwork filterNetwork )
             {
                 _filterNetwork = filterNetwork;
             }
@@ -152,7 +152,7 @@ namespace Tecan.Sila2
         {
             private Regex _filterRegex;
 
-            public RegexFilter(Regex regex)
+            public RegexFilter( Regex regex )
             {
                 _filterRegex = regex;
             }

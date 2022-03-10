@@ -23,6 +23,16 @@ namespace Tecan.Sila2.IntegrationTests
         private ServerData _server;
         private Process _serverProcess;
 
+        protected static string FindServerDirectory( string name )
+        {
+            var dir = Path.Combine( AppDomain.CurrentDomain.BaseDirectory, "..", name );
+            if(!Directory.Exists( dir ))
+            {
+                dir = Path.Combine( AppDomain.CurrentDomain.BaseDirectory, "..", "..", name );
+            }
+            return dir;
+        }
+
         [SetUp]
         public virtual void StartTestServer()
         {
@@ -53,7 +63,7 @@ namespace Tecan.Sila2.IntegrationTests
 
         protected virtual ProcessStartInfo GetTestServerStartInfo( string payloadArguments )
         {
-            var dir = Path.Combine( AppDomain.CurrentDomain.BaseDirectory, "..", "TestServer" );
+            var dir = FindServerDirectory( "TestServer" );
             var processStartInfo = new ProcessStartInfo()
             {
 #if NETCOREAPP

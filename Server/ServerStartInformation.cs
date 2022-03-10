@@ -10,6 +10,11 @@ namespace Tecan.Sila2.Server
     public class ServerStartInformation
     {
         /// <summary>
+        /// Gets the default port assignment
+        /// </summary>
+        public const int DefaultPort = 50052;
+
+        /// <summary>
         /// Creates a new instance
         /// </summary>
         /// <param name="info">The server information</param>
@@ -27,7 +32,7 @@ namespace Tecan.Sila2.Server
         /// <param name="networkInterfaces">The network interfaces the server uses for discovery</param>
         /// <param name="serverUuid">The unique identifier of the server</param>
         /// <param name="name">the initial name of the server</param>
-        public ServerStartInformation( ServerInformation info, int? port, string networkInterfaces, Guid? serverUuid, string name )
+        public ServerStartInformation( ServerInformation info, int? port, string networkInterfaces, Guid serverUuid, string name )
         {
             Name = name;
             Info = info;
@@ -62,11 +67,6 @@ namespace Tecan.Sila2.Server
         /// <summary>
         /// Gets the unique identifier of the server
         /// </summary>
-        public Guid? ServerUuid { get; set; }
-
-        /// <summary>
-        /// Gets the network interfaces used at the start of the server
-        /// </summary>
-        public IEnumerable<NetworkInterface> ActualNetworkInterfaces { get; set; }
+        public Guid ServerUuid { get; set; }
     }
 }

@@ -13,7 +13,7 @@ namespace TestServer.NetCore
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static void Main( string[] args )
         {
             AppContext.SetSwitch( "System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport", true );
             if(args.Length > 0 && args[0] == "debug")
@@ -22,7 +22,14 @@ namespace TestServer.NetCore
                 args = args.Skip( 1 ).ToArray();
             }
 
-            DryBootstrapper.Start( args ).RunUntilReadline();
+            try
+            {
+                DryBootstrapper.Start( args ).RunUntilReadline();
+            }
+            catch(InvalidOperationException)
+            {
+                Environment.ExitCode = 1;
+            }
         }
     }
 }

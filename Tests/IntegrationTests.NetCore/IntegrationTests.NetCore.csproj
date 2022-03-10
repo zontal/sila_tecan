@@ -1,38 +1,38 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFrameworks>netcoreapp3.1;net6.0</TargetFrameworks>
-      <AssemblyName>Tecan.Sila2.IntegrationTests.Managed</AssemblyName>
-      <RootNamespace>Tecan.Sila2.IntegrationTests</RootNamespace>
-  </PropertyGroup>
+    <PropertyGroup>
+        <TargetFrameworks>netcoreapp3.1;net6.0</TargetFrameworks>
+        <AssemblyName>Tecan.Sila2.IntegrationTests.Managed</AssemblyName>
+        <RootNamespace>Tecan.Sila2.IntegrationTests</RootNamespace>
+    </PropertyGroup>
 
-  <ItemGroup>
-    <Compile Include="..\IntegrationTests\IntegrationTestFixtureBase.cs" Link="IntegrationTestFixtureBase.cs" />
-    <Compile Include="..\IntegrationTests\TestAuthLockingExecutionManager.cs" Link="TestAuthLockingExecutionManager.cs" />
-    <Compile Include="..\IntegrationTests\TestServer\Client.cs" Link="TestServer\Client.cs" />
-    <Compile Include="..\IntegrationTests\TestServer\Dtos.cs" Link="TestServer\Dtos.cs" />
-    <Compile Include="..\IntegrationTests\TestServer\ITestServer.cs" Link="TestServer\ITestServer.cs" />
-  </ItemGroup>
+    <ItemGroup>
+        <Compile Include="..\IntegrationTests\IntegrationTestFixtureBase.cs" Link="IntegrationTestFixtureBase.cs" />
+        <Compile Include="..\IntegrationTests\TestAuthLockingExecutionManager.cs" Link="TestAuthLockingExecutionManager.cs" />
+        <Compile Include="..\IntegrationTests\TestServer\Client.cs" Link="TestServer\Client.cs" />
+        <Compile Include="..\IntegrationTests\TestServer\Dtos.cs" Link="TestServer\Dtos.cs" />
+        <Compile Include="..\IntegrationTests\TestServer\ITestServer.cs" Link="TestServer\ITestServer.cs" />
+    </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\Client.Core\Client.NetCore.csproj" />
-    <ProjectReference Include="..\..\Contracts\Contracts.csproj" />
-    <ProjectReference Include="..\..\DynamicClient\DynamicClient.csproj" />
-    <ProjectReference Include="..\..\Features\Authentication.Client\Authentication.Client.csproj" />
-    <ProjectReference Include="..\..\Features\Cancellation.Client\Cancellation.Client.csproj" />
-    <ProjectReference Include="..\..\Features\ConnectionConfiguration.Client\ConnectionConfiguration.Client.csproj" />
-    <ProjectReference Include="..\..\Features\Locking.Client\Locking.Client.csproj" />
-    <ProjectReference Include="..\..\Framework.NetCore\Framework.NetCore.csproj" />
-    <ProjectReference Include="..\..\Framework\Framework.csproj" />
-    <ProjectReference Include="..\..\ServerPool.Core\ServerPool.NetCore.csproj" />
-  </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\..\Client.Core\Client.NetCore.csproj" />
+        <ProjectReference Include="..\..\Contracts\Contracts.csproj" />
+        <ProjectReference Include="..\..\DynamicClient\DynamicClient.csproj" />
+        <ProjectReference Include="..\..\Features\Authentication.Client\Authentication.Client.csproj" />
+        <ProjectReference Include="..\..\Features\Cancellation.Client\Cancellation.Client.csproj" />
+        <ProjectReference Include="..\..\Features\ConnectionConfiguration.Client\ConnectionConfiguration.Client.csproj" />
+        <ProjectReference Include="..\..\Features\Locking.Client\Locking.Client.csproj" />
+        <ProjectReference Include="..\..\Framework.NetCore\Framework.NetCore.csproj" />
+        <ProjectReference Include="..\..\Framework\Framework.csproj" />
+        <ProjectReference Include="..\..\ServerPool.Core\ServerPool.NetCore.csproj" />
+    </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="TestServer\" />
-  </ItemGroup>
+    <ItemGroup>
+        <Folder Include="TestServer\" />
+    </ItemGroup>
 
     <PropertyGroup>
-        <OutputPath>..\..\Build\Test</OutputPath>
+        <OutputPath>..\..\Build\Test\Managed</OutputPath>
     </PropertyGroup>
 
     <ItemGroup>

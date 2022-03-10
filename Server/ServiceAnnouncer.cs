@@ -31,12 +31,12 @@ namespace Tecan.Sila2
             get
             {
                 var addresses = new List<IPAddress>();
-                if (Profile != null)
+                if(Profile != null)
                 {
                     int port = Profile.Resources.OfType<SRVRecord>().FirstOrDefault().Port;
-                    addresses.AddRange(Profile.Resources.OfType<ARecord>().Select(r => r.Address));
-                    addresses.AddRange(Profile.Resources.OfType<AAAARecord>().Select(r => r.Address));
-                    return addresses.Select(a => new Tuple<IPAddress, int>(a, port));
+                    addresses.AddRange( Profile.Resources.OfType<ARecord>().Select( r => r.Address ) );
+                    addresses.AddRange( Profile.Resources.OfType<AAAARecord>().Select( r => r.Address ) );
+                    return addresses.Select( a => new Tuple<IPAddress, int>( a, port ) );
                 }
                 return null;
             }
@@ -50,10 +50,9 @@ namespace Tecan.Sila2
         /// <param name="networkFilter">A predicate that filters network interfaces to advertise on</param>
         public ServiceAnnouncer( string instanceName, ushort portNumber, Predicate<NetworkInterface> networkFilter )
         {
-            var networking = new Networking( );
-            var selectedAddresses = networking.ListInterNetworkAddresses( networkFilter );
+            var selectedAddresses = Networking.ListInterNetworkAddresses( networkFilter );
             Profile = new ServiceProfile( instanceName, DiscoveryConstants.ServiceName, portNumber, selectedAddresses );
-            _multicastService = new MulticastService( networking.CreateFilter(networkFilter) );
+            _multicastService = new MulticastService( Networking.CreateFilter( networkFilter ) );
         }
 
         /// <summary>
@@ -61,7 +60,7 @@ namespace Tecan.Sila2
         /// </summary>
         /// <param name="key">The name of the property</param>
         /// <param name="value">The value of the property</param>
-        public void SetProperty(string key, string value)
+        public void SetProperty( string key, string value )
         {
             Profile.AddProperty( key, value );
         }
@@ -72,11 +71,11 @@ namespace Tecan.Sila2
         public void Start()
         {
             _serviceDiscoverer?.Dispose();
-            _logger.Info("Starting multicast service");
+            _logger.Info( "Starting multicast service" );
             _multicastService.Start();
-            _serviceDiscoverer = new ServiceDiscovery(_multicastService);
-            _logger.Info("Starting to advertise");
-            _serviceDiscoverer.Advertise(Profile);
+            _serviceDiscoverer = new ServiceDiscovery( _multicastService );
+            _logger.Info( "Starting to advertise" );
+            _serviceDiscoverer.Advertise( Profile );
         }
 
         /// <summary>

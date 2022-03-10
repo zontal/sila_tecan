@@ -11,12 +11,12 @@ namespace Tecan.Sila2.IntegrationTests
     {
     }
 
-    [TestFixture( Category = "IntegrationTests")]
+    [TestFixture( Category = "IntegrationTests" )]
     public class ClientInitiatedIntegrationTestAgainstManagedGrpcFixture : ClientInitiatedIntegrationTestFixture
     {
         protected override ProcessStartInfo GetTestServerStartInfo( string payloadArguments )
         {
-            var dir = Path.Combine( AppDomain.CurrentDomain.BaseDirectory, "..", "TestServerManaged" );
+            var dir = FindServerDirectory( "TestServerManaged" );
             var processStartInfo = new ProcessStartInfo()
             {
                 FileName = "dotnet",

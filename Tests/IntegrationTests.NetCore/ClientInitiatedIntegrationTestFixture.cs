@@ -15,11 +15,15 @@ namespace Tecan.Sila2.IntegrationTests
         protected override ProcessStartInfo GetTestServerStartInfo( string payloadArguments )
         {
             AppContext.SetSwitch( "System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport", true );
-            var dir = Path.Combine( AppDomain.CurrentDomain.BaseDirectory, "..", "TestServerManaged" );
+            var dir = FindServerDirectory( "TestServerManaged" );
             var processStartInfo = new ProcessStartInfo()
             {
                 FileName = "dotnet",
+#if NET6_0
+                Arguments = Path.Combine( dir, "net6.0", "TestServer.NetCore.dll" ) + " " + payloadArguments,
+#else
                 Arguments = Path.Combine( dir, "netcoreapp3.1", "TestServer.NetCore.dll" ) + " " + payloadArguments,
+#endif
                 CreateNoWindow = true,
                 ErrorDialog = false,
                 RedirectStandardInput = true,
@@ -48,10 +52,10 @@ namespace Tecan.Sila2.IntegrationTests
         protected override ProcessStartInfo GetTestServerStartInfo( string payloadArguments )
         {
             AppContext.SetSwitch( "System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport", true );
-            var dir = Path.Combine( AppDomain.CurrentDomain.BaseDirectory, "..", "TestServer" );
+            var dir = FindServerDirectory( "TestServer" );
             var processStartInfo = new ProcessStartInfo()
             {
-                FileName = Path.Combine(dir, "net472", "TestServer.exe"),
+                FileName = Path.Combine( dir, "net472", "TestServer.exe" ),
                 Arguments = payloadArguments,
                 CreateNoWindow = true,
                 ErrorDialog = false,

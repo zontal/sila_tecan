@@ -14,13 +14,12 @@ namespace Tecan.Sila2.Discovery
     /// Utility class to be used to discover and find SiLA Servers using the 
     /// ServiceFinder class.
     /// </summary>
-    [Export(typeof(IServerDiscovery))]
-    [PartCreationPolicy(CreationPolicy.Shared)]
+    [Export( typeof( IServerDiscovery ) )]
+    [PartCreationPolicy( CreationPolicy.Shared )]
     public class ServerDiscovery : IServerDiscovery
     {
         private readonly ILog _loggingChannel = LogManager.GetLogger<ServerDiscovery>();
         private readonly IServerConnector _serverConnector;
-        private readonly Networking _networking;
 
         private const int GuidLength = 36;
 
@@ -34,7 +33,6 @@ namespace Tecan.Sila2.Discovery
         public ServerDiscovery( IServerConnector serverConnector )
         {
             _serverConnector = serverConnector;
-            _networking = new Networking();
         }
 
         /// <inheritdoc />
@@ -46,14 +44,14 @@ namespace Tecan.Sila2.Discovery
 
             DiscoverServersCore( channel =>
             {
-                if( channel.Config.Uuid == serverUuid )
+                if(channel.Config.Uuid == serverUuid)
                 {
-                    cts.SetResult(channel);
+                    cts.SetResult( channel );
                     found = true;
                 }
             }, timeout, networkFilter, cancellationToken, $"{serverUuid}.{DiscoveryConstants.ServiceName}.{DiscoveryConstants.ServiceDomainName}" );
 
-            if (!found)
+            if(!found)
             {
                 cts.TrySetResult( null );
             }
@@ -80,13 +78,13 @@ namespace Tecan.Sila2.Discovery
                 {
                     NotifyKnownServers( serverFoundCallback );
                 }
-                else if (_connectedServers.TryGetValue(expected, out var serverData))
+                else if(_connectedServers.TryGetValue( expected, out var serverData ))
                 {
                     serverFoundCallback( serverData );
                     return;
                 }
             }
-            using(var mdns = new MulticastService( _networking.CreateFilter( networkInterfaceFilter ) ))
+            using(var mdns = new MulticastService( Networking.CreateFilter( networkInterfaceFilter ) ))
             {
                 var handler = new EventHandler<MessageEventArgs>( ( s, e ) =>
                 {
@@ -133,14 +131,14 @@ namespace Tecan.Sila2.Discovery
         private IReadOnlyDictionary<string, string> ReadDetails( IEnumerable<ResourceRecord> records )
         {
             Dictionary<string, string> result = null;
-            foreach(var item in records.OfType<TXTRecord>().SelectMany(txt => txt.Strings))
+            foreach(var item in records.OfType<TXTRecord>().SelectMany( txt => txt.Strings ))
             {
-                if (!string.IsNullOrEmpty(item))
+                if(!string.IsNullOrEmpty( item ))
                 {
                     var equalsPos = item.IndexOf( '=' );
-                    if (equalsPos > 0)
+                    if(equalsPos > 0)
                     {
-                        if (result == null)
+                        if(result == null)
                         {
                             result = new Dictionary<string, string>();
                         }
@@ -173,7 +171,7 @@ namespace Tecan.Sila2.Discovery
             var pointers = message.Answers.OfType<PTRRecord>().Where( p => p.Name.ToString().Contains( DiscoveryConstants.ServiceName ) );
             foreach(var pointer in pointers)
             {
-                if(!_connectedServers.ContainsKey( pointer.DomainName.ToString() ) && !message.Answers.Concat(message.AdditionalRecords).OfType<SRVRecord>().Any() )
+                if(!_connectedServers.ContainsKey( pointer.DomainName.ToString() ) && !message.Answers.Concat( message.AdditionalRecords ).OfType<SRVRecord>().Any())
                 {
                     // Ask for the service instance details
                     mdns.SendQuery( pointer.DomainName, type: DnsType.SRV );
@@ -188,8 +186,8 @@ namespace Tecan.Sila2.Discovery
             {
                 // Ask for PTRRecords (the devices will only respond to SRV that are directed exactly to them)
                 mdns.SendQuery( DiscoveryConstants.ServiceName + "." + DiscoveryConstants.ServiceDomainName + ".", DnsClass.IN, DnsType.PTR );
-                Wait( new TimeSpan(Math.Min(toWait.Ticks, timeout.Ticks)), cancellationToken );
-                if (cancellationToken.IsCancellationRequested)
+                Wait( new TimeSpan( Math.Min( toWait.Ticks, timeout.Ticks ) ), cancellationToken );
+                if(cancellationToken.IsCancellationRequested)
                 {
                     break;
                 }
@@ -221,10 +219,10 @@ namespace Tecan.Sila2.Discovery
         }
 
         /// <inheritdoc />
-        public IEnumerable<ServerData> GetServers(TimeSpan timeout, Predicate<NetworkInterface> networkFilter = null )
+        public IEnumerable<ServerData> GetServers( TimeSpan timeout, Predicate<NetworkInterface> networkFilter = null )
         {
             var services = new List<ServerData>();
-            DiscoverServers(services.Add, timeout, networkFilter);
+            DiscoverServers( services.Add, timeout, networkFilter );
             return services;
         }
     }
