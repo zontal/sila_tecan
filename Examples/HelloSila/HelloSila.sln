@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.0.31903.59
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.32126.315
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HelloSila", "HelloSila\HelloSila.csproj", "{6C6E61E5-693D-4F6B-846A-D3FD2E905DD8}"
 EndProject
@@ -11,9 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Implementation", "Implement
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Client", "Client\Client.csproj", "{B9F62BBF-543E-45D4-9F00-82882A45CF53}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelloSila.AspNetCore", "HelloSila.AspNetCore\HelloSila.AspNetCore.csproj", "{78430167-E09D-4C04-980B-3946CCB7DED1}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Client.Net6", "Client.Net6\Client.Net6.csproj", "{F64FFA0B-EA5E-4086-97B8-9628A294D3D8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HelloSila.AspNetCore", "HelloSila.AspNetCore\HelloSila.AspNetCore.csproj", "{78430167-E09D-4C04-980B-3946CCB7DED1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,10 +39,6 @@ Global
 		{78430167-E09D-4C04-980B-3946CCB7DED1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{78430167-E09D-4C04-980B-3946CCB7DED1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{78430167-E09D-4C04-980B-3946CCB7DED1}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F64FFA0B-EA5E-4086-97B8-9628A294D3D8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F64FFA0B-EA5E-4086-97B8-9628A294D3D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F64FFA0B-EA5E-4086-97B8-9628A294D3D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F64FFA0B-EA5E-4086-97B8-9628A294D3D8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
