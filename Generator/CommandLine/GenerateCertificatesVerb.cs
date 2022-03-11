@@ -95,8 +95,8 @@ namespace Tecan.Sila2.Generator.CommandLine
                     writer.WriteLine( "keyUsage = digitalSignature, keyEncipherment" );
                     if(!string.IsNullOrEmpty( serverUUID ))
                     {
-                        writer.WriteLine( $"2.25.27668953002016836290457026181063785061=critical,ASN1:UTF8String:{serverUUID}" );
-                        writer.WriteLine( $"2.25.27668953002016836290457026181063785061=ASN1:UTF8String:{serverUUID}" );
+                        writer.WriteLine( $"1.3.6.1.4.1.58583=critical,ASN1:UTF8String:{serverUUID}" );
+                        writer.WriteLine( $"1.3.6.1.4.1.58583=ASN1:UTF8String:{serverUUID}" );
                     }
                 }
             }

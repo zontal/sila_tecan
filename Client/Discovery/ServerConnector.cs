@@ -123,7 +123,7 @@ namespace Tecan.Sila2.Discovery
         {
             foreach(var extension in certificate.Extensions)
             {
-                if(extension.Oid.Value.ToString() == "2.25.27668953002016836290457026181063785061")
+                if(extension.Oid.Value.ToString() == "1.3.6.1.4.1.58583")
                 {
                     var value = Encoding.ASCII.GetString( extension.RawData );
                     if(value.Length >= 36 && Guid.TryParse( value.Substring( value.Length - 36 ), out var serverUuid ))
