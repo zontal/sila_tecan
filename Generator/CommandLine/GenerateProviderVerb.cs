@@ -13,52 +13,58 @@ namespace Tecan.Sila2.Generator.CommandLine
     /// <summary>
     /// Describes the command to generate a provider
     /// </summary>
-    [Export(typeof(ICommandLineVerb))]
-    [PartCreationPolicy(CreationPolicy.NonShared)]
-    [Verb("generate-provider", HelpText ="Generates the provider for a given SiLA feature")]
+    [Export( typeof( ICommandLineVerb ) )]
+    [PartCreationPolicy( CreationPolicy.NonShared )]
+    [Verb( "generate-provider", HelpText = "Generates the provider for a given SiLA feature" )]
     internal class GenerateProviderVerb : VerbBase
     {
         /// <summary>
         /// The path to the feature from which the provider shall be generated
         /// </summary>
-        [Value(0, Required = true, HelpText = "The path to the feature from which the provider shall be generated")]
+        [Value( 0, Required = true, HelpText = "The path to the feature from which the provider shall be generated" )]
         public string FeaturePath { get; set; }
 
         /// <summary>
         /// Additional namespaces the provider needs to import, separated by semicolon (;)
         /// </summary>
-        [Option("import-namespaces", HelpText = "Additional namespaces the provider needs to import, separated by semicolon (;)", Required = false)]
+        [Option( "import-namespaces", HelpText = "Additional namespaces the provider needs to import, separated by semicolon (;)", Required = false )]
         public string ImportedNamespaces { get; set; }
 
         /// <summary>
         /// The namespace for the newly generated provider. Defaults to a combination of originator and use case if omitted.
         /// </summary>
-        [Option('n', "namespace", HelpText = "The namespace for the newly generated provider. Defaults to a combination of originator and use case if omitted.", Required = false)]
+        [Option( 'n', "namespace", HelpText = "The namespace for the newly generated provider. Defaults to a combination of originator and use case if omitted.", Required = false )]
         public string Namespace { get; set; }
 
         /// <summary>
         /// The path where the DTOs should be generated to
         /// </summary>
-        [Value(1, Required = true, HelpText = "The path where the DTOs should be generated to")]
+        [Value( 1, Required = true, HelpText = "The path where the DTOs should be generated to" )]
         public string DtoPath { get; set; }
 
         /// <summary>
         /// The path where the provider should be generated to. If no provider shall be generated, path to the client
         /// </summary>
-        [Value(2, Required = true, HelpText = "The path where the provider should be generated to. If no provider shall be generated, path to the client")]
+        [Value( 2, Required = true, HelpText = "The path where the provider should be generated to. If no provider shall be generated, path to the client" )]
         public string ProviderPath { get; set; }
 
         /// <summary>
         /// The path to the client in case both server and client are generated
         /// </summary>
-        [Value(3, Required = false, HelpText = "The path to the client in case both server and client are generated")]
+        [Value( 3, Required = false, HelpText = "The path to the client in case both server and client are generated" )]
         public string ClientPath { get; set; }
+
+        /// <summary>
+        /// Path to a file that contains additional constraints
+        /// </summary>
+        [Option( "config-file", Required = false, HelpText = "Path to a file that contains additional constraints" )]
+        public string ConfigFile { get; set; }
 
         /// <summary>
         /// If set, only the client code will be generated
         /// </summary>
-        [Option('c', "client-only", HelpText = "If set, only the client code will be generated",
-            Required = false)]
+        [Option( 'c', "client-only", HelpText = "If set, only the client code will be generated",
+            Required = false )]
         public bool ClientOnly
         {
             get => GenerateClient && !GenerateServer;
@@ -68,7 +74,7 @@ namespace Tecan.Sila2.Generator.CommandLine
         /// <summary>
         /// If set, only the server code will be generated
         /// </summary>
-        [Option('s', "server-only", HelpText = "If set, only the server code will be generated", Required = false)]
+        [Option( 's', "server-only", HelpText = "If set, only the server code will be generated", Required = false )]
         public bool ServerOnly
         {
             get => GenerateServer && !GenerateClient;
@@ -119,19 +125,19 @@ namespace Tecan.Sila2.Generator.CommandLine
             }
         }
 
-        private static void AddUsingStatements(CodeCompileUnit unit, string[] imports)
+        private static void AddUsingStatements( CodeCompileUnit unit, string[] imports )
         {
-            if (imports == null || imports.Length == 0 || unit == null) return;
-            var ns = unit.Namespaces.Cast<CodeNamespace>().FirstOrDefault(n => n.Name == null);
-            if (ns == null)
+            if(imports == null || imports.Length == 0 || unit == null) return;
+            var ns = unit.Namespaces.Cast<CodeNamespace>().FirstOrDefault( n => n.Name == null );
+            if(ns == null)
             {
                 ns = new CodeNamespace();
-                unit.Namespaces.Add(ns);
+                unit.Namespaces.Add( ns );
             }
 
-            foreach (var import in imports)
+            foreach(var import in imports)
             {
-                ns.Imports.Add(new CodeNamespaceImport(import));
+                ns.Imports.Add( new CodeNamespaceImport( import ) );
             }
         }
     }

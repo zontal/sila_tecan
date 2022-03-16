@@ -10,9 +10,9 @@ namespace Tecan.Sila2.Generator.Generators
     /// <summary>
     /// A class that registers renames
     /// </summary>
-    [Export(typeof(ICodeNameProvider))]
-    [Export(typeof(ICodeNameRegistry))]
-    [PartCreationPolicy(CreationPolicy.Shared)]
+    [Export( typeof( ICodeNameProvider ) )]
+    [Export( typeof( ICodeNameRegistry ) )]
+    [PartCreationPolicy( CreationPolicy.Shared )]
     internal class CodeNameProvider : ICodeNameProvider, ICodeNameRegistry
     {
         private readonly Dictionary<string, string> _renames = new Dictionary<string, string>();
@@ -21,9 +21,9 @@ namespace Tecan.Sila2.Generator.Generators
         private readonly Dictionary<string, Type> _typeOverrides = new Dictionary<string, Type>();
 
         /// <inheritdoc />
-        public string GetStaticConstructorMethod(string typeName)
+        public string GetStaticConstructorMethod( string typeName )
         {
-            if (_constructorReplacements.TryGetValue(typeName, out var method))
+            if(_constructorReplacements.TryGetValue( typeName, out var method ))
             {
                 return method.Name;
             }
@@ -34,49 +34,49 @@ namespace Tecan.Sila2.Generator.Generators
         }
 
         /// <inheritdoc />
-        public void RegisterConstructionMethod(Type type, MethodInfo constructorMethod)
+        public void RegisterConstructionMethod( Type type, MethodInfo constructorMethod )
         {
-            _constructorReplacements.Add(type.Name, constructorMethod);
+            _constructorReplacements.Add( type.Name, constructorMethod );
         }
 
         /// <inheritdoc />
-        public CodeTypeReference CreateFeatureInterfaceReference(Feature feature)
+        public CodeTypeReference CreateFeatureInterfaceReference( Feature feature )
         {
-            if (_renames.TryGetValue(feature.Identifier, out var identifier)) return new CodeTypeReference(identifier);
-            return new CodeTypeReference("I" + feature.Identifier);
+            if(_renames.TryGetValue( feature.Identifier, out var identifier )) return new CodeTypeReference( identifier );
+            return new CodeTypeReference( "I" + feature.Identifier );
         }
 
         /// <inheritdoc />
-        public void RegisterRename(string memberName, string identifier)
+        public void RegisterRename( string memberName, string identifier )
         {
-            _renames.Add(identifier, memberName);
+            _renames.Add( identifier, memberName );
         }
 
         /// <inheritdoc />
-        public string GetCommandName(FeatureCommand featureCommand)
+        public string GetCommandName( FeatureCommand featureCommand )
         {
-            if (_renames.TryGetValue(featureCommand.Identifier, out var identifier)) return identifier;
+            if(_renames.TryGetValue( featureCommand.Identifier, out var identifier )) return identifier;
             return featureCommand.Identifier;
         }
 
         /// <inheritdoc />
-        public string GetPropertyName(FeatureProperty featureProperty)
+        public string GetPropertyName( FeatureProperty featureProperty )
         {
-            if (_renames.TryGetValue(featureProperty.Identifier, out var identifier)) return identifier;
+            if(_renames.TryGetValue( featureProperty.Identifier, out var identifier )) return identifier;
             return featureProperty.Identifier;
         }
 
         /// <inheritdoc />
-        public CodeTypeReference CreateExceptionReference(string errorIdentifier)
+        public CodeTypeReference CreateExceptionReference( string errorIdentifier )
         {
-            if (_renames.TryGetValue(errorIdentifier, out var identifier)) return new CodeTypeReference(identifier);
-            return new CodeTypeReference(errorIdentifier + "Exception");
+            if(_renames.TryGetValue( errorIdentifier, out var identifier )) return new CodeTypeReference( identifier );
+            return new CodeTypeReference( errorIdentifier + "Exception" );
         }
 
         /// <inheritdoc />
-        public void RegisterDifferentType(string identifier, Type type)
+        public void RegisterDifferentType( string identifier, Type type )
         {
-            _typeOverrides.Add(identifier, type);
+            _typeOverrides.Add( identifier, type );
         }
 
         public void RegisterMethod( string commandIdentifier, MethodInfo method )
@@ -85,11 +85,11 @@ namespace Tecan.Sila2.Generator.Generators
         }
 
         /// <inheritdoc />
-        public CodeTypeReference GetMemberType(string identifier)
+        public CodeTypeReference GetMemberType( string identifier )
         {
-            if (_typeOverrides.TryGetValue(identifier, out var type))
+            if(_typeOverrides.TryGetValue( identifier, out var type ))
             {
-                return new CodeTypeReference(type);
+                return new CodeTypeReference( type );
             }
             else
             {
@@ -97,32 +97,32 @@ namespace Tecan.Sila2.Generator.Generators
             }
         }
 
-        public CodeTypeReference GenerateCommandRequestType(FeatureCommand command)
+        public CodeTypeReference GenerateCommandRequestType( FeatureCommand command )
         {
-            return new CodeTypeReference(command.Identifier + "RequestDto");
+            return new CodeTypeReference( command.Identifier + "RequestDto" );
         }
 
-        public CodeTypeReference GenerateCommandIntermediateType(FeatureCommand command)
+        public CodeTypeReference GenerateCommandIntermediateType( FeatureCommand command )
         {
-            if (command.IntermediateResponse == null || command.IntermediateResponse.Length == 0)
+            if(command.IntermediateResponse == null || command.IntermediateResponse.Length == 0)
             {
-                return new CodeTypeReference(nameof(EmptyRequest));
+                return new CodeTypeReference( nameof( EmptyRequest ) );
             }
             else
             {
-                return new CodeTypeReference(command.Identifier + "IntermediateDto");
+                return new CodeTypeReference( command.Identifier + "IntermediateDto" );
             }
         }
 
-        public CodeTypeReference GenerateCommandResponseType(FeatureCommand command)
+        public CodeTypeReference GenerateCommandResponseType( FeatureCommand command )
         {
-            if (command.Response == null || command.Response.Length == 0)
+            if(command.Response == null || command.Response.Length == 0)
             {
-                return new CodeTypeReference(nameof(EmptyRequest));
+                return new CodeTypeReference( nameof( EmptyRequest ) );
             }
             else
             {
-                return new CodeTypeReference(command.Identifier + "ResponseDto");
+                return new CodeTypeReference( command.Identifier + "ResponseDto" );
             }
         }
 
@@ -144,7 +144,7 @@ namespace Tecan.Sila2.Generator.Generators
 
         public MethodInfo GetNonstandardMethod( FeatureCommand command )
         {
-            if( _nonstandardMethods.TryGetValue( command.Identifier, out var method ) )
+            if(_nonstandardMethods.TryGetValue( command.Identifier, out var method ))
             {
                 return method;
             }
@@ -183,6 +183,16 @@ namespace Tecan.Sila2.Generator.Generators
                 return GetMemberType( featureCommand.Identifier + "." + featureCommand.IntermediateResponse[0].Identifier )
                                 ?? translationProvider.ExtractType( featureCommand.IntermediateResponse[0].DataType, featureCommand.Identifier + "Intermediate" );
             }
+            return null;
+        }
+
+        public MethodInfo GetNonstandardMethod( FeatureProperty property )
+        {
+            if(_nonstandardMethods.TryGetValue( property.Identifier, out var method ))
+            {
+                return method;
+            }
+
             return null;
         }
     }

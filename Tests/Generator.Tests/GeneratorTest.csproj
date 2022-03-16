@@ -24,6 +24,7 @@
     </PropertyGroup>
     <ItemGroup>
       <Compile Remove="Centrifuge\ServiceReference.cs" />
+      <Compile Remove="Configuration\ServiceReference.cs" />
       <Compile Remove="InlineObservable\ServiceReference.cs" />
       <Compile Remove="Rx\ServiceReference.cs" />
     </ItemGroup>
@@ -64,6 +65,15 @@
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Compile>
         <Compile Update="Centrifuge\ProviderReference.cs">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Compile>
+        <Compile Update="Configuration\ClientReference.cs">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Compile>
+        <Compile Update="Configuration\DtoReference.cs">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Compile>
+        <Compile Update="Configuration\ProviderReference.cs">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Compile>
         <Compile Update="Dictionary\ClientReference.cs">
@@ -155,6 +165,9 @@
       <None Include="Centrifuge\ServiceReference.cs">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
+      <None Include="Configuration\ServiceReference.cs">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
       <None Include="InlineObservable\ServiceReference.cs">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
@@ -170,6 +183,12 @@
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
         <None Update="Centrifuge\Feature.xml">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Configuration\ConfiguredService.xml">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Configuration\Feature.xml">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
         <None Update="Dictionary\Feature.xml">

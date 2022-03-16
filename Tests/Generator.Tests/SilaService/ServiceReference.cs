@@ -10,17 +10,17 @@
 
 namespace Tecan.Sila2.Generator.Test.TestReference
 {
-    
-    
+
+
     ///  <summary>
     /// The Feature each SiLA Server MUST implement. It is the entry point to a SiLA Server and helps to discover the Features it implements.
     /// </summary>
-    [Tecan.Sila2.SilaFeatureAttribute(true, "silaservice")]
-    [Tecan.Sila2.SilaIdentifierAttribute("SiLAService")]
-    [Tecan.Sila2.SilaDisplayNameAttribute("SiLA Service")]
+    [Tecan.Sila2.SilaFeatureAttribute( true, "silaservice" )]
+    [Tecan.Sila2.SilaIdentifierAttribute( "SiLAService" )]
+    [Tecan.Sila2.SilaDisplayNameAttribute( "SiLA Service" )]
     public partial interface ISiLAService
     {
-        
+
         ///  <summary>
         /// Human readable name of the SiLA Server.
         /// </summary>
@@ -29,7 +29,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             get;
             set;
         }
-        
+
         ///  <summary>
         /// The type of Server this is. Is specified by the implementer of the server and not unique.
         /// </summary>
@@ -37,18 +37,18 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         {
             get;
         }
-        
+
         ///  <summary>
         /// Globally unique identifier that identifies a SiLA Server. The Server UUID MUST
         /// be generated once and always remain the same.
         /// </summary>
-        [Tecan.Sila2.SilaDisplayNameAttribute("Server UUID")]
-        [Tecan.Sila2.PatternConstraintAttribute("[0-9a-f]{8}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{12}")]
+        [Tecan.Sila2.PatternConstraintAttribute( "[0-9a-f]{8}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{12}" )]
+        [Tecan.Sila2.SilaDisplayNameAttribute( "Server UUID" )]
         string ServerUUID
         {
             get;
         }
-        
+
         ///  <summary>
         /// Description of the SiLA Server.
         /// </summary>
@@ -56,27 +56,27 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         {
             get;
         }
-        
+
         ///  <summary>
         /// Returns the version of the SiLA Server. A "Major" and a "Minor" version number (e.g. 1.0) MUST be provided,
         /// a Patch version number MAY be provided. Optionally, an arbitrary text, separated by an underscore MAY be appended, e.g. “3.19.373_mighty_lab_devices”
         /// </summary>
-        [Tecan.Sila2.PatternConstraintAttribute("(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(\\.(0|[1-9][0-9]*))?(_[_a-zA-Z0-9]+)?")]
+        [Tecan.Sila2.PatternConstraintAttribute( "(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(\\.(0|[1-9][0-9]*))?(_[_a-zA-Z0-9]+)?" )]
         string ServerVersion
         {
             get;
         }
-        
+
         ///  <summary>
         /// Returns the URL to the website of the vendor or the website
         /// of the product of this SiLA Server.
         /// </summary>
-        [Tecan.Sila2.SilaDisplayNameAttribute("Server Vendor URL")]
+        [Tecan.Sila2.SilaDisplayNameAttribute( "Server Vendor URL" )]
         Url ServerVendorURL
         {
             get;
         }
-        
+
         ///  <summary>
         /// Returns a list of qualified Feature identifiers of all
         /// implemented Features of this SiLA Server.
@@ -85,34 +85,34 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         {
             get;
         }
-        
+
         ///  <summary>
         /// Get all details on one Feature through the qualified Feature id.
         /// </summary>
         /// <param name="qualifiedFeatureIdentifier">The qualified Feature identifier for which the Feature description should be retrieved.</param>
         /// <returns>The Feature Definition in XML format.</returns>
-        [Tecan.Sila2.ThrowsAttribute(typeof(UnimplementedFeatureException))]
-        [return: Tecan.Sila2.SilaIdentifierAttribute("FeatureDefinition")]
-        FeatureDefinition GetFeatureDefinition(FeatureIdentifier qualifiedFeatureIdentifier);
+        [Tecan.Sila2.ThrowsAttribute( typeof( UnimplementedFeatureException ) )]
+        [return: Tecan.Sila2.SilaIdentifierAttribute( "FeatureDefinition" )]
+        FeatureDefinition GetFeatureDefinition( FeatureIdentifier qualifiedFeatureIdentifier );
     }
-    
+
     ///  <summary>
     /// Uniform Resource Locator as defined in RFC 1738.
     /// </summary>
-    [Tecan.Sila2.PatternConstraintAttribute("https?://.+")]
+    [Tecan.Sila2.PatternConstraintAttribute( "https?://.+" )]
     public struct Url
     {
-        
+
         private string _value;
-        
+
         ///  <summary>
         /// Initializes a new instance
         /// </summary>
-        public Url(string value)
+        public Url( string value )
         {
             _value = value;
         }
-        
+
         ///  <summary>
         /// The inner value
         /// </summary>
@@ -124,24 +124,24 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             }
         }
     }
-    
+
     ///  <summary>
     /// The content of a Feature Definition conforming with the XML Schema.
     /// </summary>
-    [Tecan.Sila2.SchemaAttribute("https://gitlab.com/SiLA2/sila_base/raw/master/schema/FeatureDefinition.xsd", Tecan.Sila2.SchemaType.Xml)]
+    [Tecan.Sila2.SchemaAttribute( "https://gitlab.com/SiLA2/sila_base/raw/master/schema/FeatureDefinition.xsd", Tecan.Sila2.SchemaType.Xml )]
     public struct FeatureDefinition
     {
-        
+
         private string _value;
-        
+
         ///  <summary>
         /// Initializes a new instance
         /// </summary>
-        public FeatureDefinition(string value)
+        public FeatureDefinition( string value )
         {
             _value = value;
         }
-        
+
         ///  <summary>
         /// The inner value
         /// </summary>
@@ -153,25 +153,25 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             }
         }
     }
-    
+
     ///  <summary>
     /// Qualified Feature Identifier as provided by the ImplementedFeatures property.
     /// </summary>
-    [Tecan.Sila2.MaximalLengthAttribute(255)]
-    [Tecan.Sila2.SilaIdentifierTypeAttribute(Tecan.Sila2.IdentifierType.FeatureIdentifier)]
+    [Tecan.Sila2.MaximalLengthAttribute( 255 )]
+    [Tecan.Sila2.SilaIdentifierTypeAttribute( Tecan.Sila2.IdentifierType.FeatureIdentifier )]
     public struct FeatureIdentifier
     {
-        
+
         private string _value;
-        
+
         ///  <summary>
         /// Initializes a new instance
         /// </summary>
-        public FeatureIdentifier(string value)
+        public FeatureIdentifier( string value )
         {
             _value = value;
         }
-        
+
         ///  <summary>
         /// The inner value
         /// </summary>
@@ -183,19 +183,19 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             }
         }
     }
-    
+
     ///  <summary>
     /// The feature specified by the given feature identifier is not implemented by the server.
     /// </summary>
     public class UnimplementedFeatureException : System.Exception
     {
-        
+
         ///  <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="message">The actual error message</param>
-        public UnimplementedFeatureException(string message) : 
-                base(message)
+        public UnimplementedFeatureException( string message ) :
+                base( message )
         {
         }
     }

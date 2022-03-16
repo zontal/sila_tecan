@@ -39,7 +39,7 @@ namespace Tecan.Sila2.Generator.CommandLine
         /// <summary>
         /// An interface that the code generator should adjust to. If not set, the generator will create a new interface based on the feature.
         /// </summary>
-        [Option('i', "adjust-to-interface", HelpText = "An interface that the code generator should adjust to. If not set, the generator will create a new interface based on the feature." )]
+        [Option( 'i', "adjust-to-interface", HelpText = "An interface that the code generator should adjust to. If not set, the generator will create a new interface based on the feature." )]
         public string AdjustToInterface { get; set; }
 
         /// <inheritdoc />
@@ -48,14 +48,14 @@ namespace Tecan.Sila2.Generator.CommandLine
             var channel = SetupLogging( container );
             var feature = FeatureSerializer.Load( Path.GetFullPath( FeaturePath ) );
             var directory = Path.GetDirectoryName( ProviderProject );
-            if( string.IsNullOrEmpty( AdjustToInterface ) )
+            if(string.IsNullOrEmpty( AdjustToInterface ))
             {
                 var unit = container.GetExportedValue<IInterfaceGenerator>().GenerateInterfaceUnit( feature, Namespace ?? feature.Namespace );
                 CodeGenerationHelper.GenerateCSharp( unit, Path.Combine( directory, feature.Identifier, $"I{feature.Identifier}.cs" ) );
-#if !NETCOREAPP2_1
-                if( Namespace == null )
+#if !NETCOREAPP3_1
+                if(Namespace == null)
                 {
-                    channel.Debug("Finding root namespace in project file");
+                    channel.Debug( "Finding root namespace in project file" );
                     var project = new Project( ProviderProject );
                     Namespace = project.GetPropertyValue( "RootNamespace" );
                 }
@@ -64,33 +64,33 @@ namespace Tecan.Sila2.Generator.CommandLine
             else
             {
                 var type = Type.GetType( AdjustToInterface, throwOnError: false );
-#if !NETCOREAPP2_1
-                if( type == null )
+#if !NETCOREAPP3_1
+                if(type == null)
                 {
                     channel.Debug( "Finding output path and assembly name in project file" );
                     var project = new Project( ProviderProject );
                     var target = project.GetPropertyValue( "OutputPath" );
                     var fileName = project.GetPropertyValue( "AssemblyName" );
                     target = Path.Combine( directory, target, fileName + ".dll" );
-                    if( File.Exists( target ) )
+                    if(File.Exists( target ))
                     {
                         var assembly = Assembly.LoadFrom( target );
                         type = assembly.GetType( AdjustToInterface );
                     }
                 }
 #endif
-                if( type == null )
+                if(type == null)
                 {
                     throw new InvalidOperationException( $"The type {AdjustToInterface} could not be found" );
                 }
 
-                if( string.IsNullOrEmpty( Namespace ) )
+                if(string.IsNullOrEmpty( Namespace ))
                 {
                     Namespace = type.Namespace;
                 }
 
                 // generate the feature. We are not interested in the feature itself, but want the side-effect that the generator registers deviations
-                container.GetExportedValue<IFeatureDefinitionGenerator>().GenerateFeature( type, feature.Originator, feature.Category, feature.FeatureVersion );
+                container.GetExportedValue<IFeatureDefinitionGenerator>().GenerateFeature( type );
             }
 
             var generateProvider = new GenerateProviderVerb()
@@ -102,7 +102,7 @@ namespace Tecan.Sila2.Generator.CommandLine
                 Namespace = Namespace + "." + feature.Identifier,
                 MinimumSeverity = MinimumSeverity
             };
-            generateProvider.Execute(container);
+            generateProvider.Execute( container );
         }
     }
 }

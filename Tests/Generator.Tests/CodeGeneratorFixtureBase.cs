@@ -55,14 +55,25 @@ namespace Tecan.Sila2.Generator.Test
         protected string ProviderReference => Path.Combine( Name, "ProviderReference.cs" );
         protected string ClientReference => Path.Combine( Name, "ClientReference.cs" );
 
-        protected virtual PredefinedFeatureGenerationConfigModel FeatureGeneratorConfig => null;
+        protected virtual FeatureGenerationConfig FeatureGeneratorConfig => null;
+
+        protected virtual IGeneratorConfigSource CreateConfigSource()
+        {
+            var configSource = new GeneratorConfigSource();
+            var config = FeatureGeneratorConfig;
+            if(config != null)
+            {
+                configSource.Add( config );
+            }
+            return configSource;
+        }
 
         [Test]
-        public void Test_GenerateFeature_SilaFeature()
+        public virtual void Test_GenerateFeature_SilaFeature()
         {
-            var generator = new FeatureDefinitionGenerator( null, _typeTranslationProvider, null, _ambiguityResolver );
+            var generator = new FeatureDefinitionGenerator( null, _typeTranslationProvider, CreateConfigSource(), null, _ambiguityResolver );
 
-            var feature = generator.GenerateFeature( Interface, featureGeneratorConfig: FeatureGeneratorConfig );
+            var feature = generator.GenerateFeature( Interface );
             var xmlCode = FeatureSerializer.SaveToString( feature );
             var path = Path.GetTempFileName();
             File.WriteAllText( path, xmlCode );
@@ -79,7 +90,7 @@ namespace Tecan.Sila2.Generator.Test
         private string GetCanonicalRepresentation( string path )
         {
             var transformedReference = new XmlDsigC14NTransform( false );
-            using( var reference = File.OpenRead( path ) )
+            using(var reference = File.OpenRead( path ))
             {
                 transformedReference.LoadInput( reference );
             }
@@ -88,10 +99,10 @@ namespace Tecan.Sila2.Generator.Test
         }
 
         [Test]
-        public void Test_GenerateInterface()
+        public virtual void Test_GenerateInterface()
         {
             var feature = FeatureSerializer.Load( FeatureDefinitionFile );
-            var interfaceGenerator = new InterfaceGenerator( _typeTranslationProvider, null );
+            var interfaceGenerator = new InterfaceGenerator( _typeTranslationProvider, null, CreateConfigSource() );
             var unit = interfaceGenerator.GenerateInterfaceUnit( feature,
                 "Tecan.Sila2.Generator.Test.TestReference" );
 
@@ -99,10 +110,10 @@ namespace Tecan.Sila2.Generator.Test
         }
 
         [Test]
-        public void Test_GenerateDto()
+        public virtual void Test_GenerateDto()
         {
             var feature = FeatureSerializer.Load( FeatureDefinitionFile );
-            var dtoGenerator = new DtoGenerator( _typeTranslationProvider, CreateNameProvider() );
+            var dtoGenerator = new DtoGenerator( _typeTranslationProvider, CreateNameProvider(), CreateConfigSource() );
             var unit = dtoGenerator.GenerateInterfaceUnit( feature,
                 "Tecan.Sila2.Generator.Test.TestReference" );
 
@@ -115,23 +126,23 @@ namespace Tecan.Sila2.Generator.Test
         }
 
         [Test]
-        public void Test_GenerateProvider()
+        public virtual void Test_GenerateProvider()
         {
             var feature = FeatureSerializer.Load( FeatureDefinitionFile );
             var nameProvider = CreateNameProvider();
-            var providerGenerator = new ServerGenerator( _typeTranslationProvider, nameProvider, new MefGenerator(), null );
+            var providerGenerator = new ServerGenerator( _typeTranslationProvider, nameProvider, new MefGenerator(), null, CreateConfigSource() );
             var unit = providerGenerator.GenerateServer( feature,
-                "Tecan.Sila2.Generator.Test.TestReference");
+                "Tecan.Sila2.Generator.Test.TestReference" );
 
             GenerateAndCompare( unit, ProviderReference );
         }
 
         [Test]
-        public void Test_GenerateClient()
+        public virtual void Test_GenerateClient()
         {
             var feature = FeatureSerializer.Load( FeatureDefinitionFile );
             var nameProvider = CreateNameProvider();
-            var providerGenerator = new ClientGenerator( nameProvider, _typeTranslationProvider, null, new MefGenerator() );
+            var providerGenerator = new ClientGenerator( nameProvider, _typeTranslationProvider, null, new MefGenerator(), CreateConfigSource() );
             var unit = providerGenerator.GenerateClient( feature,
                 "Tecan.Sila2.Generator.Test.TestReference" );
 
@@ -148,7 +159,7 @@ namespace Tecan.Sila2.Generator.Test
                 IndentString = "    ",
                 VerbatimOrder = false
             };
-            using( var writer = new StringWriter() )
+            using(var writer = new StringWriter())
             {
                 cSharp.GenerateCodeFromCompileUnit( unit, writer, options );
 

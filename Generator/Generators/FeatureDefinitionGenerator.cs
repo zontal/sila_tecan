@@ -12,8 +12,8 @@ namespace Tecan.Sila2.Generator.Generators
     /// <summary>
     /// Generates features from a given interface
     /// </summary>
-    [Export(typeof(IFeatureDefinitionGenerator))]
-    [PartCreationPolicy(CreationPolicy.Shared)]
+    [Export( typeof( IFeatureDefinitionGenerator ) )]
+    [PartCreationPolicy( CreationPolicy.Shared )]
     internal class FeatureDefinitionGenerator : IFeatureDefinitionGenerator
     {
 
@@ -26,6 +26,8 @@ namespace Tecan.Sila2.Generator.Generators
         private readonly ITypeTranslationProvider _translationProvider;
         private readonly ILog _loggingChannel = LogManager.GetLogger<FeatureDefinitionGenerator>();
         private readonly IAmbiguityResolver _ambiguityResolver;
+        private readonly IGeneratorConfigSource _generatorConfigSource;
+
         /// <summary>
         /// Creates a new feature definition generator for the provided registry
         /// </summary>
@@ -33,51 +35,39 @@ namespace Tecan.Sila2.Generator.Generators
         /// <param name="translationProvider">A component that translates types between SiLA2 and .NET</param>
         /// <param name="hooks">Generator hooks</param>
         /// <param name="ambiguityResolver">A component that resolves ambiguous properties</param>
+        /// <param name="configSource">A component from which generator specifications can be drawn</param>
         [ImportingConstructor]
-        public FeatureDefinitionGenerator( ICodeNameRegistry nameRegistry, ITypeTranslationProvider translationProvider, 
-            [ImportMany] IEnumerable<IGeneratorHook> hooks , IAmbiguityResolver ambiguityResolver)
+        public FeatureDefinitionGenerator( ICodeNameRegistry nameRegistry, ITypeTranslationProvider translationProvider, IGeneratorConfigSource configSource,
+            [ImportMany] IEnumerable<IGeneratorHook> hooks, IAmbiguityResolver ambiguityResolver )
         {
             NameRegistry = nameRegistry;
             Hooks = hooks;
             _translationProvider = translationProvider;
             _ambiguityResolver = ambiguityResolver;
+            _generatorConfigSource = configSource;
         }
 
         /// <inheritdoc />
-        public Feature GenerateFeature( Type interfaceType, string originator = null, string category = null,
-            string version = null, ICollection<string> namespaceCollector = null, PredefinedFeatureGenerationConfigModel featureGeneratorConfig = null, bool isDraftDefault = true )
+        public Feature GenerateFeature( Type interfaceType, ICollection<string> namespaceCollector = null, bool isDraftDefault = true )
         {
             if(interfaceType == null) throw new ArgumentNullException( nameof( interfaceType ) );
 
-            _loggingChannel.Info($"Generating feature definition for type {interfaceType.FullName}");
+            _loggingChannel.Info( $"Generating feature definition for type {interfaceType.FullName}" );
             var annotation = interfaceType.GetCustomAttribute<SilaFeatureAttribute>();
+            var spec = _generatorConfigSource.GetFeatureSpec( interfaceType );
+
+            var version = spec?.Version;
+            var category = spec?.Category;
+            var originator = spec?.Originator;
 
             var versionV = version == null ? interfaceType.Assembly.GetName().Version : Version.Parse( version );
             category ??= annotation?.Category;
             AssignDefaultOriginatorAndCategory( interfaceType, versionV, ref originator, ref category );
 
-            Func<string, Constraints> constraintResolver = null;
-            if (featureGeneratorConfig?.PredefinedConstraints != null )
-            {
-                constraintResolver = origin =>
-                {
-                    if(featureGeneratorConfig.PredefinedConstraints.TryGetValue( origin, out var constraint ) )
-                    {
-                        return constraint;
-                    }
-                    else
-                    {
-                        _loggingChannel.Warn($"No constraint for element {origin} found, creating only constraints based on annotations.");
-                        return null;
-                    }
-                };
-            }
-
-            var context = new FeatureDefinitionGeneratorContext(NameRegistry, constraintResolver, _translationProvider, _ambiguityResolver, featureGeneratorConfig);
+            var context = new FeatureDefinitionGeneratorContext( NameRegistry, _translationProvider, _ambiguityResolver, spec, interfaceType );
             context.TryLoadDocumentation( interfaceType.Assembly );
-
-            var (identifier, displayName, description) = context.ParseElementData( interfaceType, prefix: "I" );
-            var items = context.GenerateFeature( interfaceType, namespaceCollector );
+            var (identifier, displayName, description) = context.ParseElementData( interfaceType, spec, prefix: "I" );
+            var items = context.GenerateFeature( namespaceCollector );
 
             var feature = new Feature
             {
@@ -96,7 +86,7 @@ namespace Tecan.Sila2.Generator.Generators
             {
                 foreach(var hook in Hooks)
                 {
-                    _loggingChannel.Debug($"Executing hook {hook} after generating feature");
+                    _loggingChannel.Debug( $"Executing hook {hook} after generating feature" );
                     hook?.OnFeatureGenerated( interfaceType, feature );
                 }
             }
@@ -143,19 +133,19 @@ namespace Tecan.Sila2.Generator.Generators
                     useCaseStartIndex = ns.LastIndexOf( ".", StringComparison.Ordinal ) + 1;
                 }
 
-                if( originator == null )
+                if(originator == null)
                 {
-                    _loggingChannel.Debug("Assign originator based on the namespace because no originator has been provided.");
-                    if (useCaseStartIndex < 2)
+                    _loggingChannel.Debug( "Assign originator based on the namespace because no originator has been provided." );
+                    if(useCaseStartIndex < 2)
                     {
                         throw new InvalidOperationException( "The namespace is too short to derive originator and use case from it. Please provide them explicitly or chose a different namespace." );
                     }
                     originator = ns.Substring( 0, useCaseStartIndex - 1 );
                 }
 
-                if( category == null )
+                if(category == null)
                 {
-                    _loggingChannel.Debug("Assign category based on namespace because no category has been provided.");
+                    _loggingChannel.Debug( "Assign category based on namespace because no category has been provided." );
                     category = ns.Substring( useCaseStartIndex, endIndex - useCaseStartIndex );
                 }
             }

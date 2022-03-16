@@ -1,0 +1,31 @@
+﻿<FeatureGenerationConfig xmlns="http://www.sila-standard.org" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sila-standard.org ..\..\..\Generator\FeatureGenerationConfig.xsd">
+    <Feature Code="IConfiguredService" Description="Just a demo how to use generator configuration" Maturity="Verified">
+        <Property Code="GetSpeed" Identifier="Speed" Description="Returns the speed" Lazy="false" AsMethod="true">
+            <Mapping>
+                <Constraint>
+                    <Unit>
+                        <Label>km/h</Label>
+                        <Factor>3.6</Factor>
+                        <Offset>0</Offset>
+                        <UnitComponent>
+                            <SIUnit>Meter</SIUnit>
+                            <Exponent>1</Exponent>
+                        </UnitComponent>
+                        <UnitComponent>
+                            <SIUnit>Second</SIUnit>
+                            <Exponent>-1</Exponent>
+                        </UnitComponent>
+                    </Unit>
+                </Constraint>
+                <ValueExpression xsi:type="PropertyExpression" Property="Kmph"/>
+            </Mapping>
+        </Property>
+        <Command Code="AccelerateTo" DisplayName="Accelerate to" Description="Accelerates to a provided speed">
+            <Parameter Key="target" Description="The speed to reach" DisplayName="Target Speed">
+                <Mapping>
+                    <ValueExpression xsi:type="PropertyExpression" Property="Kmph"/>
+                </Mapping>
+            </Parameter>
+        </Command>
+    </Feature>
+</FeatureGenerationConfig>

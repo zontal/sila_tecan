@@ -4,6 +4,7 @@ using CommandLine;
 using Common.Logging;
 using Tecan.Sila2.Generator.Contracts;
 using Tecan.Sila2.Generator.Generators;
+using Tecan.Sila2.Generator.Helper;
 using Tecan.Sila2.Generator.Logging;
 
 namespace Tecan.Sila2.Generator.CommandLine
@@ -16,12 +17,18 @@ namespace Tecan.Sila2.Generator.CommandLine
         /// <summary>
         /// Sets the minimum severity of the log level. Allowed values are Debug, Info, Warning, Error.
         /// </summary>
-        [Option("verbosity", Required = false, Default = LogLevel.Info, HelpText = "Sets the minimum severity of the log level. Allowed values are Debug, Info, Warning, Error.")]
+        [Option( "verbosity", Required = false, Default = LogLevel.Info, HelpText = "Sets the minimum severity of the log level. Allowed values are Debug, Info, Warning, Error." )]
         public LogLevel MinimumSeverity
         {
             get;
             set;
         }
+
+        /// <summary>
+        /// Path to a file that contains additional constraints
+        /// </summary>
+        [Option( "config-file", Required = false, HelpText = "Path to a file that contains additional constraints" )]
+        public string ConfigFile { get; set; }
 
         /// <summary>
         /// Set up the logging according to the command line
@@ -31,7 +38,23 @@ namespace Tecan.Sila2.Generator.CommandLine
         {
             LogManager.Adapter = new ConsoleLogging( MinimumSeverity );
 
-            return LogManager.GetLogger( GetType() );
+            var channel = LogManager.GetLogger( GetType() );
+            LoadConfiguration( channel, container.GetExportedValue<IGeneratorConfigSource>() );
+            return channel;
+        }
+
+
+        private void LoadConfiguration( ILog channel, IGeneratorConfigSource configRepo )
+        {
+            var configFile = FeatureDefinitionConfigHelper.LoadConfigMappingFile( ConfigFile );
+            if(!string.IsNullOrEmpty( ConfigFile ) && configFile != null)
+            {
+                channel.Warn( "Feature definition config file could not be loaded." );
+            }
+            if(configFile != null)
+            {
+                configRepo.Add( configFile );
+            }
         }
 
         /// <inheritdoc cref="ICommandLineVerb"/>

@@ -11,8 +11,8 @@ namespace Tecan.Sila2.Generator.Test.AmbiguityResolver
     {
         protected override string Name => "AmbiguityResolver";
 
-        protected override Type Interface => typeof(IAmbiguityResolverService);
+        protected override Type Interface => typeof( IAmbiguityResolverService );
 
-        protected override PredefinedFeatureGenerationConfigModel FeatureGeneratorConfig => FeatureDefinitionConfigHelper.LoadConfigMappingFile( Path.Combine(Name, "AmbiguityResolver.xml") );
+        protected override FeatureGenerationConfig FeatureGeneratorConfig => FeatureDefinitionConfigHelper.LoadConfigMappingFile( Path.Combine( Name, "AmbiguityResolver.xml" ) );
     }
 }

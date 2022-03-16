@@ -15,8 +15,8 @@ namespace Tecan.Sila2.Generator.Generators
     /// <summary>
     /// Generates data transfer objects
     /// </summary>
-    [Export(typeof(IDtoGenerator))]
-    [PartCreationPolicy(CreationPolicy.Shared)]
+    [Export( typeof( IDtoGenerator ) )]
+    [PartCreationPolicy( CreationPolicy.Shared )]
     internal class DtoGenerator : IDtoGenerator
     {
         private const string BinaryStoreParameterName = "store";
@@ -28,65 +28,71 @@ namespace Tecan.Sila2.Generator.Generators
 
         private readonly ITypeTranslationProvider _translationProvider;
         private readonly ILog _loggingChannel = LogManager.GetLogger<DtoGenerator>();
+        private readonly IGeneratorConfigSource _configSource;
 
         /// <summary>
         /// Creates a new Dto generator for the given name provider
         /// </summary>
         /// <param name="translationProvider">The translation provider</param>
         /// <param name="nameProvider">A name provider</param>
+        /// <param name="configSource">A component where to draw configuration from</param>
         [ImportingConstructor]
-        public DtoGenerator(ITypeTranslationProvider translationProvider, ICodeNameProvider nameProvider )
+        public DtoGenerator( ITypeTranslationProvider translationProvider, ICodeNameProvider nameProvider, IGeneratorConfigSource configSource )
         {
             _translationProvider = translationProvider;
+            _configSource = configSource;
             NameProvider = nameProvider;
         }
 
         /// <inheritdoc />
-        public CodeCompileUnit GenerateInterfaceUnit(Feature feature, string ns)
+        public CodeCompileUnit GenerateInterfaceUnit( Feature feature, string ns )
         {
             _loggingChannel.Info( $"Generating data transfer objects for feature {feature.FullyQualifiedIdentifier}" );
             var unit = new CodeCompileUnit();
-            var nSpace = new CodeNamespace(ns);
-            unit.Namespaces.Add(nSpace);
-            nSpace.Imports.Add(new CodeNamespaceImport("Tecan.Sila2"));
+            var nSpace = new CodeNamespace( ns );
+            unit.Namespaces.Add( nSpace );
+            nSpace.Imports.Add( new CodeNamespaceImport( "Tecan.Sila2" ) );
 
             var structureHelper = new AnonymousTypeHelper();
             var structHandler = new Action<string, StructureType>( structureHelper.RegisterAnonymousType );
 
             if(feature.Items != null)
             {
-
+                var spec = _configSource.GetFeatureSpec( feature.Identifier );
                 foreach(var featureCommand in feature.Items.OfType<FeatureCommand>())
                 {
                     _loggingChannel.Debug( $"Generating request/response classes for {featureCommand.Identifier}" );
-                    nSpace.Types.Add( GenerateCommandRequestType( feature, featureCommand, structHandler ) );
+                    var commandSpec = spec?.Command?.FirstOrDefault( c => featureCommand.Identifier == (c.Identifier ?? c.Code) );
+                    nSpace.Types.Add( GenerateCommandRequestType( feature, featureCommand, commandSpec, structHandler ) );
 
                     if(featureCommand.IntermediateResponse != null && featureCommand.IntermediateResponse.Length > 0)
                     {
-                        nSpace.Types.Add( GenerateCommandIntermediateType( featureCommand, structHandler ) );
+                        nSpace.Types.Add( GenerateCommandIntermediateType( featureCommand, commandSpec, structHandler ) );
                     }
 
                     if(featureCommand.Response != null && featureCommand.Response.Length > 0)
                     {
-                        nSpace.Types.Add( GenerateCommandResponseType( featureCommand, structHandler ) );
+                        nSpace.Types.Add( GenerateCommandResponseType( featureCommand, commandSpec, structHandler ) );
                     }
                 }
 
                 foreach(var featureProperty in feature.Items.OfType<FeatureProperty>())
                 {
+                    var propertySpec = spec?.Property?.FirstOrDefault( c => featureProperty.Identifier == (c.Identifier ?? c.Code) );
                     // ensure dto type can be resolved
                     _translationProvider.GetDtoTypeReference( featureProperty.DataType, featureProperty.Identifier, structHandler );
                     if(featureProperty.DataType.Item is ConstrainedType)
                     {
                         _loggingChannel.Debug( $"Generating constrained DTO type for property {featureProperty.Identifier}" );
-                        nSpace.Types.Add( GeneratePropertyResponse( featureProperty, structHandler ) );
+                        nSpace.Types.Add( GeneratePropertyResponse( featureProperty, propertySpec, structHandler ) );
                     }
                 }
 
                 foreach(var dataTypeDefinition in feature.Items.OfType<SiLAElement>())
                 {
                     _loggingChannel.Debug( $"Generating data transfer type for {dataTypeDefinition.Identifier}" );
-                    var type = GenerateDataTypeDefinition( dataTypeDefinition, structHandler, true );
+                    var typeSpec = spec?.Type?.FirstOrDefault( t => dataTypeDefinition.Identifier == (t.Identifier ?? t.Code) );
+                    var type = GenerateDataTypeDefinition( dataTypeDefinition, typeSpec, structHandler, true );
                     if(type != null)
                     {
                         nSpace.Types.Add( type );
@@ -115,7 +121,7 @@ namespace Tecan.Sila2.Generator.Generators
                     },
                     DisplayName = name.ToDisplayName()
                 };
-                var type = GenerateDataTypeDefinition( element, structHandler, false );
+                var type = GenerateDataTypeDefinition( element, null, structHandler, false );
                 if(type != null)
                 {
                     nSpace.Types.Add( type );
@@ -125,7 +131,7 @@ namespace Tecan.Sila2.Generator.Generators
             return unit;
         }
 
-        private CodeTypeDeclaration GeneratePropertyResponse(FeatureProperty featureProperty, Action<string, StructureType> structHandler )
+        private CodeTypeDeclaration GeneratePropertyResponse( FeatureProperty featureProperty, PropertySpec spec, Action<string, StructureType> structHandler )
         {
             var propertyStructure = new StructureType
             {
@@ -138,106 +144,124 @@ namespace Tecan.Sila2.Generator.Generators
                     }
                 }
             };
-            var declaration = GenerateDto(featureProperty.Identifier + "Response", propertyStructure, false, featureProperty.Identifier, structHandler);
-            declaration.WriteDocumentation($"Data transfer object to encapsulate the response of the {featureProperty.DisplayName} property");
+            var declaration = GenerateDto( featureProperty.Identifier + "Response", propertyStructure, Encapsulate( spec?.Mapping, featureProperty.Identifier ), false, featureProperty.Identifier, structHandler );
+            declaration.WriteDocumentation( $"Data transfer object to encapsulate the response of the {featureProperty.DisplayName} property" );
             return declaration;
         }
 
-        private CodeTypeDeclaration GenerateCommandIntermediateType(FeatureCommand featureCommand, Action<string, StructureType> structHandler )
+        private PropertyMapping[] Encapsulate( TypeMapping mapping, string identifier )
+        {
+            if(mapping == null)
+            {
+                return null;
+            }
+            return new[] { new PropertyMapping
+            {
+                Identifier = identifier,
+                Mapping = mapping,
+            }};
+        }
+
+        private CodeTypeDeclaration GenerateCommandIntermediateType( FeatureCommand featureCommand, CommandSpec spec, Action<string, StructureType> structHandler )
         {
             var commandResponseStructure = new StructureType
             {
-                Element = featureCommand.IntermediateResponse.Select(response => new SiLAElement
+                Element = featureCommand.IntermediateResponse.Select( response => new SiLAElement
                 {
                     Identifier = response.Identifier,
                     DataType = response.DataType,
                     DisplayName = response.DisplayName,
                     Description = response.Description
-                }).ToArray()
+                } ).ToArray()
             };
-            var declaration = GenerateDto( GetStructureName( NameProvider.GenerateCommandIntermediateType( featureCommand ) ), commandResponseStructure, featureCommand.IntermediateResponse != null && featureCommand.IntermediateResponse.Length > 1,
-                featureCommand.Identifier + ".Intermediate", structHandler);
-            declaration.WriteDocumentation($"Data transfer object for the intermediate response of the {featureCommand.DisplayName} command");
+            PropertyMapping[] mappings = null;
+            if(spec?.IntermediateResponse != null)
+            {
+                mappings = new PropertyMapping[] { spec.IntermediateResponse };
+            }
+            var declaration = GenerateDto( GetStructureName( NameProvider.GenerateCommandIntermediateType( featureCommand ) ), commandResponseStructure, mappings, featureCommand.IntermediateResponse != null && featureCommand.IntermediateResponse.Length > 1,
+                featureCommand.Identifier + ".Intermediate", structHandler );
+            declaration.WriteDocumentation( $"Data transfer object for the intermediate response of the {featureCommand.DisplayName} command" );
             return declaration;
         }
 
-        private CodeTypeDeclaration GenerateCommandResponseType(FeatureCommand featureCommand, Action<string, StructureType> structHandler )
+        private CodeTypeDeclaration GenerateCommandResponseType( FeatureCommand featureCommand, CommandSpec spec, Action<string, StructureType> structHandler )
         {
             var commandResponseStructure = new StructureType
             {
-                Element = featureCommand.Response.Select(response => new SiLAElement
+                Element = featureCommand.Response.Select( response => new SiLAElement
                 {
                     Identifier = response.Identifier,
                     DataType = response.DataType,
                     DisplayName = response.DisplayName,
                     Description = response.Description
-                }).ToArray()
+                } ).ToArray()
             };
-            var declaration = GenerateDto(GetStructureName(NameProvider.GenerateCommandResponseType(featureCommand)), commandResponseStructure, featureCommand.Response != null && featureCommand.Response.Length > 1,
-                featureCommand.Identifier, structHandler);
-            declaration.WriteDocumentation($"Data transfer object for the response of the {featureCommand.DisplayName} command");
+            var declaration = GenerateDto( GetStructureName( NameProvider.GenerateCommandResponseType( featureCommand ) ), commandResponseStructure, spec?.Response, featureCommand.Response != null && featureCommand.Response.Length > 1,
+                featureCommand.Identifier, structHandler );
+            declaration.WriteDocumentation( $"Data transfer object for the response of the {featureCommand.DisplayName} command" );
             return declaration;
         }
 
         private string GetStructureName( CodeTypeReference typeReference )
         {
-            if( !typeReference.BaseType.EndsWith( "Dto" ) )
+            if(!typeReference.BaseType.EndsWith( "Dto" ))
             {
-                throw new InvalidOperationException($"{typeReference.BaseType} does not end with required suffix Dto");
+                throw new InvalidOperationException( $"{typeReference.BaseType} does not end with required suffix Dto" );
             }
 
             return typeReference.BaseType.Substring( 0, typeReference.BaseType.Length - 3 );
         }
 
-        private CodeTypeDeclaration GenerateCommandRequestType(Feature feature, FeatureCommand featureCommand, Action<string, StructureType> structHandler )
+        private CodeTypeDeclaration GenerateCommandRequestType( Feature feature, FeatureCommand featureCommand, CommandSpec spec, Action<string, StructureType> structHandler )
         {
             var commandRequestStructure = new StructureType
             {
                 Element = featureCommand.Parameter
             };
-            var requestType = GenerateDto( GetStructureName( NameProvider.GenerateCommandRequestType( featureCommand ) ), commandRequestStructure, false, featureCommand.Identifier, structHandler);
-            requestType.BaseTypes.Add(typeof(ISilaRequestObject));
-            var commandIdentifierProperty = GenerateCommandIdentifierProperty(feature.GetFullyQualifiedIdentifier(featureCommand));
-            requestType.Members.Add(commandIdentifierProperty);
-            requestType.WriteDocumentation($"Data transfer object for the request of the {featureCommand.DisplayName} command");
+            var requestType = GenerateDto( GetStructureName( NameProvider.GenerateCommandRequestType( featureCommand ) ), commandRequestStructure, spec?.Parameter, false, featureCommand.Identifier, structHandler );
+            requestType.BaseTypes.Add( typeof( ISilaRequestObject ) );
+            var commandIdentifierProperty = GenerateCommandIdentifierProperty( feature.GetFullyQualifiedIdentifier( featureCommand ) );
+            requestType.Members.Add( commandIdentifierProperty );
+            requestType.WriteDocumentation( $"Data transfer object for the request of the {featureCommand.DisplayName} command" );
             return requestType;
         }
 
-        private static CodeMemberProperty GenerateCommandIdentifierProperty(string identifier)
+        private static CodeMemberProperty GenerateCommandIdentifierProperty( string identifier )
         {
             var commandIdentifierProperty = new CodeMemberProperty()
             {
-                Name = nameof(ISilaRequestObject.CommandIdentifier),
+                Name = nameof( ISilaRequestObject.CommandIdentifier ),
                 Attributes = MemberAttributes.Public | MemberAttributes.Final,
-                Type = new CodeTypeReference(typeof(string)),
+                Type = new CodeTypeReference( typeof( string ) ),
                 HasGet = true,
                 HasSet = false
             };
-            commandIdentifierProperty.WriteDocumentation("Gets the command identifier for this command", "The fully qualified command identifier");
-            commandIdentifierProperty.GetStatements.Add(new CodeMethodReturnStatement(new CodePrimitiveExpression(identifier)));
+            commandIdentifierProperty.WriteDocumentation( "Gets the command identifier for this command", "The fully qualified command identifier" );
+            commandIdentifierProperty.GetStatements.Add( new CodeMethodReturnStatement( new CodePrimitiveExpression( identifier ) ) );
             return commandIdentifierProperty;
         }
 
-        private CodeTypeDeclaration GenerateDataTypeDefinition( SiLAElement dataType, Action<string, StructureType> structHandler, bool encapsulate )
+        private CodeTypeDeclaration GenerateDataTypeDefinition( SiLAElement dataType, TypeSpec spec, Action<string, StructureType> structHandler, bool encapsulate )
         {
             CodeTypeDeclaration declaration = null;
-            if( dataType.DataType.Item is ConstrainedType constrained )
+            if(dataType.DataType.Item is ConstrainedType constrained)
             {
-                if( constrained.Constraints.Set != null && constrained.Constraints.Set.Length > 0 )
+                if(constrained.Constraints.Set != null && constrained.Constraints.Set.Length > 0)
                 {
                     return GenerateEnumeration( dataType, constrained.Constraints.Set );
                 }
             }
-            else if( dataType.DataType.Item is StructureType structure )
+            else if(dataType.DataType.Item is StructureType structure)
             {
-                declaration = GenerateDto( CreateProperIdentifier( dataType.Identifier ), structure, true, dataType.Identifier, structHandler );
-                if (encapsulate)
+                declaration = GenerateDto( CreateProperIdentifier( dataType.Identifier ), structure, spec?.Property, true, dataType.Identifier, structHandler );
+                if(encapsulate)
                 {
-                    declaration = EncapsulateDto(declaration);
+                    declaration = EncapsulateDto( declaration );
                 }
             }
 
-            if( declaration == null )
+            if(declaration == null)
             {
                 var dataTypeStructure = new StructureType
                 {
@@ -252,7 +276,7 @@ namespace Tecan.Sila2.Generator.Generators
                         }
                     }
                 };
-                declaration = GenerateDto( CreateProperIdentifier( dataType.Identifier ), dataTypeStructure, true, dataType.Identifier, structHandler );
+                declaration = GenerateDto( CreateProperIdentifier( dataType.Identifier ), dataTypeStructure, null, true, dataType.Identifier, structHandler );
             }
 
             declaration.WriteDocumentation( $"The data transfer object for {dataType.DisplayName}" );
@@ -357,7 +381,7 @@ namespace Tecan.Sila2.Generator.Generators
             return codeTypeDeclaration;
         }
 
-        private static void CopyComments(CodeCommentStatementCollection source, CodeCommentStatementCollection target)
+        private static void CopyComments( CodeCommentStatementCollection source, CodeCommentStatementCollection target )
         {
             for(int i = 0; i < source.Count; i++)
             {
@@ -365,30 +389,30 @@ namespace Tecan.Sila2.Generator.Generators
             }
         }
 
-        private static string CreateProperIdentifier(string identifier)
+        private static string CreateProperIdentifier( string identifier )
         {
-            if (identifier.All(char.IsUpper))
+            if(identifier.All( char.IsUpper ))
             {
-                identifier = identifier[0] + identifier.Substring(1).ToLowerInvariant();
+                identifier = identifier[0] + identifier.Substring( 1 ).ToLowerInvariant();
             }
 
             return identifier;
         }
 
-        private CodeTypeDeclaration GenerateEnumeration(SiLAElement dataType, string[] enumeration)
+        private CodeTypeDeclaration GenerateEnumeration( SiLAElement dataType, string[] enumeration )
         {
-            var dto = new CodeTypeDeclaration(dataType.Identifier + "Dto")
+            var dto = new CodeTypeDeclaration( dataType.Identifier + "Dto" )
             {
                 Attributes = MemberAttributes.Public,
                 TypeAttributes = TypeAttributes.Public,
                 IsClass = true
             };
-            AddAttribute(dto.CustomAttributes, typeof(ProtoContractAttribute));
-            var innerType = new CodeTypeReference(dataType.Identifier);
-            dto.BaseTypes.Add(new CodeTypeReference(typeof(ISilaTransferObject<>).FullName, innerType));
-            var (constructor, innerRef) = GenerateExtractionConstructors(dto, innerType);
+            AddAttribute( dto.CustomAttributes, typeof( ProtoContractAttribute ) );
+            var innerType = new CodeTypeReference( dataType.Identifier );
+            dto.BaseTypes.Add( new CodeTypeReference( typeof( ISilaTransferObject<> ).FullName, innerType ) );
+            var (constructor, innerRef) = GenerateExtractionConstructors( dto, innerType );
 
-            var valueRef = GenerateProperty(new SiLAElement()
+            var valueRef = GenerateProperty( new SiLAElement()
             {
                 Identifier = "Value",
                 DisplayName = "Value",
@@ -397,244 +421,253 @@ namespace Tecan.Sila2.Generator.Generators
                 {
                     Item = BasicType.String
                 }
-            }, 1, dto, null, null);
-            constructor.Statements.Add(new CodeAssignStatement(valueRef, new CodeMethodInvokeExpression(innerRef, nameof(object.ToString))));
+            }, 1, dto, null, null );
+            constructor.Statements.Add( new CodeAssignStatement( valueRef, new CodeMethodInvokeExpression( innerRef, nameof( object.ToString ) ) ) );
             var extractMethod = new CodeMemberMethod()
             {
-                Name = nameof(ISilaTransferObject<object>.Extract),
+                Name = nameof( ISilaTransferObject<object>.Extract ),
                 Attributes = MemberAttributes.Public | MemberAttributes.Final,
                 ReturnType = innerType
             };
-            dto.Members.Add(extractMethod);
-            extractMethod.Parameters.Add(new CodeParameterDeclarationExpression(typeof(IBinaryStore), BinaryStoreParameterName));
-            extractMethod.Statements.Add(new CodeMethodReturnStatement(
-                new CodeCastExpression(innerType, new CodeMethodInvokeExpression(new CodeTypeReferenceExpression(typeof(Enum)), nameof(Enum.Parse),
-                new CodeTypeOfExpression(innerType), new CodePropertyReferenceExpression(valueRef, "Value")))));
-            extractMethod.WriteDocumentation("Extracts the transferred value", "the inner value", new Dictionary<string, string>()
+            dto.Members.Add( extractMethod );
+            extractMethod.Parameters.Add( new CodeParameterDeclarationExpression( typeof( IBinaryStore ), BinaryStoreParameterName ) );
+            extractMethod.Statements.Add( new CodeMethodReturnStatement(
+                new CodeCastExpression( innerType, new CodeMethodInvokeExpression( new CodeTypeReferenceExpression( typeof( Enum ) ), nameof( Enum.Parse ),
+                new CodeTypeOfExpression( innerType ), new CodePropertyReferenceExpression( valueRef, "Value" ) ) ) ) );
+            extractMethod.WriteDocumentation( "Extracts the transferred value", "the inner value", new Dictionary<string, string>()
             {
                 { BinaryStoreParameterName, "The binary store in which to store binary data" }
-            });
+            } );
 
-            GenerateStaticCreateMethod(dto, innerType);
+            GenerateStaticCreateMethod( dto, innerType );
 
             var (validationMethod, errors) = GenerateGetValidationErrors();
-            CompleteGetValidationErrors(validationMethod, errors);
-            dto.Members.Add(validationMethod);
-            dto.WriteDocumentation($"The data transfer object for the {dataType.DisplayName} enumeration");
+            CompleteGetValidationErrors( validationMethod, errors );
+            dto.Members.Add( validationMethod );
+            dto.WriteDocumentation( $"The data transfer object for the {dataType.DisplayName} enumeration" );
             return dto;
         }
 
-        private CodeTypeDeclaration GenerateDto(string name, StructureType structureType, bool isSilaTransferObject, string identifier, Action<string, StructureType> structHandler )
+        private CodeTypeDeclaration GenerateDto( string name, StructureType structureType, PropertyMapping[] mappings, bool isSilaTransferObject, string identifier, Action<string, StructureType> structHandler )
         {
-            var dto = new CodeTypeDeclaration( name + "Dto")
+            var dto = new CodeTypeDeclaration( name + "Dto" )
             {
                 Attributes = MemberAttributes.Public,
                 TypeAttributes = TypeAttributes.Public,
                 IsClass = true
             };
-            AddAttribute(dto.CustomAttributes, typeof(ProtoContractAttribute));
+            AddAttribute( dto.CustomAttributes, typeof( ProtoContractAttribute ) );
             var elementAction = isSilaTransferObject
-                ? ImplementTransferObjectDto(name, dto, identifier)
-                : ImplementRequestResponseDto(identifier, dto);
-            ImplementDtoProperties(structureType, dto, elementAction, structHandler, identifier);
+                ? ImplementTransferObjectDto( name, dto, identifier )
+                : ImplementRequestResponseDto( identifier, dto );
+            ImplementDtoProperties( structureType, mappings, dto, elementAction, structHandler, identifier );
             return dto;
         }
 
-        private Action<SiLAElement, CodePropertyReferenceExpression> ImplementRequestResponseDto(string methodIdentifier,
-            CodeTypeDeclaration dto)
+        private Action<SiLAElement, Expression, CodePropertyReferenceExpression> ImplementRequestResponseDto( string methodIdentifier,
+            CodeTypeDeclaration dto )
         {
-            dto.BaseTypes.Add(typeof(ISilaTransferObject));
-            var (constructor, storeRef) = GenerateMethodDtoConstructors(dto);
+            dto.BaseTypes.Add( typeof( ISilaTransferObject ) );
+            var (constructor, storeRef) = GenerateMethodDtoConstructors( dto );
 
-            void ElementAction(SiLAElement element, CodePropertyReferenceExpression property)
+            void ElementAction( SiLAElement element, Expression expression, CodePropertyReferenceExpression property )
             {
-                var type = NameProvider.GetMemberType( methodIdentifier + "." + element.Identifier ) ?? _translationProvider.ExtractType( element.DataType, methodIdentifier + element.Identifier );
-                var parameter = new CodeParameterDeclarationExpression(type, element.Identifier.ToCamelCase());
-                constructor.Parameters.Insert(constructor.Parameters.Count - 1, parameter);
-                constructor.Statements.Add(new CodeAssignStatement(property, _translationProvider.EncapsulateAsDto(new CodeArgumentReferenceExpression(parameter.Name), element.DataType, storeRef,methodIdentifier + element.Identifier)));
+                var type = NameProvider.GetMemberType( FollowIdentifier( methodIdentifier + "." + element.Identifier, expression ) ) ?? _translationProvider.ExtractType( element.DataType, methodIdentifier + element.Identifier );
+                var parameter = new CodeParameterDeclarationExpression( type, element.Identifier.ToCamelCase() );
+                constructor.Parameters.Insert( constructor.Parameters.Count - 1, parameter );
+                constructor.Statements.Add( new CodeAssignStatement( property, _translationProvider.EncapsulateAsDto( new CodeArgumentReferenceExpression( parameter.Name ), element.DataType, storeRef, methodIdentifier + element.Identifier ) ) );
                 constructor.Comments.Add( new CodeCommentStatement( $@" <param name=""{parameter.Name}"">{element.Description}</param>", true ) );
             }
 
             return ElementAction;
         }
 
-        private Action<SiLAElement, CodePropertyReferenceExpression> ImplementTransferObjectDto(string name,
-            CodeTypeDeclaration dto, string identifier)
+        private Action<SiLAElement, Expression, CodePropertyReferenceExpression> ImplementTransferObjectDto( string name,
+            CodeTypeDeclaration dto, string identifier )
         {
             var innerType = _translationProvider.ExtractType( new DataTypeType() { Item = name }, null );
-            dto.BaseTypes.Add(new CodeTypeReference(typeof(ISilaTransferObject<>).FullName, innerType));
-            var (constructor, innerRef) = GenerateExtractionConstructors(dto, innerType);
-            var extracted = GenerateExtraction(dto, innerType);
-            var storeRef = new CodeArgumentReferenceExpression(BinaryStoreParameterName);
+            dto.BaseTypes.Add( new CodeTypeReference( typeof( ISilaTransferObject<> ).FullName, innerType ) );
+            var (constructor, innerRef) = GenerateExtractionConstructors( dto, innerType );
+            var extracted = GenerateExtraction( dto, innerType );
+            var storeRef = new CodeArgumentReferenceExpression( BinaryStoreParameterName );
 
-            void ElementAction(SiLAElement element, CodePropertyReferenceExpression property)
+            void ElementAction( SiLAElement element, Expression expression, CodePropertyReferenceExpression property )
             {
-                var correspondingPropertyName = CreateProperIdentifier(property.PropertyName) == name ? "Value" : property.PropertyName;
-                if( correspondingPropertyName == nameof(ISilaRequestObject.CommandIdentifier) + "_" )
+                var correspondingPropertyName = CreateProperIdentifier( property.PropertyName ) == name ? "Value" : property.PropertyName;
+                if(correspondingPropertyName == nameof( ISilaRequestObject.CommandIdentifier ) + "_")
                 {
-                    correspondingPropertyName = nameof(ISilaRequestObject.CommandIdentifier);
+                    correspondingPropertyName = nameof( ISilaRequestObject.CommandIdentifier );
                 }
-                var customType = NameProvider.GetMemberType( name + "." + element.Identifier );
-                extracted.Add( _translationProvider.Extract(property, element.DataType, new CodeArgumentReferenceExpression( BinaryStoreParameterName ), customType) );
-                constructor.Statements.Add(new CodeAssignStatement(property,
-                    _translationProvider.EncapsulateAsDto(new CodePropertyReferenceExpression(innerRef, correspondingPropertyName),
-                        element.DataType, storeRef, identifier + element.Identifier)));
+                var customType = NameProvider.GetMemberType( FollowIdentifier( name + "." + element.Identifier, expression ) );
+                extracted.Add( _translationProvider.Extract( property, element.DataType, new CodeArgumentReferenceExpression( BinaryStoreParameterName ), customType ) );
+                constructor.Statements.Add( new CodeAssignStatement( property,
+                    _translationProvider.EncapsulateAsDto( new CodePropertyReferenceExpression( innerRef, correspondingPropertyName ),
+                        element.DataType, storeRef, identifier + element.Identifier ) ) );
             }
 
-            GenerateStaticCreateMethod(dto, innerType);
+            GenerateStaticCreateMethod( dto, innerType );
             return ElementAction;
         }
 
+        private string FollowIdentifier( string identifier, Expression expression )
+        {
+            if(expression is PropertyExpression propertyExpression)
+            {
+                return identifier + "." + propertyExpression.Property;
+            }
+            return identifier;
+        }
 
-        private void ImplementDtoProperties(StructureType structureType, CodeTypeDeclaration dto,
-            Action<SiLAElement, CodePropertyReferenceExpression> elementAction, Action<string, StructureType> structHandler, string parentIdentifier)
+        private void ImplementDtoProperties( StructureType structureType, PropertyMapping[] mappings, CodeTypeDeclaration dto,
+            Action<SiLAElement, Expression, CodePropertyReferenceExpression> elementAction, Action<string, StructureType> structHandler, string parentIdentifier )
         {
             var (validationMethod, errors) = GenerateGetValidationErrors();
             var index = 1;
-            if (structureType.Element != null)
+            if(structureType.Element != null)
             {
-                foreach (var element in structureType.Element)
+                foreach(var element in structureType.Element)
                 {
-                    var property = GenerateProperty(element, index, dto, structHandler, parentIdentifier);
-                    elementAction(element, property);
-                    if (element.DataType.Item is ConstrainedType constraints)
+                    var mapping = mappings?.FirstOrDefault( m => string.Equals( element.Identifier, m.Identifier ?? m.Key, StringComparison.OrdinalIgnoreCase ) );
+                    var property = GenerateProperty( element, index, dto, structHandler, parentIdentifier );
+                    elementAction( element, mapping?.Mapping?.ValueExpression, property );
+                    if(element.DataType.Item is ConstrainedType constraints)
                     {
-                        ImplementConstraints(constraints.Constraints, dto, validationMethod.Statements, errors, property);
+                        ImplementConstraints( constraints.Constraints, dto, validationMethod.Statements, errors, property );
                     }
 
                     index++;
                 }
             }
 
-            CompleteGetValidationErrors(validationMethod, errors);
-            dto.Members.Add(validationMethod);
+            CompleteGetValidationErrors( validationMethod, errors );
+            dto.Members.Add( validationMethod );
         }
 
-        private (CodeConstructor, CodeExpression) GenerateMethodDtoConstructors(CodeTypeDeclaration dto)
+        private (CodeConstructor, CodeExpression) GenerateMethodDtoConstructors( CodeTypeDeclaration dto )
         {
             // add default constructor
             var defaultConstructor = new CodeConstructor() { Attributes = MemberAttributes.Public };
-            dto.Members.Add(defaultConstructor);
+            dto.Members.Add( defaultConstructor );
             defaultConstructor.WriteDocumentation( "Create a new instance" );
-            var copyConstructor = new CodeConstructor() {Attributes = MemberAttributes.Public};
+            var copyConstructor = new CodeConstructor() { Attributes = MemberAttributes.Public };
             copyConstructor.WriteDocumentation( "Create a new instance", parameters: new Dictionary<string, string>()
             {
                 { BinaryStoreParameterName, "An object to organize binaries." }
             } );
-            copyConstructor.Parameters.Add(new CodeParameterDeclarationExpression(typeof(IBinaryStore), BinaryStoreParameterName));
-            var storeRef = new CodeArgumentReferenceExpression(BinaryStoreParameterName);
-            dto.Members.Add(copyConstructor);
+            copyConstructor.Parameters.Add( new CodeParameterDeclarationExpression( typeof( IBinaryStore ), BinaryStoreParameterName ) );
+            var storeRef = new CodeArgumentReferenceExpression( BinaryStoreParameterName );
+            dto.Members.Add( copyConstructor );
             return (copyConstructor, storeRef);
         }
 
-        private void GenerateStaticCreateMethod(CodeTypeDeclaration dto, CodeTypeReference innerType)
+        private void GenerateStaticCreateMethod( CodeTypeDeclaration dto, CodeTypeReference innerType )
         {
             var createMethod = new CodeMemberMethod
             {
                 Name = "Create",
                 Attributes = MemberAttributes.Public | MemberAttributes.Final | MemberAttributes.Static,
-                ReturnType = new CodeTypeReference(dto.Name)
+                ReturnType = new CodeTypeReference( dto.Name )
             };
-            var inner = new CodeParameterDeclarationExpression(innerType, "inner");
-            var store = new CodeParameterDeclarationExpression(typeof(IBinaryStore), BinaryStoreParameterName);
-            createMethod.Parameters.Add(inner);
-            createMethod.Parameters.Add(store);
-            createMethod.WriteDocumentation("Creates the data transfer object from the given object to transport",
+            var inner = new CodeParameterDeclarationExpression( innerType, "inner" );
+            var store = new CodeParameterDeclarationExpression( typeof( IBinaryStore ), BinaryStoreParameterName );
+            createMethod.Parameters.Add( inner );
+            createMethod.Parameters.Add( store );
+            createMethod.WriteDocumentation( "Creates the data transfer object from the given object to transport",
                 parameters: new Dictionary<string, string>()
                 {
                     { inner.Name, "The object to transfer" },
                     {BinaryStoreParameterName, "An object to store binary data" }
-                });
-            var innerRef = new CodeArgumentReferenceExpression(inner.Name);
-            var storeRef = new CodeArgumentReferenceExpression(store.Name);
+                } );
+            var innerRef = new CodeArgumentReferenceExpression( inner.Name );
+            var storeRef = new CodeArgumentReferenceExpression( store.Name );
             createMethod.Statements.Add(
-                new CodeMethodReturnStatement(new CodeObjectCreateExpression(createMethod.ReturnType, innerRef, storeRef)));
-            dto.Members.Add(createMethod);
+                new CodeMethodReturnStatement( new CodeObjectCreateExpression( createMethod.ReturnType, innerRef, storeRef ) ) );
+            dto.Members.Add( createMethod );
         }
 
-        private void CompleteGetValidationErrors(CodeMemberMethod validationMethod,
-            CodeVariableReferenceExpression errors)
+        private void CompleteGetValidationErrors( CodeMemberMethod validationMethod,
+            CodeVariableReferenceExpression errors )
         {
-            if (validationMethod.Statements.Count == 1)
+            if(validationMethod.Statements.Count == 1)
             {
                 validationMethod.Statements.Clear();
-                validationMethod.Statements.Add(new CodeMethodReturnStatement(new CodePrimitiveExpression(null)));
+                validationMethod.Statements.Add( new CodeMethodReturnStatement( new CodePrimitiveExpression( null ) ) );
             }
             else
             {
-                validationMethod.Statements.Add(new CodeMethodReturnStatement(errors));
+                validationMethod.Statements.Add( new CodeMethodReturnStatement( errors ) );
             }
         }
 
-        private CodeExpressionCollection GenerateExtraction(CodeTypeDeclaration dto, CodeTypeReference innerType)
+        private CodeExpressionCollection GenerateExtraction( CodeTypeDeclaration dto, CodeTypeReference innerType )
         {
             var extractMethod = new CodeMemberMethod()
             {
-                Name = nameof(ISilaTransferObject<object>.Extract),
+                Name = nameof( ISilaTransferObject<object>.Extract ),
                 Attributes = MemberAttributes.Public | MemberAttributes.Final,
                 ReturnType = innerType
             };
-            dto.Members.Add(extractMethod);
-            extractMethod.Parameters.Add(new CodeParameterDeclarationExpression(typeof(IBinaryStore), BinaryStoreParameterName));
+            dto.Members.Add( extractMethod );
+            extractMethod.Parameters.Add( new CodeParameterDeclarationExpression( typeof( IBinaryStore ), BinaryStoreParameterName ) );
             extractMethod.WriteDocumentation( "Extracts the transferred value", "the inner value", new Dictionary<string, string>()
             {
                 { BinaryStoreParameterName, "The binary store in which to store binary data" }
             } );
-            var constructorMethod = NameProvider?.GetStaticConstructorMethod(innerType.BaseType);
-            if (constructorMethod != null)
+            var constructorMethod = NameProvider?.GetStaticConstructorMethod( innerType.BaseType );
+            if(constructorMethod != null)
             {
                 var createReturn =
-                    new CodeMethodInvokeExpression(new CodeTypeReferenceExpression(innerType), constructorMethod);
-                extractMethod.Statements.Add(new CodeMethodReturnStatement(createReturn));
+                    new CodeMethodInvokeExpression( new CodeTypeReferenceExpression( innerType ), constructorMethod );
+                extractMethod.Statements.Add( new CodeMethodReturnStatement( createReturn ) );
                 return createReturn.Parameters;
             }
             else
             {
-                var createReturn = new CodeObjectCreateExpression(innerType);
-                extractMethod.Statements.Add(new CodeMethodReturnStatement(createReturn));
+                var createReturn = new CodeObjectCreateExpression( innerType );
+                extractMethod.Statements.Add( new CodeMethodReturnStatement( createReturn ) );
                 return createReturn.Parameters;
             }
         }
 
         private (CodeConstructor, CodeArgumentReferenceExpression) GenerateExtractionConstructors(
-            CodeTypeDeclaration dto, CodeTypeReference innerType)
+            CodeTypeDeclaration dto, CodeTypeReference innerType )
         {
             // add default constructor
             var defaultConstructor = new CodeConstructor() { Attributes = MemberAttributes.Public };
             defaultConstructor.WriteDocumentation( "Initializes a new instance (to be used by the serializer)" );
-            dto.Members.Add(defaultConstructor);
-            var copyConstructor = new CodeConstructor() {Attributes = MemberAttributes.Public};
-            dto.Members.Add(copyConstructor);
-            var parameter = new CodeParameterDeclarationExpression(innerType, "inner");
-            copyConstructor.Parameters.Add(parameter);
-            copyConstructor.Parameters.Add(new CodeParameterDeclarationExpression(typeof(IBinaryStore), BinaryStoreParameterName));
+            dto.Members.Add( defaultConstructor );
+            var copyConstructor = new CodeConstructor() { Attributes = MemberAttributes.Public };
+            dto.Members.Add( copyConstructor );
+            var parameter = new CodeParameterDeclarationExpression( innerType, "inner" );
+            copyConstructor.Parameters.Add( parameter );
+            copyConstructor.Parameters.Add( new CodeParameterDeclarationExpression( typeof( IBinaryStore ), BinaryStoreParameterName ) );
             copyConstructor.WriteDocumentation( "Initializes a new data transfer object from the business object",
                 parameters: new Dictionary<string, string>()
                 {
                     {parameter.Name, "The business object that should be transferred"},
                     {BinaryStoreParameterName, "A component to handle binary data"}
                 } );
-            return (copyConstructor, new CodeArgumentReferenceExpression(parameter.Name));
+            return (copyConstructor, new CodeArgumentReferenceExpression( parameter.Name ));
         }
 
         private (CodeMemberMethod, CodeVariableReferenceExpression) GenerateGetValidationErrors()
         {
             var method = new CodeMemberMethod()
             {
-                Name = nameof(ISilaTransferObject.GetValidationErrors),
+                Name = nameof( ISilaTransferObject.GetValidationErrors ),
                 Attributes = MemberAttributes.Public | MemberAttributes.Final,
-                ReturnType = new CodeTypeReference(typeof(string))
+                ReturnType = new CodeTypeReference( typeof( string ) )
             };
-            method.WriteDocumentation("Validates the contents of this transfer object", "A validation error or null, if no validation error occurred.");
+            method.WriteDocumentation( "Validates the contents of this transfer object", "A validation error or null, if no validation error occurred." );
             var variableDeclaration =
-                new CodeVariableDeclarationStatement(typeof(string), "errors",
-                    new CodePrimitiveExpression(string.Empty));
-            method.Statements.Add(variableDeclaration);
-            return (method, new CodeVariableReferenceExpression(variableDeclaration.Name));
+                new CodeVariableDeclarationStatement( typeof( string ), "errors",
+                    new CodePrimitiveExpression( string.Empty ) );
+            method.Statements.Add( variableDeclaration );
+            return (method, new CodeVariableReferenceExpression( variableDeclaration.Name ));
         }
 
-        private CodePropertyReferenceExpression GenerateProperty(SiLAElement element, int index,
-            CodeTypeDeclaration dto, Action<string, StructureType> structHandler, string parentIdentifier)
+        private CodePropertyReferenceExpression GenerateProperty( SiLAElement element, int index,
+            CodeTypeDeclaration dto, Action<string, StructureType> structHandler, string parentIdentifier )
         {
             var property = new CodeMemberProperty
             {
@@ -642,91 +675,91 @@ namespace Tecan.Sila2.Generator.Generators
                 Name = element.Identifier,
                 HasSet = true,
                 HasGet = true,
-                Type = _translationProvider.GetDtoTypeReference( element.DataType, parentIdentifier + element.Identifier, structHandler)
+                Type = _translationProvider.GetDtoTypeReference( element.DataType, parentIdentifier + element.Identifier, structHandler )
             };
-            if( element.Identifier == nameof(ISilaRequestObject.CommandIdentifier) )
+            if(element.Identifier == nameof( ISilaRequestObject.CommandIdentifier ))
             {
                 property.Name += "_";
             }
-            property.WriteDocumentation(element.Description ?? $"The {element.DisplayName} property");
-            AddAttribute(property.CustomAttributes, typeof(ProtoMemberAttribute), index);
-            dto.Members.Add(property);
+            property.WriteDocumentation( element.Description ?? $"The {element.DisplayName} property" );
+            AddAttribute( property.CustomAttributes, typeof( ProtoMemberAttribute ), index );
+            dto.Members.Add( property );
             var field = new CodeMemberField
             {
                 Name = "_" + property.Name.ToCamelCase(),
                 Attributes = MemberAttributes.Private,
                 Type = property.Type
             };
-            dto.Members.Add(field);
-            var fieldRef = new CodeFieldReferenceExpression(null, field.Name);
-            property.GetStatements.Add(new CodeMethodReturnStatement(fieldRef));
-            property.SetStatements.Add(new CodeAssignStatement(fieldRef,
-                new CodePropertySetValueReferenceExpression()));
-            return new CodePropertyReferenceExpression(null, property.Name);
+            dto.Members.Add( field );
+            var fieldRef = new CodeFieldReferenceExpression( null, field.Name );
+            property.GetStatements.Add( new CodeMethodReturnStatement( fieldRef ) );
+            property.SetStatements.Add( new CodeAssignStatement( fieldRef,
+                new CodePropertySetValueReferenceExpression() ) );
+            return new CodePropertyReferenceExpression( null, property.Name );
         }
 
-        private void ImplementConstraints(Constraints constraints, CodeTypeDeclaration wrapper,
+        private void ImplementConstraints( Constraints constraints, CodeTypeDeclaration wrapper,
             CodeStatementCollection statements, CodeVariableReferenceExpression resultRef,
-            CodePropertyReferenceExpression propertyReference)
+            CodePropertyReferenceExpression propertyReference )
         {
-            if (constraints.Pattern != null)
+            if(constraints.Pattern != null)
             {
-                var regexType = new CodeTypeReference(typeof(Regex));
+                var regexType = new CodeTypeReference( typeof( Regex ) );
                 var patternField = new CodeMemberField
                 {
                     Attributes = MemberAttributes.Public | MemberAttributes.Static,
                     Name = propertyReference.PropertyName + "Pattern",
                     Type = regexType,
-                    InitExpression = new CodeObjectCreateExpression(regexType,
-                        new CodePrimitiveExpression(constraints.Pattern))
+                    InitExpression = new CodeObjectCreateExpression( regexType,
+                        new CodePrimitiveExpression( constraints.Pattern ) )
                 };
                 patternField.WriteDocumentation( $"A regular expression to check the validity of {propertyReference.PropertyName}" );
-                wrapper.Members.Add(patternField);
+                wrapper.Members.Add( patternField );
                 var check = new CodeMethodInvokeExpression(
-                    new CodeFieldReferenceExpression(null, patternField.Name), nameof(Regex.IsMatch),
-                    new CodePropertyReferenceExpression(propertyReference, "Value"));
+                    new CodeFieldReferenceExpression( null, patternField.Name ), nameof( Regex.IsMatch ),
+                    new CodePropertyReferenceExpression( propertyReference, "Value" ) );
 
-                statements.Add(CreateValidityStatement(check,
+                statements.Add( CreateValidityStatement( check,
                     $"{propertyReference.PropertyName} '{{0}}' does not match pattern '{constraints.Pattern}'",
-                    propertyReference, resultRef));
+                    propertyReference, resultRef ) );
             }
 
-            if (constraints.MaximalLength != null)
+            if(constraints.MaximalLength != null)
             {
-                var maxLength = int.Parse(constraints.MaximalLength);
+                var maxLength = int.Parse( constraints.MaximalLength );
 
-                var check = new CodeBinaryOperatorExpression(new CodePropertyReferenceExpression(
-                        new CodePropertyReferenceExpression(propertyReference, "Value"), "Length"),
+                var check = new CodeBinaryOperatorExpression( new CodePropertyReferenceExpression(
+                        new CodePropertyReferenceExpression( propertyReference, "Value" ), "Length" ),
                     CodeBinaryOperatorType.LessThanOrEqual,
-                    new CodePrimitiveExpression(maxLength));
+                    new CodePrimitiveExpression( maxLength ) );
 
-                statements.Add(CreateValidityStatement(check,
+                statements.Add( CreateValidityStatement( check,
                     $"{propertyReference.PropertyName} '{{0}}' is longer than allowed length {maxLength}.",
-                    propertyReference, resultRef));
+                    propertyReference, resultRef ) );
             }
         }
 
-        private CodeStatement CreateValidityStatement(CodeExpression condition, string format,
-            CodePropertyReferenceExpression reference, CodeVariableReferenceExpression resultRef)
+        private CodeStatement CreateValidityStatement( CodeExpression condition, string format,
+            CodePropertyReferenceExpression reference, CodeVariableReferenceExpression resultRef )
         {
             var formatStatement = new CodeMethodInvokeExpression(
-                new CodeTypeReferenceExpression(typeof(string)),
+                new CodeTypeReferenceExpression( typeof( string ) ),
                 "Format",
-                new CodePrimitiveExpression(format), new CodePropertyReferenceExpression(reference, "Value"));
+                new CodePrimitiveExpression( format ), new CodePropertyReferenceExpression( reference, "Value" ) );
 
-            return new CodeConditionStatement(condition,
-                new CodeAssignStatement(resultRef,
-                    new CodeBinaryOperatorExpression(resultRef, CodeBinaryOperatorType.Add, formatStatement)));
+            return new CodeConditionStatement( condition,
+                new CodeAssignStatement( resultRef,
+                    new CodeBinaryOperatorExpression( resultRef, CodeBinaryOperatorType.Add, formatStatement ) ) );
         }
 
-        private void AddAttribute(CodeAttributeDeclarationCollection attributes, Type attributeType,
-            params object[] values)
+        private void AddAttribute( CodeAttributeDeclarationCollection attributes, Type attributeType,
+            params object[] values )
         {
-            var declaration = new CodeAttributeDeclaration(new CodeTypeReference(attributeType),
-                values.Select(o => new CodeAttributeArgument(o is CodeExpression exp ? exp : new CodePrimitiveExpression(o)))
-                      .ToArray());
+            var declaration = new CodeAttributeDeclaration( new CodeTypeReference( attributeType ),
+                values.Select( o => new CodeAttributeArgument( o is CodeExpression exp ? exp : new CodePrimitiveExpression( o ) ) )
+                      .ToArray() );
 
-            attributes.Add(declaration);
+            attributes.Add( declaration );
         }
     }
 }

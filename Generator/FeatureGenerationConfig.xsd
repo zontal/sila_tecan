@@ -7,22 +7,103 @@
     <xs:element name="FeatureGenerationConfig">
         <xs:complexType>
             <xs:sequence>
-				<xs:element name="Property" minOccurs="0" maxOccurs="unbounded" type="tns:PropertyMapping" />
-                <xs:element name="Constraint" minOccurs="0" maxOccurs="unbounded" type="tns:ConstraintMapping" />
+                <xs:element name="Feature" type="tns:FeatureSpec" minOccurs="0" maxOccurs="unbounded" />
             </xs:sequence>
         </xs:complexType>
     </xs:element>
-    <xs:complexType name="ConstraintMapping">
+    <xs:complexType name="PropertyMapping">
         <xs:sequence>
-            <xs:element name="Constraint" minOccurs="1" maxOccurs="1" type="tns:Constraints" />
+            <xs:element name="Mapping" type="tns:TypeMapping" minOccurs="0" maxOccurs="1" />
         </xs:sequence>
-        <xs:attribute name="Element" type="xs:string" use="required" />
+        <xs:attribute name="Property" type="xs:string" use="optional" />
+        <xs:attribute name="Identifier" type="xs:string" use="optional" />
+        <xs:attribute name="Description" type="xs:string" use="optional" />
+        <xs:attribute name="DisplayName" type="xs:string" use="optional" />
+        <xs:attribute name="Key" type="xs:string" use="required" />
     </xs:complexType>
-	<xs:complexType name="PropertyMapping">
-		<xs:simpleContent>
-			<xs:extension base="xs:string">
-			    <xs:attribute name="Key" type="xs:string" use="required" />				
-			</xs:extension>
-		</xs:simpleContent>
-	</xs:complexType>
+    <xs:complexType name="Expression" abstract="true" />
+    <xs:complexType name="PropertyExpression">
+        <xs:complexContent>
+            <xs:extension base="tns:Expression">
+                <xs:attribute name="Property" type="xs:string" use="required" />
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="FormatExpression">
+        <xs:complexContent>
+            <xs:extension base="tns:Expression">
+                <xs:sequence>
+                    <xs:element name="Arg" type="tns:Expression" minOccurs="0" maxOccurs="unbounded" />
+                </xs:sequence>
+                <xs:attribute name="FormatString" type="xs:string" use="required" />
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="MemberSpec" abstract="true">
+        <xs:attribute name="DisplayName" type="xs:string" use="optional" />
+        <xs:attribute name="Code" type="xs:string" use="required" />
+        <xs:attribute name="Identifier" type="xs:string" use="optional" />
+        <xs:attribute name="Description" type="xs:string" use="optional" />
+    </xs:complexType>
+    <xs:complexType name="FeatureSpec">
+        <xs:complexContent>
+            <xs:extension base="tns:MemberSpec">
+                <xs:sequence>
+                    <xs:element name="Property" type="tns:PropertySpec" minOccurs="0" maxOccurs="unbounded" />
+                    <xs:element name="Command" type="tns:CommandSpec" minOccurs="0" maxOccurs="unbounded" />
+                    <xs:element name="Type" type="tns:TypeSpec" minOccurs="0" maxOccurs="unbounded" />
+                </xs:sequence>
+                <xs:attribute name="Version" type="xs:string" use="optional" />
+                <xs:attribute name="Originator" type="xs:string" use="optional" />
+                <xs:attribute name="Category" type="xs:string" use="optional" />
+                <xs:attribute name="Maturity" type="tns:MaturityLevel" use="optional" />
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:simpleType name="MaturityLevel">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Draft" />
+            <xs:enumeration value="Verified" />
+            <xs:enumeration value="Normative" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:complexType name="PropertySpec">
+        <xs:complexContent>
+            <xs:extension base="tns:MemberSpec">
+                <xs:sequence>
+                    <xs:element type="tns:TypeMapping" name="Mapping" minOccurs="0" maxOccurs="1" />
+                </xs:sequence>
+                <xs:attribute name="Observable" type="xs:boolean" use="optional" />
+                <xs:attribute name="Lazy" type="xs:boolean" use="optional" />
+                <xs:attribute name="AsMethod" type="xs:boolean" use="optional" />
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="CommandSpec">
+        <xs:complexContent>
+            <xs:extension base="tns:MemberSpec">
+                <xs:sequence>
+                    <xs:element type="tns:PropertyMapping" name="Parameter" minOccurs="0" maxOccurs="unbounded" />
+                    <xs:element type="tns:PropertyMapping" name="IntermediateResponse" minOccurs="0" maxOccurs="1" />
+                    <xs:element type="tns:PropertyMapping" name="Response" minOccurs="0" maxOccurs="unbounded" />
+                </xs:sequence>
+                <xs:attribute name="Observable" type="xs:boolean" use="optional" />
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="TypeSpec">
+        <xs:complexContent>
+            <xs:extension base="tns:MemberSpec">
+                <xs:sequence>
+                    <xs:element name="Property" minOccurs="0" maxOccurs="unbounded" type="tns:PropertyMapping" />
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="TypeMapping">
+        <xs:sequence>
+            <xs:element name="Constraint" minOccurs="0" maxOccurs="1" type="tns:Constraints" />
+            <xs:element name="ValueExpression" minOccurs="0" maxOccurs="1" type="tns:Expression" />
+        </xs:sequence>
+    </xs:complexType>
 </xs:schema>

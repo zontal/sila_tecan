@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Feature xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" SiLA2Version="1.0" FeatureVersion="4.1" Originator="tecan.sila.generator.test" Category="testreference" xmlns="http://www.sila-standard.org">
+  <Identifier>ConfiguredService</Identifier>
+  <DisplayName>Configured Service</DisplayName>
+  <Description>Just a demo how to use generator configuration</Description>
+  <Property>
+    <Identifier>Speed</Identifier>
+    <DisplayName>Speed</DisplayName>
+    <Description>Returns the speed</Description>
+    <Observable>No</Observable>
+    <DataType>
+      <Constrained>
+        <DataType>
+          <Basic>Real</Basic>
+        </DataType>
+        <Constraints>
+          <Unit>
+            <Label>km/h</Label>
+            <Factor>3.6</Factor>
+            <Offset>0</Offset>
+            <UnitComponent>
+              <SIUnit>Meter</SIUnit>
+              <Exponent>1</Exponent>
+            </UnitComponent>
+            <UnitComponent>
+              <SIUnit>Second</SIUnit>
+              <Exponent>-1</Exponent>
+            </UnitComponent>
+          </Unit>
+        </Constraints>
+      </Constrained>
+    </DataType>
+  </Property>
+  <Command>
+    <Identifier>AccelerateTo</Identifier>
+    <DisplayName>Accelerate To</DisplayName>
+    <Description>Accelerates to a provided speed</Description>
+    <Observable>No</Observable>
+    <Parameter>
+      <Identifier>Target</Identifier>
+      <DisplayName>Target Speed</DisplayName>
+      <Description>The speed to reach</Description>
+      <DataType>
+        <Basic>Real</Basic>
+      </DataType>
+    </Parameter>
+  </Command>
+</Feature>

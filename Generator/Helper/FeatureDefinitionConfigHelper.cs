@@ -19,7 +19,7 @@ namespace Tecan.Sila2.Generator.Helper
         /// </summary>
         /// <param name="configFile">The absolute path to the config</param>
         /// <returns>The feature definition config</returns>
-        public static PredefinedFeatureGenerationConfigModel LoadConfigMappingFile( string configFile )
+        public static FeatureGenerationConfig LoadConfigMappingFile( string configFile )
         {
             if(configFile != null)
             {
@@ -28,10 +28,9 @@ namespace Tecan.Sila2.Generator.Helper
                     var serializer = new XmlSerializer( typeof( FeatureGenerationConfig ) );
                     using(var stream = File.OpenRead( configFile ))
                     {
-                        var constraints = (FeatureGenerationConfig)serializer.Deserialize( stream );
-                        var predefinedConstraints = constraints.Constraint?.ToDictionary( m => m.Element, m => m.Constraint );
-                        var predefinedAmbiguousProperties = constraints.Property?.ToDictionary( m => m.Key, m => m.Value );
-                        return new PredefinedFeatureGenerationConfigModel( predefinedConstraints, predefinedAmbiguousProperties );
+                        var config = (FeatureGenerationConfig)serializer.Deserialize( stream );
+                        config.Feature ??= Array.Empty<FeatureSpec>();
+                        return config;
                     }
                 }
                 else
@@ -41,6 +40,30 @@ namespace Tecan.Sila2.Generator.Helper
                 }
             }
             return null;
+        }
+
+        /// <summary>
+        /// Adds a specification to apply or override the provided originator, category and version
+        /// </summary>
+        /// <param name="featureType">The feature type</param>
+        /// <param name="config">The config source</param>
+        /// <param name="originator">The originator</param>
+        /// <param name="category">The category</param>
+        /// <param name="version">The version</param>
+        public static void AssignStandardValues( Type featureType, IGeneratorConfigSource config, string originator, string category, string version )
+        {
+            var spec = config.GetFeatureSpec( featureType );
+            if(spec == null)
+            {
+                spec = new FeatureSpec
+                {
+                    Code = featureType.FullName
+                };
+                config.Add( new FeatureGenerationConfig { Feature = new FeatureSpec[] { spec } } );
+            }
+            spec.Originator = originator ?? spec.Originator;
+            spec.Category = category ?? spec.Category;
+            spec.Version = version ?? spec.Version;
         }
     }
 }

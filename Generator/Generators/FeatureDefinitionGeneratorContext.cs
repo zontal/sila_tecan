@@ -20,11 +20,11 @@ namespace Tecan.Sila2.Generator.Generators
 
         private readonly ICodeNameRegistry _nameRegistry;
         private readonly Dictionary<string, Dictionary<string, XElement>> _loadedDocumentation = new Dictionary<string, Dictionary<string, XElement>>();
-        private readonly Func<string, Constraints> _constraintResolver;
         private readonly ITypeTranslationProvider _translationProvider;
         private readonly ILog _loggingChannel = LogManager.GetLogger<FeatureDefinitionGeneratorContext>();
         private readonly IAmbiguityResolver _ambiguityResolver;
-        private readonly PredefinedFeatureGenerationConfigModel _predefinedFeatureGenerationConfigModel;
+        private readonly FeatureSpec _featureSpec;
+        private readonly Type _interfaceType;
 
         private static readonly string[] ArgumentExceptionTypeNames =
         {
@@ -33,35 +33,37 @@ namespace Tecan.Sila2.Generator.Generators
             typeof(ArgumentOutOfRangeException).FullName
         };
 
-        public FeatureDefinitionGeneratorContext( ICodeNameRegistry nameRegistry, Func<string, Constraints> constraintResolver, 
-            ITypeTranslationProvider translationProvider, IAmbiguityResolver ambiguityResolver, 
-            PredefinedFeatureGenerationConfigModel predefinedFeatureGenerationConfigModel)
+        public FeatureDefinitionGeneratorContext( ICodeNameRegistry nameRegistry,
+            ITypeTranslationProvider translationProvider,
+            IAmbiguityResolver ambiguityResolver,
+            FeatureSpec featureSpec,
+            Type interfaceType )
         {
             _nameRegistry = nameRegistry;
-            _constraintResolver = constraintResolver;
             _translationProvider = translationProvider;
             _ambiguityResolver = ambiguityResolver;
-            _predefinedFeatureGenerationConfigModel = predefinedFeatureGenerationConfigModel;
+            _featureSpec = featureSpec;
+            _interfaceType = interfaceType;
         }
 
-        public object[] GenerateFeature(Type interfaceType, ICollection<string> namespaceCollector )
+        public object[] GenerateFeature( ICollection<string> namespaceCollector )
         {
             var items = new List<object>();
             var executeExceptions = new HashSet<Type>();
             var dataTypes = new HashSet<Type>();
 
-            AddInterfaceMembers( interfaceType, items, executeExceptions, dataTypes );
-            namespaceCollector?.Add( interfaceType.Namespace );
+            AddInterfaceMembers( _interfaceType, items, executeExceptions, dataTypes );
+            namespaceCollector?.Add( _interfaceType.Namespace );
 
             GenerateExceptions( executeExceptions, items, namespaceCollector );
             var dataTypeItems = GenerateDataTypes( dataTypes, namespaceCollector );
 
-            return dataTypeItems.Concat(items).ToArray();
+            return dataTypeItems.Concat( items ).ToArray();
         }
 
         public void TryLoadDocumentation( Assembly assembly )
         {
-            if (_loadedDocumentation.ContainsKey(assembly.FullName))
+            if(_loadedDocumentation.ContainsKey( assembly.FullName ))
             {
                 return;
             }
@@ -73,7 +75,7 @@ namespace Tecan.Sila2.Generator.Generators
             else
             {
                 var parentFolderPath = Path.Combine( Path.GetDirectoryName( documentationPath ), "..", Path.GetFileName( documentationPath ) );
-                if (File.Exists(parentFolderPath))
+                if(File.Exists( parentFolderPath ))
                 {
                     TryLoadDocumentation( assembly, parentFolderPath );
                 }
@@ -101,25 +103,25 @@ namespace Tecan.Sila2.Generator.Generators
             }
         }
 
-        private List<object> GenerateDataTypes( HashSet<Type> dataTypes, 
+        private List<object> GenerateDataTypes( HashSet<Type> dataTypes,
             ICollection<string> namespaceCollector )
         {
             // to keep the unitelabs browser happy we want to define types in order if we can
             // if the type refers to other types then we want to put it before those types
             var dependsOn = new List<Tuple<Type, Type>>();
             var newItems = new List<Tuple<Type, SiLAElement>>();
-            var processQueue = new Queue<Type>(dataTypes);
-            while( processQueue.Any() && processQueue.Dequeue() is var dataType && dataType != null )
+            var processQueue = new Queue<Type>( dataTypes );
+            while(processQueue.Any() && processQueue.Dequeue() is var dataType && dataType != null)
             {
                 var newItem = GenerateDataType( dataType, t =>
                 {
-                    dependsOn.Add(Tuple.Create(dataType, t));
-                    if( dataTypes.Add( t ) )
+                    dependsOn.Add( Tuple.Create( dataType, t ) );
+                    if(dataTypes.Add( t ))
                     {
                         processQueue.Enqueue( t );
                     }
                 } );
-                newItems.Add(Tuple.Create(dataType, newItem));
+                newItems.Add( Tuple.Create( dataType, newItem ) );
                 namespaceCollector?.Add( dataType.Namespace );
             }
 
@@ -128,27 +130,27 @@ namespace Tecan.Sila2.Generator.Generators
             // will not have seen B for another reason before we got to A. So A and B could be either way round within
             // newItems and we need to sort that out)
             var sortedElements = new List<Tuple<Type, SiLAElement>>();
-            foreach (var typeAndItem in newItems)
+            foreach(var typeAndItem in newItems)
             {
                 var thisType = typeAndItem.Item1;
                 int insertPosition = sortedElements.Count;
-                for (var i = insertPosition-1; i >= 0; --i)
+                for(var i = insertPosition - 1; i >= 0; --i)
                 {
-                    var whatElementDependsOn = dependsOn.Where(dep => dep.Item1 == thisType).Select(dep => dep.Item2)
+                    var whatElementDependsOn = dependsOn.Where( dep => dep.Item1 == thisType ).Select( dep => dep.Item2 )
                         .Distinct();
-                    if (whatElementDependsOn.Contains(thisType))
+                    if(whatElementDependsOn.Contains( thisType ))
                     {
                         insertPosition = i;
                     }
                 }
-                sortedElements.Insert(insertPosition, typeAndItem);
+                sortedElements.Insert( insertPosition, typeAndItem );
             }
 
-            return sortedElements.Select(typeAndItem =>
-                                         {
-                                             object item = typeAndItem.Item2;
-                                             return item;
-                                         }).ToList();
+            return sortedElements.Select( typeAndItem =>
+                                          {
+                                              object item = typeAndItem.Item2;
+                                              return item;
+                                          } ).ToList();
         }
 
         private void GenerateExceptions( ICollection<Type> exceptions, ICollection<object> items,
@@ -168,7 +170,15 @@ namespace Tecan.Sila2.Generator.Generators
             {
                 if(!methodInfo.IsSpecialName)
                 {
-                    items.Add( GenerateCommand( methodInfo, definedExceptions, dataTypes ) );
+                    if(_featureSpec != null && _featureSpec.TryGetPropertyFor( methodInfo.Name, out var propertySpec ))
+                    {
+                        // method should render as property
+                        items.Add( GenerateProperty( methodInfo, propertySpec, definedExceptions, dataTypes ) );
+                    }
+                    else
+                    {
+                        items.Add( GenerateCommand( methodInfo, definedExceptions, dataTypes ) );
+                    }
                 }
             }
 
@@ -177,7 +187,7 @@ namespace Tecan.Sila2.Generator.Generators
                 if(!typeof( IRequestInterceptor ).IsAssignableFrom( propertyInfo.PropertyType ))
                 {
                     items.Add( GenerateProperty( propertyInfo, definedExceptions, dataTypes, out var setterCommand ) );
-                    if( setterCommand != null )
+                    if(setterCommand != null)
                     {
                         items.Add( setterCommand );
                     }
@@ -192,7 +202,7 @@ namespace Tecan.Sila2.Generator.Generators
         private FeatureMetadata GenerateMetadata( PropertyInfo propertyInfo, ICollection<Type> definedExceptions, ICollection<Type> dataTypes )
         {
             _loggingChannel.Debug( $"Generate SiLA2 metadata for property {propertyInfo.Name}" );
-            var (identifier, displayName, description) = ParseElementData( propertyInfo );
+            var (identifier, displayName, description) = ParseElementData( propertyInfo, null );
             var exceptionIdentifiers = ParseExceptionNamesAndRegister( propertyInfo, definedExceptions );
 
             var metadataType = propertyInfo.GetCustomAttribute<MetadataTypeAttribute>();
@@ -207,7 +217,7 @@ namespace Tecan.Sila2.Generator.Generators
                 DisplayName = displayName,
                 Description = description,
                 DefinedExecutionErrors = exceptionIdentifiers.Any() ? exceptionIdentifiers.ToArray() : null,
-                DataType = GenerateTypeReference( metadataType.MetadataType, identifier, new MemberAttributeReader( propertyInfo ), true,
+                DataType = GenerateTypeReference( metadataType.MetadataType, identifier, null, new MemberAttributeReader( propertyInfo ), true,
                     dataTypes.Add )
             };
 
@@ -216,20 +226,22 @@ namespace Tecan.Sila2.Generator.Generators
 
         private SiLAElement GenerateDataType( Type dataType, Action<Type> typeAction )
         {
-            var (id, name, description) = ParseElementData( dataType );
+            TypeSpec spec = null;
+            _featureSpec?.TryGetTypeFor( dataType.Name, out spec );
+            var (id, name, description) = ParseElementData( dataType, spec );
 
             return new SiLAElement()
             {
                 Identifier = id,
                 DisplayName = name,
                 Description = description,
-                DataType = GenerateTypeReference( dataType, dataType.FullName, new MemberAttributeReader( dataType ), false, typeAction )
+                DataType = GenerateTypeReference( dataType, dataType.FullName, null, new MemberAttributeReader( dataType ), false, typeAction )
             };
         }
 
         private FeatureDefinedExecutionError GenerateExecuteException( Type exception )
         {
-            var (identifier, displayName, description) = ParseElementData( exception, suffix: nameof( Exception ) );
+            var (identifier, displayName, description) = ParseElementData( exception, null, suffix: nameof( Exception ) );
 
             return new FeatureDefinedExecutionError
             {
@@ -239,11 +251,58 @@ namespace Tecan.Sila2.Generator.Generators
             };
         }
 
+        private Type Follow( Type baseType, Expression expression, ref string origin )
+        {
+            switch(expression)
+            {
+                case null:
+                    return baseType;
+                case PropertyExpression property:
+                    var actualProperty = baseType.GetProperty( property.Property );
+                    origin += "." + property.Property;
+                    return actualProperty.PropertyType;
+                case FormatExpression:
+                    return typeof( string );
+                default:
+                    throw new NotImplementedException();
+            }
+        }
+
+        private FeatureProperty GenerateProperty( MethodInfo method, PropertySpec spec, ICollection<Type> readExceptions,
+            ICollection<Type> dataTypes )
+        {
+            if(method.GetParameters().Length > 0)
+            {
+                throw new InvalidOperationException( $"Method {method.Name} is configured to be generated as property but has parameters." );
+            }
+
+            _loggingChannel.Debug( $"Generate SiLA2 property for {method.Name}" );
+            var (identifier, displayName, description) = ParseElementData( method, spec );
+
+            var definedErrors = ParseExceptionNamesAndRegister( method, readExceptions );
+            var isDynamic = method.GetCustomAttribute<ObservableAttribute>() != null;
+            var property = new FeatureProperty
+            {
+                Identifier = identifier,
+                DisplayName = displayName,
+                Description = description,
+                DataType = GenerateTypeReference( method.ReturnType, identifier, spec?.Mapping, new MemberAttributeReader( method ), true,
+                    dataTypes.Add ),
+                DefinedExecutionErrors = definedErrors.Any() ? definedErrors.ToArray() : null,
+                Observable = isDynamic ? FeaturePropertyObservable.Yes : FeaturePropertyObservable.No
+            };
+            _nameRegistry?.RegisterMethod( identifier, method );
+            return property;
+        }
+
         private FeatureProperty GenerateProperty( PropertyInfo propertyInfo, ICollection<Type> readExceptions,
             ICollection<Type> dataTypes, out FeatureCommand setterCommand )
         {
+            PropertySpec spec = null;
+            _featureSpec?.TryGetPropertyFor( propertyInfo.Name, out spec );
+
             _loggingChannel.Debug( $"Generate SiLA2 property for {propertyInfo.Name}" );
-            var (identifier, displayName, description) = ParseElementData( propertyInfo );
+            var (identifier, displayName, description) = ParseElementData( propertyInfo, spec );
 
             var definedErrors = ParseExceptionNamesAndRegister( propertyInfo, readExceptions );
             var isDynamic = propertyInfo.GetCustomAttribute<ObservableAttribute>() != null;
@@ -253,14 +312,14 @@ namespace Tecan.Sila2.Generator.Generators
                 Identifier = identifier,
                 DisplayName = displayName,
                 Description = description,
-                DataType = GenerateTypeReference( propertyInfo.PropertyType, identifier, new MemberAttributeReader( propertyInfo ), true,
+                DataType = GenerateTypeReference( propertyInfo.PropertyType, identifier, spec?.Mapping, new MemberAttributeReader( propertyInfo ), true,
                     dataTypes.Add ),
                 DefinedExecutionErrors = definedErrors.Any() ? definedErrors.ToArray() : null,
                 Observable = isDynamic ? FeaturePropertyObservable.Yes : FeaturePropertyObservable.No
             };
-            if( propertyInfo.CanWrite )
+            if(propertyInfo.CanWrite)
             {
-                _loggingChannel.Debug($"Property {propertyInfo.Name} is writable, generating setter command.");
+                _loggingChannel.Debug( $"Property {propertyInfo.Name} is writable, generating setter command." );
                 setterCommand = new FeatureCommand()
                 {
                     Identifier = "Set" + identifier,
@@ -294,7 +353,7 @@ namespace Tecan.Sila2.Generator.Generators
             var docEntry = GetDocEntry( member );
             if(docEntry != null)
             {
-                _loggingChannel.Debug($"Found documentation for {member.Name}, extracting exceptions.");
+                _loggingChannel.Debug( $"Found documentation for {member.Name}, extracting exceptions." );
                 var assembly = member.DeclaringType.Assembly;
 
                 foreach(var exceptionElement in docEntry.Elements( XName.Get( "exception" ) ))
@@ -302,33 +361,33 @@ namespace Tecan.Sila2.Generator.Generators
                     var typeName = exceptionElement.Attribute( XName.Get( "cref" ) )?.Value?.Substring( 2 );
                     if(typeName != null)
                     {
-                        if( ArgumentExceptionTypeNames.Contains( typeName ) || typeof(Exception).FullName.Equals(typeName))
+                        if(ArgumentExceptionTypeNames.Contains( typeName ) || typeof( Exception ).FullName.Equals( typeName ))
                         {
-                            _loggingChannel.Debug($"Ignoring exception {typeName} because it is covered by SiLA2 validation errors.");
+                            _loggingChannel.Debug( $"Ignoring exception {typeName} because it is covered by SiLA2 validation errors." );
                             continue;
                         }
                         var exceptionType = assembly.GetType( typeName, false );
-                        if (exceptionType == null)
+                        if(exceptionType == null)
                         {
                             var assemblyNames = assembly.GetReferencedAssemblies();
-                            foreach (var assemblyName in assemblyNames)
+                            foreach(var assemblyName in assemblyNames)
                             {
-                                Assembly referenceAssembly = Assembly.Load(assemblyName.FullName);
-                                exceptionType = referenceAssembly.GetType(typeName, false);
-                                if (exceptionType != null)
+                                Assembly referenceAssembly = Assembly.Load( assemblyName.FullName );
+                                exceptionType = referenceAssembly.GetType( typeName, false );
+                                if(exceptionType != null)
                                 {
                                     break;
                                 }
                             }
                         }
-                        if (exceptionType != null)
+                        if(exceptionType != null)
                         {
-                            _loggingChannel.Debug($"Found exception type {exceptionType.Name}");
+                            _loggingChannel.Debug( $"Found exception type {exceptionType.Name}" );
                             AddError( exceptions, exceptionType, errors );
                             continue;
                         }
                     }
-                    _loggingChannel.Warn($"Exception {typeName} could not be found.");
+                    _loggingChannel.Warn( $"Exception {typeName} could not be found." );
                 }
             }
 
@@ -338,36 +397,42 @@ namespace Tecan.Sila2.Generator.Generators
         private void AddError( ICollection<Type> exceptions, Type exceptionType, ICollection<string> errors )
         {
             exceptions.Add( exceptionType );
-            var (identifier, _, _) = ParseElementData( exceptionType, suffix: nameof( Exception ) );
+            var (identifier, _, _) = ParseElementData( exceptionType, null, suffix: nameof( Exception ) );
             errors.Add( identifier );
         }
 
-        private DataTypeType GenerateTypeReference( Type type, string origin, IAttributeReader reader, bool allowReference,
+        private DataTypeType GenerateTypeReference( Type type, string origin, TypeMapping mapping, IAttributeReader reader, bool allowReference,
             Action<Type> typeAction )
         {
-            if(!_translationProvider.TryTranslate(type, origin, out var resultType))
+            if(mapping?.ValueExpression != null)
+            {
+                _nameRegistry?.RegisterDifferentType( origin, type );
+                type = Follow( type, mapping.ValueExpression, ref origin );
+            }
+
+            if(!_translationProvider.TryTranslate( type, origin, out var resultType ))
             {
                 throw new NotSupportedException();
             }
 
-            if( typeAction != null )
+            if(typeAction != null)
             {
-                _translationProvider.TraverseTypes(type, origin, typeAction);
+                _translationProvider.TraverseTypes( type, origin, typeAction );
             }
 
-            if( !allowReference && resultType.Item is string )
+            if(!allowReference && resultType.Item is string)
             {
                 if(type.IsEnum)
                 {
                     return GenerateEnum( type );
                 }
 
-                return GenerateStructure( type, typeAction );
+                return GenerateStructure( type, mapping, typeAction );
             }
 
             if(reader != null)
             {
-                resultType = AsConstrained( reader, resultType, _constraintResolver?.Invoke( origin ) );
+                resultType = AsConstrained( reader, resultType, mapping?.Constraint );
             }
 
             return resultType;
@@ -594,49 +659,63 @@ namespace Tecan.Sila2.Generator.Generators
             };
         }
 
-        private DataTypeType GenerateStructure( Type type, Action<Type> typeFoundAction )
+        private DataTypeType GenerateStructure( Type type, TypeMapping mapping, Action<Type> typeFoundAction )
         {
             var identifier = type.GetCustomAttribute<SilaIdentifierAttribute>()?.Identifier ?? type.Name;
             var properties = type.GetProperties();
             if(properties.Length == 1 && properties[0].Name == "Value")
             {
                 var prop = properties[0];
-                return GenerateTypeReference( prop.PropertyType, identifier + "." + prop.Name, new MemberAttributeReader( type ), true, null );
+                return GenerateTypeReference( prop.PropertyType, identifier + "." + prop.Name, mapping, new MemberAttributeReader( type ), true, null );
             }
+
+            TypeSpec spec = null;
+            _featureSpec?.TryGetTypeFor( type.Name, out spec );
 
             return new DataTypeType
             {
                 Item = new StructureType
                 {
-                    Element = GenerateStructureElements( type, typeFoundAction, identifier )
+                    Element = GenerateStructureElements( type, spec?.Property, typeFoundAction, identifier )
                 }
             };
         }
 
-        private SiLAElement[] GenerateStructureElements( Type type, Action<Type> typeFoundAction, string identifier )
+        private SiLAElement[] GenerateStructureElements( Type type, PropertyMapping[] spec, Action<Type> typeFoundAction, string identifier )
         {
             return (from prop in DetermineStructureProperties( type )
+                    let mapping = GetMapping( spec, prop )
                     select new SiLAElement
                     {
-                        DataType = GenerateTypeReference( (prop as PropertyInfo)?.PropertyType ?? (prop as FieldInfo)?.FieldType  ?? (prop as MethodInfo)?.ReturnType , identifier + "." + prop.Name, new MemberAttributeReader( prop ),
+                        DataType = GenerateTypeReference( (prop as PropertyInfo)?.PropertyType ?? (prop as FieldInfo)?.FieldType ?? (prop as MethodInfo)?.ReturnType, identifier + "." + prop.Name, mapping?.Mapping, new MemberAttributeReader( prop ),
                             true, typeFoundAction ),
-                        Identifier = prop.GetCustomAttribute<SilaIdentifierAttribute>()?.Identifier ?? prop.Name,
+                        Identifier = prop.GetCustomAttribute<SilaIdentifierAttribute>()?.Identifier ?? mapping?.Identifier ?? prop.Name,
                         DisplayName = prop.GetCustomAttribute<SilaDisplayNameAttribute>()?.DisplayName ??
                                       prop.GetCustomAttribute<DisplayNameAttribute>()?.DisplayName ??
                                       prop.Name,
                         Description = prop.GetCustomAttribute<SilaDescriptionAttribute>()?.Description ??
                                       prop.GetCustomAttribute<DescriptionAttribute>()?.Description ??
-                                      GetDocumentationSummary(prop) ?? string.Empty
+                                      GetDocumentationSummary( prop ) ?? string.Empty
                     }).ToArray();
         }
 
-        private MemberInfo GetMemberInfo(MemberInfo[] memberInfos, string parameterName)
+        private PropertyMapping GetMapping( PropertyMapping[] spec, MemberInfo prop )
         {
-            if (memberInfos.FirstOrDefault(x => x.Name.StartsWith(parameterName, StringComparison.OrdinalIgnoreCase)) is var member && member != null)
+            if(spec == null)
+            {
+                return null;
+            }
+
+            return spec.FirstOrDefault( m => m.Property == prop.Name );
+        }
+
+        private MemberInfo GetMemberInfo( MemberInfo[] memberInfos, string parameterName )
+        {
+            if(memberInfos.FirstOrDefault( x => x.Name.StartsWith( parameterName, StringComparison.OrdinalIgnoreCase ) ) is var member && member != null)
             {
                 return member;
             }
-            if (memberInfos.Length == 1)
+            if(memberInfos.Length == 1)
             {
                 return memberInfos[0];
             }
@@ -644,39 +723,51 @@ namespace Tecan.Sila2.Generator.Generators
             return null;
         }
 
-        private MemberInfo GetMemberInfo(Type type, string parameterName)
+        private MemberInfo GetMemberInfo( Type type, string parameterName )
         {
-            if (type.GetProperty(parameterName.ToPascalCase()) is var property && property!= null)
+            if(type.GetProperty( parameterName.ToPascalCase() ) is var property && property != null)
             {
                 return property;
             }
-            if (type.GetField(parameterName.ToPascalCase()) is var field && field != null)
+            if(type.GetField( parameterName.ToPascalCase() ) is var field && field != null)
             {
                 return field;
             }
-            if(GetMemberInfo(type.GetProperties(), parameterName) is var memberProperty && memberProperty!= null)
+            if(GetMemberInfo( type.GetProperties(), parameterName ) is var memberProperty && memberProperty != null)
             {
                 return memberProperty;
             }
-            if (GetMemberInfo(type.GetFields(), parameterName) is var memberField && memberField != null)
+            if(GetMemberInfo( type.GetFields(), parameterName ) is var memberField && memberField != null)
             {
                 return memberField;
             }
 
-            string id = $"{type.Name}.{parameterName}";
-            if (_predefinedFeatureGenerationConfigModel?.PredefinedAmbiguousProperties!=null && _predefinedFeatureGenerationConfigModel.PredefinedAmbiguousProperties.ContainsKey(id))
+            if(GetTypeSpec( type ) is TypeSpec typeSpec
+                && typeSpec.TryGetMappingFor( parameterName, out var mapping )
+                && mapping.Property != null)
             {
-                return GetMemberInfo(type, _predefinedFeatureGenerationConfigModel.PredefinedAmbiguousProperties[id]);
+
+                return GetMemberInfo( type, mapping.Property );
             }
 
-            List<MemberInfo> allowedProperties = new List<MemberInfo>(type.GetProperties());
-            allowedProperties.AddRange(type.GetFields());
-            if (_ambiguityResolver?.GetUserDefinedProperty(type, parameterName, allowedProperties) is var userDefinedProperty && userDefinedProperty != null)
+            List<MemberInfo> allowedProperties = new List<MemberInfo>( type.GetProperties() );
+            allowedProperties.AddRange( type.GetFields() );
+            if(_ambiguityResolver?.GetUserDefinedProperty( type, parameterName, allowedProperties ) is var userDefinedProperty && userDefinedProperty != null)
             {
                 return userDefinedProperty;
             }
             throw new InvalidOperationException(
-                                  $"Could not find matching property for constructor parameter {parameterName} of type {type.Name}");
+                                  $"Could not find matching property for constructor parameter {parameterName} of type {type.Name}" );
+        }
+
+        private TypeSpec GetTypeSpec( Type type )
+        {
+            if(_featureSpec != null
+                            && _featureSpec.TryGetTypeFor( type.Name, out var typeSpec ))
+            {
+                return typeSpec;
+            }
+            return null;
         }
 
         private IEnumerable<MemberInfo> DetermineStructureProperties( Type type )
@@ -686,10 +777,10 @@ namespace Tecan.Sila2.Generator.Generators
                                select cons).FirstOrDefault();
             if(constructor != null)
             {
-                _loggingChannel.Debug("Found constructor that can be used to create the domain object.");
+                _loggingChannel.Debug( "Found constructor that can be used to create the domain object." );
 
                 return from par in constructor.GetParameters()
-                       select GetMemberInfo(type, par.Name); 
+                       select GetMemberInfo( type, par.Name );
             }
 
             var createMethod = (from staticMethod in type.GetMethods( BindingFlags.Static | BindingFlags.Public )
@@ -697,8 +788,8 @@ namespace Tecan.Sila2.Generator.Generators
                                 select staticMethod).FirstOrDefault();
             if(createMethod != null)
             {
-                _loggingChannel.Debug($"Found static create method {createMethod.Name}");
-                _nameRegistry.RegisterConstructionMethod( type, createMethod );
+                _loggingChannel.Debug( $"Found static create method {createMethod.Name}" );
+                _nameRegistry?.RegisterConstructionMethod( type, createMethod );
                 return DetermineStructurePropertiesForConstructionMethod( type, createMethod );
             }
 
@@ -714,15 +805,15 @@ namespace Tecan.Sila2.Generator.Generators
             {
                 var suffix = createMethod.Name.Substring( 4 );
                 var property = type.GetProperties().FirstOrDefault( p => p.Name.EndsWith( suffix ) )
-                               ?? GetPropertyFunction(type, suffix)
-                               ?? throw new InvalidOperationException($"Could not find matching property with suffix {suffix}.");
+                               ?? GetPropertyFunction( type, suffix )
+                               ?? throw new InvalidOperationException( $"Could not find matching property with suffix {suffix}." );
                 propertiesInCorrectOrder = Enumerable.Repeat( property, 1 );
             }
             else
             {
                 propertiesInCorrectOrder = from par in createMethod.GetParameters()
                                            select type.GetProperty( par.Name.ToPascalCase() ) ??
-                                                  GetPropertyFunction(type, par.Name.ToPascalCase()) ??
+                                                  GetPropertyFunction( type, par.Name.ToPascalCase() ) ??
                                                   throw new InvalidOperationException(
                                                       $"Could not find matching property for create method {createMethod.Name} parameter {par.Name} of type {type.Name}" );
             }
@@ -732,27 +823,27 @@ namespace Tecan.Sila2.Generator.Generators
 
         private MemberInfo GetPropertyFunction( Type type, string expectedName )
         {
-            _loggingChannel.Warn($"Could not find a property for {expectedName}, looking for methods without parameters now. Code generated for this may not compile.");
+            _loggingChannel.Warn( $"Could not find a property for {expectedName}, looking for methods without parameters now. Code generated for this may not compile." );
             var exactFunction = type.GetMethod( expectedName );
-            if( exactFunction != null && exactFunction.GetParameters().Length == 0 )
+            if(exactFunction != null && exactFunction.GetParameters().Length == 0)
             {
                 return exactFunction;
             }
 
             var candidateFunction = type.GetMethods( BindingFlags.Instance | BindingFlags.Public )
                 .FirstOrDefault( m => m.Name.EndsWith( expectedName ) && m.GetParameters().Length == 0 );
-            if( candidateFunction != null )
+            if(candidateFunction != null)
             {
-                _loggingChannel.Warn($"Chosen function {candidateFunction.Name}. This is highly speculative. Expect compile errors. Please refactor your code.");
+                _loggingChannel.Warn( $"Chosen function {candidateFunction.Name}. This is highly speculative. Expect compile errors. Please refactor your code." );
                 return candidateFunction;
             }
 
             return null;
         }
 
-        public (string, string, string) ParseElementData( MemberInfo member, string prefix = null, string suffix = null )
+        public (string, string, string) ParseElementData( MemberInfo member, MemberSpec spec, string prefix = null, string suffix = null )
         {
-            var identifier = member.GetCustomAttribute<SilaIdentifierAttribute>()?.Identifier;
+            var identifier = member.GetCustomAttribute<SilaIdentifierAttribute>()?.Identifier ?? spec?.Identifier;
             if(identifier == null)
             {
                 identifier = GetSuggestedMemberIdentifier( member, prefix, suffix );
@@ -767,6 +858,7 @@ namespace Tecan.Sila2.Generator.Generators
                               ?? identifier.ToDisplayName();
 
             var description = member.GetCustomAttribute<SilaDescriptionAttribute>()?.Description
+                              ?? spec?.Description
                               ?? member.GetCustomAttribute<DescriptionAttribute>()?.Description
                               ?? GetDocumentationSummary( member )
                               ?? string.Empty;
@@ -785,18 +877,18 @@ namespace Tecan.Sila2.Generator.Generators
 
         private string GetDocumentationSummary( ParameterInfo parameter )
         {
-            if(GetDocEntry( parameter.Member ) is var actualDoc && actualDoc != null )
+            if(GetDocEntry( parameter.Member ) is var actualDoc && actualDoc != null)
             {
-                _loggingChannel.Debug($"Found description for parameter {parameter.Name} in documentation");
-                if( parameter.Position == -1 ) // parameter is method return value
+                _loggingChannel.Debug( $"Found description for parameter {parameter.Name} in documentation" );
+                if(parameter.Position == -1) // parameter is method return value
                 {
                     return actualDoc.Element( XName.Get( "returns" ) )?.Value?.Trim();
                 }
                 else
                 {
-                    foreach( var paramElement in actualDoc.Elements( XName.Get( "param" ) ) )
+                    foreach(var paramElement in actualDoc.Elements( XName.Get( "param" ) ))
                     {
-                        if( paramElement.Attribute( XName.Get( "name" ) )?.Value == parameter.Name )
+                        if(paramElement.Attribute( XName.Get( "name" ) )?.Value == parameter.Name)
                         {
                             return paramElement.Value?.Trim();
                         }
@@ -829,8 +921,8 @@ namespace Tecan.Sila2.Generator.Generators
                 case FieldInfo field:
                     return $"F:{field.DeclaringType.FullName}.{field.Name}";
                 case MethodInfo method:
-                    var parameterString = string.Join( ",", method.GetParameters().Select( p => GetDocTypeIdentifier(p.ParameterType) ) );
-                    if( !string.IsNullOrEmpty( parameterString ) )
+                    var parameterString = string.Join( ",", method.GetParameters().Select( p => GetDocTypeIdentifier( p.ParameterType ) ) );
+                    if(!string.IsNullOrEmpty( parameterString ))
                     {
                         parameterString = $"({parameterString})";
                     }
@@ -842,21 +934,21 @@ namespace Tecan.Sila2.Generator.Generators
 
         private string GetDocTypeIdentifier( Type type )
         {
-            if( !type.IsGenericType )
+            if(!type.IsGenericType)
             {
                 return type.FullName;
             }
 
-            var parameterString = string.Join(",", type.GetGenericArguments().Select( GetDocTypeIdentifier ));
+            var parameterString = string.Join( ",", type.GetGenericArguments().Select( GetDocTypeIdentifier ) );
             var typeDefinition = type.GetGenericTypeDefinition();
             var suffixLength = typeDefinition.GetGenericArguments().Length + 1;
-            return typeDefinition.FullName.Substring(0, typeDefinition.FullName.Length - suffixLength) + "{" + parameterString + "}";
+            return typeDefinition.FullName.Substring( 0, typeDefinition.FullName.Length - suffixLength ) + "{" + parameterString + "}";
         }
 
         private static string GetSuggestedMemberIdentifier( MemberInfo member, string prefix, string suffix )
         {
             var identifier = member.Name;
-            if (identifier.Contains( '`' ))
+            if(identifier.Contains( '`' ))
             {
                 var indexOfBacktick = identifier.LastIndexOf( '`' );
                 identifier = identifier.Substring( 0, indexOfBacktick );
@@ -874,9 +966,9 @@ namespace Tecan.Sila2.Generator.Generators
             return identifier;
         }
 
-        private (string, string, string) ParseElementData( ParameterInfo parameter )
+        private (string, string, string) ParseElementData( ParameterInfo parameter, PropertyMapping mapping )
         {
-            var identifier = parameter.GetCustomAttribute<SilaIdentifierAttribute>()?.Identifier ?? parameter.Name;
+            var identifier = parameter.GetCustomAttribute<SilaIdentifierAttribute>()?.Identifier ?? mapping?.Identifier ?? parameter.Name;
             if(string.IsNullOrEmpty( identifier )) identifier = "ReturnValue";
 
             if(char.IsLower( identifier[0] ))
@@ -885,10 +977,12 @@ namespace Tecan.Sila2.Generator.Generators
             }
 
             var displayName = parameter.GetCustomAttribute<SilaDisplayNameAttribute>()?.DisplayName
+                              ?? mapping?.DisplayName
                               ?? parameter.GetCustomAttribute<DisplayNameAttribute>()?.DisplayName
                               ?? identifier.ToDisplayName();
 
             var description = parameter.GetCustomAttribute<SilaDescriptionAttribute>()?.Description
+                              ?? mapping?.Description
                               ?? parameter.GetCustomAttribute<DescriptionAttribute>()?.Description
                               ?? GetDocumentationSummary( parameter )
                               ?? string.Empty;
@@ -900,11 +994,24 @@ namespace Tecan.Sila2.Generator.Generators
             ICollection<Type> dataTypes )
         {
             _loggingChannel.Debug( $"Generate SiLA2 command for method {methodInfo.Name}" );
-            var (identifier, displayName, description) = ParseElementData( methodInfo );
+            CommandSpec spec = null;
+            _featureSpec?.TryGetCommandFor( methodInfo.Name, out spec );
+            var (identifier, displayName, description) = ParseElementData( methodInfo, spec );
 
             var exceptionIdentifiers = ParseExceptionNamesAndRegister( methodInfo, executeExceptions );
             var (responseType, intermediateType, isObservable) = ParseCommandTypes( methodInfo, identifier );
-            var parameters = ParseCommandParameters( methodInfo, dataTypes, identifier, ref isObservable );
+            if(spec != null && spec.ObservableSpecified && isObservable != spec.Observable)
+            {
+                if(!isObservable)
+                {
+                    isObservable = true;
+                }
+                else
+                {
+                    throw new InvalidOperationException( $"Command {identifier} generated for {_interfaceType.Name} is specified to be not observable but the signature demands it." );
+                }
+            }
+            var parameters = ParseCommandParameters( methodInfo, spec, dataTypes, identifier, ref isObservable );
 
             var inlineResponse = methodInfo.ReturnTypeCustomAttributes.IsDefined( typeof( InlineStructAttribute ), false );
 
@@ -915,18 +1022,18 @@ namespace Tecan.Sila2.Generator.Generators
                 Description = description,
                 DefinedExecutionErrors = exceptionIdentifiers.Any() ? exceptionIdentifiers.ToArray() : null,
                 Parameter = parameters,
-                Response = CreateCommandResponse( identifier, methodInfo.ReturnParameter, responseType, inlineResponse, dataTypes ),
+                Response = CreateCommandResponse( identifier, methodInfo.ReturnParameter, spec, responseType, inlineResponse, dataTypes ),
                 Observable = isObservable ? FeatureCommandObservable.Yes : FeatureCommandObservable.No
             };
             if(intermediateType != null)
             {
-                SetCommandIntermediateResponseType( dataTypes, command, intermediateType, identifier );
+                SetCommandIntermediateResponseType( dataTypes, command, spec, intermediateType, identifier );
             }
 
             return command;
         }
 
-        private void SetCommandIntermediateResponseType( ICollection<Type> dataTypes, FeatureCommand command,
+        private void SetCommandIntermediateResponseType( ICollection<Type> dataTypes, FeatureCommand command, CommandSpec spec,
             Type intermediateType, string identifier )
         {
             command.IntermediateResponse = new SiLAElement[]
@@ -936,34 +1043,35 @@ namespace Tecan.Sila2.Generator.Generators
                     Identifier = "Intermediate",
                     DisplayName = "Intermediate",
                     Description = "",
-                    DataType = GenerateTypeReference(intermediateType, identifier + ".Intermediate", null, true,
+                    DataType = GenerateTypeReference(intermediateType, identifier + ".Intermediate", spec?.IntermediateResponse?.Mapping, null, true,
                         dataTypes.Add)
                 }
             };
         }
 
-        private SiLAElement[] ParseCommandParameters( MethodInfo methodInfo, ICollection<Type> dataTypes,
+        private SiLAElement[] ParseCommandParameters( MethodInfo methodInfo, CommandSpec spec, ICollection<Type> dataTypes,
             string identifier, ref bool isObservable )
         {
             var parameters = new List<SiLAElement>();
             foreach(var parameterInfo in methodInfo.GetParameters())
             {
-                if( parameterInfo.ParameterType == typeof(CancellationToken) )
+                if(parameterInfo.ParameterType == typeof( CancellationToken ))
                 {
-                    if( !isObservable )
+                    if(!isObservable)
                     {
-                        _loggingChannel.Warn($"The method {methodInfo.Name} has a parameter with a cancellation token but is not marked observable." );
+                        _loggingChannel.Warn( $"The method {methodInfo.Name} has a parameter with a cancellation token but is not marked observable." );
                         isObservable = true;
-                        _nameRegistry.RegisterMethod(identifier, methodInfo);
+                        _nameRegistry?.RegisterMethod( identifier, methodInfo );
                     }
 
-                    if( parameterInfo.Position < methodInfo.GetParameters().Length - 1 )
+                    if(parameterInfo.Position < methodInfo.GetParameters().Length - 1)
                     {
-                        _loggingChannel.Warn("The cancellation token should be the last parameter. Generated code for this feature may not compile.");
+                        _loggingChannel.Warn( "The cancellation token should be the last parameter. Generated code for this feature may not compile." );
                     }
                     continue;
                 }
-                var (parameterId, parameterName, parameterDescription) = ParseElementData( parameterInfo );
+                var parameterSpec = spec?.Parameter?.FirstOrDefault( p => p.Key == parameterInfo.Name );
+                var (parameterId, parameterName, parameterDescription) = ParseElementData( parameterInfo, parameterSpec );
 
                 parameters.Add( new SiLAElement
                 {
@@ -972,6 +1080,7 @@ namespace Tecan.Sila2.Generator.Generators
                     Description = parameterDescription ?? string.Empty,
                     DataType = GenerateTypeReference( parameterInfo.ParameterType,
                         identifier + "." + parameterId,
+                        parameterSpec?.Mapping,
                         new ParameterAttributeReader( parameterInfo ), true, dataTypes.Add )
                 } );
             }
@@ -979,7 +1088,7 @@ namespace Tecan.Sila2.Generator.Generators
             return parameters.ToArray();
         }
 
-        private SiLAElement[] CreateCommandResponse( string commandId, ParameterInfo returnParameter, Type responseType, bool inlineResponse, ICollection<Type> dataTypes )
+        private SiLAElement[] CreateCommandResponse( string commandId, ParameterInfo returnParameter, CommandSpec spec, Type responseType, bool inlineResponse, ICollection<Type> dataTypes )
         {
             if(responseType == typeof( void ))
             {
@@ -988,11 +1097,12 @@ namespace Tecan.Sila2.Generator.Generators
 
             if(inlineResponse && responseType.IsValueType)
             {
-                return GenerateStructureElements( responseType, dataTypes.Add, commandId + "." + "Return" );
+                return GenerateStructureElements( responseType, spec?.Parameter, dataTypes.Add, commandId + "." + "Return" );
             }
             else
             {
-                var (responseId, responseName, responseDescription) = ParseElementData( returnParameter );
+                var returnSpec = spec?.Response?.FirstOrDefault();
+                var (responseId, responseName, responseDescription) = ParseElementData( returnParameter, returnSpec );
                 return new[]
                 {
                     new SiLAElement()
@@ -1000,7 +1110,7 @@ namespace Tecan.Sila2.Generator.Generators
                         Identifier = responseId,
                         DisplayName = responseName,
                         Description = responseDescription ?? string.Empty,
-                        DataType = GenerateTypeReference(responseType, commandId + "." + responseId, new ParameterAttributeReader(returnParameter), true,
+                        DataType = GenerateTypeReference(responseType, commandId + "." + responseId, returnSpec?.Mapping, new ParameterAttributeReader(returnParameter), true,
                             dataTypes.Add)
                     }
                 };
@@ -1013,9 +1123,9 @@ namespace Tecan.Sila2.Generator.Generators
             var returnType = commandMethod.ReturnType;
             if(returnType.IsGenericType)
             {
-                if(typeof(IObservableCommand).IsAssignableFrom(returnType) || typeof(Task).IsAssignableFrom(returnType) )
+                if(typeof( IObservableCommand ).IsAssignableFrom( returnType ) || typeof( Task ).IsAssignableFrom( returnType ))
                 {
-                    AssertObservable(commandMethod, ref isObservable);
+                    AssertObservable( commandMethod, ref isObservable );
                 }
                 var typeDefinition = returnType.GetGenericTypeDefinition();
                 if(typeDefinition == typeof( IObservableCommand<> ))
@@ -1035,13 +1145,13 @@ namespace Tecan.Sila2.Generator.Generators
                     return (typeof( void ), arguments[0], true);
                 }
 
-                if( typeDefinition == typeof(Task<>) )
+                if(typeDefinition == typeof( Task<> ))
                 {
                     _nameRegistry?.RegisterMethod( identifier, commandMethod );
                     return (returnType.GetGenericArguments()[0], null, true);
                 }
 
-                if (typeDefinition == typeof(IObservable<>))
+                if(typeDefinition == typeof( IObservable<> ))
                 {
                     _nameRegistry?.RegisterMethod( identifier, commandMethod );
                     return (typeof( void ), returnType.GetGenericArguments()[0], true);
@@ -1050,16 +1160,16 @@ namespace Tecan.Sila2.Generator.Generators
             else if(returnType == typeof( IObservableCommand ))
             {
                 AssertObservable( commandMethod, ref isObservable );
-                return (typeof(void), null, true);
+                return (typeof( void ), null, true);
             }
-            else if( returnType == typeof(Task) )
+            else if(returnType == typeof( Task ))
             {
                 AssertObservable( commandMethod, ref isObservable );
                 _nameRegistry?.RegisterMethod( identifier, commandMethod );
-                return (typeof(void), null, true);
+                return (typeof( void ), null, true);
             }
 
-            if( isObservable )
+            if(isObservable)
             {
                 _nameRegistry?.RegisterMethod( identifier, commandMethod );
             }
@@ -1067,11 +1177,11 @@ namespace Tecan.Sila2.Generator.Generators
             return (returnType, null, isObservable);
         }
 
-        private void AssertObservable(MethodInfo commandMethod, ref bool isObservable)
+        private void AssertObservable( MethodInfo commandMethod, ref bool isObservable )
         {
-            if (!isObservable)
+            if(!isObservable)
             {
-                _loggingChannel.Warn( $"Warning: The method {commandMethod.Name} seems observable but is not marked observable.");
+                _loggingChannel.Warn( $"Warning: The method {commandMethod.Name} seems observable but is not marked observable." );
                 isObservable = true;
             }
         }
