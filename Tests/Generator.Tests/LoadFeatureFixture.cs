@@ -15,7 +15,16 @@ namespace Tecan.Sila2.Generator.Test
         [Test]
         public void LoadSimulationController_Succeeds()
         {
-            FeatureSerializer.Load( "SimulationController.sila.xml" );
+            Assert.DoesNotThrow( () => FeatureSerializer.Load( "SimulationControllerWithBom.sila.xml" ) );
+        }
+
+        [Test]
+        public void LoadSimulationControllerFromString_Succeeds()
+        {
+            var ch = '\ufeff';
+            var text = File.ReadAllText( "SimulationController.sila.xml" );
+
+            Assert.DoesNotThrow( () => FeatureSerializer.LoadFromXml( text ) );
         }
 
         [SetUp]

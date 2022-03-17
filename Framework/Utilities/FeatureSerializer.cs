@@ -48,6 +48,17 @@ namespace Tecan.Sila2
         /// <returns>The deserialized feature</returns>
         public static Feature LoadFromXml(string xml)
         {
+            if (xml == null)
+            {
+                throw new ArgumentNullException( nameof( xml ) );
+            }
+
+            var actualStart = xml.IndexOf( '<' );
+            if (actualStart > 0)
+            {
+                xml = xml.Substring( actualStart );
+            }
+
             return (Feature) Serializer.Deserialize(new StringReader(xml));
         }
 
@@ -58,9 +69,16 @@ namespace Tecan.Sila2
         /// <returns>The deserialized feature</returns>
         public static Feature Load(string path)
         {
-            using (var reader = new StreamReader(path))
+            try
             {
-                return (Feature) Serializer.Deserialize(reader);
+                using(var reader = new StreamReader( path ))
+                {
+                    return (Feature)Serializer.Deserialize( reader );
+                }
+            }
+            catch(InvalidOperationException)
+            {
+                return LoadFromXml( File.ReadAllText( path ) );
             }
         }
 
