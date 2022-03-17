@@ -15,7 +15,7 @@ namespace Tecan.Sila2.Generator.Test
         [Test]
         public void LoadSimulationController_Succeeds()
         {
-            Assert.DoesNotThrow( () => FeatureSerializer.Load( "SimulationControllerWithBom.sila.xml" ) );
+            Assert.DoesNotThrow( () => FeatureSerializer.Load( "SimulationController.sila.xml" ) );
         }
 
         [Test]
