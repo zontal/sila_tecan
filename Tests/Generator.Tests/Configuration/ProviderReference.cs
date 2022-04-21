@@ -74,7 +74,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         {
             try
             {
-                _implementation.AccelerateTo( new Tecan.Sila2.Generator.Test.TestReference.Speed( request.Target.Extract( _server ) ) );
+                _implementation.AccelerateTo( new Tecan.Sila2.Generator.Test.TestReference.Speed( request.Target.Extract( _server ) ), request.MaxAcceleration.Extract( _server ), System.TimeSpan.FromSeconds( request.TimeRange.Extract( _server ) ) );
                 return EmptyRequest.Instance;
             }
             catch(System.ArgumentException ex)
@@ -83,6 +83,16 @@ namespace Tecan.Sila2.Generator.Test.TestReference
                 {
                     throw _server.ErrorHandling.CreateValidationError( "tecan.sila.generator.test/testreference/ConfiguredService/v4/Command/AccelerateTo" +
                             "/Parameter/Target", ex.Message );
+                }
+                if((ex.ParamName == "maxAcceleration"))
+                {
+                    throw _server.ErrorHandling.CreateValidationError( "tecan.sila.generator.test/testreference/ConfiguredService/v4/Command/AccelerateTo" +
+                            "/Parameter/MaxAcceleration", ex.Message );
+                }
+                if((ex.ParamName == "timeRange"))
+                {
+                    throw _server.ErrorHandling.CreateValidationError( "tecan.sila.generator.test/testreference/ConfiguredService/v4/Command/AccelerateTo" +
+                            "/Parameter/TimeRange", ex.Message );
                 }
                 throw _server.ErrorHandling.CreateUnknownValidationError( ex );
             }

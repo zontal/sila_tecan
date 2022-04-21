@@ -512,6 +512,8 @@ namespace Tecan.Sila2.Generator
 
         private string propertyField;
 
+        private string createMethodField;
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public string Property
@@ -523,6 +525,20 @@ namespace Tecan.Sila2.Generator
             set
             {
                 this.propertyField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string CreateMethod
+        {
+            get
+            {
+                return this.createMethodField;
+            }
+            set
+            {
+                this.createMethodField = value;
             }
         }
     }

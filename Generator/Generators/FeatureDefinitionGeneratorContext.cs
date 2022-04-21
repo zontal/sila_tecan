@@ -483,6 +483,14 @@ namespace Tecan.Sila2.Generator.Generators
                 AddComponent( ConstraintsUnitUnitComponentSIUnit.Kelvin, unit.Kelvin, components );
                 AddComponent( ConstraintsUnitUnitComponentSIUnit.Mole, unit.Mole, components );
                 AddComponent( ConstraintsUnitUnitComponentSIUnit.Candela, unit.Candela, components );
+                if(components.Count == 0)
+                {
+                    components.Add( new ConstraintsUnitUnitComponent
+                    {
+                        SIUnit = ConstraintsUnitUnitComponentSIUnit.Dimensionless,
+                        Exponent = "0"
+                    } );
+                }
                 u.UnitComponent = components.ToArray();
                 constraints.Unit = u;
                 requiresConstraints = true;

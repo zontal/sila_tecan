@@ -306,9 +306,16 @@ namespace Tecan.Sila2.Generator.Generators
         {
             switch(toFollow)
             {
-                case PropertyExpression:
+                case PropertyExpression property:
                     var type = _nameProvider.GetMemberType( origin );
-                    return new CodeObjectCreateExpression( type, expression );
+                    if(string.IsNullOrEmpty( property.CreateMethod ))
+                    {
+                        return new CodeObjectCreateExpression( type, expression );
+                    }
+                    else
+                    {
+                        return new CodeMethodInvokeExpression( new CodeTypeReferenceExpression( type ), property.CreateMethod, expression );
+                    }
                 case FormatExpression:
                     _loggingChannel.Error( "Format Expressions on inputs are currently not supported." );
                     return expression;

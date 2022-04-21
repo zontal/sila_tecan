@@ -31,6 +31,8 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// Accelerates to a provided speed
         /// </summary>
         /// <param name="target">The speed to reach</param>
-        void AccelerateTo([Tecan.Sila2.SilaDisplayNameAttribute("Target Speed")] double target);
+        /// <param name="maxAcceleration"></param>
+        /// <param name="timeRange">The time in which to reach the speed</param>
+        void AccelerateTo([Tecan.Sila2.SilaDisplayNameAttribute("Target Speed")] double target, [Tecan.Sila2.UnitAttribute("m/s²", Meter = 1, Second = -2)] double maxAcceleration, [Tecan.Sila2.UnitAttribute("s", Second = 1)][Tecan.Sila2.SilaDisplayNameAttribute("Time")] double timeRange);
     }
 }

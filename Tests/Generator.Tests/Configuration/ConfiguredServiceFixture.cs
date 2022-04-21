@@ -27,12 +27,13 @@ namespace Tecan.Sila2.Generator.Test.Configuration
             nameProvider.RegisterMethod( "Speed", speedFn.Method );
             nameProvider.RegisterDifferentType( "Speed", typeof( Speed ) );
             nameProvider.RegisterDifferentType( "AccelerateTo.Target", typeof( Speed ) );
+            nameProvider.RegisterDifferentType( "AccelerateTo.TimeRange", typeof( TimeSpan ) );
             return nameProvider;
         }
 
         private class Mock : IConfiguredService
         {
-            public void AccelerateTo( Speed target )
+            public void AccelerateTo( Speed target, double maxAcceleration, TimeSpan timeRange )
             {
                 throw new NotImplementedException();
             }

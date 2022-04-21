@@ -44,5 +44,55 @@
         <Basic>Real</Basic>
       </DataType>
     </Parameter>
+    <Parameter>
+      <Identifier>MaxAcceleration</Identifier>
+      <DisplayName>Max Acceleration</DisplayName>
+      <Description />
+      <DataType>
+        <Constrained>
+          <DataType>
+            <Basic>Real</Basic>
+          </DataType>
+          <Constraints>
+            <Unit>
+              <Label>m/s²</Label>
+              <Factor>1</Factor>
+              <Offset>0</Offset>
+              <UnitComponent>
+                <SIUnit>Meter</SIUnit>
+                <Exponent>1</Exponent>
+              </UnitComponent>
+              <UnitComponent>
+                <SIUnit>Second</SIUnit>
+                <Exponent>-2</Exponent>
+              </UnitComponent>
+            </Unit>
+          </Constraints>
+        </Constrained>
+      </DataType>
+    </Parameter>
+    <Parameter>
+      <Identifier>TimeRange</Identifier>
+      <DisplayName>Time</DisplayName>
+      <Description>The time in which to reach the speed</Description>
+      <DataType>
+        <Constrained>
+          <DataType>
+            <Basic>Real</Basic>
+          </DataType>
+          <Constraints>
+            <Unit>
+              <Label>s</Label>
+              <Factor>1</Factor>
+              <Offset>0</Offset>
+              <UnitComponent>
+                <SIUnit>Second</SIUnit>
+                <Exponent>1</Exponent>
+              </UnitComponent>
+            </Unit>
+          </Constraints>
+        </Constrained>
+      </DataType>
+    </Parameter>
   </Command>
 </Feature>

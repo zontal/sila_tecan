@@ -10,7 +10,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
     {
         Speed GetSpeed();
 
-        void AccelerateTo( Speed target );
+        void AccelerateTo( Speed target, [Unit( "m/s²", Meter = 1, Second = -2 )] double maxAcceleration, TimeSpan timeRange );
     }
 
     public struct Speed

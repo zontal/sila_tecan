@@ -22,6 +22,10 @@ namespace Tecan.Sila2.Generator.Test.TestReference
 
         private Tecan.Sila2.RealDto _target;
 
+        private Tecan.Sila2.RealDto _maxAcceleration;
+
+        private Tecan.Sila2.RealDto _timeRange;
+
         ///  <summary>
         /// Create a new instance
         /// </summary>
@@ -34,9 +38,13 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
         ///  <param name="target">The speed to reach</param>
-        public AccelerateToRequestDto( double target, Tecan.Sila2.IBinaryStore store )
+        ///  <param name="maxAcceleration"></param>
+        ///  <param name="timeRange">The time in which to reach the speed</param>
+        public AccelerateToRequestDto( double target, double maxAcceleration, double timeRange, Tecan.Sila2.IBinaryStore store )
         {
             Target = new Tecan.Sila2.RealDto( target, store );
+            MaxAcceleration = new Tecan.Sila2.RealDto( maxAcceleration, store );
+            TimeRange = new Tecan.Sila2.RealDto( timeRange, store );
         }
 
         ///  <summary>
@@ -52,6 +60,37 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             set
             {
                 _target = value;
+            }
+        }
+
+        ///  <summary>
+        /// </summary>
+        [ProtoBuf.ProtoMemberAttribute( 2 )]
+        public Tecan.Sila2.RealDto MaxAcceleration
+        {
+            get
+            {
+                return _maxAcceleration;
+            }
+            set
+            {
+                _maxAcceleration = value;
+            }
+        }
+
+        ///  <summary>
+        /// The time in which to reach the speed
+        /// </summary>
+        [ProtoBuf.ProtoMemberAttribute( 3 )]
+        public Tecan.Sila2.RealDto TimeRange
+        {
+            get
+            {
+                return _timeRange;
+            }
+            set
+            {
+                _timeRange = value;
             }
         }
 
