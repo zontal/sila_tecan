@@ -342,9 +342,18 @@ namespace Tecan.Sila2.Generator.Generators
         {
             if(constraints.ContentType != null)
             {
-                attributes.AddAttribute( typeof( ContentTypeAttribute ),
+                var args = new List<object>()
+                {
                     constraints.ContentType.Type,
-                    constraints.ContentType.Subtype );
+                    constraints.ContentType.Subtype
+                };
+
+                if(constraints.ContentType.Parameters != null)
+                {
+                    args.AddRange( constraints.ContentType.Parameters.Select( p => $"{p.Attribute}={p.Value}" ) );
+                }
+
+                attributes.AddAttribute( typeof( ContentTypeAttribute ), args.ToArray() );
             }
         }
 

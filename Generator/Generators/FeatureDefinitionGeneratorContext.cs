@@ -591,6 +591,14 @@ namespace Tecan.Sila2.Generator.Generators
                     Type = contentType.Type,
                     Subtype = contentType.SubType
                 };
+                if(contentType.Parameters != null)
+                {
+                    constraints.ContentType.Parameters = contentType.Parameters.Select( p => new ConstraintsContentTypeParameter
+                    {
+                        Attribute = p.Key,
+                        Value = p.Value
+                    } ).ToArray();
+                }
                 requiresConstraints = true;
             }
 
