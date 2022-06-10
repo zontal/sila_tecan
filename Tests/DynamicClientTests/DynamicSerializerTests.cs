@@ -13,6 +13,7 @@ namespace Tecan.Sila2.DynamicClient.Test
         private static readonly Feature TestFeature = FeatureSerializer.LoadFromAssembly( typeof( DynamicSerializerTests ).Assembly, "Feature.xml" );
 
         [TestCase( "Test" )]
+        [TestCase( "" )]
         public void DynamicSerializer_String_RoundtripWorks( string input )
         {
             var expectedBytes = ByteSerializer.ToByteArray( new StringDto( input ) );
@@ -28,6 +29,14 @@ namespace Tecan.Sila2.DynamicClient.Test
             Assert.That( Roundtrip( BasicType.Integer, input, expectedBytes ), Is.EqualTo( input ) );
         }
 
+        [TestCase( true )]
+        [TestCase( false )]
+        public void DynamicSerializer_Boolean_RoundtripWorks( bool input )
+        {
+            var expectedBytes = ByteSerializer.ToByteArray( new BooleanDto( input ) );
+            Assert.That( Roundtrip( BasicType.Boolean, input, expectedBytes ), Is.EqualTo( input ) );
+        }
+
         [Test]
         public void DynamicSerializer_IntegerList_RoundtripWorks()
         {
@@ -37,14 +46,14 @@ namespace Tecan.Sila2.DynamicClient.Test
                 8,
                 15
             };
-            var expectedBytes = ByteSerializer.ToByteArray( list.Select(it => new IntegerDto(it)).ToList() );
+            var expectedBytes = ByteSerializer.ToByteArray( list.Select( it => new IntegerDto( it ) ).ToList() );
             Assert.That( Roundtrip( new DataTypeType { Item = new ListType { DataType = new DataTypeType { Item = BasicType.Integer } } }, list, expectedBytes ), Is.EquivalentTo( list ) );
         }
 
         [Test]
         public void DynamicSerializer_Date_RoundtripWorks()
         {
-            var input = new DateTimeOffset( 2021, 4, 14, 0, 0, 0, TimeSpan.FromHours(2) );
+            var input = new DateTimeOffset( 2021, 4, 14, 0, 0, 0, TimeSpan.FromHours( 2 ) );
             var expectedBytes = ByteSerializer.ToByteArray( new DateDto( input ) );
             Assert.That( Roundtrip( BasicType.Date, input, expectedBytes ), Is.EqualTo( input ) );
         }
@@ -52,7 +61,7 @@ namespace Tecan.Sila2.DynamicClient.Test
         [Test]
         public void DynamicSerializer_Timestamp_RoundtripWorks()
         {
-            var input = new DateTimeOffset( 2021, 4, 14, 8, 42, 23, TimeSpan.FromHours(2) );
+            var input = new DateTimeOffset( 2021, 4, 14, 8, 42, 23, TimeSpan.FromHours( 2 ) );
             var expectedBytes = ByteSerializer.ToByteArray( new TimestampDto( input ) );
             Assert.That( Roundtrip( BasicType.Timestamp, input, expectedBytes ), Is.EqualTo( input ) );
         }
@@ -93,7 +102,7 @@ namespace Tecan.Sila2.DynamicClient.Test
         {
             var inputProperty = new DynamicObjectProperty( null, null, null, new DataTypeType { Item = type } );
             inputProperty.Value = input;
-            var expectedBytes = ByteSerializer.ToByteArray( new AnyTypeDto(inputProperty, null) );
+            var expectedBytes = ByteSerializer.ToByteArray( new AnyTypeDto( inputProperty, null ) );
             var result = (DynamicObjectProperty)Roundtrip( BasicType.Any, inputProperty, expectedBytes );
             Assert.That( result.Value, Is.EqualTo( input ) );
         }
@@ -102,7 +111,7 @@ namespace Tecan.Sila2.DynamicClient.Test
         public void DynamicSerializer_AnyTypeWithDateWorks()
         {
             var inputProperty = new DynamicObjectProperty( null, null, null, new DataTypeType { Item = BasicType.Date } );
-            inputProperty.Value = new DateTimeOffset(2014, 4, 14, 0, 0, 0, TimeSpan.FromHours(-1));
+            inputProperty.Value = new DateTimeOffset( 2014, 4, 14, 0, 0, 0, TimeSpan.FromHours( -1 ) );
             var expectedBytes = ByteSerializer.ToByteArray( new AnyTypeDto( inputProperty, null ) );
             var result = (DynamicObjectProperty)Roundtrip( BasicType.Any, inputProperty, expectedBytes );
             Assert.That( result.Value, Is.EqualTo( inputProperty.Value ) );
@@ -121,7 +130,7 @@ namespace Tecan.Sila2.DynamicClient.Test
         [TestCase( "Test" )]
         public void DynamicSerializer_PropertyResponse_RoundtripWorks( string input )
         {
-            var expectedBytes = ByteSerializer.ToByteArray( new PropertyResponse<StringDto>(input) );
+            var expectedBytes = ByteSerializer.ToByteArray( new PropertyResponse<StringDto>( input ) );
             var serializer = new DynamicObjectSerializer( type => TestFeature.Items.OfType<SiLAElement>().Single( t => t.Identifier == type ).DataType );
             var result = new DynamicObjectProperty( "Property", null, null, new DataTypeType { Item = BasicType.String } );
             serializer.Deserialize( result, expectedBytes, true, null );
@@ -269,10 +278,13 @@ namespace Tecan.Sila2.DynamicClient.Test
             var inputProperty = new DynamicObjectProperty( "source", null, null, dataType );
             inputProperty.Value = input;
 
-            var serializer = new DynamicObjectSerializer( type => TestFeature.Items.OfType<SiLAElement>().Single(t => t.Identifier == type).DataType );
+            var serializer = new DynamicObjectSerializer( type => TestFeature.Items.OfType<SiLAElement>().Single( t => t.Identifier == type ).DataType );
 
             var bytes = serializer.Serialize( inputProperty, null );
-            Assert.That( bytes, Is.EquivalentTo( expectedBytes ) );
+            if(expectedBytes.Length > 0)
+            {
+                Assert.That( bytes, Is.EquivalentTo( expectedBytes ) );
+            }
 
             var resultProperty = new DynamicObjectProperty( "result", null, null, inputProperty.Type );
             serializer.Deserialize( resultProperty, bytes, false, null );
