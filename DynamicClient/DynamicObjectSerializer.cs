@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
@@ -44,7 +45,7 @@ namespace Tecan.Sila2.DynamicClient
             {
                 using(var reader = ProtoReader.Create( ms, null ))
                 {
-                    if(readFieldHeader)
+                    if(readFieldHeader && !(property.Type.Item is ListType))
                     {
                         reader.ReadFieldHeader();
                         var token = ProtoReader.StartSubItem( reader );
@@ -202,7 +203,7 @@ namespace Tecan.Sila2.DynamicClient
                 token = ProtoReader.StartSubItem( reader );
             }
             var field = reader.FieldNumber;
-            var list = new ObservableCollection<object>();
+            var list = CreateList( type.DataType ) ?? new ObservableCollection<object>();
             var action = new Action<object>( list.Add );
             Read( reader, action, binaryStore, (dynamic)type.DataType.Item );
             if(readSubItems)
@@ -224,6 +225,16 @@ namespace Tecan.Sila2.DynamicClient
             }
 
             setProperty( list );
+        }
+
+        /// <summary>
+        /// Creates a new collection of the given SiLA2 element type
+        /// </summary>
+        /// <param name="elementType">The element type</param>
+        /// <returns></returns>
+        protected virtual ICollection<object> CreateList( DataTypeType elementType )
+        {
+            return null;
         }
 
         private void Read( ProtoReader reader, Action<object> setProperty, IBinaryStore binaryStore, StructureType type )

@@ -43,11 +43,26 @@ namespace Tecan.Sila2.DynamicClient
         /// <param name="feature">The feature</param>
         /// <param name="serverData">The server in the context of which the call is made</param>
         /// <param name="executionManager">The execution manager that handles requests in the context of this feature</param>
-        public FeatureContext(Feature feature, ServerData serverData, IClientExecutionManager executionManager)
+        public FeatureContext( Feature feature, ServerData serverData, IClientExecutionManager executionManager )
         {
             Feature = feature;
             ExecutionManager = executionManager;
-            Serializer = new DynamicObjectSerializer(ResolveType);
+            Serializer = new DynamicObjectSerializer( ResolveType );
+            ServerData = serverData;
+        }
+
+        /// <summary>
+        /// Creates a new feature context
+        /// </summary>
+        /// <param name="feature">The feature</param>
+        /// <param name="serverData">The server in the context of which the call is made</param>
+        /// <param name="executionManager">The execution manager that handles requests in the context of this feature</param>
+        /// <param name="serializer">The dynamic object serializer</param>
+        public FeatureContext( Feature feature, ServerData serverData, IClientExecutionManager executionManager, DynamicObjectSerializer serializer )
+        {
+            Feature = feature;
+            ExecutionManager = executionManager;
+            Serializer = serializer;
             ServerData = serverData;
         }
 
@@ -56,9 +71,9 @@ namespace Tecan.Sila2.DynamicClient
         /// </summary>
         /// <param name="typeName">The name of the requested type</param>
         /// <returns>The description of this type or null, if the type could not be found.</returns>
-        public DataTypeType ResolveType(string typeName)
+        public DataTypeType ResolveType( string typeName )
         {
-            return Feature.Items.OfType<SiLAElement>().FirstOrDefault(t => t.Identifier == typeName)
+            return Feature.Items.OfType<SiLAElement>().FirstOrDefault( t => t.Identifier == typeName )
                 ?.DataType;
         }
 
@@ -67,9 +82,9 @@ namespace Tecan.Sila2.DynamicClient
         /// </summary>
         /// <param name="ex">The gRPC exception</param>
         /// <returns>A human-readable exception</returns>
-        public Exception ConvertException(Exception ex)
+        public Exception ConvertException( Exception ex )
         {
-            return Channel.ConvertException(ex, ConvertException);
+            return Channel.ConvertException( ex, ConvertException );
         }
 
         /// <summary>
@@ -78,7 +93,7 @@ namespace Tecan.Sila2.DynamicClient
         /// <param name="errorIdentifier">The SiLA2 defined error identifier</param>
         /// <param name="errorMessage">The actual error message</param>
         /// <returns>An exception with the actual error message</returns>
-        public Exception ConvertException(string errorIdentifier, string errorMessage)
+        public Exception ConvertException( string errorIdentifier, string errorMessage )
         {
             return new DefinedErrorException( errorIdentifier, errorMessage );
         }

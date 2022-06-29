@@ -272,13 +272,13 @@ namespace Tecan.Sila2.Discovery
         }
 
         /// <inheritdoc />
-        public ServerData Connect( IPAddress host, int port, Guid? expectedServer, IReadOnlyDictionary<string, string> details )
+        public virtual ServerData Connect( IPAddress host, int port, Guid? expectedServer, IReadOnlyDictionary<string, string> details )
         {
             return Connect( $"{host}:{port}", expectedServer, details );
         }
 
         /// <inheritdoc />
-        public ServerData Connect( string host, int port, Guid? expectedServer, IReadOnlyDictionary<string, string> details )
+        public virtual ServerData Connect( string host, int port, Guid? expectedServer, IReadOnlyDictionary<string, string> details )
         {
             return Connect( $"{host}:{port}", expectedServer, details );
         }
