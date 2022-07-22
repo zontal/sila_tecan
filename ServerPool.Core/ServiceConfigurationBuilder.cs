@@ -7,7 +7,7 @@ using System.Linq;
 using System.Net;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
-using System.Text;
+using System.Security.Cryptography.X509Certificates;
 using Tecan.Sila2.Client;
 using Tecan.Sila2.Security;
 using Tecan.Sila2.Server;
@@ -26,7 +26,7 @@ namespace Tecan.Sila2.ServerPooling
 
         /// <inheritdoc />
         public IEnumerable<IServiceHandler<IServerPool>> ServiceHandlers => _handlers;
-        private PfxCertificateContext _certificateContext;
+        private X509Certificate2 _certificate;
 
         /// <summary>
         /// Creates a new instance
@@ -51,19 +51,9 @@ namespace Tecan.Sila2.ServerPooling
         /// <inheritdoc />
         public void Configure( string host, int port )
         {
-            if(_certificateContext == null)
+            if(_certificate == null)
             {
-                var context = _certificateProvider.CreateContext();
-                if(context is PfxCertificateContext pfxContext)
-                {
-                    _loggingChannel.Info( "Found certificates, starting server with TLS." );
-                    _certificateContext = pfxContext;
-                }
-                else
-                {
-                    _loggingChannel.Warn( $"No certificates found. Server will start with plain-text communication" );
-                    _certificateContext = null;
-                }
+                _certificate = CertificateGenerator.GetServerCertificate( _certificateProvider.CreateContext(), null, out _ );
             }
 
             if(IPAddress.TryParse( host, out var addr ))
@@ -76,24 +66,15 @@ namespace Tecan.Sila2.ServerPooling
 
         private int AnyPort => _networkAddresses[IPAddress.Any];
 
+        /// <inheritdoc />
         public IReadOnlyDictionary<string, string> AnnouncementDetails => null;
 
         /// <inheritdoc />
         public void ConfigureForServer( Guid guid, int port, Predicate<NetworkInterface> networkInterfaceFilter )
         {
-            if(_certificateContext == null)
+            if(_certificate == null)
             {
-                var context = _certificateProvider.CreateContext( guid );
-                if(context is PfxCertificateContext pfxContext)
-                {
-                    _loggingChannel.Info( "Found certificates, starting server with TLS." );
-                    _certificateContext = pfxContext;
-                }
-                else
-                {
-                    _loggingChannel.Warn( $"No certificates found. Server will start with plain-text communication" );
-                    _certificateContext = null;
-                }
+                _certificate = CertificateGenerator.GetServerCertificate( _certificateProvider.CreateContext( guid ), guid, out _ );
             }
 
             if(networkInterfaceFilter != null)
@@ -120,19 +101,22 @@ namespace Tecan.Sila2.ServerPooling
         /// <param name="options">The Kestrel configuration</param>
         public void ConfigureKestrel( KestrelServerOptions options )
         {
+            ConfigureKestrel( options, HttpProtocols.Http2 );
+        }
+
+        /// <summary>
+        /// Configures the provided Kestrel server
+        /// </summary>
+        /// <param name="options">The Kestrel configuration</param>
+        /// <param name="protocols">The protocols to use</param>
+        public void ConfigureKestrel( KestrelServerOptions options, HttpProtocols protocols )
+        {
             Action<ListenOptions> listenOptions = ( ListenOptions opts ) =>
                 {
-                    opts.Protocols = HttpProtocols.Http2;
-                    if(_certificateContext != null)
+                    opts.Protocols = protocols;
+                    if(_certificate != null)
                     {
-                        if(_certificateContext.PathToPfx == null)
-                        {
-                            opts.UseHttps();
-                        }
-                        else
-                        {
-                            opts.UseHttps( _certificateContext.PathToPfx );
-                        }
+                        opts.UseHttps( _certificate );
                     }
                 };
             if(!IsJustAny)

@@ -7,6 +7,8 @@ using System.Linq;
 using System.Net;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
+using System.Security.Cryptography;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using Tecan.Sila2.Security;
 
@@ -25,7 +27,7 @@ namespace Tecan.Sila2.Server
 
         /// <inheritdoc />
         public IEnumerable<IServiceHandler<ISiLAServer>> ServiceHandlers => _handlers;
-        private PfxCertificateContext _certificateContext;
+        private X509Certificate2 _certificate;
 
         /// <summary>
         /// Creates a new instance
@@ -50,10 +52,9 @@ namespace Tecan.Sila2.Server
         /// <inheritdoc />
         public void Configure( string host, int port )
         {
-            if(_certificateContext == null)
+            if(_certificate == null)
             {
-                var context = _certificateProvider.CreateContext();
-                UseContext( context );
+                UseContext( _certificateProvider.CreateContext(), null );
             }
 
             if(IPAddress.TryParse( host, out var addr ))
@@ -72,10 +73,10 @@ namespace Tecan.Sila2.Server
         /// <inheritdoc />
         public void ConfigureForServer( Guid guid, int port, Predicate<NetworkInterface> networkInterfaceFilter )
         {
-            if(_certificateContext == null)
+            if(_certificate == null)
             {
                 var context = _certificateProvider.CreateContext( guid );
-                UseContext( context );
+                UseContext( context, guid );
             }
 
             if(networkInterfaceFilter != null)
@@ -96,38 +97,28 @@ namespace Tecan.Sila2.Server
             }
         }
 
-        private void UseContext( CertificateContext context )
+        private void UseContext( CertificateContext context, Guid? serverUuid )
         {
-            if(context is PfxCertificateContext pfxContext)
+            if(context != null)
             {
-                UsePfx( pfxContext );
+                _loggingChannel.Info( "Found certificates, starting server with TLS." );
+                _certificate = CertificateGenerator.GetServerCertificate( context, serverUuid, out var ca );
+
+                var certLines = Convert.ToBase64String( (ca ?? _certificate).Export( X509ContentType.Cert ), Base64FormattingOptions.InsertLineBreaks ).Split( '\n' );
+                _announcementDetails.Add( "ca0", "-----BEGIN CERTIFICATE-----" );
+                for(int i = 0; i < certLines.Length; i++)
+                {
+                    _announcementDetails.Add( "ca" + (i + 1), certLines[i].TrimEnd( '\r' ) );
+                }
+                _announcementDetails.Add( "ca" + (certLines.Length + 1), "-----END CERTIFICATE-----" );
             }
             else
             {
-                if(context is PemCertificateContext)
-                {
-                    throw new InvalidOperationException( "Expected Pfx certificate configuration but found a PEM based certificate configuration instead." );
-                }
-
                 _loggingChannel.Warn( $"No certificates found. Server will start with plain-text communication" );
-                _certificateContext = null;
+                _certificate = null;
                 _announcementDetails.Add( "encrypted", "false" );
             }
         }
-
-        private void UsePfx( PfxCertificateContext pfxContext )
-        {
-            if(string.IsNullOrEmpty( pfxContext.PathToPfx ))
-            {
-                _loggingChannel.Info( "Using default certificate, starting server with TLS." );
-            }
-            else
-            {
-                _loggingChannel.Info( $"Use certificate from {pfxContext.PathToPfx}, starting server with TLS." );
-            }
-            _certificateContext = pfxContext;
-        }
-
 
         /// <summary>
         /// Configures the provided Kestrel server
@@ -147,15 +138,11 @@ namespace Tecan.Sila2.Server
             Action<ListenOptions> listenOptions = ( ListenOptions opts ) =>
                 {
                     opts.Protocols = protocols;
-                    if(_certificateContext != null)
+                    if(_certificate != null)
                     {
-                        if(string.IsNullOrEmpty( _certificateContext.PathToPfx ))
+                        if(_certificate != null)
                         {
-                            opts.UseHttps();
-                        }
-                        else
-                        {
-                            opts.UseHttps( _certificateContext.PathToPfx );
+                            opts.UseHttps( _certificate );
                         }
                     }
                 };

@@ -125,7 +125,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IntegrationTests.NetCore", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Server.DryIoC", "Server.DryIoC\Server.DryIoC.csproj", "{B35B2AE8-FF24-4778-A47F-4B90F9F64912}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InteropServer.NetCore", "Interoperability\InteropServer.NetCore\InteropServer.NetCore.csproj", "{5400DBF0-921A-40BE-A7ED-FBD39334B349}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InteropServer.NetCore", "Interoperability\InteropServer.NetCore\InteropServer.NetCore.csproj", "{5400DBF0-921A-40BE-A7ED-FBD39334B349}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

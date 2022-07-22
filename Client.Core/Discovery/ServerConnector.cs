@@ -5,9 +5,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
+using System.Net.Security;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using Tecan.Sila2.Client;
+using Tecan.Sila2.Security;
 
 namespace Tecan.Sila2.Discovery
 {
@@ -18,9 +21,6 @@ namespace Tecan.Sila2.Discovery
     {
         private readonly IClientExecutionManager _executionManager;
         private readonly ILog _loggingChannel = LogManager.GetLogger<ServerConnector>();
-
-        private const string BeginCertPhrase = "-----BEGIN CERTIFICATE-----";
-        private const string EndCertPhrase = "-----END CERTIFICATE-----";
 
         /// <summary>
         /// Create a new instance
@@ -37,10 +37,10 @@ namespace Tecan.Sila2.Discovery
             return Connect( $"{host}:{port}", null, null, true );
         }
 
-        private ServerData Connect(string target, Guid? expectedGuid, IReadOnlyDictionary<string, string> details, bool prependScheme)
+        private ServerData Connect( string target, Guid? expectedGuid, IReadOnlyDictionary<string, string> details, bool prependScheme )
         {
             var connection = ConnectCore( target, expectedGuid, details, prependScheme );
-            if (expectedGuid.HasValue && connection != null && connection.Config.Uuid != expectedGuid.Value)
+            if(expectedGuid.HasValue && connection != null && connection.Config.Uuid != expectedGuid.Value)
             {
                 _loggingChannel.Warn( $"Connection to {target} was successful, but the server UUID {connection.Config.Uuid} does not match the expected {expectedGuid.Value}." );
                 connection.Channel.Dispose();
@@ -54,48 +54,71 @@ namespace Tecan.Sila2.Discovery
             _loggingChannel.Info( $"Connecting to {target}" );
             if(details == null || !details.TryGetValue( "encrypted", out var encryption ) || encryption != "false")
             {
-                string certificate = null;
                 if(details != null && details.ContainsKey( "ca0" ))
                 {
                     try
                     {
-                        var ca = RestoreCa( details );
-                        var channel = GrpcChannel.ForAddress( prependScheme ? "https://" + target : target, new GrpcChannelOptions
+                        var ca = CertificateGenerator.LoadCertificateFromPem( RestoreCa( details ) );
+                        try
                         {
-
-                        } );
-                        var server = GetServerData( channel );
-                        return CheckExpectedGuid( CheckCertificate( server, ExtractCertificate(certificate) ), expectedGuid);
+                            var certificateValidator = new ServerCertificateValidator( ca );
+                            var clientHandler = new HttpClientHandler
+                            {
+                                ServerCertificateCustomValidationCallback = certificateValidator.ValidateActualCertificate
+                            };
+                            var channel = GrpcChannel.ForAddress( prependScheme ? "https://" + target : target, new GrpcChannelOptions
+                            {
+                                HttpHandler = clientHandler,
+                            } );
+                            var server = CheckCertificateAuthority( GetServerData( channel ), certificateValidator.ServerCertificate, ca );
+                            return CheckExpectedGuid( CheckCertificate( server, certificateValidator.ServerCertificate ), expectedGuid );
+                        }
+                        catch(Exception e)
+                        {
+                            _loggingChannel.Error(
+                                $"Secure connection to {target} failed, falling back to unsecure connection", e );
+                            return ConnectInsecure( target, prependScheme );
+                        }
                     }
                     catch(Exception e)
                     {
-                        _loggingChannel.Error(
-                            $"Secure connection to {target} failed, falling back to unsecure connection", e );
+                        _loggingChannel.Error( "Failed to extract certificate from discovery announcement.", e );
                     }
                 }
-                else
+                try
                 {
-                    try
+                    var ca = CertificateGenerator.LoadCertificateFromPem( RestoreCa( details ) );
+                    var certificateValidator = new ServerCertificateValidator( ca );
+                    var clientHandler = new HttpClientHandler
                     {
-                        var channel = GrpcChannel.ForAddress( prependScheme ? "https://" + target : target );
-                        return CheckExpectedGuid( CheckCertificate( GetServerData( channel ), ExtractCertificate( certificate ) ), expectedGuid );
-                    }
-                    catch(Exception e)
+                        ServerCertificateCustomValidationCallback = certificateValidator.ValidateActualCertificate
+                    };
+                    var channel = GrpcChannel.ForAddress( prependScheme ? "https://" + target : target, new GrpcChannelOptions
                     {
-                        _loggingChannel.Error(
-                            $"Secure connection to {target} failed, falling back to unsecure connection", e );
-                    }
+                        HttpHandler = clientHandler,
+                    } );
+                    return CheckExpectedGuid( CheckCertificate( GetServerData( channel ), certificateValidator.ServerCertificate ), expectedGuid );
+                }
+                catch(Exception e)
+                {
+                    _loggingChannel.Error(
+                        $"Secure connection to {target} failed, falling back to unsecure connection", e );
                 }
             }
+            return ConnectInsecure( target, prependScheme );
+        }
+
+        private ServerData ConnectInsecure( string target, bool prependScheme )
+        {
             return GetServerData( GrpcChannel.ForAddress( prependScheme ? "http://" + target : target, new GrpcChannelOptions
             {
                 Credentials = ChannelCredentials.Insecure
-            } ));
+            } ) );
         }
 
         private ServerData CheckCertificate( ServerData serverData, X509Certificate2 certificate )
         {
-            if (certificate == null)
+            if(certificate == null)
             {
                 return ServerCertificateCouldNotBeRead( serverData );
             }
@@ -134,7 +157,7 @@ namespace Tecan.Sila2.Discovery
             return null;
         }
 
-        private ServerData CheckExpectedGuid(ServerData serverData, Guid? expectedGuid)
+        private ServerData CheckExpectedGuid( ServerData serverData, Guid? expectedGuid )
         {
             if(expectedGuid.HasValue && serverData.Config.Uuid != expectedGuid.Value)
             {
@@ -144,12 +167,35 @@ namespace Tecan.Sila2.Discovery
         }
 
         /// <summary>
+        /// Checks whether the server certificate matches the certificate authority as announced through discovery
+        /// </summary>
+        /// <param name="server">The server </param>
+        /// <param name="serverCertificate">The actual server certificate</param>
+        /// <param name="certificateAuthority">The certificate authority as announced through discovery</param>
+        /// <returns></returns>
+        protected virtual ServerData CheckCertificateAuthority( ServerData server, X509Certificate2 serverCertificate, X509Certificate2 certificateAuthority )
+        {
+            return server;
+        }
+
+        /// <summary>
+        /// Gets called in the case that the server did not announce its certificate through discovery
+        /// </summary>
+        /// <param name="server">The server that was connected</param>
+        /// <returns>The connected server or null, if the connection should be refused</returns>
+        protected virtual ServerData ServerUuidNotAnnounced( ServerData server )
+        {
+            _loggingChannel.Info( $"Server {server.Config.Name} did not announce certificates through discovery" );
+            return server;
+        }
+
+        /// <summary>
         /// Gets called in the case that the server has a different UUID than what was announced during discovery
         /// </summary>
         /// <param name="server">The server that was connected</param>
         /// <param name="dnsGuid">The Server UUID found via DNS</param>
         /// <returns>The connected server or null, if the connection should be refused</returns>
-        protected virtual ServerData ServerUuidDoesNotMatchDnsEntry(ServerData server, Guid dnsGuid)
+        protected virtual ServerData ServerUuidDoesNotMatchDnsEntry( ServerData server, Guid dnsGuid )
         {
             _loggingChannel.Warn( $"Server UUID does not match expected value from Discovery. Expected {dnsGuid} but the actual server id is {server.Config.Uuid}" );
             return server;
@@ -162,7 +208,7 @@ namespace Tecan.Sila2.Discovery
         /// <param name="serverIdFromCertificate">The Server UUID from the certificate</param>
         /// <param name="serverCertificate">The server certificate</param>
         /// <returns>The connected server or null, if the connection should be refused</returns>
-        protected virtual ServerData ServerUuidDoesNotMatchCertificate(ServerData server, Guid serverIdFromCertificate, X509Certificate2 serverCertificate)
+        protected virtual ServerData ServerUuidDoesNotMatchCertificate( ServerData server, Guid serverIdFromCertificate, X509Certificate2 serverCertificate )
         {
             _loggingChannel.Warn( $"Server UUID does not match expected value from certificate. Expected {serverIdFromCertificate} but the actual server id is {server.Config.Uuid}" );
             return server;
@@ -174,7 +220,7 @@ namespace Tecan.Sila2.Discovery
         /// <param name="server">The server that was connected</param>
         /// <param name="serverCertificate">The server certificate</param>
         /// <returns>The connected server or null, if the connection should be refused</returns>
-        protected virtual ServerData ServerUuidNotContainedInCertificate(ServerData server, X509Certificate2 serverCertificate)
+        protected virtual ServerData ServerUuidNotContainedInCertificate( ServerData server, X509Certificate2 serverCertificate )
         {
             _loggingChannel.Warn( $"No server uuid could be found in the certificate for server {server.Config.Uuid}" );
             return server;
@@ -185,41 +231,22 @@ namespace Tecan.Sila2.Discovery
         /// </summary>
         /// <param name="server">The connected server</param>
         /// <returns>The connected server or null, if the connection should be refused</returns>
-        protected virtual ServerData ServerCertificateCouldNotBeRead(ServerData server)
+        protected virtual ServerData ServerCertificateCouldNotBeRead( ServerData server )
         {
             return null;
-        }
-
-        private X509Certificate2 ExtractCertificate( string peerPem )
-        {
-            if (string.IsNullOrEmpty(peerPem))
-            {
-                return null;
-            }
-            try
-            {
-                var beginCertificate = peerPem.IndexOf( BeginCertPhrase );
-                var endCertificate = peerPem.LastIndexOf( EndCertPhrase );
-                var start = beginCertificate == -1 ? 0 : beginCertificate + BeginCertPhrase.Length;
-                var end = endCertificate == -1 ? peerPem.Length : endCertificate;
-                var completeBase64 = peerPem.Substring( start, end - start ).Replace( "\n", string.Empty );
-                var rawData = Convert.FromBase64String( completeBase64 );
-                return new X509Certificate2( rawData );
-            }
-            catch(Exception ex)
-            {
-                _loggingChannel.Error( "Failed to read certificate", ex );
-                return null;
-            }
         }
 
         private string RestoreCa( IReadOnlyDictionary<string, string> details )
         {
             var sb = new StringBuilder();
             var line = 0;
-            while(details.TryGetValue("ca" + line, out var caLine))
+            while(details.TryGetValue( "ca" + line, out var caLine ))
             {
-                sb.AppendLine( caLine );
+                sb.Append( caLine );
+                if(!caLine.EndsWith( '\n' ) && !caLine.EndsWith( '\r' ))
+                {
+                    sb.AppendLine();
+                }
                 line++;
             }
             return sb.ToString();
@@ -228,7 +255,7 @@ namespace Tecan.Sila2.Discovery
         /// <inheritdoc />
         public virtual ServerData Connect( string host, int port )
         {
-            return Connect( $"{host}:{port}", null, null, !host.StartsWith("http") );
+            return Connect( $"{host}:{port}", null, null, !host.StartsWith( "http" ) );
         }
 
 
@@ -278,7 +305,7 @@ namespace Tecan.Sila2.Discovery
         /// <inheritdoc />
         public ServerData Connect( string host, int port, Guid? expectedServer, IReadOnlyDictionary<string, string> details )
         {
-            return Connect( $"{host}:{port}", expectedServer, details, !host.StartsWith("http") );
+            return Connect( $"{host}:{port}", expectedServer, details, !host.StartsWith( "http" ) );
         }
     }
 }

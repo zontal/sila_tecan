@@ -20,21 +20,16 @@ namespace Tecan.Sila2
         /// <inheritdoc />
         public CertificateContext CreateContext()
         {
-            if(File.Exists( "server.crt" ) && File.Exists( "ca.crt" ) && File.Exists( "server.key" ))
-            {
-                var cacert = File.ReadAllText( @"ca.crt" );
-                var servercert = File.ReadAllText( @"server.crt" );
-                var serverkey = File.ReadAllText( @"server.key" );
-                return new PemCertificateContext( servercert, serverkey, cacert );
-            }
-            else if(File.Exists( "server.pfx" ))
-            {
-                return new PfxCertificateContext( Path.GetFullPath( "server.pfx" ) );
-            }
-            else
-            {
-                return new PfxCertificateContext( null );
-            }
+            var cacert = ReadIfExists( "ca.crt" );
+            var servercert = ReadIfExists( @"server.crt" );
+            var serverkey = ReadIfExists( @"server.key" );
+            var caKey = ReadIfExists( "ca.key" );
+            return new CertificateContext( servercert, serverkey, cacert, caKey );
+        }
+
+        private string ReadIfExists( string path )
+        {
+            return File.Exists( path ) ? File.ReadAllText( path ) : null;
         }
     }
 }

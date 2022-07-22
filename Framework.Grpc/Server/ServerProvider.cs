@@ -15,8 +15,8 @@ namespace Tecan.Sila2
     /// <summary>
     /// Denotes a component that provides a gRPC server
     /// </summary>
-    [Export(typeof(IServerProvider))]
-    [PartCreationPolicy(CreationPolicy.Shared)]
+    [Export( typeof( IServerProvider ) )]
+    [PartCreationPolicy( CreationPolicy.Shared )]
     public class ServerProvider : IServerProvider
     {
         private readonly ILog _logger = LogManager.GetLogger<ServerProvider>();
@@ -28,7 +28,7 @@ namespace Tecan.Sila2
         /// </summary>
         /// <param name="certificateProvider">the certificate provider</param>
         [ImportingConstructor]
-        public ServerProvider(IServerCertificateProvider certificateProvider)
+        public ServerProvider( IServerCertificateProvider certificateProvider )
         {
             _certificateProvider = certificateProvider;
         }
@@ -48,13 +48,13 @@ namespace Tecan.Sila2
             if(Credentials == null)
             {
                 var context = _certificateProvider.CreateContext();
-                if(context is PemCertificateContext pemContext)
+                if(context != null)
                 {
-                    Credentials = CreateCredentials( pemContext ) ?? ServerCredentials.Insecure;
+                    Credentials = CreateCredentials( context ) ?? ServerCredentials.Insecure;
                 }
                 else
                 {
-                    _logger.Warn( $"No certificates found. Server will start with plain-text communication" );
+                    _logger.Info( $"No certificates configured. Server will start with plain-text communication" );
                     Credentials = ServerCredentials.Insecure;
                 }
             }
@@ -67,11 +67,21 @@ namespace Tecan.Sila2
         /// </summary>
         /// <param name="pemContext">The PEM-encoded context</param>
         /// <returns>the server credentials to be used</returns>
-        protected virtual ServerCredentials CreateCredentials( PemCertificateContext pemContext )
+        protected virtual ServerCredentials CreateCredentials( CertificateContext pemContext )
         {
+            if(pemContext.CertificateAuthority == null) return FallBackDueTo( "CA" );
+            if(pemContext.Certificate == null) return FallBackDueTo( "server certificate" );
+            if(pemContext.Key == null) return FallBackDueTo( "server key" );
+
             var keypair = new KeyCertificatePair( pemContext.Certificate, pemContext.Key );
             _logger.Info( "Found certificates, starting server with TLS." );
-            return new SslServerCredentials( new List<KeyCertificatePair>() { keypair }, pemContext.CA, SslClientCertificateRequestType.DontRequest );
+            return new SslServerCredentials( new List<KeyCertificatePair>() { keypair }, pemContext.CertificateAuthority, SslClientCertificateRequestType.DontRequest );
+        }
+
+        private ServerCredentials FallBackDueTo( string missing )
+        {
+            _logger.Warn( $"The {missing} is missing. The server will start with plain-text communication." );
+            return ServerCredentials.Insecure;
         }
 
         /// <inheritdoc />
@@ -80,9 +90,9 @@ namespace Tecan.Sila2
             if(Credentials == null)
             {
                 var context = _certificateProvider.CreateContext( guid );
-                if(context is PemCertificateContext pemContext)
+                if(context != null)
                 {
-                    Credentials = CreateCredentials( pemContext ) ?? ServerCredentials.Insecure;
+                    Credentials = CreateCredentials( context ) ?? ServerCredentials.Insecure;
                 }
                 else
                 {
