@@ -637,6 +637,12 @@ namespace Tecan.Sila2.Generator.Generators
                     case IdentifierType.TypeIdentifier:
                         constraints.FullyQualifiedIdentifier = ConstraintsFullyQualifiedIdentifier.TypeIdentifier;
                         break;
+                    case IdentifierType.MetadataIdentifier:
+                        constraints.FullyQualifiedIdentifier = ConstraintsFullyQualifiedIdentifier.MetadataIdentifier;
+                        break;
+                    case IdentifierType.IntermediateResponseIdentifier:
+                        constraints.FullyQualifiedIdentifier = ConstraintsFullyQualifiedIdentifier.IntermediateCommandResponseIdentifier;
+                        break;
                     default:
                         throw new ArgumentOutOfRangeException( nameof( identifierType ) );
                 }

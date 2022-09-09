@@ -13,7 +13,7 @@ using Tecan.Sila2;
 using Tecan.Sila2.Client;
 using Tecan.Sila2.Server;
 
-namespace Tecan.Sila2.Interop.Server
+namespace Tecan.Sila2.Interop.Server.ObservableCommandTest
 {
     
     
@@ -61,43 +61,43 @@ namespace Tecan.Sila2.Interop.Server
         /// <param name="registration">The registration component to which the feature should be registered</param>
         public void Register(IServerBuilder registration)
         {
-            registration.RegisterCommandWithIntermediates<ObservableIterationRequestDto, long, ObservableIterationIntermediateDto, long, ObservableIterationResponseDto>("ObservableIteration", ObservableIteration, ConvertObservableIterationIntermediate, ConvertObservableIterationResponse, null);
-            registration.RegisterObservableCommand<EchoValueAsyncRequestDto, long, EchoValueAsyncResponseDto>("EchoValueAsync", EchoValueAsync, ConvertEchoValueAsyncResponse, null);
+            registration.RegisterCommandWithIntermediates<CountRequestDto, long, CountIntermediateDto, long, CountResponseDto>("Count", Count, ConvertCountIntermediate, ConvertCountResponse, null);
+            registration.RegisterObservableCommand<EchoValueAfterDelayRequestDto, long, EchoValueAfterDelayResponseDto>("EchoValueAfterDelay", EchoValueAfterDelay, ConvertEchoValueAfterDelayResponse, null);
         }
         
-        private ObservableIterationIntermediateDto ConvertObservableIterationIntermediate(long intermediate)
+        private CountIntermediateDto ConvertCountIntermediate(long intermediate)
         {
-            return new ObservableIterationIntermediateDto(intermediate, _server);
+            return new CountIntermediateDto(intermediate, _server);
         }
         
-        private ObservableIterationResponseDto ConvertObservableIterationResponse(long result)
+        private CountResponseDto ConvertCountResponse(long result)
         {
-            return new ObservableIterationResponseDto(result, _server);
-        }
-        
-        ///  <summary>
-        /// Executes the Observable iteration command
-        /// </summary>
-        /// <param name="request">A data transfer object that contains the command parameters</param>
-        /// <returns>The command response wrapped in a data transfer object</returns>
-        protected virtual Tecan.Sila2.IIntermediateObservableCommand<long, long> ObservableIteration(ObservableIterationRequestDto request)
-        {
-            return _implementation.ObservableIteration(request.NumberIterations.Extract(_server));
-        }
-        
-        private EchoValueAsyncResponseDto ConvertEchoValueAsyncResponse(long result)
-        {
-            return new EchoValueAsyncResponseDto(result, _server);
+            return new CountResponseDto(result, _server);
         }
         
         ///  <summary>
-        /// Executes the Echo Value Async command
+        /// Executes the Count command
         /// </summary>
         /// <param name="request">A data transfer object that contains the command parameters</param>
         /// <returns>The command response wrapped in a data transfer object</returns>
-        protected virtual Tecan.Sila2.IObservableCommand<long> EchoValueAsync(EchoValueAsyncRequestDto request)
+        protected virtual Tecan.Sila2.IIntermediateObservableCommand<long, long> Count(CountRequestDto request)
         {
-            return _implementation.EchoValueAsync(request.Value.Extract(_server), request.DelayInMs.Extract(_server));
+            return _implementation.Count(request.N.Extract(_server), request.Delay.Extract(_server));
+        }
+        
+        private EchoValueAfterDelayResponseDto ConvertEchoValueAfterDelayResponse(long result)
+        {
+            return new EchoValueAfterDelayResponseDto(result, _server);
+        }
+        
+        ///  <summary>
+        /// Executes the Echo Value After Delay command
+        /// </summary>
+        /// <param name="request">A data transfer object that contains the command parameters</param>
+        /// <returns>The command response wrapped in a data transfer object</returns>
+        protected virtual Tecan.Sila2.IObservableCommand<long> EchoValueAfterDelay(EchoValueAfterDelayRequestDto request)
+        {
+            return _implementation.EchoValueAfterDelay(request.Value.Extract(_server), request.Delay.Extract(_server));
         }
         
         ///  <summary>
@@ -107,13 +107,13 @@ namespace Tecan.Sila2.Interop.Server
         /// <returns>A method object or null, if the command is not supported</returns>
         public System.Reflection.MethodInfo GetCommand(string commandIdentifier)
         {
-            if ((commandIdentifier == "org.silastandard/test/ObservableCommandTest/v1/Command/ObservableIteration"))
+            if ((commandIdentifier == "org.silastandard/test/ObservableCommandTest/v1/Command/Count"))
             {
-                return typeof(IObservableCommandTest).GetMethod("ObservableIteration");
+                return typeof(IObservableCommandTest).GetMethod("Count");
             }
-            if ((commandIdentifier == "org.silastandard/test/ObservableCommandTest/v1/Command/EchoValueAsync"))
+            if ((commandIdentifier == "org.silastandard/test/ObservableCommandTest/v1/Command/EchoValueAfterDelay"))
             {
-                return typeof(IObservableCommandTest).GetMethod("EchoValueAsync");
+                return typeof(IObservableCommandTest).GetMethod("EchoValueAfterDelay");
             }
             return null;
         }

@@ -7,21 +7,23 @@ using System.Text;
 
 namespace Tecan.Sila2.Server.ConnectionConfiguration
 {
-    [Export(typeof(IConnectionConfigurationService))]
-    [PartCreationPolicy(CreationPolicy.Shared)]
+    [Export( typeof( IConnectionConfigurationService ) )]
+    [PartCreationPolicy( CreationPolicy.Shared )]
     internal class ConnectionConfigurationService : IConnectionConfigurationService
     {
         private readonly ISiLAServer _server;
         private readonly Dictionary<string, ClientEntry> _connections = new Dictionary<string, ClientEntry>();
         private readonly ILog _loggingChannel = LogManager.GetLogger<ConnectionConfigurationService>();
         private readonly IConfigurationStore _configurationStore;
+        private readonly ServerStartInformation _serverStartInformation;
         private bool _isEnabled;
 
         [ImportingConstructor]
-        public ConnectionConfigurationService(ISiLAServer server, IConfigurationStore configurationStore)
+        public ConnectionConfigurationService( ISiLAServer server, IConfigurationStore configurationStore, ServerStartInformation serverStartInformation )
         {
             _configurationStore = configurationStore;
             _server = server;
+            _serverStartInformation = serverStartInformation;
         }
 
         public bool ServerInitiatedConnectionModeStatus => _isEnabled;
@@ -30,13 +32,13 @@ namespace Tecan.Sila2.Server.ConnectionConfiguration
 
         public void ConnectSiLAClient( [MaximalLength( 255 )] string clientName, [MaximalLength( 255 ), SilaDisplayName( "SiLA Client Host" )] string siLAClientHost, [MaximalInclusive( 65536 ), MinimalExclusive( 0 ), SilaDisplayName( "SiLA Client Port" )] long siLAClientPort, [SilaDisplayName( "Persist connection" )] bool persist )
         {
-            if (!_isEnabled)
+            if(!_isEnabled)
             {
                 throw new Exception( "Connections are disabled." );
             }
             lock(_connections)
             {
-                if (_connections.ContainsKey(clientName))
+                if(_connections.ContainsKey( clientName ))
                 {
                     throw new Exception( $"A client with the name {clientName} already exists." );
                 }
@@ -45,7 +47,7 @@ namespace Tecan.Sila2.Server.ConnectionConfiguration
                 _loggingChannel.Info( $"Connection to {clientName} ({siLAClientHost}:{siLAClientPort}) established successfully" );
                 _connections.Add( clientName, new ClientEntry( siLAClientHost, (int)siLAClientPort, channel ) );
             }
-            if (persist)
+            if(persist)
             {
                 _configurationStore.Write( GetName( clientName ), new ClientConnection
                 {
@@ -94,7 +96,7 @@ namespace Tecan.Sila2.Server.ConnectionConfiguration
             {
                 _loggingChannel.Warn( $"No client '{clientName}' connected." );
             }
-            if (remove)
+            if(remove)
             {
                 _configurationStore.Delete( GetName( clientName ), typeof( ClientConnection ) );
             }
@@ -115,15 +117,15 @@ namespace Tecan.Sila2.Server.ConnectionConfiguration
             }
         }
 
-        private void TrySetConnectionmodeEnabled(bool enabled)
+        private void TrySetConnectionmodeEnabled( bool enabled )
         {
             try
             {
-                var currentConfiguration = _configurationStore.Read<ServerConfiguration>( SiLAServer.ServerConfigurationName );
+                var currentConfiguration = _configurationStore.Read<ServerConfiguration>( _serverStartInformation.ConfigName );
                 if(currentConfiguration.EnableServerConnections != enabled)
                 {
                     currentConfiguration.EnableServerConnections = enabled;
-                    _configurationStore.Write<ServerConfiguration>( SiLAServer.ServerConfigurationName, currentConfiguration );
+                    _configurationStore.Write<ServerConfiguration>( _serverStartInformation.ConfigName, currentConfiguration );
                 }
             }
             catch(Exception ex)
@@ -140,7 +142,7 @@ namespace Tecan.Sila2.Server.ConnectionConfiguration
 
             public IDisposable Channel { get; }
 
-            public ClientEntry(string host, int port, IDisposable channel)
+            public ClientEntry( string host, int port, IDisposable channel )
             {
                 Host = host;
                 Port = port;

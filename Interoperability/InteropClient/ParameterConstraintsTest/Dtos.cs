@@ -8,39 +8,24 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest
+namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstraintsTest
 {
     using Tecan.Sila2;
     
     
     ///  <summary>
-    /// Data transfer object for the request of the Exact String Length command
+    /// Data transfer object for the request of the Check String Constraint Length command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
-    public class ExactStringLengthRequestDto : Tecan.Sila2.ISilaTransferObject, Tecan.Sila2.ISilaRequestObject
+    public class CheckStringConstraintLengthRequestDto : Tecan.Sila2.ISilaTransferObject, Tecan.Sila2.ISilaRequestObject
     {
         
-        private Tecan.Sila2.StringDto _stringLength;
-        
-        private Tecan.Sila2.StringDto _maximalLengthString;
-        
-        private Tecan.Sila2.StringDto _minimalLengthString;
-        
-        private Tecan.Sila2.StringDto _minMaxLengthString;
-        
-        private Tecan.Sila2.StringDto _setString;
-        
-        private Tecan.Sila2.StringDto _patternString;
-        
-        ///  <summary>
-        /// A regular expression to check the validity of PatternString
-        /// </summary>
-        public static System.Text.RegularExpressions.Regex PatternStringPattern = new System.Text.RegularExpressions.Regex("[0-9]{2}/[0-9]{2}/[0-9]{2}/[0-9]{4}");
+        private Tecan.Sila2.StringDto _constrainedParameter;
         
         ///  <summary>
         /// Create a new instance
         /// </summary>
-        public ExactStringLengthRequestDto()
+        public CheckStringConstraintLengthRequestDto()
         {
         }
         
@@ -48,115 +33,25 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
-        ///  <param name="stringLength">Tests the Length constraint on String type</param>
-        ///  <param name="maximalLengthString">Tests the MaximalLength constraint on String type</param>
-        ///  <param name="minimalLengthString">Tests the MinimalLength constraint on String type</param>
-        ///  <param name="minMaxLengthString">Tests the combination of MinimalLength and MaximalLength constraints on String type</param>
-        ///  <param name="setString">Tests the Set constraint on String type</param>
-        ///  <param name="patternString">Tests the Pattern constraint on String type (date of birth in dd/mm/yyyy format)</param>
-        public ExactStringLengthRequestDto(string stringLength, string maximalLengthString, string minimalLengthString, string minMaxLengthString, string setString, string patternString, Tecan.Sila2.IBinaryStore store)
+        ///  <param name="constrainedParameter">A String parameter with a Length constraint of 10</param>
+        public CheckStringConstraintLengthRequestDto(string constrainedParameter, Tecan.Sila2.IBinaryStore store)
         {
-            StringLength = new Tecan.Sila2.StringDto(stringLength, store);
-            MaximalLengthString = new Tecan.Sila2.StringDto(maximalLengthString, store);
-            MinimalLengthString = new Tecan.Sila2.StringDto(minimalLengthString, store);
-            MinMaxLengthString = new Tecan.Sila2.StringDto(minMaxLengthString, store);
-            SetString = new Tecan.Sila2.StringDto(setString, store);
-            PatternString = new Tecan.Sila2.StringDto(patternString, store);
+            ConstrainedParameter = new Tecan.Sila2.StringDto(constrainedParameter, store);
         }
         
         ///  <summary>
-        /// Tests the Length constraint on String type
+        /// A String parameter with a Length constraint of 10
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute(1)]
-        public Tecan.Sila2.StringDto StringLength
+        public Tecan.Sila2.StringDto ConstrainedParameter
         {
             get
             {
-                return _stringLength;
+                return _constrainedParameter;
             }
             set
             {
-                _stringLength = value;
-            }
-        }
-        
-        ///  <summary>
-        /// Tests the MaximalLength constraint on String type
-        /// </summary>
-        [ProtoBuf.ProtoMemberAttribute(2)]
-        public Tecan.Sila2.StringDto MaximalLengthString
-        {
-            get
-            {
-                return _maximalLengthString;
-            }
-            set
-            {
-                _maximalLengthString = value;
-            }
-        }
-        
-        ///  <summary>
-        /// Tests the MinimalLength constraint on String type
-        /// </summary>
-        [ProtoBuf.ProtoMemberAttribute(3)]
-        public Tecan.Sila2.StringDto MinimalLengthString
-        {
-            get
-            {
-                return _minimalLengthString;
-            }
-            set
-            {
-                _minimalLengthString = value;
-            }
-        }
-        
-        ///  <summary>
-        /// Tests the combination of MinimalLength and MaximalLength constraints on String type
-        /// </summary>
-        [ProtoBuf.ProtoMemberAttribute(4)]
-        public Tecan.Sila2.StringDto MinMaxLengthString
-        {
-            get
-            {
-                return _minMaxLengthString;
-            }
-            set
-            {
-                _minMaxLengthString = value;
-            }
-        }
-        
-        ///  <summary>
-        /// Tests the Set constraint on String type
-        /// </summary>
-        [ProtoBuf.ProtoMemberAttribute(5)]
-        public Tecan.Sila2.StringDto SetString
-        {
-            get
-            {
-                return _setString;
-            }
-            set
-            {
-                _setString = value;
-            }
-        }
-        
-        ///  <summary>
-        /// Tests the Pattern constraint on String type (date of birth in dd/mm/yyyy format)
-        /// </summary>
-        [ProtoBuf.ProtoMemberAttribute(6)]
-        public Tecan.Sila2.StringDto PatternString
-        {
-            get
-            {
-                return _patternString;
-            }
-            set
-            {
-                _patternString = value;
+                _constrainedParameter = value;
             }
         }
         
@@ -168,7 +63,138 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest
         {
             get
             {
-                return "org.silastandard/test/ParameterConstraintsTest/v1/Command/ExactStringLength";
+                return "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckStringConstraintLe" +
+                    "ngth";
+            }
+        }
+        
+        ///  <summary>
+        /// Validates the contents of this transfer object
+        /// </summary>
+        /// <returns>A validation error or null, if no validation error occurred.</returns>
+        public string GetValidationErrors()
+        {
+            return null;
+        }
+    }
+    
+    ///  <summary>
+    /// Data transfer object for the request of the Check String Constraint Minimal Length command
+    /// </summary>
+    [ProtoBuf.ProtoContractAttribute()]
+    public class CheckStringConstraintMinimalLengthRequestDto : Tecan.Sila2.ISilaTransferObject, Tecan.Sila2.ISilaRequestObject
+    {
+        
+        private Tecan.Sila2.StringDto _constrainedParameter;
+        
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        public CheckStringConstraintMinimalLengthRequestDto()
+        {
+        }
+        
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        /// <param name="store">An object to organize binaries.</param>
+        ///  <param name="constrainedParameter">A String parameter with a MinimalLength constraint of 5</param>
+        public CheckStringConstraintMinimalLengthRequestDto(string constrainedParameter, Tecan.Sila2.IBinaryStore store)
+        {
+            ConstrainedParameter = new Tecan.Sila2.StringDto(constrainedParameter, store);
+        }
+        
+        ///  <summary>
+        /// A String parameter with a MinimalLength constraint of 5
+        /// </summary>
+        [ProtoBuf.ProtoMemberAttribute(1)]
+        public Tecan.Sila2.StringDto ConstrainedParameter
+        {
+            get
+            {
+                return _constrainedParameter;
+            }
+            set
+            {
+                _constrainedParameter = value;
+            }
+        }
+        
+        ///  <summary>
+        /// Gets the command identifier for this command
+        /// </summary>
+        /// <returns>The fully qualified command identifier</returns>
+        public string CommandIdentifier
+        {
+            get
+            {
+                return "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckStringConstraintMi" +
+                    "nimalLength";
+            }
+        }
+        
+        ///  <summary>
+        /// Validates the contents of this transfer object
+        /// </summary>
+        /// <returns>A validation error or null, if no validation error occurred.</returns>
+        public string GetValidationErrors()
+        {
+            return null;
+        }
+    }
+    
+    ///  <summary>
+    /// Data transfer object for the request of the Check String Constraint Maximal Length command
+    /// </summary>
+    [ProtoBuf.ProtoContractAttribute()]
+    public class CheckStringConstraintMaximalLengthRequestDto : Tecan.Sila2.ISilaTransferObject, Tecan.Sila2.ISilaRequestObject
+    {
+        
+        private Tecan.Sila2.StringDto _constrainedParameter;
+        
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        public CheckStringConstraintMaximalLengthRequestDto()
+        {
+        }
+        
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        /// <param name="store">An object to organize binaries.</param>
+        ///  <param name="constrainedParameter">A String parameter with a MaximalLength constraint of 20</param>
+        public CheckStringConstraintMaximalLengthRequestDto(string constrainedParameter, Tecan.Sila2.IBinaryStore store)
+        {
+            ConstrainedParameter = new Tecan.Sila2.StringDto(constrainedParameter, store);
+        }
+        
+        ///  <summary>
+        /// A String parameter with a MaximalLength constraint of 20
+        /// </summary>
+        [ProtoBuf.ProtoMemberAttribute(1)]
+        public Tecan.Sila2.StringDto ConstrainedParameter
+        {
+            get
+            {
+                return _constrainedParameter;
+            }
+            set
+            {
+                _constrainedParameter = value;
+            }
+        }
+        
+        ///  <summary>
+        /// Gets the command identifier for this command
+        /// </summary>
+        /// <returns>The fully qualified command identifier</returns>
+        public string CommandIdentifier
+        {
+            get
+            {
+                return "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckStringConstraintMa" +
+                    "ximalLength";
             }
         }
         
@@ -179,49 +205,27 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest
         public string GetValidationErrors()
         {
             string errors = "";
-            if ((MaximalLengthString.Value.Length <= 20))
+            if ((ConstrainedParameter.Value.Length <= 20))
             {
-                errors = (errors + string.Format("MaximalLengthString \'{0}\' is longer than allowed length 20.", MaximalLengthString.Value));
-            }
-            if ((MinMaxLengthString.Value.Length <= 20))
-            {
-                errors = (errors + string.Format("MinMaxLengthString \'{0}\' is longer than allowed length 20.", MinMaxLengthString.Value));
-            }
-            if (PatternStringPattern.IsMatch(PatternString.Value))
-            {
-                errors = (errors + string.Format("PatternString \'{0}\' does not match pattern \'[0-9]{2}/[0-9]{2}/[0-9]{2}/[0-9]{4}\'", PatternString.Value));
+                errors = (errors + string.Format("ConstrainedParameter \'{0}\' is longer than allowed length 20.", ConstrainedParameter.Value));
             }
             return errors;
         }
     }
     
     ///  <summary>
-    /// Data transfer object for the request of the Constrained Numeric Parameters command
+    /// Data transfer object for the request of the Check String Constraint MinMax Length command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
-    public class ConstrainedNumericParametersRequestDto : Tecan.Sila2.ISilaTransferObject, Tecan.Sila2.ISilaRequestObject
+    public class CheckStringConstraintMinMaxLengthRequestDto : Tecan.Sila2.ISilaTransferObject, Tecan.Sila2.ISilaRequestObject
     {
         
-        private Tecan.Sila2.IntegerDto _integersSet;
-        
-        private Tecan.Sila2.RealDto _maximalExclusiveReal;
-        
-        private Tecan.Sila2.RealDto _minimalExclusiveReal;
-        
-        private Tecan.Sila2.RealDto _minMaxExclusiveReal;
-        
-        private Tecan.Sila2.IntegerDto _maximalInclusiveInteger;
-        
-        private Tecan.Sila2.IntegerDto _minimalInclusiveInteger;
-        
-        private Tecan.Sila2.IntegerDto _minMaxInclusiveInteger;
-        
-        private Tecan.Sila2.IntegerDto _unit;
+        private Tecan.Sila2.StringDto _constrainedParameter;
         
         ///  <summary>
         /// Create a new instance
         /// </summary>
-        public ConstrainedNumericParametersRequestDto()
+        public CheckStringConstraintMinMaxLengthRequestDto()
         {
         }
         
@@ -229,151 +233,460 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
-        ///  <param name="integersSet">Tests the Set constraint on Integer type</param>
-        ///  <param name="maximalExclusiveReal">Tests the MaximalExclusive constraint on Real type</param>
-        ///  <param name="minimalExclusiveReal">Tests the MinimalExclusive constraint on Real type</param>
-        ///  <param name="minMaxExclusiveReal">Tests the combination of MinimalExclusive and MaximalExclusive constraints on Real type</param>
-        ///  <param name="maximalInclusiveInteger">Tests the MaximalInclusive constraint on Integer type</param>
-        ///  <param name="minimalInclusiveInteger">Tests the MinimalInclusive constraint on Integer type</param>
-        ///  <param name="minMaxInclusiveInteger">Tests the combination of MinimalInclusive and MaximalInclusive constraints on Integer type</param>
-        ///  <param name="unit">Tests the Unit constraint</param>
-        public ConstrainedNumericParametersRequestDto(long integersSet, double maximalExclusiveReal, double minimalExclusiveReal, double minMaxExclusiveReal, long maximalInclusiveInteger, long minimalInclusiveInteger, long minMaxInclusiveInteger, long unit, Tecan.Sila2.IBinaryStore store)
+        ///  <param name="constrainedParameter">A String parameter with a MinimalLength constraint of 5 and a MaximalLength constraint of 20</param>
+        public CheckStringConstraintMinMaxLengthRequestDto(string constrainedParameter, Tecan.Sila2.IBinaryStore store)
         {
-            IntegersSet = new Tecan.Sila2.IntegerDto(integersSet, store);
-            MaximalExclusiveReal = new Tecan.Sila2.RealDto(maximalExclusiveReal, store);
-            MinimalExclusiveReal = new Tecan.Sila2.RealDto(minimalExclusiveReal, store);
-            MinMaxExclusiveReal = new Tecan.Sila2.RealDto(minMaxExclusiveReal, store);
-            MaximalInclusiveInteger = new Tecan.Sila2.IntegerDto(maximalInclusiveInteger, store);
-            MinimalInclusiveInteger = new Tecan.Sila2.IntegerDto(minimalInclusiveInteger, store);
-            MinMaxInclusiveInteger = new Tecan.Sila2.IntegerDto(minMaxInclusiveInteger, store);
-            Unit = new Tecan.Sila2.IntegerDto(unit, store);
+            ConstrainedParameter = new Tecan.Sila2.StringDto(constrainedParameter, store);
         }
         
         ///  <summary>
-        /// Tests the Set constraint on Integer type
+        /// A String parameter with a MinimalLength constraint of 5 and a MaximalLength constraint of 20
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute(1)]
-        public Tecan.Sila2.IntegerDto IntegersSet
+        public Tecan.Sila2.StringDto ConstrainedParameter
         {
             get
             {
-                return _integersSet;
+                return _constrainedParameter;
             }
             set
             {
-                _integersSet = value;
+                _constrainedParameter = value;
             }
         }
         
         ///  <summary>
-        /// Tests the MaximalExclusive constraint on Real type
+        /// Gets the command identifier for this command
+        /// </summary>
+        /// <returns>The fully qualified command identifier</returns>
+        public string CommandIdentifier
+        {
+            get
+            {
+                return "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckStringConstraintMi" +
+                    "nMaxLength";
+            }
+        }
+        
+        ///  <summary>
+        /// Validates the contents of this transfer object
+        /// </summary>
+        /// <returns>A validation error or null, if no validation error occurred.</returns>
+        public string GetValidationErrors()
+        {
+            string errors = "";
+            if ((ConstrainedParameter.Value.Length <= 20))
+            {
+                errors = (errors + string.Format("ConstrainedParameter \'{0}\' is longer than allowed length 20.", ConstrainedParameter.Value));
+            }
+            return errors;
+        }
+    }
+    
+    ///  <summary>
+    /// Data transfer object for the request of the Check String Constraint Set command
+    /// </summary>
+    [ProtoBuf.ProtoContractAttribute()]
+    public class CheckStringConstraintSetRequestDto : Tecan.Sila2.ISilaTransferObject, Tecan.Sila2.ISilaRequestObject
+    {
+        
+        private Tecan.Sila2.StringDto _constrainedParameter;
+        
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        public CheckStringConstraintSetRequestDto()
+        {
+        }
+        
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        /// <param name="store">An object to organize binaries.</param>
+        ///  <param name="constrainedParameter">A String parameter with a Set constraint of 'First option', 'Second option', 'Third option'</param>
+        public CheckStringConstraintSetRequestDto(string constrainedParameter, Tecan.Sila2.IBinaryStore store)
+        {
+            ConstrainedParameter = new Tecan.Sila2.StringDto(constrainedParameter, store);
+        }
+        
+        ///  <summary>
+        /// A String parameter with a Set constraint of 'First option', 'Second option', 'Third option'
+        /// </summary>
+        [ProtoBuf.ProtoMemberAttribute(1)]
+        public Tecan.Sila2.StringDto ConstrainedParameter
+        {
+            get
+            {
+                return _constrainedParameter;
+            }
+            set
+            {
+                _constrainedParameter = value;
+            }
+        }
+        
+        ///  <summary>
+        /// Gets the command identifier for this command
+        /// </summary>
+        /// <returns>The fully qualified command identifier</returns>
+        public string CommandIdentifier
+        {
+            get
+            {
+                return "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckStringConstraintSe" +
+                    "t";
+            }
+        }
+        
+        ///  <summary>
+        /// Validates the contents of this transfer object
+        /// </summary>
+        /// <returns>A validation error or null, if no validation error occurred.</returns>
+        public string GetValidationErrors()
+        {
+            return null;
+        }
+    }
+    
+    ///  <summary>
+    /// Data transfer object for the request of the Check String Constraint Pattern command
+    /// </summary>
+    [ProtoBuf.ProtoContractAttribute()]
+    public class CheckStringConstraintPatternRequestDto : Tecan.Sila2.ISilaTransferObject, Tecan.Sila2.ISilaRequestObject
+    {
+        
+        private Tecan.Sila2.StringDto _constrainedParameter;
+        
+        ///  <summary>
+        /// A regular expression to check the validity of ConstrainedParameter
+        /// </summary>
+        public static System.Text.RegularExpressions.Regex ConstrainedParameterPattern = new System.Text.RegularExpressions.Regex("[0-9]{2}/[0-9]{2}/[0-9]{4}");
+        
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        public CheckStringConstraintPatternRequestDto()
+        {
+        }
+        
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        /// <param name="store">An object to organize binaries.</param>
+        ///  <param name="constrainedParameter">A String parameter with a Pattern constraint of a date of birth in dd/mm/yyyy format</param>
+        public CheckStringConstraintPatternRequestDto(string constrainedParameter, Tecan.Sila2.IBinaryStore store)
+        {
+            ConstrainedParameter = new Tecan.Sila2.StringDto(constrainedParameter, store);
+        }
+        
+        ///  <summary>
+        /// A String parameter with a Pattern constraint of a date of birth in dd/mm/yyyy format
+        /// </summary>
+        [ProtoBuf.ProtoMemberAttribute(1)]
+        public Tecan.Sila2.StringDto ConstrainedParameter
+        {
+            get
+            {
+                return _constrainedParameter;
+            }
+            set
+            {
+                _constrainedParameter = value;
+            }
+        }
+        
+        ///  <summary>
+        /// Gets the command identifier for this command
+        /// </summary>
+        /// <returns>The fully qualified command identifier</returns>
+        public string CommandIdentifier
+        {
+            get
+            {
+                return "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckStringConstraintPa" +
+                    "ttern";
+            }
+        }
+        
+        ///  <summary>
+        /// Validates the contents of this transfer object
+        /// </summary>
+        /// <returns>A validation error or null, if no validation error occurred.</returns>
+        public string GetValidationErrors()
+        {
+            string errors = "";
+            if (ConstrainedParameterPattern.IsMatch(ConstrainedParameter.Value))
+            {
+                errors = (errors + string.Format("ConstrainedParameter \'{0}\' does not match pattern \'[0-9]{2}/[0-9]{2}/[0-9]{4}\'", ConstrainedParameter.Value));
+            }
+            return errors;
+        }
+    }
+    
+    ///  <summary>
+    /// Data transfer object for the request of the Check String Constraint Content Type command
+    /// </summary>
+    [ProtoBuf.ProtoContractAttribute()]
+    public class CheckStringConstraintContentTypeRequestDto : Tecan.Sila2.ISilaTransferObject, Tecan.Sila2.ISilaRequestObject
+    {
+        
+        private Tecan.Sila2.StringDto _constrainedParameter;
+        
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        public CheckStringConstraintContentTypeRequestDto()
+        {
+        }
+        
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        /// <param name="store">An object to organize binaries.</param>
+        ///  <param name="constrainedParameter">A String parameter with a ContentType constraint allowing only valid XML document as content</param>
+        public CheckStringConstraintContentTypeRequestDto(string constrainedParameter, Tecan.Sila2.IBinaryStore store)
+        {
+            ConstrainedParameter = new Tecan.Sila2.StringDto(constrainedParameter, store);
+        }
+        
+        ///  <summary>
+        /// A String parameter with a ContentType constraint allowing only valid XML document as content
+        /// </summary>
+        [ProtoBuf.ProtoMemberAttribute(1)]
+        public Tecan.Sila2.StringDto ConstrainedParameter
+        {
+            get
+            {
+                return _constrainedParameter;
+            }
+            set
+            {
+                _constrainedParameter = value;
+            }
+        }
+        
+        ///  <summary>
+        /// Gets the command identifier for this command
+        /// </summary>
+        /// <returns>The fully qualified command identifier</returns>
+        public string CommandIdentifier
+        {
+            get
+            {
+                return "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckStringConstraintCo" +
+                    "ntentType";
+            }
+        }
+        
+        ///  <summary>
+        /// Validates the contents of this transfer object
+        /// </summary>
+        /// <returns>A validation error or null, if no validation error occurred.</returns>
+        public string GetValidationErrors()
+        {
+            return null;
+        }
+    }
+    
+    ///  <summary>
+    /// Data transfer object for the request of the Check String Constraint Fully Qualified Identifier command
+    /// </summary>
+    [ProtoBuf.ProtoContractAttribute()]
+    public class CheckStringConstraintFullyQualifiedIdentifierRequestDto : Tecan.Sila2.ISilaTransferObject, Tecan.Sila2.ISilaRequestObject
+    {
+        
+        private Tecan.Sila2.StringDto _featureIdentifier;
+        
+        private Tecan.Sila2.StringDto _commandIdentifier_;
+        
+        private Tecan.Sila2.StringDto _commandParameterIdentifier;
+        
+        private Tecan.Sila2.StringDto _commandResponseIdentifier;
+        
+        private Tecan.Sila2.StringDto _intermediateCommandResponseIdentifier;
+        
+        private Tecan.Sila2.StringDto _executionErrorIdentifier;
+        
+        private Tecan.Sila2.StringDto _propertyIdentifier;
+        
+        private Tecan.Sila2.StringDto _customDataTypeIdentifier;
+        
+        private Tecan.Sila2.StringDto _metadataIdentifier;
+        
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        public CheckStringConstraintFullyQualifiedIdentifierRequestDto()
+        {
+        }
+        
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        /// <param name="store">An object to organize binaries.</param>
+        ///  <param name="featureIdentifier">Tests that the parameter is a valid feature identifier</param>
+        ///  <param name="commandIdentifier">Tests that the parameter is a valid command identifier</param>
+        ///  <param name="commandParameterIdentifier">Tests that the parameter is a valid command parameter identifier</param>
+        ///  <param name="commandResponseIdentifier">Tests that the parameter is a valid command response identifier</param>
+        ///  <param name="intermediateCommandResponseIdentifier">Tests that the parameter is a valid intermediate command response identifier</param>
+        ///  <param name="executionErrorIdentifier">Tests that the parameter is a valid execution error identifier</param>
+        ///  <param name="propertyIdentifier">Tests that the parameter is a valid property identifier</param>
+        ///  <param name="customDataTypeIdentifier">Tests that the parameter is a valid data type identifier</param>
+        ///  <param name="metadataIdentifier">Tests that the parameter is a valid metadata identifier</param>
+        public CheckStringConstraintFullyQualifiedIdentifierRequestDto(string featureIdentifier, string commandIdentifier, string commandParameterIdentifier, string commandResponseIdentifier, string intermediateCommandResponseIdentifier, string executionErrorIdentifier, string propertyIdentifier, string customDataTypeIdentifier, string metadataIdentifier, Tecan.Sila2.IBinaryStore store)
+        {
+            FeatureIdentifier = new Tecan.Sila2.StringDto(featureIdentifier, store);
+            CommandIdentifier_ = new Tecan.Sila2.StringDto(commandIdentifier, store);
+            CommandParameterIdentifier = new Tecan.Sila2.StringDto(commandParameterIdentifier, store);
+            CommandResponseIdentifier = new Tecan.Sila2.StringDto(commandResponseIdentifier, store);
+            IntermediateCommandResponseIdentifier = new Tecan.Sila2.StringDto(intermediateCommandResponseIdentifier, store);
+            ExecutionErrorIdentifier = new Tecan.Sila2.StringDto(executionErrorIdentifier, store);
+            PropertyIdentifier = new Tecan.Sila2.StringDto(propertyIdentifier, store);
+            CustomDataTypeIdentifier = new Tecan.Sila2.StringDto(customDataTypeIdentifier, store);
+            MetadataIdentifier = new Tecan.Sila2.StringDto(metadataIdentifier, store);
+        }
+        
+        ///  <summary>
+        /// Tests that the parameter is a valid feature identifier
+        /// </summary>
+        [ProtoBuf.ProtoMemberAttribute(1)]
+        public Tecan.Sila2.StringDto FeatureIdentifier
+        {
+            get
+            {
+                return _featureIdentifier;
+            }
+            set
+            {
+                _featureIdentifier = value;
+            }
+        }
+        
+        ///  <summary>
+        /// Tests that the parameter is a valid command identifier
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute(2)]
-        public Tecan.Sila2.RealDto MaximalExclusiveReal
+        public Tecan.Sila2.StringDto CommandIdentifier_
         {
             get
             {
-                return _maximalExclusiveReal;
+                return _commandIdentifier_;
             }
             set
             {
-                _maximalExclusiveReal = value;
+                _commandIdentifier_ = value;
             }
         }
         
         ///  <summary>
-        /// Tests the MinimalExclusive constraint on Real type
+        /// Tests that the parameter is a valid command parameter identifier
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute(3)]
-        public Tecan.Sila2.RealDto MinimalExclusiveReal
+        public Tecan.Sila2.StringDto CommandParameterIdentifier
         {
             get
             {
-                return _minimalExclusiveReal;
+                return _commandParameterIdentifier;
             }
             set
             {
-                _minimalExclusiveReal = value;
+                _commandParameterIdentifier = value;
             }
         }
         
         ///  <summary>
-        /// Tests the combination of MinimalExclusive and MaximalExclusive constraints on Real type
+        /// Tests that the parameter is a valid command response identifier
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute(4)]
-        public Tecan.Sila2.RealDto MinMaxExclusiveReal
+        public Tecan.Sila2.StringDto CommandResponseIdentifier
         {
             get
             {
-                return _minMaxExclusiveReal;
+                return _commandResponseIdentifier;
             }
             set
             {
-                _minMaxExclusiveReal = value;
+                _commandResponseIdentifier = value;
             }
         }
         
         ///  <summary>
-        /// Tests the MaximalInclusive constraint on Integer type
+        /// Tests that the parameter is a valid intermediate command response identifier
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute(5)]
-        public Tecan.Sila2.IntegerDto MaximalInclusiveInteger
+        public Tecan.Sila2.StringDto IntermediateCommandResponseIdentifier
         {
             get
             {
-                return _maximalInclusiveInteger;
+                return _intermediateCommandResponseIdentifier;
             }
             set
             {
-                _maximalInclusiveInteger = value;
+                _intermediateCommandResponseIdentifier = value;
             }
         }
         
         ///  <summary>
-        /// Tests the MinimalInclusive constraint on Integer type
+        /// Tests that the parameter is a valid execution error identifier
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute(6)]
-        public Tecan.Sila2.IntegerDto MinimalInclusiveInteger
+        public Tecan.Sila2.StringDto ExecutionErrorIdentifier
         {
             get
             {
-                return _minimalInclusiveInteger;
+                return _executionErrorIdentifier;
             }
             set
             {
-                _minimalInclusiveInteger = value;
+                _executionErrorIdentifier = value;
             }
         }
         
         ///  <summary>
-        /// Tests the combination of MinimalInclusive and MaximalInclusive constraints on Integer type
+        /// Tests that the parameter is a valid property identifier
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute(7)]
-        public Tecan.Sila2.IntegerDto MinMaxInclusiveInteger
+        public Tecan.Sila2.StringDto PropertyIdentifier
         {
             get
             {
-                return _minMaxInclusiveInteger;
+                return _propertyIdentifier;
             }
             set
             {
-                _minMaxInclusiveInteger = value;
+                _propertyIdentifier = value;
             }
         }
         
         ///  <summary>
-        /// Tests the Unit constraint
+        /// Tests that the parameter is a valid data type identifier
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute(8)]
-        public Tecan.Sila2.IntegerDto Unit
+        public Tecan.Sila2.StringDto CustomDataTypeIdentifier
         {
             get
             {
-                return _unit;
+                return _customDataTypeIdentifier;
             }
             set
             {
-                _unit = value;
+                _customDataTypeIdentifier = value;
+            }
+        }
+        
+        ///  <summary>
+        /// Tests that the parameter is a valid metadata identifier
+        /// </summary>
+        [ProtoBuf.ProtoMemberAttribute(9)]
+        public Tecan.Sila2.StringDto MetadataIdentifier
+        {
+            get
+            {
+                return _metadataIdentifier;
+            }
+            set
+            {
+                _metadataIdentifier = value;
             }
         }
         
@@ -385,8 +698,8 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest
         {
             get
             {
-                return "org.silastandard/test/ParameterConstraintsTest/v1/Command/ConstrainedNumericParam" +
-                    "eters";
+                return "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckStringConstraintFu" +
+                    "llyQualifiedIdentifier";
             }
         }
         
@@ -401,30 +714,18 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest
     }
     
     ///  <summary>
-    /// Data transfer object for the request of the Constrained Date and Time Parameters command
+    /// Data transfer object for the request of the Check String Constraint Schema command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
-    public class ConstrainedDateTimeParametersRequestDto : Tecan.Sila2.ISilaTransferObject, Tecan.Sila2.ISilaRequestObject
+    public class CheckStringConstraintSchemaRequestDto : Tecan.Sila2.ISilaTransferObject, Tecan.Sila2.ISilaRequestObject
     {
         
-        private Tecan.Sila2.DateDto _dateSet;
-        
-        private Tecan.Sila2.DateDto _maximalExclusiveDate;
-        
-        private Tecan.Sila2.DateDto _minimalExclusiveDate;
-        
-        private Tecan.Sila2.DateDto _minMaxExclusiveDate;
-        
-        private Tecan.Sila2.TimeDto _maximalInclusiveTime;
-        
-        private Tecan.Sila2.TimeDto _minimalInclusiveTime;
-        
-        private Tecan.Sila2.TimeDto _minMaxInclusiveTime;
+        private Tecan.Sila2.StringDto _constrainedParameter;
         
         ///  <summary>
         /// Create a new instance
         /// </summary>
-        public ConstrainedDateTimeParametersRequestDto()
+        public CheckStringConstraintSchemaRequestDto()
         {
         }
         
@@ -432,133 +733,25 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
-        ///  <param name="dateSet">Tests the Set constraint on Date type</param>
-        ///  <param name="maximalExclusiveDate">Tests the MaximalExclusive constraint on Date type</param>
-        ///  <param name="minimalExclusiveDate">Tests the MinimalExclusive constraint on Date type</param>
-        ///  <param name="minMaxExclusiveDate">Tests the combination of MinimalExclusive and MaximalExclusive constraints on Date type</param>
-        ///  <param name="maximalInclusiveTime">Tests the MaximalInclusive constraint on Time type</param>
-        ///  <param name="minimalInclusiveTime">Tests the MinimalInclusive constraint on Time type</param>
-        ///  <param name="minMaxInclusiveTime">Tests the combination of MinimalInclusive and MaximalInclusive constraints on Time type</param>
-        public ConstrainedDateTimeParametersRequestDto(System.DateTimeOffset dateSet, System.DateTimeOffset maximalExclusiveDate, System.DateTimeOffset minimalExclusiveDate, System.DateTimeOffset minMaxExclusiveDate, System.TimeSpan maximalInclusiveTime, System.TimeSpan minimalInclusiveTime, System.TimeSpan minMaxInclusiveTime, Tecan.Sila2.IBinaryStore store)
+        ///  <param name="constrainedParameter">A String parameter with a Schema constraint allowing only content that is compliant with the SiLA 2 Feature Definition schema</param>
+        public CheckStringConstraintSchemaRequestDto(string constrainedParameter, Tecan.Sila2.IBinaryStore store)
         {
-            DateSet = new Tecan.Sila2.DateDto(dateSet, store);
-            MaximalExclusiveDate = new Tecan.Sila2.DateDto(maximalExclusiveDate, store);
-            MinimalExclusiveDate = new Tecan.Sila2.DateDto(minimalExclusiveDate, store);
-            MinMaxExclusiveDate = new Tecan.Sila2.DateDto(minMaxExclusiveDate, store);
-            MaximalInclusiveTime = new Tecan.Sila2.TimeDto(maximalInclusiveTime, store);
-            MinimalInclusiveTime = new Tecan.Sila2.TimeDto(minimalInclusiveTime, store);
-            MinMaxInclusiveTime = new Tecan.Sila2.TimeDto(minMaxInclusiveTime, store);
+            ConstrainedParameter = new Tecan.Sila2.StringDto(constrainedParameter, store);
         }
         
         ///  <summary>
-        /// Tests the Set constraint on Date type
+        /// A String parameter with a Schema constraint allowing only content that is compliant with the SiLA 2 Feature Definition schema
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute(1)]
-        public Tecan.Sila2.DateDto DateSet
+        public Tecan.Sila2.StringDto ConstrainedParameter
         {
             get
             {
-                return _dateSet;
+                return _constrainedParameter;
             }
             set
             {
-                _dateSet = value;
-            }
-        }
-        
-        ///  <summary>
-        /// Tests the MaximalExclusive constraint on Date type
-        /// </summary>
-        [ProtoBuf.ProtoMemberAttribute(2)]
-        public Tecan.Sila2.DateDto MaximalExclusiveDate
-        {
-            get
-            {
-                return _maximalExclusiveDate;
-            }
-            set
-            {
-                _maximalExclusiveDate = value;
-            }
-        }
-        
-        ///  <summary>
-        /// Tests the MinimalExclusive constraint on Date type
-        /// </summary>
-        [ProtoBuf.ProtoMemberAttribute(3)]
-        public Tecan.Sila2.DateDto MinimalExclusiveDate
-        {
-            get
-            {
-                return _minimalExclusiveDate;
-            }
-            set
-            {
-                _minimalExclusiveDate = value;
-            }
-        }
-        
-        ///  <summary>
-        /// Tests the combination of MinimalExclusive and MaximalExclusive constraints on Date type
-        /// </summary>
-        [ProtoBuf.ProtoMemberAttribute(4)]
-        public Tecan.Sila2.DateDto MinMaxExclusiveDate
-        {
-            get
-            {
-                return _minMaxExclusiveDate;
-            }
-            set
-            {
-                _minMaxExclusiveDate = value;
-            }
-        }
-        
-        ///  <summary>
-        /// Tests the MaximalInclusive constraint on Time type
-        /// </summary>
-        [ProtoBuf.ProtoMemberAttribute(5)]
-        public Tecan.Sila2.TimeDto MaximalInclusiveTime
-        {
-            get
-            {
-                return _maximalInclusiveTime;
-            }
-            set
-            {
-                _maximalInclusiveTime = value;
-            }
-        }
-        
-        ///  <summary>
-        /// Tests the MinimalInclusive constraint on Time type
-        /// </summary>
-        [ProtoBuf.ProtoMemberAttribute(6)]
-        public Tecan.Sila2.TimeDto MinimalInclusiveTime
-        {
-            get
-            {
-                return _minimalInclusiveTime;
-            }
-            set
-            {
-                _minimalInclusiveTime = value;
-            }
-        }
-        
-        ///  <summary>
-        /// Tests the combination of MinimalInclusive and MaximalInclusive constraints on Time type
-        /// </summary>
-        [ProtoBuf.ProtoMemberAttribute(7)]
-        public Tecan.Sila2.TimeDto MinMaxInclusiveTime
-        {
-            get
-            {
-                return _minMaxInclusiveTime;
-            }
-            set
-            {
-                _minMaxInclusiveTime = value;
+                _constrainedParameter = value;
             }
         }
         
@@ -570,8 +763,8 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest
         {
             get
             {
-                return "org.silastandard/test/ParameterConstraintsTest/v1/Command/ConstrainedDateTimePara" +
-                    "meters";
+                return "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckStringConstraintSc" +
+                    "hema";
             }
         }
         
@@ -586,24 +779,18 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest
     }
     
     ///  <summary>
-    /// Data transfer object for the request of the Constrained List Parameters command
+    /// Data transfer object for the request of the Check Integer Constraint Set command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
-    public class ConstrainedListParametersRequestDto : Tecan.Sila2.ISilaTransferObject, Tecan.Sila2.ISilaRequestObject
+    public class CheckIntegerConstraintSetRequestDto : Tecan.Sila2.ISilaTransferObject, Tecan.Sila2.ISilaRequestObject
     {
         
-        private System.Collections.Generic.List<Tecan.Sila2.StringDto> _elementCountList;
-        
-        private System.Collections.Generic.List<Tecan.Sila2.StringDto> _maximalElementCountList;
-        
-        private System.Collections.Generic.List<Tecan.Sila2.StringDto> _minimalElementCountList;
-        
-        private System.Collections.Generic.List<Tecan.Sila2.StringDto> _minMaxElementCountList;
+        private Tecan.Sila2.IntegerDto _constrainedParameter;
         
         ///  <summary>
         /// Create a new instance
         /// </summary>
-        public ConstrainedListParametersRequestDto()
+        public CheckIntegerConstraintSetRequestDto()
         {
         }
         
@@ -611,79 +798,25 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
-        ///  <param name="elementCountList">Tests the ElementCount constraint on List type</param>
-        ///  <param name="maximalElementCountList">Test the MaximalElementCount constraint on List type</param>
-        ///  <param name="minimalElementCountList">Tests the MinimalElementCount constraint on List type</param>
-        ///  <param name="minMaxElementCountList">Tests the combination of MinimalElementCount and MaximalElementCount constraints on List type</param>
-        public ConstrainedListParametersRequestDto(System.Collections.Generic.ICollection<string> elementCountList, System.Collections.Generic.ICollection<string> maximalElementCountList, System.Collections.Generic.ICollection<string> minimalElementCountList, System.Collections.Generic.ICollection<string> minMaxElementCountList, Tecan.Sila2.IBinaryStore store)
+        ///  <param name="constrainedParameter">An Integer parameter with a Set constraint of 1, 2, 3</param>
+        public CheckIntegerConstraintSetRequestDto(long constrainedParameter, Tecan.Sila2.IBinaryStore store)
         {
-            ElementCountList = Tecan.Sila2.DtoExtensions.Encapsulate(elementCountList, Tecan.Sila2.StringDto.Create, store);
-            MaximalElementCountList = Tecan.Sila2.DtoExtensions.Encapsulate(maximalElementCountList, Tecan.Sila2.StringDto.Create, store);
-            MinimalElementCountList = Tecan.Sila2.DtoExtensions.Encapsulate(minimalElementCountList, Tecan.Sila2.StringDto.Create, store);
-            MinMaxElementCountList = Tecan.Sila2.DtoExtensions.Encapsulate(minMaxElementCountList, Tecan.Sila2.StringDto.Create, store);
+            ConstrainedParameter = new Tecan.Sila2.IntegerDto(constrainedParameter, store);
         }
         
         ///  <summary>
-        /// Tests the ElementCount constraint on List type
+        /// An Integer parameter with a Set constraint of 1, 2, 3
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute(1)]
-        public System.Collections.Generic.List<Tecan.Sila2.StringDto> ElementCountList
+        public Tecan.Sila2.IntegerDto ConstrainedParameter
         {
             get
             {
-                return _elementCountList;
+                return _constrainedParameter;
             }
             set
             {
-                _elementCountList = value;
-            }
-        }
-        
-        ///  <summary>
-        /// Test the MaximalElementCount constraint on List type
-        /// </summary>
-        [ProtoBuf.ProtoMemberAttribute(2)]
-        public System.Collections.Generic.List<Tecan.Sila2.StringDto> MaximalElementCountList
-        {
-            get
-            {
-                return _maximalElementCountList;
-            }
-            set
-            {
-                _maximalElementCountList = value;
-            }
-        }
-        
-        ///  <summary>
-        /// Tests the MinimalElementCount constraint on List type
-        /// </summary>
-        [ProtoBuf.ProtoMemberAttribute(3)]
-        public System.Collections.Generic.List<Tecan.Sila2.StringDto> MinimalElementCountList
-        {
-            get
-            {
-                return _minimalElementCountList;
-            }
-            set
-            {
-                _minimalElementCountList = value;
-            }
-        }
-        
-        ///  <summary>
-        /// Tests the combination of MinimalElementCount and MaximalElementCount constraints on List type
-        /// </summary>
-        [ProtoBuf.ProtoMemberAttribute(4)]
-        public System.Collections.Generic.List<Tecan.Sila2.StringDto> MinMaxElementCountList
-        {
-            get
-            {
-                return _minMaxElementCountList;
-            }
-            set
-            {
-                _minMaxElementCountList = value;
+                _constrainedParameter = value;
             }
         }
         
@@ -695,8 +828,2940 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest
         {
             get
             {
-                return "org.silastandard/test/ParameterConstraintsTest/v1/Command/ConstrainedListParamete" +
-                    "rs";
+                return "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckIntegerConstraintS" +
+                    "et";
+            }
+        }
+        
+        ///  <summary>
+        /// Validates the contents of this transfer object
+        /// </summary>
+        /// <returns>A validation error or null, if no validation error occurred.</returns>
+        public string GetValidationErrors()
+        {
+            return null;
+        }
+    }
+    
+    ///  <summary>
+    /// Data transfer object for the request of the Check Scientifically Notated Integer Limit command
+    /// </summary>
+    [ProtoBuf.ProtoContractAttribute()]
+    public class CheckScientificallyNotatedIntegerLimitRequestDto : Tecan.Sila2.ISilaTransferObject, Tecan.Sila2.ISilaRequestObject
+    {
+        
+        private Tecan.Sila2.IntegerDto _constrainedParameter;
+        
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        public CheckScientificallyNotatedIntegerLimitRequestDto()
+        {
+        }
+        
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        /// <param name="store">An object to organize binaries.</param>
+        ///  <param name="constrainedParameter">An Integer parameter with a MinimalInclusive constraint of -1e3 and a MaximalExclusive constraint of 1.23e5</param>
+        public CheckScientificallyNotatedIntegerLimitRequestDto(long constrainedParameter, Tecan.Sila2.IBinaryStore store)
+        {
+            ConstrainedParameter = new Tecan.Sila2.IntegerDto(constrainedParameter, store);
+        }
+        
+        ///  <summary>
+        /// An Integer parameter with a MinimalInclusive constraint of -1e3 and a MaximalExclusive constraint of 1.23e5
+        /// </summary>
+        [ProtoBuf.ProtoMemberAttribute(1)]
+        public Tecan.Sila2.IntegerDto ConstrainedParameter
+        {
+            get
+            {
+                return _constrainedParameter;
+            }
+            set
+            {
+                _constrainedParameter = value;
+            }
+        }
+        
+        ///  <summary>
+        /// Gets the command identifier for this command
+        /// </summary>
+        /// <returns>The fully qualified command identifier</returns>
+        public string CommandIdentifier
+        {
+            get
+            {
+                return "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckScientificallyNota" +
+                    "tedIntegerLimit";
+            }
+        }
+        
+        ///  <summary>
+        /// Validates the contents of this transfer object
+        /// </summary>
+        /// <returns>A validation error or null, if no validation error occurred.</returns>
+        public string GetValidationErrors()
+        {
+            return null;
+        }
+    }
+    
+    ///  <summary>
+    /// Data transfer object for the request of the Check Integer Constraint Maximal Exclusive command
+    /// </summary>
+    [ProtoBuf.ProtoContractAttribute()]
+    public class CheckIntegerConstraintMaximalExclusiveRequestDto : Tecan.Sila2.ISilaTransferObject, Tecan.Sila2.ISilaRequestObject
+    {
+        
+        private Tecan.Sila2.IntegerDto _constrainedParameter;
+        
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        public CheckIntegerConstraintMaximalExclusiveRequestDto()
+        {
+        }
+        
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        /// <param name="store">An object to organize binaries.</param>
+        ///  <param name="constrainedParameter">An Integer parameter with a MaximalExclusive constraint of 11</param>
+        public CheckIntegerConstraintMaximalExclusiveRequestDto(long constrainedParameter, Tecan.Sila2.IBinaryStore store)
+        {
+            ConstrainedParameter = new Tecan.Sila2.IntegerDto(constrainedParameter, store);
+        }
+        
+        ///  <summary>
+        /// An Integer parameter with a MaximalExclusive constraint of 11
+        /// </summary>
+        [ProtoBuf.ProtoMemberAttribute(1)]
+        public Tecan.Sila2.IntegerDto ConstrainedParameter
+        {
+            get
+            {
+                return _constrainedParameter;
+            }
+            set
+            {
+                _constrainedParameter = value;
+            }
+        }
+        
+        ///  <summary>
+        /// Gets the command identifier for this command
+        /// </summary>
+        /// <returns>The fully qualified command identifier</returns>
+        public string CommandIdentifier
+        {
+            get
+            {
+                return "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckIntegerConstraintM" +
+                    "aximalExclusive";
+            }
+        }
+        
+        ///  <summary>
+        /// Validates the contents of this transfer object
+        /// </summary>
+        /// <returns>A validation error or null, if no validation error occurred.</returns>
+        public string GetValidationErrors()
+        {
+            return null;
+        }
+    }
+    
+    ///  <summary>
+    /// Data transfer object for the request of the Check Integer Constraint Maximal Inclusive command
+    /// </summary>
+    [ProtoBuf.ProtoContractAttribute()]
+    public class CheckIntegerConstraintMaximalInclusiveRequestDto : Tecan.Sila2.ISilaTransferObject, Tecan.Sila2.ISilaRequestObject
+    {
+        
+        private Tecan.Sila2.IntegerDto _constrainedParameter;
+        
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        public CheckIntegerConstraintMaximalInclusiveRequestDto()
+        {
+        }
+        
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        /// <param name="store">An object to organize binaries.</param>
+        ///  <param name="constrainedParameter">An Integer parameter with a MaximalInclusive constraint of 10</param>
+        public CheckIntegerConstraintMaximalInclusiveRequestDto(long constrainedParameter, Tecan.Sila2.IBinaryStore store)
+        {
+            ConstrainedParameter = new Tecan.Sila2.IntegerDto(constrainedParameter, store);
+        }
+        
+        ///  <summary>
+        /// An Integer parameter with a MaximalInclusive constraint of 10
+        /// </summary>
+        [ProtoBuf.ProtoMemberAttribute(1)]
+        public Tecan.Sila2.IntegerDto ConstrainedParameter
+        {
+            get
+            {
+                return _constrainedParameter;
+            }
+            set
+            {
+                _constrainedParameter = value;
+            }
+        }
+        
+        ///  <summary>
+        /// Gets the command identifier for this command
+        /// </summary>
+        /// <returns>The fully qualified command identifier</returns>
+        public string CommandIdentifier
+        {
+            get
+            {
+                return "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckIntegerConstraintM" +
+                    "aximalInclusive";
+            }
+        }
+        
+        ///  <summary>
+        /// Validates the contents of this transfer object
+        /// </summary>
+        /// <returns>A validation error or null, if no validation error occurred.</returns>
+        public string GetValidationErrors()
+        {
+            return null;
+        }
+    }
+    
+    ///  <summary>
+    /// Data transfer object for the request of the Check Integer Constraint Minimal Exclusive command
+    /// </summary>
+    [ProtoBuf.ProtoContractAttribute()]
+    public class CheckIntegerConstraintMinimalExclusiveRequestDto : Tecan.Sila2.ISilaTransferObject, Tecan.Sila2.ISilaRequestObject
+    {
+        
+        private Tecan.Sila2.IntegerDto _constrainedParameter;
+        
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        public CheckIntegerConstraintMinimalExclusiveRequestDto()
+        {
+        }
+        
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        /// <param name="store">An object to organize binaries.</param>
+        ///  <param name="constrainedParameter">An Integer parameter with a MinimalExclusive constraint of -1</param>
+        public CheckIntegerConstraintMinimalExclusiveRequestDto(long constrainedParameter, Tecan.Sila2.IBinaryStore store)
+        {
+            ConstrainedParameter = new Tecan.Sila2.IntegerDto(constrainedParameter, store);
+        }
+        
+        ///  <summary>
+        /// An Integer parameter with a MinimalExclusive constraint of -1
+        /// </summary>
+        [ProtoBuf.ProtoMemberAttribute(1)]
+        public Tecan.Sila2.IntegerDto ConstrainedParameter
+        {
+            get
+            {
+                return _constrainedParameter;
+            }
+            set
+            {
+                _constrainedParameter = value;
+            }
+        }
+        
+        ///  <summary>
+        /// Gets the command identifier for this command
+        /// </summary>
+        /// <returns>The fully qualified command identifier</returns>
+        public string CommandIdentifier
+        {
+            get
+            {
+                return "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckIntegerConstraintM" +
+                    "inimalExclusive";
+            }
+        }
+        
+        ///  <summary>
+        /// Validates the contents of this transfer object
+        /// </summary>
+        /// <returns>A validation error or null, if no validation error occurred.</returns>
+        public string GetValidationErrors()
+        {
+            return null;
+        }
+    }
+    
+    ///  <summary>
+    /// Data transfer object for the request of the Check Integer Constraint Minimal Inclusive command
+    /// </summary>
+    [ProtoBuf.ProtoContractAttribute()]
+    public class CheckIntegerConstraintMinimalInclusiveRequestDto : Tecan.Sila2.ISilaTransferObject, Tecan.Sila2.ISilaRequestObject
+    {
+        
+        private Tecan.Sila2.IntegerDto _constrainedParameter;
+        
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        public CheckIntegerConstraintMinimalInclusiveRequestDto()
+        {
+        }
+        
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        /// <param name="store">An object to organize binaries.</param>
+        ///  <param name="constrainedParameter">An Integer parameter with a MinimalInclusive constraint of 0</param>
+        public CheckIntegerConstraintMinimalInclusiveRequestDto(long constrainedParameter, Tecan.Sila2.IBinaryStore store)
+        {
+            ConstrainedParameter = new Tecan.Sila2.IntegerDto(constrainedParameter, store);
+        }
+        
+        ///  <summary>
+        /// An Integer parameter with a MinimalInclusive constraint of 0
+        /// </summary>
+        [ProtoBuf.ProtoMemberAttribute(1)]
+        public Tecan.Sila2.IntegerDto ConstrainedParameter
+        {
+            get
+            {
+                return _constrainedParameter;
+            }
+            set
+            {
+                _constrainedParameter = value;
+            }
+        }
+        
+        ///  <summary>
+        /// Gets the command identifier for this command
+        /// </summary>
+        /// <returns>The fully qualified command identifier</returns>
+        public string CommandIdentifier
+        {
+            get
+            {
+                return "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckIntegerConstraintM" +
+                    "inimalInclusive";
+            }
+        }
+        
+        ///  <summary>
+        /// Validates the contents of this transfer object
+        /// </summary>
+        /// <returns>A validation error or null, if no validation error occurred.</returns>
+        public string GetValidationErrors()
+        {
+            return null;
+        }
+    }
+    
+    ///  <summary>
+    /// Data transfer object for the request of the Check Integer Constraint MinMax command
+    /// </summary>
+    [ProtoBuf.ProtoContractAttribute()]
+    public class CheckIntegerConstraintMinMaxRequestDto : Tecan.Sila2.ISilaTransferObject, Tecan.Sila2.ISilaRequestObject
+    {
+        
+        private Tecan.Sila2.IntegerDto _constrainedParameter;
+        
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        public CheckIntegerConstraintMinMaxRequestDto()
+        {
+        }
+        
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        /// <param name="store">An object to organize binaries.</param>
+        ///  <param name="constrainedParameter">An Integer parameter with a MinimalExclusive constraint of -1 and a MaximalInclusive constraint of 10</param>
+        public CheckIntegerConstraintMinMaxRequestDto(long constrainedParameter, Tecan.Sila2.IBinaryStore store)
+        {
+            ConstrainedParameter = new Tecan.Sila2.IntegerDto(constrainedParameter, store);
+        }
+        
+        ///  <summary>
+        /// An Integer parameter with a MinimalExclusive constraint of -1 and a MaximalInclusive constraint of 10
+        /// </summary>
+        [ProtoBuf.ProtoMemberAttribute(1)]
+        public Tecan.Sila2.IntegerDto ConstrainedParameter
+        {
+            get
+            {
+                return _constrainedParameter;
+            }
+            set
+            {
+                _constrainedParameter = value;
+            }
+        }
+        
+        ///  <summary>
+        /// Gets the command identifier for this command
+        /// </summary>
+        /// <returns>The fully qualified command identifier</returns>
+        public string CommandIdentifier
+        {
+            get
+            {
+                return "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckIntegerConstraintM" +
+                    "inMax";
+            }
+        }
+        
+        ///  <summary>
+        /// Validates the contents of this transfer object
+        /// </summary>
+        /// <returns>A validation error or null, if no validation error occurred.</returns>
+        public string GetValidationErrors()
+        {
+            return null;
+        }
+    }
+    
+    ///  <summary>
+    /// Data transfer object for the request of the Check Integer Constraint Unit command
+    /// </summary>
+    [ProtoBuf.ProtoContractAttribute()]
+    public class CheckIntegerConstraintUnitRequestDto : Tecan.Sila2.ISilaTransferObject, Tecan.Sila2.ISilaRequestObject
+    {
+        
+        private Tecan.Sila2.IntegerDto _constrainedParameter;
+        
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        public CheckIntegerConstraintUnitRequestDto()
+        {
+        }
+        
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        /// <param name="store">An object to organize binaries.</param>
+        ///  <param name="constrainedParameter">An Integer parameter with a Unit constraint for milliliter (mL)</param>
+        public CheckIntegerConstraintUnitRequestDto(long constrainedParameter, Tecan.Sila2.IBinaryStore store)
+        {
+            ConstrainedParameter = new Tecan.Sila2.IntegerDto(constrainedParameter, store);
+        }
+        
+        ///  <summary>
+        /// An Integer parameter with a Unit constraint for milliliter (mL)
+        /// </summary>
+        [ProtoBuf.ProtoMemberAttribute(1)]
+        public Tecan.Sila2.IntegerDto ConstrainedParameter
+        {
+            get
+            {
+                return _constrainedParameter;
+            }
+            set
+            {
+                _constrainedParameter = value;
+            }
+        }
+        
+        ///  <summary>
+        /// Gets the command identifier for this command
+        /// </summary>
+        /// <returns>The fully qualified command identifier</returns>
+        public string CommandIdentifier
+        {
+            get
+            {
+                return "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckIntegerConstraintU" +
+                    "nit";
+            }
+        }
+        
+        ///  <summary>
+        /// Validates the contents of this transfer object
+        /// </summary>
+        /// <returns>A validation error or null, if no validation error occurred.</returns>
+        public string GetValidationErrors()
+        {
+            return null;
+        }
+    }
+    
+    ///  <summary>
+    /// Data transfer object for the request of the Check Real Constraint Set command
+    /// </summary>
+    [ProtoBuf.ProtoContractAttribute()]
+    public class CheckRealConstraintSetRequestDto : Tecan.Sila2.ISilaTransferObject, Tecan.Sila2.ISilaRequestObject
+    {
+        
+        private Tecan.Sila2.RealDto _constrainedParameter;
+        
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        public CheckRealConstraintSetRequestDto()
+        {
+        }
+        
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        /// <param name="store">An object to organize binaries.</param>
+        ///  <param name="constrainedParameter">A Real parameter with a Set constraint of 1.11, 2.22, 3.33</param>
+        public CheckRealConstraintSetRequestDto(double constrainedParameter, Tecan.Sila2.IBinaryStore store)
+        {
+            ConstrainedParameter = new Tecan.Sila2.RealDto(constrainedParameter, store);
+        }
+        
+        ///  <summary>
+        /// A Real parameter with a Set constraint of 1.11, 2.22, 3.33
+        /// </summary>
+        [ProtoBuf.ProtoMemberAttribute(1)]
+        public Tecan.Sila2.RealDto ConstrainedParameter
+        {
+            get
+            {
+                return _constrainedParameter;
+            }
+            set
+            {
+                _constrainedParameter = value;
+            }
+        }
+        
+        ///  <summary>
+        /// Gets the command identifier for this command
+        /// </summary>
+        /// <returns>The fully qualified command identifier</returns>
+        public string CommandIdentifier
+        {
+            get
+            {
+                return "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckRealConstraintSet";
+            }
+        }
+        
+        ///  <summary>
+        /// Validates the contents of this transfer object
+        /// </summary>
+        /// <returns>A validation error or null, if no validation error occurred.</returns>
+        public string GetValidationErrors()
+        {
+            return null;
+        }
+    }
+    
+    ///  <summary>
+    /// Data transfer object for the request of the Check Scientifically Notated Real Limit command
+    /// </summary>
+    [ProtoBuf.ProtoContractAttribute()]
+    public class CheckScientificallyNotatedRealLimitRequestDto : Tecan.Sila2.ISilaTransferObject, Tecan.Sila2.ISilaRequestObject
+    {
+        
+        private Tecan.Sila2.RealDto _constrainedParameter;
+        
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        public CheckScientificallyNotatedRealLimitRequestDto()
+        {
+        }
+        
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        /// <param name="store">An object to organize binaries.</param>
+        ///  <param name="constrainedParameter">A Real parameter with a MinimalInclusive constraint of 1.23e-3 and a MaximalExclusive constraint of 1.23456e2</param>
+        public CheckScientificallyNotatedRealLimitRequestDto(double constrainedParameter, Tecan.Sila2.IBinaryStore store)
+        {
+            ConstrainedParameter = new Tecan.Sila2.RealDto(constrainedParameter, store);
+        }
+        
+        ///  <summary>
+        /// A Real parameter with a MinimalInclusive constraint of 1.23e-3 and a MaximalExclusive constraint of 1.23456e2
+        /// </summary>
+        [ProtoBuf.ProtoMemberAttribute(1)]
+        public Tecan.Sila2.RealDto ConstrainedParameter
+        {
+            get
+            {
+                return _constrainedParameter;
+            }
+            set
+            {
+                _constrainedParameter = value;
+            }
+        }
+        
+        ///  <summary>
+        /// Gets the command identifier for this command
+        /// </summary>
+        /// <returns>The fully qualified command identifier</returns>
+        public string CommandIdentifier
+        {
+            get
+            {
+                return "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckScientificallyNota" +
+                    "tedRealLimit";
+            }
+        }
+        
+        ///  <summary>
+        /// Validates the contents of this transfer object
+        /// </summary>
+        /// <returns>A validation error or null, if no validation error occurred.</returns>
+        public string GetValidationErrors()
+        {
+            return null;
+        }
+    }
+    
+    ///  <summary>
+    /// Data transfer object for the request of the Check Real Constraint Maximal Exclusive command
+    /// </summary>
+    [ProtoBuf.ProtoContractAttribute()]
+    public class CheckRealConstraintMaximalExclusiveRequestDto : Tecan.Sila2.ISilaTransferObject, Tecan.Sila2.ISilaRequestObject
+    {
+        
+        private Tecan.Sila2.RealDto _constrainedParameter;
+        
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        public CheckRealConstraintMaximalExclusiveRequestDto()
+        {
+        }
+        
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        /// <param name="store">An object to organize binaries.</param>
+        ///  <param name="constrainedParameter">A Real parameter with a MaximalExclusive constraint of 10.5</param>
+        public CheckRealConstraintMaximalExclusiveRequestDto(double constrainedParameter, Tecan.Sila2.IBinaryStore store)
+        {
+            ConstrainedParameter = new Tecan.Sila2.RealDto(constrainedParameter, store);
+        }
+        
+        ///  <summary>
+        /// A Real parameter with a MaximalExclusive constraint of 10.5
+        /// </summary>
+        [ProtoBuf.ProtoMemberAttribute(1)]
+        public Tecan.Sila2.RealDto ConstrainedParameter
+        {
+            get
+            {
+                return _constrainedParameter;
+            }
+            set
+            {
+                _constrainedParameter = value;
+            }
+        }
+        
+        ///  <summary>
+        /// Gets the command identifier for this command
+        /// </summary>
+        /// <returns>The fully qualified command identifier</returns>
+        public string CommandIdentifier
+        {
+            get
+            {
+                return "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckRealConstraintMaxi" +
+                    "malExclusive";
+            }
+        }
+        
+        ///  <summary>
+        /// Validates the contents of this transfer object
+        /// </summary>
+        /// <returns>A validation error or null, if no validation error occurred.</returns>
+        public string GetValidationErrors()
+        {
+            return null;
+        }
+    }
+    
+    ///  <summary>
+    /// Data transfer object for the request of the Check Real Constraint Maximal Inclusive command
+    /// </summary>
+    [ProtoBuf.ProtoContractAttribute()]
+    public class CheckRealConstraintMaximalInclusiveRequestDto : Tecan.Sila2.ISilaTransferObject, Tecan.Sila2.ISilaRequestObject
+    {
+        
+        private Tecan.Sila2.RealDto _constrainedParameter;
+        
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        public CheckRealConstraintMaximalInclusiveRequestDto()
+        {
+        }
+        
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        /// <param name="store">An object to organize binaries.</param>
+        ///  <param name="constrainedParameter">A Real parameter with a MaximalInclusive constraint of 10</param>
+        public CheckRealConstraintMaximalInclusiveRequestDto(double constrainedParameter, Tecan.Sila2.IBinaryStore store)
+        {
+            ConstrainedParameter = new Tecan.Sila2.RealDto(constrainedParameter, store);
+        }
+        
+        ///  <summary>
+        /// A Real parameter with a MaximalInclusive constraint of 10
+        /// </summary>
+        [ProtoBuf.ProtoMemberAttribute(1)]
+        public Tecan.Sila2.RealDto ConstrainedParameter
+        {
+            get
+            {
+                return _constrainedParameter;
+            }
+            set
+            {
+                _constrainedParameter = value;
+            }
+        }
+        
+        ///  <summary>
+        /// Gets the command identifier for this command
+        /// </summary>
+        /// <returns>The fully qualified command identifier</returns>
+        public string CommandIdentifier
+        {
+            get
+            {
+                return "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckRealConstraintMaxi" +
+                    "malInclusive";
+            }
+        }
+        
+        ///  <summary>
+        /// Validates the contents of this transfer object
+        /// </summary>
+        /// <returns>A validation error or null, if no validation error occurred.</returns>
+        public string GetValidationErrors()
+        {
+            return null;
+        }
+    }
+    
+    ///  <summary>
+    /// Data transfer object for the request of the Check Real Constraint Minimal Exclusive command
+    /// </summary>
+    [ProtoBuf.ProtoContractAttribute()]
+    public class CheckRealConstraintMinimalExclusiveRequestDto : Tecan.Sila2.ISilaTransferObject, Tecan.Sila2.ISilaRequestObject
+    {
+        
+        private Tecan.Sila2.RealDto _constrainedParameter;
+        
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        public CheckRealConstraintMinimalExclusiveRequestDto()
+        {
+        }
+        
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        /// <param name="store">An object to organize binaries.</param>
+        ///  <param name="constrainedParameter">A Real parameter with a MinimalExclusive constraint of 0</param>
+        public CheckRealConstraintMinimalExclusiveRequestDto(double constrainedParameter, Tecan.Sila2.IBinaryStore store)
+        {
+            ConstrainedParameter = new Tecan.Sila2.RealDto(constrainedParameter, store);
+        }
+        
+        ///  <summary>
+        /// A Real parameter with a MinimalExclusive constraint of 0
+        /// </summary>
+        [ProtoBuf.ProtoMemberAttribute(1)]
+        public Tecan.Sila2.RealDto ConstrainedParameter
+        {
+            get
+            {
+                return _constrainedParameter;
+            }
+            set
+            {
+                _constrainedParameter = value;
+            }
+        }
+        
+        ///  <summary>
+        /// Gets the command identifier for this command
+        /// </summary>
+        /// <returns>The fully qualified command identifier</returns>
+        public string CommandIdentifier
+        {
+            get
+            {
+                return "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckRealConstraintMini" +
+                    "malExclusive";
+            }
+        }
+        
+        ///  <summary>
+        /// Validates the contents of this transfer object
+        /// </summary>
+        /// <returns>A validation error or null, if no validation error occurred.</returns>
+        public string GetValidationErrors()
+        {
+            return null;
+        }
+    }
+    
+    ///  <summary>
+    /// Data transfer object for the request of the Check Real Constraint Minimal Inclusive command
+    /// </summary>
+    [ProtoBuf.ProtoContractAttribute()]
+    public class CheckRealConstraintMinimalInclusiveRequestDto : Tecan.Sila2.ISilaTransferObject, Tecan.Sila2.ISilaRequestObject
+    {
+        
+        private Tecan.Sila2.RealDto _constrainedParameter;
+        
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        public CheckRealConstraintMinimalInclusiveRequestDto()
+        {
+        }
+        
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        /// <param name="store">An object to organize binaries.</param>
+        ///  <param name="constrainedParameter">A Real parameter with a MinimalInclusive constraint of -1.5</param>
+        public CheckRealConstraintMinimalInclusiveRequestDto(double constrainedParameter, Tecan.Sila2.IBinaryStore store)
+        {
+            ConstrainedParameter = new Tecan.Sila2.RealDto(constrainedParameter, store);
+        }
+        
+        ///  <summary>
+        /// A Real parameter with a MinimalInclusive constraint of -1.5
+        /// </summary>
+        [ProtoBuf.ProtoMemberAttribute(1)]
+        public Tecan.Sila2.RealDto ConstrainedParameter
+        {
+            get
+            {
+                return _constrainedParameter;
+            }
+            set
+            {
+                _constrainedParameter = value;
+            }
+        }
+        
+        ///  <summary>
+        /// Gets the command identifier for this command
+        /// </summary>
+        /// <returns>The fully qualified command identifier</returns>
+        public string CommandIdentifier
+        {
+            get
+            {
+                return "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckRealConstraintMini" +
+                    "malInclusive";
+            }
+        }
+        
+        ///  <summary>
+        /// Validates the contents of this transfer object
+        /// </summary>
+        /// <returns>A validation error or null, if no validation error occurred.</returns>
+        public string GetValidationErrors()
+        {
+            return null;
+        }
+    }
+    
+    ///  <summary>
+    /// Data transfer object for the request of the Check Real Constraint MinMax command
+    /// </summary>
+    [ProtoBuf.ProtoContractAttribute()]
+    public class CheckRealConstraintMinMaxRequestDto : Tecan.Sila2.ISilaTransferObject, Tecan.Sila2.ISilaRequestObject
+    {
+        
+        private Tecan.Sila2.RealDto _constrainedParameter;
+        
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        public CheckRealConstraintMinMaxRequestDto()
+        {
+        }
+        
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        /// <param name="store">An object to organize binaries.</param>
+        ///  <param name="constrainedParameter">A Real parameter with a MinimalExclusive constraint of 0.333 and a MaximalInclusive constraint of 11.111</param>
+        public CheckRealConstraintMinMaxRequestDto(double constrainedParameter, Tecan.Sila2.IBinaryStore store)
+        {
+            ConstrainedParameter = new Tecan.Sila2.RealDto(constrainedParameter, store);
+        }
+        
+        ///  <summary>
+        /// A Real parameter with a MinimalExclusive constraint of 0.333 and a MaximalInclusive constraint of 11.111
+        /// </summary>
+        [ProtoBuf.ProtoMemberAttribute(1)]
+        public Tecan.Sila2.RealDto ConstrainedParameter
+        {
+            get
+            {
+                return _constrainedParameter;
+            }
+            set
+            {
+                _constrainedParameter = value;
+            }
+        }
+        
+        ///  <summary>
+        /// Gets the command identifier for this command
+        /// </summary>
+        /// <returns>The fully qualified command identifier</returns>
+        public string CommandIdentifier
+        {
+            get
+            {
+                return "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckRealConstraintMinM" +
+                    "ax";
+            }
+        }
+        
+        ///  <summary>
+        /// Validates the contents of this transfer object
+        /// </summary>
+        /// <returns>A validation error or null, if no validation error occurred.</returns>
+        public string GetValidationErrors()
+        {
+            return null;
+        }
+    }
+    
+    ///  <summary>
+    /// Data transfer object for the request of the Check Real Constraint Unit command
+    /// </summary>
+    [ProtoBuf.ProtoContractAttribute()]
+    public class CheckRealConstraintUnitRequestDto : Tecan.Sila2.ISilaTransferObject, Tecan.Sila2.ISilaRequestObject
+    {
+        
+        private Tecan.Sila2.RealDto _constrainedParameter;
+        
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        public CheckRealConstraintUnitRequestDto()
+        {
+        }
+        
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        /// <param name="store">An object to organize binaries.</param>
+        ///  <param name="constrainedParameter">A Real parameter with a Unit constraint for degree celsius (°C)</param>
+        public CheckRealConstraintUnitRequestDto(double constrainedParameter, Tecan.Sila2.IBinaryStore store)
+        {
+            ConstrainedParameter = new Tecan.Sila2.RealDto(constrainedParameter, store);
+        }
+        
+        ///  <summary>
+        /// A Real parameter with a Unit constraint for degree celsius (°C)
+        /// </summary>
+        [ProtoBuf.ProtoMemberAttribute(1)]
+        public Tecan.Sila2.RealDto ConstrainedParameter
+        {
+            get
+            {
+                return _constrainedParameter;
+            }
+            set
+            {
+                _constrainedParameter = value;
+            }
+        }
+        
+        ///  <summary>
+        /// Gets the command identifier for this command
+        /// </summary>
+        /// <returns>The fully qualified command identifier</returns>
+        public string CommandIdentifier
+        {
+            get
+            {
+                return "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckRealConstraintUnit" +
+                    "";
+            }
+        }
+        
+        ///  <summary>
+        /// Validates the contents of this transfer object
+        /// </summary>
+        /// <returns>A validation error or null, if no validation error occurred.</returns>
+        public string GetValidationErrors()
+        {
+            return null;
+        }
+    }
+    
+    ///  <summary>
+    /// Data transfer object for the request of the Check Date Constraint Set command
+    /// </summary>
+    [ProtoBuf.ProtoContractAttribute()]
+    public class CheckDateConstraintSetRequestDto : Tecan.Sila2.ISilaTransferObject, Tecan.Sila2.ISilaRequestObject
+    {
+        
+        private Tecan.Sila2.DateDto _constrainedParameter;
+        
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        public CheckDateConstraintSetRequestDto()
+        {
+        }
+        
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        /// <param name="store">An object to organize binaries.</param>
+        ///  <param name="constrainedParameter">A Date parameter with a Set constraint of 2022-09-10Z, 2022-09-11-00:15, 2022-09-12+11:30</param>
+        public CheckDateConstraintSetRequestDto(System.DateTimeOffset constrainedParameter, Tecan.Sila2.IBinaryStore store)
+        {
+            ConstrainedParameter = new Tecan.Sila2.DateDto(constrainedParameter, store);
+        }
+        
+        ///  <summary>
+        /// A Date parameter with a Set constraint of 2022-09-10Z, 2022-09-11-00:15, 2022-09-12+11:30
+        /// </summary>
+        [ProtoBuf.ProtoMemberAttribute(1)]
+        public Tecan.Sila2.DateDto ConstrainedParameter
+        {
+            get
+            {
+                return _constrainedParameter;
+            }
+            set
+            {
+                _constrainedParameter = value;
+            }
+        }
+        
+        ///  <summary>
+        /// Gets the command identifier for this command
+        /// </summary>
+        /// <returns>The fully qualified command identifier</returns>
+        public string CommandIdentifier
+        {
+            get
+            {
+                return "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckDateConstraintSet";
+            }
+        }
+        
+        ///  <summary>
+        /// Validates the contents of this transfer object
+        /// </summary>
+        /// <returns>A validation error or null, if no validation error occurred.</returns>
+        public string GetValidationErrors()
+        {
+            return null;
+        }
+    }
+    
+    ///  <summary>
+    /// Data transfer object for the request of the Check Date Constraint Maximal Exclusive command
+    /// </summary>
+    [ProtoBuf.ProtoContractAttribute()]
+    public class CheckDateConstraintMaximalExclusiveRequestDto : Tecan.Sila2.ISilaTransferObject, Tecan.Sila2.ISilaRequestObject
+    {
+        
+        private Tecan.Sila2.DateDto _constrainedParameter;
+        
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        public CheckDateConstraintMaximalExclusiveRequestDto()
+        {
+        }
+        
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        /// <param name="store">An object to organize binaries.</param>
+        ///  <param name="constrainedParameter">A Date parameter with a MaximalExclusive constraint of 2019-12-31+02:30</param>
+        public CheckDateConstraintMaximalExclusiveRequestDto(System.DateTimeOffset constrainedParameter, Tecan.Sila2.IBinaryStore store)
+        {
+            ConstrainedParameter = new Tecan.Sila2.DateDto(constrainedParameter, store);
+        }
+        
+        ///  <summary>
+        /// A Date parameter with a MaximalExclusive constraint of 2019-12-31+02:30
+        /// </summary>
+        [ProtoBuf.ProtoMemberAttribute(1)]
+        public Tecan.Sila2.DateDto ConstrainedParameter
+        {
+            get
+            {
+                return _constrainedParameter;
+            }
+            set
+            {
+                _constrainedParameter = value;
+            }
+        }
+        
+        ///  <summary>
+        /// Gets the command identifier for this command
+        /// </summary>
+        /// <returns>The fully qualified command identifier</returns>
+        public string CommandIdentifier
+        {
+            get
+            {
+                return "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckDateConstraintMaxi" +
+                    "malExclusive";
+            }
+        }
+        
+        ///  <summary>
+        /// Validates the contents of this transfer object
+        /// </summary>
+        /// <returns>A validation error or null, if no validation error occurred.</returns>
+        public string GetValidationErrors()
+        {
+            return null;
+        }
+    }
+    
+    ///  <summary>
+    /// Data transfer object for the request of the Check Date Constraint Maximal Inclusive command
+    /// </summary>
+    [ProtoBuf.ProtoContractAttribute()]
+    public class CheckDateConstraintMaximalInclusiveRequestDto : Tecan.Sila2.ISilaTransferObject, Tecan.Sila2.ISilaRequestObject
+    {
+        
+        private Tecan.Sila2.DateDto _constrainedParameter;
+        
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        public CheckDateConstraintMaximalInclusiveRequestDto()
+        {
+        }
+        
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        /// <param name="store">An object to organize binaries.</param>
+        ///  <param name="constrainedParameter">A Date parameter with a MaximalInclusive constraint of 2025-12-31-01:30</param>
+        public CheckDateConstraintMaximalInclusiveRequestDto(System.DateTimeOffset constrainedParameter, Tecan.Sila2.IBinaryStore store)
+        {
+            ConstrainedParameter = new Tecan.Sila2.DateDto(constrainedParameter, store);
+        }
+        
+        ///  <summary>
+        /// A Date parameter with a MaximalInclusive constraint of 2025-12-31-01:30
+        /// </summary>
+        [ProtoBuf.ProtoMemberAttribute(1)]
+        public Tecan.Sila2.DateDto ConstrainedParameter
+        {
+            get
+            {
+                return _constrainedParameter;
+            }
+            set
+            {
+                _constrainedParameter = value;
+            }
+        }
+        
+        ///  <summary>
+        /// Gets the command identifier for this command
+        /// </summary>
+        /// <returns>The fully qualified command identifier</returns>
+        public string CommandIdentifier
+        {
+            get
+            {
+                return "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckDateConstraintMaxi" +
+                    "malInclusive";
+            }
+        }
+        
+        ///  <summary>
+        /// Validates the contents of this transfer object
+        /// </summary>
+        /// <returns>A validation error or null, if no validation error occurred.</returns>
+        public string GetValidationErrors()
+        {
+            return null;
+        }
+    }
+    
+    ///  <summary>
+    /// Data transfer object for the request of the Check Date Constraint Minimal Exclusive command
+    /// </summary>
+    [ProtoBuf.ProtoContractAttribute()]
+    public class CheckDateConstraintMinimalExclusiveRequestDto : Tecan.Sila2.ISilaTransferObject, Tecan.Sila2.ISilaRequestObject
+    {
+        
+        private Tecan.Sila2.DateDto _constrainedParameter;
+        
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        public CheckDateConstraintMinimalExclusiveRequestDto()
+        {
+        }
+        
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        /// <param name="store">An object to organize binaries.</param>
+        ///  <param name="constrainedParameter">A Date parameter with a MinimalExclusive constraint of 2019-01-01-01:00</param>
+        public CheckDateConstraintMinimalExclusiveRequestDto(System.DateTimeOffset constrainedParameter, Tecan.Sila2.IBinaryStore store)
+        {
+            ConstrainedParameter = new Tecan.Sila2.DateDto(constrainedParameter, store);
+        }
+        
+        ///  <summary>
+        /// A Date parameter with a MinimalExclusive constraint of 2019-01-01-01:00
+        /// </summary>
+        [ProtoBuf.ProtoMemberAttribute(1)]
+        public Tecan.Sila2.DateDto ConstrainedParameter
+        {
+            get
+            {
+                return _constrainedParameter;
+            }
+            set
+            {
+                _constrainedParameter = value;
+            }
+        }
+        
+        ///  <summary>
+        /// Gets the command identifier for this command
+        /// </summary>
+        /// <returns>The fully qualified command identifier</returns>
+        public string CommandIdentifier
+        {
+            get
+            {
+                return "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckDateConstraintMini" +
+                    "malExclusive";
+            }
+        }
+        
+        ///  <summary>
+        /// Validates the contents of this transfer object
+        /// </summary>
+        /// <returns>A validation error or null, if no validation error occurred.</returns>
+        public string GetValidationErrors()
+        {
+            return null;
+        }
+    }
+    
+    ///  <summary>
+    /// Data transfer object for the request of the Check Date Constraint Minimal Inclusive command
+    /// </summary>
+    [ProtoBuf.ProtoContractAttribute()]
+    public class CheckDateConstraintMinimalInclusiveRequestDto : Tecan.Sila2.ISilaTransferObject, Tecan.Sila2.ISilaRequestObject
+    {
+        
+        private Tecan.Sila2.DateDto _constrainedParameter;
+        
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        public CheckDateConstraintMinimalInclusiveRequestDto()
+        {
+        }
+        
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        /// <param name="store">An object to organize binaries.</param>
+        ///  <param name="constrainedParameter">A Date parameter with a MinimalInclusive constraint of 1789-07-14+02:00</param>
+        public CheckDateConstraintMinimalInclusiveRequestDto(System.DateTimeOffset constrainedParameter, Tecan.Sila2.IBinaryStore store)
+        {
+            ConstrainedParameter = new Tecan.Sila2.DateDto(constrainedParameter, store);
+        }
+        
+        ///  <summary>
+        /// A Date parameter with a MinimalInclusive constraint of 1789-07-14+02:00
+        /// </summary>
+        [ProtoBuf.ProtoMemberAttribute(1)]
+        public Tecan.Sila2.DateDto ConstrainedParameter
+        {
+            get
+            {
+                return _constrainedParameter;
+            }
+            set
+            {
+                _constrainedParameter = value;
+            }
+        }
+        
+        ///  <summary>
+        /// Gets the command identifier for this command
+        /// </summary>
+        /// <returns>The fully qualified command identifier</returns>
+        public string CommandIdentifier
+        {
+            get
+            {
+                return "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckDateConstraintMini" +
+                    "malInclusive";
+            }
+        }
+        
+        ///  <summary>
+        /// Validates the contents of this transfer object
+        /// </summary>
+        /// <returns>A validation error or null, if no validation error occurred.</returns>
+        public string GetValidationErrors()
+        {
+            return null;
+        }
+    }
+    
+    ///  <summary>
+    /// Data transfer object for the request of the Check Date Constraint MinMax command
+    /// </summary>
+    [ProtoBuf.ProtoContractAttribute()]
+    public class CheckDateConstraintMinMaxRequestDto : Tecan.Sila2.ISilaTransferObject, Tecan.Sila2.ISilaRequestObject
+    {
+        
+        private Tecan.Sila2.DateDto _constrainedParameter;
+        
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        public CheckDateConstraintMinMaxRequestDto()
+        {
+        }
+        
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        /// <param name="store">An object to organize binaries.</param>
+        ///  <param name="constrainedParameter">A Date parameter with a MinimalInclusive constraint of 1976-06-10+02:00 and a MaximalExclusive constraint of 2076-06-10+02:00</param>
+        public CheckDateConstraintMinMaxRequestDto(System.DateTimeOffset constrainedParameter, Tecan.Sila2.IBinaryStore store)
+        {
+            ConstrainedParameter = new Tecan.Sila2.DateDto(constrainedParameter, store);
+        }
+        
+        ///  <summary>
+        /// A Date parameter with a MinimalInclusive constraint of 1976-06-10+02:00 and a MaximalExclusive constraint of 2076-06-10+02:00
+        /// </summary>
+        [ProtoBuf.ProtoMemberAttribute(1)]
+        public Tecan.Sila2.DateDto ConstrainedParameter
+        {
+            get
+            {
+                return _constrainedParameter;
+            }
+            set
+            {
+                _constrainedParameter = value;
+            }
+        }
+        
+        ///  <summary>
+        /// Gets the command identifier for this command
+        /// </summary>
+        /// <returns>The fully qualified command identifier</returns>
+        public string CommandIdentifier
+        {
+            get
+            {
+                return "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckDateConstraintMinM" +
+                    "ax";
+            }
+        }
+        
+        ///  <summary>
+        /// Validates the contents of this transfer object
+        /// </summary>
+        /// <returns>A validation error or null, if no validation error occurred.</returns>
+        public string GetValidationErrors()
+        {
+            return null;
+        }
+    }
+    
+    ///  <summary>
+    /// Data transfer object for the request of the Check Time Constraint Set command
+    /// </summary>
+    [ProtoBuf.ProtoContractAttribute()]
+    public class CheckTimeConstraintSetRequestDto : Tecan.Sila2.ISilaTransferObject, Tecan.Sila2.ISilaRequestObject
+    {
+        
+        private Tecan.Sila2.TimeDto _constrainedParameter;
+        
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        public CheckTimeConstraintSetRequestDto()
+        {
+        }
+        
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        /// <param name="store">An object to organize binaries.</param>
+        ///  <param name="constrainedParameter">A Time parameter with a Set constraint of 18:59:59+02:00, 19:00:00-00:15, 19:59:00Z</param>
+        public CheckTimeConstraintSetRequestDto(System.TimeSpan constrainedParameter, Tecan.Sila2.IBinaryStore store)
+        {
+            ConstrainedParameter = new Tecan.Sila2.TimeDto(constrainedParameter, store);
+        }
+        
+        ///  <summary>
+        /// A Time parameter with a Set constraint of 18:59:59+02:00, 19:00:00-00:15, 19:59:00Z
+        /// </summary>
+        [ProtoBuf.ProtoMemberAttribute(1)]
+        public Tecan.Sila2.TimeDto ConstrainedParameter
+        {
+            get
+            {
+                return _constrainedParameter;
+            }
+            set
+            {
+                _constrainedParameter = value;
+            }
+        }
+        
+        ///  <summary>
+        /// Gets the command identifier for this command
+        /// </summary>
+        /// <returns>The fully qualified command identifier</returns>
+        public string CommandIdentifier
+        {
+            get
+            {
+                return "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckTimeConstraintSet";
+            }
+        }
+        
+        ///  <summary>
+        /// Validates the contents of this transfer object
+        /// </summary>
+        /// <returns>A validation error or null, if no validation error occurred.</returns>
+        public string GetValidationErrors()
+        {
+            return null;
+        }
+    }
+    
+    ///  <summary>
+    /// Data transfer object for the request of the Check Time Constraint Maximal Exclusive command
+    /// </summary>
+    [ProtoBuf.ProtoContractAttribute()]
+    public class CheckTimeConstraintMaximalExclusiveRequestDto : Tecan.Sila2.ISilaTransferObject, Tecan.Sila2.ISilaRequestObject
+    {
+        
+        private Tecan.Sila2.TimeDto _constrainedParameter;
+        
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        public CheckTimeConstraintMaximalExclusiveRequestDto()
+        {
+        }
+        
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        /// <param name="store">An object to organize binaries.</param>
+        ///  <param name="constrainedParameter">A Time parameter with a MaximalExclusive constraint of 12:00:00+00:15</param>
+        public CheckTimeConstraintMaximalExclusiveRequestDto(System.TimeSpan constrainedParameter, Tecan.Sila2.IBinaryStore store)
+        {
+            ConstrainedParameter = new Tecan.Sila2.TimeDto(constrainedParameter, store);
+        }
+        
+        ///  <summary>
+        /// A Time parameter with a MaximalExclusive constraint of 12:00:00+00:15
+        /// </summary>
+        [ProtoBuf.ProtoMemberAttribute(1)]
+        public Tecan.Sila2.TimeDto ConstrainedParameter
+        {
+            get
+            {
+                return _constrainedParameter;
+            }
+            set
+            {
+                _constrainedParameter = value;
+            }
+        }
+        
+        ///  <summary>
+        /// Gets the command identifier for this command
+        /// </summary>
+        /// <returns>The fully qualified command identifier</returns>
+        public string CommandIdentifier
+        {
+            get
+            {
+                return "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckTimeConstraintMaxi" +
+                    "malExclusive";
+            }
+        }
+        
+        ///  <summary>
+        /// Validates the contents of this transfer object
+        /// </summary>
+        /// <returns>A validation error or null, if no validation error occurred.</returns>
+        public string GetValidationErrors()
+        {
+            return null;
+        }
+    }
+    
+    ///  <summary>
+    /// Data transfer object for the request of the Check Time Constraint Maximal Inclusive command
+    /// </summary>
+    [ProtoBuf.ProtoContractAttribute()]
+    public class CheckTimeConstraintMaximalInclusiveRequestDto : Tecan.Sila2.ISilaTransferObject, Tecan.Sila2.ISilaRequestObject
+    {
+        
+        private Tecan.Sila2.TimeDto _constrainedParameter;
+        
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        public CheckTimeConstraintMaximalInclusiveRequestDto()
+        {
+        }
+        
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        /// <param name="store">An object to organize binaries.</param>
+        ///  <param name="constrainedParameter">A Time parameter with a MaximalInclusive constraint of 18:59:59+02:00</param>
+        public CheckTimeConstraintMaximalInclusiveRequestDto(System.TimeSpan constrainedParameter, Tecan.Sila2.IBinaryStore store)
+        {
+            ConstrainedParameter = new Tecan.Sila2.TimeDto(constrainedParameter, store);
+        }
+        
+        ///  <summary>
+        /// A Time parameter with a MaximalInclusive constraint of 18:59:59+02:00
+        /// </summary>
+        [ProtoBuf.ProtoMemberAttribute(1)]
+        public Tecan.Sila2.TimeDto ConstrainedParameter
+        {
+            get
+            {
+                return _constrainedParameter;
+            }
+            set
+            {
+                _constrainedParameter = value;
+            }
+        }
+        
+        ///  <summary>
+        /// Gets the command identifier for this command
+        /// </summary>
+        /// <returns>The fully qualified command identifier</returns>
+        public string CommandIdentifier
+        {
+            get
+            {
+                return "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckTimeConstraintMaxi" +
+                    "malInclusive";
+            }
+        }
+        
+        ///  <summary>
+        /// Validates the contents of this transfer object
+        /// </summary>
+        /// <returns>A validation error or null, if no validation error occurred.</returns>
+        public string GetValidationErrors()
+        {
+            return null;
+        }
+    }
+    
+    ///  <summary>
+    /// Data transfer object for the request of the Check Time Constraint Minimal Exclusive command
+    /// </summary>
+    [ProtoBuf.ProtoContractAttribute()]
+    public class CheckTimeConstraintMinimalExclusiveRequestDto : Tecan.Sila2.ISilaTransferObject, Tecan.Sila2.ISilaRequestObject
+    {
+        
+        private Tecan.Sila2.TimeDto _constrainedParameter;
+        
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        public CheckTimeConstraintMinimalExclusiveRequestDto()
+        {
+        }
+        
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        /// <param name="store">An object to organize binaries.</param>
+        ///  <param name="constrainedParameter">A Time parameter with a MinimalExclusive constraint of 01:02:03+04:00</param>
+        public CheckTimeConstraintMinimalExclusiveRequestDto(System.TimeSpan constrainedParameter, Tecan.Sila2.IBinaryStore store)
+        {
+            ConstrainedParameter = new Tecan.Sila2.TimeDto(constrainedParameter, store);
+        }
+        
+        ///  <summary>
+        /// A Time parameter with a MinimalExclusive constraint of 01:02:03+04:00
+        /// </summary>
+        [ProtoBuf.ProtoMemberAttribute(1)]
+        public Tecan.Sila2.TimeDto ConstrainedParameter
+        {
+            get
+            {
+                return _constrainedParameter;
+            }
+            set
+            {
+                _constrainedParameter = value;
+            }
+        }
+        
+        ///  <summary>
+        /// Gets the command identifier for this command
+        /// </summary>
+        /// <returns>The fully qualified command identifier</returns>
+        public string CommandIdentifier
+        {
+            get
+            {
+                return "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckTimeConstraintMini" +
+                    "malExclusive";
+            }
+        }
+        
+        ///  <summary>
+        /// Validates the contents of this transfer object
+        /// </summary>
+        /// <returns>A validation error or null, if no validation error occurred.</returns>
+        public string GetValidationErrors()
+        {
+            return null;
+        }
+    }
+    
+    ///  <summary>
+    /// Data transfer object for the request of the Check Time Constraint Minimal Inclusive command
+    /// </summary>
+    [ProtoBuf.ProtoContractAttribute()]
+    public class CheckTimeConstraintMinimalInclusiveRequestDto : Tecan.Sila2.ISilaTransferObject, Tecan.Sila2.ISilaRequestObject
+    {
+        
+        private Tecan.Sila2.TimeDto _constrainedParameter;
+        
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        public CheckTimeConstraintMinimalInclusiveRequestDto()
+        {
+        }
+        
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        /// <param name="store">An object to organize binaries.</param>
+        ///  <param name="constrainedParameter">A Time parameter with a MinimalInclusive constraint of 08:00:00Z</param>
+        public CheckTimeConstraintMinimalInclusiveRequestDto(System.TimeSpan constrainedParameter, Tecan.Sila2.IBinaryStore store)
+        {
+            ConstrainedParameter = new Tecan.Sila2.TimeDto(constrainedParameter, store);
+        }
+        
+        ///  <summary>
+        /// A Time parameter with a MinimalInclusive constraint of 08:00:00Z
+        /// </summary>
+        [ProtoBuf.ProtoMemberAttribute(1)]
+        public Tecan.Sila2.TimeDto ConstrainedParameter
+        {
+            get
+            {
+                return _constrainedParameter;
+            }
+            set
+            {
+                _constrainedParameter = value;
+            }
+        }
+        
+        ///  <summary>
+        /// Gets the command identifier for this command
+        /// </summary>
+        /// <returns>The fully qualified command identifier</returns>
+        public string CommandIdentifier
+        {
+            get
+            {
+                return "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckTimeConstraintMini" +
+                    "malInclusive";
+            }
+        }
+        
+        ///  <summary>
+        /// Validates the contents of this transfer object
+        /// </summary>
+        /// <returns>A validation error or null, if no validation error occurred.</returns>
+        public string GetValidationErrors()
+        {
+            return null;
+        }
+    }
+    
+    ///  <summary>
+    /// Data transfer object for the request of the Check Time Constraint MinMax command
+    /// </summary>
+    [ProtoBuf.ProtoContractAttribute()]
+    public class CheckTimeConstraintMinMaxRequestDto : Tecan.Sila2.ISilaTransferObject, Tecan.Sila2.ISilaRequestObject
+    {
+        
+        private Tecan.Sila2.TimeDto _constrainedParameter;
+        
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        public CheckTimeConstraintMinMaxRequestDto()
+        {
+        }
+        
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        /// <param name="store">An object to organize binaries.</param>
+        ///  <param name="constrainedParameter">A Time parameter with a MinimalExclusive constraint of 08:00:00-02:30 and a MaximalInclusive constraint of 18:59:59+02:30</param>
+        public CheckTimeConstraintMinMaxRequestDto(System.TimeSpan constrainedParameter, Tecan.Sila2.IBinaryStore store)
+        {
+            ConstrainedParameter = new Tecan.Sila2.TimeDto(constrainedParameter, store);
+        }
+        
+        ///  <summary>
+        /// A Time parameter with a MinimalExclusive constraint of 08:00:00-02:30 and a MaximalInclusive constraint of 18:59:59+02:30
+        /// </summary>
+        [ProtoBuf.ProtoMemberAttribute(1)]
+        public Tecan.Sila2.TimeDto ConstrainedParameter
+        {
+            get
+            {
+                return _constrainedParameter;
+            }
+            set
+            {
+                _constrainedParameter = value;
+            }
+        }
+        
+        ///  <summary>
+        /// Gets the command identifier for this command
+        /// </summary>
+        /// <returns>The fully qualified command identifier</returns>
+        public string CommandIdentifier
+        {
+            get
+            {
+                return "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckTimeConstraintMinM" +
+                    "ax";
+            }
+        }
+        
+        ///  <summary>
+        /// Validates the contents of this transfer object
+        /// </summary>
+        /// <returns>A validation error or null, if no validation error occurred.</returns>
+        public string GetValidationErrors()
+        {
+            return null;
+        }
+    }
+    
+    ///  <summary>
+    /// Data transfer object for the request of the Check Timestamp Constraint Set command
+    /// </summary>
+    [ProtoBuf.ProtoContractAttribute()]
+    public class CheckTimestampConstraintSetRequestDto : Tecan.Sila2.ISilaTransferObject, Tecan.Sila2.ISilaRequestObject
+    {
+        
+        private Tecan.Sila2.TimestampDto _constrainedParameter;
+        
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        public CheckTimestampConstraintSetRequestDto()
+        {
+        }
+        
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        /// <param name="store">An object to organize binaries.</param>
+        ///  <param name="constrainedParameter">A Timestamp parameter with a Set constraint of 1969-07-16T13:32:00Z, 19690720T201740Z, 1969-07-24T16:50:35+00:00</param>
+        public CheckTimestampConstraintSetRequestDto(System.DateTimeOffset constrainedParameter, Tecan.Sila2.IBinaryStore store)
+        {
+            ConstrainedParameter = new Tecan.Sila2.TimestampDto(constrainedParameter, store);
+        }
+        
+        ///  <summary>
+        /// A Timestamp parameter with a Set constraint of 1969-07-16T13:32:00Z, 19690720T201740Z, 1969-07-24T16:50:35+00:00
+        /// </summary>
+        [ProtoBuf.ProtoMemberAttribute(1)]
+        public Tecan.Sila2.TimestampDto ConstrainedParameter
+        {
+            get
+            {
+                return _constrainedParameter;
+            }
+            set
+            {
+                _constrainedParameter = value;
+            }
+        }
+        
+        ///  <summary>
+        /// Gets the command identifier for this command
+        /// </summary>
+        /// <returns>The fully qualified command identifier</returns>
+        public string CommandIdentifier
+        {
+            get
+            {
+                return "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckTimestampConstrain" +
+                    "tSet";
+            }
+        }
+        
+        ///  <summary>
+        /// Validates the contents of this transfer object
+        /// </summary>
+        /// <returns>A validation error or null, if no validation error occurred.</returns>
+        public string GetValidationErrors()
+        {
+            return null;
+        }
+    }
+    
+    ///  <summary>
+    /// Data transfer object for the request of the Check Timestamp Constraint Maximal Exclusive command
+    /// </summary>
+    [ProtoBuf.ProtoContractAttribute()]
+    public class CheckTimestampConstraintMaximalExclusiveRequestDto : Tecan.Sila2.ISilaTransferObject, Tecan.Sila2.ISilaRequestObject
+    {
+        
+        private Tecan.Sila2.TimestampDto _constrainedParameter;
+        
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        public CheckTimestampConstraintMaximalExclusiveRequestDto()
+        {
+        }
+        
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        /// <param name="store">An object to organize binaries.</param>
+        ///  <param name="constrainedParameter">A Timestamp parameter with a MaximalExclusive constraint of 2022-09-07T16:00:00+02:00</param>
+        public CheckTimestampConstraintMaximalExclusiveRequestDto(System.DateTimeOffset constrainedParameter, Tecan.Sila2.IBinaryStore store)
+        {
+            ConstrainedParameter = new Tecan.Sila2.TimestampDto(constrainedParameter, store);
+        }
+        
+        ///  <summary>
+        /// A Timestamp parameter with a MaximalExclusive constraint of 2022-09-07T16:00:00+02:00
+        /// </summary>
+        [ProtoBuf.ProtoMemberAttribute(1)]
+        public Tecan.Sila2.TimestampDto ConstrainedParameter
+        {
+            get
+            {
+                return _constrainedParameter;
+            }
+            set
+            {
+                _constrainedParameter = value;
+            }
+        }
+        
+        ///  <summary>
+        /// Gets the command identifier for this command
+        /// </summary>
+        /// <returns>The fully qualified command identifier</returns>
+        public string CommandIdentifier
+        {
+            get
+            {
+                return "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckTimestampConstrain" +
+                    "tMaximalExclusive";
+            }
+        }
+        
+        ///  <summary>
+        /// Validates the contents of this transfer object
+        /// </summary>
+        /// <returns>A validation error or null, if no validation error occurred.</returns>
+        public string GetValidationErrors()
+        {
+            return null;
+        }
+    }
+    
+    ///  <summary>
+    /// Data transfer object for the request of the Check Timestamp Constraint Maximal Inclusive command
+    /// </summary>
+    [ProtoBuf.ProtoContractAttribute()]
+    public class CheckTimestampConstraintMaximalInclusiveRequestDto : Tecan.Sila2.ISilaTransferObject, Tecan.Sila2.ISilaRequestObject
+    {
+        
+        private Tecan.Sila2.TimestampDto _constrainedParameter;
+        
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        public CheckTimestampConstraintMaximalInclusiveRequestDto()
+        {
+        }
+        
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        /// <param name="store">An object to organize binaries.</param>
+        ///  <param name="constrainedParameter">A Timestamp parameter with a MaximalInclusive constraint of 2025-12-31T13:59:59-01:30</param>
+        public CheckTimestampConstraintMaximalInclusiveRequestDto(System.DateTimeOffset constrainedParameter, Tecan.Sila2.IBinaryStore store)
+        {
+            ConstrainedParameter = new Tecan.Sila2.TimestampDto(constrainedParameter, store);
+        }
+        
+        ///  <summary>
+        /// A Timestamp parameter with a MaximalInclusive constraint of 2025-12-31T13:59:59-01:30
+        /// </summary>
+        [ProtoBuf.ProtoMemberAttribute(1)]
+        public Tecan.Sila2.TimestampDto ConstrainedParameter
+        {
+            get
+            {
+                return _constrainedParameter;
+            }
+            set
+            {
+                _constrainedParameter = value;
+            }
+        }
+        
+        ///  <summary>
+        /// Gets the command identifier for this command
+        /// </summary>
+        /// <returns>The fully qualified command identifier</returns>
+        public string CommandIdentifier
+        {
+            get
+            {
+                return "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckTimestampConstrain" +
+                    "tMaximalInclusive";
+            }
+        }
+        
+        ///  <summary>
+        /// Validates the contents of this transfer object
+        /// </summary>
+        /// <returns>A validation error or null, if no validation error occurred.</returns>
+        public string GetValidationErrors()
+        {
+            return null;
+        }
+    }
+    
+    ///  <summary>
+    /// Data transfer object for the request of the Check Timestamp Constraint Minimal Exclusive command
+    /// </summary>
+    [ProtoBuf.ProtoContractAttribute()]
+    public class CheckTimestampConstraintMinimalExclusiveRequestDto : Tecan.Sila2.ISilaTransferObject, Tecan.Sila2.ISilaRequestObject
+    {
+        
+        private Tecan.Sila2.TimestampDto _constrainedParameter;
+        
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        public CheckTimestampConstraintMinimalExclusiveRequestDto()
+        {
+        }
+        
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        /// <param name="store">An object to organize binaries.</param>
+        ///  <param name="constrainedParameter">A Timestamp parameter with a MinimalExclusive constraint of 2019-01-01T00:00:00-01:00</param>
+        public CheckTimestampConstraintMinimalExclusiveRequestDto(System.DateTimeOffset constrainedParameter, Tecan.Sila2.IBinaryStore store)
+        {
+            ConstrainedParameter = new Tecan.Sila2.TimestampDto(constrainedParameter, store);
+        }
+        
+        ///  <summary>
+        /// A Timestamp parameter with a MinimalExclusive constraint of 2019-01-01T00:00:00-01:00
+        /// </summary>
+        [ProtoBuf.ProtoMemberAttribute(1)]
+        public Tecan.Sila2.TimestampDto ConstrainedParameter
+        {
+            get
+            {
+                return _constrainedParameter;
+            }
+            set
+            {
+                _constrainedParameter = value;
+            }
+        }
+        
+        ///  <summary>
+        /// Gets the command identifier for this command
+        /// </summary>
+        /// <returns>The fully qualified command identifier</returns>
+        public string CommandIdentifier
+        {
+            get
+            {
+                return "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckTimestampConstrain" +
+                    "tMinimalExclusive";
+            }
+        }
+        
+        ///  <summary>
+        /// Validates the contents of this transfer object
+        /// </summary>
+        /// <returns>A validation error or null, if no validation error occurred.</returns>
+        public string GetValidationErrors()
+        {
+            return null;
+        }
+    }
+    
+    ///  <summary>
+    /// Data transfer object for the request of the Check Timestamp Constraint Minimal Inclusive command
+    /// </summary>
+    [ProtoBuf.ProtoContractAttribute()]
+    public class CheckTimestampConstraintMinimalInclusiveRequestDto : Tecan.Sila2.ISilaTransferObject, Tecan.Sila2.ISilaRequestObject
+    {
+        
+        private Tecan.Sila2.TimestampDto _constrainedParameter;
+        
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        public CheckTimestampConstraintMinimalInclusiveRequestDto()
+        {
+        }
+        
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        /// <param name="store">An object to organize binaries.</param>
+        ///  <param name="constrainedParameter">A Timestamp parameter with a MinimalInclusive constraint of 2022-09-07T13:48:59+02:00</param>
+        public CheckTimestampConstraintMinimalInclusiveRequestDto(System.DateTimeOffset constrainedParameter, Tecan.Sila2.IBinaryStore store)
+        {
+            ConstrainedParameter = new Tecan.Sila2.TimestampDto(constrainedParameter, store);
+        }
+        
+        ///  <summary>
+        /// A Timestamp parameter with a MinimalInclusive constraint of 2022-09-07T13:48:59+02:00
+        /// </summary>
+        [ProtoBuf.ProtoMemberAttribute(1)]
+        public Tecan.Sila2.TimestampDto ConstrainedParameter
+        {
+            get
+            {
+                return _constrainedParameter;
+            }
+            set
+            {
+                _constrainedParameter = value;
+            }
+        }
+        
+        ///  <summary>
+        /// Gets the command identifier for this command
+        /// </summary>
+        /// <returns>The fully qualified command identifier</returns>
+        public string CommandIdentifier
+        {
+            get
+            {
+                return "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckTimestampConstrain" +
+                    "tMinimalInclusive";
+            }
+        }
+        
+        ///  <summary>
+        /// Validates the contents of this transfer object
+        /// </summary>
+        /// <returns>A validation error or null, if no validation error occurred.</returns>
+        public string GetValidationErrors()
+        {
+            return null;
+        }
+    }
+    
+    ///  <summary>
+    /// Data transfer object for the request of the Check Timestamp Constraint MinMax command
+    /// </summary>
+    [ProtoBuf.ProtoContractAttribute()]
+    public class CheckTimestampConstraintMinMaxRequestDto : Tecan.Sila2.ISilaTransferObject, Tecan.Sila2.ISilaRequestObject
+    {
+        
+        private Tecan.Sila2.TimestampDto _constrainedParameter;
+        
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        public CheckTimestampConstraintMinMaxRequestDto()
+        {
+        }
+        
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        /// <param name="store">An object to organize binaries.</param>
+        ///  <param name="constrainedParameter">A Timestamp parameter with a MinimalInclusive constraint of 19690720T201740Z and a MaximalExclusive constraint of 1972-12-11T19:54:57Z</param>
+        public CheckTimestampConstraintMinMaxRequestDto(System.DateTimeOffset constrainedParameter, Tecan.Sila2.IBinaryStore store)
+        {
+            ConstrainedParameter = new Tecan.Sila2.TimestampDto(constrainedParameter, store);
+        }
+        
+        ///  <summary>
+        /// A Timestamp parameter with a MinimalInclusive constraint of 19690720T201740Z and a MaximalExclusive constraint of 1972-12-11T19:54:57Z
+        /// </summary>
+        [ProtoBuf.ProtoMemberAttribute(1)]
+        public Tecan.Sila2.TimestampDto ConstrainedParameter
+        {
+            get
+            {
+                return _constrainedParameter;
+            }
+            set
+            {
+                _constrainedParameter = value;
+            }
+        }
+        
+        ///  <summary>
+        /// Gets the command identifier for this command
+        /// </summary>
+        /// <returns>The fully qualified command identifier</returns>
+        public string CommandIdentifier
+        {
+            get
+            {
+                return "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckTimestampConstrain" +
+                    "tMinMax";
+            }
+        }
+        
+        ///  <summary>
+        /// Validates the contents of this transfer object
+        /// </summary>
+        /// <returns>A validation error or null, if no validation error occurred.</returns>
+        public string GetValidationErrors()
+        {
+            return null;
+        }
+    }
+    
+    ///  <summary>
+    /// Data transfer object for the request of the Check List Constraint Element Count command
+    /// </summary>
+    [ProtoBuf.ProtoContractAttribute()]
+    public class CheckListConstraintElementCountRequestDto : Tecan.Sila2.ISilaTransferObject, Tecan.Sila2.ISilaRequestObject
+    {
+        
+        private System.Collections.Generic.List<Tecan.Sila2.StringDto> _constrainedParameter;
+        
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        public CheckListConstraintElementCountRequestDto()
+        {
+        }
+        
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        /// <param name="store">An object to organize binaries.</param>
+        ///  <param name="constrainedParameter">A String List parameter with an ElementCount constraint of 5</param>
+        public CheckListConstraintElementCountRequestDto(System.Collections.Generic.ICollection<string> constrainedParameter, Tecan.Sila2.IBinaryStore store)
+        {
+            ConstrainedParameter = Tecan.Sila2.DtoExtensions.Encapsulate(constrainedParameter, Tecan.Sila2.StringDto.Create, store);
+        }
+        
+        ///  <summary>
+        /// A String List parameter with an ElementCount constraint of 5
+        /// </summary>
+        [ProtoBuf.ProtoMemberAttribute(1)]
+        public System.Collections.Generic.List<Tecan.Sila2.StringDto> ConstrainedParameter
+        {
+            get
+            {
+                return _constrainedParameter;
+            }
+            set
+            {
+                _constrainedParameter = value;
+            }
+        }
+        
+        ///  <summary>
+        /// Gets the command identifier for this command
+        /// </summary>
+        /// <returns>The fully qualified command identifier</returns>
+        public string CommandIdentifier
+        {
+            get
+            {
+                return "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckListConstraintElem" +
+                    "entCount";
+            }
+        }
+        
+        ///  <summary>
+        /// Validates the contents of this transfer object
+        /// </summary>
+        /// <returns>A validation error or null, if no validation error occurred.</returns>
+        public string GetValidationErrors()
+        {
+            return null;
+        }
+    }
+    
+    ///  <summary>
+    /// Data transfer object for the request of the Check List Constraint Minimal Element Count command
+    /// </summary>
+    [ProtoBuf.ProtoContractAttribute()]
+    public class CheckListConstraintMinimalElementCountRequestDto : Tecan.Sila2.ISilaTransferObject, Tecan.Sila2.ISilaRequestObject
+    {
+        
+        private System.Collections.Generic.List<Tecan.Sila2.StringDto> _constrainedParameter;
+        
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        public CheckListConstraintMinimalElementCountRequestDto()
+        {
+        }
+        
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        /// <param name="store">An object to organize binaries.</param>
+        ///  <param name="constrainedParameter">A String List parameter with an MinimalElementCount constraint of 3</param>
+        public CheckListConstraintMinimalElementCountRequestDto(System.Collections.Generic.ICollection<string> constrainedParameter, Tecan.Sila2.IBinaryStore store)
+        {
+            ConstrainedParameter = Tecan.Sila2.DtoExtensions.Encapsulate(constrainedParameter, Tecan.Sila2.StringDto.Create, store);
+        }
+        
+        ///  <summary>
+        /// A String List parameter with an MinimalElementCount constraint of 3
+        /// </summary>
+        [ProtoBuf.ProtoMemberAttribute(1)]
+        public System.Collections.Generic.List<Tecan.Sila2.StringDto> ConstrainedParameter
+        {
+            get
+            {
+                return _constrainedParameter;
+            }
+            set
+            {
+                _constrainedParameter = value;
+            }
+        }
+        
+        ///  <summary>
+        /// Gets the command identifier for this command
+        /// </summary>
+        /// <returns>The fully qualified command identifier</returns>
+        public string CommandIdentifier
+        {
+            get
+            {
+                return "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckListConstraintMini" +
+                    "malElementCount";
+            }
+        }
+        
+        ///  <summary>
+        /// Validates the contents of this transfer object
+        /// </summary>
+        /// <returns>A validation error or null, if no validation error occurred.</returns>
+        public string GetValidationErrors()
+        {
+            return null;
+        }
+    }
+    
+    ///  <summary>
+    /// Data transfer object for the request of the Check List Constraint Maximal Element Count command
+    /// </summary>
+    [ProtoBuf.ProtoContractAttribute()]
+    public class CheckListConstraintMaximalElementCountRequestDto : Tecan.Sila2.ISilaTransferObject, Tecan.Sila2.ISilaRequestObject
+    {
+        
+        private System.Collections.Generic.List<Tecan.Sila2.StringDto> _constrainedParameter;
+        
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        public CheckListConstraintMaximalElementCountRequestDto()
+        {
+        }
+        
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        /// <param name="store">An object to organize binaries.</param>
+        ///  <param name="constrainedParameter">A String List parameter with an MaximalElementCount constraint of 5</param>
+        public CheckListConstraintMaximalElementCountRequestDto(System.Collections.Generic.ICollection<string> constrainedParameter, Tecan.Sila2.IBinaryStore store)
+        {
+            ConstrainedParameter = Tecan.Sila2.DtoExtensions.Encapsulate(constrainedParameter, Tecan.Sila2.StringDto.Create, store);
+        }
+        
+        ///  <summary>
+        /// A String List parameter with an MaximalElementCount constraint of 5
+        /// </summary>
+        [ProtoBuf.ProtoMemberAttribute(1)]
+        public System.Collections.Generic.List<Tecan.Sila2.StringDto> ConstrainedParameter
+        {
+            get
+            {
+                return _constrainedParameter;
+            }
+            set
+            {
+                _constrainedParameter = value;
+            }
+        }
+        
+        ///  <summary>
+        /// Gets the command identifier for this command
+        /// </summary>
+        /// <returns>The fully qualified command identifier</returns>
+        public string CommandIdentifier
+        {
+            get
+            {
+                return "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckListConstraintMaxi" +
+                    "malElementCount";
+            }
+        }
+        
+        ///  <summary>
+        /// Validates the contents of this transfer object
+        /// </summary>
+        /// <returns>A validation error or null, if no validation error occurred.</returns>
+        public string GetValidationErrors()
+        {
+            return null;
+        }
+    }
+    
+    ///  <summary>
+    /// Data transfer object for the request of the Check List Constraint MinMax Element Count command
+    /// </summary>
+    [ProtoBuf.ProtoContractAttribute()]
+    public class CheckListConstraintMinMaxElementCountRequestDto : Tecan.Sila2.ISilaTransferObject, Tecan.Sila2.ISilaRequestObject
+    {
+        
+        private System.Collections.Generic.List<Tecan.Sila2.StringDto> _constrainedParameter;
+        
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        public CheckListConstraintMinMaxElementCountRequestDto()
+        {
+        }
+        
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        /// <param name="store">An object to organize binaries.</param>
+        ///  <param name="constrainedParameter">A String List parameter with a MinimalElementCount constraint of 2 and a MaximalElementCount constraint of 5</param>
+        public CheckListConstraintMinMaxElementCountRequestDto(System.Collections.Generic.ICollection<string> constrainedParameter, Tecan.Sila2.IBinaryStore store)
+        {
+            ConstrainedParameter = Tecan.Sila2.DtoExtensions.Encapsulate(constrainedParameter, Tecan.Sila2.StringDto.Create, store);
+        }
+        
+        ///  <summary>
+        /// A String List parameter with a MinimalElementCount constraint of 2 and a MaximalElementCount constraint of 5
+        /// </summary>
+        [ProtoBuf.ProtoMemberAttribute(1)]
+        public System.Collections.Generic.List<Tecan.Sila2.StringDto> ConstrainedParameter
+        {
+            get
+            {
+                return _constrainedParameter;
+            }
+            set
+            {
+                _constrainedParameter = value;
+            }
+        }
+        
+        ///  <summary>
+        /// Gets the command identifier for this command
+        /// </summary>
+        /// <returns>The fully qualified command identifier</returns>
+        public string CommandIdentifier
+        {
+            get
+            {
+                return "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckListConstraintMinM" +
+                    "axElementCount";
+            }
+        }
+        
+        ///  <summary>
+        /// Validates the contents of this transfer object
+        /// </summary>
+        /// <returns>A validation error or null, if no validation error occurred.</returns>
+        public string GetValidationErrors()
+        {
+            return null;
+        }
+    }
+    
+    ///  <summary>
+    /// Data transfer object for the request of the Check Binary Constraint Length command
+    /// </summary>
+    [ProtoBuf.ProtoContractAttribute()]
+    public class CheckBinaryConstraintLengthRequestDto : Tecan.Sila2.ISilaTransferObject, Tecan.Sila2.ISilaRequestObject
+    {
+        
+        private Tecan.Sila2.BinaryDto _constrainedParameter;
+        
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        public CheckBinaryConstraintLengthRequestDto()
+        {
+        }
+        
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        /// <param name="store">An object to organize binaries.</param>
+        ///  <param name="constrainedParameter">A Binary parameter with a Length constraint of 10</param>
+        public CheckBinaryConstraintLengthRequestDto(System.IO.Stream constrainedParameter, Tecan.Sila2.IBinaryStore store)
+        {
+            ConstrainedParameter = new Tecan.Sila2.BinaryDto(constrainedParameter, store);
+        }
+        
+        ///  <summary>
+        /// A Binary parameter with a Length constraint of 10
+        /// </summary>
+        [ProtoBuf.ProtoMemberAttribute(1)]
+        public Tecan.Sila2.BinaryDto ConstrainedParameter
+        {
+            get
+            {
+                return _constrainedParameter;
+            }
+            set
+            {
+                _constrainedParameter = value;
+            }
+        }
+        
+        ///  <summary>
+        /// Gets the command identifier for this command
+        /// </summary>
+        /// <returns>The fully qualified command identifier</returns>
+        public string CommandIdentifier
+        {
+            get
+            {
+                return "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckBinaryConstraintLe" +
+                    "ngth";
+            }
+        }
+        
+        ///  <summary>
+        /// Validates the contents of this transfer object
+        /// </summary>
+        /// <returns>A validation error or null, if no validation error occurred.</returns>
+        public string GetValidationErrors()
+        {
+            return null;
+        }
+    }
+    
+    ///  <summary>
+    /// Data transfer object for the request of the Check Binary Constraint Minimal Length command
+    /// </summary>
+    [ProtoBuf.ProtoContractAttribute()]
+    public class CheckBinaryConstraintMinimalLengthRequestDto : Tecan.Sila2.ISilaTransferObject, Tecan.Sila2.ISilaRequestObject
+    {
+        
+        private Tecan.Sila2.BinaryDto _constrainedParameter;
+        
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        public CheckBinaryConstraintMinimalLengthRequestDto()
+        {
+        }
+        
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        /// <param name="store">An object to organize binaries.</param>
+        ///  <param name="constrainedParameter">A Binary parameter with a MinimalLength constraint of 5</param>
+        public CheckBinaryConstraintMinimalLengthRequestDto(System.IO.Stream constrainedParameter, Tecan.Sila2.IBinaryStore store)
+        {
+            ConstrainedParameter = new Tecan.Sila2.BinaryDto(constrainedParameter, store);
+        }
+        
+        ///  <summary>
+        /// A Binary parameter with a MinimalLength constraint of 5
+        /// </summary>
+        [ProtoBuf.ProtoMemberAttribute(1)]
+        public Tecan.Sila2.BinaryDto ConstrainedParameter
+        {
+            get
+            {
+                return _constrainedParameter;
+            }
+            set
+            {
+                _constrainedParameter = value;
+            }
+        }
+        
+        ///  <summary>
+        /// Gets the command identifier for this command
+        /// </summary>
+        /// <returns>The fully qualified command identifier</returns>
+        public string CommandIdentifier
+        {
+            get
+            {
+                return "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckBinaryConstraintMi" +
+                    "nimalLength";
+            }
+        }
+        
+        ///  <summary>
+        /// Validates the contents of this transfer object
+        /// </summary>
+        /// <returns>A validation error or null, if no validation error occurred.</returns>
+        public string GetValidationErrors()
+        {
+            return null;
+        }
+    }
+    
+    ///  <summary>
+    /// Data transfer object for the request of the Check Binary Constraint Maximal Length command
+    /// </summary>
+    [ProtoBuf.ProtoContractAttribute()]
+    public class CheckBinaryConstraintMaximalLengthRequestDto : Tecan.Sila2.ISilaTransferObject, Tecan.Sila2.ISilaRequestObject
+    {
+        
+        private Tecan.Sila2.BinaryDto _constrainedParameter;
+        
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        public CheckBinaryConstraintMaximalLengthRequestDto()
+        {
+        }
+        
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        /// <param name="store">An object to organize binaries.</param>
+        ///  <param name="constrainedParameter">A Binary parameter with a MaximalLength constraint of 20</param>
+        public CheckBinaryConstraintMaximalLengthRequestDto(System.IO.Stream constrainedParameter, Tecan.Sila2.IBinaryStore store)
+        {
+            ConstrainedParameter = new Tecan.Sila2.BinaryDto(constrainedParameter, store);
+        }
+        
+        ///  <summary>
+        /// A Binary parameter with a MaximalLength constraint of 20
+        /// </summary>
+        [ProtoBuf.ProtoMemberAttribute(1)]
+        public Tecan.Sila2.BinaryDto ConstrainedParameter
+        {
+            get
+            {
+                return _constrainedParameter;
+            }
+            set
+            {
+                _constrainedParameter = value;
+            }
+        }
+        
+        ///  <summary>
+        /// Gets the command identifier for this command
+        /// </summary>
+        /// <returns>The fully qualified command identifier</returns>
+        public string CommandIdentifier
+        {
+            get
+            {
+                return "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckBinaryConstraintMa" +
+                    "ximalLength";
+            }
+        }
+        
+        ///  <summary>
+        /// Validates the contents of this transfer object
+        /// </summary>
+        /// <returns>A validation error or null, if no validation error occurred.</returns>
+        public string GetValidationErrors()
+        {
+            string errors = "";
+            if ((ConstrainedParameter.Value.Length <= 20))
+            {
+                errors = (errors + string.Format("ConstrainedParameter \'{0}\' is longer than allowed length 20.", ConstrainedParameter.Value));
+            }
+            return errors;
+        }
+    }
+    
+    ///  <summary>
+    /// Data transfer object for the request of the Check Binary Constraint MinMax Length command
+    /// </summary>
+    [ProtoBuf.ProtoContractAttribute()]
+    public class CheckBinaryConstraintMinMaxLengthRequestDto : Tecan.Sila2.ISilaTransferObject, Tecan.Sila2.ISilaRequestObject
+    {
+        
+        private Tecan.Sila2.BinaryDto _constrainedParameter;
+        
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        public CheckBinaryConstraintMinMaxLengthRequestDto()
+        {
+        }
+        
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        /// <param name="store">An object to organize binaries.</param>
+        ///  <param name="constrainedParameter">A Binary parameter with a MinimalLength constraint of 5 and a MaximalLength constraint of 20</param>
+        public CheckBinaryConstraintMinMaxLengthRequestDto(System.IO.Stream constrainedParameter, Tecan.Sila2.IBinaryStore store)
+        {
+            ConstrainedParameter = new Tecan.Sila2.BinaryDto(constrainedParameter, store);
+        }
+        
+        ///  <summary>
+        /// A Binary parameter with a MinimalLength constraint of 5 and a MaximalLength constraint of 20
+        /// </summary>
+        [ProtoBuf.ProtoMemberAttribute(1)]
+        public Tecan.Sila2.BinaryDto ConstrainedParameter
+        {
+            get
+            {
+                return _constrainedParameter;
+            }
+            set
+            {
+                _constrainedParameter = value;
+            }
+        }
+        
+        ///  <summary>
+        /// Gets the command identifier for this command
+        /// </summary>
+        /// <returns>The fully qualified command identifier</returns>
+        public string CommandIdentifier
+        {
+            get
+            {
+                return "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckBinaryConstraintMi" +
+                    "nMaxLength";
+            }
+        }
+        
+        ///  <summary>
+        /// Validates the contents of this transfer object
+        /// </summary>
+        /// <returns>A validation error or null, if no validation error occurred.</returns>
+        public string GetValidationErrors()
+        {
+            string errors = "";
+            if ((ConstrainedParameter.Value.Length <= 20))
+            {
+                errors = (errors + string.Format("ConstrainedParameter \'{0}\' is longer than allowed length 20.", ConstrainedParameter.Value));
+            }
+            return errors;
+        }
+    }
+    
+    ///  <summary>
+    /// Data transfer object for the request of the Check Binary Constraint Content Type command
+    /// </summary>
+    [ProtoBuf.ProtoContractAttribute()]
+    public class CheckBinaryConstraintContentTypeRequestDto : Tecan.Sila2.ISilaTransferObject, Tecan.Sila2.ISilaRequestObject
+    {
+        
+        private Tecan.Sila2.BinaryDto _constrainedParameter;
+        
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        public CheckBinaryConstraintContentTypeRequestDto()
+        {
+        }
+        
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        /// <param name="store">An object to organize binaries.</param>
+        ///  <param name="constrainedParameter">A Binary parameter with a ContentType constraint allowing only valid XML document as content</param>
+        public CheckBinaryConstraintContentTypeRequestDto(System.IO.Stream constrainedParameter, Tecan.Sila2.IBinaryStore store)
+        {
+            ConstrainedParameter = new Tecan.Sila2.BinaryDto(constrainedParameter, store);
+        }
+        
+        ///  <summary>
+        /// A Binary parameter with a ContentType constraint allowing only valid XML document as content
+        /// </summary>
+        [ProtoBuf.ProtoMemberAttribute(1)]
+        public Tecan.Sila2.BinaryDto ConstrainedParameter
+        {
+            get
+            {
+                return _constrainedParameter;
+            }
+            set
+            {
+                _constrainedParameter = value;
+            }
+        }
+        
+        ///  <summary>
+        /// Gets the command identifier for this command
+        /// </summary>
+        /// <returns>The fully qualified command identifier</returns>
+        public string CommandIdentifier
+        {
+            get
+            {
+                return "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckBinaryConstraintCo" +
+                    "ntentType";
+            }
+        }
+        
+        ///  <summary>
+        /// Validates the contents of this transfer object
+        /// </summary>
+        /// <returns>A validation error or null, if no validation error occurred.</returns>
+        public string GetValidationErrors()
+        {
+            return null;
+        }
+    }
+    
+    ///  <summary>
+    /// Data transfer object for the request of the Check Binary Constraint Schema command
+    /// </summary>
+    [ProtoBuf.ProtoContractAttribute()]
+    public class CheckBinaryConstraintSchemaRequestDto : Tecan.Sila2.ISilaTransferObject, Tecan.Sila2.ISilaRequestObject
+    {
+        
+        private Tecan.Sila2.BinaryDto _constrainedParameter;
+        
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        public CheckBinaryConstraintSchemaRequestDto()
+        {
+        }
+        
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        /// <param name="store">An object to organize binaries.</param>
+        ///  <param name="constrainedParameter">A Binary parameter with a Schema constraint allowing only content that is compliant with the SiLA 2 Feature Definition schema</param>
+        public CheckBinaryConstraintSchemaRequestDto(System.IO.Stream constrainedParameter, Tecan.Sila2.IBinaryStore store)
+        {
+            ConstrainedParameter = new Tecan.Sila2.BinaryDto(constrainedParameter, store);
+        }
+        
+        ///  <summary>
+        /// A Binary parameter with a Schema constraint allowing only content that is compliant with the SiLA 2 Feature Definition schema
+        /// </summary>
+        [ProtoBuf.ProtoMemberAttribute(1)]
+        public Tecan.Sila2.BinaryDto ConstrainedParameter
+        {
+            get
+            {
+                return _constrainedParameter;
+            }
+            set
+            {
+                _constrainedParameter = value;
+            }
+        }
+        
+        ///  <summary>
+        /// Gets the command identifier for this command
+        /// </summary>
+        /// <returns>The fully qualified command identifier</returns>
+        public string CommandIdentifier
+        {
+            get
+            {
+                return "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckBinaryConstraintSc" +
+                    "hema";
+            }
+        }
+        
+        ///  <summary>
+        /// Validates the contents of this transfer object
+        /// </summary>
+        /// <returns>A validation error or null, if no validation error occurred.</returns>
+        public string GetValidationErrors()
+        {
+            return null;
+        }
+    }
+    
+    ///  <summary>
+    /// Data transfer object for the request of the Check Allowed Types Constraint command
+    /// </summary>
+    [ProtoBuf.ProtoContractAttribute()]
+    public class CheckAllowedTypesConstraintRequestDto : Tecan.Sila2.ISilaTransferObject, Tecan.Sila2.ISilaRequestObject
+    {
+        
+        private Tecan.Sila2.DynamicClient.AnyTypeDto _constrainedParameter;
+        
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        public CheckAllowedTypesConstraintRequestDto()
+        {
+        }
+        
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        /// <param name="store">An object to organize binaries.</param>
+        ///  <param name="constrainedParameter">An Any type parameter with an AllowedTypes constraint that only allows an integer or a list of integers</param>
+        public CheckAllowedTypesConstraintRequestDto(Tecan.Sila2.DynamicClient.DynamicObjectProperty constrainedParameter, Tecan.Sila2.IBinaryStore store)
+        {
+            ConstrainedParameter = new Tecan.Sila2.DynamicClient.AnyTypeDto(constrainedParameter, store);
+        }
+        
+        ///  <summary>
+        /// An Any type parameter with an AllowedTypes constraint that only allows an integer or a list of integers
+        /// </summary>
+        [ProtoBuf.ProtoMemberAttribute(1)]
+        public Tecan.Sila2.DynamicClient.AnyTypeDto ConstrainedParameter
+        {
+            get
+            {
+                return _constrainedParameter;
+            }
+            set
+            {
+                _constrainedParameter = value;
+            }
+        }
+        
+        ///  <summary>
+        /// Gets the command identifier for this command
+        /// </summary>
+        /// <returns>The fully qualified command identifier</returns>
+        public string CommandIdentifier
+        {
+            get
+            {
+                return "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckAllowedTypesConstr" +
+                    "aint";
+            }
+        }
+        
+        ///  <summary>
+        /// Validates the contents of this transfer object
+        /// </summary>
+        /// <returns>A validation error or null, if no validation error occurred.</returns>
+        public string GetValidationErrors()
+        {
+            return null;
+        }
+    }
+    
+    ///  <summary>
+    /// Data transfer object for the request of the Check Allowed Structure Type Constraints command
+    /// </summary>
+    [ProtoBuf.ProtoContractAttribute()]
+    public class CheckAllowedStructureTypeConstraintsRequestDto : Tecan.Sila2.ISilaTransferObject, Tecan.Sila2.ISilaRequestObject
+    {
+        
+        private Tecan.Sila2.DynamicClient.AnyTypeDto _constrainedParameter;
+        
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        public CheckAllowedStructureTypeConstraintsRequestDto()
+        {
+        }
+        
+        ///  <summary>
+        /// Create a new instance
+        /// </summary>
+        /// <param name="store">An object to organize binaries.</param>
+        ///  <param name="constrainedParameter">An Any type parameter with an AllowedTypes constraint that only allows a structure with an integer</param>
+        public CheckAllowedStructureTypeConstraintsRequestDto(Tecan.Sila2.DynamicClient.DynamicObjectProperty constrainedParameter, Tecan.Sila2.IBinaryStore store)
+        {
+            ConstrainedParameter = new Tecan.Sila2.DynamicClient.AnyTypeDto(constrainedParameter, store);
+        }
+        
+        ///  <summary>
+        /// An Any type parameter with an AllowedTypes constraint that only allows a structure with an integer
+        /// </summary>
+        [ProtoBuf.ProtoMemberAttribute(1)]
+        public Tecan.Sila2.DynamicClient.AnyTypeDto ConstrainedParameter
+        {
+            get
+            {
+                return _constrainedParameter;
+            }
+            set
+            {
+                _constrainedParameter = value;
+            }
+        }
+        
+        ///  <summary>
+        /// Gets the command identifier for this command
+        /// </summary>
+        /// <returns>The fully qualified command identifier</returns>
+        public string CommandIdentifier
+        {
+            get
+            {
+                return "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckAllowedStructureTy" +
+                    "peConstraints";
             }
         }
         

@@ -42,9 +42,6 @@ namespace Tecan.Sila2.Server
         /// <summary>All current observable command executions, with the identifying CommandExecutionUUID, the command identifier and the current execution state.</summary>
         private readonly List<ObservableCommandExecution> _commandExecutions = new List<ObservableCommandExecution>();
 
-        private readonly IEnumerable<IRequestInterceptor> _interceptors;
-        private readonly Dictionary<string, List<IRequestInterceptor>> _cachedInterceptorList = new Dictionary<string, List<IRequestInterceptor>>();
-
         private readonly IFileManagement _fileManagement;
         private readonly IConfigurationStore _configurationStore;
         private readonly BinaryUpload _upload;
@@ -55,8 +52,8 @@ namespace Tecan.Sila2.Server
 
         private readonly ServerPoolDispatcher _poolDispatcher;
         private readonly IServerPoolConnectionFactory _poolConnectionFactory;
-
-        internal const string ServerConfigurationName = "default";
+        private readonly RequestPipeline _requestPipeline;
+        private readonly string _configurationName;
 
         #endregion
 
@@ -71,19 +68,6 @@ namespace Tecan.Sila2.Server
             TcpListener tcpListener = new TcpListener( IPAddress.Parse( "0.0.0.0" ), port );
             tcpListener.Start();
             tcpListener.Stop();
-        }
-
-        private IEnumerable<IRequestInterceptor> GetInterceptors( string commandIdentifier )
-        {
-            if(!_cachedInterceptorList.TryGetValue( commandIdentifier, out var interceptors ))
-            {
-                var feature = _implementedFeatures.FirstOrDefault( f => commandIdentifier.StartsWith( f.FeatureDefinition.FullyQualifiedIdentifier ) )?.FeatureDefinition;
-                interceptors = _interceptors.Where( i => i.IsInterceptRequired( feature, commandIdentifier ) ).OrderByDescending( r => r.Priority ).ToList();
-
-                _cachedInterceptorList.Add( commandIdentifier, interceptors );
-            }
-
-            return interceptors;
         }
 
         #endregion
@@ -108,17 +92,19 @@ namespace Tecan.Sila2.Server
         /// <inheritdoc />
         public string ServerUUID { get; }
 
+        internal RequestPipeline Pipeline => _requestPipeline;
+
         /// <inheritdoc />
         public void SetServerName( string serverName )
         {
             ServerName = serverName;
-            var configuration = _configurationStore.Read<ServerConfiguration>( "default" );
+            var configuration = _configurationStore.Read<ServerConfiguration>( _configurationName );
             if(configuration != null)
             {
                 configuration.Name = serverName;
                 try
                 {
-                    _configurationStore.Write( ServerConfigurationName, configuration );
+                    _configurationStore.Write( _configurationName, configuration );
                 }
                 catch(Exception exception)
                 {
@@ -135,7 +121,7 @@ namespace Tecan.Sila2.Server
         {
             try
             {
-                configurationStore.Write( ServerConfigurationName, new ServerConfiguration
+                configurationStore.Write( _configurationName, new ServerConfiguration
                 {
                     Identifier = ServerUUID,
                     InterfaceFilter = startupInfo.NetworkInterfaces,
@@ -161,7 +147,6 @@ namespace Tecan.Sila2.Server
         [ImportingConstructor]
         public SiLAServer( ServerStartInformation startupInfo, IConfigurationStore configurationStore, [ImportMany] IEnumerable<IRequestInterceptor> interceptors, IFileManagement fileManagement, IServiceConfigurationBuilder<ISiLAServer> serviceHandlerRepository, IServerPoolConnectionFactory serverPoolConnectionFactory )
         {
-            _interceptors = interceptors;
             _configurationStore = configurationStore;
             _upload = new BinaryUpload( fileManagement, this );
             _download = new BinaryDownload( fileManagement );
@@ -169,8 +154,10 @@ namespace Tecan.Sila2.Server
             _poolDispatcher = new ServerPoolDispatcher( _upload, _download, this );
             _poolConnectionFactory = serverPoolConnectionFactory;
             _serviceBinder = new SilaServiceBinder( serviceHandlerRepository );
+            _configurationName = startupInfo.ConfigName;
+            _requestPipeline = new RequestPipeline( this, interceptors, configurationStore, _configurationName );
 
-            var configuration = configurationStore.Read<ServerConfiguration>( ServerConfigurationName );
+            var configuration = configurationStore.Read<ServerConfiguration>( _configurationName );
             var port = (startupInfo.Port ?? configuration?.Port).GetValueOrDefault( ServerStartInformation.DefaultPort );
             startupInfo.Port = port;
             EnsurePortIsAvailable( port );
@@ -387,34 +374,26 @@ namespace Tecan.Sila2.Server
             where TRequest : ISilaRequestObject
         {
             _logger.Info( $"Executing command {request.CommandIdentifier}" );
-            var interceptions = RequestInterceptions( request.CommandIdentifier, metadataRepository );
+            var interceptions = _requestPipeline.RequestInterceptions( request.CommandIdentifier, metadataRepository );
             try
             {
                 var result = command( request );
-                if(interceptions != null)
-                {
-                    foreach(var interception in interceptions)
-                    {
-                        interception.ReportSuccess();
-                    }
-                }
+                _requestPipeline.ReportSuccess( interceptions );
 
                 return result;
             }
             catch(Exception exception)
             {
                 _logger.Error( $"Error while executing command {request.CommandIdentifier}", exception );
-                if(interceptions != null)
-                {
-                    foreach(var interception in interceptions)
-                    {
-                        interception.ReportException( exception );
-                    }
-                }
+                _requestPipeline.ReportError( interceptions, exception );
 
                 if(exception is OperationCanceledException)
                 {
                     throw ErrorHandling.CreateCancellationError( exception.Message );
+                }
+                else if(exception is CommandExecutionRejectedException)
+                {
+                    throw ServerErrorHandling.CreateFrameworkError( FrameworkErrorType.CommandExecutionNotAccepted );
                 }
                 else if(!(exception is RpcException))
                 {
@@ -435,35 +414,27 @@ namespace Tecan.Sila2.Server
         /// <returns>An awaitable task with the command response</returns>
         public async Task<TResponse> InvokeCommand<TResponse>( Func<Task<TResponse>> command, string commandIdentifier, IMetadataRepository metadataRepository )
         {
-            var interceptions = RequestInterceptions( commandIdentifier, metadataRepository );
+            var interceptions = _requestPipeline.RequestInterceptions( commandIdentifier, metadataRepository );
             _logger.Info( $"Executing command {commandIdentifier}" );
             try
             {
                 var result = await command();
-                if(interceptions != null)
-                {
-                    foreach(var interception in interceptions)
-                    {
-                        interception.ReportSuccess();
-                    }
-                }
+                _requestPipeline.ReportSuccess( interceptions );
 
                 return result;
             }
             catch(Exception exception)
             {
                 _logger.Error( $"Error while executing command {commandIdentifier}", exception );
-                if(interceptions != null)
-                {
-                    foreach(var interception in interceptions)
-                    {
-                        interception.ReportException( exception );
-                    }
-                }
+                _requestPipeline.ReportError( interceptions, exception );
 
                 if(exception is OperationCanceledException)
                 {
                     throw ErrorHandling.CreateCancellationError( exception.Message );
+                }
+                else if(exception is CommandExecutionRejectedException)
+                {
+                    throw ServerErrorHandling.CreateFrameworkError( FrameworkErrorType.CommandExecutionNotAccepted );
                 }
                 else if(!(exception is RpcException))
                 {
@@ -472,57 +443,6 @@ namespace Tecan.Sila2.Server
 
                 throw;
             }
-        }
-
-        /// <summary>
-        /// Requests interceptors for a call with the given command identifier
-        /// </summary>
-        /// <param name="commandIdentifier">Unique identifier of a command or property</param>
-        /// <param name="metadataRepository">A repository with metadata information</param>
-        /// <returns>A stack of request interceptions</returns>
-        public Stack<IRequestInterception> RequestInterceptions( string commandIdentifier, IMetadataRepository metadataRepository )
-        {
-            Stack<IRequestInterception> interceptions = null;
-            try
-            {
-                foreach(var interceptor in GetInterceptors( commandIdentifier ))
-                {
-                    var interception = interceptor.Intercept( commandIdentifier, this, metadataRepository );
-                    if(interception != null)
-                    {
-                        if(interceptions == null) interceptions = new Stack<IRequestInterception>();
-                        interceptions.Push( interception );
-                    }
-                }
-            }
-            catch(MissingMetadataException missingMetadata)
-            {
-                _logger.Error( $"Request rejected because required metadata {missingMetadata.MetadataIdentifier} was missing." );
-                throw ErrorHandling.CreateMissingMetadataException( missingMetadata.MetadataIdentifier );
-            }
-            catch(Exception exception)
-            {
-                if(interceptions != null)
-                {
-                    while(interceptions.Count > 0)
-                    {
-                        interceptions.Pop()?.ReportException( exception );
-                    }
-                }
-
-                if(exception is OperationCanceledException)
-                {
-                    throw ErrorHandling.CreateCancellationError( exception.Message );
-                }
-                else if(!(exception is RpcException))
-                {
-                    throw ErrorHandling.CreateUndefinedExecutionError( exception );
-                }
-
-                throw;
-            }
-
-            return interceptions;
         }
 
         /// <summary>
@@ -534,7 +454,7 @@ namespace Tecan.Sila2.Server
         /// <returns></returns>
         public string AddObservableCommandExecution( string commandIdentifier, IObservableCommand command, IMetadataRepository metadataRepository )
         {
-            var interceptions = RequestInterceptions( commandIdentifier, metadataRepository );
+            var interceptions = _requestPipeline.RequestInterceptions( commandIdentifier, metadataRepository );
             // create command ID
             var commandExecutionId = Guid.NewGuid().ToString();
 
@@ -554,32 +474,19 @@ namespace Tecan.Sila2.Server
 
         internal T GetPropertyValue<T>( string propertyIdentifier, Func<T> value, IMetadataRepository metadataRepository )
         {
-            var interceptors = RequestInterceptions( propertyIdentifier, metadataRepository );
+            var interceptors = _requestPipeline.RequestInterceptions( propertyIdentifier, metadataRepository );
             try
             {
                 _logger.Info( $"Obtaining value for property {propertyIdentifier}" );
                 var result = value();
-                if(interceptors != null)
-                {
-                    foreach(var interceptor in interceptors)
-                    {
-                        interceptor.ReportSuccess();
-                    }
-                }
+                _requestPipeline.ReportSuccess( interceptors );
 
                 return result;
             }
             catch(Exception exception)
             {
                 _logger.Error( $"Exception happened obtaining the value for {propertyIdentifier}", exception );
-                if(interceptors != null)
-                {
-                    foreach(var interceptor in interceptors)
-                    {
-                        interceptor.ReportException( exception );
-                    }
-                }
-
+                _requestPipeline.ReportError( interceptors, exception );
                 throw;
             }
         }
@@ -655,6 +562,5 @@ namespace Tecan.Sila2.Server
         }
 
         #endregion
-
     }
 }

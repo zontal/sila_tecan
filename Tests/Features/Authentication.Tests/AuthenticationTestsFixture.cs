@@ -23,17 +23,19 @@ namespace Tecan.Sila2.Authentication.Tests
             _serverMock = new Mock<ISiLAService>( MockBehavior.Strict );
             _serverId = Guid.NewGuid().ToString();
             _serverMock.Setup( s => s.ServerUUID ).Returns( _serverId );
-            
+
             _configProviderMock = new Mock<IAuthConfigurationProvider>( MockBehavior.Strict );
-            _configProviderMock.Setup( p => p.LocalUsers ).Returns( new[]
-            {
-                new User()
+            _configProviderMock.Setup( p => p.Login( It.IsAny<string>(), It.IsAny<string>() ) )
+                .Returns( null as User );
+            _configProviderMock.Setup( p => p.Login( "testadmin", "testadmin-pwd" ) )
+                .Returns( new User()
                 {
                     AllowWildcard = true,
                     Name = "testadmin",
                     Password = "testadmin-pwd"
-                },
-                new User()
+                } );
+            _configProviderMock.Setup( p => p.Login( "test", "test-pwd" ) )
+                .Returns( new User()
                 {
                     AllowWildcard = false,
                     Name = "test",
@@ -42,40 +44,39 @@ namespace Tecan.Sila2.Authentication.Tests
                     {
                         "org.silastandard/core/SiLAService/v1"
                     }
-                }
-            } );
+                } );
 
             _serverConnectorMock = new Mock<IServerConnector>( MockBehavior.Strict );
 
-            _authService = new AuthenticationAuthorizationService(new Lazy<ISiLAService>(() => _serverMock.Object), new[] { _configProviderMock.Object }, _serverConnectorMock.Object, null);
+            _authService = new AuthenticationAuthorizationService( new Lazy<ISiLAService>( () => _serverMock.Object ), new[] { _configProviderMock.Object }, _serverConnectorMock.Object, null );
         }
 
-        [TestCase("test", "test-pwd", "org.silastandard/core/SiLAService/v1" )]
-        [TestCase("testadmin", "testadmin-pwd", "org.silastandard/core/SiLAService/v1" )]
-        public void AuthenticateRequest_RequestFeature_Succeeds(string userName, string password, string feature)
+        [TestCase( "test", "test-pwd", "org.silastandard/core/SiLAService/v1" )]
+        [TestCase( "testadmin", "testadmin-pwd", "org.silastandard/core/SiLAService/v1" )]
+        public void AuthenticateRequest_RequestFeature_Succeeds( string userName, string password, string feature )
         {
             var token = _authService.Login( userName, password, _serverId, new List<string>() { feature } );
-            Assert.That(token.AccessToken, Is.Not.Null);
-            Assert.That(token.TokenLifetime, Is.GreaterThan(3600L));
+            Assert.That( token.AccessToken, Is.Not.Null );
+            Assert.That( token.TokenLifetime, Is.GreaterThan( 3600L ) );
 
             var interception = _authService.Intercept( "org.silastandard/core/SiLAService/v1/Command/GetFeatureDefinition", token.AccessToken );
-            Assert.That(interception, Is.Null);
-            Assert.DoesNotThrow(() => _authService.Logout(token.AccessToken));
+            Assert.That( interception, Is.Null );
+            Assert.DoesNotThrow( () => _authService.Logout( token.AccessToken ) );
         }
 
-        [TestCase("test", "test-pwd", "org.silastandard/core/SiLAService/v1", "org.silastandard/core/LockController/v1/Command/LockServer" )]
+        [TestCase( "test", "test-pwd", "org.silastandard/core/SiLAService/v1", "org.silastandard/core/LockController/v1/Command/LockServer" )]
         [TestCase( "testadmin", "testadmin-pwd", "org.silastandard/core/SiLAService/v1", "org.silastandard/core/LockController/v1/Command/LockServer" )]
         public void AuthenticateRequest_RequestDifferentFeature_ThrowsException( string userName, string password, string tokenFeature, string requestedCommand )
         {
             var tokenFeatures = new List<string>();
-            if( tokenFeature != null )
+            if(tokenFeature != null)
             {
-                tokenFeatures.Add(tokenFeature);
+                tokenFeatures.Add( tokenFeature );
             }
 
             var token = _authService.Login( userName, password, _serverId, tokenFeatures );
             Assert.Throws<AuthorizationInvalidAccessTokenException>( () => _authService.Intercept( requestedCommand, token.AccessToken ) );
-            Assert.DoesNotThrow(() => _authService.Logout(token.AccessToken));
+            Assert.DoesNotThrow( () => _authService.Logout( token.AccessToken ) );
         }
 
         [Test]
@@ -93,7 +94,7 @@ namespace Tecan.Sila2.Authentication.Tests
                 _authService.Intercept( "org.silastandard/core/SiLAService/v1/Command/GetFeatureDefinition", null ) );
         }
 
-        [TestCase("testadmin", "testadmin-pwd")]
+        [TestCase( "testadmin", "testadmin-pwd" )]
         public void AuthenticateRequest_Wildcard_Succeeds( string userName, string password )
         {
             var token = _authService.Login( userName, password, _serverId, new List<string>() );
@@ -115,7 +116,7 @@ namespace Tecan.Sila2.Authentication.Tests
             _configProviderMock.Setup( p => p.AuthorizationProvider ).Returns( providerMock.Object );
 
             var interception = _authService.Intercept( "org.silastandard/core/SiLAService/v1/Command/GetFeatureDefinition", accessToken );
-            Assert.That(interception, Is.Null);
+            Assert.That( interception, Is.Null );
         }
 
         [Test]
@@ -131,9 +132,9 @@ namespace Tecan.Sila2.Authentication.Tests
                 _authService.Intercept( "org.silastandard/core/SiLAService/v1/Command/GetFeatureDefinition", accessToken ) );
         }
 
-        [TestCase("test", "wrong password")]
-        [TestCase("testadmin", "test-pwd")]
-        [TestCase("doesnotexist", "no-pwd")]
+        [TestCase( "test", "wrong password" )]
+        [TestCase( "testadmin", "test-pwd" )]
+        [TestCase( "doesnotexist", "no-pwd" )]
         public void Login_WrongCredentials_ThrowsException( string userName, string password )
         {
             Assert.Throws<AuthenticationFailedException>( () => _authService.Login( userName, password, _serverId, new List<string>()

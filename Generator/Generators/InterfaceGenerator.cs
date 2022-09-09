@@ -3,6 +3,7 @@ using System;
 using System.CodeDom;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using Tecan.Sila2.Generator.Contracts;
@@ -195,7 +196,7 @@ namespace Tecan.Sila2.Generator.Generators
             property.WriteDocumentation( element.Description ?? $"The {element.Identifier} property" );
             var targetAttributes = inline ? structure.CustomAttributes : property.CustomAttributes;
             property.Type = _translationProvider.ExtractType( element.DataType,
-                structure.Name + element.Identifier, constraints => HandleConstraints( constraints, targetAttributes ), structHandler );
+                structure.Name + element.Identifier, constraints => HandleConstraints( constraints, element.DataType, targetAttributes ), structHandler );
             var parameterName = char.ToLowerInvariant( property.Name[0] ) + property.Name.Substring( 1 );
             var field = new CodeMemberField
             {
@@ -214,6 +215,7 @@ namespace Tecan.Sila2.Generator.Generators
         }
 
         private void HandleConstraints( Constraints constraints,
+            DataTypeType type,
             CodeAttributeDeclarationCollection attributes )
         {
             if(constraints.Pattern != null)
@@ -228,7 +230,7 @@ namespace Tecan.Sila2.Generator.Generators
             }
 
             HandleUnitConstraint( constraints, attributes );
-            HandleThresholdConstraints( constraints, attributes );
+            HandleThresholdConstraints( constraints, type, attributes );
             HandleContentTypeConstraints( constraints, attributes );
             HandleIdentifierTypeConstraints( constraints, attributes );
             HandleSchemaConstraints( constraints, attributes );
@@ -270,31 +272,79 @@ namespace Tecan.Sila2.Generator.Generators
             }
         }
 
-        private void HandleThresholdConstraints( Constraints constraints,
+        private void HandleThresholdConstraints( Constraints constraints, DataTypeType type,
             CodeAttributeDeclarationCollection attributes )
         {
-            if(constraints.MaximalExclusive != null)
+            if(!IsDateTime( type ))
             {
-                var maxExclusive = double.Parse( constraints.MaximalExclusive );
-                attributes.AddAttribute( typeof( MaximalExclusiveAttribute ), maxExclusive );
-            }
+                if(constraints.MaximalExclusive != null)
+                {
+                    var maxExclusive = double.Parse( constraints.MaximalExclusive );
+                    attributes.AddAttribute( typeof( MaximalExclusiveAttribute ), maxExclusive );
+                }
 
-            if(constraints.MaximalInclusive != null)
-            {
-                var maxInclusive = double.Parse( constraints.MaximalInclusive );
-                attributes.AddAttribute( typeof( MaximalInclusiveAttribute ), maxInclusive );
-            }
+                if(constraints.MaximalInclusive != null)
+                {
+                    var maxInclusive = double.Parse( constraints.MaximalInclusive );
+                    attributes.AddAttribute( typeof( MaximalInclusiveAttribute ), maxInclusive );
+                }
 
-            if(constraints.MinimalExclusive != null)
-            {
-                var minExclusive = double.Parse( constraints.MinimalExclusive );
-                attributes.AddAttribute( typeof( MinimalExclusiveAttribute ), minExclusive );
-            }
+                if(constraints.MinimalExclusive != null)
+                {
+                    var minExclusive = double.Parse( constraints.MinimalExclusive );
+                    attributes.AddAttribute( typeof( MinimalExclusiveAttribute ), minExclusive );
+                }
 
-            if(constraints.MinimalInclusive != null)
+                if(constraints.MinimalInclusive != null)
+                {
+                    var minInclusive = double.Parse( constraints.MinimalInclusive );
+                    attributes.AddAttribute( typeof( MinimalInclusiveAttribute ), minInclusive );
+                }
+            }
+            else
             {
-                var minInclusive = double.Parse( constraints.MinimalInclusive );
-                attributes.AddAttribute( typeof( MinimalInclusiveAttribute ), minInclusive );
+                if(constraints.MaximalExclusive != null)
+                {
+                    attributes.AddAttribute( typeof( MaximalExclusiveDateAttribute ), constraints.MaximalExclusive );
+                }
+                if(constraints.MaximalInclusive != null)
+                {
+                    attributes.AddAttribute( typeof( MaximalInclusiveDateAttribute ), constraints.MaximalInclusive );
+                }
+                if(constraints.MinimalExclusive != null)
+                {
+                    attributes.AddAttribute( typeof( MinimalExclusiveDateAttribute ), constraints.MinimalExclusive );
+                }
+                if(constraints.MinimalInclusive != null)
+                {
+                    attributes.AddAttribute( typeof( MinimalInclusiveDateAttribute ), constraints.MinimalInclusive );
+                }
+            }
+        }
+
+        private CodeExpression CreateDateTimeOffsetExpression( string input )
+        {
+            if(!DateTimeOffset.TryParse( input, out _ ))
+            {
+                _loggingChannel.Warn( $"'{input}' could not be parsed as a timestamp. This can lead to runtime errors." );
+            }
+            return new CodeMethodInvokeExpression(
+                new CodeTypeReferenceExpression( typeof( DateTimeOffset ) ),
+                nameof( DateTimeOffset.Parse ),
+                new CodePrimitiveExpression( input ),
+                new CodePropertyReferenceExpression( new CodeTypeReferenceExpression( typeof( CultureInfo ) ), nameof( CultureInfo.InvariantCulture ) ) );
+        }
+
+        private bool IsDateTime( DataTypeType dataType )
+        {
+            switch(dataType.Item)
+            {
+                case BasicType basic:
+                    return basic == BasicType.Time || basic == BasicType.Timestamp || basic == BasicType.Date;
+                case ConstrainedType constrained:
+                    return IsDateTime( constrained.DataType );
+                default:
+                    return false;
             }
         }
 
@@ -328,6 +378,12 @@ namespace Tecan.Sila2.Generator.Generators
                         break;
                     case ConstraintsFullyQualifiedIdentifier.TypeIdentifier:
                         fieldReference.FieldName = nameof( IdentifierType.TypeIdentifier );
+                        break;
+                    case ConstraintsFullyQualifiedIdentifier.IntermediateCommandResponseIdentifier:
+                        fieldReference.FieldName = nameof( IdentifierType.IntermediateResponseIdentifier );
+                        break;
+                    case ConstraintsFullyQualifiedIdentifier.MetadataIdentifier:
+                        fieldReference.FieldName = nameof( IdentifierType.MetadataIdentifier );
                         break;
                     default:
                         throw new ArgumentOutOfRangeException( nameof( constraints.FullyQualifiedIdentifier ) );
@@ -509,7 +565,7 @@ namespace Tecan.Sila2.Generator.Generators
                     Name = spec?.Code ?? property.Identifier,
                     Attributes = MemberAttributes.Public
                 };
-                method.ReturnType = _translationProvider.ExtractType( property.DataType, property.Identifier, constraints => HandleConstraints( constraints, method.ReturnTypeCustomAttributes ),
+                method.ReturnType = _translationProvider.ExtractType( property.DataType, property.Identifier, constraints => HandleConstraints( constraints, property.DataType, method.ReturnTypeCustomAttributes ),
                     structHandler );
                 prop = method;
             }
@@ -522,7 +578,7 @@ namespace Tecan.Sila2.Generator.Generators
                     HasGet = true,
                     HasSet = hasSetter
                 };
-                codeProperty.Type = _translationProvider.ExtractType( property.DataType, property.Identifier, constraints => HandleConstraints( constraints, codeProperty.CustomAttributes ),
+                codeProperty.Type = _translationProvider.ExtractType( property.DataType, property.Identifier, constraints => HandleConstraints( constraints, property.DataType, codeProperty.CustomAttributes ),
                     structHandler );
                 prop = codeProperty;
             }
@@ -644,7 +700,7 @@ namespace Tecan.Sila2.Generator.Generators
                     }
 
                     method.ReturnType = _translationProvider.ExtractType( response.DataType, command.Identifier + command.Response[0].Identifier,
-                        constraints => HandleConstraints( constraints, method.ReturnTypeCustomAttributes ), structureHandler );
+                        constraints => HandleConstraints( constraints, response.DataType, method.ReturnTypeCustomAttributes ), structureHandler );
                     documentation = response.Description;
                 }
                 else
@@ -685,7 +741,7 @@ namespace Tecan.Sila2.Generator.Generators
                     var parameterDeclaration = new CodeParameterDeclarationExpression();
                     parameterDeclaration.Name = identifier;
                     parameterDeclaration.Type = _translationProvider.ExtractType( parameter.DataType,
-                        command.Identifier + parameter.Identifier, constraints => HandleConstraints( constraints, parameterDeclaration.CustomAttributes ), structureHandler );
+                        command.Identifier + parameter.Identifier, constraints => HandleConstraints( constraints, parameter.DataType, parameterDeclaration.CustomAttributes ), structureHandler );
                     if(parameter.DisplayName != parameter.Identifier.ToDisplayName())
                     {
                         parameterDeclaration.CustomAttributes.AddAttribute( typeof( SilaDisplayNameAttribute ),

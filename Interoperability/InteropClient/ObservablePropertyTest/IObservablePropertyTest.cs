@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Tecan.Sila2.Interop.Client
+namespace Tecan.Sila2.Interop.Client.ObservablePropertyTest
 {
     
     
@@ -22,12 +22,36 @@ namespace Tecan.Sila2.Interop.Client
     {
         
         ///  <summary>
-        /// Display the seconds elapsed since the server is on.
+        /// Always returns 42 and never changes.
         /// </summary>
         [Tecan.Sila2.ObservableAttribute()]
-        long UpTime
+        long FixedValue
         {
             get;
         }
+        
+        ///  <summary>
+        /// Switches every second between true and false
+        /// </summary>
+        [Tecan.Sila2.ObservableAttribute()]
+        bool Alternating
+        {
+            get;
+        }
+        
+        ///  <summary>
+        /// Can be set through SetValue command
+        /// </summary>
+        [Tecan.Sila2.ObservableAttribute()]
+        long Editable
+        {
+            get;
+        }
+        
+        ///  <summary>
+        /// Changes the value of Editable
+        /// </summary>
+        /// <param name="value">The new value</param>
+        void SetValue(long value);
     }
 }

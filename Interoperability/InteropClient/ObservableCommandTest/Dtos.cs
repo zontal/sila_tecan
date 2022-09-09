@@ -8,24 +8,26 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Tecan.Sila2.Interop.Client.ObservableCommandTest
+namespace Tecan.Sila2.Interop.Client.ObservableCommandTest.ObservableCommandTest
 {
     using Tecan.Sila2;
     
     
     ///  <summary>
-    /// Data transfer object for the request of the Observable iteration command
+    /// Data transfer object for the request of the Count command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
-    public class ObservableIterationRequestDto : Tecan.Sila2.ISilaTransferObject, Tecan.Sila2.ISilaRequestObject
+    public class CountRequestDto : Tecan.Sila2.ISilaTransferObject, Tecan.Sila2.ISilaRequestObject
     {
         
-        private Tecan.Sila2.IntegerDto _numberIterations;
+        private Tecan.Sila2.IntegerDto _n;
+        
+        private Tecan.Sila2.RealDto _delay;
         
         ///  <summary>
         /// Create a new instance
         /// </summary>
-        public ObservableIterationRequestDto()
+        public CountRequestDto()
         {
         }
         
@@ -33,25 +35,43 @@ namespace Tecan.Sila2.Interop.Client.ObservableCommandTest
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
-        ///  <param name="numberIterations">Number of Iterations to perform</param>
-        public ObservableIterationRequestDto(long numberIterations, Tecan.Sila2.IBinaryStore store)
+        ///  <param name="n">Number to count to</param>
+        ///  <param name="delay">The delay for each iteration</param>
+        public CountRequestDto(long n, double delay, Tecan.Sila2.IBinaryStore store)
         {
-            NumberIterations = new Tecan.Sila2.IntegerDto(numberIterations, store);
+            N = new Tecan.Sila2.IntegerDto(n, store);
+            Delay = new Tecan.Sila2.RealDto(delay, store);
         }
         
         ///  <summary>
-        /// Number of Iterations to perform
+        /// Number to count to
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute(1)]
-        public Tecan.Sila2.IntegerDto NumberIterations
+        public Tecan.Sila2.IntegerDto N
         {
             get
             {
-                return _numberIterations;
+                return _n;
             }
             set
             {
-                _numberIterations = value;
+                _n = value;
+            }
+        }
+        
+        ///  <summary>
+        /// The delay for each iteration
+        /// </summary>
+        [ProtoBuf.ProtoMemberAttribute(2)]
+        public Tecan.Sila2.RealDto Delay
+        {
+            get
+            {
+                return _delay;
+            }
+            set
+            {
+                _delay = value;
             }
         }
         
@@ -63,7 +83,7 @@ namespace Tecan.Sila2.Interop.Client.ObservableCommandTest
         {
             get
             {
-                return "org.silastandard/test/ObservableCommandTest/v1/Command/ObservableIteration";
+                return "org.silastandard/test/ObservableCommandTest/v1/Command/Count";
             }
         }
         
@@ -78,10 +98,10 @@ namespace Tecan.Sila2.Interop.Client.ObservableCommandTest
     }
     
     ///  <summary>
-    /// Data transfer object for the intermediate response of the Observable iteration command
+    /// Data transfer object for the intermediate response of the Count command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
-    public class ObservableIterationIntermediateDto : Tecan.Sila2.ISilaTransferObject
+    public class CountIntermediateDto : Tecan.Sila2.ISilaTransferObject
     {
         
         private Tecan.Sila2.IntegerDto _currentIteration;
@@ -89,7 +109,7 @@ namespace Tecan.Sila2.Interop.Client.ObservableCommandTest
         ///  <summary>
         /// Create a new instance
         /// </summary>
-        public ObservableIterationIntermediateDto()
+        public CountIntermediateDto()
         {
         }
         
@@ -97,14 +117,14 @@ namespace Tecan.Sila2.Interop.Client.ObservableCommandTest
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
-        ///  <param name="currentIteration">Return the current iteration in progress, starting from 0 to NumberIterations (excluded).</param>
-        public ObservableIterationIntermediateDto(long currentIteration, Tecan.Sila2.IBinaryStore store)
+        ///  <param name="currentIteration">The current number, from 0 to N-1 (excluded).</param>
+        public CountIntermediateDto(long currentIteration, Tecan.Sila2.IBinaryStore store)
         {
             CurrentIteration = new Tecan.Sila2.IntegerDto(currentIteration, store);
         }
         
         ///  <summary>
-        /// Return the current iteration in progress, starting from 0 to NumberIterations (excluded).
+        /// The current number, from 0 to N-1 (excluded).
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute(1)]
         public Tecan.Sila2.IntegerDto CurrentIteration
@@ -130,10 +150,10 @@ namespace Tecan.Sila2.Interop.Client.ObservableCommandTest
     }
     
     ///  <summary>
-    /// Data transfer object for the response of the Observable iteration command
+    /// Data transfer object for the response of the Count command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
-    public class ObservableIterationResponseDto : Tecan.Sila2.ISilaTransferObject
+    public class CountResponseDto : Tecan.Sila2.ISilaTransferObject
     {
         
         private Tecan.Sila2.IntegerDto _iterationResponse;
@@ -141,7 +161,7 @@ namespace Tecan.Sila2.Interop.Client.ObservableCommandTest
         ///  <summary>
         /// Create a new instance
         /// </summary>
-        public ObservableIterationResponseDto()
+        public CountResponseDto()
         {
         }
         
@@ -149,14 +169,14 @@ namespace Tecan.Sila2.Interop.Client.ObservableCommandTest
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
-        ///  <param name="iterationResponse">If the command ended successfully the response should be NumberIterations - 1</param>
-        public ObservableIterationResponseDto(long iterationResponse, Tecan.Sila2.IBinaryStore store)
+        ///  <param name="iterationResponse">The last number (N-1)</param>
+        public CountResponseDto(long iterationResponse, Tecan.Sila2.IBinaryStore store)
         {
             IterationResponse = new Tecan.Sila2.IntegerDto(iterationResponse, store);
         }
         
         ///  <summary>
-        /// If the command ended successfully the response should be NumberIterations - 1
+        /// The last number (N-1)
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute(1)]
         public Tecan.Sila2.IntegerDto IterationResponse
@@ -182,20 +202,20 @@ namespace Tecan.Sila2.Interop.Client.ObservableCommandTest
     }
     
     ///  <summary>
-    /// Data transfer object for the request of the Echo Value Async command
+    /// Data transfer object for the request of the Echo Value After Delay command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
-    public class EchoValueAsyncRequestDto : Tecan.Sila2.ISilaTransferObject, Tecan.Sila2.ISilaRequestObject
+    public class EchoValueAfterDelayRequestDto : Tecan.Sila2.ISilaTransferObject, Tecan.Sila2.ISilaRequestObject
     {
         
         private Tecan.Sila2.IntegerDto _value;
         
-        private Tecan.Sila2.IntegerDto _delayInMs;
+        private Tecan.Sila2.RealDto _delay;
         
         ///  <summary>
         /// Create a new instance
         /// </summary>
-        public EchoValueAsyncRequestDto()
+        public EchoValueAfterDelayRequestDto()
         {
         }
         
@@ -204,11 +224,11 @@ namespace Tecan.Sila2.Interop.Client.ObservableCommandTest
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
         ///  <param name="value">The value to echo</param>
-        ///  <param name="delayInMs">The delay in milliseconds</param>
-        public EchoValueAsyncRequestDto(long value, long delayInMs, Tecan.Sila2.IBinaryStore store)
+        ///  <param name="delay">The delay before the command execution starts</param>
+        public EchoValueAfterDelayRequestDto(long value, double delay, Tecan.Sila2.IBinaryStore store)
         {
             Value = new Tecan.Sila2.IntegerDto(value, store);
-            DelayInMs = new Tecan.Sila2.IntegerDto(delayInMs, store);
+            Delay = new Tecan.Sila2.RealDto(delay, store);
         }
         
         ///  <summary>
@@ -228,18 +248,18 @@ namespace Tecan.Sila2.Interop.Client.ObservableCommandTest
         }
         
         ///  <summary>
-        /// The delay in milliseconds
+        /// The delay before the command execution starts
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute(2)]
-        public Tecan.Sila2.IntegerDto DelayInMs
+        public Tecan.Sila2.RealDto Delay
         {
             get
             {
-                return _delayInMs;
+                return _delay;
             }
             set
             {
-                _delayInMs = value;
+                _delay = value;
             }
         }
         
@@ -251,7 +271,7 @@ namespace Tecan.Sila2.Interop.Client.ObservableCommandTest
         {
             get
             {
-                return "org.silastandard/test/ObservableCommandTest/v1/Command/EchoValueAsync";
+                return "org.silastandard/test/ObservableCommandTest/v1/Command/EchoValueAfterDelay";
             }
         }
         
@@ -266,10 +286,10 @@ namespace Tecan.Sila2.Interop.Client.ObservableCommandTest
     }
     
     ///  <summary>
-    /// Data transfer object for the response of the Echo Value Async command
+    /// Data transfer object for the response of the Echo Value After Delay command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
-    public class EchoValueAsyncResponseDto : Tecan.Sila2.ISilaTransferObject
+    public class EchoValueAfterDelayResponseDto : Tecan.Sila2.ISilaTransferObject
     {
         
         private Tecan.Sila2.IntegerDto _receivedValue;
@@ -277,7 +297,7 @@ namespace Tecan.Sila2.Interop.Client.ObservableCommandTest
         ///  <summary>
         /// Create a new instance
         /// </summary>
-        public EchoValueAsyncResponseDto()
+        public EchoValueAfterDelayResponseDto()
         {
         }
         
@@ -286,7 +306,7 @@ namespace Tecan.Sila2.Interop.Client.ObservableCommandTest
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
         ///  <param name="receivedValue">The Received Value</param>
-        public EchoValueAsyncResponseDto(long receivedValue, Tecan.Sila2.IBinaryStore store)
+        public EchoValueAfterDelayResponseDto(long receivedValue, Tecan.Sila2.IBinaryStore store)
         {
             ReceivedValue = new Tecan.Sila2.IntegerDto(receivedValue, store);
         }

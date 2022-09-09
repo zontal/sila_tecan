@@ -202,6 +202,20 @@ namespace Tecan.Sila2.Locking
         }
         
         ///  <summary>
+        /// Gets the metadata identifier this request interceptor is connected to or null, if not applicable
+        /// </summary>
+        public string MetadataIdentifier
+        {
+            get
+            {
+                return "org.silastandard/core/LockController/v1/Metadata/LockIdentifier";
+            }
+            set
+            {
+            }
+        }
+        
+        ///  <summary>
         /// Decides whether the interceptor is required for the given command
         /// </summary>
         /// <param name="feature">The feature that contains the command or property</param>
@@ -228,7 +242,7 @@ namespace Tecan.Sila2.Locking
         {
             try
             {
-                return Intercept(commandIdentifier, Tecan.Sila2.Server.Metadata.Extract<Tecan.Sila2.StringDto>(metadata, "org.silastandard/core/LockController/v1/Metadata/LockIdentifier").Extract(server));
+                return Intercept(commandIdentifier, Tecan.Sila2.Server.Metadata.Extract<Tecan.Sila2.StringDto>(metadata, MetadataIdentifier).Extract(server));
             } catch (InvalidLockIdentifierException ex)
             {
                 throw server.ErrorHandling.CreateExecutionError("org.silastandard/core/LockController/v1/DefinedExecutionError/InvalidLockIdentifi" +

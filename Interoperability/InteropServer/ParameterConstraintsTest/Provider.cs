@@ -13,7 +13,7 @@ using Tecan.Sila2;
 using Tecan.Sila2.Client;
 using Tecan.Sila2.Server;
 
-namespace Tecan.Sila2.Interop.Server
+namespace Tecan.Sila2.Interop.Server.ParameterConstraintsTest
 {
     
     
@@ -61,200 +61,1308 @@ namespace Tecan.Sila2.Interop.Server
         /// <param name="registration">The registration component to which the feature should be registered</param>
         public void Register(IServerBuilder registration)
         {
-            registration.RegisterUnobservableCommand<ExactStringLengthRequestDto, EmptyRequest>("ExactStringLength", ExactStringLength);
-            registration.RegisterUnobservableCommand<ConstrainedNumericParametersRequestDto, EmptyRequest>("ConstrainedNumericParameters", ConstrainedNumericParameters);
-            registration.RegisterUnobservableCommand<ConstrainedDateTimeParametersRequestDto, EmptyRequest>("ConstrainedDateTimeParameters", ConstrainedDateTimeParameters);
-            registration.RegisterUnobservableCommand<ConstrainedListParametersRequestDto, EmptyRequest>("ConstrainedListParameters", ConstrainedListParameters);
+            registration.RegisterUnobservableCommand<CheckStringConstraintLengthRequestDto, EmptyRequest>("CheckStringConstraintLength", CheckStringConstraintLength);
+            registration.RegisterUnobservableCommand<CheckStringConstraintMinimalLengthRequestDto, EmptyRequest>("CheckStringConstraintMinimalLength", CheckStringConstraintMinimalLength);
+            registration.RegisterUnobservableCommand<CheckStringConstraintMaximalLengthRequestDto, EmptyRequest>("CheckStringConstraintMaximalLength", CheckStringConstraintMaximalLength);
+            registration.RegisterUnobservableCommand<CheckStringConstraintMinMaxLengthRequestDto, EmptyRequest>("CheckStringConstraintMinMaxLength", CheckStringConstraintMinMaxLength);
+            registration.RegisterUnobservableCommand<CheckStringConstraintSetRequestDto, EmptyRequest>("CheckStringConstraintSet", CheckStringConstraintSet);
+            registration.RegisterUnobservableCommand<CheckStringConstraintPatternRequestDto, EmptyRequest>("CheckStringConstraintPattern", CheckStringConstraintPattern);
+            registration.RegisterUnobservableCommand<CheckStringConstraintContentTypeRequestDto, EmptyRequest>("CheckStringConstraintContentType", CheckStringConstraintContentType);
+            registration.RegisterUnobservableCommand<CheckStringConstraintFullyQualifiedIdentifierRequestDto, EmptyRequest>("CheckStringConstraintFullyQualifiedIdentifier", CheckStringConstraintFullyQualifiedIdentifier);
+            registration.RegisterUnobservableCommand<CheckStringConstraintSchemaRequestDto, EmptyRequest>("CheckStringConstraintSchema", CheckStringConstraintSchema);
+            registration.RegisterUnobservableCommand<CheckIntegerConstraintSetRequestDto, EmptyRequest>("CheckIntegerConstraintSet", CheckIntegerConstraintSet);
+            registration.RegisterUnobservableCommand<CheckScientificallyNotatedIntegerLimitRequestDto, EmptyRequest>("CheckScientificallyNotatedIntegerLimit", CheckScientificallyNotatedIntegerLimit);
+            registration.RegisterUnobservableCommand<CheckIntegerConstraintMaximalExclusiveRequestDto, EmptyRequest>("CheckIntegerConstraintMaximalExclusive", CheckIntegerConstraintMaximalExclusive);
+            registration.RegisterUnobservableCommand<CheckIntegerConstraintMaximalInclusiveRequestDto, EmptyRequest>("CheckIntegerConstraintMaximalInclusive", CheckIntegerConstraintMaximalInclusive);
+            registration.RegisterUnobservableCommand<CheckIntegerConstraintMinimalExclusiveRequestDto, EmptyRequest>("CheckIntegerConstraintMinimalExclusive", CheckIntegerConstraintMinimalExclusive);
+            registration.RegisterUnobservableCommand<CheckIntegerConstraintMinimalInclusiveRequestDto, EmptyRequest>("CheckIntegerConstraintMinimalInclusive", CheckIntegerConstraintMinimalInclusive);
+            registration.RegisterUnobservableCommand<CheckIntegerConstraintMinMaxRequestDto, EmptyRequest>("CheckIntegerConstraintMinMax", CheckIntegerConstraintMinMax);
+            registration.RegisterUnobservableCommand<CheckIntegerConstraintUnitRequestDto, EmptyRequest>("CheckIntegerConstraintUnit", CheckIntegerConstraintUnit);
+            registration.RegisterUnobservableCommand<CheckRealConstraintSetRequestDto, EmptyRequest>("CheckRealConstraintSet", CheckRealConstraintSet);
+            registration.RegisterUnobservableCommand<CheckScientificallyNotatedRealLimitRequestDto, EmptyRequest>("CheckScientificallyNotatedRealLimit", CheckScientificallyNotatedRealLimit);
+            registration.RegisterUnobservableCommand<CheckRealConstraintMaximalExclusiveRequestDto, EmptyRequest>("CheckRealConstraintMaximalExclusive", CheckRealConstraintMaximalExclusive);
+            registration.RegisterUnobservableCommand<CheckRealConstraintMaximalInclusiveRequestDto, EmptyRequest>("CheckRealConstraintMaximalInclusive", CheckRealConstraintMaximalInclusive);
+            registration.RegisterUnobservableCommand<CheckRealConstraintMinimalExclusiveRequestDto, EmptyRequest>("CheckRealConstraintMinimalExclusive", CheckRealConstraintMinimalExclusive);
+            registration.RegisterUnobservableCommand<CheckRealConstraintMinimalInclusiveRequestDto, EmptyRequest>("CheckRealConstraintMinimalInclusive", CheckRealConstraintMinimalInclusive);
+            registration.RegisterUnobservableCommand<CheckRealConstraintMinMaxRequestDto, EmptyRequest>("CheckRealConstraintMinMax", CheckRealConstraintMinMax);
+            registration.RegisterUnobservableCommand<CheckRealConstraintUnitRequestDto, EmptyRequest>("CheckRealConstraintUnit", CheckRealConstraintUnit);
+            registration.RegisterUnobservableCommand<CheckDateConstraintSetRequestDto, EmptyRequest>("CheckDateConstraintSet", CheckDateConstraintSet);
+            registration.RegisterUnobservableCommand<CheckDateConstraintMaximalExclusiveRequestDto, EmptyRequest>("CheckDateConstraintMaximalExclusive", CheckDateConstraintMaximalExclusive);
+            registration.RegisterUnobservableCommand<CheckDateConstraintMaximalInclusiveRequestDto, EmptyRequest>("CheckDateConstraintMaximalInclusive", CheckDateConstraintMaximalInclusive);
+            registration.RegisterUnobservableCommand<CheckDateConstraintMinimalExclusiveRequestDto, EmptyRequest>("CheckDateConstraintMinimalExclusive", CheckDateConstraintMinimalExclusive);
+            registration.RegisterUnobservableCommand<CheckDateConstraintMinimalInclusiveRequestDto, EmptyRequest>("CheckDateConstraintMinimalInclusive", CheckDateConstraintMinimalInclusive);
+            registration.RegisterUnobservableCommand<CheckDateConstraintMinMaxRequestDto, EmptyRequest>("CheckDateConstraintMinMax", CheckDateConstraintMinMax);
+            registration.RegisterUnobservableCommand<CheckTimeConstraintSetRequestDto, EmptyRequest>("CheckTimeConstraintSet", CheckTimeConstraintSet);
+            registration.RegisterUnobservableCommand<CheckTimeConstraintMaximalExclusiveRequestDto, EmptyRequest>("CheckTimeConstraintMaximalExclusive", CheckTimeConstraintMaximalExclusive);
+            registration.RegisterUnobservableCommand<CheckTimeConstraintMaximalInclusiveRequestDto, EmptyRequest>("CheckTimeConstraintMaximalInclusive", CheckTimeConstraintMaximalInclusive);
+            registration.RegisterUnobservableCommand<CheckTimeConstraintMinimalExclusiveRequestDto, EmptyRequest>("CheckTimeConstraintMinimalExclusive", CheckTimeConstraintMinimalExclusive);
+            registration.RegisterUnobservableCommand<CheckTimeConstraintMinimalInclusiveRequestDto, EmptyRequest>("CheckTimeConstraintMinimalInclusive", CheckTimeConstraintMinimalInclusive);
+            registration.RegisterUnobservableCommand<CheckTimeConstraintMinMaxRequestDto, EmptyRequest>("CheckTimeConstraintMinMax", CheckTimeConstraintMinMax);
+            registration.RegisterUnobservableCommand<CheckTimestampConstraintSetRequestDto, EmptyRequest>("CheckTimestampConstraintSet", CheckTimestampConstraintSet);
+            registration.RegisterUnobservableCommand<CheckTimestampConstraintMaximalExclusiveRequestDto, EmptyRequest>("CheckTimestampConstraintMaximalExclusive", CheckTimestampConstraintMaximalExclusive);
+            registration.RegisterUnobservableCommand<CheckTimestampConstraintMaximalInclusiveRequestDto, EmptyRequest>("CheckTimestampConstraintMaximalInclusive", CheckTimestampConstraintMaximalInclusive);
+            registration.RegisterUnobservableCommand<CheckTimestampConstraintMinimalExclusiveRequestDto, EmptyRequest>("CheckTimestampConstraintMinimalExclusive", CheckTimestampConstraintMinimalExclusive);
+            registration.RegisterUnobservableCommand<CheckTimestampConstraintMinimalInclusiveRequestDto, EmptyRequest>("CheckTimestampConstraintMinimalInclusive", CheckTimestampConstraintMinimalInclusive);
+            registration.RegisterUnobservableCommand<CheckTimestampConstraintMinMaxRequestDto, EmptyRequest>("CheckTimestampConstraintMinMax", CheckTimestampConstraintMinMax);
+            registration.RegisterUnobservableCommand<CheckListConstraintElementCountRequestDto, EmptyRequest>("CheckListConstraintElementCount", CheckListConstraintElementCount);
+            registration.RegisterUnobservableCommand<CheckListConstraintMinimalElementCountRequestDto, EmptyRequest>("CheckListConstraintMinimalElementCount", CheckListConstraintMinimalElementCount);
+            registration.RegisterUnobservableCommand<CheckListConstraintMaximalElementCountRequestDto, EmptyRequest>("CheckListConstraintMaximalElementCount", CheckListConstraintMaximalElementCount);
+            registration.RegisterUnobservableCommand<CheckListConstraintMinMaxElementCountRequestDto, EmptyRequest>("CheckListConstraintMinMaxElementCount", CheckListConstraintMinMaxElementCount);
+            registration.RegisterUnobservableCommand<CheckBinaryConstraintLengthRequestDto, EmptyRequest>("CheckBinaryConstraintLength", CheckBinaryConstraintLength);
+            registration.RegisterUnobservableCommand<CheckBinaryConstraintMinimalLengthRequestDto, EmptyRequest>("CheckBinaryConstraintMinimalLength", CheckBinaryConstraintMinimalLength);
+            registration.RegisterUnobservableCommand<CheckBinaryConstraintMaximalLengthRequestDto, EmptyRequest>("CheckBinaryConstraintMaximalLength", CheckBinaryConstraintMaximalLength);
+            registration.RegisterUnobservableCommand<CheckBinaryConstraintMinMaxLengthRequestDto, EmptyRequest>("CheckBinaryConstraintMinMaxLength", CheckBinaryConstraintMinMaxLength);
+            registration.RegisterUnobservableCommand<CheckBinaryConstraintContentTypeRequestDto, EmptyRequest>("CheckBinaryConstraintContentType", CheckBinaryConstraintContentType);
+            registration.RegisterUnobservableCommand<CheckBinaryConstraintSchemaRequestDto, EmptyRequest>("CheckBinaryConstraintSchema", CheckBinaryConstraintSchema);
+            registration.RegisterUnobservableCommand<CheckAllowedTypesConstraintRequestDto, EmptyRequest>("CheckAllowedTypesConstraint", CheckAllowedTypesConstraint);
+            registration.RegisterUnobservableCommand<CheckAllowedStructureTypeConstraintsRequestDto, EmptyRequest>("CheckAllowedStructureTypeConstraints", CheckAllowedStructureTypeConstraints);
         }
         
         ///  <summary>
-        /// Executes the Exact String Length command
+        /// Executes the Check String Constraint Length command
         /// </summary>
         /// <param name="request">A data transfer object that contains the command parameters</param>
         /// <returns>The command response wrapped in a data transfer object</returns>
-        protected virtual EmptyRequest ExactStringLength(ExactStringLengthRequestDto request)
+        protected virtual EmptyRequest CheckStringConstraintLength(CheckStringConstraintLengthRequestDto request)
         {
             try
             {
-                _implementation.ExactStringLength(request.StringLength.Extract(_server), request.MaximalLengthString.Extract(_server), request.MinimalLengthString.Extract(_server), request.MinMaxLengthString.Extract(_server), request.SetString.Extract(_server), request.PatternString.Extract(_server));
+                _implementation.CheckStringConstraintLength(request.ConstrainedParameter.Extract(_server));
                 return EmptyRequest.Instance;
             } catch (System.ArgumentException ex)
             {
-                if ((ex.ParamName == "stringLength"))
+                if ((ex.ParamName == "constrainedParameter"))
                 {
-                    throw _server.ErrorHandling.CreateValidationError("org.silastandard/test/ParameterConstraintsTest/v1/Command/ExactStringLength/Param" +
-                            "eter/StringLength", ex.Message);
-                }
-                if ((ex.ParamName == "maximalLengthString"))
-                {
-                    throw _server.ErrorHandling.CreateValidationError("org.silastandard/test/ParameterConstraintsTest/v1/Command/ExactStringLength/Param" +
-                            "eter/MaximalLengthString", ex.Message);
-                }
-                if ((ex.ParamName == "minimalLengthString"))
-                {
-                    throw _server.ErrorHandling.CreateValidationError("org.silastandard/test/ParameterConstraintsTest/v1/Command/ExactStringLength/Param" +
-                            "eter/MinimalLengthString", ex.Message);
-                }
-                if ((ex.ParamName == "minMaxLengthString"))
-                {
-                    throw _server.ErrorHandling.CreateValidationError("org.silastandard/test/ParameterConstraintsTest/v1/Command/ExactStringLength/Param" +
-                            "eter/MinMaxLengthString", ex.Message);
-                }
-                if ((ex.ParamName == "setString"))
-                {
-                    throw _server.ErrorHandling.CreateValidationError("org.silastandard/test/ParameterConstraintsTest/v1/Command/ExactStringLength/Param" +
-                            "eter/SetString", ex.Message);
-                }
-                if ((ex.ParamName == "patternString"))
-                {
-                    throw _server.ErrorHandling.CreateValidationError("org.silastandard/test/ParameterConstraintsTest/v1/Command/ExactStringLength/Param" +
-                            "eter/PatternString", ex.Message);
+                    throw _server.ErrorHandling.CreateValidationError("org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckStringConstraintLe" +
+                            "ngth/Parameter/ConstrainedParameter", ex.Message);
                 }
                 throw _server.ErrorHandling.CreateUnknownValidationError(ex);
             }
         }
         
         ///  <summary>
-        /// Executes the Constrained Numeric Parameters command
+        /// Executes the Check String Constraint Minimal Length command
         /// </summary>
         /// <param name="request">A data transfer object that contains the command parameters</param>
         /// <returns>The command response wrapped in a data transfer object</returns>
-        protected virtual EmptyRequest ConstrainedNumericParameters(ConstrainedNumericParametersRequestDto request)
+        protected virtual EmptyRequest CheckStringConstraintMinimalLength(CheckStringConstraintMinimalLengthRequestDto request)
         {
             try
             {
-                _implementation.ConstrainedNumericParameters(request.IntegersSet.Extract(_server), request.MaximalExclusiveReal.Extract(_server), request.MinimalExclusiveReal.Extract(_server), request.MinMaxExclusiveReal.Extract(_server), request.MaximalInclusiveInteger.Extract(_server), request.MinimalInclusiveInteger.Extract(_server), request.MinMaxInclusiveInteger.Extract(_server), request.Unit.Extract(_server));
+                _implementation.CheckStringConstraintMinimalLength(request.ConstrainedParameter.Extract(_server));
                 return EmptyRequest.Instance;
             } catch (System.ArgumentException ex)
             {
-                if ((ex.ParamName == "integersSet"))
+                if ((ex.ParamName == "constrainedParameter"))
                 {
-                    throw _server.ErrorHandling.CreateValidationError("org.silastandard/test/ParameterConstraintsTest/v1/Command/ConstrainedNumericParam" +
-                            "eters/Parameter/IntegersSet", ex.Message);
-                }
-                if ((ex.ParamName == "maximalExclusiveReal"))
-                {
-                    throw _server.ErrorHandling.CreateValidationError("org.silastandard/test/ParameterConstraintsTest/v1/Command/ConstrainedNumericParam" +
-                            "eters/Parameter/MaximalExclusiveReal", ex.Message);
-                }
-                if ((ex.ParamName == "minimalExclusiveReal"))
-                {
-                    throw _server.ErrorHandling.CreateValidationError("org.silastandard/test/ParameterConstraintsTest/v1/Command/ConstrainedNumericParam" +
-                            "eters/Parameter/MinimalExclusiveReal", ex.Message);
-                }
-                if ((ex.ParamName == "minMaxExclusiveReal"))
-                {
-                    throw _server.ErrorHandling.CreateValidationError("org.silastandard/test/ParameterConstraintsTest/v1/Command/ConstrainedNumericParam" +
-                            "eters/Parameter/MinMaxExclusiveReal", ex.Message);
-                }
-                if ((ex.ParamName == "maximalInclusiveInteger"))
-                {
-                    throw _server.ErrorHandling.CreateValidationError("org.silastandard/test/ParameterConstraintsTest/v1/Command/ConstrainedNumericParam" +
-                            "eters/Parameter/MaximalInclusiveInteger", ex.Message);
-                }
-                if ((ex.ParamName == "minimalInclusiveInteger"))
-                {
-                    throw _server.ErrorHandling.CreateValidationError("org.silastandard/test/ParameterConstraintsTest/v1/Command/ConstrainedNumericParam" +
-                            "eters/Parameter/MinimalInclusiveInteger", ex.Message);
-                }
-                if ((ex.ParamName == "minMaxInclusiveInteger"))
-                {
-                    throw _server.ErrorHandling.CreateValidationError("org.silastandard/test/ParameterConstraintsTest/v1/Command/ConstrainedNumericParam" +
-                            "eters/Parameter/MinMaxInclusiveInteger", ex.Message);
-                }
-                if ((ex.ParamName == "unit"))
-                {
-                    throw _server.ErrorHandling.CreateValidationError("org.silastandard/test/ParameterConstraintsTest/v1/Command/ConstrainedNumericParam" +
-                            "eters/Parameter/Unit", ex.Message);
+                    throw _server.ErrorHandling.CreateValidationError("org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckStringConstraintMi" +
+                            "nimalLength/Parameter/ConstrainedParameter", ex.Message);
                 }
                 throw _server.ErrorHandling.CreateUnknownValidationError(ex);
             }
         }
         
         ///  <summary>
-        /// Executes the Constrained Date and Time Parameters command
+        /// Executes the Check String Constraint Maximal Length command
         /// </summary>
         /// <param name="request">A data transfer object that contains the command parameters</param>
         /// <returns>The command response wrapped in a data transfer object</returns>
-        protected virtual EmptyRequest ConstrainedDateTimeParameters(ConstrainedDateTimeParametersRequestDto request)
+        protected virtual EmptyRequest CheckStringConstraintMaximalLength(CheckStringConstraintMaximalLengthRequestDto request)
         {
             try
             {
-                _implementation.ConstrainedDateTimeParameters(request.DateSet.Extract(_server), request.MaximalExclusiveDate.Extract(_server), request.MinimalExclusiveDate.Extract(_server), request.MinMaxExclusiveDate.Extract(_server), request.MaximalInclusiveTime.Extract(_server), request.MinimalInclusiveTime.Extract(_server), request.MinMaxInclusiveTime.Extract(_server));
+                _implementation.CheckStringConstraintMaximalLength(request.ConstrainedParameter.Extract(_server));
                 return EmptyRequest.Instance;
             } catch (System.ArgumentException ex)
             {
-                if ((ex.ParamName == "dateSet"))
+                if ((ex.ParamName == "constrainedParameter"))
                 {
-                    throw _server.ErrorHandling.CreateValidationError("org.silastandard/test/ParameterConstraintsTest/v1/Command/ConstrainedDateTimePara" +
-                            "meters/Parameter/DateSet", ex.Message);
-                }
-                if ((ex.ParamName == "maximalExclusiveDate"))
-                {
-                    throw _server.ErrorHandling.CreateValidationError("org.silastandard/test/ParameterConstraintsTest/v1/Command/ConstrainedDateTimePara" +
-                            "meters/Parameter/MaximalExclusiveDate", ex.Message);
-                }
-                if ((ex.ParamName == "minimalExclusiveDate"))
-                {
-                    throw _server.ErrorHandling.CreateValidationError("org.silastandard/test/ParameterConstraintsTest/v1/Command/ConstrainedDateTimePara" +
-                            "meters/Parameter/MinimalExclusiveDate", ex.Message);
-                }
-                if ((ex.ParamName == "minMaxExclusiveDate"))
-                {
-                    throw _server.ErrorHandling.CreateValidationError("org.silastandard/test/ParameterConstraintsTest/v1/Command/ConstrainedDateTimePara" +
-                            "meters/Parameter/MinMaxExclusiveDate", ex.Message);
-                }
-                if ((ex.ParamName == "maximalInclusiveTime"))
-                {
-                    throw _server.ErrorHandling.CreateValidationError("org.silastandard/test/ParameterConstraintsTest/v1/Command/ConstrainedDateTimePara" +
-                            "meters/Parameter/MaximalInclusiveTime", ex.Message);
-                }
-                if ((ex.ParamName == "minimalInclusiveTime"))
-                {
-                    throw _server.ErrorHandling.CreateValidationError("org.silastandard/test/ParameterConstraintsTest/v1/Command/ConstrainedDateTimePara" +
-                            "meters/Parameter/MinimalInclusiveTime", ex.Message);
-                }
-                if ((ex.ParamName == "minMaxInclusiveTime"))
-                {
-                    throw _server.ErrorHandling.CreateValidationError("org.silastandard/test/ParameterConstraintsTest/v1/Command/ConstrainedDateTimePara" +
-                            "meters/Parameter/MinMaxInclusiveTime", ex.Message);
+                    throw _server.ErrorHandling.CreateValidationError("org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckStringConstraintMa" +
+                            "ximalLength/Parameter/ConstrainedParameter", ex.Message);
                 }
                 throw _server.ErrorHandling.CreateUnknownValidationError(ex);
             }
         }
         
         ///  <summary>
-        /// Executes the Constrained List Parameters command
+        /// Executes the Check String Constraint MinMax Length command
         /// </summary>
         /// <param name="request">A data transfer object that contains the command parameters</param>
         /// <returns>The command response wrapped in a data transfer object</returns>
-        protected virtual EmptyRequest ConstrainedListParameters(ConstrainedListParametersRequestDto request)
+        protected virtual EmptyRequest CheckStringConstraintMinMaxLength(CheckStringConstraintMinMaxLengthRequestDto request)
         {
             try
             {
-                _implementation.ConstrainedListParameters(request.ElementCountList.Extract(_server), request.MaximalElementCountList.Extract(_server), request.MinimalElementCountList.Extract(_server), request.MinMaxElementCountList.Extract(_server));
+                _implementation.CheckStringConstraintMinMaxLength(request.ConstrainedParameter.Extract(_server));
                 return EmptyRequest.Instance;
             } catch (System.ArgumentException ex)
             {
-                if ((ex.ParamName == "elementCountList"))
+                if ((ex.ParamName == "constrainedParameter"))
                 {
-                    throw _server.ErrorHandling.CreateValidationError("org.silastandard/test/ParameterConstraintsTest/v1/Command/ConstrainedListParamete" +
-                            "rs/Parameter/ElementCountList", ex.Message);
+                    throw _server.ErrorHandling.CreateValidationError("org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckStringConstraintMi" +
+                            "nMaxLength/Parameter/ConstrainedParameter", ex.Message);
                 }
-                if ((ex.ParamName == "maximalElementCountList"))
+                throw _server.ErrorHandling.CreateUnknownValidationError(ex);
+            }
+        }
+        
+        ///  <summary>
+        /// Executes the Check String Constraint Set command
+        /// </summary>
+        /// <param name="request">A data transfer object that contains the command parameters</param>
+        /// <returns>The command response wrapped in a data transfer object</returns>
+        protected virtual EmptyRequest CheckStringConstraintSet(CheckStringConstraintSetRequestDto request)
+        {
+            try
+            {
+                _implementation.CheckStringConstraintSet(request.ConstrainedParameter.Extract(_server));
+                return EmptyRequest.Instance;
+            } catch (System.ArgumentException ex)
+            {
+                if ((ex.ParamName == "constrainedParameter"))
                 {
-                    throw _server.ErrorHandling.CreateValidationError("org.silastandard/test/ParameterConstraintsTest/v1/Command/ConstrainedListParamete" +
-                            "rs/Parameter/MaximalElementCountList", ex.Message);
+                    throw _server.ErrorHandling.CreateValidationError("org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckStringConstraintSe" +
+                            "t/Parameter/ConstrainedParameter", ex.Message);
                 }
-                if ((ex.ParamName == "minimalElementCountList"))
+                throw _server.ErrorHandling.CreateUnknownValidationError(ex);
+            }
+        }
+        
+        ///  <summary>
+        /// Executes the Check String Constraint Pattern command
+        /// </summary>
+        /// <param name="request">A data transfer object that contains the command parameters</param>
+        /// <returns>The command response wrapped in a data transfer object</returns>
+        protected virtual EmptyRequest CheckStringConstraintPattern(CheckStringConstraintPatternRequestDto request)
+        {
+            try
+            {
+                _implementation.CheckStringConstraintPattern(request.ConstrainedParameter.Extract(_server));
+                return EmptyRequest.Instance;
+            } catch (System.ArgumentException ex)
+            {
+                if ((ex.ParamName == "constrainedParameter"))
                 {
-                    throw _server.ErrorHandling.CreateValidationError("org.silastandard/test/ParameterConstraintsTest/v1/Command/ConstrainedListParamete" +
-                            "rs/Parameter/MinimalElementCountList", ex.Message);
+                    throw _server.ErrorHandling.CreateValidationError("org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckStringConstraintPa" +
+                            "ttern/Parameter/ConstrainedParameter", ex.Message);
                 }
-                if ((ex.ParamName == "minMaxElementCountList"))
+                throw _server.ErrorHandling.CreateUnknownValidationError(ex);
+            }
+        }
+        
+        ///  <summary>
+        /// Executes the Check String Constraint Content Type command
+        /// </summary>
+        /// <param name="request">A data transfer object that contains the command parameters</param>
+        /// <returns>The command response wrapped in a data transfer object</returns>
+        protected virtual EmptyRequest CheckStringConstraintContentType(CheckStringConstraintContentTypeRequestDto request)
+        {
+            try
+            {
+                _implementation.CheckStringConstraintContentType(request.ConstrainedParameter.Extract(_server));
+                return EmptyRequest.Instance;
+            } catch (System.ArgumentException ex)
+            {
+                if ((ex.ParamName == "constrainedParameter"))
                 {
-                    throw _server.ErrorHandling.CreateValidationError("org.silastandard/test/ParameterConstraintsTest/v1/Command/ConstrainedListParamete" +
-                            "rs/Parameter/MinMaxElementCountList", ex.Message);
+                    throw _server.ErrorHandling.CreateValidationError("org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckStringConstraintCo" +
+                            "ntentType/Parameter/ConstrainedParameter", ex.Message);
+                }
+                throw _server.ErrorHandling.CreateUnknownValidationError(ex);
+            }
+        }
+        
+        ///  <summary>
+        /// Executes the Check String Constraint Fully Qualified Identifier command
+        /// </summary>
+        /// <param name="request">A data transfer object that contains the command parameters</param>
+        /// <returns>The command response wrapped in a data transfer object</returns>
+        protected virtual EmptyRequest CheckStringConstraintFullyQualifiedIdentifier(CheckStringConstraintFullyQualifiedIdentifierRequestDto request)
+        {
+            try
+            {
+                _implementation.CheckStringConstraintFullyQualifiedIdentifier(request.FeatureIdentifier.Extract(_server), request.CommandIdentifier_.Extract(_server), request.CommandParameterIdentifier.Extract(_server), request.CommandResponseIdentifier.Extract(_server), request.IntermediateCommandResponseIdentifier.Extract(_server), request.ExecutionErrorIdentifier.Extract(_server), request.PropertyIdentifier.Extract(_server), request.CustomDataTypeIdentifier.Extract(_server), request.MetadataIdentifier.Extract(_server));
+                return EmptyRequest.Instance;
+            } catch (System.ArgumentException ex)
+            {
+                if ((ex.ParamName == "featureIdentifier"))
+                {
+                    throw _server.ErrorHandling.CreateValidationError("org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckStringConstraintFu" +
+                            "llyQualifiedIdentifier/Parameter/FeatureIdentifier", ex.Message);
+                }
+                if ((ex.ParamName == "commandIdentifier"))
+                {
+                    throw _server.ErrorHandling.CreateValidationError("org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckStringConstraintFu" +
+                            "llyQualifiedIdentifier/Parameter/CommandIdentifier", ex.Message);
+                }
+                if ((ex.ParamName == "commandParameterIdentifier"))
+                {
+                    throw _server.ErrorHandling.CreateValidationError("org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckStringConstraintFu" +
+                            "llyQualifiedIdentifier/Parameter/CommandParameterIdentifier", ex.Message);
+                }
+                if ((ex.ParamName == "commandResponseIdentifier"))
+                {
+                    throw _server.ErrorHandling.CreateValidationError("org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckStringConstraintFu" +
+                            "llyQualifiedIdentifier/Parameter/CommandResponseIdentifier", ex.Message);
+                }
+                if ((ex.ParamName == "intermediateCommandResponseIdentifier"))
+                {
+                    throw _server.ErrorHandling.CreateValidationError("org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckStringConstraintFu" +
+                            "llyQualifiedIdentifier/Parameter/IntermediateCommandResponseIdentifier", ex.Message);
+                }
+                if ((ex.ParamName == "executionErrorIdentifier"))
+                {
+                    throw _server.ErrorHandling.CreateValidationError("org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckStringConstraintFu" +
+                            "llyQualifiedIdentifier/Parameter/ExecutionErrorIdentifier", ex.Message);
+                }
+                if ((ex.ParamName == "propertyIdentifier"))
+                {
+                    throw _server.ErrorHandling.CreateValidationError("org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckStringConstraintFu" +
+                            "llyQualifiedIdentifier/Parameter/PropertyIdentifier", ex.Message);
+                }
+                if ((ex.ParamName == "customDataTypeIdentifier"))
+                {
+                    throw _server.ErrorHandling.CreateValidationError("org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckStringConstraintFu" +
+                            "llyQualifiedIdentifier/Parameter/CustomDataTypeIdentifier", ex.Message);
+                }
+                if ((ex.ParamName == "metadataIdentifier"))
+                {
+                    throw _server.ErrorHandling.CreateValidationError("org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckStringConstraintFu" +
+                            "llyQualifiedIdentifier/Parameter/MetadataIdentifier", ex.Message);
+                }
+                throw _server.ErrorHandling.CreateUnknownValidationError(ex);
+            }
+        }
+        
+        ///  <summary>
+        /// Executes the Check String Constraint Schema command
+        /// </summary>
+        /// <param name="request">A data transfer object that contains the command parameters</param>
+        /// <returns>The command response wrapped in a data transfer object</returns>
+        protected virtual EmptyRequest CheckStringConstraintSchema(CheckStringConstraintSchemaRequestDto request)
+        {
+            try
+            {
+                _implementation.CheckStringConstraintSchema(request.ConstrainedParameter.Extract(_server));
+                return EmptyRequest.Instance;
+            } catch (System.ArgumentException ex)
+            {
+                if ((ex.ParamName == "constrainedParameter"))
+                {
+                    throw _server.ErrorHandling.CreateValidationError("org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckStringConstraintSc" +
+                            "hema/Parameter/ConstrainedParameter", ex.Message);
+                }
+                throw _server.ErrorHandling.CreateUnknownValidationError(ex);
+            }
+        }
+        
+        ///  <summary>
+        /// Executes the Check Integer Constraint Set command
+        /// </summary>
+        /// <param name="request">A data transfer object that contains the command parameters</param>
+        /// <returns>The command response wrapped in a data transfer object</returns>
+        protected virtual EmptyRequest CheckIntegerConstraintSet(CheckIntegerConstraintSetRequestDto request)
+        {
+            try
+            {
+                _implementation.CheckIntegerConstraintSet(request.ConstrainedParameter.Extract(_server));
+                return EmptyRequest.Instance;
+            } catch (System.ArgumentException ex)
+            {
+                if ((ex.ParamName == "constrainedParameter"))
+                {
+                    throw _server.ErrorHandling.CreateValidationError("org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckIntegerConstraintS" +
+                            "et/Parameter/ConstrainedParameter", ex.Message);
+                }
+                throw _server.ErrorHandling.CreateUnknownValidationError(ex);
+            }
+        }
+        
+        ///  <summary>
+        /// Executes the Check Scientifically Notated Integer Limit command
+        /// </summary>
+        /// <param name="request">A data transfer object that contains the command parameters</param>
+        /// <returns>The command response wrapped in a data transfer object</returns>
+        protected virtual EmptyRequest CheckScientificallyNotatedIntegerLimit(CheckScientificallyNotatedIntegerLimitRequestDto request)
+        {
+            try
+            {
+                _implementation.CheckScientificallyNotatedIntegerLimit(request.ConstrainedParameter.Extract(_server));
+                return EmptyRequest.Instance;
+            } catch (System.ArgumentException ex)
+            {
+                if ((ex.ParamName == "constrainedParameter"))
+                {
+                    throw _server.ErrorHandling.CreateValidationError("org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckScientificallyNota" +
+                            "tedIntegerLimit/Parameter/ConstrainedParameter", ex.Message);
+                }
+                throw _server.ErrorHandling.CreateUnknownValidationError(ex);
+            }
+        }
+        
+        ///  <summary>
+        /// Executes the Check Integer Constraint Maximal Exclusive command
+        /// </summary>
+        /// <param name="request">A data transfer object that contains the command parameters</param>
+        /// <returns>The command response wrapped in a data transfer object</returns>
+        protected virtual EmptyRequest CheckIntegerConstraintMaximalExclusive(CheckIntegerConstraintMaximalExclusiveRequestDto request)
+        {
+            try
+            {
+                _implementation.CheckIntegerConstraintMaximalExclusive(request.ConstrainedParameter.Extract(_server));
+                return EmptyRequest.Instance;
+            } catch (System.ArgumentException ex)
+            {
+                if ((ex.ParamName == "constrainedParameter"))
+                {
+                    throw _server.ErrorHandling.CreateValidationError("org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckIntegerConstraintM" +
+                            "aximalExclusive/Parameter/ConstrainedParameter", ex.Message);
+                }
+                throw _server.ErrorHandling.CreateUnknownValidationError(ex);
+            }
+        }
+        
+        ///  <summary>
+        /// Executes the Check Integer Constraint Maximal Inclusive command
+        /// </summary>
+        /// <param name="request">A data transfer object that contains the command parameters</param>
+        /// <returns>The command response wrapped in a data transfer object</returns>
+        protected virtual EmptyRequest CheckIntegerConstraintMaximalInclusive(CheckIntegerConstraintMaximalInclusiveRequestDto request)
+        {
+            try
+            {
+                _implementation.CheckIntegerConstraintMaximalInclusive(request.ConstrainedParameter.Extract(_server));
+                return EmptyRequest.Instance;
+            } catch (System.ArgumentException ex)
+            {
+                if ((ex.ParamName == "constrainedParameter"))
+                {
+                    throw _server.ErrorHandling.CreateValidationError("org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckIntegerConstraintM" +
+                            "aximalInclusive/Parameter/ConstrainedParameter", ex.Message);
+                }
+                throw _server.ErrorHandling.CreateUnknownValidationError(ex);
+            }
+        }
+        
+        ///  <summary>
+        /// Executes the Check Integer Constraint Minimal Exclusive command
+        /// </summary>
+        /// <param name="request">A data transfer object that contains the command parameters</param>
+        /// <returns>The command response wrapped in a data transfer object</returns>
+        protected virtual EmptyRequest CheckIntegerConstraintMinimalExclusive(CheckIntegerConstraintMinimalExclusiveRequestDto request)
+        {
+            try
+            {
+                _implementation.CheckIntegerConstraintMinimalExclusive(request.ConstrainedParameter.Extract(_server));
+                return EmptyRequest.Instance;
+            } catch (System.ArgumentException ex)
+            {
+                if ((ex.ParamName == "constrainedParameter"))
+                {
+                    throw _server.ErrorHandling.CreateValidationError("org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckIntegerConstraintM" +
+                            "inimalExclusive/Parameter/ConstrainedParameter", ex.Message);
+                }
+                throw _server.ErrorHandling.CreateUnknownValidationError(ex);
+            }
+        }
+        
+        ///  <summary>
+        /// Executes the Check Integer Constraint Minimal Inclusive command
+        /// </summary>
+        /// <param name="request">A data transfer object that contains the command parameters</param>
+        /// <returns>The command response wrapped in a data transfer object</returns>
+        protected virtual EmptyRequest CheckIntegerConstraintMinimalInclusive(CheckIntegerConstraintMinimalInclusiveRequestDto request)
+        {
+            try
+            {
+                _implementation.CheckIntegerConstraintMinimalInclusive(request.ConstrainedParameter.Extract(_server));
+                return EmptyRequest.Instance;
+            } catch (System.ArgumentException ex)
+            {
+                if ((ex.ParamName == "constrainedParameter"))
+                {
+                    throw _server.ErrorHandling.CreateValidationError("org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckIntegerConstraintM" +
+                            "inimalInclusive/Parameter/ConstrainedParameter", ex.Message);
+                }
+                throw _server.ErrorHandling.CreateUnknownValidationError(ex);
+            }
+        }
+        
+        ///  <summary>
+        /// Executes the Check Integer Constraint MinMax command
+        /// </summary>
+        /// <param name="request">A data transfer object that contains the command parameters</param>
+        /// <returns>The command response wrapped in a data transfer object</returns>
+        protected virtual EmptyRequest CheckIntegerConstraintMinMax(CheckIntegerConstraintMinMaxRequestDto request)
+        {
+            try
+            {
+                _implementation.CheckIntegerConstraintMinMax(request.ConstrainedParameter.Extract(_server));
+                return EmptyRequest.Instance;
+            } catch (System.ArgumentException ex)
+            {
+                if ((ex.ParamName == "constrainedParameter"))
+                {
+                    throw _server.ErrorHandling.CreateValidationError("org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckIntegerConstraintM" +
+                            "inMax/Parameter/ConstrainedParameter", ex.Message);
+                }
+                throw _server.ErrorHandling.CreateUnknownValidationError(ex);
+            }
+        }
+        
+        ///  <summary>
+        /// Executes the Check Integer Constraint Unit command
+        /// </summary>
+        /// <param name="request">A data transfer object that contains the command parameters</param>
+        /// <returns>The command response wrapped in a data transfer object</returns>
+        protected virtual EmptyRequest CheckIntegerConstraintUnit(CheckIntegerConstraintUnitRequestDto request)
+        {
+            try
+            {
+                _implementation.CheckIntegerConstraintUnit(request.ConstrainedParameter.Extract(_server));
+                return EmptyRequest.Instance;
+            } catch (System.ArgumentException ex)
+            {
+                if ((ex.ParamName == "constrainedParameter"))
+                {
+                    throw _server.ErrorHandling.CreateValidationError("org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckIntegerConstraintU" +
+                            "nit/Parameter/ConstrainedParameter", ex.Message);
+                }
+                throw _server.ErrorHandling.CreateUnknownValidationError(ex);
+            }
+        }
+        
+        ///  <summary>
+        /// Executes the Check Real Constraint Set command
+        /// </summary>
+        /// <param name="request">A data transfer object that contains the command parameters</param>
+        /// <returns>The command response wrapped in a data transfer object</returns>
+        protected virtual EmptyRequest CheckRealConstraintSet(CheckRealConstraintSetRequestDto request)
+        {
+            try
+            {
+                _implementation.CheckRealConstraintSet(request.ConstrainedParameter.Extract(_server));
+                return EmptyRequest.Instance;
+            } catch (System.ArgumentException ex)
+            {
+                if ((ex.ParamName == "constrainedParameter"))
+                {
+                    throw _server.ErrorHandling.CreateValidationError("org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckRealConstraintSet/" +
+                            "Parameter/ConstrainedParameter", ex.Message);
+                }
+                throw _server.ErrorHandling.CreateUnknownValidationError(ex);
+            }
+        }
+        
+        ///  <summary>
+        /// Executes the Check Scientifically Notated Real Limit command
+        /// </summary>
+        /// <param name="request">A data transfer object that contains the command parameters</param>
+        /// <returns>The command response wrapped in a data transfer object</returns>
+        protected virtual EmptyRequest CheckScientificallyNotatedRealLimit(CheckScientificallyNotatedRealLimitRequestDto request)
+        {
+            try
+            {
+                _implementation.CheckScientificallyNotatedRealLimit(request.ConstrainedParameter.Extract(_server));
+                return EmptyRequest.Instance;
+            } catch (System.ArgumentException ex)
+            {
+                if ((ex.ParamName == "constrainedParameter"))
+                {
+                    throw _server.ErrorHandling.CreateValidationError("org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckScientificallyNota" +
+                            "tedRealLimit/Parameter/ConstrainedParameter", ex.Message);
+                }
+                throw _server.ErrorHandling.CreateUnknownValidationError(ex);
+            }
+        }
+        
+        ///  <summary>
+        /// Executes the Check Real Constraint Maximal Exclusive command
+        /// </summary>
+        /// <param name="request">A data transfer object that contains the command parameters</param>
+        /// <returns>The command response wrapped in a data transfer object</returns>
+        protected virtual EmptyRequest CheckRealConstraintMaximalExclusive(CheckRealConstraintMaximalExclusiveRequestDto request)
+        {
+            try
+            {
+                _implementation.CheckRealConstraintMaximalExclusive(request.ConstrainedParameter.Extract(_server));
+                return EmptyRequest.Instance;
+            } catch (System.ArgumentException ex)
+            {
+                if ((ex.ParamName == "constrainedParameter"))
+                {
+                    throw _server.ErrorHandling.CreateValidationError("org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckRealConstraintMaxi" +
+                            "malExclusive/Parameter/ConstrainedParameter", ex.Message);
+                }
+                throw _server.ErrorHandling.CreateUnknownValidationError(ex);
+            }
+        }
+        
+        ///  <summary>
+        /// Executes the Check Real Constraint Maximal Inclusive command
+        /// </summary>
+        /// <param name="request">A data transfer object that contains the command parameters</param>
+        /// <returns>The command response wrapped in a data transfer object</returns>
+        protected virtual EmptyRequest CheckRealConstraintMaximalInclusive(CheckRealConstraintMaximalInclusiveRequestDto request)
+        {
+            try
+            {
+                _implementation.CheckRealConstraintMaximalInclusive(request.ConstrainedParameter.Extract(_server));
+                return EmptyRequest.Instance;
+            } catch (System.ArgumentException ex)
+            {
+                if ((ex.ParamName == "constrainedParameter"))
+                {
+                    throw _server.ErrorHandling.CreateValidationError("org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckRealConstraintMaxi" +
+                            "malInclusive/Parameter/ConstrainedParameter", ex.Message);
+                }
+                throw _server.ErrorHandling.CreateUnknownValidationError(ex);
+            }
+        }
+        
+        ///  <summary>
+        /// Executes the Check Real Constraint Minimal Exclusive command
+        /// </summary>
+        /// <param name="request">A data transfer object that contains the command parameters</param>
+        /// <returns>The command response wrapped in a data transfer object</returns>
+        protected virtual EmptyRequest CheckRealConstraintMinimalExclusive(CheckRealConstraintMinimalExclusiveRequestDto request)
+        {
+            try
+            {
+                _implementation.CheckRealConstraintMinimalExclusive(request.ConstrainedParameter.Extract(_server));
+                return EmptyRequest.Instance;
+            } catch (System.ArgumentException ex)
+            {
+                if ((ex.ParamName == "constrainedParameter"))
+                {
+                    throw _server.ErrorHandling.CreateValidationError("org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckRealConstraintMini" +
+                            "malExclusive/Parameter/ConstrainedParameter", ex.Message);
+                }
+                throw _server.ErrorHandling.CreateUnknownValidationError(ex);
+            }
+        }
+        
+        ///  <summary>
+        /// Executes the Check Real Constraint Minimal Inclusive command
+        /// </summary>
+        /// <param name="request">A data transfer object that contains the command parameters</param>
+        /// <returns>The command response wrapped in a data transfer object</returns>
+        protected virtual EmptyRequest CheckRealConstraintMinimalInclusive(CheckRealConstraintMinimalInclusiveRequestDto request)
+        {
+            try
+            {
+                _implementation.CheckRealConstraintMinimalInclusive(request.ConstrainedParameter.Extract(_server));
+                return EmptyRequest.Instance;
+            } catch (System.ArgumentException ex)
+            {
+                if ((ex.ParamName == "constrainedParameter"))
+                {
+                    throw _server.ErrorHandling.CreateValidationError("org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckRealConstraintMini" +
+                            "malInclusive/Parameter/ConstrainedParameter", ex.Message);
+                }
+                throw _server.ErrorHandling.CreateUnknownValidationError(ex);
+            }
+        }
+        
+        ///  <summary>
+        /// Executes the Check Real Constraint MinMax command
+        /// </summary>
+        /// <param name="request">A data transfer object that contains the command parameters</param>
+        /// <returns>The command response wrapped in a data transfer object</returns>
+        protected virtual EmptyRequest CheckRealConstraintMinMax(CheckRealConstraintMinMaxRequestDto request)
+        {
+            try
+            {
+                _implementation.CheckRealConstraintMinMax(request.ConstrainedParameter.Extract(_server));
+                return EmptyRequest.Instance;
+            } catch (System.ArgumentException ex)
+            {
+                if ((ex.ParamName == "constrainedParameter"))
+                {
+                    throw _server.ErrorHandling.CreateValidationError("org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckRealConstraintMinM" +
+                            "ax/Parameter/ConstrainedParameter", ex.Message);
+                }
+                throw _server.ErrorHandling.CreateUnknownValidationError(ex);
+            }
+        }
+        
+        ///  <summary>
+        /// Executes the Check Real Constraint Unit command
+        /// </summary>
+        /// <param name="request">A data transfer object that contains the command parameters</param>
+        /// <returns>The command response wrapped in a data transfer object</returns>
+        protected virtual EmptyRequest CheckRealConstraintUnit(CheckRealConstraintUnitRequestDto request)
+        {
+            try
+            {
+                _implementation.CheckRealConstraintUnit(request.ConstrainedParameter.Extract(_server));
+                return EmptyRequest.Instance;
+            } catch (System.ArgumentException ex)
+            {
+                if ((ex.ParamName == "constrainedParameter"))
+                {
+                    throw _server.ErrorHandling.CreateValidationError("org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckRealConstraintUnit" +
+                            "/Parameter/ConstrainedParameter", ex.Message);
+                }
+                throw _server.ErrorHandling.CreateUnknownValidationError(ex);
+            }
+        }
+        
+        ///  <summary>
+        /// Executes the Check Date Constraint Set command
+        /// </summary>
+        /// <param name="request">A data transfer object that contains the command parameters</param>
+        /// <returns>The command response wrapped in a data transfer object</returns>
+        protected virtual EmptyRequest CheckDateConstraintSet(CheckDateConstraintSetRequestDto request)
+        {
+            try
+            {
+                _implementation.CheckDateConstraintSet(request.ConstrainedParameter.Extract(_server));
+                return EmptyRequest.Instance;
+            } catch (System.ArgumentException ex)
+            {
+                if ((ex.ParamName == "constrainedParameter"))
+                {
+                    throw _server.ErrorHandling.CreateValidationError("org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckDateConstraintSet/" +
+                            "Parameter/ConstrainedParameter", ex.Message);
+                }
+                throw _server.ErrorHandling.CreateUnknownValidationError(ex);
+            }
+        }
+        
+        ///  <summary>
+        /// Executes the Check Date Constraint Maximal Exclusive command
+        /// </summary>
+        /// <param name="request">A data transfer object that contains the command parameters</param>
+        /// <returns>The command response wrapped in a data transfer object</returns>
+        protected virtual EmptyRequest CheckDateConstraintMaximalExclusive(CheckDateConstraintMaximalExclusiveRequestDto request)
+        {
+            try
+            {
+                _implementation.CheckDateConstraintMaximalExclusive(request.ConstrainedParameter.Extract(_server));
+                return EmptyRequest.Instance;
+            } catch (System.ArgumentException ex)
+            {
+                if ((ex.ParamName == "constrainedParameter"))
+                {
+                    throw _server.ErrorHandling.CreateValidationError("org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckDateConstraintMaxi" +
+                            "malExclusive/Parameter/ConstrainedParameter", ex.Message);
+                }
+                throw _server.ErrorHandling.CreateUnknownValidationError(ex);
+            }
+        }
+        
+        ///  <summary>
+        /// Executes the Check Date Constraint Maximal Inclusive command
+        /// </summary>
+        /// <param name="request">A data transfer object that contains the command parameters</param>
+        /// <returns>The command response wrapped in a data transfer object</returns>
+        protected virtual EmptyRequest CheckDateConstraintMaximalInclusive(CheckDateConstraintMaximalInclusiveRequestDto request)
+        {
+            try
+            {
+                _implementation.CheckDateConstraintMaximalInclusive(request.ConstrainedParameter.Extract(_server));
+                return EmptyRequest.Instance;
+            } catch (System.ArgumentException ex)
+            {
+                if ((ex.ParamName == "constrainedParameter"))
+                {
+                    throw _server.ErrorHandling.CreateValidationError("org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckDateConstraintMaxi" +
+                            "malInclusive/Parameter/ConstrainedParameter", ex.Message);
+                }
+                throw _server.ErrorHandling.CreateUnknownValidationError(ex);
+            }
+        }
+        
+        ///  <summary>
+        /// Executes the Check Date Constraint Minimal Exclusive command
+        /// </summary>
+        /// <param name="request">A data transfer object that contains the command parameters</param>
+        /// <returns>The command response wrapped in a data transfer object</returns>
+        protected virtual EmptyRequest CheckDateConstraintMinimalExclusive(CheckDateConstraintMinimalExclusiveRequestDto request)
+        {
+            try
+            {
+                _implementation.CheckDateConstraintMinimalExclusive(request.ConstrainedParameter.Extract(_server));
+                return EmptyRequest.Instance;
+            } catch (System.ArgumentException ex)
+            {
+                if ((ex.ParamName == "constrainedParameter"))
+                {
+                    throw _server.ErrorHandling.CreateValidationError("org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckDateConstraintMini" +
+                            "malExclusive/Parameter/ConstrainedParameter", ex.Message);
+                }
+                throw _server.ErrorHandling.CreateUnknownValidationError(ex);
+            }
+        }
+        
+        ///  <summary>
+        /// Executes the Check Date Constraint Minimal Inclusive command
+        /// </summary>
+        /// <param name="request">A data transfer object that contains the command parameters</param>
+        /// <returns>The command response wrapped in a data transfer object</returns>
+        protected virtual EmptyRequest CheckDateConstraintMinimalInclusive(CheckDateConstraintMinimalInclusiveRequestDto request)
+        {
+            try
+            {
+                _implementation.CheckDateConstraintMinimalInclusive(request.ConstrainedParameter.Extract(_server));
+                return EmptyRequest.Instance;
+            } catch (System.ArgumentException ex)
+            {
+                if ((ex.ParamName == "constrainedParameter"))
+                {
+                    throw _server.ErrorHandling.CreateValidationError("org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckDateConstraintMini" +
+                            "malInclusive/Parameter/ConstrainedParameter", ex.Message);
+                }
+                throw _server.ErrorHandling.CreateUnknownValidationError(ex);
+            }
+        }
+        
+        ///  <summary>
+        /// Executes the Check Date Constraint MinMax command
+        /// </summary>
+        /// <param name="request">A data transfer object that contains the command parameters</param>
+        /// <returns>The command response wrapped in a data transfer object</returns>
+        protected virtual EmptyRequest CheckDateConstraintMinMax(CheckDateConstraintMinMaxRequestDto request)
+        {
+            try
+            {
+                _implementation.CheckDateConstraintMinMax(request.ConstrainedParameter.Extract(_server));
+                return EmptyRequest.Instance;
+            } catch (System.ArgumentException ex)
+            {
+                if ((ex.ParamName == "constrainedParameter"))
+                {
+                    throw _server.ErrorHandling.CreateValidationError("org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckDateConstraintMinM" +
+                            "ax/Parameter/ConstrainedParameter", ex.Message);
+                }
+                throw _server.ErrorHandling.CreateUnknownValidationError(ex);
+            }
+        }
+        
+        ///  <summary>
+        /// Executes the Check Time Constraint Set command
+        /// </summary>
+        /// <param name="request">A data transfer object that contains the command parameters</param>
+        /// <returns>The command response wrapped in a data transfer object</returns>
+        protected virtual EmptyRequest CheckTimeConstraintSet(CheckTimeConstraintSetRequestDto request)
+        {
+            try
+            {
+                _implementation.CheckTimeConstraintSet(request.ConstrainedParameter.Extract(_server));
+                return EmptyRequest.Instance;
+            } catch (System.ArgumentException ex)
+            {
+                if ((ex.ParamName == "constrainedParameter"))
+                {
+                    throw _server.ErrorHandling.CreateValidationError("org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckTimeConstraintSet/" +
+                            "Parameter/ConstrainedParameter", ex.Message);
+                }
+                throw _server.ErrorHandling.CreateUnknownValidationError(ex);
+            }
+        }
+        
+        ///  <summary>
+        /// Executes the Check Time Constraint Maximal Exclusive command
+        /// </summary>
+        /// <param name="request">A data transfer object that contains the command parameters</param>
+        /// <returns>The command response wrapped in a data transfer object</returns>
+        protected virtual EmptyRequest CheckTimeConstraintMaximalExclusive(CheckTimeConstraintMaximalExclusiveRequestDto request)
+        {
+            try
+            {
+                _implementation.CheckTimeConstraintMaximalExclusive(request.ConstrainedParameter.Extract(_server));
+                return EmptyRequest.Instance;
+            } catch (System.ArgumentException ex)
+            {
+                if ((ex.ParamName == "constrainedParameter"))
+                {
+                    throw _server.ErrorHandling.CreateValidationError("org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckTimeConstraintMaxi" +
+                            "malExclusive/Parameter/ConstrainedParameter", ex.Message);
+                }
+                throw _server.ErrorHandling.CreateUnknownValidationError(ex);
+            }
+        }
+        
+        ///  <summary>
+        /// Executes the Check Time Constraint Maximal Inclusive command
+        /// </summary>
+        /// <param name="request">A data transfer object that contains the command parameters</param>
+        /// <returns>The command response wrapped in a data transfer object</returns>
+        protected virtual EmptyRequest CheckTimeConstraintMaximalInclusive(CheckTimeConstraintMaximalInclusiveRequestDto request)
+        {
+            try
+            {
+                _implementation.CheckTimeConstraintMaximalInclusive(request.ConstrainedParameter.Extract(_server));
+                return EmptyRequest.Instance;
+            } catch (System.ArgumentException ex)
+            {
+                if ((ex.ParamName == "constrainedParameter"))
+                {
+                    throw _server.ErrorHandling.CreateValidationError("org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckTimeConstraintMaxi" +
+                            "malInclusive/Parameter/ConstrainedParameter", ex.Message);
+                }
+                throw _server.ErrorHandling.CreateUnknownValidationError(ex);
+            }
+        }
+        
+        ///  <summary>
+        /// Executes the Check Time Constraint Minimal Exclusive command
+        /// </summary>
+        /// <param name="request">A data transfer object that contains the command parameters</param>
+        /// <returns>The command response wrapped in a data transfer object</returns>
+        protected virtual EmptyRequest CheckTimeConstraintMinimalExclusive(CheckTimeConstraintMinimalExclusiveRequestDto request)
+        {
+            try
+            {
+                _implementation.CheckTimeConstraintMinimalExclusive(request.ConstrainedParameter.Extract(_server));
+                return EmptyRequest.Instance;
+            } catch (System.ArgumentException ex)
+            {
+                if ((ex.ParamName == "constrainedParameter"))
+                {
+                    throw _server.ErrorHandling.CreateValidationError("org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckTimeConstraintMini" +
+                            "malExclusive/Parameter/ConstrainedParameter", ex.Message);
+                }
+                throw _server.ErrorHandling.CreateUnknownValidationError(ex);
+            }
+        }
+        
+        ///  <summary>
+        /// Executes the Check Time Constraint Minimal Inclusive command
+        /// </summary>
+        /// <param name="request">A data transfer object that contains the command parameters</param>
+        /// <returns>The command response wrapped in a data transfer object</returns>
+        protected virtual EmptyRequest CheckTimeConstraintMinimalInclusive(CheckTimeConstraintMinimalInclusiveRequestDto request)
+        {
+            try
+            {
+                _implementation.CheckTimeConstraintMinimalInclusive(request.ConstrainedParameter.Extract(_server));
+                return EmptyRequest.Instance;
+            } catch (System.ArgumentException ex)
+            {
+                if ((ex.ParamName == "constrainedParameter"))
+                {
+                    throw _server.ErrorHandling.CreateValidationError("org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckTimeConstraintMini" +
+                            "malInclusive/Parameter/ConstrainedParameter", ex.Message);
+                }
+                throw _server.ErrorHandling.CreateUnknownValidationError(ex);
+            }
+        }
+        
+        ///  <summary>
+        /// Executes the Check Time Constraint MinMax command
+        /// </summary>
+        /// <param name="request">A data transfer object that contains the command parameters</param>
+        /// <returns>The command response wrapped in a data transfer object</returns>
+        protected virtual EmptyRequest CheckTimeConstraintMinMax(CheckTimeConstraintMinMaxRequestDto request)
+        {
+            try
+            {
+                _implementation.CheckTimeConstraintMinMax(request.ConstrainedParameter.Extract(_server));
+                return EmptyRequest.Instance;
+            } catch (System.ArgumentException ex)
+            {
+                if ((ex.ParamName == "constrainedParameter"))
+                {
+                    throw _server.ErrorHandling.CreateValidationError("org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckTimeConstraintMinM" +
+                            "ax/Parameter/ConstrainedParameter", ex.Message);
+                }
+                throw _server.ErrorHandling.CreateUnknownValidationError(ex);
+            }
+        }
+        
+        ///  <summary>
+        /// Executes the Check Timestamp Constraint Set command
+        /// </summary>
+        /// <param name="request">A data transfer object that contains the command parameters</param>
+        /// <returns>The command response wrapped in a data transfer object</returns>
+        protected virtual EmptyRequest CheckTimestampConstraintSet(CheckTimestampConstraintSetRequestDto request)
+        {
+            try
+            {
+                _implementation.CheckTimestampConstraintSet(request.ConstrainedParameter.Extract(_server));
+                return EmptyRequest.Instance;
+            } catch (System.ArgumentException ex)
+            {
+                if ((ex.ParamName == "constrainedParameter"))
+                {
+                    throw _server.ErrorHandling.CreateValidationError("org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckTimestampConstrain" +
+                            "tSet/Parameter/ConstrainedParameter", ex.Message);
+                }
+                throw _server.ErrorHandling.CreateUnknownValidationError(ex);
+            }
+        }
+        
+        ///  <summary>
+        /// Executes the Check Timestamp Constraint Maximal Exclusive command
+        /// </summary>
+        /// <param name="request">A data transfer object that contains the command parameters</param>
+        /// <returns>The command response wrapped in a data transfer object</returns>
+        protected virtual EmptyRequest CheckTimestampConstraintMaximalExclusive(CheckTimestampConstraintMaximalExclusiveRequestDto request)
+        {
+            try
+            {
+                _implementation.CheckTimestampConstraintMaximalExclusive(request.ConstrainedParameter.Extract(_server));
+                return EmptyRequest.Instance;
+            } catch (System.ArgumentException ex)
+            {
+                if ((ex.ParamName == "constrainedParameter"))
+                {
+                    throw _server.ErrorHandling.CreateValidationError("org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckTimestampConstrain" +
+                            "tMaximalExclusive/Parameter/ConstrainedParameter", ex.Message);
+                }
+                throw _server.ErrorHandling.CreateUnknownValidationError(ex);
+            }
+        }
+        
+        ///  <summary>
+        /// Executes the Check Timestamp Constraint Maximal Inclusive command
+        /// </summary>
+        /// <param name="request">A data transfer object that contains the command parameters</param>
+        /// <returns>The command response wrapped in a data transfer object</returns>
+        protected virtual EmptyRequest CheckTimestampConstraintMaximalInclusive(CheckTimestampConstraintMaximalInclusiveRequestDto request)
+        {
+            try
+            {
+                _implementation.CheckTimestampConstraintMaximalInclusive(request.ConstrainedParameter.Extract(_server));
+                return EmptyRequest.Instance;
+            } catch (System.ArgumentException ex)
+            {
+                if ((ex.ParamName == "constrainedParameter"))
+                {
+                    throw _server.ErrorHandling.CreateValidationError("org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckTimestampConstrain" +
+                            "tMaximalInclusive/Parameter/ConstrainedParameter", ex.Message);
+                }
+                throw _server.ErrorHandling.CreateUnknownValidationError(ex);
+            }
+        }
+        
+        ///  <summary>
+        /// Executes the Check Timestamp Constraint Minimal Exclusive command
+        /// </summary>
+        /// <param name="request">A data transfer object that contains the command parameters</param>
+        /// <returns>The command response wrapped in a data transfer object</returns>
+        protected virtual EmptyRequest CheckTimestampConstraintMinimalExclusive(CheckTimestampConstraintMinimalExclusiveRequestDto request)
+        {
+            try
+            {
+                _implementation.CheckTimestampConstraintMinimalExclusive(request.ConstrainedParameter.Extract(_server));
+                return EmptyRequest.Instance;
+            } catch (System.ArgumentException ex)
+            {
+                if ((ex.ParamName == "constrainedParameter"))
+                {
+                    throw _server.ErrorHandling.CreateValidationError("org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckTimestampConstrain" +
+                            "tMinimalExclusive/Parameter/ConstrainedParameter", ex.Message);
+                }
+                throw _server.ErrorHandling.CreateUnknownValidationError(ex);
+            }
+        }
+        
+        ///  <summary>
+        /// Executes the Check Timestamp Constraint Minimal Inclusive command
+        /// </summary>
+        /// <param name="request">A data transfer object that contains the command parameters</param>
+        /// <returns>The command response wrapped in a data transfer object</returns>
+        protected virtual EmptyRequest CheckTimestampConstraintMinimalInclusive(CheckTimestampConstraintMinimalInclusiveRequestDto request)
+        {
+            try
+            {
+                _implementation.CheckTimestampConstraintMinimalInclusive(request.ConstrainedParameter.Extract(_server));
+                return EmptyRequest.Instance;
+            } catch (System.ArgumentException ex)
+            {
+                if ((ex.ParamName == "constrainedParameter"))
+                {
+                    throw _server.ErrorHandling.CreateValidationError("org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckTimestampConstrain" +
+                            "tMinimalInclusive/Parameter/ConstrainedParameter", ex.Message);
+                }
+                throw _server.ErrorHandling.CreateUnknownValidationError(ex);
+            }
+        }
+        
+        ///  <summary>
+        /// Executes the Check Timestamp Constraint MinMax command
+        /// </summary>
+        /// <param name="request">A data transfer object that contains the command parameters</param>
+        /// <returns>The command response wrapped in a data transfer object</returns>
+        protected virtual EmptyRequest CheckTimestampConstraintMinMax(CheckTimestampConstraintMinMaxRequestDto request)
+        {
+            try
+            {
+                _implementation.CheckTimestampConstraintMinMax(request.ConstrainedParameter.Extract(_server));
+                return EmptyRequest.Instance;
+            } catch (System.ArgumentException ex)
+            {
+                if ((ex.ParamName == "constrainedParameter"))
+                {
+                    throw _server.ErrorHandling.CreateValidationError("org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckTimestampConstrain" +
+                            "tMinMax/Parameter/ConstrainedParameter", ex.Message);
+                }
+                throw _server.ErrorHandling.CreateUnknownValidationError(ex);
+            }
+        }
+        
+        ///  <summary>
+        /// Executes the Check List Constraint Element Count command
+        /// </summary>
+        /// <param name="request">A data transfer object that contains the command parameters</param>
+        /// <returns>The command response wrapped in a data transfer object</returns>
+        protected virtual EmptyRequest CheckListConstraintElementCount(CheckListConstraintElementCountRequestDto request)
+        {
+            try
+            {
+                _implementation.CheckListConstraintElementCount(request.ConstrainedParameter.Extract(_server));
+                return EmptyRequest.Instance;
+            } catch (System.ArgumentException ex)
+            {
+                if ((ex.ParamName == "constrainedParameter"))
+                {
+                    throw _server.ErrorHandling.CreateValidationError("org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckListConstraintElem" +
+                            "entCount/Parameter/ConstrainedParameter", ex.Message);
+                }
+                throw _server.ErrorHandling.CreateUnknownValidationError(ex);
+            }
+        }
+        
+        ///  <summary>
+        /// Executes the Check List Constraint Minimal Element Count command
+        /// </summary>
+        /// <param name="request">A data transfer object that contains the command parameters</param>
+        /// <returns>The command response wrapped in a data transfer object</returns>
+        protected virtual EmptyRequest CheckListConstraintMinimalElementCount(CheckListConstraintMinimalElementCountRequestDto request)
+        {
+            try
+            {
+                _implementation.CheckListConstraintMinimalElementCount(request.ConstrainedParameter.Extract(_server));
+                return EmptyRequest.Instance;
+            } catch (System.ArgumentException ex)
+            {
+                if ((ex.ParamName == "constrainedParameter"))
+                {
+                    throw _server.ErrorHandling.CreateValidationError("org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckListConstraintMini" +
+                            "malElementCount/Parameter/ConstrainedParameter", ex.Message);
+                }
+                throw _server.ErrorHandling.CreateUnknownValidationError(ex);
+            }
+        }
+        
+        ///  <summary>
+        /// Executes the Check List Constraint Maximal Element Count command
+        /// </summary>
+        /// <param name="request">A data transfer object that contains the command parameters</param>
+        /// <returns>The command response wrapped in a data transfer object</returns>
+        protected virtual EmptyRequest CheckListConstraintMaximalElementCount(CheckListConstraintMaximalElementCountRequestDto request)
+        {
+            try
+            {
+                _implementation.CheckListConstraintMaximalElementCount(request.ConstrainedParameter.Extract(_server));
+                return EmptyRequest.Instance;
+            } catch (System.ArgumentException ex)
+            {
+                if ((ex.ParamName == "constrainedParameter"))
+                {
+                    throw _server.ErrorHandling.CreateValidationError("org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckListConstraintMaxi" +
+                            "malElementCount/Parameter/ConstrainedParameter", ex.Message);
+                }
+                throw _server.ErrorHandling.CreateUnknownValidationError(ex);
+            }
+        }
+        
+        ///  <summary>
+        /// Executes the Check List Constraint MinMax Element Count command
+        /// </summary>
+        /// <param name="request">A data transfer object that contains the command parameters</param>
+        /// <returns>The command response wrapped in a data transfer object</returns>
+        protected virtual EmptyRequest CheckListConstraintMinMaxElementCount(CheckListConstraintMinMaxElementCountRequestDto request)
+        {
+            try
+            {
+                _implementation.CheckListConstraintMinMaxElementCount(request.ConstrainedParameter.Extract(_server));
+                return EmptyRequest.Instance;
+            } catch (System.ArgumentException ex)
+            {
+                if ((ex.ParamName == "constrainedParameter"))
+                {
+                    throw _server.ErrorHandling.CreateValidationError("org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckListConstraintMinM" +
+                            "axElementCount/Parameter/ConstrainedParameter", ex.Message);
+                }
+                throw _server.ErrorHandling.CreateUnknownValidationError(ex);
+            }
+        }
+        
+        ///  <summary>
+        /// Executes the Check Binary Constraint Length command
+        /// </summary>
+        /// <param name="request">A data transfer object that contains the command parameters</param>
+        /// <returns>The command response wrapped in a data transfer object</returns>
+        protected virtual EmptyRequest CheckBinaryConstraintLength(CheckBinaryConstraintLengthRequestDto request)
+        {
+            try
+            {
+                _implementation.CheckBinaryConstraintLength(request.ConstrainedParameter.Extract(_server));
+                return EmptyRequest.Instance;
+            } catch (System.ArgumentException ex)
+            {
+                if ((ex.ParamName == "constrainedParameter"))
+                {
+                    throw _server.ErrorHandling.CreateValidationError("org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckBinaryConstraintLe" +
+                            "ngth/Parameter/ConstrainedParameter", ex.Message);
+                }
+                throw _server.ErrorHandling.CreateUnknownValidationError(ex);
+            }
+        }
+        
+        ///  <summary>
+        /// Executes the Check Binary Constraint Minimal Length command
+        /// </summary>
+        /// <param name="request">A data transfer object that contains the command parameters</param>
+        /// <returns>The command response wrapped in a data transfer object</returns>
+        protected virtual EmptyRequest CheckBinaryConstraintMinimalLength(CheckBinaryConstraintMinimalLengthRequestDto request)
+        {
+            try
+            {
+                _implementation.CheckBinaryConstraintMinimalLength(request.ConstrainedParameter.Extract(_server));
+                return EmptyRequest.Instance;
+            } catch (System.ArgumentException ex)
+            {
+                if ((ex.ParamName == "constrainedParameter"))
+                {
+                    throw _server.ErrorHandling.CreateValidationError("org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckBinaryConstraintMi" +
+                            "nimalLength/Parameter/ConstrainedParameter", ex.Message);
+                }
+                throw _server.ErrorHandling.CreateUnknownValidationError(ex);
+            }
+        }
+        
+        ///  <summary>
+        /// Executes the Check Binary Constraint Maximal Length command
+        /// </summary>
+        /// <param name="request">A data transfer object that contains the command parameters</param>
+        /// <returns>The command response wrapped in a data transfer object</returns>
+        protected virtual EmptyRequest CheckBinaryConstraintMaximalLength(CheckBinaryConstraintMaximalLengthRequestDto request)
+        {
+            try
+            {
+                _implementation.CheckBinaryConstraintMaximalLength(request.ConstrainedParameter.Extract(_server));
+                return EmptyRequest.Instance;
+            } catch (System.ArgumentException ex)
+            {
+                if ((ex.ParamName == "constrainedParameter"))
+                {
+                    throw _server.ErrorHandling.CreateValidationError("org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckBinaryConstraintMa" +
+                            "ximalLength/Parameter/ConstrainedParameter", ex.Message);
+                }
+                throw _server.ErrorHandling.CreateUnknownValidationError(ex);
+            }
+        }
+        
+        ///  <summary>
+        /// Executes the Check Binary Constraint MinMax Length command
+        /// </summary>
+        /// <param name="request">A data transfer object that contains the command parameters</param>
+        /// <returns>The command response wrapped in a data transfer object</returns>
+        protected virtual EmptyRequest CheckBinaryConstraintMinMaxLength(CheckBinaryConstraintMinMaxLengthRequestDto request)
+        {
+            try
+            {
+                _implementation.CheckBinaryConstraintMinMaxLength(request.ConstrainedParameter.Extract(_server));
+                return EmptyRequest.Instance;
+            } catch (System.ArgumentException ex)
+            {
+                if ((ex.ParamName == "constrainedParameter"))
+                {
+                    throw _server.ErrorHandling.CreateValidationError("org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckBinaryConstraintMi" +
+                            "nMaxLength/Parameter/ConstrainedParameter", ex.Message);
+                }
+                throw _server.ErrorHandling.CreateUnknownValidationError(ex);
+            }
+        }
+        
+        ///  <summary>
+        /// Executes the Check Binary Constraint Content Type command
+        /// </summary>
+        /// <param name="request">A data transfer object that contains the command parameters</param>
+        /// <returns>The command response wrapped in a data transfer object</returns>
+        protected virtual EmptyRequest CheckBinaryConstraintContentType(CheckBinaryConstraintContentTypeRequestDto request)
+        {
+            try
+            {
+                _implementation.CheckBinaryConstraintContentType(request.ConstrainedParameter.Extract(_server));
+                return EmptyRequest.Instance;
+            } catch (System.ArgumentException ex)
+            {
+                if ((ex.ParamName == "constrainedParameter"))
+                {
+                    throw _server.ErrorHandling.CreateValidationError("org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckBinaryConstraintCo" +
+                            "ntentType/Parameter/ConstrainedParameter", ex.Message);
+                }
+                throw _server.ErrorHandling.CreateUnknownValidationError(ex);
+            }
+        }
+        
+        ///  <summary>
+        /// Executes the Check Binary Constraint Schema command
+        /// </summary>
+        /// <param name="request">A data transfer object that contains the command parameters</param>
+        /// <returns>The command response wrapped in a data transfer object</returns>
+        protected virtual EmptyRequest CheckBinaryConstraintSchema(CheckBinaryConstraintSchemaRequestDto request)
+        {
+            try
+            {
+                _implementation.CheckBinaryConstraintSchema(request.ConstrainedParameter.Extract(_server));
+                return EmptyRequest.Instance;
+            } catch (System.ArgumentException ex)
+            {
+                if ((ex.ParamName == "constrainedParameter"))
+                {
+                    throw _server.ErrorHandling.CreateValidationError("org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckBinaryConstraintSc" +
+                            "hema/Parameter/ConstrainedParameter", ex.Message);
+                }
+                throw _server.ErrorHandling.CreateUnknownValidationError(ex);
+            }
+        }
+        
+        ///  <summary>
+        /// Executes the Check Allowed Types Constraint command
+        /// </summary>
+        /// <param name="request">A data transfer object that contains the command parameters</param>
+        /// <returns>The command response wrapped in a data transfer object</returns>
+        protected virtual EmptyRequest CheckAllowedTypesConstraint(CheckAllowedTypesConstraintRequestDto request)
+        {
+            try
+            {
+                _implementation.CheckAllowedTypesConstraint(request.ConstrainedParameter.Extract(_server));
+                return EmptyRequest.Instance;
+            } catch (System.ArgumentException ex)
+            {
+                if ((ex.ParamName == "constrainedParameter"))
+                {
+                    throw _server.ErrorHandling.CreateValidationError("org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckAllowedTypesConstr" +
+                            "aint/Parameter/ConstrainedParameter", ex.Message);
+                }
+                throw _server.ErrorHandling.CreateUnknownValidationError(ex);
+            }
+        }
+        
+        ///  <summary>
+        /// Executes the Check Allowed Structure Type Constraints command
+        /// </summary>
+        /// <param name="request">A data transfer object that contains the command parameters</param>
+        /// <returns>The command response wrapped in a data transfer object</returns>
+        protected virtual EmptyRequest CheckAllowedStructureTypeConstraints(CheckAllowedStructureTypeConstraintsRequestDto request)
+        {
+            try
+            {
+                _implementation.CheckAllowedStructureTypeConstraints(request.ConstrainedParameter.Extract(_server));
+                return EmptyRequest.Instance;
+            } catch (System.ArgumentException ex)
+            {
+                if ((ex.ParamName == "constrainedParameter"))
+                {
+                    throw _server.ErrorHandling.CreateValidationError("org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckAllowedStructureTy" +
+                            "peConstraints/Parameter/ConstrainedParameter", ex.Message);
                 }
                 throw _server.ErrorHandling.CreateUnknownValidationError(ex);
             }
@@ -267,24 +1375,277 @@ namespace Tecan.Sila2.Interop.Server
         /// <returns>A method object or null, if the command is not supported</returns>
         public System.Reflection.MethodInfo GetCommand(string commandIdentifier)
         {
-            if ((commandIdentifier == "org.silastandard/test/ParameterConstraintsTest/v1/Command/ExactStringLength"))
+            if ((commandIdentifier == "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckStringConstraintLe" +
+                "ngth"))
             {
-                return typeof(IParameterConstraintsTest).GetMethod("ExactStringLength");
+                return typeof(IParameterConstraintsTest).GetMethod("CheckStringConstraintLength");
             }
-            if ((commandIdentifier == "org.silastandard/test/ParameterConstraintsTest/v1/Command/ConstrainedNumericParam" +
-                "eters"))
+            if ((commandIdentifier == "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckStringConstraintMi" +
+                "nimalLength"))
             {
-                return typeof(IParameterConstraintsTest).GetMethod("ConstrainedNumericParameters");
+                return typeof(IParameterConstraintsTest).GetMethod("CheckStringConstraintMinimalLength");
             }
-            if ((commandIdentifier == "org.silastandard/test/ParameterConstraintsTest/v1/Command/ConstrainedDateTimePara" +
-                "meters"))
+            if ((commandIdentifier == "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckStringConstraintMa" +
+                "ximalLength"))
             {
-                return typeof(IParameterConstraintsTest).GetMethod("ConstrainedDateTimeParameters");
+                return typeof(IParameterConstraintsTest).GetMethod("CheckStringConstraintMaximalLength");
             }
-            if ((commandIdentifier == "org.silastandard/test/ParameterConstraintsTest/v1/Command/ConstrainedListParamete" +
-                "rs"))
+            if ((commandIdentifier == "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckStringConstraintMi" +
+                "nMaxLength"))
             {
-                return typeof(IParameterConstraintsTest).GetMethod("ConstrainedListParameters");
+                return typeof(IParameterConstraintsTest).GetMethod("CheckStringConstraintMinMaxLength");
+            }
+            if ((commandIdentifier == "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckStringConstraintSe" +
+                "t"))
+            {
+                return typeof(IParameterConstraintsTest).GetMethod("CheckStringConstraintSet");
+            }
+            if ((commandIdentifier == "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckStringConstraintPa" +
+                "ttern"))
+            {
+                return typeof(IParameterConstraintsTest).GetMethod("CheckStringConstraintPattern");
+            }
+            if ((commandIdentifier == "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckStringConstraintCo" +
+                "ntentType"))
+            {
+                return typeof(IParameterConstraintsTest).GetMethod("CheckStringConstraintContentType");
+            }
+            if ((commandIdentifier == "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckStringConstraintFu" +
+                "llyQualifiedIdentifier"))
+            {
+                return typeof(IParameterConstraintsTest).GetMethod("CheckStringConstraintFullyQualifiedIdentifier");
+            }
+            if ((commandIdentifier == "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckStringConstraintSc" +
+                "hema"))
+            {
+                return typeof(IParameterConstraintsTest).GetMethod("CheckStringConstraintSchema");
+            }
+            if ((commandIdentifier == "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckIntegerConstraintS" +
+                "et"))
+            {
+                return typeof(IParameterConstraintsTest).GetMethod("CheckIntegerConstraintSet");
+            }
+            if ((commandIdentifier == "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckScientificallyNota" +
+                "tedIntegerLimit"))
+            {
+                return typeof(IParameterConstraintsTest).GetMethod("CheckScientificallyNotatedIntegerLimit");
+            }
+            if ((commandIdentifier == "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckIntegerConstraintM" +
+                "aximalExclusive"))
+            {
+                return typeof(IParameterConstraintsTest).GetMethod("CheckIntegerConstraintMaximalExclusive");
+            }
+            if ((commandIdentifier == "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckIntegerConstraintM" +
+                "aximalInclusive"))
+            {
+                return typeof(IParameterConstraintsTest).GetMethod("CheckIntegerConstraintMaximalInclusive");
+            }
+            if ((commandIdentifier == "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckIntegerConstraintM" +
+                "inimalExclusive"))
+            {
+                return typeof(IParameterConstraintsTest).GetMethod("CheckIntegerConstraintMinimalExclusive");
+            }
+            if ((commandIdentifier == "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckIntegerConstraintM" +
+                "inimalInclusive"))
+            {
+                return typeof(IParameterConstraintsTest).GetMethod("CheckIntegerConstraintMinimalInclusive");
+            }
+            if ((commandIdentifier == "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckIntegerConstraintM" +
+                "inMax"))
+            {
+                return typeof(IParameterConstraintsTest).GetMethod("CheckIntegerConstraintMinMax");
+            }
+            if ((commandIdentifier == "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckIntegerConstraintU" +
+                "nit"))
+            {
+                return typeof(IParameterConstraintsTest).GetMethod("CheckIntegerConstraintUnit");
+            }
+            if ((commandIdentifier == "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckRealConstraintSet"))
+            {
+                return typeof(IParameterConstraintsTest).GetMethod("CheckRealConstraintSet");
+            }
+            if ((commandIdentifier == "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckScientificallyNota" +
+                "tedRealLimit"))
+            {
+                return typeof(IParameterConstraintsTest).GetMethod("CheckScientificallyNotatedRealLimit");
+            }
+            if ((commandIdentifier == "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckRealConstraintMaxi" +
+                "malExclusive"))
+            {
+                return typeof(IParameterConstraintsTest).GetMethod("CheckRealConstraintMaximalExclusive");
+            }
+            if ((commandIdentifier == "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckRealConstraintMaxi" +
+                "malInclusive"))
+            {
+                return typeof(IParameterConstraintsTest).GetMethod("CheckRealConstraintMaximalInclusive");
+            }
+            if ((commandIdentifier == "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckRealConstraintMini" +
+                "malExclusive"))
+            {
+                return typeof(IParameterConstraintsTest).GetMethod("CheckRealConstraintMinimalExclusive");
+            }
+            if ((commandIdentifier == "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckRealConstraintMini" +
+                "malInclusive"))
+            {
+                return typeof(IParameterConstraintsTest).GetMethod("CheckRealConstraintMinimalInclusive");
+            }
+            if ((commandIdentifier == "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckRealConstraintMinM" +
+                "ax"))
+            {
+                return typeof(IParameterConstraintsTest).GetMethod("CheckRealConstraintMinMax");
+            }
+            if ((commandIdentifier == "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckRealConstraintUnit" +
+                ""))
+            {
+                return typeof(IParameterConstraintsTest).GetMethod("CheckRealConstraintUnit");
+            }
+            if ((commandIdentifier == "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckDateConstraintSet"))
+            {
+                return typeof(IParameterConstraintsTest).GetMethod("CheckDateConstraintSet");
+            }
+            if ((commandIdentifier == "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckDateConstraintMaxi" +
+                "malExclusive"))
+            {
+                return typeof(IParameterConstraintsTest).GetMethod("CheckDateConstraintMaximalExclusive");
+            }
+            if ((commandIdentifier == "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckDateConstraintMaxi" +
+                "malInclusive"))
+            {
+                return typeof(IParameterConstraintsTest).GetMethod("CheckDateConstraintMaximalInclusive");
+            }
+            if ((commandIdentifier == "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckDateConstraintMini" +
+                "malExclusive"))
+            {
+                return typeof(IParameterConstraintsTest).GetMethod("CheckDateConstraintMinimalExclusive");
+            }
+            if ((commandIdentifier == "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckDateConstraintMini" +
+                "malInclusive"))
+            {
+                return typeof(IParameterConstraintsTest).GetMethod("CheckDateConstraintMinimalInclusive");
+            }
+            if ((commandIdentifier == "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckDateConstraintMinM" +
+                "ax"))
+            {
+                return typeof(IParameterConstraintsTest).GetMethod("CheckDateConstraintMinMax");
+            }
+            if ((commandIdentifier == "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckTimeConstraintSet"))
+            {
+                return typeof(IParameterConstraintsTest).GetMethod("CheckTimeConstraintSet");
+            }
+            if ((commandIdentifier == "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckTimeConstraintMaxi" +
+                "malExclusive"))
+            {
+                return typeof(IParameterConstraintsTest).GetMethod("CheckTimeConstraintMaximalExclusive");
+            }
+            if ((commandIdentifier == "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckTimeConstraintMaxi" +
+                "malInclusive"))
+            {
+                return typeof(IParameterConstraintsTest).GetMethod("CheckTimeConstraintMaximalInclusive");
+            }
+            if ((commandIdentifier == "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckTimeConstraintMini" +
+                "malExclusive"))
+            {
+                return typeof(IParameterConstraintsTest).GetMethod("CheckTimeConstraintMinimalExclusive");
+            }
+            if ((commandIdentifier == "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckTimeConstraintMini" +
+                "malInclusive"))
+            {
+                return typeof(IParameterConstraintsTest).GetMethod("CheckTimeConstraintMinimalInclusive");
+            }
+            if ((commandIdentifier == "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckTimeConstraintMinM" +
+                "ax"))
+            {
+                return typeof(IParameterConstraintsTest).GetMethod("CheckTimeConstraintMinMax");
+            }
+            if ((commandIdentifier == "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckTimestampConstrain" +
+                "tSet"))
+            {
+                return typeof(IParameterConstraintsTest).GetMethod("CheckTimestampConstraintSet");
+            }
+            if ((commandIdentifier == "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckTimestampConstrain" +
+                "tMaximalExclusive"))
+            {
+                return typeof(IParameterConstraintsTest).GetMethod("CheckTimestampConstraintMaximalExclusive");
+            }
+            if ((commandIdentifier == "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckTimestampConstrain" +
+                "tMaximalInclusive"))
+            {
+                return typeof(IParameterConstraintsTest).GetMethod("CheckTimestampConstraintMaximalInclusive");
+            }
+            if ((commandIdentifier == "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckTimestampConstrain" +
+                "tMinimalExclusive"))
+            {
+                return typeof(IParameterConstraintsTest).GetMethod("CheckTimestampConstraintMinimalExclusive");
+            }
+            if ((commandIdentifier == "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckTimestampConstrain" +
+                "tMinimalInclusive"))
+            {
+                return typeof(IParameterConstraintsTest).GetMethod("CheckTimestampConstraintMinimalInclusive");
+            }
+            if ((commandIdentifier == "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckTimestampConstrain" +
+                "tMinMax"))
+            {
+                return typeof(IParameterConstraintsTest).GetMethod("CheckTimestampConstraintMinMax");
+            }
+            if ((commandIdentifier == "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckListConstraintElem" +
+                "entCount"))
+            {
+                return typeof(IParameterConstraintsTest).GetMethod("CheckListConstraintElementCount");
+            }
+            if ((commandIdentifier == "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckListConstraintMini" +
+                "malElementCount"))
+            {
+                return typeof(IParameterConstraintsTest).GetMethod("CheckListConstraintMinimalElementCount");
+            }
+            if ((commandIdentifier == "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckListConstraintMaxi" +
+                "malElementCount"))
+            {
+                return typeof(IParameterConstraintsTest).GetMethod("CheckListConstraintMaximalElementCount");
+            }
+            if ((commandIdentifier == "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckListConstraintMinM" +
+                "axElementCount"))
+            {
+                return typeof(IParameterConstraintsTest).GetMethod("CheckListConstraintMinMaxElementCount");
+            }
+            if ((commandIdentifier == "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckBinaryConstraintLe" +
+                "ngth"))
+            {
+                return typeof(IParameterConstraintsTest).GetMethod("CheckBinaryConstraintLength");
+            }
+            if ((commandIdentifier == "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckBinaryConstraintMi" +
+                "nimalLength"))
+            {
+                return typeof(IParameterConstraintsTest).GetMethod("CheckBinaryConstraintMinimalLength");
+            }
+            if ((commandIdentifier == "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckBinaryConstraintMa" +
+                "ximalLength"))
+            {
+                return typeof(IParameterConstraintsTest).GetMethod("CheckBinaryConstraintMaximalLength");
+            }
+            if ((commandIdentifier == "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckBinaryConstraintMi" +
+                "nMaxLength"))
+            {
+                return typeof(IParameterConstraintsTest).GetMethod("CheckBinaryConstraintMinMaxLength");
+            }
+            if ((commandIdentifier == "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckBinaryConstraintCo" +
+                "ntentType"))
+            {
+                return typeof(IParameterConstraintsTest).GetMethod("CheckBinaryConstraintContentType");
+            }
+            if ((commandIdentifier == "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckBinaryConstraintSc" +
+                "hema"))
+            {
+                return typeof(IParameterConstraintsTest).GetMethod("CheckBinaryConstraintSchema");
+            }
+            if ((commandIdentifier == "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckAllowedTypesConstr" +
+                "aint"))
+            {
+                return typeof(IParameterConstraintsTest).GetMethod("CheckAllowedTypesConstraint");
+            }
+            if ((commandIdentifier == "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckAllowedStructureTy" +
+                "peConstraints"))
+            {
+                return typeof(IParameterConstraintsTest).GetMethod("CheckAllowedStructureTypeConstraints");
             }
             return null;
         }

@@ -13,7 +13,7 @@ namespace Tecan.Sila2.Server.ServiceDefinition
         private readonly SiLAServer _server;
         private readonly IRequestInterceptor _requestInterceptor;
 
-        public MetadataHandler(SiLAServer server, IRequestInterceptor requestInterceptor)
+        public MetadataHandler( SiLAServer server, IRequestInterceptor requestInterceptor )
         {
             _server = server;
             _requestInterceptor = requestInterceptor;
@@ -21,43 +21,9 @@ namespace Tecan.Sila2.Server.ServiceDefinition
 
         public Task<List<StringDto>> GetAffectedBy( EmptyRequest request, ServerCallContext context )
         {
-            List<StringDto> affected = DtoExtensions.Encapsulate( GetAffected(), StringDto.Create, null );
+            List<StringDto> affected = DtoExtensions.Encapsulate( _server.Pipeline.GetAffectedOfMetadata( _requestInterceptor ), StringDto.Create, null );
 
             return Task.FromResult( affected );
-        }
-
-        private IEnumerable<string> GetAffected()
-        {
-            var affected = new List<string>();
-
-            foreach(var provider in _server.Features)
-            {
-                var feature = provider.FeatureDefinition;
-                if(_requestInterceptor.AppliesToCommands)
-                {
-                    foreach(var command in feature.Items.OfType<FeatureCommand>())
-                    {
-                        var identifier = feature.GetFullyQualifiedIdentifier( command );
-                        if(_requestInterceptor.IsInterceptRequired( feature, identifier ))
-                        {
-                            affected.Add( identifier );
-                        }
-                    }
-                }
-                if(_requestInterceptor.AppliesToProperties)
-                {
-                    foreach(var property in feature.Items.OfType<FeatureProperty>())
-                    {
-                        var identifier = feature.GetFullyQualifiedIdentifier( property );
-                        if(_requestInterceptor.IsInterceptRequired( feature, identifier ))
-                        {
-                            affected.Add( identifier );
-                        }
-                    }
-                }
-            }
-
-            return affected;
         }
 
         public async void HandleRequest( SilaClientMessage message, IClientStreamWriter<SilaServerMessage> responseWriter, ServerPoolDispatcher dispatcher )
@@ -72,7 +38,7 @@ namespace Tecan.Sila2.Server.ServiceDefinition
                 RequestUuid = message.RequestUuid,
                 MetadataResponse = new GetFCPAffectedByMetadataResponse
                 {
-                    AffectedCalls = GetAffected().ToList()
+                    AffectedCalls = _server.Pipeline.GetAffectedOfMetadata( _requestInterceptor ).ToList()
                 }
             } );
         }

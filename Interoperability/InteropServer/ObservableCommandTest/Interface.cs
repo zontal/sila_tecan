@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Tecan.Sila2.Interop.Server
+namespace Tecan.Sila2.Interop.Server.ObservableCommandTest
 {
     
     
@@ -23,23 +23,23 @@ namespace Tecan.Sila2.Interop.Server
     {
         
         ///  <summary>
-        /// Observable iteration, running NumberIterations times and returning the current count as intermediate result.
+        /// Count from 0 to N-1 and return the current number as intermediate response.
         /// </summary>
-        /// <param name="numberIterations">Number of Iterations to perform</param>
-        /// <returns>If the command ended successfully the response should be NumberIterations - 1</returns>
+        /// <param name="n">Number to count to</param>
+        /// <param name="delay">The delay for each iteration</param>
+        /// <returns>The last number (N-1)</returns>
         [Tecan.Sila2.ObservableAttribute()]
-        [Tecan.Sila2.SilaDisplayNameAttribute("Observable iteration")]
         [return: Tecan.Sila2.SilaIdentifierAttribute("IterationResponse")]
-        Tecan.Sila2.IIntermediateObservableCommand<long, long> ObservableIteration(long numberIterations);
+        Tecan.Sila2.IIntermediateObservableCommand<long, long> Count(long n, [Tecan.Sila2.UnitAttribute("s", Second=1)] double delay);
         
         ///  <summary>
-        /// Echo the given value asynchronously after the specified delay
+        /// Echo the given value after the specified delay. The command state must be "waiting" until the delay has passed.
         /// </summary>
         /// <param name="value">The value to echo</param>
-        /// <param name="delayInMs">The delay in milliseconds</param>
+        /// <param name="delay">The delay before the command execution starts</param>
         /// <returns>The Received Value</returns>
         [Tecan.Sila2.ObservableAttribute()]
         [return: Tecan.Sila2.SilaIdentifierAttribute("ReceivedValue")]
-        Tecan.Sila2.IObservableCommand<long> EchoValueAsync(long value, long delayInMs);
+        Tecan.Sila2.IObservableCommand<long> EchoValueAfterDelay(long value, [Tecan.Sila2.UnitAttribute("s", Second=1)] double delay);
     }
 }

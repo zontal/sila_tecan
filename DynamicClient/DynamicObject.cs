@@ -16,19 +16,40 @@ namespace Tecan.Sila2.DynamicClient
         /// <inheritdoc cref="object"/>
         public override string ToString()
         {
-            return "{ " + string.Join(", ", Elements.Select(p => $"{p.DisplayName} = {Print(p.Value)}")) + " }";
+            return "{ " + string.Join( ", ", Elements.Select( p => $"{p.DisplayName} = {Print( p.Value )}" ) ) + " }";
         }
 
-        internal static string Print(object obj)
+        /// <summary>
+        /// Creates the type of this dynamic object on the fly
+        /// </summary>
+        /// <returns>A SiLA2 structure type with all the elements</returns>
+        public DataTypeType CreateType()
         {
-            if (obj == null)
+            return new DataTypeType
+            {
+                Item = new StructureType
+                {
+                    Element = Elements.Select( e => new SiLAElement
+                    {
+                        Identifier = e.Identifier,
+                        DisplayName = e.DisplayName,
+                        Description = e.Description,
+                        DataType = e.Type
+                    } ).ToArray()
+                }
+            };
+        }
+
+        internal static string Print( object obj )
+        {
+            if(obj == null)
             {
                 return "(null)";
             }
 
-            if (obj is IEnumerable<object> enumerable)
+            if(obj is IEnumerable<object> enumerable)
             {
-                return "[ " + string.Join(", ", enumerable.Select(Print)) + " ]";
+                return "[ " + string.Join( ", ", enumerable.Select( Print ) ) + " ]";
             }
             return obj.ToString();
         }

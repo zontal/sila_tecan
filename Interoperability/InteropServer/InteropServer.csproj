@@ -16,12 +16,27 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <None Remove="AnyTypeTest.sila.xml" />
+        <None Remove="AuthenticationTest.sila.xml" />
+        <None Remove="BasicDataTypesTest.sila.xml" />
+        <None Remove="BinaryTransferTest.sila.xml" />
+        <None Remove="CancellationTest.sila.xml" />
         <None Remove="ComplexDataTypeTest.sila.xml" />
         <None Remove="DataTypeProvider.sila.xml" />
+        <None Remove="ErrorHandlingTest.sila.xml" />
         <None Remove="InteropServer.csproj.DotSettings" />
+        <None Remove="ListDataTypeTest.sila.xml" />
+        <None Remove="LockableCommandProvider.sila.xml" />
+        <None Remove="MetadataConsumerTest.sila.xml" />
+        <None Remove="MetadataProviderTest.sila.xml" />
+        <None Remove="MultiClientTest.sila.xml" />
         <None Remove="ObservableCommandTest.sila.xml" />
         <None Remove="ObservablePropertyTest.sila.xml" />
         <None Remove="ParameterConstraintsTest.sila.xml" />
+        <None Remove="RecoverableErrorProvider.sila.xml" />
+        <None Remove="StructureDataTypeTest.sila.xml" />
+        <None Remove="UnobservableCommandTest.sila.xml" />
+        <None Remove="UnobservablePropertyTest.sila.xml" />
     </ItemGroup>
 
     <ItemGroup>
@@ -29,12 +44,25 @@
     </ItemGroup>
 
     <ItemGroup>
-        <EmbeddedResource Include="ComplexDataTypeTest.sila.xml" />
-        <EmbeddedResource Include="DataTypeProvider.sila.xml" />
+        <EmbeddedResource Include="AnyTypeTest.sila.xml" />
+        <EmbeddedResource Include="AuthenticationTest.sila.xml" />
+        <EmbeddedResource Include="BasicDataTypesTest.sila.xml" />
+        <EmbeddedResource Include="BinaryTransferTest.sila.xml" />
+        <EmbeddedResource Include="CancellationTest.sila.xml" />
+        <EmbeddedResource Include="ErrorHandlingTest.sila.xml" />
         <EmbeddedResource Include="InteropServer.csproj.DotSettings" />
+        <EmbeddedResource Include="ListDataTypeTest.sila.xml" />
+        <EmbeddedResource Include="LockableCommandProvider.sila.xml" />
+        <EmbeddedResource Include="MetadataConsumerTest.sila.xml" />
+        <EmbeddedResource Include="MetadataProviderTest.sila.xml" />
+        <EmbeddedResource Include="MultiClientTest.sila.xml" />
         <EmbeddedResource Include="ObservableCommandTest.sila.xml" />
         <EmbeddedResource Include="ObservablePropertyTest.sila.xml" />
         <EmbeddedResource Include="ParameterConstraintsTest.sila.xml" />
+        <EmbeddedResource Include="RecoverableErrorProvider.sila.xml" />
+        <EmbeddedResource Include="StructureDataTypeTest.sila.xml" />
+        <EmbeddedResource Include="UnobservableCommandTest.sila.xml" />
+        <EmbeddedResource Include="UnobservablePropertyTest.sila.xml" />
     </ItemGroup>
 
     <ItemGroup>

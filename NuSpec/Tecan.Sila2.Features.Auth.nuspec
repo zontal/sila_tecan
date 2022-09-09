@@ -13,6 +13,7 @@
         <repository type="git" url="https://gitlab.com/SiLA2/vendors/sila_tecan.git" />
         <dependencies>
             <dependency id="Tecan.Sila2" version="[$version$,5.0)" />
+            <dependency id="Microsoft.AspNetCore.Cryptography.KeyDerivation" version="6.0.8" />
         </dependencies>
     </metadata>
     <files>

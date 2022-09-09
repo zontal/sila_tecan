@@ -119,6 +119,20 @@ namespace Tecan.Sila2.Authorization
         }
         
         ///  <summary>
+        /// Gets the metadata identifier this request interceptor is connected to or null, if not applicable
+        /// </summary>
+        public string MetadataIdentifier
+        {
+            get
+            {
+                return "org.silastandard/core/AuthorizationService/v1/Metadata/AccessToken";
+            }
+            set
+            {
+            }
+        }
+        
+        ///  <summary>
         /// Decides whether the interceptor is required for the given command
         /// </summary>
         /// <param name="feature">The feature that contains the command or property</param>
@@ -145,7 +159,7 @@ namespace Tecan.Sila2.Authorization
         {
             try
             {
-                return Intercept(commandIdentifier, Tecan.Sila2.Server.Metadata.Extract<Tecan.Sila2.StringDto>(metadata, "org.silastandard/core/AuthorizationService/v1/Metadata/AccessToken").Extract(server));
+                return Intercept(commandIdentifier, Tecan.Sila2.Server.Metadata.Extract<Tecan.Sila2.StringDto>(metadata, MetadataIdentifier).Extract(server));
             } catch (InvalidAccessTokenException ex)
             {
                 throw server.ErrorHandling.CreateExecutionError("org.silastandard/core/AuthorizationService/v1/DefinedExecutionError/InvalidAccess" +

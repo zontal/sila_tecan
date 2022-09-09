@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Feature SiLA2Version="1.0" FeatureVersion="1.0" Originator="org.silastandard" Category="test"
+         xmlns="http://www.sila-standard.org"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://www.sila-standard.org https://gitlab.com/SiLA2/sila_base/raw/master/schema/FeatureDefinition.xsd">
+  <Identifier>CancellationTest</Identifier>
+  <DisplayName>Cancellation Test</DisplayName>
+  <Description>Contains a command that can be cancelled via the "Cancel Controller" core feature.</Description>
+
+  <Command>
+    <Identifier>WaitForCancel</Identifier>
+    <DisplayName>Wait For Cancel</DisplayName>
+    <Description>Starts a command and waits for cancellation</Description>
+    <Observable>Yes</Observable>
+    <Parameter>
+      <Identifier>Duration</Identifier>
+      <DisplayName>Duration</DisplayName>
+      <Description>The time the server should wait for the cancellation</Description>
+      <DataType>
+        <Constrained>
+          <DataType>
+            <Basic>Integer</Basic>
+          </DataType>
+          <Constraints>
+            <Unit>
+              <Label>s</Label>
+              <Factor>1</Factor>
+              <Offset>0</Offset>
+              <UnitComponent>
+                <SIUnit>Second</SIUnit>
+                <Exponent>1</Exponent>
+              </UnitComponent>
+            </Unit>
+          </Constraints>
+        </Constrained>
+      </DataType>
+    </Parameter>
+    <DefinedExecutionErrors>
+      <Identifier>ShouldHaveBeenCancelled</Identifier>
+    </DefinedExecutionErrors>
+  </Command>
+
+  <DefinedExecutionError>
+    <Identifier>ShouldHaveBeenCancelled</Identifier>
+    <DisplayName>Should Have Been Cancelled</DisplayName>
+    <Description>Happens if the command did not receive a cancellation</Description>
+  </DefinedExecutionError>
+
+</Feature>

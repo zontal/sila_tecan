@@ -8,13 +8,13 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Tecan.Sila2.Interop.Server
+namespace Tecan.Sila2.Interop.Server.ParameterConstraintsTest
 {
     
     
     ///  <summary>
     /// This is a test feature to generically test constrained parameters.
-    /// A validation Error must be raised if the constraints are not fulfilled.
+    /// A validation Error must be raised if a constraint is not fulfilled.
     /// </summary>
     [Tecan.Sila2.SilaFeatureAttribute(true, "test")]
     [Tecan.Sila2.SilaIdentifierAttribute("ParameterConstraintsTest")]
@@ -23,49 +23,349 @@ namespace Tecan.Sila2.Interop.Server
     {
         
         ///  <summary>
-        /// Tests the Length constraint on String type
+        /// Tests the Length constraint on the String type
         /// </summary>
-        /// <param name="stringLength">Tests the Length constraint on String type</param>
-        /// <param name="maximalLengthString">Tests the MaximalLength constraint on String type</param>
-        /// <param name="minimalLengthString">Tests the MinimalLength constraint on String type</param>
-        /// <param name="minMaxLengthString">Tests the combination of MinimalLength and MaximalLength constraints on String type</param>
-        /// <param name="setString">Tests the Set constraint on String type</param>
-        /// <param name="patternString">Tests the Pattern constraint on String type (date of birth in dd/mm/yyyy format)</param>
-        void ExactStringLength([Tecan.Sila2.SilaDisplayNameAttribute("Length of String")] string stringLength, [Tecan.Sila2.MaximalLengthAttribute(20)] [Tecan.Sila2.SilaDisplayNameAttribute("String Maximal Length")] string maximalLengthString, [Tecan.Sila2.SilaDisplayNameAttribute("String Minimal Length")] string minimalLengthString, [Tecan.Sila2.MaximalLengthAttribute(20)] [Tecan.Sila2.SilaDisplayNameAttribute("String MinMax Length")] string minMaxLengthString, [Tecan.Sila2.SilaDisplayNameAttribute("Set of Strings")] string setString, [Tecan.Sila2.PatternConstraintAttribute("[0-9]{2}/[0-9]{2}/[0-9]{2}/[0-9]{4}")] [Tecan.Sila2.SilaDisplayNameAttribute("String Pattern")] string patternString);
+        /// <param name="constrainedParameter">A String parameter with a Length constraint of 10</param>
+        void CheckStringConstraintLength(string constrainedParameter);
         
         ///  <summary>
-        /// A command with constrained parameters of type Integer or Real
+        /// Tests the MinimalLength constraint on the String type
         /// </summary>
-        /// <param name="integersSet">Tests the Set constraint on Integer type</param>
-        /// <param name="maximalExclusiveReal">Tests the MaximalExclusive constraint on Real type</param>
-        /// <param name="minimalExclusiveReal">Tests the MinimalExclusive constraint on Real type</param>
-        /// <param name="minMaxExclusiveReal">Tests the combination of MinimalExclusive and MaximalExclusive constraints on Real type</param>
-        /// <param name="maximalInclusiveInteger">Tests the MaximalInclusive constraint on Integer type</param>
-        /// <param name="minimalInclusiveInteger">Tests the MinimalInclusive constraint on Integer type</param>
-        /// <param name="minMaxInclusiveInteger">Tests the combination of MinimalInclusive and MaximalInclusive constraints on Integer type</param>
-        /// <param name="unit">Tests the Unit constraint</param>
-        void ConstrainedNumericParameters([Tecan.Sila2.SilaDisplayNameAttribute("Set Of Integers")] long integersSet, [Tecan.Sila2.MaximalExclusiveAttribute(10D)] double maximalExclusiveReal, [Tecan.Sila2.MinimalExclusiveAttribute(0D)] double minimalExclusiveReal, [Tecan.Sila2.MaximalExclusiveAttribute(10D)] [Tecan.Sila2.MinimalExclusiveAttribute(0D)] [Tecan.Sila2.SilaDisplayNameAttribute("Minimal Maximal Exclusive Real")] double minMaxExclusiveReal, [Tecan.Sila2.MaximalInclusiveAttribute(10D)] long maximalInclusiveInteger, [Tecan.Sila2.MinimalInclusiveAttribute(0D)] long minimalInclusiveInteger, [Tecan.Sila2.MaximalInclusiveAttribute(10D)] [Tecan.Sila2.MinimalInclusiveAttribute(0D)] [Tecan.Sila2.SilaDisplayNameAttribute("Minimal Maximal Inclusive Integer")] long minMaxInclusiveInteger, [Tecan.Sila2.UnitAttribute("mL", Meter=3, Factor=1E-06D)] long unit);
+        /// <param name="constrainedParameter">A String parameter with a MinimalLength constraint of 5</param>
+        void CheckStringConstraintMinimalLength(string constrainedParameter);
         
         ///  <summary>
-        /// A command with constrained parameters of type Date, Time or Timestamp
+        /// Tests the MaximalLength constraint on the String type
         /// </summary>
-        /// <param name="dateSet">Tests the Set constraint on Date type</param>
-        /// <param name="maximalExclusiveDate">Tests the MaximalExclusive constraint on Date type</param>
-        /// <param name="minimalExclusiveDate">Tests the MinimalExclusive constraint on Date type</param>
-        /// <param name="minMaxExclusiveDate">Tests the combination of MinimalExclusive and MaximalExclusive constraints on Date type</param>
-        /// <param name="maximalInclusiveTime">Tests the MaximalInclusive constraint on Time type</param>
-        /// <param name="minimalInclusiveTime">Tests the MinimalInclusive constraint on Time type</param>
-        /// <param name="minMaxInclusiveTime">Tests the combination of MinimalInclusive and MaximalInclusive constraints on Time type</param>
-        [Tecan.Sila2.SilaDisplayNameAttribute("Constrained Date and Time Parameters")]
-        void ConstrainedDateTimeParameters([Tecan.Sila2.SilaDisplayNameAttribute("Set of Dates")] System.DateTimeOffset dateSet, [Tecan.Sila2.MaximalExclusiveAttribute(20191231D)] System.DateTimeOffset maximalExclusiveDate, [Tecan.Sila2.MinimalExclusiveAttribute(20190101D)] System.DateTimeOffset minimalExclusiveDate, [Tecan.Sila2.MaximalExclusiveAttribute(20191130D)] [Tecan.Sila2.MinimalExclusiveAttribute(20190201D)] [Tecan.Sila2.SilaDisplayNameAttribute("Minimal Maximal Exclusive Date")] System.DateTimeOffset minMaxExclusiveDate, [Tecan.Sila2.MaximalInclusiveAttribute(185959D)] System.TimeSpan maximalInclusiveTime, [Tecan.Sila2.MinimalInclusiveAttribute(80000D)] System.TimeSpan minimalInclusiveTime, [Tecan.Sila2.MaximalInclusiveAttribute(185959D)] [Tecan.Sila2.MinimalInclusiveAttribute(80000D)] [Tecan.Sila2.SilaDisplayNameAttribute("Minimal Maximal Inclusive Time")] System.TimeSpan minMaxInclusiveTime);
+        /// <param name="constrainedParameter">A String parameter with a MaximalLength constraint of 20</param>
+        void CheckStringConstraintMaximalLength([Tecan.Sila2.MaximalLengthAttribute(20)] string constrainedParameter);
         
         ///  <summary>
-        /// A command with constrained parameters of type List
+        /// Tests the combination of MinimalLength and MaximalLength constraints on the String type
         /// </summary>
-        /// <param name="elementCountList">Tests the ElementCount constraint on List type</param>
-        /// <param name="maximalElementCountList">Test the MaximalElementCount constraint on List type</param>
-        /// <param name="minimalElementCountList">Tests the MinimalElementCount constraint on List type</param>
-        /// <param name="minMaxElementCountList">Tests the combination of MinimalElementCount and MaximalElementCount constraints on List type</param>
-        void ConstrainedListParameters([Tecan.Sila2.SilaDisplayNameAttribute("List with Element Count")] System.Collections.Generic.ICollection<string> elementCountList, [Tecan.Sila2.SilaDisplayNameAttribute("List with Maximal Element Count")] System.Collections.Generic.ICollection<string> maximalElementCountList, [Tecan.Sila2.SilaDisplayNameAttribute("List with a Minimal Element Count")] System.Collections.Generic.ICollection<string> minimalElementCountList, [Tecan.Sila2.SilaDisplayNameAttribute("List with a Interval Element Count")] System.Collections.Generic.ICollection<string> minMaxElementCountList);
+        /// <param name="constrainedParameter">A String parameter with a MinimalLength constraint of 5 and a MaximalLength constraint of 20</param>
+        [Tecan.Sila2.SilaDisplayNameAttribute("Check String Constraint MinMax Length")]
+        void CheckStringConstraintMinMaxLength([Tecan.Sila2.MaximalLengthAttribute(20)] string constrainedParameter);
+        
+        ///  <summary>
+        /// Tests the Set constraint on the String type
+        /// </summary>
+        /// <param name="constrainedParameter">A String parameter with a Set constraint of 'First option', 'Second option', 'Third option'</param>
+        void CheckStringConstraintSet(string constrainedParameter);
+        
+        ///  <summary>
+        /// Tests the Pattern constraint on String type
+        /// </summary>
+        /// <param name="constrainedParameter">A String parameter with a Pattern constraint of a date of birth in dd/mm/yyyy format</param>
+        void CheckStringConstraintPattern([Tecan.Sila2.PatternConstraintAttribute("[0-9]{2}/[0-9]{2}/[0-9]{4}")] string constrainedParameter);
+        
+        ///  <summary>
+        /// Tests the ContentType constraint on the String type
+        /// </summary>
+        /// <param name="constrainedParameter">A String parameter with a ContentType constraint allowing only valid XML document as content</param>
+        void CheckStringConstraintContentType([Tecan.Sila2.ContentTypeAttribute("application", "xml")] string constrainedParameter);
+        
+        ///  <summary>
+        /// A command that has a parameter for every possible FullyQualifiedIdentifier constraint
+        /// </summary>
+        /// <param name="featureIdentifier">Tests that the parameter is a valid feature identifier</param>
+        /// <param name="commandIdentifier">Tests that the parameter is a valid command identifier</param>
+        /// <param name="commandParameterIdentifier">Tests that the parameter is a valid command parameter identifier</param>
+        /// <param name="commandResponseIdentifier">Tests that the parameter is a valid command response identifier</param>
+        /// <param name="intermediateCommandResponseIdentifier">Tests that the parameter is a valid intermediate command response identifier</param>
+        /// <param name="executionErrorIdentifier">Tests that the parameter is a valid execution error identifier</param>
+        /// <param name="propertyIdentifier">Tests that the parameter is a valid property identifier</param>
+        /// <param name="customDataTypeIdentifier">Tests that the parameter is a valid data type identifier</param>
+        /// <param name="metadataIdentifier">Tests that the parameter is a valid metadata identifier</param>
+        void CheckStringConstraintFullyQualifiedIdentifier([Tecan.Sila2.SilaIdentifierTypeAttribute(Tecan.Sila2.IdentifierType.FeatureIdentifier)] string featureIdentifier, [Tecan.Sila2.SilaIdentifierTypeAttribute(Tecan.Sila2.IdentifierType.CommandIdentifier)] string commandIdentifier, [Tecan.Sila2.SilaIdentifierTypeAttribute(Tecan.Sila2.IdentifierType.CommandParameterIdentifier)] string commandParameterIdentifier, [Tecan.Sila2.SilaIdentifierTypeAttribute(Tecan.Sila2.IdentifierType.CommandResponseIdentifier)] string commandResponseIdentifier, [Tecan.Sila2.SilaIdentifierTypeAttribute(Tecan.Sila2.IdentifierType.IntermediateResponseIdentifier)] string intermediateCommandResponseIdentifier, [Tecan.Sila2.SilaIdentifierTypeAttribute(Tecan.Sila2.IdentifierType.DefinedExecutionErrorIdentifier)] string executionErrorIdentifier, [Tecan.Sila2.SilaIdentifierTypeAttribute(Tecan.Sila2.IdentifierType.PropertyIdentifier)] string propertyIdentifier, [Tecan.Sila2.SilaIdentifierTypeAttribute(Tecan.Sila2.IdentifierType.TypeIdentifier)] string customDataTypeIdentifier, [Tecan.Sila2.SilaIdentifierTypeAttribute(Tecan.Sila2.IdentifierType.MetadataIdentifier)] string metadataIdentifier);
+        
+        ///  <summary>
+        /// Tests that the parameter is valid for a given Schema constraint
+        /// </summary>
+        /// <param name="constrainedParameter">A String parameter with a Schema constraint allowing only content that is compliant with the SiLA 2 Feature Definition schema</param>
+        void CheckStringConstraintSchema([Tecan.Sila2.SchemaAttribute("https://gitlab.com/SiLA2/sila_base/-/blob/master/schema/FeatureDefinition.xsd", Tecan.Sila2.SchemaType.Xml)] string constrainedParameter);
+        
+        ///  <summary>
+        /// Tests the Set constraint on the Integer type
+        /// </summary>
+        /// <param name="constrainedParameter">An Integer parameter with a Set constraint of 1, 2, 3</param>
+        void CheckIntegerConstraintSet(long constrainedParameter);
+        
+        ///  <summary>
+        /// Tests if scientific notation is accepted for checking limits of type Integer
+        /// </summary>
+        /// <param name="constrainedParameter">An Integer parameter with a MinimalInclusive constraint of -1e3 and a MaximalExclusive constraint of 1.23e5</param>
+        void CheckScientificallyNotatedIntegerLimit([Tecan.Sila2.MaximalExclusiveAttribute(12300000D)] [Tecan.Sila2.MinimalInclusiveAttribute(-1000D)] long constrainedParameter);
+        
+        ///  <summary>
+        /// Tests the MaximalExclusive constraint on the Integer type
+        /// </summary>
+        /// <param name="constrainedParameter">An Integer parameter with a MaximalExclusive constraint of 11</param>
+        void CheckIntegerConstraintMaximalExclusive([Tecan.Sila2.MaximalExclusiveAttribute(11D)] long constrainedParameter);
+        
+        ///  <summary>
+        /// Tests the MaximalInclusive constraint on the Integer type
+        /// </summary>
+        /// <param name="constrainedParameter">An Integer parameter with a MaximalInclusive constraint of 10</param>
+        void CheckIntegerConstraintMaximalInclusive([Tecan.Sila2.MaximalInclusiveAttribute(10D)] long constrainedParameter);
+        
+        ///  <summary>
+        /// Tests the MinimalExclusive constraint on the Integer type
+        /// </summary>
+        /// <param name="constrainedParameter">An Integer parameter with a MinimalExclusive constraint of -1</param>
+        void CheckIntegerConstraintMinimalExclusive([Tecan.Sila2.MinimalExclusiveAttribute(-1D)] long constrainedParameter);
+        
+        ///  <summary>
+        /// Tests the MinimalInclusive constraint on the Integer type
+        /// </summary>
+        /// <param name="constrainedParameter">An Integer parameter with a MinimalInclusive constraint of 0</param>
+        void CheckIntegerConstraintMinimalInclusive([Tecan.Sila2.MinimalInclusiveAttribute(0D)] long constrainedParameter);
+        
+        ///  <summary>
+        /// Tests the combination of MinimalExclusive and MaximalInclusive constraints on Integer type
+        /// </summary>
+        /// <param name="constrainedParameter">An Integer parameter with a MinimalExclusive constraint of -1 and a MaximalInclusive constraint of 10</param>
+        [Tecan.Sila2.SilaDisplayNameAttribute("Check Integer Constraint MinMax")]
+        void CheckIntegerConstraintMinMax([Tecan.Sila2.MaximalInclusiveAttribute(10D)] [Tecan.Sila2.MinimalExclusiveAttribute(-1D)] long constrainedParameter);
+        
+        ///  <summary>
+        /// Tests the Unit constraint on the Integer type
+        /// </summary>
+        /// <param name="constrainedParameter">An Integer parameter with a Unit constraint for milliliter (mL)</param>
+        void CheckIntegerConstraintUnit([Tecan.Sila2.UnitAttribute("mL", Meter=3, Factor=1E-06D)] long constrainedParameter);
+        
+        ///  <summary>
+        /// Tests the Set constraint on the Real type
+        /// </summary>
+        /// <param name="constrainedParameter">A Real parameter with a Set constraint of 1.11, 2.22, 3.33</param>
+        void CheckRealConstraintSet(double constrainedParameter);
+        
+        ///  <summary>
+        /// Tests if scientific notation is accepted for checking limits of type Real
+        /// </summary>
+        /// <param name="constrainedParameter">A Real parameter with a MinimalInclusive constraint of 1.23e-3 and a MaximalExclusive constraint of 1.23456e2</param>
+        void CheckScientificallyNotatedRealLimit([Tecan.Sila2.MaximalExclusiveAttribute(12345600D)] [Tecan.Sila2.MinimalInclusiveAttribute(0.123D)] double constrainedParameter);
+        
+        ///  <summary>
+        /// Tests the MaximalExclusive constraint on the Real type
+        /// </summary>
+        /// <param name="constrainedParameter">A Real parameter with a MaximalExclusive constraint of 10.5</param>
+        void CheckRealConstraintMaximalExclusive([Tecan.Sila2.MaximalExclusiveAttribute(105D)] double constrainedParameter);
+        
+        ///  <summary>
+        /// Tests the MaximalInclusive constraint on the Real type
+        /// </summary>
+        /// <param name="constrainedParameter">A Real parameter with a MaximalInclusive constraint of 10</param>
+        void CheckRealConstraintMaximalInclusive([Tecan.Sila2.MaximalInclusiveAttribute(10D)] double constrainedParameter);
+        
+        ///  <summary>
+        /// Tests the MinimalExclusive constraint on the Real type
+        /// </summary>
+        /// <param name="constrainedParameter">A Real parameter with a MinimalExclusive constraint of 0</param>
+        void CheckRealConstraintMinimalExclusive([Tecan.Sila2.MinimalExclusiveAttribute(0D)] double constrainedParameter);
+        
+        ///  <summary>
+        /// Tests the MinimalInclusive constraint on the Real type
+        /// </summary>
+        /// <param name="constrainedParameter">A Real parameter with a MinimalInclusive constraint of -1.5</param>
+        void CheckRealConstraintMinimalInclusive([Tecan.Sila2.MinimalInclusiveAttribute(-15D)] double constrainedParameter);
+        
+        ///  <summary>
+        /// Tests the combination of MinimalExclusive and MaximalInclusive constraints on Real type
+        /// </summary>
+        /// <param name="constrainedParameter">A Real parameter with a MinimalExclusive constraint of 0.333 and a MaximalInclusive constraint of 11.111</param>
+        [Tecan.Sila2.SilaDisplayNameAttribute("Check Real Constraint MinMax")]
+        void CheckRealConstraintMinMax([Tecan.Sila2.MaximalInclusiveAttribute(11111D)] [Tecan.Sila2.MinimalExclusiveAttribute(333D)] double constrainedParameter);
+        
+        ///  <summary>
+        /// Tests the Unit constraint on the Real type
+        /// </summary>
+        /// <param name="constrainedParameter">A Real parameter with a Unit constraint for degree celsius (°C)</param>
+        void CheckRealConstraintUnit([Tecan.Sila2.UnitAttribute("°C", Kelvin=1, Offset=273.15D)] double constrainedParameter);
+        
+        ///  <summary>
+        /// Tests the Set constraint on the Date type
+        /// </summary>
+        /// <param name="constrainedParameter">A Date parameter with a Set constraint of 2022-09-10Z, 2022-09-11-00:15, 2022-09-12+11:30</param>
+        void CheckDateConstraintSet(System.DateTimeOffset constrainedParameter);
+        
+        ///  <summary>
+        /// Tests the MaximalExclusive constraint on the Date type
+        /// </summary>
+        /// <param name="constrainedParameter">A Date parameter with a MaximalExclusive constraint of 2019-12-31+02:30</param>
+        void CheckDateConstraintMaximalExclusive([Tecan.Sila2.MaximalExclusiveDateAttribute("2019-12-31+02:30")] System.DateTimeOffset constrainedParameter);
+        
+        ///  <summary>
+        /// Tests the MaximalInclusive constraint on the Date type
+        /// </summary>
+        /// <param name="constrainedParameter">A Date parameter with a MaximalInclusive constraint of 2025-12-31-01:30</param>
+        void CheckDateConstraintMaximalInclusive([Tecan.Sila2.MaximalInclusiveDateAttribute("2025-12-31-01:30")] System.DateTimeOffset constrainedParameter);
+        
+        ///  <summary>
+        /// Tests the MinimalExclusive constraint on the Date type
+        /// </summary>
+        /// <param name="constrainedParameter">A Date parameter with a MinimalExclusive constraint of 2019-01-01-01:00</param>
+        void CheckDateConstraintMinimalExclusive([Tecan.Sila2.MinimalExclusiveDateAttribute("2019-01-01-01:00")] System.DateTimeOffset constrainedParameter);
+        
+        ///  <summary>
+        /// Tests the MinimalInclusive constraint on the Date type
+        /// </summary>
+        /// <param name="constrainedParameter">A Date parameter with a MinimalInclusive constraint of 1789-07-14+02:00</param>
+        void CheckDateConstraintMinimalInclusive([Tecan.Sila2.MinimalInclusiveDateAttribute("1789-07-14+02:00")] System.DateTimeOffset constrainedParameter);
+        
+        ///  <summary>
+        /// Tests the combination of MinimalInclusive and MaximalExclusive constraints on Date type
+        /// </summary>
+        /// <param name="constrainedParameter">A Date parameter with a MinimalInclusive constraint of 1976-06-10+02:00 and a MaximalExclusive constraint of 2076-06-10+02:00</param>
+        [Tecan.Sila2.SilaDisplayNameAttribute("Check Date Constraint MinMax")]
+        void CheckDateConstraintMinMax([Tecan.Sila2.MaximalExclusiveDateAttribute("2076-06-10+02:00")] [Tecan.Sila2.MinimalInclusiveDateAttribute("1976-06-10+02:00")] System.DateTimeOffset constrainedParameter);
+        
+        ///  <summary>
+        /// Tests the Set constraint on the Time type
+        /// </summary>
+        /// <param name="constrainedParameter">A Time parameter with a Set constraint of 18:59:59+02:00, 19:00:00-00:15, 19:59:00Z</param>
+        void CheckTimeConstraintSet(System.TimeSpan constrainedParameter);
+        
+        ///  <summary>
+        /// Tests the MaximalExclusive constraint on the Time type
+        /// </summary>
+        /// <param name="constrainedParameter">A Time parameter with a MaximalExclusive constraint of 12:00:00+00:15</param>
+        void CheckTimeConstraintMaximalExclusive([Tecan.Sila2.MaximalExclusiveDateAttribute("12:00:00+00:15")] System.TimeSpan constrainedParameter);
+        
+        ///  <summary>
+        /// Tests the MaximalInclusive constraint on the Time type
+        /// </summary>
+        /// <param name="constrainedParameter">A Time parameter with a MaximalInclusive constraint of 18:59:59+02:00</param>
+        void CheckTimeConstraintMaximalInclusive([Tecan.Sila2.MaximalInclusiveDateAttribute("18:59:59+02:00")] System.TimeSpan constrainedParameter);
+        
+        ///  <summary>
+        /// Tests the MinimalExclusive constraint on the Time type
+        /// </summary>
+        /// <param name="constrainedParameter">A Time parameter with a MinimalExclusive constraint of 01:02:03+04:00</param>
+        void CheckTimeConstraintMinimalExclusive([Tecan.Sila2.MinimalExclusiveDateAttribute("01:02:03+04:00")] System.TimeSpan constrainedParameter);
+        
+        ///  <summary>
+        /// Tests the MinimalInclusive constraint on the Time type
+        /// </summary>
+        /// <param name="constrainedParameter">A Time parameter with a MinimalInclusive constraint of 08:00:00Z</param>
+        void CheckTimeConstraintMinimalInclusive([Tecan.Sila2.MinimalInclusiveDateAttribute("08:00:00Z")] System.TimeSpan constrainedParameter);
+        
+        ///  <summary>
+        /// Tests the combination of MinimalExclusive and MaximalInclusive constraints on Time type
+        /// </summary>
+        /// <param name="constrainedParameter">A Time parameter with a MinimalExclusive constraint of 08:00:00-02:30 and a MaximalInclusive constraint of 18:59:59+02:30</param>
+        [Tecan.Sila2.SilaDisplayNameAttribute("Check Time Constraint MinMax")]
+        void CheckTimeConstraintMinMax([Tecan.Sila2.MaximalInclusiveDateAttribute("18:59:59+02:30")] [Tecan.Sila2.MinimalExclusiveDateAttribute("08:00:00-02:30")] System.TimeSpan constrainedParameter);
+        
+        ///  <summary>
+        /// Tests the Set constraint on the Timestamp type
+        /// </summary>
+        /// <param name="constrainedParameter">A Timestamp parameter with a Set constraint of 1969-07-16T13:32:00Z, 19690720T201740Z, 1969-07-24T16:50:35+00:00</param>
+        void CheckTimestampConstraintSet(System.DateTimeOffset constrainedParameter);
+        
+        ///  <summary>
+        /// Tests the MaximalExclusive constraint on the Timestamp type
+        /// </summary>
+        /// <param name="constrainedParameter">A Timestamp parameter with a MaximalExclusive constraint of 2022-09-07T16:00:00+02:00</param>
+        void CheckTimestampConstraintMaximalExclusive([Tecan.Sila2.MaximalExclusiveDateAttribute("2022-09-07T16:00:00+02:00")] System.DateTimeOffset constrainedParameter);
+        
+        ///  <summary>
+        /// Tests the MaximalInclusive constraint on the Timestamp type
+        /// </summary>
+        /// <param name="constrainedParameter">A Timestamp parameter with a MaximalInclusive constraint of 2025-12-31T13:59:59-01:30</param>
+        void CheckTimestampConstraintMaximalInclusive([Tecan.Sila2.MaximalInclusiveDateAttribute("2025-12-31T13:59:59-01:30")] System.DateTimeOffset constrainedParameter);
+        
+        ///  <summary>
+        /// Tests the MinimalExclusive constraint on the Timestamp type
+        /// </summary>
+        /// <param name="constrainedParameter">A Timestamp parameter with a MinimalExclusive constraint of 2019-01-01T00:00:00-01:00</param>
+        void CheckTimestampConstraintMinimalExclusive([Tecan.Sila2.MinimalExclusiveDateAttribute("2019-01-01T00:00:00-01:00")] System.DateTimeOffset constrainedParameter);
+        
+        ///  <summary>
+        /// Tests the MinimalInclusive constraint on the Timestamp type
+        /// </summary>
+        /// <param name="constrainedParameter">A Timestamp parameter with a MinimalInclusive constraint of 2022-09-07T13:48:59+02:00</param>
+        void CheckTimestampConstraintMinimalInclusive([Tecan.Sila2.MinimalInclusiveDateAttribute("2022-09-07T13:48:59+02:00")] System.DateTimeOffset constrainedParameter);
+        
+        ///  <summary>
+        /// Tests the combination of MinimalInclusive and MaximalExclusive constraints on Timestamp type
+        /// </summary>
+        /// <param name="constrainedParameter">A Timestamp parameter with a MinimalInclusive constraint of 19690720T201740Z and a MaximalExclusive constraint of 1972-12-11T19:54:57Z</param>
+        [Tecan.Sila2.SilaDisplayNameAttribute("Check Timestamp Constraint MinMax")]
+        void CheckTimestampConstraintMinMax([Tecan.Sila2.MaximalExclusiveDateAttribute("1972-12-11T19:54:57Z")] [Tecan.Sila2.MinimalInclusiveDateAttribute("1969-07-20T20:17:40Z")] System.DateTimeOffset constrainedParameter);
+        
+        ///  <summary>
+        /// Tests the ElementCount constraint on the List type
+        /// </summary>
+        /// <param name="constrainedParameter">A String List parameter with an ElementCount constraint of 5</param>
+        void CheckListConstraintElementCount(System.Collections.Generic.ICollection<string> constrainedParameter);
+        
+        ///  <summary>
+        /// Tests the MinimalElementCount constraint on the List type
+        /// </summary>
+        /// <param name="constrainedParameter">A String List parameter with an MinimalElementCount constraint of 3</param>
+        void CheckListConstraintMinimalElementCount(System.Collections.Generic.ICollection<string> constrainedParameter);
+        
+        ///  <summary>
+        /// Tests the MaximalElementCount constraint on the List type
+        /// </summary>
+        /// <param name="constrainedParameter">A String List parameter with an MaximalElementCount constraint of 5</param>
+        void CheckListConstraintMaximalElementCount(System.Collections.Generic.ICollection<string> constrainedParameter);
+        
+        ///  <summary>
+        /// Tests the combination of MinimalElementCount and MaximalElementCount constraints on the List type
+        /// </summary>
+        /// <param name="constrainedParameter">A String List parameter with a MinimalElementCount constraint of 2 and a MaximalElementCount constraint of 5</param>
+        [Tecan.Sila2.SilaDisplayNameAttribute("Check List Constraint MinMax Element Count")]
+        void CheckListConstraintMinMaxElementCount(System.Collections.Generic.ICollection<string> constrainedParameter);
+        
+        ///  <summary>
+        /// Tests the Length constraint on the Binary type
+        /// </summary>
+        /// <param name="constrainedParameter">A Binary parameter with a Length constraint of 10</param>
+        void CheckBinaryConstraintLength(System.IO.Stream constrainedParameter);
+        
+        ///  <summary>
+        /// Tests the MinimalLength constraint on the Binary type
+        /// </summary>
+        /// <param name="constrainedParameter">A Binary parameter with a MinimalLength constraint of 5</param>
+        void CheckBinaryConstraintMinimalLength(System.IO.Stream constrainedParameter);
+        
+        ///  <summary>
+        /// Tests the MaximalLength constraint on the Binary type
+        /// </summary>
+        /// <param name="constrainedParameter">A Binary parameter with a MaximalLength constraint of 20</param>
+        void CheckBinaryConstraintMaximalLength([Tecan.Sila2.MaximalLengthAttribute(20)] System.IO.Stream constrainedParameter);
+        
+        ///  <summary>
+        /// Tests the combination of MinimalLength and MaximalLength constraints on the Binary type
+        /// </summary>
+        /// <param name="constrainedParameter">A Binary parameter with a MinimalLength constraint of 5 and a MaximalLength constraint of 20</param>
+        [Tecan.Sila2.SilaDisplayNameAttribute("Check Binary Constraint MinMax Length")]
+        void CheckBinaryConstraintMinMaxLength([Tecan.Sila2.MaximalLengthAttribute(20)] System.IO.Stream constrainedParameter);
+        
+        ///  <summary>
+        /// Tests the ContentType constraint on the Binary type
+        /// </summary>
+        /// <param name="constrainedParameter">A Binary parameter with a ContentType constraint allowing only valid XML document as content</param>
+        void CheckBinaryConstraintContentType([Tecan.Sila2.ContentTypeAttribute("application", "xml")] System.IO.Stream constrainedParameter);
+        
+        ///  <summary>
+        /// Tests that the parameter is valid for a given Schema constraint
+        /// </summary>
+        /// <param name="constrainedParameter">A Binary parameter with a Schema constraint allowing only content that is compliant with the SiLA 2 Feature Definition schema</param>
+        void CheckBinaryConstraintSchema([Tecan.Sila2.SchemaAttribute("https://gitlab.com/SiLA2/sila_base/-/blob/master/schema/FeatureDefinition.xsd", Tecan.Sila2.SchemaType.Xml)] System.IO.Stream constrainedParameter);
+        
+        ///  <summary>
+        /// Tests the AllowedTypes constraint on the Any type
+        /// </summary>
+        /// <param name="constrainedParameter">An Any type parameter with an AllowedTypes constraint that only allows an integer or a list of integers</param>
+        void CheckAllowedTypesConstraint(Tecan.Sila2.DynamicClient.DynamicObjectProperty constrainedParameter);
+        
+        ///  <summary>
+        /// Tests the AllowedTypes constraint with a Structure type on the Any type
+        /// </summary>
+        /// <param name="constrainedParameter">An Any type parameter with an AllowedTypes constraint that only allows a structure with an integer</param>
+        void CheckAllowedStructureTypeConstraints(Tecan.Sila2.DynamicClient.DynamicObjectProperty constrainedParameter);
     }
 }

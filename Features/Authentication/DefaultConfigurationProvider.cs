@@ -1,20 +1,27 @@
 ﻿using System.ComponentModel.Composition;
 using System.IO;
+using System.Linq;
 
 namespace Tecan.Sila2
 {
     [Export]
-    [PartCreationPolicy(CreationPolicy.Shared)]
+    [PartCreationPolicy( CreationPolicy.Shared )]
     internal class DefaultConfigurationProvider : AuthConfigurationProviderBase
     {
         private const string ConfigName = "Auth";
         private readonly IConfigurationStore _configurationStore;
 
         [ImportingConstructor]
-        public DefaultConfigurationProvider(IServerConnector serverConnector, IServerDiscovery discovery, IConfigurationStore configurationStore)
-            : base( discovery, serverConnector)
+        public DefaultConfigurationProvider( IServerConnector serverConnector, IServerDiscovery discovery, IConfigurationStore configurationStore )
+            : base( discovery, serverConnector )
         {
             _configurationStore = configurationStore;
+        }
+
+        protected override User Login( string username, string password, AuthConfiguration configuration )
+        {
+            return configuration.LocalUser?.FirstOrDefault( u => string.Equals( u.Name, username, System.StringComparison.OrdinalIgnoreCase ) &&
+                PasswordHasher.VerifyPassword( u.Password, password ) );
         }
 
         protected override AuthConfiguration LoadConfiguration()
@@ -31,7 +38,7 @@ namespace Tecan.Sila2
                     new User()
                     {
                         Name = "admin",
-                        Password = "admin",
+                        Password = PasswordHasher.HashPassword("admin"),
                         AllowWildcard = true
                     }
                 }

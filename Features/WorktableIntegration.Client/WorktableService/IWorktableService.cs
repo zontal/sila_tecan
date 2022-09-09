@@ -210,7 +210,7 @@ namespace Tecan.Sila2.WorktableIntegration
         ///  <summary>
         /// The rotation
         /// </summary>
-        [Tecan.Sila2.UnitAttribute("Degree")]
+        [Tecan.Sila2.UnitAttribute("Degree", Factor=57.2957795130823D)]
         public double Rotation
         {
             get

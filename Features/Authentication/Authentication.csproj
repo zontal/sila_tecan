@@ -43,6 +43,7 @@
 
   <ItemGroup>
     <PackageReference Include="Grpc.Core" Version="2.40.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Cryptography.KeyDerivation" Version="6.0.8" />
     <PackageReference Include="protobuf-net" Version="2.4.0" />
   </ItemGroup>
   <ItemGroup>

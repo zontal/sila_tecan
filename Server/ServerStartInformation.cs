@@ -10,6 +10,11 @@ namespace Tecan.Sila2.Server
     public class ServerStartInformation
     {
         /// <summary>
+        /// Denotes the default server configuration name
+        /// </summary>
+        public const string DefaultServerConfigurationName = "default";
+
+        /// <summary>
         /// Gets the default port assignment
         /// </summary>
         public const int DefaultPort = 50052;
@@ -33,12 +38,28 @@ namespace Tecan.Sila2.Server
         /// <param name="serverUuid">The unique identifier of the server</param>
         /// <param name="name">the initial name of the server</param>
         public ServerStartInformation( ServerInformation info, int? port, string networkInterfaces, Guid serverUuid, string name )
+            : this( info, port, networkInterfaces, serverUuid, name, null )
+        {
+        }
+
+
+        /// <summary>
+        /// Creates a new instance
+        /// </summary>
+        /// <param name="info">The server information</param>
+        /// <param name="port">The port the server is running on</param>
+        /// <param name="networkInterfaces">The network interfaces the server uses for discovery</param>
+        /// <param name="serverUuid">The unique identifier of the server</param>
+        /// <param name="name">the initial name of the server</param>
+        /// <param name="configName">The name of the configuration to use</param>
+        public ServerStartInformation( ServerInformation info, int? port, string networkInterfaces, Guid serverUuid, string name, string configName )
         {
             Name = name;
             Info = info;
             Port = port;
             NetworkInterfaces = networkInterfaces;
             ServerUuid = serverUuid;
+            ConfigName = configName ?? DefaultServerConfigurationName;
         }
 
         /// <summary>
@@ -50,6 +71,14 @@ namespace Tecan.Sila2.Server
         /// Gets the initial name of the server
         /// </summary>
         public string Name
+        {
+            get;
+        }
+
+        /// <summary>
+        /// Gets the name of the configuration set that should be used
+        /// </summary>
+        public string ConfigName
         {
             get;
         }

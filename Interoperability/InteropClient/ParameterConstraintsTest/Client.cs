@@ -13,7 +13,7 @@ using Tecan.Sila2;
 using Tecan.Sila2.Client;
 using Tecan.Sila2.Server;
 
-namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest
+namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstraintsTest
 {
     
     
@@ -41,21 +41,17 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest
         }
         
         ///  <summary>
-        /// Tests the Length constraint on String type
+        /// Tests the Length constraint on the String type
         /// </summary>
-        /// <param name="stringLength">Tests the Length constraint on String type</param>
-        /// <param name="maximalLengthString">Tests the MaximalLength constraint on String type</param>
-        /// <param name="minimalLengthString">Tests the MinimalLength constraint on String type</param>
-        /// <param name="minMaxLengthString">Tests the combination of MinimalLength and MaximalLength constraints on String type</param>
-        /// <param name="setString">Tests the Set constraint on String type</param>
-        /// <param name="patternString">Tests the Pattern constraint on String type (date of birth in dd/mm/yyyy format)</param>
-        public virtual void ExactStringLength(string stringLength, string maximalLengthString, string minimalLengthString, string minMaxLengthString, string setString, string patternString)
+        /// <param name="constrainedParameter">A String parameter with a Length constraint of 10</param>
+        public virtual void CheckStringConstraintLength(string constrainedParameter)
         {
-            ExactStringLengthRequestDto request = new ExactStringLengthRequestDto(stringLength, maximalLengthString, minimalLengthString, minMaxLengthString, setString, patternString, null);
-            Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/ParameterConstraintsTest/v1/Command/ExactStringLength");
+            CheckStringConstraintLengthRequestDto request = new CheckStringConstraintLengthRequestDto(constrainedParameter, null);
+            Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckStringConstraintLe" +
+                    "ngth");
             try
             {
-                _channel.ExecuteUnobservableCommand<ExactStringLengthRequestDto>(_serviceName, "ExactStringLength", request, callInfo);
+                _channel.ExecuteUnobservableCommand<CheckStringConstraintLengthRequestDto>(_serviceName, "CheckStringConstraintLength", request, callInfo);
                 callInfo.FinishSuccessful();
                 return;
             } catch (System.Exception ex)
@@ -67,24 +63,17 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest
         }
         
         ///  <summary>
-        /// A command with constrained parameters of type Integer or Real
+        /// Tests the MinimalLength constraint on the String type
         /// </summary>
-        /// <param name="integersSet">Tests the Set constraint on Integer type</param>
-        /// <param name="maximalExclusiveReal">Tests the MaximalExclusive constraint on Real type</param>
-        /// <param name="minimalExclusiveReal">Tests the MinimalExclusive constraint on Real type</param>
-        /// <param name="minMaxExclusiveReal">Tests the combination of MinimalExclusive and MaximalExclusive constraints on Real type</param>
-        /// <param name="maximalInclusiveInteger">Tests the MaximalInclusive constraint on Integer type</param>
-        /// <param name="minimalInclusiveInteger">Tests the MinimalInclusive constraint on Integer type</param>
-        /// <param name="minMaxInclusiveInteger">Tests the combination of MinimalInclusive and MaximalInclusive constraints on Integer type</param>
-        /// <param name="unit">Tests the Unit constraint</param>
-        public virtual void ConstrainedNumericParameters(long integersSet, double maximalExclusiveReal, double minimalExclusiveReal, double minMaxExclusiveReal, long maximalInclusiveInteger, long minimalInclusiveInteger, long minMaxInclusiveInteger, long unit)
+        /// <param name="constrainedParameter">A String parameter with a MinimalLength constraint of 5</param>
+        public virtual void CheckStringConstraintMinimalLength(string constrainedParameter)
         {
-            ConstrainedNumericParametersRequestDto request = new ConstrainedNumericParametersRequestDto(integersSet, maximalExclusiveReal, minimalExclusiveReal, minMaxExclusiveReal, maximalInclusiveInteger, minimalInclusiveInteger, minMaxInclusiveInteger, unit, null);
-            Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/ParameterConstraintsTest/v1/Command/ConstrainedNumericParam" +
-                    "eters");
+            CheckStringConstraintMinimalLengthRequestDto request = new CheckStringConstraintMinimalLengthRequestDto(constrainedParameter, null);
+            Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckStringConstraintMi" +
+                    "nimalLength");
             try
             {
-                _channel.ExecuteUnobservableCommand<ConstrainedNumericParametersRequestDto>(_serviceName, "ConstrainedNumericParameters", request, callInfo);
+                _channel.ExecuteUnobservableCommand<CheckStringConstraintMinimalLengthRequestDto>(_serviceName, "CheckStringConstraintMinimalLength", request, callInfo);
                 callInfo.FinishSuccessful();
                 return;
             } catch (System.Exception ex)
@@ -96,23 +85,17 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest
         }
         
         ///  <summary>
-        /// A command with constrained parameters of type Date, Time or Timestamp
+        /// Tests the MaximalLength constraint on the String type
         /// </summary>
-        /// <param name="dateSet">Tests the Set constraint on Date type</param>
-        /// <param name="maximalExclusiveDate">Tests the MaximalExclusive constraint on Date type</param>
-        /// <param name="minimalExclusiveDate">Tests the MinimalExclusive constraint on Date type</param>
-        /// <param name="minMaxExclusiveDate">Tests the combination of MinimalExclusive and MaximalExclusive constraints on Date type</param>
-        /// <param name="maximalInclusiveTime">Tests the MaximalInclusive constraint on Time type</param>
-        /// <param name="minimalInclusiveTime">Tests the MinimalInclusive constraint on Time type</param>
-        /// <param name="minMaxInclusiveTime">Tests the combination of MinimalInclusive and MaximalInclusive constraints on Time type</param>
-        public virtual void ConstrainedDateTimeParameters(System.DateTimeOffset dateSet, System.DateTimeOffset maximalExclusiveDate, System.DateTimeOffset minimalExclusiveDate, System.DateTimeOffset minMaxExclusiveDate, System.TimeSpan maximalInclusiveTime, System.TimeSpan minimalInclusiveTime, System.TimeSpan minMaxInclusiveTime)
+        /// <param name="constrainedParameter">A String parameter with a MaximalLength constraint of 20</param>
+        public virtual void CheckStringConstraintMaximalLength(string constrainedParameter)
         {
-            ConstrainedDateTimeParametersRequestDto request = new ConstrainedDateTimeParametersRequestDto(dateSet, maximalExclusiveDate, minimalExclusiveDate, minMaxExclusiveDate, maximalInclusiveTime, minimalInclusiveTime, minMaxInclusiveTime, null);
-            Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/ParameterConstraintsTest/v1/Command/ConstrainedDateTimePara" +
-                    "meters");
+            CheckStringConstraintMaximalLengthRequestDto request = new CheckStringConstraintMaximalLengthRequestDto(constrainedParameter, null);
+            Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckStringConstraintMa" +
+                    "ximalLength");
             try
             {
-                _channel.ExecuteUnobservableCommand<ConstrainedDateTimeParametersRequestDto>(_serviceName, "ConstrainedDateTimeParameters", request, callInfo);
+                _channel.ExecuteUnobservableCommand<CheckStringConstraintMaximalLengthRequestDto>(_serviceName, "CheckStringConstraintMaximalLength", request, callInfo);
                 callInfo.FinishSuccessful();
                 return;
             } catch (System.Exception ex)
@@ -124,20 +107,1144 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest
         }
         
         ///  <summary>
-        /// A command with constrained parameters of type List
+        /// Tests the combination of MinimalLength and MaximalLength constraints on the String type
         /// </summary>
-        /// <param name="elementCountList">Tests the ElementCount constraint on List type</param>
-        /// <param name="maximalElementCountList">Test the MaximalElementCount constraint on List type</param>
-        /// <param name="minimalElementCountList">Tests the MinimalElementCount constraint on List type</param>
-        /// <param name="minMaxElementCountList">Tests the combination of MinimalElementCount and MaximalElementCount constraints on List type</param>
-        public virtual void ConstrainedListParameters(System.Collections.Generic.ICollection<string> elementCountList, System.Collections.Generic.ICollection<string> maximalElementCountList, System.Collections.Generic.ICollection<string> minimalElementCountList, System.Collections.Generic.ICollection<string> minMaxElementCountList)
+        /// <param name="constrainedParameter">A String parameter with a MinimalLength constraint of 5 and a MaximalLength constraint of 20</param>
+        public virtual void CheckStringConstraintMinMaxLength(string constrainedParameter)
         {
-            ConstrainedListParametersRequestDto request = new ConstrainedListParametersRequestDto(elementCountList, maximalElementCountList, minimalElementCountList, minMaxElementCountList, null);
-            Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/ParameterConstraintsTest/v1/Command/ConstrainedListParamete" +
-                    "rs");
+            CheckStringConstraintMinMaxLengthRequestDto request = new CheckStringConstraintMinMaxLengthRequestDto(constrainedParameter, null);
+            Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckStringConstraintMi" +
+                    "nMaxLength");
             try
             {
-                _channel.ExecuteUnobservableCommand<ConstrainedListParametersRequestDto>(_serviceName, "ConstrainedListParameters", request, callInfo);
+                _channel.ExecuteUnobservableCommand<CheckStringConstraintMinMaxLengthRequestDto>(_serviceName, "CheckStringConstraintMinMaxLength", request, callInfo);
+                callInfo.FinishSuccessful();
+                return;
+            } catch (System.Exception ex)
+            {
+                System.Exception exception = _channel.ConvertException(ex);
+                callInfo.FinishWithErrors(exception);
+                throw exception;
+            }
+        }
+        
+        ///  <summary>
+        /// Tests the Set constraint on the String type
+        /// </summary>
+        /// <param name="constrainedParameter">A String parameter with a Set constraint of 'First option', 'Second option', 'Third option'</param>
+        public virtual void CheckStringConstraintSet(string constrainedParameter)
+        {
+            CheckStringConstraintSetRequestDto request = new CheckStringConstraintSetRequestDto(constrainedParameter, null);
+            Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckStringConstraintSe" +
+                    "t");
+            try
+            {
+                _channel.ExecuteUnobservableCommand<CheckStringConstraintSetRequestDto>(_serviceName, "CheckStringConstraintSet", request, callInfo);
+                callInfo.FinishSuccessful();
+                return;
+            } catch (System.Exception ex)
+            {
+                System.Exception exception = _channel.ConvertException(ex);
+                callInfo.FinishWithErrors(exception);
+                throw exception;
+            }
+        }
+        
+        ///  <summary>
+        /// Tests the Pattern constraint on String type
+        /// </summary>
+        /// <param name="constrainedParameter">A String parameter with a Pattern constraint of a date of birth in dd/mm/yyyy format</param>
+        public virtual void CheckStringConstraintPattern(string constrainedParameter)
+        {
+            CheckStringConstraintPatternRequestDto request = new CheckStringConstraintPatternRequestDto(constrainedParameter, null);
+            Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckStringConstraintPa" +
+                    "ttern");
+            try
+            {
+                _channel.ExecuteUnobservableCommand<CheckStringConstraintPatternRequestDto>(_serviceName, "CheckStringConstraintPattern", request, callInfo);
+                callInfo.FinishSuccessful();
+                return;
+            } catch (System.Exception ex)
+            {
+                System.Exception exception = _channel.ConvertException(ex);
+                callInfo.FinishWithErrors(exception);
+                throw exception;
+            }
+        }
+        
+        ///  <summary>
+        /// Tests the ContentType constraint on the String type
+        /// </summary>
+        /// <param name="constrainedParameter">A String parameter with a ContentType constraint allowing only valid XML document as content</param>
+        public virtual void CheckStringConstraintContentType(string constrainedParameter)
+        {
+            CheckStringConstraintContentTypeRequestDto request = new CheckStringConstraintContentTypeRequestDto(constrainedParameter, null);
+            Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckStringConstraintCo" +
+                    "ntentType");
+            try
+            {
+                _channel.ExecuteUnobservableCommand<CheckStringConstraintContentTypeRequestDto>(_serviceName, "CheckStringConstraintContentType", request, callInfo);
+                callInfo.FinishSuccessful();
+                return;
+            } catch (System.Exception ex)
+            {
+                System.Exception exception = _channel.ConvertException(ex);
+                callInfo.FinishWithErrors(exception);
+                throw exception;
+            }
+        }
+        
+        ///  <summary>
+        /// A command that has a parameter for every possible FullyQualifiedIdentifier constraint
+        /// </summary>
+        /// <param name="featureIdentifier">Tests that the parameter is a valid feature identifier</param>
+        /// <param name="commandIdentifier">Tests that the parameter is a valid command identifier</param>
+        /// <param name="commandParameterIdentifier">Tests that the parameter is a valid command parameter identifier</param>
+        /// <param name="commandResponseIdentifier">Tests that the parameter is a valid command response identifier</param>
+        /// <param name="intermediateCommandResponseIdentifier">Tests that the parameter is a valid intermediate command response identifier</param>
+        /// <param name="executionErrorIdentifier">Tests that the parameter is a valid execution error identifier</param>
+        /// <param name="propertyIdentifier">Tests that the parameter is a valid property identifier</param>
+        /// <param name="customDataTypeIdentifier">Tests that the parameter is a valid data type identifier</param>
+        /// <param name="metadataIdentifier">Tests that the parameter is a valid metadata identifier</param>
+        public virtual void CheckStringConstraintFullyQualifiedIdentifier(string featureIdentifier, string commandIdentifier, string commandParameterIdentifier, string commandResponseIdentifier, string intermediateCommandResponseIdentifier, string executionErrorIdentifier, string propertyIdentifier, string customDataTypeIdentifier, string metadataIdentifier)
+        {
+            CheckStringConstraintFullyQualifiedIdentifierRequestDto request = new CheckStringConstraintFullyQualifiedIdentifierRequestDto(featureIdentifier, commandIdentifier, commandParameterIdentifier, commandResponseIdentifier, intermediateCommandResponseIdentifier, executionErrorIdentifier, propertyIdentifier, customDataTypeIdentifier, metadataIdentifier, null);
+            Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckStringConstraintFu" +
+                    "llyQualifiedIdentifier");
+            try
+            {
+                _channel.ExecuteUnobservableCommand<CheckStringConstraintFullyQualifiedIdentifierRequestDto>(_serviceName, "CheckStringConstraintFullyQualifiedIdentifier", request, callInfo);
+                callInfo.FinishSuccessful();
+                return;
+            } catch (System.Exception ex)
+            {
+                System.Exception exception = _channel.ConvertException(ex);
+                callInfo.FinishWithErrors(exception);
+                throw exception;
+            }
+        }
+        
+        ///  <summary>
+        /// Tests that the parameter is valid for a given Schema constraint
+        /// </summary>
+        /// <param name="constrainedParameter">A String parameter with a Schema constraint allowing only content that is compliant with the SiLA 2 Feature Definition schema</param>
+        public virtual void CheckStringConstraintSchema(string constrainedParameter)
+        {
+            CheckStringConstraintSchemaRequestDto request = new CheckStringConstraintSchemaRequestDto(constrainedParameter, null);
+            Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckStringConstraintSc" +
+                    "hema");
+            try
+            {
+                _channel.ExecuteUnobservableCommand<CheckStringConstraintSchemaRequestDto>(_serviceName, "CheckStringConstraintSchema", request, callInfo);
+                callInfo.FinishSuccessful();
+                return;
+            } catch (System.Exception ex)
+            {
+                System.Exception exception = _channel.ConvertException(ex);
+                callInfo.FinishWithErrors(exception);
+                throw exception;
+            }
+        }
+        
+        ///  <summary>
+        /// Tests the Set constraint on the Integer type
+        /// </summary>
+        /// <param name="constrainedParameter">An Integer parameter with a Set constraint of 1, 2, 3</param>
+        public virtual void CheckIntegerConstraintSet(long constrainedParameter)
+        {
+            CheckIntegerConstraintSetRequestDto request = new CheckIntegerConstraintSetRequestDto(constrainedParameter, null);
+            Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckIntegerConstraintS" +
+                    "et");
+            try
+            {
+                _channel.ExecuteUnobservableCommand<CheckIntegerConstraintSetRequestDto>(_serviceName, "CheckIntegerConstraintSet", request, callInfo);
+                callInfo.FinishSuccessful();
+                return;
+            } catch (System.Exception ex)
+            {
+                System.Exception exception = _channel.ConvertException(ex);
+                callInfo.FinishWithErrors(exception);
+                throw exception;
+            }
+        }
+        
+        ///  <summary>
+        /// Tests if scientific notation is accepted for checking limits of type Integer
+        /// </summary>
+        /// <param name="constrainedParameter">An Integer parameter with a MinimalInclusive constraint of -1e3 and a MaximalExclusive constraint of 1.23e5</param>
+        public virtual void CheckScientificallyNotatedIntegerLimit(long constrainedParameter)
+        {
+            CheckScientificallyNotatedIntegerLimitRequestDto request = new CheckScientificallyNotatedIntegerLimitRequestDto(constrainedParameter, null);
+            Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckScientificallyNota" +
+                    "tedIntegerLimit");
+            try
+            {
+                _channel.ExecuteUnobservableCommand<CheckScientificallyNotatedIntegerLimitRequestDto>(_serviceName, "CheckScientificallyNotatedIntegerLimit", request, callInfo);
+                callInfo.FinishSuccessful();
+                return;
+            } catch (System.Exception ex)
+            {
+                System.Exception exception = _channel.ConvertException(ex);
+                callInfo.FinishWithErrors(exception);
+                throw exception;
+            }
+        }
+        
+        ///  <summary>
+        /// Tests the MaximalExclusive constraint on the Integer type
+        /// </summary>
+        /// <param name="constrainedParameter">An Integer parameter with a MaximalExclusive constraint of 11</param>
+        public virtual void CheckIntegerConstraintMaximalExclusive(long constrainedParameter)
+        {
+            CheckIntegerConstraintMaximalExclusiveRequestDto request = new CheckIntegerConstraintMaximalExclusiveRequestDto(constrainedParameter, null);
+            Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckIntegerConstraintM" +
+                    "aximalExclusive");
+            try
+            {
+                _channel.ExecuteUnobservableCommand<CheckIntegerConstraintMaximalExclusiveRequestDto>(_serviceName, "CheckIntegerConstraintMaximalExclusive", request, callInfo);
+                callInfo.FinishSuccessful();
+                return;
+            } catch (System.Exception ex)
+            {
+                System.Exception exception = _channel.ConvertException(ex);
+                callInfo.FinishWithErrors(exception);
+                throw exception;
+            }
+        }
+        
+        ///  <summary>
+        /// Tests the MaximalInclusive constraint on the Integer type
+        /// </summary>
+        /// <param name="constrainedParameter">An Integer parameter with a MaximalInclusive constraint of 10</param>
+        public virtual void CheckIntegerConstraintMaximalInclusive(long constrainedParameter)
+        {
+            CheckIntegerConstraintMaximalInclusiveRequestDto request = new CheckIntegerConstraintMaximalInclusiveRequestDto(constrainedParameter, null);
+            Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckIntegerConstraintM" +
+                    "aximalInclusive");
+            try
+            {
+                _channel.ExecuteUnobservableCommand<CheckIntegerConstraintMaximalInclusiveRequestDto>(_serviceName, "CheckIntegerConstraintMaximalInclusive", request, callInfo);
+                callInfo.FinishSuccessful();
+                return;
+            } catch (System.Exception ex)
+            {
+                System.Exception exception = _channel.ConvertException(ex);
+                callInfo.FinishWithErrors(exception);
+                throw exception;
+            }
+        }
+        
+        ///  <summary>
+        /// Tests the MinimalExclusive constraint on the Integer type
+        /// </summary>
+        /// <param name="constrainedParameter">An Integer parameter with a MinimalExclusive constraint of -1</param>
+        public virtual void CheckIntegerConstraintMinimalExclusive(long constrainedParameter)
+        {
+            CheckIntegerConstraintMinimalExclusiveRequestDto request = new CheckIntegerConstraintMinimalExclusiveRequestDto(constrainedParameter, null);
+            Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckIntegerConstraintM" +
+                    "inimalExclusive");
+            try
+            {
+                _channel.ExecuteUnobservableCommand<CheckIntegerConstraintMinimalExclusiveRequestDto>(_serviceName, "CheckIntegerConstraintMinimalExclusive", request, callInfo);
+                callInfo.FinishSuccessful();
+                return;
+            } catch (System.Exception ex)
+            {
+                System.Exception exception = _channel.ConvertException(ex);
+                callInfo.FinishWithErrors(exception);
+                throw exception;
+            }
+        }
+        
+        ///  <summary>
+        /// Tests the MinimalInclusive constraint on the Integer type
+        /// </summary>
+        /// <param name="constrainedParameter">An Integer parameter with a MinimalInclusive constraint of 0</param>
+        public virtual void CheckIntegerConstraintMinimalInclusive(long constrainedParameter)
+        {
+            CheckIntegerConstraintMinimalInclusiveRequestDto request = new CheckIntegerConstraintMinimalInclusiveRequestDto(constrainedParameter, null);
+            Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckIntegerConstraintM" +
+                    "inimalInclusive");
+            try
+            {
+                _channel.ExecuteUnobservableCommand<CheckIntegerConstraintMinimalInclusiveRequestDto>(_serviceName, "CheckIntegerConstraintMinimalInclusive", request, callInfo);
+                callInfo.FinishSuccessful();
+                return;
+            } catch (System.Exception ex)
+            {
+                System.Exception exception = _channel.ConvertException(ex);
+                callInfo.FinishWithErrors(exception);
+                throw exception;
+            }
+        }
+        
+        ///  <summary>
+        /// Tests the combination of MinimalExclusive and MaximalInclusive constraints on Integer type
+        /// </summary>
+        /// <param name="constrainedParameter">An Integer parameter with a MinimalExclusive constraint of -1 and a MaximalInclusive constraint of 10</param>
+        public virtual void CheckIntegerConstraintMinMax(long constrainedParameter)
+        {
+            CheckIntegerConstraintMinMaxRequestDto request = new CheckIntegerConstraintMinMaxRequestDto(constrainedParameter, null);
+            Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckIntegerConstraintM" +
+                    "inMax");
+            try
+            {
+                _channel.ExecuteUnobservableCommand<CheckIntegerConstraintMinMaxRequestDto>(_serviceName, "CheckIntegerConstraintMinMax", request, callInfo);
+                callInfo.FinishSuccessful();
+                return;
+            } catch (System.Exception ex)
+            {
+                System.Exception exception = _channel.ConvertException(ex);
+                callInfo.FinishWithErrors(exception);
+                throw exception;
+            }
+        }
+        
+        ///  <summary>
+        /// Tests the Unit constraint on the Integer type
+        /// </summary>
+        /// <param name="constrainedParameter">An Integer parameter with a Unit constraint for milliliter (mL)</param>
+        public virtual void CheckIntegerConstraintUnit(long constrainedParameter)
+        {
+            CheckIntegerConstraintUnitRequestDto request = new CheckIntegerConstraintUnitRequestDto(constrainedParameter, null);
+            Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckIntegerConstraintU" +
+                    "nit");
+            try
+            {
+                _channel.ExecuteUnobservableCommand<CheckIntegerConstraintUnitRequestDto>(_serviceName, "CheckIntegerConstraintUnit", request, callInfo);
+                callInfo.FinishSuccessful();
+                return;
+            } catch (System.Exception ex)
+            {
+                System.Exception exception = _channel.ConvertException(ex);
+                callInfo.FinishWithErrors(exception);
+                throw exception;
+            }
+        }
+        
+        ///  <summary>
+        /// Tests the Set constraint on the Real type
+        /// </summary>
+        /// <param name="constrainedParameter">A Real parameter with a Set constraint of 1.11, 2.22, 3.33</param>
+        public virtual void CheckRealConstraintSet(double constrainedParameter)
+        {
+            CheckRealConstraintSetRequestDto request = new CheckRealConstraintSetRequestDto(constrainedParameter, null);
+            Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckRealConstraintSet");
+            try
+            {
+                _channel.ExecuteUnobservableCommand<CheckRealConstraintSetRequestDto>(_serviceName, "CheckRealConstraintSet", request, callInfo);
+                callInfo.FinishSuccessful();
+                return;
+            } catch (System.Exception ex)
+            {
+                System.Exception exception = _channel.ConvertException(ex);
+                callInfo.FinishWithErrors(exception);
+                throw exception;
+            }
+        }
+        
+        ///  <summary>
+        /// Tests if scientific notation is accepted for checking limits of type Real
+        /// </summary>
+        /// <param name="constrainedParameter">A Real parameter with a MinimalInclusive constraint of 1.23e-3 and a MaximalExclusive constraint of 1.23456e2</param>
+        public virtual void CheckScientificallyNotatedRealLimit(double constrainedParameter)
+        {
+            CheckScientificallyNotatedRealLimitRequestDto request = new CheckScientificallyNotatedRealLimitRequestDto(constrainedParameter, null);
+            Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckScientificallyNota" +
+                    "tedRealLimit");
+            try
+            {
+                _channel.ExecuteUnobservableCommand<CheckScientificallyNotatedRealLimitRequestDto>(_serviceName, "CheckScientificallyNotatedRealLimit", request, callInfo);
+                callInfo.FinishSuccessful();
+                return;
+            } catch (System.Exception ex)
+            {
+                System.Exception exception = _channel.ConvertException(ex);
+                callInfo.FinishWithErrors(exception);
+                throw exception;
+            }
+        }
+        
+        ///  <summary>
+        /// Tests the MaximalExclusive constraint on the Real type
+        /// </summary>
+        /// <param name="constrainedParameter">A Real parameter with a MaximalExclusive constraint of 10.5</param>
+        public virtual void CheckRealConstraintMaximalExclusive(double constrainedParameter)
+        {
+            CheckRealConstraintMaximalExclusiveRequestDto request = new CheckRealConstraintMaximalExclusiveRequestDto(constrainedParameter, null);
+            Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckRealConstraintMaxi" +
+                    "malExclusive");
+            try
+            {
+                _channel.ExecuteUnobservableCommand<CheckRealConstraintMaximalExclusiveRequestDto>(_serviceName, "CheckRealConstraintMaximalExclusive", request, callInfo);
+                callInfo.FinishSuccessful();
+                return;
+            } catch (System.Exception ex)
+            {
+                System.Exception exception = _channel.ConvertException(ex);
+                callInfo.FinishWithErrors(exception);
+                throw exception;
+            }
+        }
+        
+        ///  <summary>
+        /// Tests the MaximalInclusive constraint on the Real type
+        /// </summary>
+        /// <param name="constrainedParameter">A Real parameter with a MaximalInclusive constraint of 10</param>
+        public virtual void CheckRealConstraintMaximalInclusive(double constrainedParameter)
+        {
+            CheckRealConstraintMaximalInclusiveRequestDto request = new CheckRealConstraintMaximalInclusiveRequestDto(constrainedParameter, null);
+            Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckRealConstraintMaxi" +
+                    "malInclusive");
+            try
+            {
+                _channel.ExecuteUnobservableCommand<CheckRealConstraintMaximalInclusiveRequestDto>(_serviceName, "CheckRealConstraintMaximalInclusive", request, callInfo);
+                callInfo.FinishSuccessful();
+                return;
+            } catch (System.Exception ex)
+            {
+                System.Exception exception = _channel.ConvertException(ex);
+                callInfo.FinishWithErrors(exception);
+                throw exception;
+            }
+        }
+        
+        ///  <summary>
+        /// Tests the MinimalExclusive constraint on the Real type
+        /// </summary>
+        /// <param name="constrainedParameter">A Real parameter with a MinimalExclusive constraint of 0</param>
+        public virtual void CheckRealConstraintMinimalExclusive(double constrainedParameter)
+        {
+            CheckRealConstraintMinimalExclusiveRequestDto request = new CheckRealConstraintMinimalExclusiveRequestDto(constrainedParameter, null);
+            Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckRealConstraintMini" +
+                    "malExclusive");
+            try
+            {
+                _channel.ExecuteUnobservableCommand<CheckRealConstraintMinimalExclusiveRequestDto>(_serviceName, "CheckRealConstraintMinimalExclusive", request, callInfo);
+                callInfo.FinishSuccessful();
+                return;
+            } catch (System.Exception ex)
+            {
+                System.Exception exception = _channel.ConvertException(ex);
+                callInfo.FinishWithErrors(exception);
+                throw exception;
+            }
+        }
+        
+        ///  <summary>
+        /// Tests the MinimalInclusive constraint on the Real type
+        /// </summary>
+        /// <param name="constrainedParameter">A Real parameter with a MinimalInclusive constraint of -1.5</param>
+        public virtual void CheckRealConstraintMinimalInclusive(double constrainedParameter)
+        {
+            CheckRealConstraintMinimalInclusiveRequestDto request = new CheckRealConstraintMinimalInclusiveRequestDto(constrainedParameter, null);
+            Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckRealConstraintMini" +
+                    "malInclusive");
+            try
+            {
+                _channel.ExecuteUnobservableCommand<CheckRealConstraintMinimalInclusiveRequestDto>(_serviceName, "CheckRealConstraintMinimalInclusive", request, callInfo);
+                callInfo.FinishSuccessful();
+                return;
+            } catch (System.Exception ex)
+            {
+                System.Exception exception = _channel.ConvertException(ex);
+                callInfo.FinishWithErrors(exception);
+                throw exception;
+            }
+        }
+        
+        ///  <summary>
+        /// Tests the combination of MinimalExclusive and MaximalInclusive constraints on Real type
+        /// </summary>
+        /// <param name="constrainedParameter">A Real parameter with a MinimalExclusive constraint of 0.333 and a MaximalInclusive constraint of 11.111</param>
+        public virtual void CheckRealConstraintMinMax(double constrainedParameter)
+        {
+            CheckRealConstraintMinMaxRequestDto request = new CheckRealConstraintMinMaxRequestDto(constrainedParameter, null);
+            Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckRealConstraintMinM" +
+                    "ax");
+            try
+            {
+                _channel.ExecuteUnobservableCommand<CheckRealConstraintMinMaxRequestDto>(_serviceName, "CheckRealConstraintMinMax", request, callInfo);
+                callInfo.FinishSuccessful();
+                return;
+            } catch (System.Exception ex)
+            {
+                System.Exception exception = _channel.ConvertException(ex);
+                callInfo.FinishWithErrors(exception);
+                throw exception;
+            }
+        }
+        
+        ///  <summary>
+        /// Tests the Unit constraint on the Real type
+        /// </summary>
+        /// <param name="constrainedParameter">A Real parameter with a Unit constraint for degree celsius (°C)</param>
+        public virtual void CheckRealConstraintUnit(double constrainedParameter)
+        {
+            CheckRealConstraintUnitRequestDto request = new CheckRealConstraintUnitRequestDto(constrainedParameter, null);
+            Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckRealConstraintUnit" +
+                    "");
+            try
+            {
+                _channel.ExecuteUnobservableCommand<CheckRealConstraintUnitRequestDto>(_serviceName, "CheckRealConstraintUnit", request, callInfo);
+                callInfo.FinishSuccessful();
+                return;
+            } catch (System.Exception ex)
+            {
+                System.Exception exception = _channel.ConvertException(ex);
+                callInfo.FinishWithErrors(exception);
+                throw exception;
+            }
+        }
+        
+        ///  <summary>
+        /// Tests the Set constraint on the Date type
+        /// </summary>
+        /// <param name="constrainedParameter">A Date parameter with a Set constraint of 2022-09-10Z, 2022-09-11-00:15, 2022-09-12+11:30</param>
+        public virtual void CheckDateConstraintSet(System.DateTimeOffset constrainedParameter)
+        {
+            CheckDateConstraintSetRequestDto request = new CheckDateConstraintSetRequestDto(constrainedParameter, null);
+            Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckDateConstraintSet");
+            try
+            {
+                _channel.ExecuteUnobservableCommand<CheckDateConstraintSetRequestDto>(_serviceName, "CheckDateConstraintSet", request, callInfo);
+                callInfo.FinishSuccessful();
+                return;
+            } catch (System.Exception ex)
+            {
+                System.Exception exception = _channel.ConvertException(ex);
+                callInfo.FinishWithErrors(exception);
+                throw exception;
+            }
+        }
+        
+        ///  <summary>
+        /// Tests the MaximalExclusive constraint on the Date type
+        /// </summary>
+        /// <param name="constrainedParameter">A Date parameter with a MaximalExclusive constraint of 2019-12-31+02:30</param>
+        public virtual void CheckDateConstraintMaximalExclusive(System.DateTimeOffset constrainedParameter)
+        {
+            CheckDateConstraintMaximalExclusiveRequestDto request = new CheckDateConstraintMaximalExclusiveRequestDto(constrainedParameter, null);
+            Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckDateConstraintMaxi" +
+                    "malExclusive");
+            try
+            {
+                _channel.ExecuteUnobservableCommand<CheckDateConstraintMaximalExclusiveRequestDto>(_serviceName, "CheckDateConstraintMaximalExclusive", request, callInfo);
+                callInfo.FinishSuccessful();
+                return;
+            } catch (System.Exception ex)
+            {
+                System.Exception exception = _channel.ConvertException(ex);
+                callInfo.FinishWithErrors(exception);
+                throw exception;
+            }
+        }
+        
+        ///  <summary>
+        /// Tests the MaximalInclusive constraint on the Date type
+        /// </summary>
+        /// <param name="constrainedParameter">A Date parameter with a MaximalInclusive constraint of 2025-12-31-01:30</param>
+        public virtual void CheckDateConstraintMaximalInclusive(System.DateTimeOffset constrainedParameter)
+        {
+            CheckDateConstraintMaximalInclusiveRequestDto request = new CheckDateConstraintMaximalInclusiveRequestDto(constrainedParameter, null);
+            Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckDateConstraintMaxi" +
+                    "malInclusive");
+            try
+            {
+                _channel.ExecuteUnobservableCommand<CheckDateConstraintMaximalInclusiveRequestDto>(_serviceName, "CheckDateConstraintMaximalInclusive", request, callInfo);
+                callInfo.FinishSuccessful();
+                return;
+            } catch (System.Exception ex)
+            {
+                System.Exception exception = _channel.ConvertException(ex);
+                callInfo.FinishWithErrors(exception);
+                throw exception;
+            }
+        }
+        
+        ///  <summary>
+        /// Tests the MinimalExclusive constraint on the Date type
+        /// </summary>
+        /// <param name="constrainedParameter">A Date parameter with a MinimalExclusive constraint of 2019-01-01-01:00</param>
+        public virtual void CheckDateConstraintMinimalExclusive(System.DateTimeOffset constrainedParameter)
+        {
+            CheckDateConstraintMinimalExclusiveRequestDto request = new CheckDateConstraintMinimalExclusiveRequestDto(constrainedParameter, null);
+            Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckDateConstraintMini" +
+                    "malExclusive");
+            try
+            {
+                _channel.ExecuteUnobservableCommand<CheckDateConstraintMinimalExclusiveRequestDto>(_serviceName, "CheckDateConstraintMinimalExclusive", request, callInfo);
+                callInfo.FinishSuccessful();
+                return;
+            } catch (System.Exception ex)
+            {
+                System.Exception exception = _channel.ConvertException(ex);
+                callInfo.FinishWithErrors(exception);
+                throw exception;
+            }
+        }
+        
+        ///  <summary>
+        /// Tests the MinimalInclusive constraint on the Date type
+        /// </summary>
+        /// <param name="constrainedParameter">A Date parameter with a MinimalInclusive constraint of 1789-07-14+02:00</param>
+        public virtual void CheckDateConstraintMinimalInclusive(System.DateTimeOffset constrainedParameter)
+        {
+            CheckDateConstraintMinimalInclusiveRequestDto request = new CheckDateConstraintMinimalInclusiveRequestDto(constrainedParameter, null);
+            Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckDateConstraintMini" +
+                    "malInclusive");
+            try
+            {
+                _channel.ExecuteUnobservableCommand<CheckDateConstraintMinimalInclusiveRequestDto>(_serviceName, "CheckDateConstraintMinimalInclusive", request, callInfo);
+                callInfo.FinishSuccessful();
+                return;
+            } catch (System.Exception ex)
+            {
+                System.Exception exception = _channel.ConvertException(ex);
+                callInfo.FinishWithErrors(exception);
+                throw exception;
+            }
+        }
+        
+        ///  <summary>
+        /// Tests the combination of MinimalInclusive and MaximalExclusive constraints on Date type
+        /// </summary>
+        /// <param name="constrainedParameter">A Date parameter with a MinimalInclusive constraint of 1976-06-10+02:00 and a MaximalExclusive constraint of 2076-06-10+02:00</param>
+        public virtual void CheckDateConstraintMinMax(System.DateTimeOffset constrainedParameter)
+        {
+            CheckDateConstraintMinMaxRequestDto request = new CheckDateConstraintMinMaxRequestDto(constrainedParameter, null);
+            Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckDateConstraintMinM" +
+                    "ax");
+            try
+            {
+                _channel.ExecuteUnobservableCommand<CheckDateConstraintMinMaxRequestDto>(_serviceName, "CheckDateConstraintMinMax", request, callInfo);
+                callInfo.FinishSuccessful();
+                return;
+            } catch (System.Exception ex)
+            {
+                System.Exception exception = _channel.ConvertException(ex);
+                callInfo.FinishWithErrors(exception);
+                throw exception;
+            }
+        }
+        
+        ///  <summary>
+        /// Tests the Set constraint on the Time type
+        /// </summary>
+        /// <param name="constrainedParameter">A Time parameter with a Set constraint of 18:59:59+02:00, 19:00:00-00:15, 19:59:00Z</param>
+        public virtual void CheckTimeConstraintSet(System.TimeSpan constrainedParameter)
+        {
+            CheckTimeConstraintSetRequestDto request = new CheckTimeConstraintSetRequestDto(constrainedParameter, null);
+            Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckTimeConstraintSet");
+            try
+            {
+                _channel.ExecuteUnobservableCommand<CheckTimeConstraintSetRequestDto>(_serviceName, "CheckTimeConstraintSet", request, callInfo);
+                callInfo.FinishSuccessful();
+                return;
+            } catch (System.Exception ex)
+            {
+                System.Exception exception = _channel.ConvertException(ex);
+                callInfo.FinishWithErrors(exception);
+                throw exception;
+            }
+        }
+        
+        ///  <summary>
+        /// Tests the MaximalExclusive constraint on the Time type
+        /// </summary>
+        /// <param name="constrainedParameter">A Time parameter with a MaximalExclusive constraint of 12:00:00+00:15</param>
+        public virtual void CheckTimeConstraintMaximalExclusive(System.TimeSpan constrainedParameter)
+        {
+            CheckTimeConstraintMaximalExclusiveRequestDto request = new CheckTimeConstraintMaximalExclusiveRequestDto(constrainedParameter, null);
+            Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckTimeConstraintMaxi" +
+                    "malExclusive");
+            try
+            {
+                _channel.ExecuteUnobservableCommand<CheckTimeConstraintMaximalExclusiveRequestDto>(_serviceName, "CheckTimeConstraintMaximalExclusive", request, callInfo);
+                callInfo.FinishSuccessful();
+                return;
+            } catch (System.Exception ex)
+            {
+                System.Exception exception = _channel.ConvertException(ex);
+                callInfo.FinishWithErrors(exception);
+                throw exception;
+            }
+        }
+        
+        ///  <summary>
+        /// Tests the MaximalInclusive constraint on the Time type
+        /// </summary>
+        /// <param name="constrainedParameter">A Time parameter with a MaximalInclusive constraint of 18:59:59+02:00</param>
+        public virtual void CheckTimeConstraintMaximalInclusive(System.TimeSpan constrainedParameter)
+        {
+            CheckTimeConstraintMaximalInclusiveRequestDto request = new CheckTimeConstraintMaximalInclusiveRequestDto(constrainedParameter, null);
+            Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckTimeConstraintMaxi" +
+                    "malInclusive");
+            try
+            {
+                _channel.ExecuteUnobservableCommand<CheckTimeConstraintMaximalInclusiveRequestDto>(_serviceName, "CheckTimeConstraintMaximalInclusive", request, callInfo);
+                callInfo.FinishSuccessful();
+                return;
+            } catch (System.Exception ex)
+            {
+                System.Exception exception = _channel.ConvertException(ex);
+                callInfo.FinishWithErrors(exception);
+                throw exception;
+            }
+        }
+        
+        ///  <summary>
+        /// Tests the MinimalExclusive constraint on the Time type
+        /// </summary>
+        /// <param name="constrainedParameter">A Time parameter with a MinimalExclusive constraint of 01:02:03+04:00</param>
+        public virtual void CheckTimeConstraintMinimalExclusive(System.TimeSpan constrainedParameter)
+        {
+            CheckTimeConstraintMinimalExclusiveRequestDto request = new CheckTimeConstraintMinimalExclusiveRequestDto(constrainedParameter, null);
+            Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckTimeConstraintMini" +
+                    "malExclusive");
+            try
+            {
+                _channel.ExecuteUnobservableCommand<CheckTimeConstraintMinimalExclusiveRequestDto>(_serviceName, "CheckTimeConstraintMinimalExclusive", request, callInfo);
+                callInfo.FinishSuccessful();
+                return;
+            } catch (System.Exception ex)
+            {
+                System.Exception exception = _channel.ConvertException(ex);
+                callInfo.FinishWithErrors(exception);
+                throw exception;
+            }
+        }
+        
+        ///  <summary>
+        /// Tests the MinimalInclusive constraint on the Time type
+        /// </summary>
+        /// <param name="constrainedParameter">A Time parameter with a MinimalInclusive constraint of 08:00:00Z</param>
+        public virtual void CheckTimeConstraintMinimalInclusive(System.TimeSpan constrainedParameter)
+        {
+            CheckTimeConstraintMinimalInclusiveRequestDto request = new CheckTimeConstraintMinimalInclusiveRequestDto(constrainedParameter, null);
+            Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckTimeConstraintMini" +
+                    "malInclusive");
+            try
+            {
+                _channel.ExecuteUnobservableCommand<CheckTimeConstraintMinimalInclusiveRequestDto>(_serviceName, "CheckTimeConstraintMinimalInclusive", request, callInfo);
+                callInfo.FinishSuccessful();
+                return;
+            } catch (System.Exception ex)
+            {
+                System.Exception exception = _channel.ConvertException(ex);
+                callInfo.FinishWithErrors(exception);
+                throw exception;
+            }
+        }
+        
+        ///  <summary>
+        /// Tests the combination of MinimalExclusive and MaximalInclusive constraints on Time type
+        /// </summary>
+        /// <param name="constrainedParameter">A Time parameter with a MinimalExclusive constraint of 08:00:00-02:30 and a MaximalInclusive constraint of 18:59:59+02:30</param>
+        public virtual void CheckTimeConstraintMinMax(System.TimeSpan constrainedParameter)
+        {
+            CheckTimeConstraintMinMaxRequestDto request = new CheckTimeConstraintMinMaxRequestDto(constrainedParameter, null);
+            Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckTimeConstraintMinM" +
+                    "ax");
+            try
+            {
+                _channel.ExecuteUnobservableCommand<CheckTimeConstraintMinMaxRequestDto>(_serviceName, "CheckTimeConstraintMinMax", request, callInfo);
+                callInfo.FinishSuccessful();
+                return;
+            } catch (System.Exception ex)
+            {
+                System.Exception exception = _channel.ConvertException(ex);
+                callInfo.FinishWithErrors(exception);
+                throw exception;
+            }
+        }
+        
+        ///  <summary>
+        /// Tests the Set constraint on the Timestamp type
+        /// </summary>
+        /// <param name="constrainedParameter">A Timestamp parameter with a Set constraint of 1969-07-16T13:32:00Z, 19690720T201740Z, 1969-07-24T16:50:35+00:00</param>
+        public virtual void CheckTimestampConstraintSet(System.DateTimeOffset constrainedParameter)
+        {
+            CheckTimestampConstraintSetRequestDto request = new CheckTimestampConstraintSetRequestDto(constrainedParameter, null);
+            Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckTimestampConstrain" +
+                    "tSet");
+            try
+            {
+                _channel.ExecuteUnobservableCommand<CheckTimestampConstraintSetRequestDto>(_serviceName, "CheckTimestampConstraintSet", request, callInfo);
+                callInfo.FinishSuccessful();
+                return;
+            } catch (System.Exception ex)
+            {
+                System.Exception exception = _channel.ConvertException(ex);
+                callInfo.FinishWithErrors(exception);
+                throw exception;
+            }
+        }
+        
+        ///  <summary>
+        /// Tests the MaximalExclusive constraint on the Timestamp type
+        /// </summary>
+        /// <param name="constrainedParameter">A Timestamp parameter with a MaximalExclusive constraint of 2022-09-07T16:00:00+02:00</param>
+        public virtual void CheckTimestampConstraintMaximalExclusive(System.DateTimeOffset constrainedParameter)
+        {
+            CheckTimestampConstraintMaximalExclusiveRequestDto request = new CheckTimestampConstraintMaximalExclusiveRequestDto(constrainedParameter, null);
+            Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckTimestampConstrain" +
+                    "tMaximalExclusive");
+            try
+            {
+                _channel.ExecuteUnobservableCommand<CheckTimestampConstraintMaximalExclusiveRequestDto>(_serviceName, "CheckTimestampConstraintMaximalExclusive", request, callInfo);
+                callInfo.FinishSuccessful();
+                return;
+            } catch (System.Exception ex)
+            {
+                System.Exception exception = _channel.ConvertException(ex);
+                callInfo.FinishWithErrors(exception);
+                throw exception;
+            }
+        }
+        
+        ///  <summary>
+        /// Tests the MaximalInclusive constraint on the Timestamp type
+        /// </summary>
+        /// <param name="constrainedParameter">A Timestamp parameter with a MaximalInclusive constraint of 2025-12-31T13:59:59-01:30</param>
+        public virtual void CheckTimestampConstraintMaximalInclusive(System.DateTimeOffset constrainedParameter)
+        {
+            CheckTimestampConstraintMaximalInclusiveRequestDto request = new CheckTimestampConstraintMaximalInclusiveRequestDto(constrainedParameter, null);
+            Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckTimestampConstrain" +
+                    "tMaximalInclusive");
+            try
+            {
+                _channel.ExecuteUnobservableCommand<CheckTimestampConstraintMaximalInclusiveRequestDto>(_serviceName, "CheckTimestampConstraintMaximalInclusive", request, callInfo);
+                callInfo.FinishSuccessful();
+                return;
+            } catch (System.Exception ex)
+            {
+                System.Exception exception = _channel.ConvertException(ex);
+                callInfo.FinishWithErrors(exception);
+                throw exception;
+            }
+        }
+        
+        ///  <summary>
+        /// Tests the MinimalExclusive constraint on the Timestamp type
+        /// </summary>
+        /// <param name="constrainedParameter">A Timestamp parameter with a MinimalExclusive constraint of 2019-01-01T00:00:00-01:00</param>
+        public virtual void CheckTimestampConstraintMinimalExclusive(System.DateTimeOffset constrainedParameter)
+        {
+            CheckTimestampConstraintMinimalExclusiveRequestDto request = new CheckTimestampConstraintMinimalExclusiveRequestDto(constrainedParameter, null);
+            Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckTimestampConstrain" +
+                    "tMinimalExclusive");
+            try
+            {
+                _channel.ExecuteUnobservableCommand<CheckTimestampConstraintMinimalExclusiveRequestDto>(_serviceName, "CheckTimestampConstraintMinimalExclusive", request, callInfo);
+                callInfo.FinishSuccessful();
+                return;
+            } catch (System.Exception ex)
+            {
+                System.Exception exception = _channel.ConvertException(ex);
+                callInfo.FinishWithErrors(exception);
+                throw exception;
+            }
+        }
+        
+        ///  <summary>
+        /// Tests the MinimalInclusive constraint on the Timestamp type
+        /// </summary>
+        /// <param name="constrainedParameter">A Timestamp parameter with a MinimalInclusive constraint of 2022-09-07T13:48:59+02:00</param>
+        public virtual void CheckTimestampConstraintMinimalInclusive(System.DateTimeOffset constrainedParameter)
+        {
+            CheckTimestampConstraintMinimalInclusiveRequestDto request = new CheckTimestampConstraintMinimalInclusiveRequestDto(constrainedParameter, null);
+            Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckTimestampConstrain" +
+                    "tMinimalInclusive");
+            try
+            {
+                _channel.ExecuteUnobservableCommand<CheckTimestampConstraintMinimalInclusiveRequestDto>(_serviceName, "CheckTimestampConstraintMinimalInclusive", request, callInfo);
+                callInfo.FinishSuccessful();
+                return;
+            } catch (System.Exception ex)
+            {
+                System.Exception exception = _channel.ConvertException(ex);
+                callInfo.FinishWithErrors(exception);
+                throw exception;
+            }
+        }
+        
+        ///  <summary>
+        /// Tests the combination of MinimalInclusive and MaximalExclusive constraints on Timestamp type
+        /// </summary>
+        /// <param name="constrainedParameter">A Timestamp parameter with a MinimalInclusive constraint of 19690720T201740Z and a MaximalExclusive constraint of 1972-12-11T19:54:57Z</param>
+        public virtual void CheckTimestampConstraintMinMax(System.DateTimeOffset constrainedParameter)
+        {
+            CheckTimestampConstraintMinMaxRequestDto request = new CheckTimestampConstraintMinMaxRequestDto(constrainedParameter, null);
+            Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckTimestampConstrain" +
+                    "tMinMax");
+            try
+            {
+                _channel.ExecuteUnobservableCommand<CheckTimestampConstraintMinMaxRequestDto>(_serviceName, "CheckTimestampConstraintMinMax", request, callInfo);
+                callInfo.FinishSuccessful();
+                return;
+            } catch (System.Exception ex)
+            {
+                System.Exception exception = _channel.ConvertException(ex);
+                callInfo.FinishWithErrors(exception);
+                throw exception;
+            }
+        }
+        
+        ///  <summary>
+        /// Tests the ElementCount constraint on the List type
+        /// </summary>
+        /// <param name="constrainedParameter">A String List parameter with an ElementCount constraint of 5</param>
+        public virtual void CheckListConstraintElementCount(System.Collections.Generic.ICollection<string> constrainedParameter)
+        {
+            CheckListConstraintElementCountRequestDto request = new CheckListConstraintElementCountRequestDto(constrainedParameter, null);
+            Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckListConstraintElem" +
+                    "entCount");
+            try
+            {
+                _channel.ExecuteUnobservableCommand<CheckListConstraintElementCountRequestDto>(_serviceName, "CheckListConstraintElementCount", request, callInfo);
+                callInfo.FinishSuccessful();
+                return;
+            } catch (System.Exception ex)
+            {
+                System.Exception exception = _channel.ConvertException(ex);
+                callInfo.FinishWithErrors(exception);
+                throw exception;
+            }
+        }
+        
+        ///  <summary>
+        /// Tests the MinimalElementCount constraint on the List type
+        /// </summary>
+        /// <param name="constrainedParameter">A String List parameter with an MinimalElementCount constraint of 3</param>
+        public virtual void CheckListConstraintMinimalElementCount(System.Collections.Generic.ICollection<string> constrainedParameter)
+        {
+            CheckListConstraintMinimalElementCountRequestDto request = new CheckListConstraintMinimalElementCountRequestDto(constrainedParameter, null);
+            Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckListConstraintMini" +
+                    "malElementCount");
+            try
+            {
+                _channel.ExecuteUnobservableCommand<CheckListConstraintMinimalElementCountRequestDto>(_serviceName, "CheckListConstraintMinimalElementCount", request, callInfo);
+                callInfo.FinishSuccessful();
+                return;
+            } catch (System.Exception ex)
+            {
+                System.Exception exception = _channel.ConvertException(ex);
+                callInfo.FinishWithErrors(exception);
+                throw exception;
+            }
+        }
+        
+        ///  <summary>
+        /// Tests the MaximalElementCount constraint on the List type
+        /// </summary>
+        /// <param name="constrainedParameter">A String List parameter with an MaximalElementCount constraint of 5</param>
+        public virtual void CheckListConstraintMaximalElementCount(System.Collections.Generic.ICollection<string> constrainedParameter)
+        {
+            CheckListConstraintMaximalElementCountRequestDto request = new CheckListConstraintMaximalElementCountRequestDto(constrainedParameter, null);
+            Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckListConstraintMaxi" +
+                    "malElementCount");
+            try
+            {
+                _channel.ExecuteUnobservableCommand<CheckListConstraintMaximalElementCountRequestDto>(_serviceName, "CheckListConstraintMaximalElementCount", request, callInfo);
+                callInfo.FinishSuccessful();
+                return;
+            } catch (System.Exception ex)
+            {
+                System.Exception exception = _channel.ConvertException(ex);
+                callInfo.FinishWithErrors(exception);
+                throw exception;
+            }
+        }
+        
+        ///  <summary>
+        /// Tests the combination of MinimalElementCount and MaximalElementCount constraints on the List type
+        /// </summary>
+        /// <param name="constrainedParameter">A String List parameter with a MinimalElementCount constraint of 2 and a MaximalElementCount constraint of 5</param>
+        public virtual void CheckListConstraintMinMaxElementCount(System.Collections.Generic.ICollection<string> constrainedParameter)
+        {
+            CheckListConstraintMinMaxElementCountRequestDto request = new CheckListConstraintMinMaxElementCountRequestDto(constrainedParameter, null);
+            Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckListConstraintMinM" +
+                    "axElementCount");
+            try
+            {
+                _channel.ExecuteUnobservableCommand<CheckListConstraintMinMaxElementCountRequestDto>(_serviceName, "CheckListConstraintMinMaxElementCount", request, callInfo);
+                callInfo.FinishSuccessful();
+                return;
+            } catch (System.Exception ex)
+            {
+                System.Exception exception = _channel.ConvertException(ex);
+                callInfo.FinishWithErrors(exception);
+                throw exception;
+            }
+        }
+        
+        ///  <summary>
+        /// Tests the Length constraint on the Binary type
+        /// </summary>
+        /// <param name="constrainedParameter">A Binary parameter with a Length constraint of 10</param>
+        public virtual void CheckBinaryConstraintLength(System.IO.Stream constrainedParameter)
+        {
+            CheckBinaryConstraintLengthRequestDto request = new CheckBinaryConstraintLengthRequestDto(constrainedParameter, null);
+            Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckBinaryConstraintLe" +
+                    "ngth");
+            try
+            {
+                _channel.ExecuteUnobservableCommand<CheckBinaryConstraintLengthRequestDto>(_serviceName, "CheckBinaryConstraintLength", request, callInfo);
+                callInfo.FinishSuccessful();
+                return;
+            } catch (System.Exception ex)
+            {
+                System.Exception exception = _channel.ConvertException(ex);
+                callInfo.FinishWithErrors(exception);
+                throw exception;
+            }
+        }
+        
+        ///  <summary>
+        /// Tests the MinimalLength constraint on the Binary type
+        /// </summary>
+        /// <param name="constrainedParameter">A Binary parameter with a MinimalLength constraint of 5</param>
+        public virtual void CheckBinaryConstraintMinimalLength(System.IO.Stream constrainedParameter)
+        {
+            CheckBinaryConstraintMinimalLengthRequestDto request = new CheckBinaryConstraintMinimalLengthRequestDto(constrainedParameter, null);
+            Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckBinaryConstraintMi" +
+                    "nimalLength");
+            try
+            {
+                _channel.ExecuteUnobservableCommand<CheckBinaryConstraintMinimalLengthRequestDto>(_serviceName, "CheckBinaryConstraintMinimalLength", request, callInfo);
+                callInfo.FinishSuccessful();
+                return;
+            } catch (System.Exception ex)
+            {
+                System.Exception exception = _channel.ConvertException(ex);
+                callInfo.FinishWithErrors(exception);
+                throw exception;
+            }
+        }
+        
+        ///  <summary>
+        /// Tests the MaximalLength constraint on the Binary type
+        /// </summary>
+        /// <param name="constrainedParameter">A Binary parameter with a MaximalLength constraint of 20</param>
+        public virtual void CheckBinaryConstraintMaximalLength(System.IO.Stream constrainedParameter)
+        {
+            CheckBinaryConstraintMaximalLengthRequestDto request = new CheckBinaryConstraintMaximalLengthRequestDto(constrainedParameter, null);
+            Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckBinaryConstraintMa" +
+                    "ximalLength");
+            try
+            {
+                _channel.ExecuteUnobservableCommand<CheckBinaryConstraintMaximalLengthRequestDto>(_serviceName, "CheckBinaryConstraintMaximalLength", request, callInfo);
+                callInfo.FinishSuccessful();
+                return;
+            } catch (System.Exception ex)
+            {
+                System.Exception exception = _channel.ConvertException(ex);
+                callInfo.FinishWithErrors(exception);
+                throw exception;
+            }
+        }
+        
+        ///  <summary>
+        /// Tests the combination of MinimalLength and MaximalLength constraints on the Binary type
+        /// </summary>
+        /// <param name="constrainedParameter">A Binary parameter with a MinimalLength constraint of 5 and a MaximalLength constraint of 20</param>
+        public virtual void CheckBinaryConstraintMinMaxLength(System.IO.Stream constrainedParameter)
+        {
+            CheckBinaryConstraintMinMaxLengthRequestDto request = new CheckBinaryConstraintMinMaxLengthRequestDto(constrainedParameter, null);
+            Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckBinaryConstraintMi" +
+                    "nMaxLength");
+            try
+            {
+                _channel.ExecuteUnobservableCommand<CheckBinaryConstraintMinMaxLengthRequestDto>(_serviceName, "CheckBinaryConstraintMinMaxLength", request, callInfo);
+                callInfo.FinishSuccessful();
+                return;
+            } catch (System.Exception ex)
+            {
+                System.Exception exception = _channel.ConvertException(ex);
+                callInfo.FinishWithErrors(exception);
+                throw exception;
+            }
+        }
+        
+        ///  <summary>
+        /// Tests the ContentType constraint on the Binary type
+        /// </summary>
+        /// <param name="constrainedParameter">A Binary parameter with a ContentType constraint allowing only valid XML document as content</param>
+        public virtual void CheckBinaryConstraintContentType(System.IO.Stream constrainedParameter)
+        {
+            CheckBinaryConstraintContentTypeRequestDto request = new CheckBinaryConstraintContentTypeRequestDto(constrainedParameter, null);
+            Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckBinaryConstraintCo" +
+                    "ntentType");
+            try
+            {
+                _channel.ExecuteUnobservableCommand<CheckBinaryConstraintContentTypeRequestDto>(_serviceName, "CheckBinaryConstraintContentType", request, callInfo);
+                callInfo.FinishSuccessful();
+                return;
+            } catch (System.Exception ex)
+            {
+                System.Exception exception = _channel.ConvertException(ex);
+                callInfo.FinishWithErrors(exception);
+                throw exception;
+            }
+        }
+        
+        ///  <summary>
+        /// Tests that the parameter is valid for a given Schema constraint
+        /// </summary>
+        /// <param name="constrainedParameter">A Binary parameter with a Schema constraint allowing only content that is compliant with the SiLA 2 Feature Definition schema</param>
+        public virtual void CheckBinaryConstraintSchema(System.IO.Stream constrainedParameter)
+        {
+            CheckBinaryConstraintSchemaRequestDto request = new CheckBinaryConstraintSchemaRequestDto(constrainedParameter, null);
+            Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckBinaryConstraintSc" +
+                    "hema");
+            try
+            {
+                _channel.ExecuteUnobservableCommand<CheckBinaryConstraintSchemaRequestDto>(_serviceName, "CheckBinaryConstraintSchema", request, callInfo);
+                callInfo.FinishSuccessful();
+                return;
+            } catch (System.Exception ex)
+            {
+                System.Exception exception = _channel.ConvertException(ex);
+                callInfo.FinishWithErrors(exception);
+                throw exception;
+            }
+        }
+        
+        ///  <summary>
+        /// Tests the AllowedTypes constraint on the Any type
+        /// </summary>
+        /// <param name="constrainedParameter">An Any type parameter with an AllowedTypes constraint that only allows an integer or a list of integers</param>
+        public virtual void CheckAllowedTypesConstraint(Tecan.Sila2.DynamicClient.DynamicObjectProperty constrainedParameter)
+        {
+            CheckAllowedTypesConstraintRequestDto request = new CheckAllowedTypesConstraintRequestDto(constrainedParameter, null);
+            Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckAllowedTypesConstr" +
+                    "aint");
+            try
+            {
+                _channel.ExecuteUnobservableCommand<CheckAllowedTypesConstraintRequestDto>(_serviceName, "CheckAllowedTypesConstraint", request, callInfo);
+                callInfo.FinishSuccessful();
+                return;
+            } catch (System.Exception ex)
+            {
+                System.Exception exception = _channel.ConvertException(ex);
+                callInfo.FinishWithErrors(exception);
+                throw exception;
+            }
+        }
+        
+        ///  <summary>
+        /// Tests the AllowedTypes constraint with a Structure type on the Any type
+        /// </summary>
+        /// <param name="constrainedParameter">An Any type parameter with an AllowedTypes constraint that only allows a structure with an integer</param>
+        public virtual void CheckAllowedStructureTypeConstraints(Tecan.Sila2.DynamicClient.DynamicObjectProperty constrainedParameter)
+        {
+            CheckAllowedStructureTypeConstraintsRequestDto request = new CheckAllowedStructureTypeConstraintsRequestDto(constrainedParameter, null);
+            Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckAllowedStructureTy" +
+                    "peConstraints");
+            try
+            {
+                _channel.ExecuteUnobservableCommand<CheckAllowedStructureTypeConstraintsRequestDto>(_serviceName, "CheckAllowedStructureTypeConstraints", request, callInfo);
                 callInfo.FinishSuccessful();
                 return;
             } catch (System.Exception ex)

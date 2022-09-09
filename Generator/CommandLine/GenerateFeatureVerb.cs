@@ -56,12 +56,6 @@ namespace Tecan.Sila2.Generator.CommandLine
         [Option( 'v', "version", HelpText = "The version of the given feature. If omitted, the version of the assembly is used." )]
         public string Version { get; set; }
 
-        /// <summary>
-        /// Path to a file that contains additional constraints
-        /// </summary>
-        [Option( 'c', "config-file", Required = false, HelpText = "Path to a file that contains additional constraints" )]
-        public string ConfigFile { get; set; }
-
         public override void Execute( CompositionContainer container )
         {
             var channel = SetupLogging( container );
@@ -72,10 +66,6 @@ namespace Tecan.Sila2.Generator.CommandLine
                  t.IsInterface && !t.IsGenericType );
 
             var generatorConfig = FeatureDefinitionConfigHelper.LoadConfigMappingFile( ConfigFile );
-            if(!string.IsNullOrEmpty( ConfigFile ) && generatorConfig != null)
-            {
-                channel.Warn( "Feature definition config file could not be loaded." );
-            }
 
             if(InterfaceName == null)
             {

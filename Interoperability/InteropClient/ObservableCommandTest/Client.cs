@@ -13,7 +13,7 @@ using Tecan.Sila2;
 using Tecan.Sila2.Client;
 using Tecan.Sila2.Server;
 
-namespace Tecan.Sila2.Interop.Client.ObservableCommandTest
+namespace Tecan.Sila2.Interop.Client.ObservableCommandTest.ObservableCommandTest
 {
     
     
@@ -41,74 +41,75 @@ namespace Tecan.Sila2.Interop.Client.ObservableCommandTest
         }
         
         ///  <summary>
-        /// Observable iteration, running NumberIterations times and returning the current count as intermediate result.
+        /// Count from 0 to N-1 and return the current number as intermediate response.
         /// </summary>
-        /// <param name="numberIterations">Number of Iterations to perform</param>
-        public virtual Tecan.Sila2.IIntermediateObservableCommand<long, long> ObservableIteration(long numberIterations)
+        /// <param name="n">Number to count to</param>
+        /// <param name="delay">The delay for each iteration</param>
+        public virtual Tecan.Sila2.IIntermediateObservableCommand<long, long> Count(long n, double delay)
         {
-            ObservableIterationRequestDto request = new ObservableIterationRequestDto(numberIterations, null);
-            return _channel.ExecuteIntermediatesCommand<ObservableIterationRequestDto, long, ObservableIterationIntermediateDto, long, ObservableIterationResponseDto>(_serviceName, "ObservableIteration", request, ConvertObservableIterationIntermediate, ConvertObservableIterationResponse, ConvertObservableIterationException, _executionManager.CreateCallOptions(request.CommandIdentifier));
+            CountRequestDto request = new CountRequestDto(n, delay, null);
+            return _channel.ExecuteIntermediatesCommand<CountRequestDto, long, CountIntermediateDto, long, CountResponseDto>(_serviceName, "Count", request, ConvertCountIntermediate, ConvertCountResponse, ConvertCountException, _executionManager.CreateCallOptions(request.CommandIdentifier));
         }
         
         ///  <summary>
-        /// Converts the error ocurred during execution of ObservableIteration to a proper exception
+        /// Converts the error ocurred during execution of Count to a proper exception
         /// </summary>
         /// <param name="errorIdentifier">The identifier of the error that has happened</param>
         /// <param name="errorMessage">The original error message from the server</param>
         /// <returns>The converted exception or null, if the error is not understood</returns>
-        private static System.Exception ConvertObservableIterationException(string errorIdentifier, string errorMessage)
+        private static System.Exception ConvertCountException(string errorIdentifier, string errorMessage)
         {
             return null;
         }
         
         ///  <summary>
-        /// Unwraps the response of the ObservableIterationIntermediate command
+        /// Unwraps the response of the CountIntermediate command
         /// </summary>
         /// <param name="value">The response data transfer object</param>
         /// <returns>The actual response</returns>
-        private long ConvertObservableIterationIntermediate(ObservableIterationIntermediateDto value)
+        private long ConvertCountIntermediate(CountIntermediateDto value)
         {
             return value.CurrentIteration.Extract(_executionManager.DownloadBinaryStore);
         }
         
         ///  <summary>
-        /// Unwraps the response of the ObservableIterationResponse command
+        /// Unwraps the response of the CountResponse command
         /// </summary>
         /// <param name="value">The response data transfer object</param>
         /// <returns>The actual response</returns>
-        private long ConvertObservableIterationResponse(ObservableIterationResponseDto value)
+        private long ConvertCountResponse(CountResponseDto value)
         {
             return value.IterationResponse.Extract(_executionManager.DownloadBinaryStore);
         }
         
         ///  <summary>
-        /// Echo the given value asynchronously after the specified delay
+        /// Echo the given value after the specified delay. The command state must be "waiting" until the delay has passed.
         /// </summary>
         /// <param name="value">The value to echo</param>
-        /// <param name="delayInMs">The delay in milliseconds</param>
-        public virtual Tecan.Sila2.IObservableCommand<long> EchoValueAsync(long value, long delayInMs)
+        /// <param name="delay">The delay before the command execution starts</param>
+        public virtual Tecan.Sila2.IObservableCommand<long> EchoValueAfterDelay(long value, double delay)
         {
-            EchoValueAsyncRequestDto request = new EchoValueAsyncRequestDto(value, delayInMs, null);
-            return _channel.ExecuteObservableCommand<EchoValueAsyncRequestDto, long, EchoValueAsyncResponseDto>(_serviceName, "EchoValueAsync", request, ConvertEchoValueAsyncResponse, ConvertEchoValueAsyncException, _executionManager.CreateCallOptions(request.CommandIdentifier));
+            EchoValueAfterDelayRequestDto request = new EchoValueAfterDelayRequestDto(value, delay, null);
+            return _channel.ExecuteObservableCommand<EchoValueAfterDelayRequestDto, long, EchoValueAfterDelayResponseDto>(_serviceName, "EchoValueAfterDelay", request, ConvertEchoValueAfterDelayResponse, ConvertEchoValueAfterDelayException, _executionManager.CreateCallOptions(request.CommandIdentifier));
         }
         
         ///  <summary>
-        /// Converts the error ocurred during execution of EchoValueAsync to a proper exception
+        /// Converts the error ocurred during execution of EchoValueAfterDelay to a proper exception
         /// </summary>
         /// <param name="errorIdentifier">The identifier of the error that has happened</param>
         /// <param name="errorMessage">The original error message from the server</param>
         /// <returns>The converted exception or null, if the error is not understood</returns>
-        private static System.Exception ConvertEchoValueAsyncException(string errorIdentifier, string errorMessage)
+        private static System.Exception ConvertEchoValueAfterDelayException(string errorIdentifier, string errorMessage)
         {
             return null;
         }
         
         ///  <summary>
-        /// Unwraps the response of the EchoValueAsyncResponse command
+        /// Unwraps the response of the EchoValueAfterDelayResponse command
         /// </summary>
         /// <param name="value">The response data transfer object</param>
         /// <returns>The actual response</returns>
-        private long ConvertEchoValueAsyncResponse(EchoValueAsyncResponseDto value)
+        private long ConvertEchoValueAfterDelayResponse(EchoValueAfterDelayResponseDto value)
         {
             return value.ReceivedValue.Extract(_executionManager.DownloadBinaryStore);
         }

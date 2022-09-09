@@ -11,19 +11,19 @@ namespace Tecan.Sila2
     /// </summary>
     public class FeatureSerializer
     {
-        
-        private static readonly XmlSerializer Serializer = new XmlSerializer(typeof(Feature));
+
+        private static readonly XmlSerializer Serializer = new XmlSerializer( typeof( Feature ) );
 
         /// <summary>
         /// Saves the given feature to the given path
         /// </summary>
         /// <param name="feature">The feature</param>
         /// <param name="path">A path where to store the feature</param>
-        public static void Save(Feature feature, string path)
+        public static void Save( Feature feature, string path )
         {
-            using (var writer = new StreamWriter(path))
+            using(var writer = new StreamWriter( path ))
             {
-                Serializer.Serialize(writer, feature);
+                Serializer.Serialize( writer, feature );
             }
         }
 
@@ -32,11 +32,11 @@ namespace Tecan.Sila2
         /// </summary>
         /// <param name="feature">The feature</param>
         /// <returns>The XML representation of the feature</returns>
-        public static string SaveToString(Feature feature)
+        public static string SaveToString( Feature feature )
         {
-            using (var writer = new Utf8StringWriter())
+            using(var writer = new Utf8StringWriter())
             {
-                Serializer.Serialize(writer, feature);
+                Serializer.Serialize( writer, feature );
                 return writer.ToString();
             }
         }
@@ -46,20 +46,20 @@ namespace Tecan.Sila2
         /// </summary>
         /// <param name="xml">The XML representation of the feature</param>
         /// <returns>The deserialized feature</returns>
-        public static Feature LoadFromXml(string xml)
+        public static Feature LoadFromXml( string xml )
         {
-            if (xml == null)
+            if(xml == null)
             {
                 throw new ArgumentNullException( nameof( xml ) );
             }
 
             var actualStart = xml.IndexOf( '<' );
-            if (actualStart > 0)
+            if(actualStart > 0)
             {
                 xml = xml.Substring( actualStart );
             }
 
-            return (Feature) Serializer.Deserialize(new StringReader(xml));
+            return (Feature)Serializer.Deserialize( new StringReader( xml ) );
         }
 
         /// <summary>
@@ -67,7 +67,7 @@ namespace Tecan.Sila2
         /// </summary>
         /// <param name="path">The path where to load the feature from</param>
         /// <returns>The deserialized feature</returns>
-        public static Feature Load(string path)
+        public static Feature Load( string path )
         {
             try
             {
@@ -88,23 +88,33 @@ namespace Tecan.Sila2
         /// <param name="assembly">The assembly that has the feature included</param>
         /// <param name="name">The name suffix of the manifest resource</param>
         /// <returns>The deserialized feature</returns>
-        public static Feature LoadFromAssembly(Assembly assembly, string name)
+        public static Feature LoadFromAssembly( Assembly assembly, string name )
         {
-            var actualName = assembly.GetManifestResourceNames().FirstOrDefault(n => n.EndsWith(name));
-            if (actualName != null)
+            var actualName = assembly.GetManifestResourceNames().FirstOrDefault( n => n.EndsWith( name ) );
+            if(actualName != null)
             {
-                var stream = assembly.GetManifestResourceStream(actualName);
-                if (stream != null)
+                var stream = assembly.GetManifestResourceStream( actualName );
+                if(stream != null)
                 {
-                    using (var reader = new StreamReader(stream))
-                    {
-                        return (Feature) Serializer.Deserialize(reader);
-                    }
+                    return Load( stream );
                 }
             }
 
             throw new InvalidOperationException(
-                $"The requested embedded resource {name} could not be found in {assembly.FullName}.");
+                $"The requested embedded resource {name} could not be found in {assembly.FullName}." );
+        }
+
+        /// <summary>
+        /// Loads a feature from the given path
+        /// </summary>
+        /// <param name="stream">The stream that contains the feature</param>
+        /// <returns>The deserialized feature</returns>
+        public static Feature Load( Stream stream )
+        {
+            using(var reader = new StreamReader( stream ))
+            {
+                return (Feature)Serializer.Deserialize( reader );
+            }
         }
     }
 }

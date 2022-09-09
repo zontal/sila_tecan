@@ -9,12 +9,12 @@ namespace Tecan.Sila2
     public interface IAuthConfigurationProvider
     {
         /// <summary>
-        /// Gets the users registered locally with the device
+        /// Logs in with the current credentials
         /// </summary>
-        IEnumerable<User> LocalUsers
-        {
-            get;
-        }
+        /// <param name="username">The user name</param>
+        /// <param name="password">The entered password</param>
+        /// <returns>A user or null, if the provided credentials are invalid</returns>
+        User Login( string username, string password );
 
         /// <summary>
         /// Gets a client for the chosen authorization provider or null, if not set

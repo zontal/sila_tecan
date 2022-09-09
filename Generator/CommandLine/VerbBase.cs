@@ -47,7 +47,7 @@ namespace Tecan.Sila2.Generator.CommandLine
         private void LoadConfiguration( ILog channel, IGeneratorConfigSource configRepo )
         {
             var configFile = FeatureDefinitionConfigHelper.LoadConfigMappingFile( ConfigFile );
-            if(!string.IsNullOrEmpty( ConfigFile ) && configFile != null)
+            if(!string.IsNullOrEmpty( ConfigFile ) && configFile == null)
             {
                 channel.Warn( "Feature definition config file could not be loaded." );
             }

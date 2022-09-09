@@ -40,9 +40,9 @@ namespace Tecan.Sila2
                     SetAuthorizationProvider( explicitServer.Host, int.Parse( explicitServer.Port ) );
                 }
             }
-            catch( Exception e )
+            catch(Exception e)
             {
-                LogManager.GetLogger<AuthConfigurationProviderBase>().Error("Restoring authorization provider failed", e);
+                LogManager.GetLogger<AuthConfigurationProviderBase>().Error( "Restoring authorization provider failed", e );
             }
         }
 
@@ -53,7 +53,19 @@ namespace Tecan.Sila2
         protected abstract AuthConfiguration LoadConfiguration();
 
         /// <inheritdoc />
-        public IEnumerable<User> LocalUsers => _configuration.LocalUser;
+        public User Login( string username, string password )
+        {
+            return Login( username, password, _configuration );
+        }
+
+        /// <summary>
+        /// Logs in with the current credentials
+        /// </summary>
+        /// <param name="username">The user name</param>
+        /// <param name="password">The entered password</param>
+        /// <param name="configuration">The current authentication configuration</param>
+        /// <returns>A user or null, if the provided credentials are invalid</returns>
+        protected abstract User Login( string username, string password, AuthConfiguration configuration );
 
         /// <inheritdoc />
         public IAuthorizationProviderService AuthorizationProvider
@@ -72,7 +84,7 @@ namespace Tecan.Sila2
         /// <inheritdoc />
         public void SetAuthorizationProvider( string serverUuid )
         {
-            SetAuthorizationProviderCore(serverUuid);
+            SetAuthorizationProviderCore( serverUuid );
             _configuration.AuthProvider = new DiscoveredServer()
             {
                 ServerUUID = serverUuid
@@ -80,28 +92,28 @@ namespace Tecan.Sila2
             SaveConfiguration( _configuration );
         }
 
-        private void SetAuthorizationProviderCore(string serverUuid)
+        private void SetAuthorizationProviderCore( string serverUuid )
         {
-            if (!Guid.TryParse(serverUuid, out var serverId))
+            if(!Guid.TryParse( serverUuid, out var serverId ))
             {
-                throw new ArgumentException("The provided server is not a valid server id.", nameof(serverUuid));
+                throw new ArgumentException( "The provided server is not a valid server id.", nameof( serverUuid ) );
             }
 
-            var servers = _discovery.GetServers(TimeSpan.FromSeconds(1));
-            var server = servers?.FirstOrDefault(s => s.Config.Uuid == serverId);
-            if (server == null)
+            var servers = _discovery.GetServers( TimeSpan.FromSeconds( 1 ) );
+            var server = servers?.FirstOrDefault( s => s.Config.Uuid == serverId );
+            if(server == null)
             {
-                throw new ArgumentException($"The server with id {serverUuid} could not be found.", nameof(serverUuid));
+                throw new ArgumentException( $"The server with id {serverUuid} could not be found.", nameof( serverUuid ) );
             }
 
-            if ( server.Features.All( f => f.FullyQualifiedIdentifier != ProviderFeatureId ) )
+            if(server.Features.All( f => f.FullyQualifiedIdentifier != ProviderFeatureId ))
             {
-                throw new ArgumentException("The server is not an authorization provider.", nameof(serverUuid));
+                throw new ArgumentException( "The server is not an authorization provider.", nameof( serverUuid ) );
             }
 
             AuthorizationProviderUuid = serverUuid;
             AuthorizationProvider =
-                new AuthorizationProviderServiceClient( server.Channel, new DiscoveryExecutionManager());
+                new AuthorizationProviderServiceClient( server.Channel, new DiscoveryExecutionManager() );
         }
 
         /// <summary>
@@ -113,7 +125,7 @@ namespace Tecan.Sila2
         /// <inheritdoc />
         public void SetAuthorizationProvider( string host, int port )
         {
-            SetAuthorizationProviderCore(host, port);
+            SetAuthorizationProviderCore( host, port );
             _configuration.AuthProvider = new ExplicitServer()
             {
                 Host = host,
@@ -122,12 +134,12 @@ namespace Tecan.Sila2
             SaveConfiguration( _configuration );
         }
 
-        private void SetAuthorizationProviderCore(string host, int port)
+        private void SetAuthorizationProviderCore( string host, int port )
         {
             var server = _serverConnector.Connect( host, port );
-            if (server == null || server.Features.All( f => f.FullyQualifiedIdentifier != ProviderFeatureId ) )
+            if(server == null || server.Features.All( f => f.FullyQualifiedIdentifier != ProviderFeatureId ))
             {
-                throw new ArgumentException("The server is not an authorization provider.", nameof(host));
+                throw new ArgumentException( "The server is not an authorization provider.", nameof( host ) );
             }
 
             AuthorizationProviderUuid = server.Config.Uuid.ToString();

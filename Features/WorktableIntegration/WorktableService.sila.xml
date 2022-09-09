@@ -180,6 +180,10 @@
                   <Label>Degree</Label>
                   <Factor>57.2957795130823</Factor>
                   <Offset>0</Offset>
+                  <UnitComponent>
+                    <SIUnit>Dimensionless</SIUnit>
+                    <Exponent>0</Exponent>
+                  </UnitComponent>
                 </Unit>
               </Constraints>
             </Constrained>

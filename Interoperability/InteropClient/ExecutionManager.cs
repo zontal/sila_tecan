@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using Grpc.Core;
 using Tecan.Sila2.Binary;
 using Tecan.Sila2.Client;
-using Tecan.Sila2.Interop.Client.ComplexDataTypeTest;
+using Tecan.Sila2.Interop.Client.MetadataProvider;
+using Tecan.Sila2.Interop.Client.MetadataProvider.MetadataProviderTest;
 
 namespace Tecan.Sila2.Interop.Client
 {
@@ -13,19 +14,36 @@ namespace Tecan.Sila2.Interop.Client
 
         public ExecutionManager( Channel serverChannel )
         {
-            DownloadBinaryStore = new ClientBinaryStore(null, serverChannel, this);
+            DownloadBinaryStore = new ClientBinaryStore( null, serverChannel, this );
             _serverChannel = serverChannel;
         }
 
         public IClientCallInfo CreateCallOptions( string commandIdentifier )
         {
             var metadata = new Dictionary<string, byte[]>();
-            if( commandIdentifier.StartsWith( "org.silastandard/test/ComplexDataTypeTest/v1" ) )
+            if(commandIdentifier.StartsWith( "org.silastandard/test/MetadataConsumerTest/v1" ))
             {
-                metadata.Add( "org.silastandard/test/ComplexDataTypeTest/v1/Metadata/User" ,
-                    ProtobufMarshaller<UserDto>.ToByteArray( new UserDto( new User( Environment.UserName ), DownloadBinaryStore ) ) );
+                metadata.Add( "org.silastandard/test/MetadataProviderTest/v1/Metadata/StringMetadata",
+                    ProtobufMarshaller<StringDto>.ToByteArray( new StringDto( StringValue ) ) );
             }
-            return new CallInfo(metadata);
+            if(commandIdentifier == "org.silastandard/test/MetadataConsumerTest/v1/Command/UnpackMetadata")
+            {
+                metadata.Add( "org.silastandard/test/MetadataProviderTest/v1/Metadata/TwoIntegersMetadata",
+                    ProtobufMarshaller<TwoIntegersMetadataDto>.ToByteArray( new TwoIntegersMetadataDto( TwoIntegers, DownloadBinaryStore ) ) );
+            }
+            return new CallInfo( metadata );
+        }
+
+        public string StringValue
+        {
+            get;
+            set;
+        }
+
+        public TwoIntegersMetadata TwoIntegers
+        {
+            get;
+            set;
         }
 
         public IBinaryStore DownloadBinaryStore
@@ -35,7 +53,7 @@ namespace Tecan.Sila2.Interop.Client
 
         public IBinaryStore CreateBinaryStore( string commandParameterIdentifier )
         {
-            return new ClientBinaryStore(commandParameterIdentifier, _serverChannel, this);
+            return new ClientBinaryStore( commandParameterIdentifier, _serverChannel, this );
         }
 
         private class CallInfo : IClientCallInfo

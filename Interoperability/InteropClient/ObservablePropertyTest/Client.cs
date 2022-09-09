@@ -13,7 +13,7 @@ using Tecan.Sila2;
 using Tecan.Sila2.Client;
 using Tecan.Sila2.Server;
 
-namespace Tecan.Sila2.Interop.Client.ObservablePropertyTest
+namespace Tecan.Sila2.Interop.Client.ObservablePropertyTest.ObservablePropertyTest
 {
     
     
@@ -23,9 +23,17 @@ namespace Tecan.Sila2.Interop.Client.ObservablePropertyTest
     public partial class ObservablePropertyTestClient : IObservablePropertyTest, System.ComponentModel.INotifyPropertyChanged, System.IDisposable
     {
         
-        private long _upTime;
+        private long _fixedValue;
         
-        private System.Threading.Tasks.Task _upTimeUpdateTask;
+        private System.Threading.Tasks.Task _fixedValueUpdateTask;
+        
+        private bool _alternating;
+        
+        private System.Threading.Tasks.Task _alternatingUpdateTask;
+        
+        private long _editable;
+        
+        private System.Threading.Tasks.Task _editableUpdateTask;
         
         private System.Threading.CancellationTokenSource _cancellationTokenSource = new System.Threading.CancellationTokenSource();
         
@@ -47,42 +55,120 @@ namespace Tecan.Sila2.Interop.Client.ObservablePropertyTest
         }
         
         ///  <summary>
-        /// Display the seconds elapsed since the server is on.
+        /// Always returns 42 and never changes.
         /// </summary>
-        public virtual long UpTime
+        public virtual long FixedValue
         {
             get
             {
-                if ((_upTimeUpdateTask == null))
+                if ((_fixedValueUpdateTask == null))
                 {
                     try
                     {
                         System.Threading.Monitor.Enter(_cancellationTokenSource);
-                        if ((_upTimeUpdateTask == null))
+                        if ((_fixedValueUpdateTask == null))
                         {
-                            _upTimeUpdateTask = _channel.SubscribeProperty<PropertyResponse<Tecan.Sila2.IntegerDto>>(_serviceName, "UpTime", "org.silastandard/test/ObservablePropertyTest/v1/Property/UpTime", ReceiveNewUpTime, _executionManager.CreateCallOptions("org.silastandard/test/ObservablePropertyTest/v1/Property/UpTime"), _cancellationTokenSource.Token);
+                            _fixedValueUpdateTask = _channel.SubscribeProperty<PropertyResponse<Tecan.Sila2.IntegerDto>>(_serviceName, "FixedValue", "org.silastandard/test/ObservablePropertyTest/v1/Property/FixedValue", ReceiveNewFixedValue, _executionManager.CreateCallOptions("org.silastandard/test/ObservablePropertyTest/v1/Property/FixedValue"), _cancellationTokenSource.Token);
                         }
                     } finally
                     {
                         System.Threading.Monitor.Exit(_cancellationTokenSource);
                     }
                 }
-                return _upTime;
+                return _fixedValue;
+            }
+        }
+        
+        ///  <summary>
+        /// Switches every second between true and false
+        /// </summary>
+        public virtual bool Alternating
+        {
+            get
+            {
+                if ((_alternatingUpdateTask == null))
+                {
+                    try
+                    {
+                        System.Threading.Monitor.Enter(_cancellationTokenSource);
+                        if ((_alternatingUpdateTask == null))
+                        {
+                            _alternatingUpdateTask = _channel.SubscribeProperty<PropertyResponse<Tecan.Sila2.BooleanDto>>(_serviceName, "Alternating", "org.silastandard/test/ObservablePropertyTest/v1/Property/Alternating", ReceiveNewAlternating, _executionManager.CreateCallOptions("org.silastandard/test/ObservablePropertyTest/v1/Property/Alternating"), _cancellationTokenSource.Token);
+                        }
+                    } finally
+                    {
+                        System.Threading.Monitor.Exit(_cancellationTokenSource);
+                    }
+                }
+                return _alternating;
+            }
+        }
+        
+        ///  <summary>
+        /// Can be set through SetValue command
+        /// </summary>
+        public virtual long Editable
+        {
+            get
+            {
+                if ((_editableUpdateTask == null))
+                {
+                    try
+                    {
+                        System.Threading.Monitor.Enter(_cancellationTokenSource);
+                        if ((_editableUpdateTask == null))
+                        {
+                            _editableUpdateTask = _channel.SubscribeProperty<PropertyResponse<Tecan.Sila2.IntegerDto>>(_serviceName, "Editable", "org.silastandard/test/ObservablePropertyTest/v1/Property/Editable", ReceiveNewEditable, _executionManager.CreateCallOptions("org.silastandard/test/ObservablePropertyTest/v1/Property/Editable"), _cancellationTokenSource.Token);
+                        }
+                    } finally
+                    {
+                        System.Threading.Monitor.Exit(_cancellationTokenSource);
+                    }
+                }
+                return _editable;
             }
         }
         
         public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
         
-        private void ReceiveNewUpTime(PropertyResponse<Tecan.Sila2.IntegerDto> upTime)
+        private void ReceiveNewFixedValue(PropertyResponse<Tecan.Sila2.IntegerDto> fixedValue)
         {
-            long inner = upTime.Value.Extract(_executionManager.DownloadBinaryStore);
-            if ((_upTime != inner))
+            long inner = fixedValue.Value.Extract(_executionManager.DownloadBinaryStore);
+            if ((_fixedValue != inner))
             {
-                _upTime = inner;
+                _fixedValue = inner;
                 System.ComponentModel.PropertyChangedEventHandler handler = PropertyChanged;
                 if ((handler != null))
                 {
-                    handler.Invoke(this, new System.ComponentModel.PropertyChangedEventArgs("UpTime"));
+                    handler.Invoke(this, new System.ComponentModel.PropertyChangedEventArgs("FixedValue"));
+                }
+            }
+        }
+        
+        private void ReceiveNewAlternating(PropertyResponse<Tecan.Sila2.BooleanDto> alternating)
+        {
+            bool inner = alternating.Value.Extract(_executionManager.DownloadBinaryStore);
+            if ((_alternating != inner))
+            {
+                _alternating = inner;
+                System.ComponentModel.PropertyChangedEventHandler handler = PropertyChanged;
+                if ((handler != null))
+                {
+                    handler.Invoke(this, new System.ComponentModel.PropertyChangedEventArgs("Alternating"));
+                }
+            }
+        }
+        
+        private void ReceiveNewEditable(PropertyResponse<Tecan.Sila2.IntegerDto> editable)
+        {
+            long inner = editable.Value.Extract(_executionManager.DownloadBinaryStore);
+            if ((_editable != inner))
+            {
+                _editable = inner;
+                System.ComponentModel.PropertyChangedEventHandler handler = PropertyChanged;
+                if ((handler != null))
+                {
+                    handler.Invoke(this, new System.ComponentModel.PropertyChangedEventArgs("Editable"));
                 }
             }
         }
@@ -94,6 +180,27 @@ namespace Tecan.Sila2.Interop.Client.ObservablePropertyTest
         {
             _cancellationTokenSource.Cancel();
             _cancellationTokenSource.Dispose();
+        }
+        
+        ///  <summary>
+        /// Changes the value of Editable
+        /// </summary>
+        /// <param name="value">The new value</param>
+        public virtual void SetValue(long value)
+        {
+            SetValueRequestDto request = new SetValueRequestDto(value, null);
+            Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/ObservablePropertyTest/v1/Command/SetValue");
+            try
+            {
+                _channel.ExecuteUnobservableCommand<SetValueRequestDto>(_serviceName, "SetValue", request, callInfo);
+                callInfo.FinishSuccessful();
+                return;
+            } catch (System.Exception ex)
+            {
+                System.Exception exception = _channel.ConvertException(ex);
+                callInfo.FinishWithErrors(exception);
+                throw exception;
+            }
         }
         
         private T Extract<T>(Tecan.Sila2.ISilaTransferObject<T> dto)

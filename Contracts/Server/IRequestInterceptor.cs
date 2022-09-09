@@ -20,6 +20,10 @@
         /// </summary>
         bool AppliesToProperties { get; }
 
+        /// <summary>
+        /// Gets the metadata identifier this request interceptor is connected to or null, if not applicable
+        /// </summary>
+        string MetadataIdentifier { get; }
 
         /// <summary>
         /// Returns whether a given command should be intercepted
@@ -27,7 +31,7 @@
         /// <param name="feature">The feature that defines the intercepted command</param>
         /// <param name="commandIdentifier">The identifier of the command</param>
         /// <returns>True, if the interceptor should be notified whenever the command with the given identifier is executed, otherwise false</returns>
-        bool IsInterceptRequired(Feature feature, string commandIdentifier);
+        bool IsInterceptRequired( Feature feature, string commandIdentifier );
 
         /// <summary>
         /// Intercepts a call to a given command
@@ -36,6 +40,6 @@
         /// <param name="server">The server that executes the request</param>
         /// <param name="metadata">The metadata that was used with this request</param>
         /// <returns>An interception instance</returns>
-        IRequestInterception Intercept(string commandIdentifier, ISiLAServer server, IMetadataRepository metadata );
+        IRequestInterception Intercept( string commandIdentifier, ISiLAServer server, IMetadataRepository metadata );
     }
 }

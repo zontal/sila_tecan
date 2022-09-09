@@ -14,9 +14,9 @@ namespace Tecan.Sila2.DynamicClient
         /// Creates a dynamic property
         /// </summary>
         /// <param name="element">The SiLA element to encapsulate in a dynamic property</param>
-        public DynamicObjectProperty(SiLAElement element)
+        public DynamicObjectProperty( SiLAElement element )
         {
-            if (element == null) throw new ArgumentNullException(nameof(element));
+            if(element == null) throw new ArgumentNullException( nameof( element ) );
 
             Identifier = element.Identifier;
             DisplayName = element.DisplayName;
@@ -31,13 +31,75 @@ namespace Tecan.Sila2.DynamicClient
         /// <param name="displayName">The display name of the property</param>
         /// <param name="description">The description of the property</param>
         /// <param name="type">The property type</param>
-        public DynamicObjectProperty(string identifier, string displayName, string description, DataTypeType type)
+        public DynamicObjectProperty( string identifier, string displayName, string description, DataTypeType type )
         {
             Identifier = identifier;
             DisplayName = displayName;
             Description = description;
             Type = type;
         }
+
+        /// <summary>
+        /// Creates a dynamic object property for the given value
+        /// </summary>
+        /// <param name="value">The value that is to be encapsulated</param>
+        /// <param name="dataType">The SiLA2 data type of the value</param>
+        public DynamicObjectProperty( object value, DataTypeType dataType )
+        {
+            Value = value;
+            Type = dataType;
+        }
+
+        /// <summary>
+        /// Creates a dynamic object property for the given value
+        /// </summary>
+        /// <param name="value">The value that is to be encapsulated</param>
+        /// <param name="basicType">The basic SiLA2 data type of the value</param>
+        public DynamicObjectProperty( object value, BasicType basicType ) : this( value, new DataTypeType { Item = basicType } )
+        {
+        }
+
+        /// <summary>
+        /// Creates a dynamic object property for the given value
+        /// </summary>
+        /// <param name="stringValue">The string value</param>
+        public DynamicObjectProperty( string stringValue ) : this( stringValue, BasicType.String ) { }
+
+        /// <summary>
+        /// Creates a dynamic object property for the given value
+        /// </summary>
+        /// <param name="doubleValue">The real value</param>
+        public DynamicObjectProperty( double doubleValue ) : this( doubleValue, BasicType.Real ) { }
+
+        /// <summary>
+        /// Creates a dynamic object property for the given value
+        /// </summary>
+        /// <param name="longValue">The integer value</param>
+        public DynamicObjectProperty( long longValue ) : this( longValue, BasicType.Integer ) { }
+
+        /// <summary>
+        /// Creates a dynamic object property for the given value
+        /// </summary>
+        /// <param name="booleanValue">The boolean value</param>
+        public DynamicObjectProperty( bool booleanValue ) : this( booleanValue, BasicType.Boolean ) { }
+
+        /// <summary>
+        /// Creates a dynamic object property for the given value
+        /// </summary>
+        /// <param name="binaryValue">The binary value</param>
+        public DynamicObjectProperty( byte[] binaryValue ) : this( binaryValue, BasicType.Binary ) { }
+
+        /// <summary>
+        /// Creates a dynamic object property for the given value
+        /// </summary>
+        /// <param name="timeStampValue">The timestamp value</param>
+        public DynamicObjectProperty( DateTimeOffset timeStampValue ) : this( timeStampValue, BasicType.Timestamp ) { }
+
+        /// <summary>
+        /// Creates a dynamic object property for the given value
+        /// </summary>
+        /// <param name="dynamicObject">The dynamic object</param>
+        public DynamicObjectProperty( DynamicObject dynamicObject ) : this( dynamicObject, dynamicObject?.CreateType() ?? throw new ArgumentNullException( nameof( dynamicObject ) ) ) { }
 
         /// <summary>
         /// Gets the identifier of the property
@@ -67,7 +129,7 @@ namespace Tecan.Sila2.DynamicClient
         public object Value
         {
             get => _value;
-            set => SetValue(ref _value, value);
+            set => SetValue( ref _value, value );
         }
 
         /// <summary>
@@ -77,12 +139,12 @@ namespace Tecan.Sila2.DynamicClient
         /// <param name="field">The field</param>
         /// <param name="value">The value to set</param>
         /// <param name="callerName">The name of the property whose value is set</param>
-        protected void SetValue<T>(ref T field, T value, [CallerMemberName] string callerName = null)
+        protected void SetValue<T>( ref T field, T value, [CallerMemberName] string callerName = null )
         {
-            if (!EqualityComparer<T>.Default.Equals(field, value))
+            if(!EqualityComparer<T>.Default.Equals( field, value ))
             {
                 field = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(callerName));
+                PropertyChanged?.Invoke( this, new PropertyChangedEventArgs( callerName ) );
             }
         }
 
@@ -93,8 +155,8 @@ namespace Tecan.Sila2.DynamicClient
         /// Only for internal use
         /// </summary>
         /// <param name="obj"></param>
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        internal void SetValue(object obj)
+        [EditorBrowsable( EditorBrowsableState.Never )]
+        internal void SetValue( object obj )
         {
             Value = obj;
         }
@@ -102,7 +164,7 @@ namespace Tecan.Sila2.DynamicClient
         /// <inheritdoc />
         public override string ToString()
         {
-            return $"{DisplayName} = {DynamicObject.Print(Value)}";
+            return $"{DisplayName} = {DynamicObject.Print( Value )}";
         }
 
         /// <inheritdoc />
@@ -114,9 +176,9 @@ namespace Tecan.Sila2.DynamicClient
         [EditorBrowsable( EditorBrowsableState.Never )]
         internal void MergeValue( object obj )
         {
-            if (Value is ICollection<object> collection)
+            if(Value is ICollection<object> collection)
             {
-                if (obj is IEnumerable<object> collectionToMerge)
+                if(obj is IEnumerable<object> collectionToMerge)
                 {
                     foreach(var item in collectionToMerge)
                     {

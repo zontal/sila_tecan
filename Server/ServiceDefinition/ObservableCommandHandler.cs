@@ -102,6 +102,10 @@ namespace Tecan.Sila2.Server.ServiceDefinition
             {
                 throw _server.ErrorHandling.CreateCancellationError( exception.Message );
             }
+            catch(CommandExecutionRejectedException)
+            {
+                throw ServerErrorHandling.CreateFrameworkError( FrameworkErrorType.CommandExecutionNotAccepted );
+            }
             catch(Exception otherException)
             {
                 var convertedException = _errorConverter?.Invoke( otherException );
@@ -118,7 +122,7 @@ namespace Tecan.Sila2.Server.ServiceDefinition
 
         public Task<CommandConfirmation> Execute( TRequest request, ServerCallContext context )
         {
-            var executionId = _server.AddObservableCommandExecution( request.CommandIdentifier, _implementation?.Invoke(request), new MetadataRepository(context) );
+            var executionId = _server.AddObservableCommandExecution( request.CommandIdentifier, _implementation?.Invoke( request ), new MetadataRepository( context ) );
             return Task.FromResult( new CommandConfirmation( executionId ) );
         }
 
@@ -139,7 +143,7 @@ namespace Tecan.Sila2.Server.ServiceDefinition
                     RequestUuid = message.RequestUuid,
                     ObservableCommandConfirmation = new ObservableCommandConfirmation
                     {
-                        CommandConfirmation = new CommandConfirmation(executionId)
+                        CommandConfirmation = new CommandConfirmation( executionId )
                     }
                 } );
             }
@@ -171,9 +175,9 @@ namespace Tecan.Sila2.Server.ServiceDefinition
                     CommandError = error
                 } );
             }
-            catch (Exception exception)
+            catch(Exception exception)
             {
-                if (command.Command.Response.IsCanceled)
+                if(command.Command.Response.IsCanceled)
                 {
                     _loggingChannel.Info( $"Cancelling execution subscription of command {command.CommandExecutionID} because command has been cancelled" );
                 }
@@ -190,7 +194,7 @@ namespace Tecan.Sila2.Server.ServiceDefinition
 
         public void HandleIntermediatesSubscription( string uuid, ObservableCommandExecution command, IClientStreamWriter<SilaServerMessage> responseWriter, ServerPoolDispatcher dispatcher )
         {
-            if (_intermediateHandler != null)
+            if(_intermediateHandler != null)
             {
                 _intermediateHandler.HandleIntermediatesSubscription( uuid, command, responseWriter, dispatcher );
             }
@@ -221,7 +225,7 @@ namespace Tecan.Sila2.Server.ServiceDefinition
                     RequestUuid = uuid,
                     ObservableCommandResponse = new ObservableCommandResponse
                     {
-                        ExecutionUUID = new CommandExecutionUuid(command.CommandExecutionID),
+                        ExecutionUUID = new CommandExecutionUuid( command.CommandExecutionID ),
                         Result = EmptyRequest.Marshaller.Serializer( EmptyRequest.Instance )
                     }
                 } );
@@ -243,7 +247,7 @@ namespace Tecan.Sila2.Server.ServiceDefinition
             private readonly string _requestUuid;
             private readonly CommandExecutionUuid _executionUuid;
 
-            public ExecutionStateResponseStream(IAsyncStreamWriter<SilaServerMessage> inner, string requestUuid, CommandExecutionUuid executionUuid)
+            public ExecutionStateResponseStream( IAsyncStreamWriter<SilaServerMessage> inner, string requestUuid, CommandExecutionUuid executionUuid )
             {
                 _inner = inner;
                 _requestUuid = requestUuid;
@@ -272,7 +276,7 @@ namespace Tecan.Sila2.Server.ServiceDefinition
         private readonly Func<TResponse, TResponseDto> _responseConverter;
 
         public ObservableCommandHandler( SiLAServer server, Func<TRequest, IObservableCommand> implementation, Func<TResponse, TResponseDto> responseConverter, Func<Exception, Exception> errorConverter, IIntermediateRequestHandler intermediateHandler )
-            : base(server, implementation, errorConverter, intermediateHandler)
+            : base( server, implementation, errorConverter, intermediateHandler )
         {
             _responseConverter = responseConverter;
         }
@@ -298,6 +302,10 @@ namespace Tecan.Sila2.Server.ServiceDefinition
             catch(OperationCanceledException exception)
             {
                 throw _server.ErrorHandling.CreateCancellationError( exception.Message );
+            }
+            catch(NotSupportedException)
+            {
+                throw ServerErrorHandling.CreateFrameworkError( FrameworkErrorType.CommandExecutionNotAccepted );
             }
             catch(Exception otherException)
             {

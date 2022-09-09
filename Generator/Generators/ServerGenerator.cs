@@ -850,6 +850,18 @@ namespace Tecan.Sila2.Generator.Generators
                 .WriteDocumentation( "Gets whether the metadata applies to properties", "True, if the metadata is applicable to properties, otherwise false." ) );
             metadataInterceptor.Members.Add( CreateAbstractProperty( nameof( IRequestInterceptor.Priority ), typeof( int ) )
                 .WriteDocumentation( "Gets the priority for the metadata", "A relative priority." ) );
+            metadataInterceptor.Members.Add( (new CodeMemberProperty
+            {
+                Name = nameof( IRequestInterceptor.MetadataIdentifier ),
+                Attributes = MemberAttributes.Public | MemberAttributes.Final,
+                Type = new CodeTypeReference( typeof( string ) ),
+                HasGet = true,
+                HasSet = false,
+                GetStatements =
+                {
+                    new CodeMethodReturnStatement(new CodePrimitiveExpression(feature.GetFullyQualifiedIdentifier(metadata)))
+                }
+            }).WriteDocumentation( "Gets the metadata identifier this request interceptor is connected to or null, if not applicable" ) );
             metadataInterceptor.Members.Add( (new CodeMemberMethod
             {
                 Name = nameof( IRequestInterceptor.IsInterceptRequired ),
@@ -907,7 +919,7 @@ namespace Tecan.Sila2.Generator.Generators
                 new CodeMethodReferenceExpression( new CodeTypeReferenceExpression( typeof( Metadata ) ), nameof( Metadata.Extract ),
                     _translationProvider.GetDtoTypeReference( metadata.DataType, metadata.Identifier, structHandler ) ),
                 new CodeArgumentReferenceExpression( "metadata" ),
-                new CodePrimitiveExpression( feature.GetFullyQualifiedIdentifier( metadata ) ) );
+                new CodePropertyReferenceExpression( null, nameof( IRequestInterceptor.MetadataIdentifier ) ) );
             var statements = GenerateExceptionHandling( feature, null, metadata.DefinedExecutionErrors, id => FindError( feature, id ), interceptMethod.Statements, serverRef );
             statements.Add( new CodeMethodReturnStatement(
                 new CodeMethodInvokeExpression(

@@ -32,6 +32,14 @@
         /// <summary>
         /// Identifier of a type
         /// </summary>
-        TypeIdentifier
+        TypeIdentifier,
+        /// <summary>
+        /// Identifier of an intermediate response
+        /// </summary>
+        IntermediateResponseIdentifier,
+        /// <summary>
+        /// Identifier of a custom metadata
+        /// </summary>
+        MetadataIdentifier
     }
 }

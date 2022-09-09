@@ -13,7 +13,7 @@ using Tecan.Sila2;
 using Tecan.Sila2.Client;
 using Tecan.Sila2.Server;
 
-namespace Tecan.Sila2.Interop.Server
+namespace Tecan.Sila2.Interop.Server.ObservablePropertyTest
 {
     
     
@@ -61,16 +61,58 @@ namespace Tecan.Sila2.Interop.Server
         /// <param name="registration">The registration component to which the feature should be registered</param>
         public void Register(IServerBuilder registration)
         {
-            registration.RegisterObservableProperty("UpTime", GetUpTime, _implementation);
+            registration.RegisterUnobservableCommand<SetValueRequestDto, EmptyRequest>("SetValue", SetValue);
+            registration.RegisterObservableProperty("FixedValue", GetFixedValue, _implementation);
+            registration.RegisterObservableProperty("Alternating", GetAlternating, _implementation);
+            registration.RegisterObservableProperty("Editable", GetEditable, _implementation);
         }
         
         ///  <summary>
-        /// Gets the current value of the Up Time property
+        /// Executes the Set Value command
+        /// </summary>
+        /// <param name="request">A data transfer object that contains the command parameters</param>
+        /// <returns>The command response wrapped in a data transfer object</returns>
+        protected virtual EmptyRequest SetValue(SetValueRequestDto request)
+        {
+            try
+            {
+                _implementation.SetValue(request.Value.Extract(_server));
+                return EmptyRequest.Instance;
+            } catch (System.ArgumentException ex)
+            {
+                if ((ex.ParamName == "value"))
+                {
+                    throw _server.ErrorHandling.CreateValidationError("org.silastandard/test/ObservablePropertyTest/v1/Command/SetValue/Parameter/Value", ex.Message);
+                }
+                throw _server.ErrorHandling.CreateUnknownValidationError(ex);
+            }
+        }
+        
+        ///  <summary>
+        /// Gets the current value of the Fixed Value property
         /// </summary>
         /// <returns>The current value wrapped in a data transfer object</returns>
-        protected virtual PropertyResponse<Tecan.Sila2.IntegerDto> GetUpTime()
+        protected virtual PropertyResponse<Tecan.Sila2.IntegerDto> GetFixedValue()
         {
-            return new PropertyResponse<Tecan.Sila2.IntegerDto>(new Tecan.Sila2.IntegerDto(_implementation.UpTime, _server));
+            return new PropertyResponse<Tecan.Sila2.IntegerDto>(new Tecan.Sila2.IntegerDto(_implementation.FixedValue, _server));
+        }
+        
+        ///  <summary>
+        /// Gets the current value of the Alternating property
+        /// </summary>
+        /// <returns>The current value wrapped in a data transfer object</returns>
+        protected virtual PropertyResponse<Tecan.Sila2.BooleanDto> GetAlternating()
+        {
+            return new PropertyResponse<Tecan.Sila2.BooleanDto>(new Tecan.Sila2.BooleanDto(_implementation.Alternating, _server));
+        }
+        
+        ///  <summary>
+        /// Gets the current value of the Editable property
+        /// </summary>
+        /// <returns>The current value wrapped in a data transfer object</returns>
+        protected virtual PropertyResponse<Tecan.Sila2.IntegerDto> GetEditable()
+        {
+            return new PropertyResponse<Tecan.Sila2.IntegerDto>(new Tecan.Sila2.IntegerDto(_implementation.Editable, _server));
         }
         
         ///  <summary>
@@ -80,6 +122,10 @@ namespace Tecan.Sila2.Interop.Server
         /// <returns>A method object or null, if the command is not supported</returns>
         public System.Reflection.MethodInfo GetCommand(string commandIdentifier)
         {
+            if ((commandIdentifier == "org.silastandard/test/ObservablePropertyTest/v1/Command/SetValue"))
+            {
+                return typeof(IObservablePropertyTest).GetMethod("SetValue");
+            }
             return null;
         }
         
@@ -90,9 +136,17 @@ namespace Tecan.Sila2.Interop.Server
         /// <returns>A property object or null, if the property is not supported</returns>
         public System.Reflection.PropertyInfo GetProperty(string propertyIdentifier)
         {
-            if ((propertyIdentifier == "org.silastandard/test/ObservablePropertyTest/v1/Property/UpTime"))
+            if ((propertyIdentifier == "org.silastandard/test/ObservablePropertyTest/v1/Property/FixedValue"))
             {
-                return typeof(IObservablePropertyTest).GetProperty("UpTime");
+                return typeof(IObservablePropertyTest).GetProperty("FixedValue");
+            }
+            if ((propertyIdentifier == "org.silastandard/test/ObservablePropertyTest/v1/Property/Alternating"))
+            {
+                return typeof(IObservablePropertyTest).GetProperty("Alternating");
+            }
+            if ((propertyIdentifier == "org.silastandard/test/ObservablePropertyTest/v1/Property/Editable"))
+            {
+                return typeof(IObservablePropertyTest).GetProperty("Editable");
             }
             return null;
         }

@@ -1,0 +1,79 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Feature SiLA2Version="1.0" FeatureVersion="1.0" Originator="org.silastandard" Category="test"
+         xmlns="http://www.sila-standard.org"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://www.sila-standard.org https://gitlab.com/SiLA2/sila_base/raw/master/schema/FeatureDefinition.xsd">
+  <Identifier>RecoverableErrorProvider</Identifier>
+  <DisplayName>Recoverable Error Provider</DisplayName>
+  <Description>Contains an observable command that raises a recoverable error for testing the "Error Recovery Service" core feature (v 2.0).</Description>
+  <Command>
+    <Identifier>RaiseRecoverableError</Identifier>
+    <DisplayName>Raise Recoverable Error</DisplayName>
+    <Description>
+      Raises a recoverable error with the error message 'SiLA 2 recoverable error for test' after the specified duration containing the
+      following continuation options:
+      - Identifier = 'OptionA', Description = 'Recover the error by choosing option A',
+      - Identifier = 'OptionB', Description = 'Recover the error by choosing option B',
+      - Identifier = 'OptionC', Description = 'Recover the error by choosing option C'
+      and OptionB marked as the default option.
+      Returns the identifier of the continuation option which has been selected to handle the error.
+    </Description>
+    <Observable>Yes</Observable>
+    <Parameter>
+      <Identifier>DurationUntilError</Identifier>
+      <DisplayName>Duration Until Error</DisplayName>
+      <Description>The duration in seconds before the recoverable error is raised.</Description>
+      <DataType>
+        <Constrained>
+          <DataType>
+            <Basic>Integer</Basic>
+          </DataType>
+          <Constraints>
+            <Unit>
+              <Label>s</Label>
+              <Factor>1</Factor>
+              <Offset>0</Offset>
+              <UnitComponent>
+                <SIUnit>Second</SIUnit>
+                <Exponent>1</Exponent>
+              </UnitComponent>
+            </Unit>
+            <MinimalInclusive>0</MinimalInclusive>
+          </Constraints>
+        </Constrained>
+      </DataType>
+    </Parameter>
+    <Parameter>
+      <Identifier>AutomaticExecutionTimeout</Identifier>
+      <DisplayName>Automatic Execution Timeout</DisplayName>
+      <Description>The duration in seconds after the specified default option is automatically selected (0 means no automatic execution).</Description>
+      <DataType>
+        <Constrained>
+          <DataType>
+            <Basic>Integer</Basic>
+          </DataType>
+          <Constraints>
+            <Unit>
+              <Label>s</Label>
+              <Factor>1</Factor>
+              <Offset>0</Offset>
+              <UnitComponent>
+                <SIUnit>Second</SIUnit>
+                <Exponent>1</Exponent>
+              </UnitComponent>
+            </Unit>
+            <MinimalInclusive>0</MinimalInclusive>
+          </Constraints>
+        </Constrained>
+      </DataType>
+    </Parameter>
+    <Response>
+      <Identifier>SelectedContinuationOption</Identifier>
+      <DisplayName>Selected Continuation Option</DisplayName>
+      <Description>The identifier of the continuation option which has been selected to handle the error.</Description>
+      <DataType>
+        <Basic>String</Basic>
+      </DataType>
+    </Response>
+  </Command>
+</Feature>
