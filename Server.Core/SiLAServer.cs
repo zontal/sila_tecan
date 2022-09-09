@@ -464,6 +464,10 @@ namespace Tecan.Sila2.Server
             {
                 _commandExecutions.Add( execution );
             }
+            if(command is IServerCommand serverCommand)
+            {
+                serverCommand.CommandExecutionUuid = commandExecutionId;
+            }
             if(!command.IsStarted)
             {
                 command.Start();

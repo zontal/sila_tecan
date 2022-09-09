@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFrameworks>netstandard2.0;net6.0</TargetFrameworks>
+        <AssemblyName>Tecan.Sila2.Recovery</AssemblyName>
+        <RootNamespace>Tecan.Sila2.Recovery</RootNamespace>
+        <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+        <LangVersion>latest</LangVersion>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <OutputPath>..\..\Build\Features\</OutputPath>
+        <DocumentationFile>..\..\Build\Features\Tecan.Sila2.Recovery.xml</DocumentationFile>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\..\Annotations\Annotations.csproj" />
+        <ProjectReference Include="..\..\Contracts\Contracts.csproj" />
+        <ProjectReference Include="..\..\DynamicClient\DynamicClient.csproj" />
+        <ProjectReference Include="..\..\Framework\Framework.csproj" />
+    </ItemGroup>
+
+</Project>

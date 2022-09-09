@@ -39,6 +39,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NuSpec", "NuSpec", "{B34C24
 		NuSpec\Tecan.Sila2.Features.Locking.nuspec = NuSpec\Tecan.Sila2.Features.Locking.nuspec
 		NuSpec\Tecan.Sila2.Features.ParameterConstraintsProvider.Client.nuspec = NuSpec\Tecan.Sila2.Features.ParameterConstraintsProvider.Client.nuspec
 		NuSpec\Tecan.Sila2.Features.ParameterConstraintsProvider.nuspec = NuSpec\Tecan.Sila2.Features.ParameterConstraintsProvider.nuspec
+		NuSpec\Tecan.Sila2.Features.Recovery.nuspec = NuSpec\Tecan.Sila2.Features.Recovery.nuspec
 		NuSpec\Tecan.Sila2.Features.WorktableIntegration.Client.nuspec = NuSpec\Tecan.Sila2.Features.WorktableIntegration.Client.nuspec
 		NuSpec\Tecan.Sila2.Features.WorktableIntegration.nuspec = NuSpec\Tecan.Sila2.Features.WorktableIntegration.nuspec
 		NuSpec\Tecan.Sila2.Generator.nuspec = NuSpec\Tecan.Sila2.Generator.nuspec
@@ -126,6 +127,10 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Server.DryIoC", "Server.DryIoC\Server.DryIoC.csproj", "{B35B2AE8-FF24-4778-A47F-4B90F9F64912}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InteropServer.NetCore", "Interoperability\InteropServer.NetCore\InteropServer.NetCore.csproj", "{5400DBF0-921A-40BE-A7ED-FBD39334B349}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Recovery", "Features\Recovery\Recovery.csproj", "{0D4D6784-B918-4BE5-9D70-C422F053B1FD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Recovery.Tests", "Tests\Features\Recovery.Tests\Recovery.Tests.csproj", "{0F2EF82C-F80A-440C-A10B-F1FD931C6CC0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -281,6 +286,14 @@ Global
 		{5400DBF0-921A-40BE-A7ED-FBD39334B349}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5400DBF0-921A-40BE-A7ED-FBD39334B349}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5400DBF0-921A-40BE-A7ED-FBD39334B349}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0D4D6784-B918-4BE5-9D70-C422F053B1FD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0D4D6784-B918-4BE5-9D70-C422F053B1FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0D4D6784-B918-4BE5-9D70-C422F053B1FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0D4D6784-B918-4BE5-9D70-C422F053B1FD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0F2EF82C-F80A-440C-A10B-F1FD931C6CC0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0F2EF82C-F80A-440C-A10B-F1FD931C6CC0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0F2EF82C-F80A-440C-A10B-F1FD931C6CC0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0F2EF82C-F80A-440C-A10B-F1FD931C6CC0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -321,6 +334,8 @@ Global
 		{D66CBAD3-CB10-451A-8F68-D098ADA91D20} = {D20F3DDF-CC13-45C3-95F5-F48B1EFFBB82}
 		{B35B2AE8-FF24-4778-A47F-4B90F9F64912} = {98D6F41E-A727-4CF4-99C6-8D95BAEB3BB4}
 		{5400DBF0-921A-40BE-A7ED-FBD39334B349} = {C552BB03-C50A-4F7F-9B67-A080E13AF7C4}
+		{0D4D6784-B918-4BE5-9D70-C422F053B1FD} = {0E82C9E0-FD04-401F-9BB9-4C9E6419FA47}
+		{0F2EF82C-F80A-440C-A10B-F1FD931C6CC0} = {A475D3F2-B710-436D-9014-8B47DF05D799}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F2AE9C9D-34E5-4A2A-8AAA-5EEA105AF08F}
