@@ -14,6 +14,14 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <None Remove="ErrorRecoveryService.sila.xml" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Include="ErrorRecoveryService.sila.xml" />
+    </ItemGroup>
+
+    <ItemGroup>
         <ProjectReference Include="..\..\Annotations\Annotations.csproj" />
         <ProjectReference Include="..\..\Contracts\Contracts.csproj" />
         <ProjectReference Include="..\..\DynamicClient\DynamicClient.csproj" />
