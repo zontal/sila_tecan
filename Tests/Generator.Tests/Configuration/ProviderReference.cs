@@ -74,6 +74,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         {
             try
             {
+                request.Validate();
                 _implementation.AccelerateTo( new Tecan.Sila2.Generator.Test.TestReference.Speed( request.Target.Extract( _server ) ), request.MaxAcceleration.Extract( _server ), System.TimeSpan.FromSeconds( request.TimeRange.Extract( _server ) ) );
                 return EmptyRequest.Instance;
             }

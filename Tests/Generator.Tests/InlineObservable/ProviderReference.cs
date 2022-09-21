@@ -62,7 +62,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// <param name="registration">The registration component to which the feature should be registered</param>
         public void Register( IServerBuilder registration )
         {
-            registration.RegisterObservableCommand<TestInlineObservableRequestDto, bool, TestInlineObservableResponseDto>("TestInlineObservable", TestInlineObservable, ConvertTestInlineObservableResponse, null);
+            registration.RegisterObservableCommand<TestInlineObservableRequestDto, bool, TestInlineObservableResponseDto>( "TestInlineObservable", TestInlineObservable, ConvertTestInlineObservableResponse, null );
         }
 
         private TestInlineObservableResponseDto ConvertTestInlineObservableResponse( bool result )
@@ -77,6 +77,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// <returns>The command response wrapped in a data transfer object</returns>
         protected virtual Tecan.Sila2.IObservableCommand<bool> TestInlineObservable( TestInlineObservableRequestDto request )
         {
+            request.Validate();
             return new TestInlineObservableCommand( this, request );
         }
 

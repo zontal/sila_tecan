@@ -396,7 +396,7 @@ namespace Tecan.Sila2.Generator.Generators
             {
                 actualCall = GenerateCreateCommand( feature, featureCommand, spec, method, server, implementationRef, serverRef, requestRef );
             }
-
+            commandMethod.Statements.Add( new CodeMethodInvokeExpression( requestRef, nameof( ISilaRequestObject.Validate ) ) );
             commandMethod.Statements.Add( new CodeMethodReturnStatement( actualCall ) );
 
             if(featureCommand.IntermediateResponse != null && featureCommand.IntermediateResponse.Length > 0)

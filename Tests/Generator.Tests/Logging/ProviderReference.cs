@@ -15,34 +15,34 @@ using Tecan.Sila2.Server;
 
 namespace Tecan.Sila2.Generator.Test.TestReference
 {
-    
-    
+
+
     ///  <summary>
     /// A class that exposes the ILoggingService interface via SiLA2
     /// </summary>
-    [System.ComponentModel.Composition.ExportAttribute(typeof(IFeatureProvider))]
-    [System.ComponentModel.Composition.PartCreationPolicyAttribute(System.ComponentModel.Composition.CreationPolicy.Shared)]
+    [System.ComponentModel.Composition.ExportAttribute( typeof( IFeatureProvider ) )]
+    [System.ComponentModel.Composition.PartCreationPolicyAttribute( System.ComponentModel.Composition.CreationPolicy.Shared )]
     public partial class LoggingServiceProvider : IFeatureProvider
     {
-        
+
         private ILoggingService _implementation;
-        
+
         private Tecan.Sila2.Server.ISiLAServer _server;
-        
-        private static Tecan.Sila2.Feature _feature = FeatureSerializer.LoadFromAssembly(typeof(LoggingServiceProvider).Assembly, "LoggingService.sila.xml");
-        
+
+        private static Tecan.Sila2.Feature _feature = FeatureSerializer.LoadFromAssembly( typeof( LoggingServiceProvider ).Assembly, "LoggingService.sila.xml" );
+
         ///  <summary>
         /// Creates a new instance
         /// </summary>
         /// <param name="implementation">The implementation to exported through SiLA2</param>
         /// <param name="server">The SiLA2 server instance through which the implementation shall be exported</param>
         [System.ComponentModel.Composition.ImportingConstructorAttribute()]
-        public LoggingServiceProvider(ILoggingService implementation, Tecan.Sila2.Server.ISiLAServer server)
+        public LoggingServiceProvider( ILoggingService implementation, Tecan.Sila2.Server.ISiLAServer server )
         {
             _implementation = implementation;
             _server = server;
         }
-        
+
         ///  <summary>
         /// The feature that is exposed by this feature provider
         /// </summary>
@@ -54,64 +54,65 @@ namespace Tecan.Sila2.Generator.Test.TestReference
                 return _feature;
             }
         }
-        
+
         ///  <summary>
         /// Registers the feature in the provided feature registration
         /// </summary>
         /// <param name="registration">The registration component to which the feature should be registered</param>
-        public void Register(IServerBuilder registration)
+        public void Register( IServerBuilder registration )
         {
-            registration.RegisterCommandWithIntermediates<ListenForLogEntriesRequestDto, LogEntry, ListenForLogEntriesIntermediateDto>("ListenForLogEntries", ListenForLogEntries, ConvertListenForLogEntriesIntermediate, null);
-            registration.RegisterMetadata("LoggingActivity", _implementation.LoggingActivity);
+            registration.RegisterCommandWithIntermediates<ListenForLogEntriesRequestDto, LogEntry, ListenForLogEntriesIntermediateDto>( "ListenForLogEntries", ListenForLogEntries, ConvertListenForLogEntriesIntermediate, null );
+            registration.RegisterMetadata( "LoggingActivity", _implementation.LoggingActivity );
         }
-        
-        private ListenForLogEntriesIntermediateDto ConvertListenForLogEntriesIntermediate(LogEntry intermediate)
+
+        private ListenForLogEntriesIntermediateDto ConvertListenForLogEntriesIntermediate( LogEntry intermediate )
         {
-            return new ListenForLogEntriesIntermediateDto(intermediate, _server);
+            return new ListenForLogEntriesIntermediateDto( intermediate, _server );
         }
-        
+
         ///  <summary>
         /// Executes the Listen for log entries command
         /// </summary>
         /// <param name="request">A data transfer object that contains the command parameters</param>
         /// <returns>The command response wrapped in a data transfer object</returns>
-        protected virtual Tecan.Sila2.IIntermediateObservableCommand<LogEntry> ListenForLogEntries(ListenForLogEntriesRequestDto request)
+        protected virtual Tecan.Sila2.IIntermediateObservableCommand<LogEntry> ListenForLogEntries( ListenForLogEntriesRequestDto request )
         {
+            request.Validate();
             return _implementation.ListenForLogEntries();
         }
-        
+
         ///  <summary>
         /// Gets the command with the given identifier
         /// </summary>
         /// <param name="commandIdentifier">A fully qualified command identifier</param>
         /// <returns>A method object or null, if the command is not supported</returns>
-        public System.Reflection.MethodInfo GetCommand(string commandIdentifier)
+        public System.Reflection.MethodInfo GetCommand( string commandIdentifier )
         {
-            if ((commandIdentifier == "tecan.sila.generator.test.logging/infrastructure/LoggingService/v4/Command/Listen" +
+            if((commandIdentifier == "tecan.sila.generator.test.logging/infrastructure/LoggingService/v4/Command/Listen" +
                 "ForLogEntries"))
             {
-                return typeof(ILoggingService).GetMethod("ListenForLogEntries");
+                return typeof( ILoggingService ).GetMethod( "ListenForLogEntries" );
             }
             return null;
         }
-        
+
         ///  <summary>
         /// Gets the property with the given identifier
         /// </summary>
         /// <param name="propertyIdentifier">A fully qualified property identifier</param>
         /// <returns>A property object or null, if the property is not supported</returns>
-        public System.Reflection.PropertyInfo GetProperty(string propertyIdentifier)
+        public System.Reflection.PropertyInfo GetProperty( string propertyIdentifier )
         {
             return null;
         }
     }
-    
+
     ///  <summary>
     /// An abstract base class to support the Logging Activity metadata
     /// </summary>
     public abstract partial class LoggingActivityInterceptorBase : Tecan.Sila2.Server.IRequestInterceptor
     {
-        
+
         ///  <summary>
         /// Gets whether the metadata applies to commands
         /// </summary>
@@ -120,7 +121,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         {
             get;
         }
-        
+
         ///  <summary>
         /// Gets whether the metadata applies to properties
         /// </summary>
@@ -129,7 +130,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         {
             get;
         }
-        
+
         ///  <summary>
         /// Gets the priority for the metadata
         /// </summary>
@@ -138,7 +139,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         {
             get;
         }
-        
+
         ///  <summary>
         /// Gets the metadata identifier this request interceptor is connected to or null, if not applicable
         /// </summary>
@@ -150,23 +151,23 @@ namespace Tecan.Sila2.Generator.Test.TestReference
                     "ngActivity";
             }
         }
-        
+
         ///  <summary>
         /// Decides whether the interceptor is required for the given command
         /// </summary>
         /// <param name="feature">The feature that contains the command or property</param>
         /// <param name="commandIdentifier">The fully qualified identifier of the command or property in question</param>
         /// <returns>True, if the interceptor should be applied</returns>
-        public abstract bool IsInterceptRequired(Feature feature, string commandIdentifier);
-        
+        public abstract bool IsInterceptRequired( Feature feature, string commandIdentifier );
+
         ///  <summary>
         /// Intercepts the call to the given command
         /// </summary>
         /// <param name="commandIdentifier">The fully qualified identifier of the command or property in question</param>
         /// <param name="loggingActivity">The parsed metadata</param>
         /// <returns>A request interception or null, if this is not necessary</returns>
-        public abstract Tecan.Sila2.Server.IRequestInterception Intercept(string commandIdentifier, string loggingActivity);
-        
+        public abstract Tecan.Sila2.Server.IRequestInterception Intercept( string commandIdentifier, string loggingActivity );
+
         ///  <summary>
         /// Intercepts the call to the given command
         /// </summary>
@@ -174,9 +175,9 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// <param name="server">The server that should execute the request</param>
         /// <param name="metadata">The metadata attached to the request</param>
         /// <returns>A request interception or null, if this is not necessary</returns>
-        public Tecan.Sila2.Server.IRequestInterception Intercept(string commandIdentifier, Tecan.Sila2.Server.ISiLAServer server, Tecan.Sila2.Server.IMetadataRepository metadata)
+        public Tecan.Sila2.Server.IRequestInterception Intercept( string commandIdentifier, Tecan.Sila2.Server.ISiLAServer server, Tecan.Sila2.Server.IMetadataRepository metadata )
         {
-            return Intercept(commandIdentifier, Tecan.Sila2.Server.Metadata.Extract<Tecan.Sila2.StringDto>(metadata, MetadataIdentifier).Extract(server));
+            return Intercept( commandIdentifier, Tecan.Sila2.Server.Metadata.Extract<Tecan.Sila2.StringDto>( metadata, MetadataIdentifier ).Extract( server ) );
         }
     }
 }

@@ -15,34 +15,34 @@ using Tecan.Sila2.Server;
 
 namespace Tecan.Sila2.Generator.Test.TestReference
 {
-    
-    
+
+
     ///  <summary>
     /// A class that exposes the IRxService interface via SiLA2
     /// </summary>
-    [System.ComponentModel.Composition.ExportAttribute(typeof(IFeatureProvider))]
-    [System.ComponentModel.Composition.PartCreationPolicyAttribute(System.ComponentModel.Composition.CreationPolicy.Shared)]
+    [System.ComponentModel.Composition.ExportAttribute( typeof( IFeatureProvider ) )]
+    [System.ComponentModel.Composition.PartCreationPolicyAttribute( System.ComponentModel.Composition.CreationPolicy.Shared )]
     public partial class RxServiceProvider : IFeatureProvider
     {
-        
+
         private IRxService _implementation;
-        
+
         private Tecan.Sila2.Server.ISiLAServer _server;
-        
-        private static Tecan.Sila2.Feature _feature = FeatureSerializer.LoadFromAssembly(typeof(RxServiceProvider).Assembly, "RxService.sila.xml");
-        
+
+        private static Tecan.Sila2.Feature _feature = FeatureSerializer.LoadFromAssembly( typeof( RxServiceProvider ).Assembly, "RxService.sila.xml" );
+
         ///  <summary>
         /// Creates a new instance
         /// </summary>
         /// <param name="implementation">The implementation to exported through SiLA2</param>
         /// <param name="server">The SiLA2 server instance through which the implementation shall be exported</param>
         [System.ComponentModel.Composition.ImportingConstructorAttribute()]
-        public RxServiceProvider(IRxService implementation, Tecan.Sila2.Server.ISiLAServer server)
+        public RxServiceProvider( IRxService implementation, Tecan.Sila2.Server.ISiLAServer server )
         {
             _implementation = implementation;
             _server = server;
         }
-        
+
         ///  <summary>
         /// The feature that is exposed by this feature provider
         /// </summary>
@@ -54,51 +54,52 @@ namespace Tecan.Sila2.Generator.Test.TestReference
                 return _feature;
             }
         }
-        
+
         ///  <summary>
         /// Registers the feature in the provided feature registration
         /// </summary>
         /// <param name="registration">The registration component to which the feature should be registered</param>
-        public void Register(IServerBuilder registration)
+        public void Register( IServerBuilder registration )
         {
-            registration.RegisterCommandWithIntermediates<RunRxObservableRequestDto, bool, RunRxObservableIntermediateDto>("RunRxObservable", RunRxObservable, ConvertRunRxObservableIntermediate, null);
+            registration.RegisterCommandWithIntermediates<RunRxObservableRequestDto, bool, RunRxObservableIntermediateDto>( "RunRxObservable", RunRxObservable, ConvertRunRxObservableIntermediate, null );
         }
-        
-        private RunRxObservableIntermediateDto ConvertRunRxObservableIntermediate(bool intermediate)
+
+        private RunRxObservableIntermediateDto ConvertRunRxObservableIntermediate( bool intermediate )
         {
-            return new RunRxObservableIntermediateDto(intermediate, _server);
+            return new RunRxObservableIntermediateDto( intermediate, _server );
         }
-        
+
         ///  <summary>
         /// Executes the Run Rx Observable command
         /// </summary>
         /// <param name="request">A data transfer object that contains the command parameters</param>
         /// <returns>The command response wrapped in a data transfer object</returns>
-        protected virtual Tecan.Sila2.IIntermediateObservableCommand<bool> RunRxObservable(RunRxObservableRequestDto request)
+        protected virtual Tecan.Sila2.IIntermediateObservableCommand<bool> RunRxObservable( RunRxObservableRequestDto request )
         {
-            return new ObservableRxCommand<bool>( _implementation.RunRxObservable());
+            request.Validate();
+            return new ObservableRxCommand<bool>( _implementation.RunRxObservable() );
         }
-        
+
         ///  <summary>
         /// Gets the command with the given identifier
         /// </summary>
         /// <param name="commandIdentifier">A fully qualified command identifier</param>
         /// <returns>A method object or null, if the command is not supported</returns>
-        public System.Reflection.MethodInfo GetCommand(string commandIdentifier)
+        public System.Reflection.MethodInfo GetCommand( string commandIdentifier )
         {
-            if ((commandIdentifier == "tecan.sila.generator.test/testreference/RxService/v4/Command/RunRxObservable"))
+            if((commandIdentifier == "tecan.sila.generator.test/testreference/RxService/v4/Command/RunRxObservable"))
             {
-                return typeof(IRxService).GetMethod("RunRxObservable");
+                return typeof( IRxService ).GetMethod( "RunRxObservable" );
             }
             return null;
         }
-        
+
         ///  <summary>
         /// Gets the property with the given identifier
         /// </summary>
         /// <param name="propertyIdentifier">A fully qualified property identifier</param>
         /// <returns>A property object or null, if the property is not supported</returns>
-        public System.Reflection.PropertyInfo GetProperty(string propertyIdentifier)
+        public System.Reflection.PropertyInfo GetProperty( string propertyIdentifier )
         {
             return null;
         }
