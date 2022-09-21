@@ -81,6 +81,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         {
             try
             {
+                request.Validate();
                 return new GetFeatureDefinitionResponseDto(_implementation.GetFeatureDefinition(request.QualifiedFeatureIdentifier.Extract(_server)), _server);
             } catch (System.ArgumentException ex)
             {
@@ -107,6 +108,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         {
             try
             {
+                request.Validate();
                 _implementation.ServerName = request.ServerName.Extract(_server);
                 return EmptyRequest.Instance;
             } catch (System.ArgumentException ex)

@@ -9,5 +9,10 @@
         /// The fully qualified identifier of the command
         /// </summary>
         string CommandIdentifier { get; }
+
+        /// <summary>
+        /// Validates the given request object
+        /// </summary>
+        void Validate();
     }
 }

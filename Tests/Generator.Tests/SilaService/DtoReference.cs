@@ -69,12 +69,20 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         }
         
         ///  <summary>
+        /// Validates the given request object
+        /// </summary>
+        public void Validate()
+        {
+            Argument.Validate(QualifiedFeatureIdentifier, "qualifiedFeatureIdentifier");
+        }
+        
+        ///  <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return null;
+            return ("" + Argument.Require(QualifiedFeatureIdentifier, "qualifiedFeatureIdentifier"));
         }
     }
     
@@ -121,12 +129,20 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         }
         
         ///  <summary>
+        /// Validates the given request object
+        /// </summary>
+        public void Validate()
+        {
+            Argument.Validate(FeatureDefinition, "featureDefinition");
+        }
+        
+        ///  <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return null;
+            return ("" + Argument.Require(FeatureDefinition, "featureDefinition"));
         }
     }
     
@@ -185,12 +201,20 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         }
         
         ///  <summary>
+        /// Validates the given request object
+        /// </summary>
+        public void Validate()
+        {
+            Argument.Validate(ServerName, "serverName");
+        }
+        
+        ///  <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return null;
+            return ("" + Argument.Require(ServerName, "serverName"));
         }
     }
     
@@ -242,16 +266,24 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         }
         
         ///  <summary>
+        /// Validates the given request object
+        /// </summary>
+        public void Validate()
+        {
+            Argument.Validate(Value, "value");
+        }
+        
+        ///  <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            string errors = "";
-            if (ValuePattern.IsMatch(Value.Value))
+            string errors = ("" + Argument.Require(Value, "value"));
+            if ((ValuePattern.IsMatch(Value.Value) == false))
             {
                 errors = (errors + string.Format("Value \'{0}\' does not match pattern \'[0-9a-f]{8}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-" +
-                        "f]{4}\\-[0-9a-f]{12}\'", Value.Value));
+                        "f]{4}\\-[0-9a-f]{12}\'; ", Value.Value));
             }
             return errors;
         }
@@ -305,16 +337,24 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         }
         
         ///  <summary>
+        /// Validates the given request object
+        /// </summary>
+        public void Validate()
+        {
+            Argument.Validate(Value, "value");
+        }
+        
+        ///  <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            string errors = "";
-            if (ValuePattern.IsMatch(Value.Value))
+            string errors = ("" + Argument.Require(Value, "value"));
+            if ((ValuePattern.IsMatch(Value.Value) == false))
             {
                 errors = (errors + string.Format("Value \'{0}\' does not match pattern \'(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(\\.(0|[1-9][0" +
-                        "-9]*))?(_[_a-zA-Z0-9]+)?\'", Value.Value));
+                        "-9]*))?(_[_a-zA-Z0-9]+)?\'; ", Value.Value));
             }
             return errors;
         }
@@ -393,10 +433,10 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            string errors = "";
-            if (URLPattern.IsMatch(URL.Value))
+            string errors = ("" + Argument.Require(URL, "uRL"));
+            if ((URLPattern.IsMatch(URL.Value) == false))
             {
-                errors = (errors + string.Format("URL \'{0}\' does not match pattern \'https?://.+\'", URL.Value));
+                errors = (errors + string.Format("URL \'{0}\' does not match pattern \'https?://.+\'; ", URL.Value));
             }
             return errors;
         }
@@ -470,7 +510,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return null;
+            return ("" + Argument.Require(FeatureDefinition, "featureDefinition"));
         }
     }
     
@@ -542,10 +582,11 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            string errors = "";
-            if ((FeatureIdentifier.Value.Length <= 255))
+            string errors = ("" + Argument.Require(FeatureIdentifier, "featureIdentifier"));
+            if (((FeatureIdentifier.Value.Length <= 255) 
+                        == false))
             {
-                errors = (errors + string.Format("FeatureIdentifier \'{0}\' is longer than allowed length 255.", FeatureIdentifier.Value));
+                errors = (errors + string.Format("FeatureIdentifier \'{0}\' is longer than allowed length 255; ", FeatureIdentifier.Value));
             }
             return errors;
         }

@@ -86,6 +86,7 @@ namespace Tecan.Sila2.Interop.Server.BasicDataTypesTest
         {
             try
             {
+                request.Validate();
                 return new EchoStringValueResponseDto(_implementation.EchoStringValue(request.StringValue.Extract(_server)), _server);
             } catch (System.ArgumentException ex)
             {
@@ -107,6 +108,7 @@ namespace Tecan.Sila2.Interop.Server.BasicDataTypesTest
         {
             try
             {
+                request.Validate();
                 return new EchoIntegerValueResponseDto(_implementation.EchoIntegerValue(request.IntegerValue.Extract(_server)), _server);
             } catch (System.ArgumentException ex)
             {
@@ -128,6 +130,7 @@ namespace Tecan.Sila2.Interop.Server.BasicDataTypesTest
         {
             try
             {
+                request.Validate();
                 return new EchoRealValueResponseDto(_implementation.EchoRealValue(request.RealValue.Extract(_server)), _server);
             } catch (System.ArgumentException ex)
             {
@@ -149,6 +152,7 @@ namespace Tecan.Sila2.Interop.Server.BasicDataTypesTest
         {
             try
             {
+                request.Validate();
                 return new EchoBooleanValueResponseDto(_implementation.EchoBooleanValue(request.BooleanValue.Extract(_server)), _server);
             } catch (System.ArgumentException ex)
             {
@@ -170,6 +174,7 @@ namespace Tecan.Sila2.Interop.Server.BasicDataTypesTest
         {
             try
             {
+                request.Validate();
                 return new EchoDateValueResponseDto(_implementation.EchoDateValue(request.DateValue.Extract(_server)), _server);
             } catch (System.ArgumentException ex)
             {
@@ -191,6 +196,7 @@ namespace Tecan.Sila2.Interop.Server.BasicDataTypesTest
         {
             try
             {
+                request.Validate();
                 return new EchoTimeValueResponseDto(_implementation.EchoTimeValue(request.TimeValue.Extract(_server)), _server);
             } catch (System.ArgumentException ex)
             {
@@ -212,6 +218,7 @@ namespace Tecan.Sila2.Interop.Server.BasicDataTypesTest
         {
             try
             {
+                request.Validate();
                 return new EchoTimestampValueResponseDto(_implementation.EchoTimestampValue(request.TimestampValue.Extract(_server)), _server);
             } catch (System.ArgumentException ex)
             {

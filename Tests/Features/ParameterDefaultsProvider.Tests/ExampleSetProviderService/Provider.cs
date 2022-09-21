@@ -74,6 +74,7 @@ namespace Tecan.Sila2.ParameterDefaultsProvider.Tests
         {
             try
             {
+                request.Validate();
                 _implementation.ExampleMethod(request.Parameter.Extract(_server));
                 return EmptyRequest.Instance;
             } catch (System.ArgumentException ex)

@@ -100,7 +100,8 @@ namespace Tecan.Sila2.ParameterConstraintsProvider
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return null;
+            return (("" + Argument.Require(CommandParameterIdentifier, "commandParameterIdentifier")) 
+                        + Argument.Require(Constraints, "constraints"));
         }
     }
 }

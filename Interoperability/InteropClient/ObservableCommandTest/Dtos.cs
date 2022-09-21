@@ -88,12 +88,22 @@ namespace Tecan.Sila2.Interop.Client.ObservableCommandTest.ObservableCommandTest
         }
         
         ///  <summary>
+        /// Validates the given request object
+        /// </summary>
+        public void Validate()
+        {
+            Argument.Validate(N, "n");
+            Argument.Validate(Delay, "delay");
+        }
+        
+        ///  <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return null;
+            return (("" + Argument.Require(N, "n")) 
+                        + Argument.Require(Delay, "delay"));
         }
     }
     
@@ -140,12 +150,20 @@ namespace Tecan.Sila2.Interop.Client.ObservableCommandTest.ObservableCommandTest
         }
         
         ///  <summary>
+        /// Validates the given request object
+        /// </summary>
+        public void Validate()
+        {
+            Argument.Validate(CurrentIteration, "currentIteration");
+        }
+        
+        ///  <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return null;
+            return ("" + Argument.Require(CurrentIteration, "currentIteration"));
         }
     }
     
@@ -192,12 +210,20 @@ namespace Tecan.Sila2.Interop.Client.ObservableCommandTest.ObservableCommandTest
         }
         
         ///  <summary>
+        /// Validates the given request object
+        /// </summary>
+        public void Validate()
+        {
+            Argument.Validate(IterationResponse, "iterationResponse");
+        }
+        
+        ///  <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return null;
+            return ("" + Argument.Require(IterationResponse, "iterationResponse"));
         }
     }
     
@@ -276,12 +302,22 @@ namespace Tecan.Sila2.Interop.Client.ObservableCommandTest.ObservableCommandTest
         }
         
         ///  <summary>
+        /// Validates the given request object
+        /// </summary>
+        public void Validate()
+        {
+            Argument.Validate(Value, "value");
+            Argument.Validate(Delay, "delay");
+        }
+        
+        ///  <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return null;
+            return (("" + Argument.Require(Value, "value")) 
+                        + Argument.Require(Delay, "delay"));
         }
     }
     
@@ -328,12 +364,20 @@ namespace Tecan.Sila2.Interop.Client.ObservableCommandTest.ObservableCommandTest
         }
         
         ///  <summary>
+        /// Validates the given request object
+        /// </summary>
+        public void Validate()
+        {
+            Argument.Validate(ReceivedValue, "receivedValue");
+        }
+        
+        ///  <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return null;
+            return ("" + Argument.Require(ReceivedValue, "receivedValue"));
         }
     }
 }

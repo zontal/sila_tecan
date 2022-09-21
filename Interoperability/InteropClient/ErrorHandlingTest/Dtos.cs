@@ -48,6 +48,13 @@ namespace Tecan.Sila2.Interop.Client.ErrorHandlingTest.ErrorHandlingTest
         }
         
         ///  <summary>
+        /// Validates the given request object
+        /// </summary>
+        public void Validate()
+        {
+        }
+        
+        ///  <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
@@ -90,6 +97,13 @@ namespace Tecan.Sila2.Interop.Client.ErrorHandlingTest.ErrorHandlingTest
                 return "org.silastandard/test/ErrorHandlingTest/v1/Command/RaiseDefinedExecutionErrorObse" +
                     "rvably";
             }
+        }
+        
+        ///  <summary>
+        /// Validates the given request object
+        /// </summary>
+        public void Validate()
+        {
         }
         
         ///  <summary>
@@ -137,6 +151,13 @@ namespace Tecan.Sila2.Interop.Client.ErrorHandlingTest.ErrorHandlingTest
         }
         
         ///  <summary>
+        /// Validates the given request object
+        /// </summary>
+        public void Validate()
+        {
+        }
+        
+        ///  <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
@@ -179,6 +200,13 @@ namespace Tecan.Sila2.Interop.Client.ErrorHandlingTest.ErrorHandlingTest
                 return "org.silastandard/test/ErrorHandlingTest/v1/Command/RaiseUndefinedExecutionErrorOb" +
                     "servably";
             }
+        }
+        
+        ///  <summary>
+        /// Validates the given request object
+        /// </summary>
+        public void Validate()
+        {
         }
         
         ///  <summary>

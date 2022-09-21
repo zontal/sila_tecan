@@ -76,6 +76,7 @@ namespace Tecan.Sila2.Locking
         {
             try
             {
+                request.Validate();
                 _implementation.LockServer(request.LockIdentifier.Extract(_server), request.Timeout.Extract(_server));
                 return EmptyRequest.Instance;
             } catch (System.ArgumentException ex)
@@ -106,6 +107,7 @@ namespace Tecan.Sila2.Locking
         {
             try
             {
+                request.Validate();
                 _implementation.UnlockServer(request.LockIdentifier.Extract(_server));
                 return EmptyRequest.Instance;
             } catch (System.ArgumentException ex)
@@ -209,9 +211,6 @@ namespace Tecan.Sila2.Locking
             get
             {
                 return "org.silastandard/core/LockController/v1/Metadata/LockIdentifier";
-            }
-            set
-            {
             }
         }
         

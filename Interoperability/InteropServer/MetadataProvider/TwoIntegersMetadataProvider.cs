@@ -1,11 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.Composition;
 using System.Text;
 using Tecan.Sila2.Interop.Server.MetadataConsumerTest;
 using Tecan.Sila2.Server;
 
 namespace Tecan.Sila2.Interop.Server.MetadataProvider
 {
+    [Export( typeof( IRequestInterceptor ) )]
+    [Export( typeof( TwoIntegersMetadataProvider ) )]
+    [PartCreationPolicy( CreationPolicy.Shared )]
     internal class TwoIntegersMetadataProvider : TwoIntegersMetadataInterceptorBase
     {
         [ThreadStatic]
@@ -31,7 +35,7 @@ namespace Tecan.Sila2.Interop.Server.MetadataProvider
             {
                 return false;
             }
-            return commandIdentifier == nameof( IMetadataConsumerTest.UnpackMetadata );
+            return commandIdentifier.Contains( nameof( IMetadataConsumerTest.UnpackMetadata ) );
         }
     }
 }

@@ -13,8 +13,8 @@ namespace Tecan.Sila2.DynamicClient
         /// <param name="command">The feature command</param>
         /// <param name="commandIdentifier">The fully qualified command identifier</param>
         /// <param name="requestType">The type of the request</param>
-        public DynamicRequest(FeatureCommand command, string commandIdentifier, DataTypeType requestType)
-            : base((command ?? throw new ArgumentNullException(nameof(command))).Identifier, command.DisplayName, command.Description, requestType)
+        public DynamicRequest( FeatureCommand command, string commandIdentifier, DataTypeType requestType )
+            : base( (command ?? throw new ArgumentNullException( nameof( command ) )).Identifier, command.DisplayName, command.Description, requestType )
         {
             CommandIdentifier = commandIdentifier;
         }
@@ -23,5 +23,23 @@ namespace Tecan.Sila2.DynamicClient
         /// Gets the fully qualified command identifier
         /// </summary>
         public string CommandIdentifier { get; }
+
+        /// <summary>
+        /// Validates the request
+        /// </summary>
+        public void Validate()
+        {
+            if(Value is DynamicObject obj)
+            {
+                foreach(var prop in obj.Elements)
+                {
+                    var error = prop.GetValidationErrors();
+                    if(error != null)
+                    {
+                        throw new ArgumentException( error, prop.Identifier );
+                    }
+                }
+            }
+        }
     }
 }

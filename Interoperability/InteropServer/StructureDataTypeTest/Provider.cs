@@ -76,6 +76,7 @@ namespace Tecan.Sila2.Interop.Server.StructureDataTypeTest
         {
             try
             {
+                request.Validate();
                 return new EchoStructureValueResponseDto(_implementation.EchoStructureValue(request.StructureValue.Extract(_server)), _server);
             } catch (System.ArgumentException ex)
             {
@@ -97,6 +98,7 @@ namespace Tecan.Sila2.Interop.Server.StructureDataTypeTest
         {
             try
             {
+                request.Validate();
                 return new EchoDeepStructureValueResponseDto(_implementation.EchoDeepStructureValue(request.DeepStructureValue.Extract(_server)), _server);
             } catch (System.ArgumentException ex)
             {

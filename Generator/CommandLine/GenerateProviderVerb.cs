@@ -55,12 +55,6 @@ namespace Tecan.Sila2.Generator.CommandLine
         public string ClientPath { get; set; }
 
         /// <summary>
-        /// Path to a file that contains additional constraints
-        /// </summary>
-        [Option( "config-file", Required = false, HelpText = "Path to a file that contains additional constraints" )]
-        public string ConfigFile { get; set; }
-
-        /// <summary>
         /// If set, only the client code will be generated
         /// </summary>
         [Option( 'c', "client-only", HelpText = "If set, only the client code will be generated",

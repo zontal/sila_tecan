@@ -113,16 +113,28 @@ namespace Tecan.Sila2.Authorization.AuthorizationProviderService
         }
         
         ///  <summary>
+        /// Validates the given request object
+        /// </summary>
+        public void Validate()
+        {
+            Argument.Validate(AccessToken, "accessToken");
+            Argument.Validate(RequestedServer, "requestedServer");
+            Argument.Validate(RequestedFeature, "requestedFeature");
+        }
+        
+        ///  <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            string errors = "";
-            if (RequestedServerPattern.IsMatch(RequestedServer.Value))
+            string errors = ((("" + Argument.Require(AccessToken, "accessToken")) 
+                        + Argument.Require(RequestedServer, "requestedServer")) 
+                        + Argument.Require(RequestedFeature, "requestedFeature"));
+            if ((RequestedServerPattern.IsMatch(RequestedServer.Value) == false))
             {
                 errors = (errors + string.Format("RequestedServer \'{0}\' does not match pattern \'[0-9a-f]{8}\\-[0-9a-f]{4}\\-[0-9a-f]{" +
-                        "4}\\-[0-9a-f]{4}\\-[0-9a-f]{12}\'", RequestedServer.Value));
+                        "4}\\-[0-9a-f]{4}\\-[0-9a-f]{12}\'; ", RequestedServer.Value));
             }
             return errors;
         }
@@ -171,12 +183,20 @@ namespace Tecan.Sila2.Authorization.AuthorizationProviderService
         }
         
         ///  <summary>
+        /// Validates the given request object
+        /// </summary>
+        public void Validate()
+        {
+            Argument.Validate(TokenLifetime, "tokenLifetime");
+        }
+        
+        ///  <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return null;
+            return ("" + Argument.Require(TokenLifetime, "tokenLifetime"));
         }
     }
 }

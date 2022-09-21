@@ -128,9 +128,6 @@ namespace Tecan.Sila2.Interop.Server.MetadataProvider
             {
                 return "org.silastandard/test/MetadataProviderTest/v1/Metadata/StringMetadata";
             }
-            set
-            {
-            }
         }
         
         ///  <summary>
@@ -203,9 +200,6 @@ namespace Tecan.Sila2.Interop.Server.MetadataProvider
             get
             {
                 return "org.silastandard/test/MetadataProviderTest/v1/Metadata/TwoIntegersMetadata";
-            }
-            set
-            {
             }
         }
         

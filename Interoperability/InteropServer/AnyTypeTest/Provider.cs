@@ -83,6 +83,7 @@ namespace Tecan.Sila2.Interop.Server.AnyTypeTest
         {
             try
             {
+                request.Validate();
                 return new SetAnyTypeValueResponseDto(_implementation.SetAnyTypeValue(request.AnyTypeValue.Extract(_server)), _server);
             } catch (System.ArgumentException ex)
             {

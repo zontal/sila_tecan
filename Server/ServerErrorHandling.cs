@@ -122,21 +122,42 @@ namespace Tecan.Sila2.Server
         /// Creates a server-side framework error
         /// </summary>
         /// <param name="identifier">The type of the error</param>
-        public static Exception CreateFrameworkError( FrameworkErrorType identifier )
+        /// <param name="message">The message</param>
+        public static Exception CreateFrameworkError( FrameworkErrorType identifier, string message = null )
         {
             return new RpcException( new Status( StatusCode.Aborted, ToBase64String( new SiLAErrorDto
             {
                 FrameworkError = new FrameworkErrorDto()
                 {
-                    Type = identifier
+                    Type = identifier,
+                    Message = message ?? GetDefaultMessage( identifier )
                 }
             } ) ) );
+        }
+
+        private static string GetDefaultMessage( FrameworkErrorType errorType )
+        {
+            switch(errorType)
+            {
+                case FrameworkErrorType.CommandExecutionNotAccepted:
+                    return "Command execution was not accepted";
+                case FrameworkErrorType.InvalidCommandExecutionUuid:
+                    return "The command execution Uuid specified was invalid.";
+                case FrameworkErrorType.CommandExecutionNotFinished:
+                    return "The command has not finished, yet.";
+                case FrameworkErrorType.InvalidMetadata:
+                    return "Metadata has not been provided";
+                case FrameworkErrorType.NoMetadataAllowed:
+                    return "No metadata allowed on this call";
+                default:
+                    throw new ArgumentOutOfRangeException( nameof( errorType ) );
+            }
         }
 
         /// <inheritdoc />
         public Exception CreateMissingMetadataException( string metadataIdentifier )
         {
-            return CreateFrameworkError( FrameworkErrorType.InvalidMetadata );
+            return CreateFrameworkError( FrameworkErrorType.InvalidMetadata, $"Metadata {metadataIdentifier} is missing" );
         }
     }
 }

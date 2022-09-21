@@ -98,8 +98,12 @@ namespace Tecan.Sila2
             {
                 throw new ArgumentException( "The provided server is not a valid server id.", nameof( serverUuid ) );
             }
+            if(_discovery == null)
+            {
+                throw new InvalidOperationException( "The server is not configured to discover authorization providers through a server uuid." );
+            }
 
-            var servers = _discovery.GetServers( TimeSpan.FromSeconds( 1 ) );
+            var servers = _discovery.GetServers( TimeSpan.FromSeconds( 10 ) );
             var server = servers?.FirstOrDefault( s => s.Config.Uuid == serverId );
             if(server == null)
             {
@@ -136,6 +140,10 @@ namespace Tecan.Sila2
 
         private void SetAuthorizationProviderCore( string host, int port )
         {
+            if(_serverConnector == null)
+            {
+                throw new InvalidOperationException( "The server is not configured to connect with a server with host name and port." );
+            }
             var server = _serverConnector.Connect( host, port );
             if(server == null || server.Features.All( f => f.FullyQualifiedIdentifier != ProviderFeatureId ))
             {

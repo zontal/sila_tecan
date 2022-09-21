@@ -136,6 +136,11 @@ namespace Tecan.Sila2.Recovery
             }
             return errors;
         }
+
+        public void Validate()
+        {
+            throw new System.NotImplementedException();
+        }
     }
 
     ///  <summary>
@@ -211,6 +216,11 @@ namespace Tecan.Sila2.Recovery
             }
             return errors;
         }
+
+        public void Validate()
+        {
+            throw new System.NotImplementedException();
+        }
     }
 
     ///  <summary>
@@ -274,6 +284,11 @@ namespace Tecan.Sila2.Recovery
         public string GetValidationErrors()
         {
             return null;
+        }
+
+        public void Validate()
+        {
+            throw new System.NotImplementedException();
         }
     }
 

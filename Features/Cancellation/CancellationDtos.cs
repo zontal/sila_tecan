@@ -68,12 +68,20 @@ namespace Tecan.Sila2.Cancellation
         }
         
         ///  <summary>
+        /// Validates the given request object
+        /// </summary>
+        public void Validate()
+        {
+            Argument.Validate(CommandExecutionUUID, "commandExecutionUUID");
+        }
+        
+        ///  <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return null;
+            return ("" + Argument.Require(CommandExecutionUUID, "commandExecutionUUID"));
         }
     }
     
@@ -109,6 +117,13 @@ namespace Tecan.Sila2.Cancellation
             {
                 return "org.silastandard/core.commands/CancelController/v1/Command/CancelAll";
             }
+        }
+        
+        ///  <summary>
+        /// Validates the given request object
+        /// </summary>
+        public void Validate()
+        {
         }
         
         ///  <summary>
@@ -194,11 +209,11 @@ namespace Tecan.Sila2.Cancellation
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            string errors = "";
-            if (UUIDPattern.IsMatch(UUID.Value))
+            string errors = ("" + Argument.Require(UUID, "uUID"));
+            if ((UUIDPattern.IsMatch(UUID.Value) == false))
             {
                 errors = (errors + string.Format("UUID \'{0}\' does not match pattern \'[0-9a-f]{8}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f" +
-                        "]{4}\\-[0-9a-f]{12}\'", UUID.Value));
+                        "]{4}\\-[0-9a-f]{12}\'; ", UUID.Value));
             }
             return errors;
         }

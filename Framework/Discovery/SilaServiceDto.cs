@@ -11,24 +11,24 @@
 namespace Tecan.Sila2.Discovery
 {
     using Tecan.Sila2;
-    
-    
+
+
     ///  <summary>
     /// Data transfer object for the request of the Get Feature Definition command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
     public class GetFeatureDefinitionRequestDto : Tecan.Sila2.ISilaTransferObject, Tecan.Sila2.ISilaRequestObject
     {
-        
+
         private Tecan.Sila2.StringDto _featureIdentifier;
-        
+
         ///  <summary>
         /// Create a new instance
         /// </summary>
         public GetFeatureDefinitionRequestDto()
         {
         }
-        
+
         ///  <summary>
         /// Create a new instance
         /// </summary>
@@ -36,15 +36,15 @@ namespace Tecan.Sila2.Discovery
         ///  <param name="featureIdentifier">
         ///        The fully qualified Feature identifier for which the Feature definition shall be retrieved.
         ///      </param>
-        public GetFeatureDefinitionRequestDto(string featureIdentifier, Tecan.Sila2.IBinaryStore store)
+        public GetFeatureDefinitionRequestDto( string featureIdentifier, Tecan.Sila2.IBinaryStore store )
         {
-            FeatureIdentifier = new Tecan.Sila2.StringDto(featureIdentifier, store);
+            FeatureIdentifier = new Tecan.Sila2.StringDto( featureIdentifier, store );
         }
-        
+
         ///  <summary>
         /// The fully qualified Feature identifier for which the Feature definition shall be retrieved.
         /// </summary>
-        [ProtoBuf.ProtoMemberAttribute(1)]
+        [ProtoBuf.ProtoMemberAttribute( 1 )]
         public Tecan.Sila2.StringDto FeatureIdentifier
         {
             get
@@ -56,7 +56,7 @@ namespace Tecan.Sila2.Discovery
                 _featureIdentifier = value;
             }
         }
-        
+
         ///  <summary>
         /// Gets the command identifier for this command
         /// </summary>
@@ -68,47 +68,55 @@ namespace Tecan.Sila2.Discovery
                 return "org.silastandard/core/SiLAService/v1/Command/GetFeatureDefinition";
             }
         }
-        
+
+        ///  <summary>
+        /// Validates the given request object
+        /// </summary>
+        public void Validate()
+        {
+            Argument.Validate( FeatureIdentifier, "featureIdentifier" );
+        }
+
         ///  <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return null;
+            return ("" + Argument.Require( FeatureIdentifier, "featureIdentifier" ));
         }
     }
-    
+
     ///  <summary>
     /// Data transfer object for the response of the Get Feature Definition command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
     public class GetFeatureDefinitionResponseDto : Tecan.Sila2.ISilaTransferObject
     {
-        
+
         private Tecan.Sila2.StringDto _featureDefinition;
-        
+
         ///  <summary>
         /// Create a new instance
         /// </summary>
         public GetFeatureDefinitionResponseDto()
         {
         }
-        
+
         ///  <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
         ///  <param name="featureDefinition">The Feature definition in XML format (according to the Feature Definition Schema).</param>
-        public GetFeatureDefinitionResponseDto(string featureDefinition, Tecan.Sila2.IBinaryStore store)
+        public GetFeatureDefinitionResponseDto( string featureDefinition, Tecan.Sila2.IBinaryStore store )
         {
-            FeatureDefinition = new Tecan.Sila2.StringDto(featureDefinition, store);
+            FeatureDefinition = new Tecan.Sila2.StringDto( featureDefinition, store );
         }
-        
+
         ///  <summary>
         /// The Feature definition in XML format (according to the Feature Definition Schema).
         /// </summary>
-        [ProtoBuf.ProtoMemberAttribute(1)]
+        [ProtoBuf.ProtoMemberAttribute( 1 )]
         public Tecan.Sila2.StringDto FeatureDefinition
         {
             get
@@ -120,47 +128,55 @@ namespace Tecan.Sila2.Discovery
                 _featureDefinition = value;
             }
         }
-        
+
+        ///  <summary>
+        /// Validates the given request object
+        /// </summary>
+        public void Validate()
+        {
+            Argument.Validate( FeatureDefinition, "featureDefinition" );
+        }
+
         ///  <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return null;
+            return ("" + Argument.Require( FeatureDefinition, "featureDefinition" ));
         }
     }
-    
+
     ///  <summary>
     /// Data transfer object for the request of the Set Server Name command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
     public class SetServerNameRequestDto : Tecan.Sila2.ISilaTransferObject, Tecan.Sila2.ISilaRequestObject
     {
-        
+
         private Tecan.Sila2.StringDto _serverName;
-        
+
         ///  <summary>
         /// Create a new instance
         /// </summary>
         public SetServerNameRequestDto()
         {
         }
-        
+
         ///  <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
         ///  <param name="serverName">The human readable name to assign to the SiLA Server.</param>
-        public SetServerNameRequestDto(string serverName, Tecan.Sila2.IBinaryStore store)
+        public SetServerNameRequestDto( string serverName, Tecan.Sila2.IBinaryStore store )
         {
-            ServerName = new Tecan.Sila2.StringDto(serverName, store);
+            ServerName = new Tecan.Sila2.StringDto( serverName, store );
         }
-        
+
         ///  <summary>
         /// The human readable name to assign to the SiLA Server.
         /// </summary>
-        [ProtoBuf.ProtoMemberAttribute(1)]
+        [ProtoBuf.ProtoMemberAttribute( 1 )]
         public Tecan.Sila2.StringDto ServerName
         {
             get
@@ -172,7 +188,7 @@ namespace Tecan.Sila2.Discovery
                 _serverName = value;
             }
         }
-        
+
         ///  <summary>
         /// Gets the command identifier for this command
         /// </summary>
@@ -184,52 +200,61 @@ namespace Tecan.Sila2.Discovery
                 return "org.silastandard/core/SiLAService/v1/Command/SetServerName";
             }
         }
-        
+
+        ///  <summary>
+        /// Validates the given request object
+        /// </summary>
+        public void Validate()
+        {
+            Argument.Validate( ServerName, "serverName" );
+        }
+
         ///  <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            string errors = "";
-            if ((ServerName.Value.Length <= 255))
+            string errors = ("" + Argument.Require( ServerName, "serverName" ));
+            if(((ServerName.Value.Length <= 255)
+                        == false))
             {
-                errors = (errors + string.Format("ServerName \'{0}\' is longer than allowed length 255.", ServerName.Value));
+                errors = (errors + string.Format( "ServerName \'{0}\' is longer than allowed length 255; ", ServerName.Value ));
             }
             return errors;
         }
     }
-    
+
     ///  <summary>
     /// Data transfer object to encapsulate the response of the Server Name property
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
     public class ServerNameResponseDto : Tecan.Sila2.ISilaTransferObject
     {
-        
+
         private Tecan.Sila2.StringDto _value;
-        
+
         ///  <summary>
         /// Create a new instance
         /// </summary>
         public ServerNameResponseDto()
         {
         }
-        
+
         ///  <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
         ///  <param name="value"></param>
-        public ServerNameResponseDto(string value, Tecan.Sila2.IBinaryStore store)
+        public ServerNameResponseDto( string value, Tecan.Sila2.IBinaryStore store )
         {
-            Value = new Tecan.Sila2.StringDto(value, store);
+            Value = new Tecan.Sila2.StringDto( value, store );
         }
-        
+
         ///  <summary>
         /// The  property
         /// </summary>
-        [ProtoBuf.ProtoMemberAttribute(1)]
+        [ProtoBuf.ProtoMemberAttribute( 1 )]
         public Tecan.Sila2.StringDto Value
         {
             get
@@ -241,57 +266,66 @@ namespace Tecan.Sila2.Discovery
                 _value = value;
             }
         }
-        
+
+        ///  <summary>
+        /// Validates the given request object
+        /// </summary>
+        public void Validate()
+        {
+            Argument.Validate( Value, "value" );
+        }
+
         ///  <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            string errors = "";
-            if ((Value.Value.Length <= 255))
+            string errors = ("" + Argument.Require( Value, "value" ));
+            if(((Value.Value.Length <= 255)
+                        == false))
             {
-                errors = (errors + string.Format("Value \'{0}\' is longer than allowed length 255.", Value.Value));
+                errors = (errors + string.Format( "Value \'{0}\' is longer than allowed length 255; ", Value.Value ));
             }
             return errors;
         }
     }
-    
+
     ///  <summary>
     /// Data transfer object to encapsulate the response of the Server Type property
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
     public class ServerTypeResponseDto : Tecan.Sila2.ISilaTransferObject
     {
-        
+
         private Tecan.Sila2.StringDto _value;
-        
+
         ///  <summary>
         /// A regular expression to check the validity of Value
         /// </summary>
-        public static System.Text.RegularExpressions.Regex ValuePattern = new System.Text.RegularExpressions.Regex("[A-Z][a-zA-Z0-9]*");
-        
+        public static System.Text.RegularExpressions.Regex ValuePattern = new System.Text.RegularExpressions.Regex( "[A-Z][a-zA-Z0-9]*" );
+
         ///  <summary>
         /// Create a new instance
         /// </summary>
         public ServerTypeResponseDto()
         {
         }
-        
+
         ///  <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
         ///  <param name="value"></param>
-        public ServerTypeResponseDto(string value, Tecan.Sila2.IBinaryStore store)
+        public ServerTypeResponseDto( string value, Tecan.Sila2.IBinaryStore store )
         {
-            Value = new Tecan.Sila2.StringDto(value, store);
+            Value = new Tecan.Sila2.StringDto( value, store );
         }
-        
+
         ///  <summary>
         /// The  property
         /// </summary>
-        [ProtoBuf.ProtoMemberAttribute(1)]
+        [ProtoBuf.ProtoMemberAttribute( 1 )]
         public Tecan.Sila2.StringDto Value
         {
             get
@@ -303,57 +337,65 @@ namespace Tecan.Sila2.Discovery
                 _value = value;
             }
         }
-        
+
+        ///  <summary>
+        /// Validates the given request object
+        /// </summary>
+        public void Validate()
+        {
+            Argument.Validate( Value, "value" );
+        }
+
         ///  <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            string errors = "";
-            if (ValuePattern.IsMatch(Value.Value))
+            string errors = ("" + Argument.Require( Value, "value" ));
+            if((ValuePattern.IsMatch( Value.Value ) == false))
             {
-                errors = (errors + string.Format("Value \'{0}\' does not match pattern \'[A-Z][a-zA-Z0-9]*\'", Value.Value));
+                errors = (errors + string.Format( "Value \'{0}\' does not match pattern \'[A-Z][a-zA-Z0-9]*\'; ", Value.Value ));
             }
             return errors;
         }
     }
-    
+
     ///  <summary>
     /// Data transfer object to encapsulate the response of the Server UUID property
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
     public class ServerUUIDResponseDto : Tecan.Sila2.ISilaTransferObject
     {
-        
+
         private Tecan.Sila2.StringDto _value;
-        
+
         ///  <summary>
         /// A regular expression to check the validity of Value
         /// </summary>
-        public static System.Text.RegularExpressions.Regex ValuePattern = new System.Text.RegularExpressions.Regex("[0-9a-f]{8}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{12}");
-        
+        public static System.Text.RegularExpressions.Regex ValuePattern = new System.Text.RegularExpressions.Regex( "[0-9a-f]{8}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{12}" );
+
         ///  <summary>
         /// Create a new instance
         /// </summary>
         public ServerUUIDResponseDto()
         {
         }
-        
+
         ///  <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
         ///  <param name="value"></param>
-        public ServerUUIDResponseDto(string value, Tecan.Sila2.IBinaryStore store)
+        public ServerUUIDResponseDto( string value, Tecan.Sila2.IBinaryStore store )
         {
-            Value = new Tecan.Sila2.StringDto(value, store);
+            Value = new Tecan.Sila2.StringDto( value, store );
         }
-        
+
         ///  <summary>
         /// The  property
         /// </summary>
-        [ProtoBuf.ProtoMemberAttribute(1)]
+        [ProtoBuf.ProtoMemberAttribute( 1 )]
         public Tecan.Sila2.StringDto Value
         {
             get
@@ -365,58 +407,66 @@ namespace Tecan.Sila2.Discovery
                 _value = value;
             }
         }
-        
+
+        ///  <summary>
+        /// Validates the given request object
+        /// </summary>
+        public void Validate()
+        {
+            Argument.Validate( Value, "value" );
+        }
+
         ///  <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            string errors = "";
-            if (ValuePattern.IsMatch(Value.Value))
+            string errors = ("" + Argument.Require( Value, "value" ));
+            if((ValuePattern.IsMatch( Value.Value ) == false))
             {
-                errors = (errors + string.Format("Value \'{0}\' does not match pattern \'[0-9a-f]{8}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-" +
-                        "f]{4}\\-[0-9a-f]{12}\'", Value.Value));
+                errors = (errors + string.Format( "Value \'{0}\' does not match pattern \'[0-9a-f]{8}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-" +
+                        "f]{4}\\-[0-9a-f]{12}\'; ", Value.Value ));
             }
             return errors;
         }
     }
-    
+
     ///  <summary>
     /// Data transfer object to encapsulate the response of the Server Version property
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
     public class ServerVersionResponseDto : Tecan.Sila2.ISilaTransferObject
     {
-        
+
         private Tecan.Sila2.StringDto _value;
-        
+
         ///  <summary>
         /// A regular expression to check the validity of Value
         /// </summary>
-        public static System.Text.RegularExpressions.Regex ValuePattern = new System.Text.RegularExpressions.Regex("(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(\\.(0|[1-9][0-9]*))?(_[_a-zA-Z0-9]+)?");
-        
+        public static System.Text.RegularExpressions.Regex ValuePattern = new System.Text.RegularExpressions.Regex( "(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(\\.(0|[1-9][0-9]*))?(_[_a-zA-Z0-9]+)?" );
+
         ///  <summary>
         /// Create a new instance
         /// </summary>
         public ServerVersionResponseDto()
         {
         }
-        
+
         ///  <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
         ///  <param name="value"></param>
-        public ServerVersionResponseDto(string value, Tecan.Sila2.IBinaryStore store)
+        public ServerVersionResponseDto( string value, Tecan.Sila2.IBinaryStore store )
         {
-            Value = new Tecan.Sila2.StringDto(value, store);
+            Value = new Tecan.Sila2.StringDto( value, store );
         }
-        
+
         ///  <summary>
         /// The  property
         /// </summary>
-        [ProtoBuf.ProtoMemberAttribute(1)]
+        [ProtoBuf.ProtoMemberAttribute( 1 )]
         public Tecan.Sila2.StringDto Value
         {
             get
@@ -428,58 +478,66 @@ namespace Tecan.Sila2.Discovery
                 _value = value;
             }
         }
-        
+
+        ///  <summary>
+        /// Validates the given request object
+        /// </summary>
+        public void Validate()
+        {
+            Argument.Validate( Value, "value" );
+        }
+
         ///  <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            string errors = "";
-            if (ValuePattern.IsMatch(Value.Value))
+            string errors = ("" + Argument.Require( Value, "value" ));
+            if((ValuePattern.IsMatch( Value.Value ) == false))
             {
-                errors = (errors + string.Format("Value \'{0}\' does not match pattern \'(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(\\.(0|[1-9][0" +
-                        "-9]*))?(_[_a-zA-Z0-9]+)?\'", Value.Value));
+                errors = (errors + string.Format( "Value \'{0}\' does not match pattern \'(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(\\.(0|[1-9][0" +
+                        "-9]*))?(_[_a-zA-Z0-9]+)?\'; ", Value.Value ));
             }
             return errors;
         }
     }
-    
+
     ///  <summary>
     /// Data transfer object to encapsulate the response of the Server Vendor URL property
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
     public class ServerVendorURLResponseDto : Tecan.Sila2.ISilaTransferObject
     {
-        
+
         private Tecan.Sila2.StringDto _value;
-        
+
         ///  <summary>
         /// A regular expression to check the validity of Value
         /// </summary>
-        public static System.Text.RegularExpressions.Regex ValuePattern = new System.Text.RegularExpressions.Regex("https?://.+");
-        
+        public static System.Text.RegularExpressions.Regex ValuePattern = new System.Text.RegularExpressions.Regex( "https?://.+" );
+
         ///  <summary>
         /// Create a new instance
         /// </summary>
         public ServerVendorURLResponseDto()
         {
         }
-        
+
         ///  <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
         ///  <param name="value"></param>
-        public ServerVendorURLResponseDto(string value, Tecan.Sila2.IBinaryStore store)
+        public ServerVendorURLResponseDto( string value, Tecan.Sila2.IBinaryStore store )
         {
-            Value = new Tecan.Sila2.StringDto(value, store);
+            Value = new Tecan.Sila2.StringDto( value, store );
         }
-        
+
         ///  <summary>
         /// The  property
         /// </summary>
-        [ProtoBuf.ProtoMemberAttribute(1)]
+        [ProtoBuf.ProtoMemberAttribute( 1 )]
         public Tecan.Sila2.StringDto Value
         {
             get
@@ -491,17 +549,25 @@ namespace Tecan.Sila2.Discovery
                 _value = value;
             }
         }
-        
+
+        ///  <summary>
+        /// Validates the given request object
+        /// </summary>
+        public void Validate()
+        {
+            Argument.Validate( Value, "value" );
+        }
+
         ///  <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            string errors = "";
-            if (ValuePattern.IsMatch(Value.Value))
+            string errors = ("" + Argument.Require( Value, "value" ));
+            if((ValuePattern.IsMatch( Value.Value ) == false))
             {
-                errors = (errors + string.Format("Value \'{0}\' does not match pattern \'https?://.+\'", Value.Value));
+                errors = (errors + string.Format( "Value \'{0}\' does not match pattern \'https?://.+\'; ", Value.Value ));
             }
             return errors;
         }

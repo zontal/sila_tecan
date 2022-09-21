@@ -67,12 +67,20 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         }
         
         ///  <summary>
+        /// Validates the given request object
+        /// </summary>
+        public void Validate()
+        {
+            Argument.Validate(Data, "data");
+        }
+        
+        ///  <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return null;
+            return ("" + Argument.Require(Data, "data"));
         }
     }
     
@@ -118,12 +126,20 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         }
         
         ///  <summary>
+        /// Validates the given request object
+        /// </summary>
+        public void Validate()
+        {
+            Argument.Validate(ReturnValue, "returnValue");
+        }
+        
+        ///  <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return null;
+            return ("" + Argument.Require(ReturnValue, "returnValue"));
         }
     }
     
@@ -181,12 +197,20 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         }
         
         ///  <summary>
+        /// Validates the given request object
+        /// </summary>
+        public void Validate()
+        {
+            Argument.Validate(Data, "data");
+        }
+        
+        ///  <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return null;
+            return ("" + Argument.Require(Data, "data"));
         }
     }
     
@@ -232,12 +256,20 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         }
         
         ///  <summary>
+        /// Validates the given request object
+        /// </summary>
+        public void Validate()
+        {
+            Argument.Validate(ReturnValue, "returnValue");
+        }
+        
+        ///  <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return null;
+            return ("" + Argument.Require(ReturnValue, "returnValue"));
         }
     }
     
@@ -295,12 +327,20 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         }
         
         ///  <summary>
+        /// Validates the given request object
+        /// </summary>
+        public void Validate()
+        {
+            Argument.Validate(Data, "data");
+        }
+        
+        ///  <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return null;
+            return ("" + Argument.Require(Data, "data"));
         }
     }
     
@@ -346,12 +386,20 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         }
         
         ///  <summary>
+        /// Validates the given request object
+        /// </summary>
+        public void Validate()
+        {
+            Argument.Validate(ReturnValue, "returnValue");
+        }
+        
+        ///  <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return null;
+            return ("" + Argument.Require(ReturnValue, "returnValue"));
         }
     }
     
@@ -409,12 +457,20 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         }
         
         ///  <summary>
+        /// Validates the given request object
+        /// </summary>
+        public void Validate()
+        {
+            Argument.Validate(Data, "data");
+        }
+        
+        ///  <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return null;
+            return ("" + Argument.Require(Data, "data"));
         }
     }
     
@@ -460,12 +516,20 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         }
         
         ///  <summary>
+        /// Validates the given request object
+        /// </summary>
+        public void Validate()
+        {
+            Argument.Validate(ReturnValue, "returnValue");
+        }
+        
+        ///  <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return null;
+            return ("" + Argument.Require(ReturnValue, "returnValue"));
         }
     }
     
@@ -523,12 +587,20 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         }
         
         ///  <summary>
+        /// Validates the given request object
+        /// </summary>
+        public void Validate()
+        {
+            Argument.Validate(Timestamp, "timestamp");
+        }
+        
+        ///  <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return null;
+            return ("" + Argument.Require(Timestamp, "timestamp"));
         }
     }
     
@@ -574,12 +646,20 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         }
         
         ///  <summary>
+        /// Validates the given request object
+        /// </summary>
+        public void Validate()
+        {
+            Argument.Validate(ReturnValue, "returnValue");
+        }
+        
+        ///  <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return null;
+            return ("" + Argument.Require(ReturnValue, "returnValue"));
         }
     }
     
@@ -637,12 +717,20 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         }
         
         ///  <summary>
+        /// Validates the given request object
+        /// </summary>
+        public void Validate()
+        {
+            Argument.Validate(Time, "time");
+        }
+        
+        ///  <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return null;
+            return ("" + Argument.Require(Time, "time"));
         }
     }
     
@@ -688,12 +776,20 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         }
         
         ///  <summary>
+        /// Validates the given request object
+        /// </summary>
+        public void Validate()
+        {
+            Argument.Validate(ReturnValue, "returnValue");
+        }
+        
+        ///  <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return null;
+            return ("" + Argument.Require(ReturnValue, "returnValue"));
         }
     }
     
@@ -751,12 +847,20 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         }
         
         ///  <summary>
+        /// Validates the given request object
+        /// </summary>
+        public void Validate()
+        {
+            Argument.Validate(Value, "value");
+        }
+        
+        ///  <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return null;
+            return ("" + Argument.Require(Value, "value"));
         }
     }
     
@@ -802,12 +906,20 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         }
         
         ///  <summary>
+        /// Validates the given request object
+        /// </summary>
+        public void Validate()
+        {
+            Argument.Validate(ReturnValue, "returnValue");
+        }
+        
+        ///  <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return null;
+            return ("" + Argument.Require(ReturnValue, "returnValue"));
         }
     }
     
@@ -865,12 +977,20 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         }
         
         ///  <summary>
+        /// Validates the given request object
+        /// </summary>
+        public void Validate()
+        {
+            Argument.Validate(Value, "value");
+        }
+        
+        ///  <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return null;
+            return ("" + Argument.Require(Value, "value"));
         }
     }
     
@@ -916,12 +1036,20 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         }
         
         ///  <summary>
+        /// Validates the given request object
+        /// </summary>
+        public void Validate()
+        {
+            Argument.Validate(ReturnValue, "returnValue");
+        }
+        
+        ///  <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return null;
+            return ("" + Argument.Require(ReturnValue, "returnValue"));
         }
     }
     
@@ -979,12 +1107,20 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         }
         
         ///  <summary>
+        /// Validates the given request object
+        /// </summary>
+        public void Validate()
+        {
+            Argument.Validate(File, "file");
+        }
+        
+        ///  <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return null;
+            return ("" + Argument.Require(File, "file"));
         }
     }
     
@@ -1030,12 +1166,20 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         }
         
         ///  <summary>
+        /// Validates the given request object
+        /// </summary>
+        public void Validate()
+        {
+            Argument.Validate(ReturnValue, "returnValue");
+        }
+        
+        ///  <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return null;
+            return ("" + Argument.Require(ReturnValue, "returnValue"));
         }
     }
     
@@ -1093,12 +1237,20 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         }
         
         ///  <summary>
+        /// Validates the given request object
+        /// </summary>
+        public void Validate()
+        {
+            Argument.Validate(Bytes, "bytes");
+        }
+        
+        ///  <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return null;
+            return ("" + Argument.Require(Bytes, "bytes"));
         }
     }
     
@@ -1144,12 +1296,20 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         }
         
         ///  <summary>
+        /// Validates the given request object
+        /// </summary>
+        public void Validate()
+        {
+            Argument.Validate(ReturnValue, "returnValue");
+        }
+        
+        ///  <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return null;
+            return ("" + Argument.Require(ReturnValue, "returnValue"));
         }
     }
     
@@ -1207,12 +1367,20 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         }
         
         ///  <summary>
+        /// Validates the given request object
+        /// </summary>
+        public void Validate()
+        {
+            Argument.Validate(Dynamic, "dynamic");
+        }
+        
+        ///  <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return null;
+            return ("" + Argument.Require(Dynamic, "dynamic"));
         }
     }
     
@@ -1258,12 +1426,20 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         }
         
         ///  <summary>
+        /// Validates the given request object
+        /// </summary>
+        public void Validate()
+        {
+            Argument.Validate(ReturnValue, "returnValue");
+        }
+        
+        ///  <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return null;
+            return ("" + Argument.Require(ReturnValue, "returnValue"));
         }
     }
     
@@ -1321,12 +1497,20 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         }
         
         ///  <summary>
+        /// Validates the given request object
+        /// </summary>
+        public void Validate()
+        {
+            Argument.Validate(Strings, "strings");
+        }
+        
+        ///  <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return null;
+            return ("" + Argument.Require(Strings, "strings"));
         }
     }
     
@@ -1372,12 +1556,20 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         }
         
         ///  <summary>
+        /// Validates the given request object
+        /// </summary>
+        public void Validate()
+        {
+            Argument.Validate(ReturnValue, "returnValue");
+        }
+        
+        ///  <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return null;
+            return ("" + Argument.Require(ReturnValue, "returnValue"));
         }
     }
     
@@ -1435,12 +1627,20 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         }
         
         ///  <summary>
+        /// Validates the given request object
+        /// </summary>
+        public void Validate()
+        {
+            Argument.Validate(Structure, "structure");
+        }
+        
+        ///  <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return null;
+            return ("" + Argument.Require(Structure, "structure"));
         }
     }
     
@@ -1486,12 +1686,20 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         }
         
         ///  <summary>
+        /// Validates the given request object
+        /// </summary>
+        public void Validate()
+        {
+            Argument.Validate(ReturnValue, "returnValue");
+        }
+        
+        ///  <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return null;
+            return ("" + Argument.Require(ReturnValue, "returnValue"));
         }
     }
     
@@ -1527,6 +1735,13 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             {
                 return "tecan.sila/integrationtests/TestServer/v1/Command/RunObservable";
             }
+        }
+        
+        ///  <summary>
+        /// Validates the given request object
+        /// </summary>
+        public void Validate()
+        {
         }
         
         ///  <summary>
@@ -1581,12 +1796,20 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         }
         
         ///  <summary>
+        /// Validates the given request object
+        /// </summary>
+        public void Validate()
+        {
+            Argument.Validate(ReturnValue, "returnValue");
+        }
+        
+        ///  <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return null;
+            return ("" + Argument.Require(ReturnValue, "returnValue"));
         }
     }
     
@@ -1623,6 +1846,13 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
                 return "tecan.sila/integrationtests/TestServer/v1/Command/RunIntermediateObservableComman" +
                     "d";
             }
+        }
+        
+        ///  <summary>
+        /// Validates the given request object
+        /// </summary>
+        public void Validate()
+        {
         }
         
         ///  <summary>
@@ -1677,12 +1907,20 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         }
         
         ///  <summary>
+        /// Validates the given request object
+        /// </summary>
+        public void Validate()
+        {
+            Argument.Validate(Intermediate, "intermediate");
+        }
+        
+        ///  <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return null;
+            return ("" + Argument.Require(Intermediate, "intermediate"));
         }
     }
     
@@ -1740,12 +1978,20 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         }
         
         ///  <summary>
+        /// Validates the given request object
+        /// </summary>
+        public void Validate()
+        {
+            Argument.Validate(Duration, "duration");
+        }
+        
+        ///  <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return null;
+            return ("" + Argument.Require(Duration, "duration"));
         }
     }
     
@@ -1781,6 +2027,13 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             {
                 return "tecan.sila/integrationtests/TestServer/v1/Command/RunIntoFailure";
             }
+        }
+        
+        ///  <summary>
+        /// Validates the given request object
+        /// </summary>
+        public void Validate()
+        {
         }
         
         ///  <summary>
@@ -1825,6 +2078,13 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             {
                 return "tecan.sila/integrationtests/TestServer/v1/Command/RunIntoFailureObservably";
             }
+        }
+        
+        ///  <summary>
+        /// Validates the given request object
+        /// </summary>
+        public void Validate()
+        {
         }
         
         ///  <summary>
@@ -1891,12 +2151,20 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         }
         
         ///  <summary>
+        /// Validates the given request object
+        /// </summary>
+        public void Validate()
+        {
+            Argument.Validate(CommandId, "commandId");
+        }
+        
+        ///  <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return null;
+            return ("" + Argument.Require(CommandId, "commandId"));
         }
     }
     
@@ -1942,12 +2210,20 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         }
         
         ///  <summary>
+        /// Validates the given request object
+        /// </summary>
+        public void Validate()
+        {
+            Argument.Validate(ReturnValue, "returnValue");
+        }
+        
+        ///  <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return null;
+            return ("" + Argument.Require(ReturnValue, "returnValue"));
         }
     }
     
@@ -1983,6 +2259,13 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             {
                 return "tecan.sila/integrationtests/TestServer/v1/Command/ThrowRuntimeException";
             }
+        }
+        
+        ///  <summary>
+        /// Validates the given request object
+        /// </summary>
+        public void Validate()
+        {
         }
         
         ///  <summary>
@@ -2049,12 +2332,20 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         }
         
         ///  <summary>
+        /// Validates the given request object
+        /// </summary>
+        public void Validate()
+        {
+            Argument.Validate(Value, "value");
+        }
+        
+        ///  <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return null;
+            return ("" + Argument.Require(Value, "value"));
         }
     }
     
@@ -2259,7 +2550,12 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return null;
+            return (((((("" + Argument.Require(Boolean, "boolean")) 
+                        + Argument.Require(Real, "real")) 
+                        + Argument.Require(Long, "long")) 
+                        + Argument.Require(Int, "int")) 
+                        + Argument.Require(Timestamp, "timestamp")) 
+                        + Argument.Require(Time, "time"));
         }
         
         ///  <summary>

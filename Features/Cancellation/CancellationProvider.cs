@@ -74,6 +74,7 @@ namespace Tecan.Sila2.Cancellation
         {
             try
             {
+                request.Validate();
                 _implementation.CancelCommand(request.CommandExecutionUUID.Extract(_server));
                 return EmptyRequest.Instance;
             } catch (System.ArgumentException ex)
@@ -104,6 +105,7 @@ namespace Tecan.Sila2.Cancellation
         /// <returns>The command response wrapped in a data transfer object</returns>
         protected virtual EmptyRequest CancelAll(CancelAllRequestDto request)
         {
+            request.Validate();
             _implementation.CancelAll();
             return EmptyRequest.Instance;
         }

@@ -22,5 +22,15 @@ namespace Tecan.Sila2
         {
             MetadataIdentifier = metadataIdentifier;
         }
+
+        /// <summary>
+        /// Creates a new instance
+        /// </summary>
+        /// <param name="metadataIdentifier">The identifier of the metadata that is missing</param>
+        /// <param name="message">The error message</param>
+        public MissingMetadataException( string metadataIdentifier, string message ) : base( message )
+        {
+            MetadataIdentifier = metadataIdentifier;
+        }
     }
 }

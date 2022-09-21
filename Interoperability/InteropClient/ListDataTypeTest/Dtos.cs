@@ -68,12 +68,20 @@ namespace Tecan.Sila2.Interop.Client.ListDataTypeTest.ListDataTypeTest
         }
         
         ///  <summary>
+        /// Validates the given request object
+        /// </summary>
+        public void Validate()
+        {
+            Argument.Validate(StringList, "stringList");
+        }
+        
+        ///  <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return null;
+            return ("" + Argument.Require(StringList, "stringList"));
         }
     }
     
@@ -120,12 +128,20 @@ namespace Tecan.Sila2.Interop.Client.ListDataTypeTest.ListDataTypeTest
         }
         
         ///  <summary>
+        /// Validates the given request object
+        /// </summary>
+        public void Validate()
+        {
+            Argument.Validate(ReceivedValues, "receivedValues");
+        }
+        
+        ///  <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return null;
+            return ("" + Argument.Require(ReceivedValues, "receivedValues"));
         }
     }
     
@@ -184,12 +200,20 @@ namespace Tecan.Sila2.Interop.Client.ListDataTypeTest.ListDataTypeTest
         }
         
         ///  <summary>
+        /// Validates the given request object
+        /// </summary>
+        public void Validate()
+        {
+            Argument.Validate(IntegerList, "integerList");
+        }
+        
+        ///  <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return null;
+            return ("" + Argument.Require(IntegerList, "integerList"));
         }
     }
     
@@ -236,12 +260,20 @@ namespace Tecan.Sila2.Interop.Client.ListDataTypeTest.ListDataTypeTest
         }
         
         ///  <summary>
+        /// Validates the given request object
+        /// </summary>
+        public void Validate()
+        {
+            Argument.Validate(ReceivedValues, "receivedValues");
+        }
+        
+        ///  <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return null;
+            return ("" + Argument.Require(ReceivedValues, "receivedValues"));
         }
     }
     
@@ -300,12 +332,20 @@ namespace Tecan.Sila2.Interop.Client.ListDataTypeTest.ListDataTypeTest
         }
         
         ///  <summary>
+        /// Validates the given request object
+        /// </summary>
+        public void Validate()
+        {
+            Argument.Validate(StructureList, "structureList");
+        }
+        
+        ///  <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return null;
+            return ("" + Argument.Require(StructureList, "structureList"));
         }
     }
     
@@ -352,12 +392,20 @@ namespace Tecan.Sila2.Interop.Client.ListDataTypeTest.ListDataTypeTest
         }
         
         ///  <summary>
+        /// Validates the given request object
+        /// </summary>
+        public void Validate()
+        {
+            Argument.Validate(ReceivedValues, "receivedValues");
+        }
+        
+        ///  <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return null;
+            return ("" + Argument.Require(ReceivedValues, "receivedValues"));
         }
     }
     
@@ -637,7 +685,15 @@ namespace Tecan.Sila2.Interop.Client.ListDataTypeTest.ListDataTypeTest
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return null;
+            return ((((((((("" + Argument.Require(StringTypeValue, "stringTypeValue")) 
+                        + Argument.Require(IntegerTypeValue, "integerTypeValue")) 
+                        + Argument.Require(RealTypeValue, "realTypeValue")) 
+                        + Argument.Require(BooleanTypeValue, "booleanTypeValue")) 
+                        + Argument.Require(BinaryTypeValue, "binaryTypeValue")) 
+                        + Argument.Require(DateTypeValue, "dateTypeValue")) 
+                        + Argument.Require(TimeTypeValue, "timeTypeValue")) 
+                        + Argument.Require(TimestampTypeValue, "timestampTypeValue")) 
+                        + Argument.Require(AnyTypeValue, "anyTypeValue"));
         }
         
         ///  <summary>

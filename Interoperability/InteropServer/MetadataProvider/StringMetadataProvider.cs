@@ -1,10 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.Composition;
 using System.Text;
 using Tecan.Sila2.Server;
 
 namespace Tecan.Sila2.Interop.Server.MetadataProvider
 {
+    [Export( typeof( IRequestInterceptor ) )]
+    [Export( typeof( StringMetadataProvider ) )]
+    [PartCreationPolicy( CreationPolicy.Shared )]
     internal class StringMetadataProvider : StringMetadataInterceptorBase
     {
         [ThreadStatic]

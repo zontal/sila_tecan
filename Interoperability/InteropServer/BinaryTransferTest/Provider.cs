@@ -75,6 +75,7 @@ namespace Tecan.Sila2.Interop.Server.BinaryTransferTest
         {
             try
             {
+                request.Validate();
                 return new EchoBinaryValueResponseDto(_implementation.EchoBinaryValue(request.BinaryValue.Extract(_server)), _server);
             } catch (System.ArgumentException ex)
             {

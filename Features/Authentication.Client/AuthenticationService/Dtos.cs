@@ -133,16 +133,30 @@ namespace Tecan.Sila2.Authentication.AuthenticationService
         }
         
         ///  <summary>
+        /// Validates the given request object
+        /// </summary>
+        public void Validate()
+        {
+            Argument.Validate(UserIdentification, "userIdentification");
+            Argument.Validate(Password, "password");
+            Argument.Validate(RequestedServer, "requestedServer");
+            Argument.Validate(RequestedFeatures, "requestedFeatures");
+        }
+        
+        ///  <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            string errors = "";
-            if (RequestedServerPattern.IsMatch(RequestedServer.Value))
+            string errors = (((("" + Argument.Require(UserIdentification, "userIdentification")) 
+                        + Argument.Require(Password, "password")) 
+                        + Argument.Require(RequestedServer, "requestedServer")) 
+                        + Argument.Require(RequestedFeatures, "requestedFeatures"));
+            if ((RequestedServerPattern.IsMatch(RequestedServer.Value) == false))
             {
                 errors = (errors + string.Format("RequestedServer \'{0}\' does not match pattern \'[0-9a-f]{8}\\-[0-9a-f]{4}\\-[0-9a-f]{" +
-                        "4}\\-[0-9a-f]{4}\\-[0-9a-f]{12}\'", RequestedServer.Value));
+                        "4}\\-[0-9a-f]{4}\\-[0-9a-f]{12}\'; ", RequestedServer.Value));
             }
             return errors;
         }
@@ -236,7 +250,8 @@ namespace Tecan.Sila2.Authentication.AuthenticationService
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return null;
+            return (("" + Argument.Require(AccessToken, "accessToken")) 
+                        + Argument.Require(TokenLifetime, "tokenLifetime"));
         }
     }
     
@@ -295,12 +310,20 @@ namespace Tecan.Sila2.Authentication.AuthenticationService
         }
         
         ///  <summary>
+        /// Validates the given request object
+        /// </summary>
+        public void Validate()
+        {
+            Argument.Validate(AccessToken, "accessToken");
+        }
+        
+        ///  <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return null;
+            return ("" + Argument.Require(AccessToken, "accessToken"));
         }
     }
 }

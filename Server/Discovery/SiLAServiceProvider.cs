@@ -81,6 +81,7 @@ namespace Tecan.Sila2.Discovery
         {
             try
             {
+                request.Validate();
                 return new GetFeatureDefinitionResponseDto(_implementation.GetFeatureDefinition(request.FeatureIdentifier.Extract(_server)), _server);
             } catch (System.ArgumentException ex)
             {
@@ -106,6 +107,7 @@ namespace Tecan.Sila2.Discovery
         {
             try
             {
+                request.Validate();
                 _implementation.SetServerName(request.ServerName.Extract(_server));
                 return EmptyRequest.Instance;
             } catch (System.ArgumentException ex)

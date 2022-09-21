@@ -74,16 +74,24 @@ namespace Tecan.Sila2.Authorization
         }
         
         ///  <summary>
+        /// Validates the given request object
+        /// </summary>
+        public void Validate()
+        {
+            Argument.Validate(AuthorizationProvider, "authorizationProvider");
+        }
+        
+        ///  <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            string errors = "";
-            if (AuthorizationProviderPattern.IsMatch(AuthorizationProvider.Value))
+            string errors = ("" + Argument.Require(AuthorizationProvider, "authorizationProvider"));
+            if ((AuthorizationProviderPattern.IsMatch(AuthorizationProvider.Value) == false))
             {
                 errors = (errors + string.Format("AuthorizationProvider \'{0}\' does not match pattern \'[0-9a-f]{8}\\-[0-9a-f]{4}\\-[0-" +
-                        "9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{12}\'", AuthorizationProvider.Value));
+                        "9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{12}\'; ", AuthorizationProvider.Value));
             }
             return errors;
         }
@@ -137,16 +145,24 @@ namespace Tecan.Sila2.Authorization
         }
         
         ///  <summary>
+        /// Validates the given request object
+        /// </summary>
+        public void Validate()
+        {
+            Argument.Validate(Value, "value");
+        }
+        
+        ///  <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            string errors = "";
-            if (ValuePattern.IsMatch(Value.Value))
+            string errors = ("" + Argument.Require(Value, "value"));
+            if ((ValuePattern.IsMatch(Value.Value) == false))
             {
                 errors = (errors + string.Format("Value \'{0}\' does not match pattern \'[0-9a-f]{8}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-" +
-                        "f]{4}\\-[0-9a-f]{12}\'", Value.Value));
+                        "f]{4}\\-[0-9a-f]{12}\'; ", Value.Value));
             }
             return errors;
         }

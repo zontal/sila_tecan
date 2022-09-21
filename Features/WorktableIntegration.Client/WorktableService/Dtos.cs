@@ -151,7 +151,9 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return null;
+            return ((("" + Argument.Require(X, "x")) 
+                        + Argument.Require(Y, "y")) 
+                        + Argument.Require(Z, "z"));
         }
         
         ///  <summary>
@@ -351,7 +353,8 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return null;
+            return (("" + Argument.Require(Width, "width")) 
+                        + Argument.Require(Depth, "depth"));
         }
         
         ///  <summary>
@@ -578,7 +581,10 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return null;
+            return (((("" + Argument.Require(Name, "name")) 
+                        + Argument.Require(Template, "template")) 
+                        + Argument.Require(Offset, "offset")) 
+                        + Argument.Require(Rotation, "rotation"));
         }
         
         ///  <summary>
@@ -820,7 +826,9 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return null;
+            return ((("" + Argument.Require(Name, "name")) 
+                        + Argument.Require(SiteRectangle, "siteRectangle")) 
+                        + Argument.Require(Tags, "tags"));
         }
         
         ///  <summary>
@@ -1020,7 +1028,8 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return null;
+            return (("" + Argument.Require(Rectangle, "rectangle")) 
+                        + Argument.Require(Height, "height"));
         }
         
         ///  <summary>

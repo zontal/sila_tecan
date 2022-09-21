@@ -10,7 +10,7 @@ namespace Tecan.Sila2
     /// </summary>
     public static class IdentifierConstraint
     {
-        private static readonly Regex FeatureIdentifierRegex = new Regex( @"\w+(\.\w+)*/(\w+(\.\w+)*/)?/\w+/v\d+" );
+        private static readonly Regex FeatureIdentifierRegex = new Regex( @"\w+(\.\w+)*\/(\w+(\.\w+)*\/)?\w+(\.\w+)*\/v\d+" );
         private static readonly Regex IdentifierRegex = new Regex( @"[A-Z][a-zA-Z0-9]*" );
         private const string CommandInfix = "/Command/";
         private const string PropertyInfix = "/Property/";

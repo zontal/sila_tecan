@@ -100,7 +100,8 @@ namespace Tecan.Sila2.Interop.Client.MetadataProvider.MetadataProviderTest
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return null;
+            return (("" + Argument.Require(FirstInteger, "firstInteger")) 
+                        + Argument.Require(SecondInteger, "secondInteger"));
         }
     }
 }

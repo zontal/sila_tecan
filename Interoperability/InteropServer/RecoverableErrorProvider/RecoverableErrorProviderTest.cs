@@ -13,6 +13,7 @@ namespace Tecan.Sila2.Interop.Server.RecoverableErrorProvider
     {
         private readonly IRecoveryService _recoveryService;
 
+        [ImportingConstructor]
         public RecoverableErrorProviderTest( IRecoveryService recoveryService )
         {
             _recoveryService = recoveryService;

@@ -49,6 +49,13 @@ namespace Tecan.Sila2.Interop.Client.UnobservableCommandTest.UnobservableCommand
         }
         
         ///  <summary>
+        /// Validates the given request object
+        /// </summary>
+        public void Validate()
+        {
+        }
+        
+        ///  <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
@@ -113,12 +120,20 @@ namespace Tecan.Sila2.Interop.Client.UnobservableCommandTest.UnobservableCommand
         }
         
         ///  <summary>
+        /// Validates the given request object
+        /// </summary>
+        public void Validate()
+        {
+            Argument.Validate(Integer, "integer");
+        }
+        
+        ///  <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return null;
+            return ("" + Argument.Require(Integer, "integer"));
         }
     }
     
@@ -165,12 +180,20 @@ namespace Tecan.Sila2.Interop.Client.UnobservableCommandTest.UnobservableCommand
         }
         
         ///  <summary>
+        /// Validates the given request object
+        /// </summary>
+        public void Validate()
+        {
+            Argument.Validate(StringRepresentation, "stringRepresentation");
+        }
+        
+        ///  <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return null;
+            return ("" + Argument.Require(StringRepresentation, "stringRepresentation"));
         }
     }
     
@@ -249,12 +272,22 @@ namespace Tecan.Sila2.Interop.Client.UnobservableCommandTest.UnobservableCommand
         }
         
         ///  <summary>
+        /// Validates the given request object
+        /// </summary>
+        public void Validate()
+        {
+            Argument.Validate(Integer, "integer");
+            Argument.Validate(String, "string");
+        }
+        
+        ///  <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return null;
+            return (("" + Argument.Require(Integer, "integer")) 
+                        + Argument.Require(String, "string"));
         }
     }
     
@@ -301,12 +334,20 @@ namespace Tecan.Sila2.Interop.Client.UnobservableCommandTest.UnobservableCommand
         }
         
         ///  <summary>
+        /// Validates the given request object
+        /// </summary>
+        public void Validate()
+        {
+            Argument.Validate(JoinedParameters, "joinedParameters");
+        }
+        
+        ///  <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return null;
+            return ("" + Argument.Require(JoinedParameters, "joinedParameters"));
         }
     }
     
@@ -366,12 +407,20 @@ namespace Tecan.Sila2.Interop.Client.UnobservableCommandTest.UnobservableCommand
         }
         
         ///  <summary>
+        /// Validates the given request object
+        /// </summary>
+        public void Validate()
+        {
+            Argument.Validate(String, "string");
+        }
+        
+        ///  <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return null;
+            return ("" + Argument.Require(String, "string"));
         }
     }
     
@@ -462,10 +511,12 @@ namespace Tecan.Sila2.Interop.Client.UnobservableCommandTest.UnobservableCommand
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            string errors = "";
-            if ((FirstCharacter.Value.Length <= 1))
+            string errors = (("" + Argument.Require(FirstCharacter, "firstCharacter")) 
+                        + Argument.Require(Remainder, "remainder"));
+            if (((FirstCharacter.Value.Length <= 1) 
+                        == false))
             {
-                errors = (errors + string.Format("FirstCharacter \'{0}\' is longer than allowed length 1.", FirstCharacter.Value));
+                errors = (errors + string.Format("FirstCharacter \'{0}\' is longer than allowed length 1; ", FirstCharacter.Value));
             }
             return errors;
         }

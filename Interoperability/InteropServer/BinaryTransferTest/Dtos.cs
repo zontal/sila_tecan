@@ -68,12 +68,20 @@ namespace Tecan.Sila2.Interop.Server.BinaryTransferTest
         }
         
         ///  <summary>
+        /// Validates the given request object
+        /// </summary>
+        public void Validate()
+        {
+            Argument.Validate(BinaryValue, "binaryValue");
+        }
+        
+        ///  <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return null;
+            return ("" + Argument.Require(BinaryValue, "binaryValue"));
         }
     }
     
@@ -120,12 +128,20 @@ namespace Tecan.Sila2.Interop.Server.BinaryTransferTest
         }
         
         ///  <summary>
+        /// Validates the given request object
+        /// </summary>
+        public void Validate()
+        {
+            Argument.Validate(ReceivedValue, "receivedValue");
+        }
+        
+        ///  <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return null;
+            return ("" + Argument.Require(ReceivedValue, "receivedValue"));
         }
     }
 }

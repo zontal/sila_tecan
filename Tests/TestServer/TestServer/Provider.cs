@@ -126,6 +126,7 @@ namespace Tecan.Sila2.IntegrationTests
         {
             try
             {
+                request.Validate();
                 return new PassBoolResponseDto(_implementation.PassBool(request.Data.Extract(_server)), _server);
             } catch (System.ArgumentException ex)
             {
@@ -146,6 +147,7 @@ namespace Tecan.Sila2.IntegrationTests
         {
             try
             {
+                request.Validate();
                 return new PassDoubleResponseDto(_implementation.PassDouble(request.Data.Extract(_server)), _server);
             } catch (System.ArgumentException ex)
             {
@@ -166,6 +168,7 @@ namespace Tecan.Sila2.IntegrationTests
         {
             try
             {
+                request.Validate();
                 return new PassLongResponseDto(_implementation.PassLong(request.Data.Extract(_server)), _server);
             } catch (System.ArgumentException ex)
             {
@@ -186,6 +189,7 @@ namespace Tecan.Sila2.IntegrationTests
         {
             try
             {
+                request.Validate();
                 return new PassIntResponseDto(_implementation.PassInt(((int)(request.Data.Extract(_server)))), _server);
             } catch (System.ArgumentException ex)
             {
@@ -206,6 +210,7 @@ namespace Tecan.Sila2.IntegrationTests
         {
             try
             {
+                request.Validate();
                 return new PassTimestampResponseDto(_implementation.PassTimestamp(request.Timestamp.Extract(_server)), _server);
             } catch (System.ArgumentException ex)
             {
@@ -227,6 +232,7 @@ namespace Tecan.Sila2.IntegrationTests
         {
             try
             {
+                request.Validate();
                 return new PassTimeResponseDto(_implementation.PassTime(request.Time.Extract(_server)), _server);
             } catch (System.ArgumentException ex)
             {
@@ -247,6 +253,7 @@ namespace Tecan.Sila2.IntegrationTests
         {
             try
             {
+                request.Validate();
                 return new PassStringResponseDto(_implementation.PassString(request.Value.Extract(_server)), _server);
             } catch (System.ArgumentException ex)
             {
@@ -267,6 +274,7 @@ namespace Tecan.Sila2.IntegrationTests
         {
             try
             {
+                request.Validate();
                 return new PassStreamResponseDto(_implementation.PassStream(request.Value.Extract(_server)), _server);
             } catch (System.ArgumentException ex)
             {
@@ -287,6 +295,7 @@ namespace Tecan.Sila2.IntegrationTests
         {
             try
             {
+                request.Validate();
                 return new PassFileResponseDto(_implementation.PassFile(request.File.ExtractToFileInfo(_server)), _server);
             } catch (System.ArgumentException ex)
             {
@@ -307,6 +316,7 @@ namespace Tecan.Sila2.IntegrationTests
         {
             try
             {
+                request.Validate();
                 return new PassBytesResponseDto(_implementation.PassBytes(request.Bytes.ExtractToBytes(_server)), _server);
             } catch (System.ArgumentException ex)
             {
@@ -327,6 +337,7 @@ namespace Tecan.Sila2.IntegrationTests
         {
             try
             {
+                request.Validate();
                 return new PassDynamicResponseDto(_implementation.PassDynamic(request.Dynamic.Extract(_server)), _server);
             } catch (System.ArgumentException ex)
             {
@@ -347,6 +358,7 @@ namespace Tecan.Sila2.IntegrationTests
         {
             try
             {
+                request.Validate();
                 return new PassCollectionResponseDto(_implementation.PassCollection(request.Strings.Extract(_server)), _server);
             } catch (System.ArgumentException ex)
             {
@@ -368,6 +380,7 @@ namespace Tecan.Sila2.IntegrationTests
         {
             try
             {
+                request.Validate();
                 return new PassStructureResponseDto(_implementation.PassStructure(request.Structure.Extract(_server)), _server);
             } catch (System.ArgumentException ex)
             {
@@ -429,6 +442,7 @@ namespace Tecan.Sila2.IntegrationTests
         {
             try
             {
+                request.Validate();
                 _implementation.RunIntoFailure();
                 return EmptyRequest.Instance;
             } catch (FakeException ex)
@@ -456,6 +470,7 @@ namespace Tecan.Sila2.IntegrationTests
         {
             try
             {
+                request.Validate();
                 return new IsCancelledResponseDto(_implementation.IsCancelled(request.CommandId.Extract(_server)), _server);
             } catch (System.ArgumentException ex)
             {
@@ -475,6 +490,7 @@ namespace Tecan.Sila2.IntegrationTests
         /// <returns>The command response wrapped in a data transfer object</returns>
         protected virtual EmptyRequest ThrowRuntimeException(ThrowRuntimeExceptionRequestDto request)
         {
+            request.Validate();
             _implementation.ThrowRuntimeException();
             return EmptyRequest.Instance;
         }
@@ -488,6 +504,7 @@ namespace Tecan.Sila2.IntegrationTests
         {
             try
             {
+                request.Validate();
                 _implementation.SetDummy(((int)(request.Value.Extract(_server))));
                 return EmptyRequest.Instance;
             } catch (System.ArgumentException ex)

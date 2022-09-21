@@ -115,6 +115,11 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         {
             return null;
         }
+
+        public void Validate()
+        {
+            throw new System.NotImplementedException();
+        }
     }
 
     ///  <summary>

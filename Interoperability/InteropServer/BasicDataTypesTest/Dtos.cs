@@ -68,12 +68,20 @@ namespace Tecan.Sila2.Interop.Server.BasicDataTypesTest
         }
         
         ///  <summary>
+        /// Validates the given request object
+        /// </summary>
+        public void Validate()
+        {
+            Argument.Validate(StringValue, "stringValue");
+        }
+        
+        ///  <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return null;
+            return ("" + Argument.Require(StringValue, "stringValue"));
         }
     }
     
@@ -120,12 +128,20 @@ namespace Tecan.Sila2.Interop.Server.BasicDataTypesTest
         }
         
         ///  <summary>
+        /// Validates the given request object
+        /// </summary>
+        public void Validate()
+        {
+            Argument.Validate(ReceivedValue, "receivedValue");
+        }
+        
+        ///  <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return null;
+            return ("" + Argument.Require(ReceivedValue, "receivedValue"));
         }
     }
     
@@ -184,12 +200,20 @@ namespace Tecan.Sila2.Interop.Server.BasicDataTypesTest
         }
         
         ///  <summary>
+        /// Validates the given request object
+        /// </summary>
+        public void Validate()
+        {
+            Argument.Validate(IntegerValue, "integerValue");
+        }
+        
+        ///  <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return null;
+            return ("" + Argument.Require(IntegerValue, "integerValue"));
         }
     }
     
@@ -236,12 +260,20 @@ namespace Tecan.Sila2.Interop.Server.BasicDataTypesTest
         }
         
         ///  <summary>
+        /// Validates the given request object
+        /// </summary>
+        public void Validate()
+        {
+            Argument.Validate(ReceivedValue, "receivedValue");
+        }
+        
+        ///  <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return null;
+            return ("" + Argument.Require(ReceivedValue, "receivedValue"));
         }
     }
     
@@ -300,12 +332,20 @@ namespace Tecan.Sila2.Interop.Server.BasicDataTypesTest
         }
         
         ///  <summary>
+        /// Validates the given request object
+        /// </summary>
+        public void Validate()
+        {
+            Argument.Validate(RealValue, "realValue");
+        }
+        
+        ///  <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return null;
+            return ("" + Argument.Require(RealValue, "realValue"));
         }
     }
     
@@ -352,12 +392,20 @@ namespace Tecan.Sila2.Interop.Server.BasicDataTypesTest
         }
         
         ///  <summary>
+        /// Validates the given request object
+        /// </summary>
+        public void Validate()
+        {
+            Argument.Validate(ReceivedValue, "receivedValue");
+        }
+        
+        ///  <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return null;
+            return ("" + Argument.Require(ReceivedValue, "receivedValue"));
         }
     }
     
@@ -416,12 +464,20 @@ namespace Tecan.Sila2.Interop.Server.BasicDataTypesTest
         }
         
         ///  <summary>
+        /// Validates the given request object
+        /// </summary>
+        public void Validate()
+        {
+            Argument.Validate(BooleanValue, "booleanValue");
+        }
+        
+        ///  <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return null;
+            return ("" + Argument.Require(BooleanValue, "booleanValue"));
         }
     }
     
@@ -468,12 +524,20 @@ namespace Tecan.Sila2.Interop.Server.BasicDataTypesTest
         }
         
         ///  <summary>
+        /// Validates the given request object
+        /// </summary>
+        public void Validate()
+        {
+            Argument.Validate(ReceivedValue, "receivedValue");
+        }
+        
+        ///  <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return null;
+            return ("" + Argument.Require(ReceivedValue, "receivedValue"));
         }
     }
     
@@ -532,12 +596,20 @@ namespace Tecan.Sila2.Interop.Server.BasicDataTypesTest
         }
         
         ///  <summary>
+        /// Validates the given request object
+        /// </summary>
+        public void Validate()
+        {
+            Argument.Validate(DateValue, "dateValue");
+        }
+        
+        ///  <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return null;
+            return ("" + Argument.Require(DateValue, "dateValue"));
         }
     }
     
@@ -584,12 +656,20 @@ namespace Tecan.Sila2.Interop.Server.BasicDataTypesTest
         }
         
         ///  <summary>
+        /// Validates the given request object
+        /// </summary>
+        public void Validate()
+        {
+            Argument.Validate(ReceivedValue, "receivedValue");
+        }
+        
+        ///  <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return null;
+            return ("" + Argument.Require(ReceivedValue, "receivedValue"));
         }
     }
     
@@ -648,12 +728,20 @@ namespace Tecan.Sila2.Interop.Server.BasicDataTypesTest
         }
         
         ///  <summary>
+        /// Validates the given request object
+        /// </summary>
+        public void Validate()
+        {
+            Argument.Validate(TimeValue, "timeValue");
+        }
+        
+        ///  <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return null;
+            return ("" + Argument.Require(TimeValue, "timeValue"));
         }
     }
     
@@ -700,12 +788,20 @@ namespace Tecan.Sila2.Interop.Server.BasicDataTypesTest
         }
         
         ///  <summary>
+        /// Validates the given request object
+        /// </summary>
+        public void Validate()
+        {
+            Argument.Validate(ReceivedValue, "receivedValue");
+        }
+        
+        ///  <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return null;
+            return ("" + Argument.Require(ReceivedValue, "receivedValue"));
         }
     }
     
@@ -764,12 +860,20 @@ namespace Tecan.Sila2.Interop.Server.BasicDataTypesTest
         }
         
         ///  <summary>
+        /// Validates the given request object
+        /// </summary>
+        public void Validate()
+        {
+            Argument.Validate(TimestampValue, "timestampValue");
+        }
+        
+        ///  <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return null;
+            return ("" + Argument.Require(TimestampValue, "timestampValue"));
         }
     }
     
@@ -816,12 +920,20 @@ namespace Tecan.Sila2.Interop.Server.BasicDataTypesTest
         }
         
         ///  <summary>
+        /// Validates the given request object
+        /// </summary>
+        public void Validate()
+        {
+            Argument.Validate(ReceivedValue, "receivedValue");
+        }
+        
+        ///  <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return null;
+            return ("" + Argument.Require(ReceivedValue, "receivedValue"));
         }
     }
 }

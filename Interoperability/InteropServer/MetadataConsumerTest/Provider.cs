@@ -72,6 +72,7 @@ namespace Tecan.Sila2.Interop.Server.MetadataConsumerTest
         /// <returns>The command response wrapped in a data transfer object</returns>
         protected virtual EchoStringMetadataResponseDto EchoStringMetadata(EchoStringMetadataRequestDto request)
         {
+            request.Validate();
             return new EchoStringMetadataResponseDto(_implementation.EchoStringMetadata(), _server);
         }
         
@@ -82,6 +83,7 @@ namespace Tecan.Sila2.Interop.Server.MetadataConsumerTest
         /// <returns>The command response wrapped in a data transfer object</returns>
         protected virtual UnpackMetadataResponseDto UnpackMetadata(UnpackMetadataRequestDto request)
         {
+            request.Validate();
             return new UnpackMetadataResponseDto(_implementation.UnpackMetadata(), _server);
         }
         

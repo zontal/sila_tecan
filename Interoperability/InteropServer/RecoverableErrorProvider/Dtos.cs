@@ -88,12 +88,22 @@ namespace Tecan.Sila2.Interop.Server.RecoverableErrorProvider
         }
         
         ///  <summary>
+        /// Validates the given request object
+        /// </summary>
+        public void Validate()
+        {
+            Argument.Validate(DurationUntilError, "durationUntilError");
+            Argument.Validate(AutomaticExecutionTimeout, "automaticExecutionTimeout");
+        }
+        
+        ///  <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return null;
+            return (("" + Argument.Require(DurationUntilError, "durationUntilError")) 
+                        + Argument.Require(AutomaticExecutionTimeout, "automaticExecutionTimeout"));
         }
     }
     
@@ -140,12 +150,20 @@ namespace Tecan.Sila2.Interop.Server.RecoverableErrorProvider
         }
         
         ///  <summary>
+        /// Validates the given request object
+        /// </summary>
+        public void Validate()
+        {
+            Argument.Validate(SelectedContinuationOption, "selectedContinuationOption");
+        }
+        
+        ///  <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return null;
+            return ("" + Argument.Require(SelectedContinuationOption, "selectedContinuationOption"));
         }
     }
 }

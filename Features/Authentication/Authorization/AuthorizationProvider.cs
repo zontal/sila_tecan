@@ -127,9 +127,6 @@ namespace Tecan.Sila2.Authorization
             {
                 return "org.silastandard/core/AuthorizationService/v1/Metadata/AccessToken";
             }
-            set
-            {
-            }
         }
         
         ///  <summary>

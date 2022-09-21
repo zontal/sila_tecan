@@ -97,6 +97,10 @@ namespace Tecan.Sila2.Server
         /// <inheritdoc />
         public void SetServerName( string serverName )
         {
+            if(serverName.Length > 255)
+            {
+                throw new ArgumentException( "The server name must not be longer than 255 characters", nameof( serverName ) );
+            }
             ServerName = serverName;
             var configuration = _configurationStore.Read<ServerConfiguration>( _configurationName );
             if(configuration != null)
@@ -304,16 +308,17 @@ namespace Tecan.Sila2.Server
         /// <summary>
         /// Gets the feature object with the given feature identifier.
         /// </summary>
-        /// <param name="qualifiedFeatureIdentifier">The (full qualified) feature identifier.</param>
+        /// <param name="featureIdentifier">The (full qualified) feature identifier.</param>
         /// <returns>The feature description.</returns>
-        public string GetFeatureDefinition( string qualifiedFeatureIdentifier )
+        public string GetFeatureDefinition( string featureIdentifier )
         {
-            if(!ImplementedFeatures.Contains( qualifiedFeatureIdentifier ))
+            IdentifierConstraint.CheckParameter( featureIdentifier, IdentifierType.FeatureIdentifier, nameof( featureIdentifier ) );
+            if(!ImplementedFeatures.Contains( featureIdentifier ))
             {
-                throw new UnimplementedFeatureException( $"Given Feature identifier: \"{qualifiedFeatureIdentifier}\"" );
+                throw new UnimplementedFeatureException( $"Given Feature identifier: \"{featureIdentifier}\"" );
             }
 
-            var feature = _implementedFeatures.First( f => f.FeatureDefinition.FullyQualifiedIdentifier == qualifiedFeatureIdentifier ).FeatureDefinition;
+            var feature = _implementedFeatures.First( f => f.FeatureDefinition.FullyQualifiedIdentifier == featureIdentifier ).FeatureDefinition;
             return FeatureSerializer.SaveToString( feature ).Replace( Environment.NewLine, string.Empty );
         }
 

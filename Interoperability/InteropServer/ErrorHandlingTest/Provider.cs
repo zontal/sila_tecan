@@ -91,6 +91,7 @@ namespace Tecan.Sila2.Interop.Server.ErrorHandlingTest
         {
             try
             {
+                request.Validate();
                 _implementation.RaiseDefinedExecutionError();
                 return EmptyRequest.Instance;
             } catch (TestErrorException ex)
@@ -116,6 +117,7 @@ namespace Tecan.Sila2.Interop.Server.ErrorHandlingTest
         /// <returns>The command response wrapped in a data transfer object</returns>
         protected virtual EmptyRequest RaiseUndefinedExecutionError(RaiseUndefinedExecutionErrorRequestDto request)
         {
+            request.Validate();
             _implementation.RaiseUndefinedExecutionError();
             return EmptyRequest.Instance;
         }

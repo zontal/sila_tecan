@@ -307,6 +307,10 @@ namespace Tecan.Sila2.Server.Binary
                 return null;
             }
 
+            public void Validate()
+            {
+            }
+
             public string CommandIdentifier
             {
                 get;

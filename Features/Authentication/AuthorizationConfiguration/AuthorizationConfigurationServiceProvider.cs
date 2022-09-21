@@ -74,6 +74,7 @@ namespace Tecan.Sila2.Authorization
         {
             try
             {
+                request.Validate();
                 _implementation.SetAuthorizationProvider(request.AuthorizationProvider.Extract(_server));
                 return EmptyRequest.Instance;
             } catch (System.ArgumentException ex)

@@ -69,9 +69,16 @@
         <ProjectReference Include="..\..\Annotations\Annotations.csproj" />
         <ProjectReference Include="..\..\Contracts\Contracts.csproj" />
         <ProjectReference Include="..\..\DynamicClient\DynamicClient.csproj" />
+        <ProjectReference Include="..\..\Features\Authentication\Authentication.csproj" />
         <ProjectReference Include="..\..\Features\Recovery\Recovery.csproj" />
         <ProjectReference Include="..\..\Framework\Framework.csproj" />
         <ProjectReference Include="..\..\Server\Server.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Update="default.MetadataConfigurationSet.xml">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
     </ItemGroup>
 
 </Project>

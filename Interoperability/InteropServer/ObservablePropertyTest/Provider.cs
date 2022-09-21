@@ -76,6 +76,7 @@ namespace Tecan.Sila2.Interop.Server.ObservablePropertyTest
         {
             try
             {
+                request.Validate();
                 _implementation.SetValue(request.Value.Extract(_server));
                 return EmptyRequest.Instance;
             } catch (System.ArgumentException ex)

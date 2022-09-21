@@ -79,6 +79,7 @@ namespace Tecan.Sila2.Interop.Server.ListDataTypeTest
         {
             try
             {
+                request.Validate();
                 return new EchoStringListResponseDto(_implementation.EchoStringList(request.StringList.Extract(_server)), _server);
             } catch (System.ArgumentException ex)
             {
@@ -100,6 +101,7 @@ namespace Tecan.Sila2.Interop.Server.ListDataTypeTest
         {
             try
             {
+                request.Validate();
                 return new EchoIntegerListResponseDto(_implementation.EchoIntegerList(request.IntegerList.Extract(_server)), _server);
             } catch (System.ArgumentException ex)
             {
@@ -121,6 +123,7 @@ namespace Tecan.Sila2.Interop.Server.ListDataTypeTest
         {
             try
             {
+                request.Validate();
                 return new EchoStructureListResponseDto(_implementation.EchoStructureList(request.StructureList.Extract(_server)), _server);
             } catch (System.ArgumentException ex)
             {

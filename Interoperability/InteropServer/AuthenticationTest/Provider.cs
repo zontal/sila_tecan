@@ -71,6 +71,7 @@ namespace Tecan.Sila2.Interop.Server.AuthenticationTest
         /// <returns>The command response wrapped in a data transfer object</returns>
         protected virtual EmptyRequest RequiresToken(RequiresTokenRequestDto request)
         {
+            request.Validate();
             _implementation.RequiresToken();
             return EmptyRequest.Instance;
         }

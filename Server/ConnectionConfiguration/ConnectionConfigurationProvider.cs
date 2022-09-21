@@ -76,6 +76,7 @@ namespace Tecan.Sila2.Server.ConnectionConfiguration
         /// <returns>The command response wrapped in a data transfer object</returns>
         protected virtual EmptyRequest EnableServerInitiatedConnectionMode(EnableServerInitiatedConnectionModeRequestDto request)
         {
+            request.Validate();
             _implementation.EnableServerInitiatedConnectionMode();
             return EmptyRequest.Instance;
         }
@@ -87,6 +88,7 @@ namespace Tecan.Sila2.Server.ConnectionConfiguration
         /// <returns>The command response wrapped in a data transfer object</returns>
         protected virtual EmptyRequest DisableServerInitiatedConnectionMode(DisableServerInitiatedConnectionModeRequestDto request)
         {
+            request.Validate();
             _implementation.DisableServerInitiatedConnectionMode();
             return EmptyRequest.Instance;
         }
@@ -100,6 +102,7 @@ namespace Tecan.Sila2.Server.ConnectionConfiguration
         {
             try
             {
+                request.Validate();
                 _implementation.ConnectSiLAClient(request.ClientName.Extract(_server), request.SiLAClientHost.Extract(_server), request.SiLAClientPort.Extract(_server), request.Persist.Extract(_server));
                 return EmptyRequest.Instance;
             } catch (System.ArgumentException ex)
@@ -137,6 +140,7 @@ namespace Tecan.Sila2.Server.ConnectionConfiguration
         {
             try
             {
+                request.Validate();
                 _implementation.DisconnectSiLAClient(request.ClientName.Extract(_server), request.Remove.Extract(_server));
                 return EmptyRequest.Instance;
             } catch (System.ArgumentException ex)

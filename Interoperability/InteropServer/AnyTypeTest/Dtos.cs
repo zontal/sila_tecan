@@ -68,12 +68,20 @@ namespace Tecan.Sila2.Interop.Server.AnyTypeTest
         }
         
         ///  <summary>
+        /// Validates the given request object
+        /// </summary>
+        public void Validate()
+        {
+            Argument.Validate(AnyTypeValue, "anyTypeValue");
+        }
+        
+        ///  <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return null;
+            return ("" + Argument.Require(AnyTypeValue, "anyTypeValue"));
         }
     }
     
@@ -164,7 +172,8 @@ namespace Tecan.Sila2.Interop.Server.AnyTypeTest
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return null;
+            return (("" + Argument.Require(ReceivedAnyType, "receivedAnyType")) 
+                        + Argument.Require(ReceivedValue, "receivedValue"));
         }
     }
 }

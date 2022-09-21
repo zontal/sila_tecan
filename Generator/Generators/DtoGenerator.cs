@@ -224,6 +224,7 @@ namespace Tecan.Sila2.Generator.Generators
             var commandIdentifierProperty = GenerateCommandIdentifierProperty( feature.GetFullyQualifiedIdentifier( featureCommand ) );
             requestType.Members.Add( commandIdentifierProperty );
             requestType.WriteDocumentation( $"Data transfer object for the request of the {featureCommand.DisplayName} command" );
+
             return requestType;
         }
 
@@ -470,6 +471,18 @@ namespace Tecan.Sila2.Generator.Generators
             dto.BaseTypes.Add( typeof( ISilaTransferObject ) );
             var (constructor, storeRef) = GenerateMethodDtoConstructors( dto );
 
+            var validateMethod = new CodeMemberMethod
+            {
+                Name = nameof( ISilaRequestObject.Validate ),
+                Attributes = MemberAttributes.Public | MemberAttributes.Final
+            };
+            validateMethod.WriteDocumentation( "Validates the given request object" );
+            dto.Members.Add( validateMethod );
+
+            var validate = new CodeMethodReferenceExpression(
+                new CodeTypeReferenceExpression( nameof( Argument ) ),
+                nameof( Argument.Validate ) );
+
             void ElementAction( SiLAElement element, Expression expression, CodePropertyReferenceExpression property )
             {
                 var type = NameProvider.GetMemberType( FollowIdentifier( methodIdentifier + "." + element.Identifier, expression ) ) ?? _translationProvider.ExtractType( element.DataType, methodIdentifier + element.Identifier );
@@ -477,6 +490,8 @@ namespace Tecan.Sila2.Generator.Generators
                 constructor.Parameters.Insert( constructor.Parameters.Count - 1, parameter );
                 constructor.Statements.Add( new CodeAssignStatement( property, _translationProvider.EncapsulateAsDto( new CodeArgumentReferenceExpression( parameter.Name ), element.DataType, storeRef, methodIdentifier + element.Identifier ) ) );
                 constructor.Comments.Add( new CodeCommentStatement( $@" <param name=""{parameter.Name}"">{element.Description}</param>", true ) );
+
+                validateMethod.Statements.Add( new CodeMethodInvokeExpression( validate, property, new CodePrimitiveExpression( element.Identifier.ToCamelCase() ) ) );
             }
 
             return ElementAction;
@@ -525,6 +540,10 @@ namespace Tecan.Sila2.Generator.Generators
             var index = 1;
             if(structureType.Element != null)
             {
+                var errorsRef = new CodeVariableReferenceExpression( errors.Name );
+                var requireCall = new CodeMethodReferenceExpression(
+                    new CodeTypeReferenceExpression( nameof( Argument ) ),
+                    nameof( Argument.Require ) );
                 foreach(var element in structureType.Element)
                 {
                     var mapping = mappings?.FirstOrDefault( m => string.Equals( element.Identifier, m.Identifier ?? m.Key, StringComparison.OrdinalIgnoreCase ) );
@@ -532,8 +551,10 @@ namespace Tecan.Sila2.Generator.Generators
                     elementAction( element, mapping?.Mapping?.ValueExpression, property );
                     if(element.DataType.Item is ConstrainedType constraints)
                     {
-                        ImplementConstraints( constraints.Constraints, dto, validationMethod.Statements, errors, property );
+                        ImplementConstraints( constraints.Constraints, dto, validationMethod.Statements, errorsRef, property );
                     }
+                    var validate = new CodeMethodInvokeExpression( requireCall, property, new CodePrimitiveExpression( element.Identifier.ToCamelCase() ) );
+                    errors.InitExpression = new CodeBinaryOperatorExpression( errors.InitExpression, CodeBinaryOperatorType.Add, validate );
 
                     index++;
                 }
@@ -586,16 +607,23 @@ namespace Tecan.Sila2.Generator.Generators
         }
 
         private void CompleteGetValidationErrors( CodeMemberMethod validationMethod,
-            CodeVariableReferenceExpression errors )
+            CodeVariableDeclarationStatement errors )
         {
             if(validationMethod.Statements.Count == 1)
             {
                 validationMethod.Statements.Clear();
-                validationMethod.Statements.Add( new CodeMethodReturnStatement( new CodePrimitiveExpression( null ) ) );
+                if(errors.InitExpression is CodePrimitiveExpression)
+                {
+                    validationMethod.Statements.Add( new CodeMethodReturnStatement( new CodePrimitiveExpression( null ) ) );
+                }
+                else
+                {
+                    validationMethod.Statements.Add( new CodeMethodReturnStatement( errors.InitExpression ) );
+                }
             }
             else
             {
-                validationMethod.Statements.Add( new CodeMethodReturnStatement( errors ) );
+                validationMethod.Statements.Add( new CodeMethodReturnStatement( new CodeVariableReferenceExpression( errors.Name ) ) );
             }
         }
 
@@ -650,7 +678,7 @@ namespace Tecan.Sila2.Generator.Generators
             return (copyConstructor, new CodeArgumentReferenceExpression( parameter.Name ));
         }
 
-        private (CodeMemberMethod, CodeVariableReferenceExpression) GenerateGetValidationErrors()
+        private (CodeMemberMethod, CodeVariableDeclarationStatement) GenerateGetValidationErrors()
         {
             var method = new CodeMemberMethod()
             {
@@ -663,7 +691,7 @@ namespace Tecan.Sila2.Generator.Generators
                 new CodeVariableDeclarationStatement( typeof( string ), "errors",
                     new CodePrimitiveExpression( string.Empty ) );
             method.Statements.Add( variableDeclaration );
-            return (method, new CodeVariableReferenceExpression( variableDeclaration.Name ));
+            return (method, variableDeclaration);
         }
 
         private CodePropertyReferenceExpression GenerateProperty( SiLAElement element, int index,
@@ -734,7 +762,7 @@ namespace Tecan.Sila2.Generator.Generators
                     new CodePrimitiveExpression( maxLength ) );
 
                 statements.Add( CreateValidityStatement( check,
-                    $"{propertyReference.PropertyName} '{{0}}' is longer than allowed length {maxLength}.",
+                    $"{propertyReference.PropertyName} '{{0}}' is longer than allowed length {maxLength}",
                     propertyReference, resultRef ) );
             }
         }
@@ -745,9 +773,9 @@ namespace Tecan.Sila2.Generator.Generators
             var formatStatement = new CodeMethodInvokeExpression(
                 new CodeTypeReferenceExpression( typeof( string ) ),
                 "Format",
-                new CodePrimitiveExpression( format ), new CodePropertyReferenceExpression( reference, "Value" ) );
+                new CodePrimitiveExpression( format + "; " ), new CodePropertyReferenceExpression( reference, "Value" ) );
 
-            return new CodeConditionStatement( condition,
+            return new CodeConditionStatement( new CodeBinaryOperatorExpression( condition, CodeBinaryOperatorType.ValueEquality, new CodePrimitiveExpression( false ) ),
                 new CodeAssignStatement( resultRef,
                     new CodeBinaryOperatorExpression( resultRef, CodeBinaryOperatorType.Add, formatStatement ) ) );
         }

@@ -74,6 +74,7 @@ namespace Tecan.Sila2.Authentication
         {
             try
             {
+                request.Validate();
                 return new LoginResponseDto(_implementation.Login(request.UserIdentification.Extract(_server), request.Password.Extract(_server), request.RequestedServer.Extract(_server), request.RequestedFeatures.Extract(_server)), _server);
             } catch (System.ArgumentException ex)
             {
@@ -113,6 +114,7 @@ namespace Tecan.Sila2.Authentication
         {
             try
             {
+                request.Validate();
                 _implementation.Logout(request.AccessToken.Extract(_server));
                 return EmptyRequest.Instance;
             } catch (System.ArgumentException ex)

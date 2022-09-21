@@ -10,68 +10,68 @@
 
 namespace Tecan.Sila2.Generator.Test.TestReference
 {
-
-
+    
+    
     ///  <summary>
     /// Controlling and retrieving the temperature.
     /// </summary>
-    [Tecan.Sila2.SilaFeatureAttribute( true, "test" )]
-    [Tecan.Sila2.SilaIdentifierAttribute( "TemperatureController" )]
-    [Tecan.Sila2.SilaDisplayNameAttribute( "Temperature Controller" )]
+    [Tecan.Sila2.SilaFeatureAttribute(true, "test")]
+    [Tecan.Sila2.SilaIdentifierAttribute("TemperatureController")]
+    [Tecan.Sila2.SilaDisplayNameAttribute("Temperature Controller")]
     public partial interface ITemperatureController
     {
-
+        
         ///  <summary>
         /// Current Temperature as measured by the controller.
         /// </summary>
-        [Tecan.Sila2.UnitAttribute( "K", Kelvin = 1 )]
-        [Tecan.Sila2.MaximalInclusiveAttribute( 373D )]
-        [Tecan.Sila2.MinimalExclusiveAttribute( 273D )]
+        [Tecan.Sila2.UnitAttribute("K", Kelvin=1)]
+        [Tecan.Sila2.MaximalInclusiveAttribute(373D)]
+        [Tecan.Sila2.MinimalExclusiveAttribute(273D)]
         [Tecan.Sila2.ObservableAttribute()]
         double CurrentTemperature
         {
             get;
         }
-
+        
         ///  <summary>
         /// Control the Temperature gradually to a set target,
         /// </summary>
         /// <param name="targetTemperature">The target temperature that the device will try to reach. Note that the command might
         ///be completed at a temperature that is close enough.</param>
         [Tecan.Sila2.ObservableAttribute()]
-        [Tecan.Sila2.ThrowsAttribute( typeof( TemperatureNotReachableException ) )]
-        [Tecan.Sila2.ThrowsAttribute( typeof( ControlInterruptedException ) )]
-        Tecan.Sila2.IObservableCommand ControlTemperature( [Tecan.Sila2.UnitAttribute( "K", Kelvin = 1 )][Tecan.Sila2.MaximalInclusiveAttribute( 373D )][Tecan.Sila2.MinimalExclusiveAttribute( 273D )] double targetTemperature );
+        [Tecan.Sila2.ThrowsAttribute(typeof(TemperatureNotReachableException))]
+        [Tecan.Sila2.ThrowsAttribute(typeof(ControlInterruptedException))]
+        Tecan.Sila2.IObservableCommand ControlTemperature([Tecan.Sila2.UnitAttribute("K", Kelvin=1)] [Tecan.Sila2.MaximalInclusiveAttribute(373D)] [Tecan.Sila2.MinimalExclusiveAttribute(273D)] double targetTemperature);
     }
-
+    
     ///  <summary>
     /// The ambient conditions prohibit the device from reaching the target temperature.
     /// </summary>
     public class TemperatureNotReachableException : System.Exception
     {
-
+        
         ///  <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="message">The actual error message</param>
-        public TemperatureNotReachableException( string message ) :
-                base( message )
+        public TemperatureNotReachableException(string message) : 
+                base(message)
         {
         }
     }
-
+    
     ///  <summary>
     /// The control of temperature couldn't be finished as it was interrupted by another target temperature.
     /// </summary>
     public class ControlInterruptedException : System.Exception
     {
-
+        
         ///  <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="message">The actual error message</param>
-        public ControlInterruptedException( string message ) :
-                base( message )
+        public ControlInterruptedException(string message) : 
+                base(message)
         {
         }
     }

@@ -48,6 +48,13 @@ namespace Tecan.Sila2.Interop.Client.MetadataConsumerTest.MetadataConsumerTest
         }
         
         ///  <summary>
+        /// Validates the given request object
+        /// </summary>
+        public void Validate()
+        {
+        }
+        
+        ///  <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
@@ -100,12 +107,20 @@ namespace Tecan.Sila2.Interop.Client.MetadataConsumerTest.MetadataConsumerTest
         }
         
         ///  <summary>
+        /// Validates the given request object
+        /// </summary>
+        public void Validate()
+        {
+            Argument.Validate(ReceivedStringMetadata, "receivedStringMetadata");
+        }
+        
+        ///  <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return null;
+            return ("" + Argument.Require(ReceivedStringMetadata, "receivedStringMetadata"));
         }
     }
     
@@ -141,6 +156,13 @@ namespace Tecan.Sila2.Interop.Client.MetadataConsumerTest.MetadataConsumerTest
             {
                 return "org.silastandard/test/MetadataConsumerTest/v1/Command/UnpackMetadata";
             }
+        }
+        
+        ///  <summary>
+        /// Validates the given request object
+        /// </summary>
+        public void Validate()
+        {
         }
         
         ///  <summary>
@@ -259,7 +281,9 @@ namespace Tecan.Sila2.Interop.Client.MetadataConsumerTest.MetadataConsumerTest
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return null;
+            return ((("" + Argument.Require(ReceivedString, "receivedString")) 
+                        + Argument.Require(FirstReceivedInteger, "firstReceivedInteger")) 
+                        + Argument.Require(SecondReceivedInteger, "secondReceivedInteger"));
         }
     }
 }

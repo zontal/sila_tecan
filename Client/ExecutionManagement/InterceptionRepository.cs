@@ -34,13 +34,21 @@ namespace Tecan.Sila2.Client.ExecutionManagement
             }
         }
 
+        private IEnumerable<IClientRequestInterceptor> ConcatIfApplicable( IEnumerable<IClientRequestInterceptor> current, string identifier )
+        {
+            if(_cachedInterceptors.TryGetValue( identifier, out var interceptors ))
+            {
+                return interceptors.Concat( current );
+            }
+            return current;
+        }
+
         public IEnumerable<IClientRequestInterceptor> GetInterceptorsForCommand( string commandIdentifier )
         {
-            if(!_cachedInterceptors.TryGetValue( commandIdentifier, out var interceptors ))
-            {
-                return _ubiquitousInterceptors;
-            }
-            return interceptors.Concat( _ubiquitousInterceptors );
+            var commandNameSeparator = commandIdentifier.LastIndexOf( '/' );
+            var featureLength = commandIdentifier.LastIndexOf( '/', commandNameSeparator - 1 );
+            var featureIdentifier = commandIdentifier.Substring( 0, featureLength );
+            return ConcatIfApplicable( ConcatIfApplicable( _ubiquitousInterceptors, featureIdentifier ), commandIdentifier );
         }
     }
 }

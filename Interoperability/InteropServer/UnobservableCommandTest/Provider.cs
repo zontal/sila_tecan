@@ -74,6 +74,7 @@ namespace Tecan.Sila2.Interop.Server.UnobservableCommandTest
         /// <returns>The command response wrapped in a data transfer object</returns>
         protected virtual EmptyRequest CommandWithoutParametersAndResponses(CommandWithoutParametersAndResponsesRequestDto request)
         {
+            request.Validate();
             _implementation.CommandWithoutParametersAndResponses();
             return EmptyRequest.Instance;
         }
@@ -87,6 +88,7 @@ namespace Tecan.Sila2.Interop.Server.UnobservableCommandTest
         {
             try
             {
+                request.Validate();
                 return new ConvertIntegerToStringResponseDto(_implementation.ConvertIntegerToString(request.Integer.Extract(_server)), _server);
             } catch (System.ArgumentException ex)
             {
@@ -108,6 +110,7 @@ namespace Tecan.Sila2.Interop.Server.UnobservableCommandTest
         {
             try
             {
+                request.Validate();
                 return new JoinIntegerAndStringResponseDto(_implementation.JoinIntegerAndString(request.Integer.Extract(_server), request.String.Extract(_server)), _server);
             } catch (System.ArgumentException ex)
             {
@@ -134,6 +137,7 @@ namespace Tecan.Sila2.Interop.Server.UnobservableCommandTest
         {
             try
             {
+                request.Validate();
                 return new SplitStringAfterFirstCharacterResponseDto(_implementation.SplitStringAfterFirstCharacter(request.String.Extract(_server)), _server);
             } catch (System.ArgumentException ex)
             {

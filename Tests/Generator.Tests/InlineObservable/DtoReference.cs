@@ -11,37 +11,37 @@
 namespace Tecan.Sila2.Generator.Test.TestReference
 {
     using Tecan.Sila2;
-    
-    
+
+
     ///  <summary>
     /// Data transfer object for the request of the Test Inline Observable command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
     public class TestInlineObservableRequestDto : Tecan.Sila2.ISilaTransferObject, Tecan.Sila2.ISilaRequestObject
     {
-        
+
         private Tecan.Sila2.StringDto _parameter;
-        
+
         ///  <summary>
         /// Create a new instance
         /// </summary>
         public TestInlineObservableRequestDto()
         {
         }
-        
+
         ///  <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
         ///  <param name="parameter"></param>
-        public TestInlineObservableRequestDto(string parameter, Tecan.Sila2.IBinaryStore store)
+        public TestInlineObservableRequestDto( string parameter, Tecan.Sila2.IBinaryStore store )
         {
-            Parameter = new Tecan.Sila2.StringDto(parameter, store);
+            Parameter = new Tecan.Sila2.StringDto( parameter, store );
         }
-        
+
         ///  <summary>
         /// </summary>
-        [ProtoBuf.ProtoMemberAttribute(1)]
+        [ProtoBuf.ProtoMemberAttribute( 1 )]
         public Tecan.Sila2.StringDto Parameter
         {
             get
@@ -53,7 +53,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
                 _parameter = value;
             }
         }
-        
+
         ///  <summary>
         /// Gets the command identifier for this command
         /// </summary>
@@ -66,7 +66,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
                     "lineObservable";
             }
         }
-        
+
         ///  <summary>
         /// Validates the contents of this transfer object
         /// </summary>
@@ -75,37 +75,42 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         {
             return null;
         }
+
+        public void Validate()
+        {
+            throw new System.NotImplementedException();
+        }
     }
-    
+
     ///  <summary>
     /// Data transfer object for the response of the Test Inline Observable command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
     public class TestInlineObservableResponseDto : Tecan.Sila2.ISilaTransferObject
     {
-        
+
         private Tecan.Sila2.BooleanDto _returnValue;
-        
+
         ///  <summary>
         /// Create a new instance
         /// </summary>
         public TestInlineObservableResponseDto()
         {
         }
-        
+
         ///  <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
         ///  <param name="returnValue"></param>
-        public TestInlineObservableResponseDto(bool returnValue, Tecan.Sila2.IBinaryStore store)
+        public TestInlineObservableResponseDto( bool returnValue, Tecan.Sila2.IBinaryStore store )
         {
-            ReturnValue = new Tecan.Sila2.BooleanDto(returnValue, store);
+            ReturnValue = new Tecan.Sila2.BooleanDto( returnValue, store );
         }
-        
+
         ///  <summary>
         /// </summary>
-        [ProtoBuf.ProtoMemberAttribute(1)]
+        [ProtoBuf.ProtoMemberAttribute( 1 )]
         public Tecan.Sila2.BooleanDto ReturnValue
         {
             get
@@ -117,7 +122,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
                 _returnValue = value;
             }
         }
-        
+
         ///  <summary>
         /// Validates the contents of this transfer object
         /// </summary>

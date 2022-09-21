@@ -49,6 +49,13 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         }
         
         ///  <summary>
+        /// Validates the given request object
+        /// </summary>
+        public void Validate()
+        {
+        }
+        
+        ///  <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
@@ -100,12 +107,20 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         }
         
         ///  <summary>
+        /// Validates the given request object
+        /// </summary>
+        public void Validate()
+        {
+            Argument.Validate(ReturnValue, "returnValue");
+        }
+        
+        ///  <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return null;
+            return ("" + Argument.Require(ReturnValue, "returnValue"));
         }
     }
     
@@ -222,7 +237,8 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return null;
+            return (("" + Argument.Require(Message, "message")) 
+                        + Argument.Require(AmbiguousChannel, "ambiguousChannel"));
         }
         
         ///  <summary>

@@ -96,12 +96,22 @@ namespace Tecan.Sila2.Locking
         }
         
         ///  <summary>
+        /// Validates the given request object
+        /// </summary>
+        public void Validate()
+        {
+            Argument.Validate(LockIdentifier, "lockIdentifier");
+            Argument.Validate(Timeout, "timeout");
+        }
+        
+        ///  <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return null;
+            return (("" + Argument.Require(LockIdentifier, "lockIdentifier")) 
+                        + Argument.Require(Timeout, "timeout"));
         }
     }
     
@@ -160,12 +170,20 @@ namespace Tecan.Sila2.Locking
         }
         
         ///  <summary>
+        /// Validates the given request object
+        /// </summary>
+        public void Validate()
+        {
+            Argument.Validate(LockIdentifier, "lockIdentifier");
+        }
+        
+        ///  <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return null;
+            return ("" + Argument.Require(LockIdentifier, "lockIdentifier"));
         }
     }
 }

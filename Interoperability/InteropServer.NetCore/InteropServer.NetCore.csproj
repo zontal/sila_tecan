@@ -86,6 +86,12 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Content Include="..\InteropServer\default.MetadataConfigurationSet.xml" Link="default.MetadataConfigurationSet.xml">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+    </ItemGroup>
+
+    <ItemGroup>
       <EmbeddedResource Include="..\InteropServer\AnyTypeTest.sila.xml" Link="AnyTypeTest.sila.xml" />
       <EmbeddedResource Include="..\InteropServer\AuthenticationTest.sila.xml" Link="AuthenticationTest.sila.xml" />
       <EmbeddedResource Include="..\InteropServer\BasicDataTypesTest.sila.xml" Link="BasicDataTypesTest.sila.xml" />

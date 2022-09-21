@@ -68,12 +68,20 @@ namespace Tecan.Sila2.Interop.Client.ObservablePropertyTest.ObservablePropertyTe
         }
         
         ///  <summary>
+        /// Validates the given request object
+        /// </summary>
+        public void Validate()
+        {
+            Argument.Validate(Value, "value");
+        }
+        
+        ///  <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return null;
+            return ("" + Argument.Require(Value, "value"));
         }
     }
 }
