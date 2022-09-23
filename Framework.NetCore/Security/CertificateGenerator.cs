@@ -60,7 +60,9 @@ namespace Tecan.Sila2.Security
 
             if(baseCertificate != null)
             {
-                return request.Create( baseCertificate, DateTimeOffset.UtcNow.Subtract( TimeSpan.FromMinutes( 1 ) ), baseCertificate.NotAfter, serial );
+                return request
+                    .Create( baseCertificate, DateTimeOffset.UtcNow.Subtract( TimeSpan.FromMinutes( 1 ) ), baseCertificate.NotAfter, serial )
+                    .CopyWithPrivateKey( key );
             }
             else
             {
@@ -121,7 +123,7 @@ namespace Tecan.Sila2.Security
                         if(certificate.NotBefore < DateTime.Now && certificate.NotAfter > DateTime.Now)
                         {
                             certificateAuthority = ca ?? certificate;
-                            return CompensateWindowsEpheralKeysProblem( certificate.CopyWithPrivateKey(key) );
+                            return CompensateWindowsEpheralKeysProblem( certificate.CopyWithPrivateKey( key ) );
                         }
                         else
                         {
@@ -154,7 +156,7 @@ namespace Tecan.Sila2.Security
         private static X509Certificate2 CompensateWindowsEpheralKeysProblem( X509Certificate2 cert )
         {
             if(RuntimeInformation.IsOSPlatform( OSPlatform.Windows ))
-            {                
+            {
                 // SSLStream on Windows throws with ephemeral key sets
                 // workaround from https://github.com/dotnet/runtime/issues/23749#issuecomment-388231655
                 var originalCert = cert;
