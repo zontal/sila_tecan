@@ -32,7 +32,7 @@ namespace Tecan.Sila2.Binary
         {
             BinaryStorageIdentifier = binaryIdentifier;
             _binaryStore = binaryResolver;
-            _streamImplementation = new Lazy<Stream>(CreateStream, true);
+            _streamImplementation = new Lazy<Stream>( CreateStream, true );
         }
 
         /// <inheritdoc />
@@ -93,10 +93,10 @@ namespace Tecan.Sila2.Binary
         /// <inheritdoc />
         protected override void Dispose( bool disposing )
         {
-            if( _streamImplementation.IsValueCreated )
+            if(_streamImplementation.IsValueCreated)
             {
                 _streamImplementation.Value.Dispose();
-                _binaryStore.Delete(BinaryStorageIdentifier);
+                _binaryStore.Delete( BinaryStorageIdentifier );
             }
             base.Dispose( disposing );
         }
@@ -138,6 +138,7 @@ namespace Tecan.Sila2.Binary
         }
 
         /// <inheritdoc />
+        [Obsolete]
         public override object InitializeLifetimeService()
         {
             return _streamImplementation.Value.InitializeLifetimeService();

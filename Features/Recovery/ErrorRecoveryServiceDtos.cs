@@ -123,23 +123,30 @@ namespace Tecan.Sila2.Recovery
         }
 
         ///  <summary>
+        /// Validates the given request object
+        /// </summary>
+        public void Validate()
+        {
+            Argument.Validate( CommandExecutionUUID, "commandExecutionUUID" );
+            Argument.Validate( ContinuationOption, "continuationOption" );
+            Argument.Validate( InputData, "inputData" );
+        }
+
+        ///  <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            string errors = "";
-            if(CommandExecutionUUIDPattern.IsMatch( CommandExecutionUUID.Value ))
+            string errors = ((("" + Argument.Require( CommandExecutionUUID, "commandExecutionUUID" ))
+                        + Argument.Require( ContinuationOption, "continuationOption" ))
+                        + Argument.Require( InputData, "inputData" ));
+            if((CommandExecutionUUIDPattern.IsMatch( CommandExecutionUUID.Value ) == false))
             {
                 errors = (errors + string.Format( "CommandExecutionUUID \'{0}\' does not match pattern \'[0-9a-f]{8}\\-[0-9a-f]{4}\\-[0-9" +
-                        "a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{12}\'", CommandExecutionUUID.Value ));
+                        "a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{12}\'; ", CommandExecutionUUID.Value ));
             }
             return errors;
-        }
-
-        public void Validate()
-        {
-            throw new System.NotImplementedException();
         }
     }
 
@@ -203,23 +210,26 @@ namespace Tecan.Sila2.Recovery
         }
 
         ///  <summary>
+        /// Validates the given request object
+        /// </summary>
+        public void Validate()
+        {
+            Argument.Validate( CommandExecutionUUID, "commandExecutionUUID" );
+        }
+
+        ///  <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            string errors = "";
-            if(CommandExecutionUUIDPattern.IsMatch( CommandExecutionUUID.Value ))
+            string errors = ("" + Argument.Require( CommandExecutionUUID, "commandExecutionUUID" ));
+            if((CommandExecutionUUIDPattern.IsMatch( CommandExecutionUUID.Value ) == false))
             {
                 errors = (errors + string.Format( "CommandExecutionUUID \'{0}\' does not match pattern \'[0-9a-f]{8}\\-[0-9a-f]{4}\\-[0-9" +
-                        "a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{12}\'", CommandExecutionUUID.Value ));
+                        "a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{12}\'; ", CommandExecutionUUID.Value ));
             }
             return errors;
-        }
-
-        public void Validate()
-        {
-            throw new System.NotImplementedException();
         }
     }
 
@@ -278,17 +288,20 @@ namespace Tecan.Sila2.Recovery
         }
 
         ///  <summary>
+        /// Validates the given request object
+        /// </summary>
+        public void Validate()
+        {
+            Argument.Validate( ErrorHandlingTimeout, "errorHandlingTimeout" );
+        }
+
+        ///  <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return null;
-        }
-
-        public void Validate()
-        {
-            throw new System.NotImplementedException();
+            return ("" + Argument.Require( ErrorHandlingTimeout, "errorHandlingTimeout" ));
         }
     }
 
@@ -505,11 +518,16 @@ namespace Tecan.Sila2.Recovery
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            string errors = "";
-            if(ExecuteContinuationOptionRequestDto.CommandExecutionUUIDPattern.IsMatch( CommandExecutionUUID.Value ))
+            string errors = (((((("" + Argument.Require( CommandIdentifier_, "commandIdentifier" ))
+                        + Argument.Require( CommandExecutionUUID, "commandExecutionUUID" ))
+                        + Argument.Require( ErrorMessage, "errorMessage" ))
+                        + Argument.Require( ContinuationOptions, "continuationOptions" ))
+                        + Argument.Require( DefaultOption, "defaultOption" ))
+                        + Argument.Require( AutomaticExecutionTimeout, "automaticExecutionTimeout" ));
+            if((ExecuteContinuationOptionRequestDto.CommandExecutionUUIDPattern.IsMatch( CommandExecutionUUID.Value ) == false))
             {
                 errors = (errors + string.Format( "CommandExecutionUUID \'{0}\' does not match pattern \'[0-9a-f]{8}\\-[0-9a-f]{4}\\-[0-9" +
-                        "a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{12}\'", CommandExecutionUUID.Value ));
+                        "a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{12}\'; ", CommandExecutionUUID.Value ));
             }
             return errors;
         }
@@ -807,7 +825,9 @@ namespace Tecan.Sila2.Recovery
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return null;
+            return ((("" + Argument.Require( Identifier, "identifier" ))
+                        + Argument.Require( Description, "description" ))
+                        + Argument.Require( RequiredInputData, "requiredInputData" ));
         }
 
         ///  <summary>
@@ -965,7 +985,7 @@ namespace Tecan.Sila2.Recovery
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return null;
+            return ("" + Argument.Require( Timeout, "timeout" ));
         }
     }
 }

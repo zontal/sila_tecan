@@ -3,8 +3,6 @@
     <PropertyGroup>
         <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
         <TargetFramework>net6.0</TargetFramework>
-        <Nullable>enable</Nullable>
-        <ImplicitUsings>enable</ImplicitUsings>
         <RootNamespace>Tecan.Sila2.Interop.Server</RootNamespace>
         <AssemblyName>Tecan.Sila2.Interop.Server</AssemblyName>
         <OutputPath>..\..\Build\Interop\ServerNetCore</OutputPath>
@@ -86,30 +84,30 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Content Include="..\InteropServer\default.MetadataConfigurationSet.xml" Link="default.MetadataConfigurationSet.xml">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </Content>
+        <Content Include="..\InteropServer\default.MetadataConfigurationSet.xml" Link="default.MetadataConfigurationSet.xml">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
     </ItemGroup>
 
     <ItemGroup>
-      <EmbeddedResource Include="..\InteropServer\AnyTypeTest.sila.xml" Link="AnyTypeTest.sila.xml" />
-      <EmbeddedResource Include="..\InteropServer\AuthenticationTest.sila.xml" Link="AuthenticationTest.sila.xml" />
-      <EmbeddedResource Include="..\InteropServer\BasicDataTypesTest.sila.xml" Link="BasicDataTypesTest.sila.xml" />
-      <EmbeddedResource Include="..\InteropServer\BinaryTransferTest.sila.xml" Link="BinaryTransferTest.sila.xml" />
-      <EmbeddedResource Include="..\InteropServer\CancellationTest.sila.xml" Link="CancellationTest.sila.xml" />
-      <EmbeddedResource Include="..\InteropServer\ErrorHandlingTest.sila.xml" Link="ErrorHandlingTest.sila.xml" />
-      <EmbeddedResource Include="..\InteropServer\ListDataTypeTest.sila.xml" Link="ListDataTypeTest.sila.xml" />
-      <EmbeddedResource Include="..\InteropServer\LockableCommandProvider.sila.xml" Link="LockableCommandProvider.sila.xml" />
-      <EmbeddedResource Include="..\InteropServer\MetadataConsumerTest.sila.xml" Link="MetadataConsumerTest.sila.xml" />
-      <EmbeddedResource Include="..\InteropServer\MetadataProviderTest.sila.xml" Link="MetadataProviderTest.sila.xml" />
-      <EmbeddedResource Include="..\InteropServer\MultiClientTest.sila.xml" Link="MultiClientTest.sila.xml" />
-      <EmbeddedResource Include="..\InteropServer\ObservableCommandTest.sila.xml" Link="ObservableCommandTest.sila.xml" />
-      <EmbeddedResource Include="..\InteropServer\ObservablePropertyTest.sila.xml" Link="ObservablePropertyTest.sila.xml" />
-      <EmbeddedResource Include="..\InteropServer\ParameterConstraintsTest.sila.xml" Link="ParameterConstraintsTest.sila.xml" />
-      <EmbeddedResource Include="..\InteropServer\RecoverableErrorProvider.sila.xml" Link="RecoverableErrorProvider.sila.xml" />
-      <EmbeddedResource Include="..\InteropServer\StructureDataTypeTest.sila.xml" Link="StructureDataTypeTest.sila.xml" />
-      <EmbeddedResource Include="..\InteropServer\UnobservableCommandTest.sila.xml" Link="UnobservableCommandTest.sila.xml" />
-      <EmbeddedResource Include="..\InteropServer\UnobservablePropertyTest.sila.xml" Link="UnobservablePropertyTest.sila.xml" />
+        <EmbeddedResource Include="..\InteropServer\AnyTypeTest.sila.xml" Link="AnyTypeTest.sila.xml" />
+        <EmbeddedResource Include="..\InteropServer\AuthenticationTest.sila.xml" Link="AuthenticationTest.sila.xml" />
+        <EmbeddedResource Include="..\InteropServer\BasicDataTypesTest.sila.xml" Link="BasicDataTypesTest.sila.xml" />
+        <EmbeddedResource Include="..\InteropServer\BinaryTransferTest.sila.xml" Link="BinaryTransferTest.sila.xml" />
+        <EmbeddedResource Include="..\InteropServer\CancellationTest.sila.xml" Link="CancellationTest.sila.xml" />
+        <EmbeddedResource Include="..\InteropServer\ErrorHandlingTest.sila.xml" Link="ErrorHandlingTest.sila.xml" />
+        <EmbeddedResource Include="..\InteropServer\ListDataTypeTest.sila.xml" Link="ListDataTypeTest.sila.xml" />
+        <EmbeddedResource Include="..\InteropServer\LockableCommandProvider.sila.xml" Link="LockableCommandProvider.sila.xml" />
+        <EmbeddedResource Include="..\InteropServer\MetadataConsumerTest.sila.xml" Link="MetadataConsumerTest.sila.xml" />
+        <EmbeddedResource Include="..\InteropServer\MetadataProviderTest.sila.xml" Link="MetadataProviderTest.sila.xml" />
+        <EmbeddedResource Include="..\InteropServer\MultiClientTest.sila.xml" Link="MultiClientTest.sila.xml" />
+        <EmbeddedResource Include="..\InteropServer\ObservableCommandTest.sila.xml" Link="ObservableCommandTest.sila.xml" />
+        <EmbeddedResource Include="..\InteropServer\ObservablePropertyTest.sila.xml" Link="ObservablePropertyTest.sila.xml" />
+        <EmbeddedResource Include="..\InteropServer\ParameterConstraintsTest.sila.xml" Link="ParameterConstraintsTest.sila.xml" />
+        <EmbeddedResource Include="..\InteropServer\RecoverableErrorProvider.sila.xml" Link="RecoverableErrorProvider.sila.xml" />
+        <EmbeddedResource Include="..\InteropServer\StructureDataTypeTest.sila.xml" Link="StructureDataTypeTest.sila.xml" />
+        <EmbeddedResource Include="..\InteropServer\UnobservableCommandTest.sila.xml" Link="UnobservableCommandTest.sila.xml" />
+        <EmbeddedResource Include="..\InteropServer\UnobservablePropertyTest.sila.xml" Link="UnobservablePropertyTest.sila.xml" />
     </ItemGroup>
 
     <ItemGroup>
@@ -119,23 +117,23 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="AnyTypeTest\" />
-      <Folder Include="AuthenticationTest\" />
-      <Folder Include="BasicDataTypesTest\" />
-      <Folder Include="BinaryTransferTest\" />
-      <Folder Include="CancellationTest\" />
-      <Folder Include="ErrorHandlingTest\" />
-      <Folder Include="ListDataTypeTest\" />
-      <Folder Include="MetadataConsumerTest\" />
-      <Folder Include="MetadataProvider\" />
-      <Folder Include="MultiClientTest\" />
-      <Folder Include="UnobservablePropertyTest\" />
-      <Folder Include="UnobservableCommandTest\" />
-      <Folder Include="StructureDataTypeTest\" />
-      <Folder Include="RecoverableErrorProvider\" />
-      <Folder Include="ParameterConstraintsTest\" />
-      <Folder Include="ObservablePropertyTest\" />
-      <Folder Include="ObservableCommandTest\" />
+        <Folder Include="AnyTypeTest\" />
+        <Folder Include="AuthenticationTest\" />
+        <Folder Include="BasicDataTypesTest\" />
+        <Folder Include="BinaryTransferTest\" />
+        <Folder Include="CancellationTest\" />
+        <Folder Include="ErrorHandlingTest\" />
+        <Folder Include="ListDataTypeTest\" />
+        <Folder Include="MetadataConsumerTest\" />
+        <Folder Include="MetadataProvider\" />
+        <Folder Include="MultiClientTest\" />
+        <Folder Include="UnobservablePropertyTest\" />
+        <Folder Include="UnobservableCommandTest\" />
+        <Folder Include="StructureDataTypeTest\" />
+        <Folder Include="RecoverableErrorProvider\" />
+        <Folder Include="ParameterConstraintsTest\" />
+        <Folder Include="ObservablePropertyTest\" />
+        <Folder Include="ObservableCommandTest\" />
     </ItemGroup>
 
 </Project>

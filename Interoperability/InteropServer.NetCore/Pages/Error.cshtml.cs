@@ -1,3 +1,4 @@
+using Common.Logging;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Diagnostics;
@@ -8,15 +9,14 @@ namespace Tecan.Sila2.Interop.Server.Pages
     [IgnoreAntiforgeryToken]
     public class ErrorModel : PageModel
     {
-        public string? RequestId { get; set; }
+        public string RequestId { get; set; }
 
         public bool ShowRequestId => !string.IsNullOrEmpty( RequestId );
 
-        private readonly ILogger<ErrorModel> _logger;
+        private readonly ILog _logger;
 
-        public ErrorModel( ILogger<ErrorModel> logger )
+        public ErrorModel()
         {
-            _logger = logger;
         }
 
         public void OnGet()

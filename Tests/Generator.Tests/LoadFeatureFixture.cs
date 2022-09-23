@@ -25,6 +25,7 @@ namespace Tecan.Sila2.Generator.Test
             var text = File.ReadAllText( "SimulationController.sila.xml" );
 
             Assert.DoesNotThrow( () => FeatureSerializer.LoadFromXml( text ) );
+            Assert.DoesNotThrow( () => FeatureSerializer.LoadFromXml( ch + text ) );
         }
 
         [SetUp]

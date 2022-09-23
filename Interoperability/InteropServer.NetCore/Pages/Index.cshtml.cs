@@ -1,13 +1,14 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Common.Logging;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Tecan.Sila2.Interop.Server.Pages
 {
     public class IndexModel : PageModel
     {
-        private readonly ILogger<IndexModel> _logger;
+        private readonly ILog _logger;
 
-        public IndexModel( ILogger<IndexModel> logger )
+        public IndexModel( ILog logger )
         {
             _logger = logger;
         }
