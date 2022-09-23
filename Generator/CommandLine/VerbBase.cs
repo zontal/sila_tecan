@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.Composition;
+﻿using System;
+using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
 using CommandLine;
 using Common.Logging;
@@ -25,6 +26,16 @@ namespace Tecan.Sila2.Generator.CommandLine
         }
 
         /// <summary>
+        /// If set, all interactive interrogations of this command are suppressed.
+        /// </summary>
+        [Option( 'b', "non-interactive", HelpText = "If set, all interactive interrogations of this command are suppressed.", Required = false )]
+        public bool IsNonInteractive
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// Path to a file that contains additional constraints
         /// </summary>
         [Option( "config-file", Required = false, HelpText = "Path to a file that contains additional constraints" )]
@@ -37,7 +48,7 @@ namespace Tecan.Sila2.Generator.CommandLine
         protected ILog SetupLogging( CompositionContainer container )
         {
             LogManager.Adapter = new ConsoleLogging( MinimumSeverity );
-
+            GeneratorSettings.IsInteractive = !IsNonInteractive && Environment.UserInteractive;
             var channel = LogManager.GetLogger( GetType() );
             LoadConfiguration( channel, container.GetExportedValue<IGeneratorConfigSource>() );
             return channel;

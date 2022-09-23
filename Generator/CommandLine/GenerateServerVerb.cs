@@ -130,7 +130,13 @@ namespace Tecan.Sila2.Generator.CommandLine
             }
 
             var directory = Path.GetDirectoryName( Path.GetFullPath( ProviderProject ) );
+            var assemblyDirectory = Path.GetDirectoryName( Path.GetFullPath( AssemblyPath ) );
+
+            var assemblyResolver = CreateAssemblyResolver( assemblyDirectory );
+            AppDomain.CurrentDomain.AssemblyResolve += assemblyResolver;
+
             var assembly = Assembly.LoadFrom( Path.GetFullPath( AssemblyPath ) );
+
             var featureTypes = assembly.ExportedTypes.Where( t =>
                  t.IsInterface && !t.IsGenericType );
 
@@ -186,6 +192,23 @@ namespace Tecan.Sila2.Generator.CommandLine
                     channel.Warn( "No interface with SilaFeature attribute has been found." );
                 }
             }
+        }
+
+        private ResolveEventHandler CreateAssemblyResolver( string assemblyDirectory )
+        {
+            return ( o, e ) =>
+            {
+                var commaPosition = e.Name.IndexOf( ',' );
+                if(commaPosition != -1)
+                {
+                    var fileLocation = Path.Combine( assemblyDirectory, e.Name.Substring( 0, commaPosition ) + ".dll" );
+                    if(File.Exists( fileLocation ))
+                    {
+                        return Assembly.LoadFrom( fileLocation );
+                    }
+                }
+                return null;
+            };
         }
 
         private static string AddImports( string importString, IEnumerable<string> imports )

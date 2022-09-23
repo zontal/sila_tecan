@@ -6,6 +6,7 @@ using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
@@ -166,35 +167,59 @@ namespace Tecan.Sila2.Generator.Generators
         private void AddInterfaceMembers( Type interfaceType, ICollection<object> items,
             ICollection<Type> definedExceptions, ICollection<Type> dataTypes )
         {
-            foreach(var methodInfo in interfaceType.GetMethods())
+            foreach(var methodGroup in interfaceType.GetMethods().GroupBy( m => m.Name ))
             {
+                var methodInfo = methodGroup.FirstOrDefault();
+                if(methodGroup.Count() > 1)
+                {
+                    methodInfo = _ambiguityResolver.GetExposedOverload( methodGroup.ToList() );
+
+                    if(methodInfo == null)
+                    {
+                        continue;
+                    }
+                }
                 if(!methodInfo.IsSpecialName)
                 {
-                    if(_featureSpec != null && _featureSpec.TryGetPropertyFor( methodInfo.Name, out var propertySpec ))
+                    try
                     {
-                        // method should render as property
-                        items.Add( GenerateProperty( methodInfo, propertySpec, definedExceptions, dataTypes ) );
+                        if(_featureSpec != null && _featureSpec.TryGetPropertyFor( methodInfo.Name, out var propertySpec ))
+                        {
+                            // method should render as property
+                            items.Add( GenerateProperty( methodInfo, propertySpec, definedExceptions, dataTypes ) );
+                        }
+                        else
+                        {
+                            items.Add( GenerateCommand( methodInfo, definedExceptions, dataTypes ) );
+                        }
                     }
-                    else
+                    catch(NotSupportedException notSupported)
                     {
-                        items.Add( GenerateCommand( methodInfo, definedExceptions, dataTypes ) );
+                        _loggingChannel.Error( $"Failed to expose method {methodInfo.Name}({string.Join( ", ", methodInfo.GetParameters().Select( p => p.ParameterType.Name ) )})", notSupported );
                     }
                 }
             }
 
             foreach(var propertyInfo in interfaceType.GetProperties())
             {
-                if(!typeof( IRequestInterceptor ).IsAssignableFrom( propertyInfo.PropertyType ))
+                try
                 {
-                    items.Add( GenerateProperty( propertyInfo, definedExceptions, dataTypes, out var setterCommand ) );
-                    if(setterCommand != null)
+                    if(!typeof( IRequestInterceptor ).IsAssignableFrom( propertyInfo.PropertyType ))
                     {
-                        items.Add( setterCommand );
+                        items.Add( GenerateProperty( propertyInfo, definedExceptions, dataTypes, out var setterCommand ) );
+                        if(setterCommand != null)
+                        {
+                            items.Add( setterCommand );
+                        }
+                    }
+                    else
+                    {
+                        items.Add( GenerateMetadata( propertyInfo, definedExceptions, dataTypes ) );
                     }
                 }
-                else
+                catch(NotSupportedException notSupported)
                 {
-                    items.Add( GenerateMetadata( propertyInfo, definedExceptions, dataTypes ) );
+                    _loggingChannel.Error( $"Failed to expose property {propertyInfo.Name}", notSupported );
                 }
             }
         }
@@ -412,7 +437,7 @@ namespace Tecan.Sila2.Generator.Generators
 
             if(!_translationProvider.TryTranslate( type, origin, out var resultType ))
             {
-                throw new NotSupportedException();
+                throw new NotSupportedException( $"There was no translation found for type {type.FullName}. " );
             }
 
             if(typeAction != null)
@@ -778,8 +803,7 @@ namespace Tecan.Sila2.Generator.Generators
             {
                 return userDefinedProperty;
             }
-            throw new InvalidOperationException(
-                                  $"Could not find matching property for constructor parameter {parameterName} of type {type.Name}" );
+            throw new NotSupportedException( $"Could not find matching property for constructor parameter {parameterName} of type {type.Name}" );
         }
 
         private TypeSpec GetTypeSpec( Type type )
