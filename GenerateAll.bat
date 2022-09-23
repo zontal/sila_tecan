@@ -21,6 +21,7 @@ Build\Generator\net472\SilaGen.exe generate-interface Features\ParameterConstrai
 Build\Generator\net472\SilaGen.exe generate-provider Features\ParameterConstraintsProvider\ParameterConstraintsProvider.sila.xml Features\ParameterConstraintsProvider\ParameterConstraintDtos.cs Features\ParameterConstraintsProvider\ParameterConstraintsServiceProvider.cs -n Tecan.Sila2.ParameterConstraintsProvider -s
 Build\Generator\net472\SilaGen.exe generate-interface Features\Cancellation\CancelController.sila.xml Features\Cancellation\ICancellationProvider.cs -n Tecan.Sila2.Cancellation
 Build\Generator\net472\SilaGen.exe generate-provider Features\Cancellation\CancelController.sila.xml Features\Cancellation\CancellationDtos.cs Features\Cancellation\CancellationProvider.cs -n Tecan.Sila2.Cancellation -s
+Build\Generator\net472\SilaGen.exe generate-provider Features\Recovery\ErrorRecoveryService.sila.xml Features\Recovery\ErrorRecoveryServiceDtos.cs Features\Recovery\ErrorRecoveryServiceProvider.cs -s -n Tecan.Sila2.Recovery
 
 Build\Generator\net472\SilaGen.exe generate-server Build\Features\netstandard2.0\Tecan.Sila2.WorktableIntegration.dll Features\WorktableIntegration\WorktableIntegration.csproj -n Tecan.Sila2.WorktableIntegration -v 1.0
 
