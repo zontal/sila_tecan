@@ -24,7 +24,7 @@ namespace Tecan.Sila2
         /// </summary>
         /// <param name="value">The inner value</param>
         /// <param name="store">A binary store to resolve binary data</param>
-        public StringDto(string value, IBinaryStore store = null)
+        public StringDto( string value, IBinaryStore store = null )
         {
             Value = value;
         }
@@ -32,24 +32,24 @@ namespace Tecan.Sila2
         /// <summary>
         /// The actual value
         /// </summary>
-        [ProtoMember(1, Name = @"value")]
-        [System.ComponentModel.DefaultValue("")]
+        [ProtoMember( 1, Name = @"value" )]
+        [System.ComponentModel.DefaultValue( "" )]
         public string Value { get; set; } = "";
 
         /// <summary>
         /// Packages a string into a dto
         /// </summary>
         /// <param name="value">The string value</param>
-        public static implicit operator StringDto(string value)
+        public static implicit operator StringDto( string value )
         {
-            return new StringDto(value);
+            return new StringDto( value );
         }
 
         /// <summary>
         /// Extracts the underlying string
         /// </summary>
         /// <returns>The actual string value</returns>
-        public string Extract(IBinaryStore resolver)
+        public string Extract( IBinaryStore resolver )
         {
             return Value;
         }
@@ -69,9 +69,15 @@ namespace Tecan.Sila2
         /// <param name="value">The string value</param>
         /// <param name="store">A binary store</param>
         /// <returns>The encapsulated value</returns>
-        public static StringDto Create(string value, IBinaryStore store = null)
+        public static StringDto Create( string value, IBinaryStore store = null )
         {
             return value;
+        }
+
+        /// <inheritdoc />
+        public override string ToString()
+        {
+            return Value.ToString();
         }
     }
 
@@ -91,7 +97,7 @@ namespace Tecan.Sila2
         /// </summary>
         /// <param name="value">The inner value</param>
         /// <param name="store">A binary store to resolve binary data</param>
-        public IntegerDto(long value, IBinaryStore store = null)
+        public IntegerDto( long value, IBinaryStore store = null )
         {
             Value = value;
         }
@@ -103,7 +109,7 @@ namespace Tecan.Sila2
         /// <param name="store">A binary store to resolve binary data</param>
         public IntegerDto( long? value, IBinaryStore store = null )
         {
-            Value = value.GetValueOrDefault(0);
+            Value = value.GetValueOrDefault( 0 );
         }
 
         /// <summary>
@@ -129,16 +135,16 @@ namespace Tecan.Sila2
         /// <summary>
         /// The actual value for this dto
         /// </summary>
-        [ProtoMember(1, Name = @"value")]
+        [ProtoMember( 1, Name = @"value" )]
         public long Value { get; set; }
 
         /// <summary>
         /// Converts the given integer value to a dto
         /// </summary>
         /// <param name="value">The actual value</param>
-        public static implicit operator IntegerDto(long value)
+        public static implicit operator IntegerDto( long value )
         {
-            return new IntegerDto(value);
+            return new IntegerDto( value );
         }
 
         /// <summary>
@@ -146,7 +152,7 @@ namespace Tecan.Sila2
         /// </summary>
         /// <param name="resolver">A resolver component to resolve binary data</param>
         /// <returns>The actual value</returns>
-        public long Extract(IBinaryStore resolver)
+        public long Extract( IBinaryStore resolver )
         {
             return Value;
         }
@@ -166,9 +172,9 @@ namespace Tecan.Sila2
         /// <param name="value">The actual value</param>
         /// <param name="store">A binary store</param>
         /// <returns>The encapsulated value</returns>
-        public static IntegerDto Create(long value, IBinaryStore store = null)
+        public static IntegerDto Create( long value, IBinaryStore store = null )
         {
-            return new IntegerDto(value);
+            return new IntegerDto( value );
         }
 
         /// <summary>
@@ -324,6 +330,12 @@ namespace Tecan.Sila2
         {
             return (uint)value.Value;
         }
+
+        /// <inheritdoc />
+        public override string ToString()
+        {
+            return Value.ToString();
+        }
     }
 
     /// <summary>
@@ -342,7 +354,7 @@ namespace Tecan.Sila2
         /// </summary>
         /// <param name="value">The inner value</param>
         /// <param name="store">A binary store to resolve binary data</param>
-        public RealDto(double value, IBinaryStore store = null)
+        public RealDto( double value, IBinaryStore store = null )
         {
             Value = value;
         }
@@ -354,22 +366,22 @@ namespace Tecan.Sila2
         /// <param name="store">A binary store to resolve binary data</param>
         public RealDto( double? value, IBinaryStore store = null )
         {
-            Value = value.GetValueOrDefault(double.NaN);
+            Value = value.GetValueOrDefault( double.NaN );
         }
 
         /// <summary>
         /// The actual value for this dto
         /// </summary>
-        [ProtoMember(1, Name = @"value")]
+        [ProtoMember( 1, Name = @"value" )]
         public double Value { get; set; }
 
         /// <summary>
         /// Encapsulates the given floating point into a dto
         /// </summary>
         /// <param name="value"></param>
-        public static implicit operator RealDto(double value)
+        public static implicit operator RealDto( double value )
         {
-            return new RealDto(value);
+            return new RealDto( value );
         }
 
         /// <summary>
@@ -377,7 +389,7 @@ namespace Tecan.Sila2
         /// </summary>
         /// <param name="resolver">A resolver component to resolve binary data</param>
         /// <returns>The actual value</returns>
-        public double Extract(IBinaryStore resolver)
+        public double Extract( IBinaryStore resolver )
         {
             return Value;
         }
@@ -397,9 +409,9 @@ namespace Tecan.Sila2
         /// <param name="value">The inner value</param>
         /// <param name="store">A binary store</param>
         /// <returns>The encapsulated value</returns>
-        public static RealDto Create(double value, IBinaryStore store = null)
+        public static RealDto Create( double value, IBinaryStore store = null )
         {
-            return new RealDto(value);
+            return new RealDto( value );
         }
 
         /// <summary>
@@ -434,6 +446,12 @@ namespace Tecan.Sila2
         {
             return new RealDto( value );
         }
+
+        /// <inheritdoc />
+        public override string ToString()
+        {
+            return Value.ToString();
+        }
     }
 
     /// <summary>
@@ -452,7 +470,7 @@ namespace Tecan.Sila2
         /// </summary>
         /// <param name="value">The inner value</param>
         /// <param name="store">A binary store to resolve binary data</param>
-        public BooleanDto(bool value, IBinaryStore store = null)
+        public BooleanDto( bool value, IBinaryStore store = null )
         {
             Value = value;
         }
@@ -464,22 +482,22 @@ namespace Tecan.Sila2
         /// <param name="store">A binary store to resolve binary data</param>
         public BooleanDto( bool? value, IBinaryStore store = null )
         {
-            Value = value.GetValueOrDefault(false);
+            Value = value.GetValueOrDefault( false );
         }
 
         /// <summary>
         /// The actual value for this dto
         /// </summary>
-        [ProtoMember(1, Name = @"value")]
+        [ProtoMember( 1, Name = @"value" )]
         public bool Value { get; set; }
 
         /// <summary>
         /// Encapsulates the given value into a dto
         /// </summary>
         /// <param name="value">The actual value</param>
-        public static implicit operator BooleanDto(bool value)
+        public static implicit operator BooleanDto( bool value )
         {
-            return new BooleanDto(value);
+            return new BooleanDto( value );
         }
 
         /// <summary>
@@ -487,7 +505,7 @@ namespace Tecan.Sila2
         /// </summary>
         /// <param name="resolver">A resolver component to resolve binary data</param>
         /// <returns>The actual value</returns>
-        public bool Extract(IBinaryStore resolver)
+        public bool Extract( IBinaryStore resolver )
         {
             return Value;
         }
@@ -507,9 +525,15 @@ namespace Tecan.Sila2
         /// <param name="value"></param>
         /// <param name="store">A binary store</param>
         /// <returns>The encapsulated value</returns>
-        public static BooleanDto Create(bool value, IBinaryStore store = null)
+        public static BooleanDto Create( bool value, IBinaryStore store = null )
         {
             return value;
+        }
+
+        /// <inheritdoc />
+        public override string ToString()
+        {
+            return Value.ToString();
         }
     }
 
@@ -529,21 +553,21 @@ namespace Tecan.Sila2
         /// </summary>
         /// <param name="data">The inner value</param>
         /// <param name="store">A binary store to resolve binary data</param>
-        public BinaryDto(Stream data, IBinaryStore store)
+        public BinaryDto( Stream data, IBinaryStore store )
         {
-            if (data == null)
+            if(data == null)
             {
                 Value = new byte[0];
             }
-            else if (store.ShouldStoreBinary(data.Length))
+            else if(store.ShouldStoreBinary( data.Length ))
             {
-                BinaryTransferUUID = store.StoreBinary(data);
+                BinaryTransferUUID = store.StoreBinary( data );
             }
             else
             {
-                using (var ms = new MemoryStream())
+                using(var ms = new MemoryStream())
                 {
-                    data.CopyTo(ms);
+                    data.CopyTo( ms );
                     Value = ms.ToArray();
                 }
             }
@@ -554,13 +578,13 @@ namespace Tecan.Sila2
         /// </summary>
         /// <param name="data">The binary array</param>
         /// <param name="store">A binary store to resolve binary data</param>
-        public BinaryDto(byte[] data, IBinaryStore store)
+        public BinaryDto( byte[] data, IBinaryStore store )
         {
-            if (store.ShouldStoreBinary(data.LongLength))
+            if(store.ShouldStoreBinary( data.LongLength ))
             {
-                using (var ms = new MemoryStream(data))
+                using(var ms = new MemoryStream( data ))
                 {
-                    BinaryTransferUUID = store.StoreBinary(ms);
+                    BinaryTransferUUID = store.StoreBinary( ms );
                 }
             }
             else
@@ -574,67 +598,67 @@ namespace Tecan.Sila2
         /// </summary>
         /// <param name="file">The file that should be stored</param>
         /// <param name="store">A binary store to resolve binary data</param>
-        public BinaryDto(FileInfo file, IBinaryStore store)
+        public BinaryDto( FileInfo file, IBinaryStore store )
         {
-            BinaryTransferUUID = store.StoreBinary(file);
+            BinaryTransferUUID = store.StoreBinary( file );
         }
 
         /// <summary>
         /// The actual value for this dto
         /// </summary>
-        [ProtoMember(1, Name = @"value")]
+        [ProtoMember( 1, Name = @"value" )]
         public byte[] Value
         {
-            get { return __pbn__union.Is(1) ? ((byte[])__pbn__union.Object) : default; }
-            set { __pbn__union = new DiscriminatedUnionObject(1, value); }
+            get { return __pbn__union.Is( 1 ) ? ((byte[])__pbn__union.Object) : default; }
+            set { __pbn__union = new DiscriminatedUnionObject( 1, value ); }
         }
         /// <summary>
         /// Gets a value indicating whether the value property should be serialized
         /// </summary>
         /// <returns>True, if the value property should be serialized, otherwise False</returns>
-        public bool ShouldSerializeValue() => __pbn__union.Is(1);
+        public bool ShouldSerializeValue() => __pbn__union.Is( 1 );
         /// <summary>
         /// Resets the Value property
         /// </summary>
-        public void ResetValue() => DiscriminatedUnionObject.Reset(ref __pbn__union, 1);
+        public void ResetValue() => DiscriminatedUnionObject.Reset( ref __pbn__union, 1 );
 
         private DiscriminatedUnionObject __pbn__union;
 
         /// <summary>
         /// Gets the binary storage identifier
         /// </summary>
-        [ProtoMember(2)]
-        [DefaultValue("")]
+        [ProtoMember( 2 )]
+        [DefaultValue( "" )]
         public string BinaryTransferUUID
         {
-            get { return __pbn__union.Is(2) ? ((string)__pbn__union.Object) : ""; }
-            set { __pbn__union = new DiscriminatedUnionObject(2, value); }
+            get { return __pbn__union.Is( 2 ) ? ((string)__pbn__union.Object) : ""; }
+            set { __pbn__union = new DiscriminatedUnionObject( 2, value ); }
         }
         /// <summary>
         /// Gets a value indicating whether the binary storage identifier property should be serialized
         /// </summary>
         /// <returns>True, if the binary storage identifier property should be serialized, otherwise False</returns>
-        public bool ShouldSerializeBinaryTransferUUID() => __pbn__union.Is(2);
+        public bool ShouldSerializeBinaryTransferUUID() => __pbn__union.Is( 2 );
 
         /// <summary>
         /// Resets the binary storage identifier property
         /// </summary>
-        public void ResetBinaryTransferUUID() => DiscriminatedUnionObject.Reset(ref __pbn__union, 2);
+        public void ResetBinaryTransferUUID() => DiscriminatedUnionObject.Reset( ref __pbn__union, 2 );
 
         /// <summary>
         /// Extracts the value from the dto
         /// </summary>
         /// <param name="resolver">A resolver component to resolve binary data</param>
         /// <returns>The actual value</returns>
-        public Stream Extract(IBinaryStore resolver)
+        public Stream Extract( IBinaryStore resolver )
         {
-            if (ShouldSerializeValue())
+            if(ShouldSerializeValue())
             {
-                return new MemoryStream(Value);
+                return new MemoryStream( Value );
             }
             else
             {
-                return new LazyBinaryStream(resolver, BinaryTransferUUID);
+                return new LazyBinaryStream( resolver, BinaryTransferUUID );
             }
         }
 
@@ -643,17 +667,17 @@ namespace Tecan.Sila2
         /// </summary>
         /// <param name="resolver">A resolver component to resolve binary data</param>
         /// <returns>The actual value</returns>
-        public byte[] ExtractToBytes(IBinaryStore resolver)
+        public byte[] ExtractToBytes( IBinaryStore resolver )
         {
-            if( ShouldSerializeValue() )
+            if(ShouldSerializeValue())
             {
                 return Value;
             }
             else
             {
-                using( var ms = new MemoryStream() )
+                using(var ms = new MemoryStream())
                 {
-                    using( var resolvedStream = new LazyBinaryStream( resolver, BinaryTransferUUID ) )
+                    using(var resolvedStream = new LazyBinaryStream( resolver, BinaryTransferUUID ))
                     {
                         resolvedStream.CopyTo( ms );
                         return ms.ToArray();
@@ -669,11 +693,11 @@ namespace Tecan.Sila2
         /// <returns>The actual value</returns>
         public FileInfo ExtractToFileInfo( IBinaryStore resolver )
         {
-            if( ShouldSerializeValue() )
+            if(ShouldSerializeValue())
             {
                 var path = Path.GetTempFileName();
-                File.WriteAllBytes(path, Value);
-                return new FileInfo(path);
+                File.WriteAllBytes( path, Value );
+                return new FileInfo( path );
             }
             else
             {
@@ -707,45 +731,45 @@ namespace Tecan.Sila2
         /// </summary>
         /// <param name="value">The inner value</param>
         /// <param name="store">A binary store to resolve binary data</param>
-        public DateDto(DateTimeOffset value, IBinaryStore store = null)
+        public DateDto( DateTimeOffset value, IBinaryStore store = null )
         {
-            Day = (uint) value.Day;
-            Month = (uint) value.Month;
-            Year = (uint) value.Year;
+            Day = (uint)value.Day;
+            Month = (uint)value.Month;
+            Year = (uint)value.Year;
             Timezone = value.Offset;
         }
 
         /// <summary>
         /// Gets or sets the day
         /// </summary>
-        [ProtoMember(1, Name = @"day")]
+        [ProtoMember( 1, Name = @"day" )]
         public uint Day { get; set; }
 
         /// <summary>
         /// Gets or sets the month
         /// </summary>
-        [ProtoMember(2, Name = @"month")]
+        [ProtoMember( 2, Name = @"month" )]
         public uint Month { get; set; }
 
         /// <summary>
         /// Gets or sets the year
         /// </summary>
-        [ProtoMember(3, Name = @"year")]
+        [ProtoMember( 3, Name = @"year" )]
         public ulong Year { get; set; }
 
         /// <summary>
         /// Gets or sets the timezone
         /// </summary>
-        [ProtoMember(4, Name = @"timezone")]
+        [ProtoMember( 4, Name = @"timezone" )]
         public TimezoneDto Timezone { get; set; }
 
         /// <summary>
         /// Encapsulates a given date into a data transfer object
         /// </summary>
         /// <param name="value">The actual date</param>
-        public static implicit operator DateDto(DateTimeOffset value)
+        public static implicit operator DateDto( DateTimeOffset value )
         {
-            return new DateDto(value);
+            return new DateDto( value );
         }
 
         /// <summary>
@@ -753,9 +777,9 @@ namespace Tecan.Sila2
         /// </summary>
         /// <param name="resolver">A resolver component to resolve binary data</param>
         /// <returns>The actual value</returns>
-        public DateTimeOffset Extract(IBinaryStore resolver)
+        public DateTimeOffset Extract( IBinaryStore resolver )
         {
-            return new DateTimeOffset((int)Year, (int)Month, (int)Day, 0, 0, 0, Timezone.Extract(resolver));
+            return new DateTimeOffset( (int)Year, (int)Month, (int)Day, 0, 0, 0, Timezone.Extract( resolver ) );
         }
 
         /// <summary>
@@ -772,9 +796,15 @@ namespace Tecan.Sila2
         /// </summary>
         /// <param name="value">The actual date</param>
         /// <param name="store">(ignored)</param>
-        public static DateDto Create(DateTimeOffset value, IBinaryStore store = null)
+        public static DateDto Create( DateTimeOffset value, IBinaryStore store = null )
         {
             return value;
+        }
+
+        /// <inheritdoc />
+        public override string ToString()
+        {
+            return Extract( null ).ToString();
         }
     }
 
@@ -794,45 +824,45 @@ namespace Tecan.Sila2
         /// </summary>
         /// <param name="value">The inner value</param>
         /// <param name="store">A binary store to resolve binary data</param>
-        public TimeDto(TimeSpan value, IBinaryStore store = null)
+        public TimeDto( TimeSpan value, IBinaryStore store = null )
         {
-            Second = (uint) value.Seconds;
-            Minute = (uint) value.Minutes;
-            Hour = (uint) value.Hours;
-            Timezone = new TimezoneDto(TimeSpan.Zero);
+            Second = (uint)value.Seconds;
+            Minute = (uint)value.Minutes;
+            Hour = (uint)value.Hours;
+            Timezone = new TimezoneDto( TimeSpan.Zero );
         }
 
         /// <summary>
         /// Gets or sets the second
         /// </summary>
-        [ProtoMember(1, Name = @"second")]
+        [ProtoMember( 1, Name = @"second" )]
         public uint Second { get; set; }
 
         /// <summary>
         /// Gets or sets the minute
         /// </summary>
-        [ProtoMember(2, Name = @"minute")]
+        [ProtoMember( 2, Name = @"minute" )]
         public uint Minute { get; set; }
 
         /// <summary>
         /// Gets or sets the hour
         /// </summary>
-        [ProtoMember(3, Name = @"hour")]
+        [ProtoMember( 3, Name = @"hour" )]
         public uint Hour { get; set; }
 
         /// <summary>
         /// Gets or sets the timezone
         /// </summary>
-        [ProtoMember(4, Name = @"timezone")]
+        [ProtoMember( 4, Name = @"timezone" )]
         public TimezoneDto Timezone { get; set; }
 
         /// <summary>
         /// Encapsulates the given time into a dto
         /// </summary>
         /// <param name="value">The actual time</param>
-        public static implicit operator TimeDto(TimeSpan value)
+        public static implicit operator TimeDto( TimeSpan value )
         {
-            return new TimeDto(value);
+            return new TimeDto( value );
         }
 
         /// <summary>
@@ -840,9 +870,9 @@ namespace Tecan.Sila2
         /// </summary>
         /// <param name="resolver">A resolver component to resolve binary data</param>
         /// <returns>The actual value</returns>
-        public TimeSpan Extract(IBinaryStore resolver)
+        public TimeSpan Extract( IBinaryStore resolver )
         {
-            return new TimeSpan((int) Hour, (int) Minute, (int) Second) + Timezone.Extract(resolver);
+            return new TimeSpan( (int)Hour, (int)Minute, (int)Second ) + Timezone.Extract( resolver );
         }
 
         /// <summary>
@@ -859,9 +889,15 @@ namespace Tecan.Sila2
         /// </summary>
         /// <param name="value">The actual time</param>
         /// <param name="store">(ignored)</param>
-        public static TimeDto Create(TimeSpan value, IBinaryStore store = null)
+        public static TimeDto Create( TimeSpan value, IBinaryStore store = null )
         {
             return value;
+        }
+
+        /// <inheritdoc />
+        public override string ToString()
+        {
+            return Extract( null ).ToString();
         }
     }
 
@@ -881,7 +917,7 @@ namespace Tecan.Sila2
         /// </summary>
         /// <param name="value">The inner value</param>
         /// <param name="store">A binary store to resolve binary data</param>
-        public TimestampDto(DateTimeOffset value, IBinaryStore store = null)
+        public TimestampDto( DateTimeOffset value, IBinaryStore store = null )
         {
             Second = value.Second;
             Minute = value.Minute;
@@ -895,52 +931,52 @@ namespace Tecan.Sila2
         /// <summary>
         /// Gets or sets the second
         /// </summary>
-        [ProtoMember(1, Name = @"second")]
+        [ProtoMember( 1, Name = @"second" )]
         public long Second { get; set; }
 
         /// <summary>
         /// Gets or sets the minute
         /// </summary>
-        [ProtoMember(2, Name = @"minute")]
+        [ProtoMember( 2, Name = @"minute" )]
         public long Minute { get; set; }
 
         /// <summary>
         /// Gets or sets the hour
         /// </summary>
-        [ProtoMember(3, Name = @"hour")]
+        [ProtoMember( 3, Name = @"hour" )]
         public long Hour { get; set; }
 
         /// <summary>
         /// Gets or sets the day
         /// </summary>
-        [ProtoMember(4, Name = @"day")]
+        [ProtoMember( 4, Name = @"day" )]
         public long Day { get; set; }
 
         /// <summary>
         /// Gets or sets the month
         /// </summary>
-        [ProtoMember(5, Name = @"month")]
+        [ProtoMember( 5, Name = @"month" )]
         public long Month { get; set; }
 
         /// <summary>
         /// Gets or sets the year
         /// </summary>
-        [ProtoMember(6, Name = @"year")]
+        [ProtoMember( 6, Name = @"year" )]
         public long Year { get; set; }
 
         /// <summary>
         /// Gets or sets the timezone
         /// </summary>
-        [ProtoMember(7, Name = @"timezone")]
+        [ProtoMember( 7, Name = @"timezone" )]
         public TimezoneDto Timezone { get; set; }
 
         /// <summary>
         /// Encapsulates the given timestamp into a dto
         /// </summary>
         /// <param name="value">The actual timestamp</param>
-        public static implicit operator TimestampDto(DateTimeOffset value)
+        public static implicit operator TimestampDto( DateTimeOffset value )
         {
-            return new TimestampDto(value);
+            return new TimestampDto( value );
         }
 
         /// <summary>
@@ -948,9 +984,9 @@ namespace Tecan.Sila2
         /// </summary>
         /// <param name="resolver">A resolver component to resolve binary data</param>
         /// <returns>The actual value</returns>
-        public DateTimeOffset Extract(IBinaryStore resolver)
+        public DateTimeOffset Extract( IBinaryStore resolver )
         {
-            return new DateTimeOffset((int)Year, (int)Month, (int)Day, (int)Hour, (int)Minute, (int)Second, Timezone.Extract(resolver));
+            return new DateTimeOffset( (int)Year, (int)Month, (int)Day, (int)Hour, (int)Minute, (int)Second, Timezone.Extract( resolver ) );
         }
 
         /// <summary>
@@ -967,9 +1003,15 @@ namespace Tecan.Sila2
         /// </summary>
         /// <param name="value">The actual timestamp</param>
         /// <param name="store">(ignored)</param>
-        public static TimestampDto Create(DateTimeOffset value, IBinaryStore store = null)
+        public static TimestampDto Create( DateTimeOffset value, IBinaryStore store = null )
         {
             return value;
+        }
+
+        /// <inheritdoc />
+        public override string ToString()
+        {
+            return Extract( null ).ToString();
         }
     }
 
@@ -989,31 +1031,31 @@ namespace Tecan.Sila2
         /// </summary>
         /// <param name="value">The inner value</param>
         /// <param name="store">A binary store to resolve binary data</param>
-        public TimezoneDto(TimeSpan value, IBinaryStore store = null)
+        public TimezoneDto( TimeSpan value, IBinaryStore store = null )
         {
             Hours = value.Hours;
-            Minutes = (uint) value.Minutes;
+            Minutes = (uint)value.Minutes;
         }
 
         /// <summary>
         /// Gets or sets the offset hours
         /// </summary>
-        [ProtoMember(1, Name = @"hours")]
+        [ProtoMember( 1, Name = @"hours" )]
         public int Hours { get; set; }
 
         /// <summary>
         /// Gets or sets the offset minutes
         /// </summary>
-        [ProtoMember(2, Name = @"minutes")]
+        [ProtoMember( 2, Name = @"minutes" )]
         public uint Minutes { get; set; }
 
         /// <summary>
         /// Wraps the given offset into a transfer object
         /// </summary>
         /// <param name="offset">The given offset</param>
-        public static implicit operator TimezoneDto(TimeSpan offset)
+        public static implicit operator TimezoneDto( TimeSpan offset )
         {
-            return new TimezoneDto(offset);
+            return new TimezoneDto( offset );
         }
 
         /// <summary>
@@ -1021,9 +1063,9 @@ namespace Tecan.Sila2
         /// </summary>
         /// <param name="resolver">A resolver component to resolve binary data</param>
         /// <returns>The actual value</returns>
-        public TimeSpan Extract(IBinaryStore resolver)
+        public TimeSpan Extract( IBinaryStore resolver )
         {
-            return new TimeSpan(0, Hours, (int)Minutes, 0);
+            return new TimeSpan( 0, Hours, (int)Minutes, 0 );
         }
 
         /// <summary>
@@ -1039,9 +1081,9 @@ namespace Tecan.Sila2
         /// Wraps the given offset into a transfer object
         /// </summary>
         /// <param name="value">The given offset</param>
-        public static TimezoneDto Create(TimeSpan value)
+        public static TimezoneDto Create( TimeSpan value )
         {
-            return new TimezoneDto(value);
+            return new TimezoneDto( value );
         }
     }
 
@@ -1061,7 +1103,7 @@ namespace Tecan.Sila2
         /// </summary>
         /// <param name="value">The inner value</param>
         /// <param name="store">A binary store to resolve binary data</param>
-        public DurationDto(TimeSpan value, IBinaryStore store = null)
+        public DurationDto( TimeSpan value, IBinaryStore store = null )
         {
             Nanos = (int)(value.Ticks % TimeSpan.TicksPerSecond) * 100;
             Seconds = (long)value.TotalSeconds;
@@ -1070,22 +1112,22 @@ namespace Tecan.Sila2
         /// <summary>
         /// Gets or sets the seconds
         /// </summary>
-        [ProtoMember(1, Name = @"seconds")]
+        [ProtoMember( 1, Name = @"seconds" )]
         public long Seconds { get; set; }
 
         /// <summary>
         /// Gets or sets the nanoseconds
         /// </summary>
-        [ProtoMember(2, Name = @"nanos")]
+        [ProtoMember( 2, Name = @"nanos" )]
         public int Nanos { get; set; }
 
         /// <summary>
         /// Encapsulates the given duration into a transfer object
         /// </summary>
         /// <param name="value">The actual duration</param>
-        public static implicit operator DurationDto(TimeSpan value)
+        public static implicit operator DurationDto( TimeSpan value )
         {
-            return new DurationDto(value);
+            return new DurationDto( value );
         }
 
         /// <summary>
@@ -1093,9 +1135,9 @@ namespace Tecan.Sila2
         /// </summary>
         /// <param name="resolver">A resolver component to resolve binary data</param>
         /// <returns>The actual value</returns>
-        public TimeSpan Extract(IBinaryStore resolver)
+        public TimeSpan Extract( IBinaryStore resolver )
         {
-            return new TimeSpan(Seconds * TimeSpan.TicksPerSecond + (Nanos / 100));
+            return new TimeSpan( Seconds * TimeSpan.TicksPerSecond + (Nanos / 100) );
         }
 
         /// <summary>
@@ -1111,7 +1153,7 @@ namespace Tecan.Sila2
     /// <summary>
     /// The data transfer class for a command execution identifier
     /// </summary>
-    [ProtoContract(Name = "CommandExecutionUUID")]
+    [ProtoContract( Name = "CommandExecutionUUID" )]
     public class CommandExecutionUuid
     {
         /// <summary>
@@ -1123,7 +1165,7 @@ namespace Tecan.Sila2
         /// Creates a data transfer object for the given command execution identifier
         /// </summary>
         /// <param name="commandId"></param>
-        public CommandExecutionUuid(string commandId)
+        public CommandExecutionUuid( string commandId )
         {
             CommandId = commandId;
         }
@@ -1131,8 +1173,8 @@ namespace Tecan.Sila2
         /// <summary>
         /// Gets the command execution identifier
         /// </summary>
-        [ProtoMember(1, Name = "commandId")]
-        [DefaultValue("")]
+        [ProtoMember( 1, Name = "commandId" )]
+        [DefaultValue( "" )]
         public string CommandId { get; set; } = "";
 
     }
@@ -1154,32 +1196,32 @@ namespace Tecan.Sila2
         /// Creates a data transfer object for the given command execution identifier
         /// </summary>
         /// <param name="commandId">The command execution identifier</param>
-        public CommandConfirmation(string commandId)
+        public CommandConfirmation( string commandId )
         {
-            CommandId = new CommandExecutionUuid(commandId);
+            CommandId = new CommandExecutionUuid( commandId );
         }
-        
+
         /// <summary>
         /// Creates a data transfer object for the given command execution identifier
         /// </summary>
         /// <param name="commandId">The command execution identifier</param>
         /// <param name="expectedDuration">The expected duration</param>
-        public CommandConfirmation(string commandId, TimeSpan expectedDuration)
+        public CommandConfirmation( string commandId, TimeSpan expectedDuration )
         {
-            CommandId = new CommandExecutionUuid(commandId);
-            LifetimeOfExecution = new DurationDto(expectedDuration);
+            CommandId = new CommandExecutionUuid( commandId );
+            LifetimeOfExecution = new DurationDto( expectedDuration );
         }
 
         /// <summary>
         /// Gets the command execution identifier
         /// </summary>
-        [ProtoMember(1, Name = "commandExecutionUUID")]
+        [ProtoMember( 1, Name = "commandExecutionUUID" )]
         public CommandExecutionUuid CommandId { get; set; }
 
         /// <summary>
         /// Gets the expected lifetime of execution
         /// </summary>
-        [ProtoMember(2, Name = "lifetimeOfExecution")]
+        [ProtoMember( 2, Name = "lifetimeOfExecution" )]
         public DurationDto LifetimeOfExecution { get; set; }
 
     }
@@ -1201,7 +1243,7 @@ namespace Tecan.Sila2
         /// <param name="status">The status of the command execution</param>
         /// <param name="progress">The curent progress</param>
         /// <param name="estimatedRemainingTime">The estimated remaining time</param>
-        public ExecutionState(CommandStatus status, double progress, TimeSpan estimatedRemainingTime)
+        public ExecutionState( CommandStatus status, double progress, TimeSpan estimatedRemainingTime )
         {
             Status = status;
             Progress = progress;
@@ -1211,25 +1253,25 @@ namespace Tecan.Sila2
         /// <summary>
         /// Gets or sets the command state
         /// </summary>
-        [ProtoMember(1, Name = "commandStatus")]
+        [ProtoMember( 1, Name = "commandStatus" )]
         public CommandStatus Status { get; set; }
 
         /// <summary>
         /// Gets or sets the progress
         /// </summary>
-        [ProtoMember(2, Name = @"progress")]
+        [ProtoMember( 2, Name = @"progress" )]
         public RealDto Progress { get; set; }
 
         /// <summary>
         /// Gets or sets the estimated remaining time
         /// </summary>
-        [ProtoMember(3, Name = "estimatedRemainingTime")]
+        [ProtoMember( 3, Name = "estimatedRemainingTime" )]
         public DurationDto EstimatedRemainingTime { get; set; }
 
         /// <summary>
         /// Gets or sets the updated lifetime of execution
         /// </summary>
-        [ProtoMember(4, Name = "updatedLifetimeOfExecution")]
+        [ProtoMember( 4, Name = "updatedLifetimeOfExecution" )]
         public DurationDto UpdatedLifetimeOfExecution { get; set; }
 
         /// <summary>
@@ -1241,22 +1283,22 @@ namespace Tecan.Sila2
             /// <summary>
             /// The command is waiting for execution
             /// </summary>
-            [ProtoEnum(Name = @"waiting")]
+            [ProtoEnum( Name = @"waiting" )]
             Waiting = 0,
             /// <summary>
             /// The command is running
             /// </summary>
-            [ProtoEnum(Name = @"running")]
+            [ProtoEnum( Name = @"running" )]
             Running = 1,
             /// <summary>
             /// The command finished successfully
             /// </summary>
-            [ProtoEnum(Name = @"finishedSuccessfully")]
+            [ProtoEnum( Name = @"finishedSuccessfully" )]
             FinishedSuccessfully = 2,
             /// <summary>
             /// The command finished with error
             /// </summary>
-            [ProtoEnum(Name = @"finishedWithError")]
+            [ProtoEnum( Name = @"finishedWithError" )]
             FinishedWithError = 3,
         }
 
@@ -1271,80 +1313,80 @@ namespace Tecan.Sila2
         /// <summary>
         /// Gets or sets the validation error
         /// </summary>
-        [ProtoMember(1)]
+        [ProtoMember( 1 )]
         public ValidationErrorDto ValidationError
         {
-            get { return __pbn__error.Is(1) ? ((ValidationErrorDto)__pbn__error.Object) : default; }
-            set { __pbn__error = new DiscriminatedUnionObject(1, value); }
+            get { return __pbn__error.Is( 1 ) ? ((ValidationErrorDto)__pbn__error.Object) : default; }
+            set { __pbn__error = new DiscriminatedUnionObject( 1, value ); }
         }
         /// <summary>
         /// Gets a value indicating whether the validation error should be serialized
         /// </summary>
         /// <returns>True, if the validation error should be serialized, otherwise False</returns>
-        public bool ShouldSerializeValidationError() => __pbn__error.Is(1);
+        public bool ShouldSerializeValidationError() => __pbn__error.Is( 1 );
         /// <summary>
         /// Resets the validation error property
         /// </summary>
-        public void ResetValidationError() => DiscriminatedUnionObject.Reset(ref __pbn__error, 1);
+        public void ResetValidationError() => DiscriminatedUnionObject.Reset( ref __pbn__error, 1 );
 
         private DiscriminatedUnionObject __pbn__error;
 
         /// <summary>
         /// Gets or sets the execution error
         /// </summary>
-        [ProtoMember(2)]
+        [ProtoMember( 2 )]
         public DefinedExecutionErrorDto DefinedExecutionError
         {
-            get { return __pbn__error.Is(2) ? ((DefinedExecutionErrorDto)__pbn__error.Object) : default; }
-            set { __pbn__error = new DiscriminatedUnionObject(2, value); }
+            get { return __pbn__error.Is( 2 ) ? ((DefinedExecutionErrorDto)__pbn__error.Object) : default; }
+            set { __pbn__error = new DiscriminatedUnionObject( 2, value ); }
         }
         /// <summary>
         /// Gets a value indicating whether the execution error should be serialized
         /// </summary>
         /// <returns>True, if the execution error should be serialized, otherwise False</returns>
-        public bool ShouldSerializeDefinedExecutionError() => __pbn__error.Is(2);
+        public bool ShouldSerializeDefinedExecutionError() => __pbn__error.Is( 2 );
         /// <summary>
         /// Resets the execution error property
         /// </summary>
-        public void ResetDefinedExecutionError() => DiscriminatedUnionObject.Reset(ref __pbn__error, 2);
+        public void ResetDefinedExecutionError() => DiscriminatedUnionObject.Reset( ref __pbn__error, 2 );
 
         /// <summary>
         /// Gets or sets the undefined execution error
         /// </summary>
-        [ProtoMember(3)]
+        [ProtoMember( 3 )]
         public UndefinedExecutionErrorDto UndefinedExecutionError
         {
-            get { return __pbn__error.Is(3) ? ((UndefinedExecutionErrorDto)__pbn__error.Object) : default; }
-            set { __pbn__error = new DiscriminatedUnionObject(3, value); }
+            get { return __pbn__error.Is( 3 ) ? ((UndefinedExecutionErrorDto)__pbn__error.Object) : default; }
+            set { __pbn__error = new DiscriminatedUnionObject( 3, value ); }
         }
         /// <summary>
         /// Gets a value indicating whether the undefined execution error should be serialized
         /// </summary>
         /// <returns>True, if the undefined execution error should be serialized, otherwise False</returns>
-        public bool ShouldSerializeUndefinedExecutionError() => __pbn__error.Is(3);
+        public bool ShouldSerializeUndefinedExecutionError() => __pbn__error.Is( 3 );
         /// <summary>
         /// Resets the undefined execution error property
         /// </summary>
-        public void ResetUndefinedExecutionError() => DiscriminatedUnionObject.Reset(ref __pbn__error, 3);
+        public void ResetUndefinedExecutionError() => DiscriminatedUnionObject.Reset( ref __pbn__error, 3 );
 
         /// <summary>
         /// Gets or sets the framework error
         /// </summary>
-        [ProtoMember(4)]
+        [ProtoMember( 4 )]
         public FrameworkErrorDto FrameworkError
         {
-            get { return __pbn__error.Is(4) ? ((FrameworkErrorDto)__pbn__error.Object) : default; }
-            set { __pbn__error = new DiscriminatedUnionObject(4, value); }
+            get { return __pbn__error.Is( 4 ) ? ((FrameworkErrorDto)__pbn__error.Object) : default; }
+            set { __pbn__error = new DiscriminatedUnionObject( 4, value ); }
         }
         /// <summary>
         /// Gets a value indicating whether the framework error should be serialized
         /// </summary>
         /// <returns>True, if the framework error should be serialized, otherwise False</returns>
-        public bool ShouldSerializeFrameworkError() => __pbn__error.Is(4);
+        public bool ShouldSerializeFrameworkError() => __pbn__error.Is( 4 );
         /// <summary>
         /// Resets the framework error property
         /// </summary>
-        public void ResetFrameworkError() => DiscriminatedUnionObject.Reset(ref __pbn__error, 4);
+        public void ResetFrameworkError() => DiscriminatedUnionObject.Reset( ref __pbn__error, 4 );
 
     }
 
@@ -1357,15 +1399,15 @@ namespace Tecan.Sila2
         /// <summary>
         /// Gets or sets the parameter identifier that did not validate
         /// </summary>
-        [ProtoMember(1, Name = @"parameter")]
-        [DefaultValue("")]
+        [ProtoMember( 1, Name = @"parameter" )]
+        [DefaultValue( "" )]
         public string Parameter { get; set; } = "";
 
         /// <summary>
         /// Gets or sets the error message
         /// </summary>
-        [ProtoMember(2, Name = @"message")]
-        [DefaultValue("")]
+        [ProtoMember( 2, Name = @"message" )]
+        [DefaultValue( "" )]
         public string Message { get; set; } = "";
 
     }
@@ -1379,15 +1421,15 @@ namespace Tecan.Sila2
         /// <summary>
         /// Gets or sets the fully qualified identifier of the execution error
         /// </summary>
-        [ProtoMember(1)]
-        [DefaultValue("")]
+        [ProtoMember( 1 )]
+        [DefaultValue( "" )]
         public string ErrorIdentifier { get; set; } = "";
 
         /// <summary>
         /// Gets or sets the error message
         /// </summary>
-        [ProtoMember(2, Name = @"message")]
-        [DefaultValue("")]
+        [ProtoMember( 2, Name = @"message" )]
+        [DefaultValue( "" )]
         public string Message { get; set; } = "";
 
     }
@@ -1399,14 +1441,14 @@ namespace Tecan.Sila2
     public class UndefinedExecutionErrorDto : IExtensible
     {
         private IExtension __pbn__extensionData;
-        IExtension IExtensible.GetExtensionObject(bool createIfMissing)
-            => Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
+        IExtension IExtensible.GetExtensionObject( bool createIfMissing )
+            => Extensible.GetExtensionObject( ref __pbn__extensionData, createIfMissing );
 
         /// <summary>
         /// Gets or sets the error message
         /// </summary>
-        [ProtoMember(1, Name = @"message")]
-        [DefaultValue("")]
+        [ProtoMember( 1, Name = @"message" )]
+        [DefaultValue( "" )]
         public string Message { get; set; } = "";
 
     }
@@ -1418,20 +1460,20 @@ namespace Tecan.Sila2
     public class FrameworkErrorDto : IExtensible
     {
         private IExtension __pbn__extensionData;
-        IExtension IExtensible.GetExtensionObject(bool createIfMissing)
-            => Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
+        IExtension IExtensible.GetExtensionObject( bool createIfMissing )
+            => Extensible.GetExtensionObject( ref __pbn__extensionData, createIfMissing );
 
         /// <summary>
         /// Gets or sets the type of error
         /// </summary>
-        [ProtoMember(1)]
+        [ProtoMember( 1 )]
         public FrameworkErrorType Type { get; set; }
 
         /// <summary>
         /// Gets or sets the error message
         /// </summary>
-        [ProtoMember(2, Name = @"message")]
-        [DefaultValue("")]
+        [ProtoMember( 2, Name = @"message" )]
+        [DefaultValue( "" )]
         public string Message { get; set; } = "";
 
 
@@ -1446,27 +1488,27 @@ namespace Tecan.Sila2
         /// <summary>
         /// The server denied the execution of a command
         /// </summary>
-        [ProtoEnum(Name = @"COMMAND_EXECUTION_NOT_ACCEPTED")]
+        [ProtoEnum( Name = @"COMMAND_EXECUTION_NOT_ACCEPTED" )]
         CommandExecutionNotAccepted = 0,
         /// <summary>
         /// The execution identifier is invalid
         /// </summary>
-        [ProtoEnum(Name = @"INVALID_COMMAND_EXECUTION_UUID")]
+        [ProtoEnum( Name = @"INVALID_COMMAND_EXECUTION_UUID" )]
         InvalidCommandExecutionUuid = 1,
         /// <summary>
         /// The command execution did not finish
         /// </summary>
-        [ProtoEnum(Name = @"COMMAND_EXECUTION_NOT_FINISHED")]
+        [ProtoEnum( Name = @"COMMAND_EXECUTION_NOT_FINISHED" )]
         CommandExecutionNotFinished = 2,
         /// <summary>
         /// The metadata provided is invalid
         /// </summary>
-        [ProtoEnum(Name = @"INVALID_METADATA")]
+        [ProtoEnum( Name = @"INVALID_METADATA" )]
         InvalidMetadata = 3,
         /// <summary>
         /// No metadata is allowed for this request
         /// </summary>
-        [ProtoEnum(Name = @"NO_METADATA_ALLOWED")]
+        [ProtoEnum( Name = @"NO_METADATA_ALLOWED" )]
         NoMetadataAllowed = 4,
     }
 
@@ -1483,7 +1525,7 @@ namespace Tecan.Sila2
         /// <summary>
         /// Gets the transfer object for the key
         /// </summary>
-        [ProtoMember(1, Name = "key")]
+        [ProtoMember( 1, Name = "key" )]
         public TKeyDto Key
         {
             get;
@@ -1493,7 +1535,7 @@ namespace Tecan.Sila2
         /// <summary>
         /// Gets the transfer object for the value
         /// </summary>
-        [ProtoMember(2, Name = "value")]
+        [ProtoMember( 2, Name = "value" )]
         public TValueDto Value
         {
             get;
@@ -1552,7 +1594,7 @@ namespace Tecan.Sila2
         /// <inheritdoc />
         public string GetValidationErrors()
         {
-            return Key?.GetValidationErrors() + Value.Select(v => v.GetValidationErrors());
+            return Key?.GetValidationErrors() + Value.Select( v => v.GetValidationErrors() );
         }
     }
 
@@ -1568,9 +1610,9 @@ namespace Tecan.Sila2
         /// <param name="source">A collection with data transfer objects</param>
         /// <param name="resolver">A component that resolves binary storage identifiers</param>
         /// <returns>A collection with the underlying data</returns>
-        public static List<T> Extract<T>(this IEnumerable<ISilaTransferObject<T>> source, IBinaryStore resolver)
+        public static List<T> Extract<T>( this IEnumerable<ISilaTransferObject<T>> source, IBinaryStore resolver )
         {
-            return source?.Select(it => it.Extract(resolver)).ToList();
+            return source?.Select( it => it.Extract( resolver ) ).ToList();
         }
 
         /// <summary>
@@ -1588,12 +1630,12 @@ namespace Tecan.Sila2
             where TKeyDto : ISilaTransferObject<TKey>
             where TValueDto : ISilaTransferObject<TValue>
         {
-            if( source == null )
+            if(source == null)
             {
                 return null;
             }
             var dict = new Dictionary<TKey, TValue>();
-            foreach( var keyValuePairDto in source )
+            foreach(var keyValuePairDto in source)
             {
                 var pair = keyValuePairDto.Extract( resolver );
                 dict.Add( pair.Key, pair.Value );
@@ -1640,10 +1682,10 @@ namespace Tecan.Sila2
         /// <param name="convertFunc">A conversion function to encapsulate the data</param>
         /// <param name="resolver">A component to handle binary data transfer</param>
         /// <returns></returns>
-        public static List<TDto> Encapsulate<TDto, TInner>(IEnumerable<TInner> source,
-            Func<TInner, IBinaryStore, TDto> convertFunc, IBinaryStore resolver)
+        public static List<TDto> Encapsulate<TDto, TInner>( IEnumerable<TInner> source,
+            Func<TInner, IBinaryStore, TDto> convertFunc, IBinaryStore resolver )
         {
-            return source?.Select(item => convertFunc(item, resolver)).ToList();
+            return source?.Select( item => convertFunc( item, resolver ) ).ToList();
         }
 
         /// <summary>
@@ -1690,7 +1732,7 @@ namespace Tecan.Sila2
             return source?.Select( item => new LookupEntryDto<TKey, TKeyDto, TValue, TValueDto>()
             {
                 Key = keyConvertFunc( item.Key, resolver ),
-                Value = Encapsulate(item.Value, valueConvertFunc, resolver)
+                Value = Encapsulate( item.Value, valueConvertFunc, resolver )
             } ).ToList();
         }
     }

@@ -12,6 +12,7 @@ using NUnit.Framework;
 using Tecan.Sila2.Generator.Contracts;
 using Tecan.Sila2.Generator.Generators;
 using Tecan.Sila2.Generator.TypeTranslation;
+using Tecan.Sila2.Generator.Validation;
 
 namespace Tecan.Sila2.Generator.Test
 {
@@ -113,7 +114,12 @@ namespace Tecan.Sila2.Generator.Test
         public virtual void Test_GenerateDto()
         {
             var feature = FeatureSerializer.Load( FeatureDefinitionFile );
-            var dtoGenerator = new DtoGenerator( _typeTranslationProvider, CreateNameProvider(), CreateConfigSource() );
+            var dtoGenerator = new DtoGenerator( _typeTranslationProvider, CreateNameProvider(), CreateConfigSource(), new IValidationCreator[]
+            {
+                new LengthValidation(),
+                new NumberValidation(),
+                new RegexValidationCreator()
+            } );
             var unit = dtoGenerator.GenerateInterfaceUnit( feature,
                 "Tecan.Sila2.Generator.Test.TestReference" );
 

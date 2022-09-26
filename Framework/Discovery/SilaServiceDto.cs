@@ -300,11 +300,6 @@ namespace Tecan.Sila2.Discovery
         private Tecan.Sila2.StringDto _value;
         
         /// <summary>
-        /// A regular expression to check the validity of Value
-        /// </summary>
-        public static System.Text.RegularExpressions.Regex ValuePattern = new System.Text.RegularExpressions.Regex("[A-Z][a-zA-Z0-9]*");
-        
-        /// <summary>
         /// Create a new instance
         /// </summary>
         public ServerTypeResponseDto()
@@ -351,7 +346,7 @@ namespace Tecan.Sila2.Discovery
         public string GetValidationErrors()
         {
             string errors = ("" + Argument.Require(Value, "value"));
-            if ((ValuePattern.IsMatch(Value.Value) == false))
+            if ((RegexConstraint.IsMatch(Value.Value, "[A-Z][a-zA-Z0-9]*") == false))
             {
                 errors = (errors + string.Format("Value \'{0}\' does not match pattern \'[A-Z][a-zA-Z0-9]*\'; ", Value.Value));
             }
@@ -367,11 +362,6 @@ namespace Tecan.Sila2.Discovery
     {
         
         private Tecan.Sila2.StringDto _value;
-        
-        /// <summary>
-        /// A regular expression to check the validity of Value
-        /// </summary>
-        public static System.Text.RegularExpressions.Regex ValuePattern = new System.Text.RegularExpressions.Regex("[0-9a-f]{8}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{12}");
         
         /// <summary>
         /// Create a new instance
@@ -420,7 +410,7 @@ namespace Tecan.Sila2.Discovery
         public string GetValidationErrors()
         {
             string errors = ("" + Argument.Require(Value, "value"));
-            if ((ValuePattern.IsMatch(Value.Value) == false))
+            if ((RegexConstraint.IsMatch(Value.Value, "[0-9a-f]{8}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{12}") == false))
             {
                 errors = (errors + string.Format("Value \'{0}\' does not match pattern \'[0-9a-f]{8}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-" +
                         "f]{4}\\-[0-9a-f]{12}\'; ", Value.Value));
@@ -437,11 +427,6 @@ namespace Tecan.Sila2.Discovery
     {
         
         private Tecan.Sila2.StringDto _value;
-        
-        /// <summary>
-        /// A regular expression to check the validity of Value
-        /// </summary>
-        public static System.Text.RegularExpressions.Regex ValuePattern = new System.Text.RegularExpressions.Regex("(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(\\.(0|[1-9][0-9]*))?(_[_a-zA-Z0-9]+)?");
         
         /// <summary>
         /// Create a new instance
@@ -490,7 +475,7 @@ namespace Tecan.Sila2.Discovery
         public string GetValidationErrors()
         {
             string errors = ("" + Argument.Require(Value, "value"));
-            if ((ValuePattern.IsMatch(Value.Value) == false))
+            if ((RegexConstraint.IsMatch(Value.Value, "(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(\\.(0|[1-9][0-9]*))?(_[_a-zA-Z0-9]+)?") == false))
             {
                 errors = (errors + string.Format("Value \'{0}\' does not match pattern \'(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(\\.(0|[1-9][0" +
                         "-9]*))?(_[_a-zA-Z0-9]+)?\'; ", Value.Value));
@@ -507,11 +492,6 @@ namespace Tecan.Sila2.Discovery
     {
         
         private Tecan.Sila2.StringDto _value;
-        
-        /// <summary>
-        /// A regular expression to check the validity of Value
-        /// </summary>
-        public static System.Text.RegularExpressions.Regex ValuePattern = new System.Text.RegularExpressions.Regex("https?://.+");
         
         /// <summary>
         /// Create a new instance
@@ -560,7 +540,7 @@ namespace Tecan.Sila2.Discovery
         public string GetValidationErrors()
         {
             string errors = ("" + Argument.Require(Value, "value"));
-            if ((ValuePattern.IsMatch(Value.Value) == false))
+            if ((RegexConstraint.IsMatch(Value.Value, "https?://.+") == false))
             {
                 errors = (errors + string.Format("Value \'{0}\' does not match pattern \'https?://.+\'; ", Value.Value));
             }

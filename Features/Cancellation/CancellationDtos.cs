@@ -146,11 +146,6 @@ namespace Tecan.Sila2.Cancellation
         private Tecan.Sila2.StringDto _uUID;
         
         /// <summary>
-        /// A regular expression to check the validity of UUID
-        /// </summary>
-        public static System.Text.RegularExpressions.Regex UUIDPattern = new System.Text.RegularExpressions.Regex("[0-9a-f]{8}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{12}");
-        
-        /// <summary>
         /// Initializes a new instance (to be used by the serializer)
         /// </summary>
         public UuidDto()
@@ -210,7 +205,7 @@ namespace Tecan.Sila2.Cancellation
         public string GetValidationErrors()
         {
             string errors = ("" + Argument.Require(UUID, "uUID"));
-            if ((UUIDPattern.IsMatch(UUID.Value) == false))
+            if ((RegexConstraint.IsMatch(UUID.Value, "[0-9a-f]{8}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{12}") == false))
             {
                 errors = (errors + string.Format("UUID \'{0}\' does not match pattern \'[0-9a-f]{8}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f" +
                         "]{4}\\-[0-9a-f]{12}\'; ", UUID.Value));

@@ -400,11 +400,6 @@ namespace Tecan.Sila2.Interop.Server.ParameterConstraintsTest
         private Tecan.Sila2.StringDto _constrainedParameter;
         
         /// <summary>
-        /// A regular expression to check the validity of ConstrainedParameter
-        /// </summary>
-        public static System.Text.RegularExpressions.Regex ConstrainedParameterPattern = new System.Text.RegularExpressions.Regex("[0-9]{2}/[0-9]{2}/[0-9]{4}");
-        
-        /// <summary>
         /// Create a new instance
         /// </summary>
         public CheckStringConstraintPatternRequestDto()
@@ -465,7 +460,7 @@ namespace Tecan.Sila2.Interop.Server.ParameterConstraintsTest
         public string GetValidationErrors()
         {
             string errors = ("" + Argument.Require(ConstrainedParameter, "constrainedParameter"));
-            if ((ConstrainedParameterPattern.IsMatch(ConstrainedParameter.Value) == false))
+            if ((RegexConstraint.IsMatch(ConstrainedParameter.Value, "[0-9]{2}/[0-9]{2}/[0-9]{4}") == false))
             {
                 errors = (errors + string.Format("ConstrainedParameter \'{0}\' does not match pattern \'[0-9]{2}/[0-9]{2}/[0-9]{4}\'; ", ConstrainedParameter.Value));
             }

@@ -23,11 +23,6 @@ namespace Tecan.Sila2.Authorization.AuthorizationConfigurationService
         private Tecan.Sila2.StringDto _authorizationProvider;
         
         /// <summary>
-        /// A regular expression to check the validity of AuthorizationProvider
-        /// </summary>
-        public static System.Text.RegularExpressions.Regex AuthorizationProviderPattern = new System.Text.RegularExpressions.Regex("[0-9a-f]{8}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{12}");
-        
-        /// <summary>
         /// Create a new instance
         /// </summary>
         public SetAuthorizationProviderRequestDto()
@@ -88,7 +83,7 @@ namespace Tecan.Sila2.Authorization.AuthorizationConfigurationService
         public string GetValidationErrors()
         {
             string errors = ("" + Argument.Require(AuthorizationProvider, "authorizationProvider"));
-            if ((AuthorizationProviderPattern.IsMatch(AuthorizationProvider.Value) == false))
+            if ((RegexConstraint.IsMatch(AuthorizationProvider.Value, "[0-9a-f]{8}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{12}") == false))
             {
                 errors = (errors + string.Format("AuthorizationProvider \'{0}\' does not match pattern \'[0-9a-f]{8}\\-[0-9a-f]{4}\\-[0-" +
                         "9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{12}\'; ", AuthorizationProvider.Value));
@@ -105,11 +100,6 @@ namespace Tecan.Sila2.Authorization.AuthorizationConfigurationService
     {
         
         private Tecan.Sila2.StringDto _value;
-        
-        /// <summary>
-        /// A regular expression to check the validity of Value
-        /// </summary>
-        public static System.Text.RegularExpressions.Regex ValuePattern = new System.Text.RegularExpressions.Regex("[0-9a-f]{8}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{12}");
         
         /// <summary>
         /// Create a new instance
@@ -158,7 +148,7 @@ namespace Tecan.Sila2.Authorization.AuthorizationConfigurationService
         public string GetValidationErrors()
         {
             string errors = ("" + Argument.Require(Value, "value"));
-            if ((ValuePattern.IsMatch(Value.Value) == false))
+            if ((RegexConstraint.IsMatch(Value.Value, "[0-9a-f]{8}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{12}") == false))
             {
                 errors = (errors + string.Format("Value \'{0}\' does not match pattern \'[0-9a-f]{8}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-" +
                         "f]{4}\\-[0-9a-f]{12}\'; ", Value.Value));

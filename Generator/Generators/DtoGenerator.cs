@@ -6,6 +6,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using Common.Logging;
+using Microsoft.SqlServer.Server;
 using ProtoBuf;
 using Tecan.Sila2.Generator.Contracts;
 using Tecan.Sila2.Generator.Helper;
@@ -29,6 +30,7 @@ namespace Tecan.Sila2.Generator.Generators
         private readonly ITypeTranslationProvider _translationProvider;
         private readonly ILog _loggingChannel = LogManager.GetLogger<DtoGenerator>();
         private readonly IGeneratorConfigSource _configSource;
+        private readonly IReadOnlyList<IValidationCreator> _validators;
 
         /// <summary>
         /// Creates a new Dto generator for the given name provider
@@ -36,11 +38,13 @@ namespace Tecan.Sila2.Generator.Generators
         /// <param name="translationProvider">The translation provider</param>
         /// <param name="nameProvider">A name provider</param>
         /// <param name="configSource">A component where to draw configuration from</param>
+        /// <param name="validations">Validators to generate validation statements</param>
         [ImportingConstructor]
-        public DtoGenerator( ITypeTranslationProvider translationProvider, ICodeNameProvider nameProvider, IGeneratorConfigSource configSource )
+        public DtoGenerator( ITypeTranslationProvider translationProvider, ICodeNameProvider nameProvider, IGeneratorConfigSource configSource, [ImportMany] IEnumerable<IValidationCreator> validations )
         {
             _translationProvider = translationProvider;
             _configSource = configSource;
+            _validators = validations.ToList();
             NameProvider = nameProvider;
         }
 
@@ -493,7 +497,26 @@ namespace Tecan.Sila2.Generator.Generators
                 {
                     constructor.Comments.Add( new CodeCommentStatement( $@"<param name=""{parameter.Name}"">{element.Description}</param>", true ) );
                 }
-                validateMethod.Statements.Add( new CodeMethodInvokeExpression( validate, property, new CodePrimitiveExpression( element.Identifier.ToCamelCase() ) ) );
+                validateMethod.Statements.Add( new CodeMethodInvokeExpression( validate, property, new CodePrimitiveExpression( parameter.Name ) ) );
+                if(element.DataType.Item is ConstrainedType constrained)
+                {
+                    foreach(var validationGenerator in _validators)
+                    {
+                        foreach(var validation in validationGenerator.CreateValidation( property, constrained.DataType, constrained.Constraints, dto ))
+                        {
+                            var formatStatement = new CodeMethodInvokeExpression(
+                                new CodeTypeReferenceExpression( typeof( string ) ),
+                            "Format",
+                                new CodePrimitiveExpression( validation.ErrorMessageTemplate ), property );
+
+                            validateMethod.Statements.Add( new CodeConditionStatement(
+                                validation.CheckExpression,
+                                new CodeThrowExceptionStatement( new CodeObjectCreateExpression( nameof( ArgumentException ),
+                                    new CodePrimitiveExpression( parameter.Name ),
+                                    formatStatement ) ) ) );
+                        }
+                    }
+                }
             }
 
             return ElementAction;
@@ -553,7 +576,7 @@ namespace Tecan.Sila2.Generator.Generators
                     elementAction( element, mapping?.Mapping?.ValueExpression, property );
                     if(element.DataType.Item is ConstrainedType constraints)
                     {
-                        ImplementConstraints( constraints.Constraints, dto, validationMethod.Statements, errorsRef, property );
+                        ImplementValidationErrorConstraints( constraints.Constraints, constraints.DataType, dto, validationMethod.Statements, errorsRef, property );
                     }
                     var validate = new CodeMethodInvokeExpression( requireCall, property, new CodePrimitiveExpression( element.Identifier.ToCamelCase() ) );
                     errors.InitExpression = new CodeBinaryOperatorExpression( errors.InitExpression, CodeBinaryOperatorType.Add, validate );
@@ -728,44 +751,23 @@ namespace Tecan.Sila2.Generator.Generators
             return new CodePropertyReferenceExpression( null, property.Name );
         }
 
-        private void ImplementConstraints( Constraints constraints, CodeTypeDeclaration wrapper,
+        private void ImplementValidationErrorConstraints( Constraints constraints, DataTypeType dataType, CodeTypeDeclaration wrapper,
             CodeStatementCollection statements, CodeVariableReferenceExpression resultRef,
             CodePropertyReferenceExpression propertyReference )
         {
-            if(constraints.Pattern != null)
+            try
             {
-                var regexType = new CodeTypeReference( typeof( Regex ) );
-                var patternField = new CodeMemberField
+                foreach(var validator in _validators)
                 {
-                    Attributes = MemberAttributes.Public | MemberAttributes.Static,
-                    Name = propertyReference.PropertyName + "Pattern",
-                    Type = regexType,
-                    InitExpression = new CodeObjectCreateExpression( regexType,
-                        new CodePrimitiveExpression( constraints.Pattern ) )
-                };
-                patternField.WriteDocumentation( $"A regular expression to check the validity of {propertyReference.PropertyName}" );
-                wrapper.Members.Add( patternField );
-                var check = new CodeMethodInvokeExpression(
-                    new CodeFieldReferenceExpression( null, patternField.Name ), nameof( Regex.IsMatch ),
-                    new CodePropertyReferenceExpression( propertyReference, "Value" ) );
-
-                statements.Add( CreateValidityStatement( check,
-                    $"{propertyReference.PropertyName} '{{0}}' does not match pattern '{constraints.Pattern}'",
-                    propertyReference, resultRef ) );
+                    foreach(var validation in validator.CreateValidation( propertyReference, dataType, constraints, wrapper ))
+                    {
+                        statements.Add( CreateValidityStatement( validation.CheckExpression, validation.ErrorMessageTemplate, propertyReference, resultRef ) );
+                    }
+                }
             }
-
-            if(constraints.MaximalLength != null)
+            catch(Exception ex)
             {
-                var maxLength = int.Parse( constraints.MaximalLength );
-
-                var check = new CodeBinaryOperatorExpression( new CodePropertyReferenceExpression(
-                        new CodePropertyReferenceExpression( propertyReference, "Value" ), "Length" ),
-                    CodeBinaryOperatorType.LessThanOrEqual,
-                    new CodePrimitiveExpression( maxLength ) );
-
-                statements.Add( CreateValidityStatement( check,
-                    $"{propertyReference.PropertyName} '{{0}}' is longer than allowed length {maxLength}",
-                    propertyReference, resultRef ) );
+                _loggingChannel.Warn( "Exception trying to generate code to enforce constraints", ex );
             }
         }
 
@@ -777,7 +779,7 @@ namespace Tecan.Sila2.Generator.Generators
                 "Format",
                 new CodePrimitiveExpression( format + "; " ), new CodePropertyReferenceExpression( reference, "Value" ) );
 
-            return new CodeConditionStatement( new CodeBinaryOperatorExpression( condition, CodeBinaryOperatorType.ValueEquality, new CodePrimitiveExpression( false ) ),
+            return new CodeConditionStatement( condition,
                 new CodeAssignStatement( resultRef,
                     new CodeBinaryOperatorExpression( resultRef, CodeBinaryOperatorType.Add, formatStatement ) ) );
         }

@@ -26,11 +26,6 @@ namespace Tecan.Sila2.Authentication
         
         private Tecan.Sila2.StringDto _requestedServer;
         
-        /// <summary>
-        /// A regular expression to check the validity of RequestedServer
-        /// </summary>
-        public static System.Text.RegularExpressions.Regex RequestedServerPattern = new System.Text.RegularExpressions.Regex("[0-9a-f]{8}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{12}");
-        
         private System.Collections.Generic.List<Tecan.Sila2.StringDto> _requestedFeatures;
         
         /// <summary>
@@ -153,7 +148,7 @@ namespace Tecan.Sila2.Authentication
                         + Argument.Require(Password, "password")) 
                         + Argument.Require(RequestedServer, "requestedServer")) 
                         + Argument.Require(RequestedFeatures, "requestedFeatures"));
-            if ((RequestedServerPattern.IsMatch(RequestedServer.Value) == false))
+            if ((RegexConstraint.IsMatch(RequestedServer.Value, "[0-9a-f]{8}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{12}") == false))
             {
                 errors = (errors + string.Format("RequestedServer \'{0}\' does not match pattern \'[0-9a-f]{8}\\-[0-9a-f]{4}\\-[0-9a-f]{" +
                         "4}\\-[0-9a-f]{4}\\-[0-9a-f]{12}\'; ", RequestedServer.Value));
