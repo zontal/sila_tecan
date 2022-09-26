@@ -119,6 +119,7 @@ namespace Tecan.Sila2.ConnectionConfiguration.ConnectionConfigurationService
         public virtual void EnableServerInitiatedConnectionMode()
         {
             EnableServerInitiatedConnectionModeRequestDto request = new EnableServerInitiatedConnectionModeRequestDto(null);
+            request.Validate();
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/core/ConnectionConfigurationService/v1/Command/EnableServerIniti" +
                     "atedConnectionMode");
             try
@@ -140,6 +141,7 @@ namespace Tecan.Sila2.ConnectionConfiguration.ConnectionConfigurationService
         public virtual void DisableServerInitiatedConnectionMode()
         {
             DisableServerInitiatedConnectionModeRequestDto request = new DisableServerInitiatedConnectionModeRequestDto(null);
+            request.Validate();
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/core/ConnectionConfigurationService/v1/Command/DisableServerInit" +
                     "iatedConnectionMode");
             try
@@ -165,6 +167,7 @@ namespace Tecan.Sila2.ConnectionConfiguration.ConnectionConfigurationService
         public virtual void ConnectSiLAClient(string clientName, string siLAClientHost, long siLAClientPort, bool persist)
         {
             ConnectSiLAClientRequestDto request = new ConnectSiLAClientRequestDto(clientName, siLAClientHost, siLAClientPort, persist, null);
+            request.Validate();
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/core/ConnectionConfigurationService/v1/Command/ConnectSiLAClient" +
                     "");
             try
@@ -188,6 +191,7 @@ namespace Tecan.Sila2.ConnectionConfiguration.ConnectionConfigurationService
         public virtual void DisconnectSiLAClient(string clientName, bool remove)
         {
             DisconnectSiLAClientRequestDto request = new DisconnectSiLAClientRequestDto(clientName, remove, null);
+            request.Validate();
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/core/ConnectionConfigurationService/v1/Command/DisconnectSiLACli" +
                     "ent");
             try

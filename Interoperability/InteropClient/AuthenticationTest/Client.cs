@@ -46,6 +46,7 @@ namespace Tecan.Sila2.Interop.Client.AuthenticationTest.AuthenticationTest
         public virtual void RequiresToken()
         {
             RequiresTokenRequestDto request = new RequiresTokenRequestDto(null);
+            request.Validate();
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/AuthenticationTest/v1/Command/RequiresToken");
             try
             {

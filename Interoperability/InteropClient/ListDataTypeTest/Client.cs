@@ -191,6 +191,7 @@ namespace Tecan.Sila2.Interop.Client.ListDataTypeTest.ListDataTypeTest
         public virtual System.Collections.Generic.ICollection<string> EchoStringList(System.Collections.Generic.ICollection<string> stringList)
         {
             EchoStringListRequestDto request = new EchoStringListRequestDto(stringList, null);
+            request.Validate();
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/ListDataTypeTest/v1/Command/EchoStringList");
             try
             {
@@ -212,6 +213,7 @@ namespace Tecan.Sila2.Interop.Client.ListDataTypeTest.ListDataTypeTest
         public virtual System.Collections.Generic.ICollection<long> EchoIntegerList(System.Collections.Generic.ICollection<long> integerList)
         {
             EchoIntegerListRequestDto request = new EchoIntegerListRequestDto(integerList, null);
+            request.Validate();
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/ListDataTypeTest/v1/Command/EchoIntegerList");
             try
             {
@@ -234,6 +236,7 @@ namespace Tecan.Sila2.Interop.Client.ListDataTypeTest.ListDataTypeTest
         {
             EchoStructureListRequestDto request = new EchoStructureListRequestDto(structureList, _executionManager.CreateBinaryStore("org.silastandard/test/ListDataTypeTest/v1/Command/EchoStructureList/Parameter/Str" +
                         "uctureList"));
+            request.Validate();
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/ListDataTypeTest/v1/Command/EchoStructureList");
             try
             {

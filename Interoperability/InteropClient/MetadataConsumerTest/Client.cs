@@ -46,6 +46,7 @@ namespace Tecan.Sila2.Interop.Client.MetadataConsumerTest.MetadataConsumerTest
         public virtual string EchoStringMetadata()
         {
             EchoStringMetadataRequestDto request = new EchoStringMetadataRequestDto(null);
+            request.Validate();
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/MetadataConsumerTest/v1/Command/EchoStringMetadata");
             try
             {
@@ -66,6 +67,7 @@ namespace Tecan.Sila2.Interop.Client.MetadataConsumerTest.MetadataConsumerTest
         public virtual UnpackMetadataResponse UnpackMetadata()
         {
             UnpackMetadataRequestDto request = new UnpackMetadataRequestDto(null);
+            request.Validate();
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/MetadataConsumerTest/v1/Command/UnpackMetadata");
             try
             {

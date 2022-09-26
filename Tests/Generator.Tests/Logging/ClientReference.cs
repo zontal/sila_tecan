@@ -47,6 +47,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         public virtual Tecan.Sila2.IIntermediateObservableCommand<LogEntry> ListenForLogEntries()
         {
             ListenForLogEntriesRequestDto request = new ListenForLogEntriesRequestDto(null);
+            request.Validate();
             return _channel.ExecuteIntermediatesCommand<ListenForLogEntriesRequestDto, LogEntry, ListenForLogEntriesIntermediateDto>(_serviceName, "ListenForLogEntries", request, ConvertListenForLogEntriesIntermediate, ConvertListenForLogEntriesException, _executionManager.CreateCallOptions(request.CommandIdentifier));
         }
         

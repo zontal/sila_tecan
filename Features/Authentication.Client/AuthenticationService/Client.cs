@@ -50,6 +50,7 @@ namespace Tecan.Sila2.Authentication.AuthenticationService
         public virtual LoginResponse Login(string userIdentification, string password, string requestedServer, System.Collections.Generic.ICollection<string> requestedFeatures)
         {
             LoginRequestDto request = new LoginRequestDto(userIdentification, password, requestedServer, requestedFeatures, null);
+            request.Validate();
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/core/AuthenticationService/v1/Command/Login");
             try
             {
@@ -87,6 +88,7 @@ namespace Tecan.Sila2.Authentication.AuthenticationService
         public virtual void Logout(string accessToken)
         {
             LogoutRequestDto request = new LogoutRequestDto(accessToken, null);
+            request.Validate();
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/core/AuthenticationService/v1/Command/Logout");
             try
             {

@@ -47,6 +47,7 @@ namespace Tecan.Sila2.Interop.Client.CancellationTest.CancellationTest
         public virtual Tecan.Sila2.IObservableCommand WaitForCancel(long duration)
         {
             WaitForCancelRequestDto request = new WaitForCancelRequestDto(duration, null);
+            request.Validate();
             return _channel.ExecuteObservableCommand<WaitForCancelRequestDto>(_serviceName, "WaitForCancel", request, ConvertWaitForCancelException, _executionManager.CreateCallOptions(request.CommandIdentifier));
         }
         

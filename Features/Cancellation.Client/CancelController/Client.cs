@@ -52,6 +52,7 @@ namespace Tecan.Sila2.Cancellation.CancelController
         public virtual void CancelCommand(Uuid commandExecutionUUID)
         {
             CancelCommandRequestDto request = new CancelCommandRequestDto(commandExecutionUUID, null);
+            request.Validate();
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/core.commands/CancelController/v1/Command/CancelCommand");
             try
             {
@@ -95,6 +96,7 @@ namespace Tecan.Sila2.Cancellation.CancelController
         public virtual void CancelAll()
         {
             CancelAllRequestDto request = new CancelAllRequestDto(null);
+            request.Validate();
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/core.commands/CancelController/v1/Command/CancelAll");
             try
             {

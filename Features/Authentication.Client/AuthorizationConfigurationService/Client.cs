@@ -88,6 +88,7 @@ namespace Tecan.Sila2.Authorization.AuthorizationConfigurationService
         public virtual void SetAuthorizationProvider(string authorizationProvider)
         {
             SetAuthorizationProviderRequestDto request = new SetAuthorizationProviderRequestDto(authorizationProvider, null);
+            request.Validate();
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/core/AuthorizationConfigurationService/v1/Command/SetAuthorizati" +
                     "onProvider");
             try

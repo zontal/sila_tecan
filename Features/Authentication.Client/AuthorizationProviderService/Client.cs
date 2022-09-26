@@ -50,6 +50,7 @@ namespace Tecan.Sila2.Authorization.AuthorizationProviderService
         public virtual long Verify(string accessToken, string requestedServer, string requestedFeature)
         {
             VerifyRequestDto request = new VerifyRequestDto(accessToken, requestedServer, requestedFeature, null);
+            request.Validate();
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/core/AuthorizationProviderService/v1/Command/Verify");
             try
             {

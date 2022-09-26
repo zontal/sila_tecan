@@ -118,6 +118,7 @@ namespace Tecan.Sila2.Interop.Client.BinaryTransferTest.BinaryTransferTest
         {
             EchoBinaryValueRequestDto request = new EchoBinaryValueRequestDto(binaryValue, _executionManager.CreateBinaryStore("org.silastandard/test/BinaryTransferTest/v1/Command/EchoBinaryValue/Parameter/Bin" +
                         "aryValue"));
+            request.Validate();
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/BinaryTransferTest/v1/Command/EchoBinaryValue");
             try
             {

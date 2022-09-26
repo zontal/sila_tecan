@@ -69,6 +69,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         public virtual void AccelerateTo( Tecan.Sila2.Generator.Test.TestReference.Speed target, double maxAcceleration, System.TimeSpan timeRange )
         {
             AccelerateToRequestDto request = new AccelerateToRequestDto( target.Kmph, maxAcceleration, timeRange.TotalSeconds, null );
+            request.Validate();
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions( "tecan.sila.generator.test/testreference/ConfiguredService/v4/Command/AccelerateTo" +
                     "" );
             try

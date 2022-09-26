@@ -44,6 +44,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         public virtual Tecan.Sila2.IObservableCommand<AmbiguousClass> CheckAmbiguousEntries()
         {
             CheckAmbiguousEntriesRequestDto request = new CheckAmbiguousEntriesRequestDto(null);
+            request.Validate();
             return _channel.ExecuteObservableCommand<CheckAmbiguousEntriesRequestDto, AmbiguousClass, CheckAmbiguousEntriesResponseDto>(_serviceName, "CheckAmbiguousEntries", request, ConvertCheckAmbiguousEntriesResponse, ConvertCheckAmbiguousEntriesException, _executionManager.CreateCallOptions(request.CommandIdentifier));
         }
         
@@ -71,6 +72,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         public virtual void OverloadedMethod(string method)
         {
             OverloadedMethodRequestDto request = new OverloadedMethodRequestDto(method, null);
+            request.Validate();
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("tecan.sila.generator.test/ambiguityresolver/AmbiguityResolverService/v4/Command/O" +
                     "verloadedMethod");
             try

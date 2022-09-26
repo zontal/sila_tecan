@@ -236,6 +236,7 @@ namespace Tecan.Sila2.Interop.Client.ErrorHandlingTest.ErrorHandlingTest
         public virtual void RaiseDefinedExecutionError()
         {
             RaiseDefinedExecutionErrorRequestDto request = new RaiseDefinedExecutionErrorRequestDto(null);
+            request.Validate();
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/ErrorHandlingTest/v1/Command/RaiseDefinedExecutionError");
             try
             {
@@ -271,6 +272,7 @@ namespace Tecan.Sila2.Interop.Client.ErrorHandlingTest.ErrorHandlingTest
         public virtual Tecan.Sila2.IObservableCommand RaiseDefinedExecutionErrorObservably()
         {
             RaiseDefinedExecutionErrorObservablyRequestDto request = new RaiseDefinedExecutionErrorObservablyRequestDto(null);
+            request.Validate();
             return _channel.ExecuteObservableCommand<RaiseDefinedExecutionErrorObservablyRequestDto>(_serviceName, "RaiseDefinedExecutionErrorObservably", request, ConvertRaiseDefinedExecutionErrorObservablyException, _executionManager.CreateCallOptions(request.CommandIdentifier));
         }
         
@@ -295,6 +297,7 @@ namespace Tecan.Sila2.Interop.Client.ErrorHandlingTest.ErrorHandlingTest
         public virtual void RaiseUndefinedExecutionError()
         {
             RaiseUndefinedExecutionErrorRequestDto request = new RaiseUndefinedExecutionErrorRequestDto(null);
+            request.Validate();
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/ErrorHandlingTest/v1/Command/RaiseUndefinedExecutionError");
             try
             {
@@ -315,6 +318,7 @@ namespace Tecan.Sila2.Interop.Client.ErrorHandlingTest.ErrorHandlingTest
         public virtual Tecan.Sila2.IObservableCommand RaiseUndefinedExecutionErrorObservably()
         {
             RaiseUndefinedExecutionErrorObservablyRequestDto request = new RaiseUndefinedExecutionErrorObservablyRequestDto(null);
+            request.Validate();
             return _channel.ExecuteObservableCommand<RaiseUndefinedExecutionErrorObservablyRequestDto>(_serviceName, "RaiseUndefinedExecutionErrorObservably", request, ConvertRaiseUndefinedExecutionErrorObservablyException, _executionManager.CreateCallOptions(request.CommandIdentifier));
         }
         

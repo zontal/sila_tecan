@@ -358,6 +358,7 @@ namespace Tecan.Sila2.Interop.Client.AnyTypeTest.AnyTypeTest
         public virtual SetAnyTypeValueResponse SetAnyTypeValue(Tecan.Sila2.DynamicClient.DynamicObjectProperty anyTypeValue)
         {
             SetAnyTypeValueRequestDto request = new SetAnyTypeValueRequestDto(anyTypeValue, null);
+            request.Validate();
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/AnyTypeTest/v1/Command/SetAnyTypeValue");
             try
             {

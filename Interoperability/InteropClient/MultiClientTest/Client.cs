@@ -47,6 +47,7 @@ namespace Tecan.Sila2.Interop.Client.MultiClientTest.MultiClientTest
         public virtual Tecan.Sila2.IObservableCommand RunInParallel(double duration)
         {
             RunInParallelRequestDto request = new RunInParallelRequestDto(duration, null);
+            request.Validate();
             return _channel.ExecuteObservableCommand<RunInParallelRequestDto>(_serviceName, "RunInParallel", request, ConvertRunInParallelException, _executionManager.CreateCallOptions(request.CommandIdentifier));
         }
         
@@ -68,6 +69,7 @@ namespace Tecan.Sila2.Interop.Client.MultiClientTest.MultiClientTest
         public virtual Tecan.Sila2.IObservableCommand RunQueued(double duration)
         {
             RunQueuedRequestDto request = new RunQueuedRequestDto(duration, null);
+            request.Validate();
             return _channel.ExecuteObservableCommand<RunQueuedRequestDto>(_serviceName, "RunQueued", request, ConvertRunQueuedException, _executionManager.CreateCallOptions(request.CommandIdentifier));
         }
         
@@ -89,6 +91,7 @@ namespace Tecan.Sila2.Interop.Client.MultiClientTest.MultiClientTest
         public virtual Tecan.Sila2.IObservableCommand RejectParallelExecution(double duration)
         {
             RejectParallelExecutionRequestDto request = new RejectParallelExecutionRequestDto(duration, null);
+            request.Validate();
             return _channel.ExecuteObservableCommand<RejectParallelExecutionRequestDto>(_serviceName, "RejectParallelExecution", request, ConvertRejectParallelExecutionException, _executionManager.CreateCallOptions(request.CommandIdentifier));
         }
         

@@ -133,6 +133,7 @@ namespace Tecan.Sila2.Interop.Client.StructureDataTypeTest.StructureDataTypeTest
         {
             EchoStructureValueRequestDto request = new EchoStructureValueRequestDto(structureValue, _executionManager.CreateBinaryStore("org.silastandard/test/StructureDataTypeTest/v1/Command/EchoStructureValue/Paramet" +
                         "er/StructureValue"));
+            request.Validate();
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/StructureDataTypeTest/v1/Command/EchoStructureValue");
             try
             {
@@ -154,6 +155,7 @@ namespace Tecan.Sila2.Interop.Client.StructureDataTypeTest.StructureDataTypeTest
         public virtual DeepStructure EchoDeepStructureValue(DeepStructure deepStructureValue)
         {
             EchoDeepStructureValueRequestDto request = new EchoDeepStructureValueRequestDto(deepStructureValue, null);
+            request.Validate();
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/StructureDataTypeTest/v1/Command/EchoDeepStructureValue");
             try
             {

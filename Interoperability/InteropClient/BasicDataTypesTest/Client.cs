@@ -265,6 +265,7 @@ namespace Tecan.Sila2.Interop.Client.BasicDataTypesTest.BasicDataTypesTest
         public virtual string EchoStringValue(string stringValue)
         {
             EchoStringValueRequestDto request = new EchoStringValueRequestDto(stringValue, null);
+            request.Validate();
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/BasicDataTypesTest/v1/Command/EchoStringValue");
             try
             {
@@ -286,6 +287,7 @@ namespace Tecan.Sila2.Interop.Client.BasicDataTypesTest.BasicDataTypesTest
         public virtual long EchoIntegerValue(long integerValue)
         {
             EchoIntegerValueRequestDto request = new EchoIntegerValueRequestDto(integerValue, null);
+            request.Validate();
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/BasicDataTypesTest/v1/Command/EchoIntegerValue");
             try
             {
@@ -307,6 +309,7 @@ namespace Tecan.Sila2.Interop.Client.BasicDataTypesTest.BasicDataTypesTest
         public virtual double EchoRealValue(double realValue)
         {
             EchoRealValueRequestDto request = new EchoRealValueRequestDto(realValue, null);
+            request.Validate();
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/BasicDataTypesTest/v1/Command/EchoRealValue");
             try
             {
@@ -328,6 +331,7 @@ namespace Tecan.Sila2.Interop.Client.BasicDataTypesTest.BasicDataTypesTest
         public virtual bool EchoBooleanValue(bool booleanValue)
         {
             EchoBooleanValueRequestDto request = new EchoBooleanValueRequestDto(booleanValue, null);
+            request.Validate();
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/BasicDataTypesTest/v1/Command/EchoBooleanValue");
             try
             {
@@ -349,6 +353,7 @@ namespace Tecan.Sila2.Interop.Client.BasicDataTypesTest.BasicDataTypesTest
         public virtual System.DateTimeOffset EchoDateValue(System.DateTimeOffset dateValue)
         {
             EchoDateValueRequestDto request = new EchoDateValueRequestDto(dateValue, null);
+            request.Validate();
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/BasicDataTypesTest/v1/Command/EchoDateValue");
             try
             {
@@ -370,6 +375,7 @@ namespace Tecan.Sila2.Interop.Client.BasicDataTypesTest.BasicDataTypesTest
         public virtual System.TimeSpan EchoTimeValue(System.TimeSpan timeValue)
         {
             EchoTimeValueRequestDto request = new EchoTimeValueRequestDto(timeValue, null);
+            request.Validate();
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/BasicDataTypesTest/v1/Command/EchoTimeValue");
             try
             {
@@ -391,6 +397,7 @@ namespace Tecan.Sila2.Interop.Client.BasicDataTypesTest.BasicDataTypesTest
         public virtual System.DateTimeOffset EchoTimestampValue(System.DateTimeOffset timestampValue)
         {
             EchoTimestampValueRequestDto request = new EchoTimestampValueRequestDto(timestampValue, null);
+            request.Validate();
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/BasicDataTypesTest/v1/Command/EchoTimestampValue");
             try
             {

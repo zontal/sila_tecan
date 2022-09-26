@@ -275,6 +275,7 @@ namespace Tecan.Sila2.Discovery
         public virtual string GetFeatureDefinition(string featureIdentifier)
         {
             GetFeatureDefinitionRequestDto request = new GetFeatureDefinitionRequestDto(featureIdentifier, null);
+            request.Validate();
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/core/SiLAService/v1/Command/GetFeatureDefinition");
             try
             {
@@ -312,6 +313,7 @@ namespace Tecan.Sila2.Discovery
         public virtual void SetServerName(string serverName)
         {
             SetServerNameRequestDto request = new SetServerNameRequestDto(serverName, null);
+            request.Validate();
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/core/SiLAService/v1/Command/SetServerName");
             try
             {

@@ -46,6 +46,7 @@ namespace Tecan.Sila2.Interop.Client.UnobservableCommandTest.UnobservableCommand
         public virtual void CommandWithoutParametersAndResponses()
         {
             CommandWithoutParametersAndResponsesRequestDto request = new CommandWithoutParametersAndResponsesRequestDto(null);
+            request.Validate();
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/UnobservableCommandTest/v1/Command/CommandWithoutParameters" +
                     "AndResponses");
             try
@@ -68,6 +69,7 @@ namespace Tecan.Sila2.Interop.Client.UnobservableCommandTest.UnobservableCommand
         public virtual string ConvertIntegerToString(long integer)
         {
             ConvertIntegerToStringRequestDto request = new ConvertIntegerToStringRequestDto(integer, null);
+            request.Validate();
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/UnobservableCommandTest/v1/Command/ConvertIntegerToString");
             try
             {
@@ -91,6 +93,7 @@ namespace Tecan.Sila2.Interop.Client.UnobservableCommandTest.UnobservableCommand
         public virtual string JoinIntegerAndString(long integer, string @string)
         {
             JoinIntegerAndStringRequestDto request = new JoinIntegerAndStringRequestDto(integer, @string, null);
+            request.Validate();
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/UnobservableCommandTest/v1/Command/JoinIntegerAndString");
             try
             {
@@ -113,6 +116,7 @@ namespace Tecan.Sila2.Interop.Client.UnobservableCommandTest.UnobservableCommand
         public virtual SplitStringAfterFirstCharacterResponse SplitStringAfterFirstCharacter(string @string)
         {
             SplitStringAfterFirstCharacterRequestDto request = new SplitStringAfterFirstCharacterRequestDto(@string, null);
+            request.Validate();
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/UnobservableCommandTest/v1/Command/SplitStringAfterFirstCha" +
                     "racter");
             try

@@ -48,6 +48,7 @@ namespace Tecan.Sila2.Interop.Client.ObservableCommandTest.ObservableCommandTest
         public virtual Tecan.Sila2.IIntermediateObservableCommand<long, long> Count(long n, double delay)
         {
             CountRequestDto request = new CountRequestDto(n, delay, null);
+            request.Validate();
             return _channel.ExecuteIntermediatesCommand<CountRequestDto, long, CountIntermediateDto, long, CountResponseDto>(_serviceName, "Count", request, ConvertCountIntermediate, ConvertCountResponse, ConvertCountException, _executionManager.CreateCallOptions(request.CommandIdentifier));
         }
         
@@ -90,6 +91,7 @@ namespace Tecan.Sila2.Interop.Client.ObservableCommandTest.ObservableCommandTest
         public virtual Tecan.Sila2.IObservableCommand<long> EchoValueAfterDelay(long value, double delay)
         {
             EchoValueAfterDelayRequestDto request = new EchoValueAfterDelayRequestDto(value, delay, null);
+            request.Validate();
             return _channel.ExecuteObservableCommand<EchoValueAfterDelayRequestDto, long, EchoValueAfterDelayResponseDto>(_serviceName, "EchoValueAfterDelay", request, ConvertEchoValueAfterDelayResponse, ConvertEchoValueAfterDelayException, _executionManager.CreateCallOptions(request.CommandIdentifier));
         }
         

@@ -96,6 +96,7 @@ namespace Tecan.Sila2.Locking.LockController
         public virtual void LockServer(string lockIdentifier, long timeout)
         {
             LockServerRequestDto request = new LockServerRequestDto(lockIdentifier, timeout, null);
+            request.Validate();
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/core/LockController/v1/Command/LockServer");
             try
             {
@@ -134,6 +135,7 @@ namespace Tecan.Sila2.Locking.LockController
         public virtual void UnlockServer(string lockIdentifier)
         {
             UnlockServerRequestDto request = new UnlockServerRequestDto(lockIdentifier, null);
+            request.Validate();
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/core/LockController/v1/Command/UnlockServer");
             try
             {

@@ -189,6 +189,7 @@ namespace Tecan.Sila2.Interop.Client.ObservablePropertyTest.ObservablePropertyTe
         public virtual void SetValue(long value)
         {
             SetValueRequestDto request = new SetValueRequestDto(value, null);
+            request.Validate();
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/ObservablePropertyTest/v1/Command/SetValue");
             try
             {

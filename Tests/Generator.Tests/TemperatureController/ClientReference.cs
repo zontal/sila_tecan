@@ -106,6 +106,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         public virtual Tecan.Sila2.IObservableCommand ControlTemperature(double targetTemperature)
         {
             ControlTemperatureRequestDto request = new ControlTemperatureRequestDto(targetTemperature, null);
+            request.Validate();
             return _channel.ExecuteObservableCommand<ControlTemperatureRequestDto>(_serviceName, "ControlTemperature", request, ConvertControlTemperatureException, _executionManager.CreateCallOptions(request.CommandIdentifier));
         }
         

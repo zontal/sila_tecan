@@ -96,6 +96,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         public virtual bool PassBool(bool data)
         {
             PassBoolRequestDto request = new PassBoolRequestDto(data, null);
+            request.Validate();
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("tecan.sila/integrationtests/TestServer/v1/Command/PassBool");
             try
             {
@@ -113,6 +114,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         public virtual double PassDouble(double data)
         {
             PassDoubleRequestDto request = new PassDoubleRequestDto(data, null);
+            request.Validate();
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("tecan.sila/integrationtests/TestServer/v1/Command/PassDouble");
             try
             {
@@ -130,6 +132,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         public virtual long PassLong(long data)
         {
             PassLongRequestDto request = new PassLongRequestDto(data, null);
+            request.Validate();
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("tecan.sila/integrationtests/TestServer/v1/Command/PassLong");
             try
             {
@@ -147,6 +150,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         public virtual long PassInt(long data)
         {
             PassIntRequestDto request = new PassIntRequestDto(data, null);
+            request.Validate();
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("tecan.sila/integrationtests/TestServer/v1/Command/PassInt");
             try
             {
@@ -164,6 +168,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         public virtual System.DateTimeOffset PassTimestamp(System.DateTimeOffset timestamp)
         {
             PassTimestampRequestDto request = new PassTimestampRequestDto(timestamp, null);
+            request.Validate();
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("tecan.sila/integrationtests/TestServer/v1/Command/PassTimestamp");
             try
             {
@@ -181,6 +186,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         public virtual System.TimeSpan PassTime(System.TimeSpan time)
         {
             PassTimeRequestDto request = new PassTimeRequestDto(time, null);
+            request.Validate();
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("tecan.sila/integrationtests/TestServer/v1/Command/PassTime");
             try
             {
@@ -198,6 +204,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         public virtual string PassString(string value)
         {
             PassStringRequestDto request = new PassStringRequestDto(value, null);
+            request.Validate();
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("tecan.sila/integrationtests/TestServer/v1/Command/PassString");
             try
             {
@@ -215,6 +222,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         public virtual System.IO.Stream PassStream(System.IO.Stream value)
         {
             PassStreamRequestDto request = new PassStreamRequestDto(value, _executionManager.CreateBinaryStore("tecan.sila/integrationtests/TestServer/v1/Command/PassStream/Parameter/Value"));
+            request.Validate();
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("tecan.sila/integrationtests/TestServer/v1/Command/PassStream");
             try
             {
@@ -232,6 +240,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         public virtual System.IO.Stream PassFile(System.IO.Stream file)
         {
             PassFileRequestDto request = new PassFileRequestDto(file, _executionManager.CreateBinaryStore("tecan.sila/integrationtests/TestServer/v1/Command/PassFile/Parameter/File"));
+            request.Validate();
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("tecan.sila/integrationtests/TestServer/v1/Command/PassFile");
             try
             {
@@ -249,6 +258,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         public virtual System.IO.Stream PassBytes(System.IO.Stream bytes)
         {
             PassBytesRequestDto request = new PassBytesRequestDto(bytes, _executionManager.CreateBinaryStore("tecan.sila/integrationtests/TestServer/v1/Command/PassBytes/Parameter/Bytes"));
+            request.Validate();
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("tecan.sila/integrationtests/TestServer/v1/Command/PassBytes");
             try
             {
@@ -266,6 +276,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         public virtual Tecan.Sila2.DynamicClient.DynamicObjectProperty PassDynamic(Tecan.Sila2.DynamicClient.DynamicObjectProperty dynamic)
         {
             PassDynamicRequestDto request = new PassDynamicRequestDto(dynamic, null);
+            request.Validate();
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("tecan.sila/integrationtests/TestServer/v1/Command/PassDynamic");
             try
             {
@@ -283,6 +294,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         public virtual System.Collections.Generic.ICollection<string> PassCollection(System.Collections.Generic.ICollection<string> strings)
         {
             PassCollectionRequestDto request = new PassCollectionRequestDto(strings, null);
+            request.Validate();
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("tecan.sila/integrationtests/TestServer/v1/Command/PassCollection");
             try
             {
@@ -300,6 +312,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         public virtual SomeStructure PassStructure(SomeStructure structure)
         {
             PassStructureRequestDto request = new PassStructureRequestDto(structure, null);
+            request.Validate();
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("tecan.sila/integrationtests/TestServer/v1/Command/PassStructure");
             try
             {
@@ -317,6 +330,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         public virtual Tecan.Sila2.IObservableCommand<long> RunObservable()
         {
             RunObservableRequestDto request = new RunObservableRequestDto(null);
+            request.Validate();
             return _channel.ExecuteObservableCommand<RunObservableRequestDto, long, RunObservableResponseDto>(_serviceName, "RunObservable", request, ConvertRunObservableResponse, ConvertRunObservableException, _executionManager.CreateCallOptions(request.CommandIdentifier));
         }
         
@@ -344,6 +358,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         public virtual Tecan.Sila2.IIntermediateObservableCommand<long> RunIntermediateObservableCommand()
         {
             RunIntermediateObservableCommandRequestDto request = new RunIntermediateObservableCommandRequestDto(null);
+            request.Validate();
             return _channel.ExecuteIntermediatesCommand<RunIntermediateObservableCommandRequestDto, long, RunIntermediateObservableCommandIntermediateDto>(_serviceName, "RunIntermediateObservableCommand", request, ConvertRunIntermediateObservableCommandIntermediate, ConvertRunIntermediateObservableCommandException, _executionManager.CreateCallOptions(request.CommandIdentifier));
         }
         
@@ -371,6 +386,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         public virtual Tecan.Sila2.IObservableCommand WaitForCancelOrThrow(System.TimeSpan duration)
         {
             WaitForCancelOrThrowRequestDto request = new WaitForCancelOrThrowRequestDto(duration, null);
+            request.Validate();
             return _channel.ExecuteObservableCommand<WaitForCancelOrThrowRequestDto>(_serviceName, "WaitForCancelOrThrow", request, ConvertWaitForCancelOrThrowException, _executionManager.CreateCallOptions(request.CommandIdentifier));
         }
         
@@ -393,6 +409,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         public virtual void RunIntoFailure()
         {
             RunIntoFailureRequestDto request = new RunIntoFailureRequestDto(null);
+            request.Validate();
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("tecan.sila/integrationtests/TestServer/v1/Command/RunIntoFailure");
             try
             {
@@ -425,6 +442,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         public virtual Tecan.Sila2.IObservableCommand RunIntoFailureObservably()
         {
             RunIntoFailureObservablyRequestDto request = new RunIntoFailureObservablyRequestDto(null);
+            request.Validate();
             return _channel.ExecuteObservableCommand<RunIntoFailureObservablyRequestDto>(_serviceName, "RunIntoFailureObservably", request, ConvertRunIntoFailureObservablyException, _executionManager.CreateCallOptions(request.CommandIdentifier));
         }
         
@@ -446,6 +464,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         public virtual bool IsCancelled(string commandId)
         {
             IsCancelledRequestDto request = new IsCancelledRequestDto(commandId, null);
+            request.Validate();
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("tecan.sila/integrationtests/TestServer/v1/Command/IsCancelled");
             try
             {
@@ -463,6 +482,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         public virtual void ThrowRuntimeException()
         {
             ThrowRuntimeExceptionRequestDto request = new ThrowRuntimeExceptionRequestDto(null);
+            request.Validate();
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("tecan.sila/integrationtests/TestServer/v1/Command/ThrowRuntimeException");
             try
             {
@@ -480,6 +500,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         public virtual void SetDummy(long value)
         {
             SetDummyRequestDto request = new SetDummyRequestDto(value, null);
+            request.Validate();
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("tecan.sila/integrationtests/TestServer/v1/Command/SetDummy");
             try
             {
