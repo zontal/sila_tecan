@@ -12,23 +12,20 @@ namespace Tecan.Sila2.Generator.Test.TestReference
 {
     
     
-    ///  <summary>
-    /// </summary>
     [Tecan.Sila2.SilaFeatureAttribute(true, "ambiguityresolver")]
     [Tecan.Sila2.SilaIdentifierAttribute("AmbiguityResolverService")]
     [Tecan.Sila2.SilaDisplayNameAttribute("Ambiguity Resolver Service")]
     public partial interface IAmbiguityResolverService
     {
         
-        ///  <summary>
-        /// </summary>
-        /// <returns></returns>
         [Tecan.Sila2.ObservableAttribute()]
         [return: Tecan.Sila2.SilaIdentifierAttribute("ReturnValue")]
         Tecan.Sila2.IObservableCommand<AmbiguousClass> CheckAmbiguousEntries();
+        
+        void OverloadedMethod(string method);
     }
     
-    ///  <summary>
+    /// <summary>
     /// Describes a class which has ambiguous parameter
     /// </summary>
     public struct AmbiguousClass
@@ -38,7 +35,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         
         private string _ambiguousChannel;
         
-        ///  <summary>
+        /// <summary>
         /// Initializes a new instance
         /// </summary>
         public AmbiguousClass(string message, string ambiguousChannel)
@@ -47,8 +44,6 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             _ambiguousChannel = ambiguousChannel;
         }
         
-        ///  <summary>
-        /// </summary>
         public string Message
         {
             get
@@ -57,8 +52,6 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             }
         }
         
-        ///  <summary>
-        /// </summary>
         public string AmbiguousChannel
         {
             get

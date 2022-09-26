@@ -26,6 +26,84 @@ namespace Tecan.Sila2.Generator
             return false;
         }
 
+        public PropertySpec FindPropertySpec( string identifier, out string path )
+        {
+            path = null;
+            if(Property == null)
+            {
+                return null;
+            }
+
+            var localProperty = Property.FirstOrDefault( p => identifier == (p.Identifier ?? p.Code) );
+            if(localProperty != null)
+            {
+                return localProperty;
+            }
+
+            if(Inline != null)
+            {
+                foreach(var inline in Inline)
+                {
+                    var inlined = inline.FindPropertySpec( identifier, out var inlinedPath );
+                    if(inlined != null)
+                    {
+                        path = inline.Code + "." + inlinedPath;
+                        return inlined;
+                    }
+                }
+            }
+            return null;
+        }
+
+        public CommandSpec FindCommandSpec( string identifier, out string path )
+        {
+            if(Command == null)
+            {
+                path = null;
+                return null;
+            }
+
+            var localProperty = Command.FirstOrDefault( p => identifier == (p.Identifier ?? p.Code) );
+            if(localProperty != null)
+            {
+                path = null;
+                return localProperty;
+            }
+
+            if(Inline != null)
+            {
+                foreach(var inline in Inline)
+                {
+                    var inlined = inline.FindCommandSpec( identifier, out var inlinedPath );
+                    if(inlined != null)
+                    {
+                        path = inline.Code + "." + inlinedPath;
+                        return inlined;
+                    }
+                }
+            }
+            path = null;
+            return null;
+        }
+
+        /// <summary>
+        /// Attempts to obtain the inline specification for the given property
+        /// </summary>
+        /// <param name="property">The name of the property</param>
+        /// <param name="inline">The inline</param>
+        /// <returns>True, if the property is inlined, otherwise False</returns>
+        public bool TryGetInlineFor( string property, out Inline inline )
+        {
+            if(Inline != null)
+            {
+                inline = Inline.FirstOrDefault( i => i.Code == property );
+                return inline != null;
+            }
+
+            inline = null;
+            return false;
+        }
+
         /// <summary>
         /// Attempts to obtain the command specification for the given command
         /// </summary>

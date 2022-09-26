@@ -17,7 +17,7 @@ namespace Tecan.Sila2.Interop.Server.MetadataProvider
 {
     
     
-    ///  <summary>
+    /// <summary>
     /// A class that exposes the IMetadataProviderTest interface via SiLA2
     /// </summary>
     [System.ComponentModel.Composition.ExportAttribute(typeof(IFeatureProvider))]
@@ -31,7 +31,7 @@ namespace Tecan.Sila2.Interop.Server.MetadataProvider
         
         private static Tecan.Sila2.Feature _feature = FeatureSerializer.LoadFromAssembly(typeof(MetadataProviderTestProvider).Assembly, "MetadataProviderTest.sila.xml");
         
-        ///  <summary>
+        /// <summary>
         /// Creates a new instance
         /// </summary>
         /// <param name="implementation">The implementation to exported through SiLA2</param>
@@ -43,7 +43,7 @@ namespace Tecan.Sila2.Interop.Server.MetadataProvider
             _server = server;
         }
         
-        ///  <summary>
+        /// <summary>
         /// The feature that is exposed by this feature provider
         /// </summary>
         /// <returns>A feature object</returns>
@@ -55,7 +55,7 @@ namespace Tecan.Sila2.Interop.Server.MetadataProvider
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Registers the feature in the provided feature registration
         /// </summary>
         /// <param name="registration">The registration component to which the feature should be registered</param>
@@ -65,7 +65,7 @@ namespace Tecan.Sila2.Interop.Server.MetadataProvider
             registration.RegisterMetadata("TwoIntegersMetadata", _implementation.TwoIntegersMetadata);
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the command with the given identifier
         /// </summary>
         /// <param name="commandIdentifier">A fully qualified command identifier</param>
@@ -75,7 +75,7 @@ namespace Tecan.Sila2.Interop.Server.MetadataProvider
             return null;
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the property with the given identifier
         /// </summary>
         /// <param name="propertyIdentifier">A fully qualified property identifier</param>
@@ -86,13 +86,13 @@ namespace Tecan.Sila2.Interop.Server.MetadataProvider
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// An abstract base class to support the String Metadata metadata
     /// </summary>
     public abstract partial class StringMetadataInterceptorBase : Tecan.Sila2.Server.IRequestInterceptor
     {
         
-        ///  <summary>
+        /// <summary>
         /// Gets whether the metadata applies to commands
         /// </summary>
         /// <returns>True, if the metadata is applicable to commands, otherwise false.</returns>
@@ -101,7 +101,7 @@ namespace Tecan.Sila2.Interop.Server.MetadataProvider
             get;
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets whether the metadata applies to properties
         /// </summary>
         /// <returns>True, if the metadata is applicable to properties, otherwise false.</returns>
@@ -110,7 +110,7 @@ namespace Tecan.Sila2.Interop.Server.MetadataProvider
             get;
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the priority for the metadata
         /// </summary>
         /// <returns>A relative priority.</returns>
@@ -119,7 +119,7 @@ namespace Tecan.Sila2.Interop.Server.MetadataProvider
             get;
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the metadata identifier this request interceptor is connected to or null, if not applicable
         /// </summary>
         public string MetadataIdentifier
@@ -130,7 +130,7 @@ namespace Tecan.Sila2.Interop.Server.MetadataProvider
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Decides whether the interceptor is required for the given command
         /// </summary>
         /// <param name="feature">The feature that contains the command or property</param>
@@ -138,7 +138,7 @@ namespace Tecan.Sila2.Interop.Server.MetadataProvider
         /// <returns>True, if the interceptor should be applied</returns>
         public abstract bool IsInterceptRequired(Feature feature, string commandIdentifier);
         
-        ///  <summary>
+        /// <summary>
         /// Intercepts the call to the given command
         /// </summary>
         /// <param name="commandIdentifier">The fully qualified identifier of the command or property in question</param>
@@ -146,7 +146,7 @@ namespace Tecan.Sila2.Interop.Server.MetadataProvider
         /// <returns>A request interception or null, if this is not necessary</returns>
         public abstract Tecan.Sila2.Server.IRequestInterception Intercept(string commandIdentifier, string stringMetadata);
         
-        ///  <summary>
+        /// <summary>
         /// Intercepts the call to the given command
         /// </summary>
         /// <param name="commandIdentifier">The fully qualified identifier of the command or property in question</param>
@@ -159,13 +159,13 @@ namespace Tecan.Sila2.Interop.Server.MetadataProvider
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// An abstract base class to support the Two Integers Metadata metadata
     /// </summary>
     public abstract partial class TwoIntegersMetadataInterceptorBase : Tecan.Sila2.Server.IRequestInterceptor
     {
         
-        ///  <summary>
+        /// <summary>
         /// Gets whether the metadata applies to commands
         /// </summary>
         /// <returns>True, if the metadata is applicable to commands, otherwise false.</returns>
@@ -174,7 +174,7 @@ namespace Tecan.Sila2.Interop.Server.MetadataProvider
             get;
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets whether the metadata applies to properties
         /// </summary>
         /// <returns>True, if the metadata is applicable to properties, otherwise false.</returns>
@@ -183,7 +183,7 @@ namespace Tecan.Sila2.Interop.Server.MetadataProvider
             get;
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the priority for the metadata
         /// </summary>
         /// <returns>A relative priority.</returns>
@@ -192,7 +192,7 @@ namespace Tecan.Sila2.Interop.Server.MetadataProvider
             get;
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the metadata identifier this request interceptor is connected to or null, if not applicable
         /// </summary>
         public string MetadataIdentifier
@@ -203,7 +203,7 @@ namespace Tecan.Sila2.Interop.Server.MetadataProvider
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Decides whether the interceptor is required for the given command
         /// </summary>
         /// <param name="feature">The feature that contains the command or property</param>
@@ -211,7 +211,7 @@ namespace Tecan.Sila2.Interop.Server.MetadataProvider
         /// <returns>True, if the interceptor should be applied</returns>
         public abstract bool IsInterceptRequired(Feature feature, string commandIdentifier);
         
-        ///  <summary>
+        /// <summary>
         /// Intercepts the call to the given command
         /// </summary>
         /// <param name="commandIdentifier">The fully qualified identifier of the command or property in question</param>
@@ -219,7 +219,7 @@ namespace Tecan.Sila2.Interop.Server.MetadataProvider
         /// <returns>A request interception or null, if this is not necessary</returns>
         public abstract Tecan.Sila2.Server.IRequestInterception Intercept(string commandIdentifier, TwoIntegersMetadata twoIntegersMetadata);
         
-        ///  <summary>
+        /// <summary>
         /// Intercepts the call to the given command
         /// </summary>
         /// <param name="commandIdentifier">The fully qualified identifier of the command or property in question</param>

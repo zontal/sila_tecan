@@ -17,7 +17,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
 {
     
     
-    ///  <summary>
+    /// <summary>
     /// Class that implements the ILoggingService interface through SiLA2
     /// </summary>
     public partial class LoggingServiceClient : ILoggingService
@@ -30,7 +30,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         private const string _serviceName = "sila2.tecan.sila.generator.test.logging.infrastructure.loggingservice.v4.LoggingS" +
             "ervice";
         
-        ///  <summary>
+        /// <summary>
         /// Creates a new instance
         /// </summary>
         /// <param name="channel">The channel through which calls should be executed</param>
@@ -41,7 +41,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             _channel = channel;
         }
         
-        ///  <summary>
+        /// <summary>
         /// Starts listening for log entries from the device
         /// </summary>
         public virtual Tecan.Sila2.IIntermediateObservableCommand<LogEntry> ListenForLogEntries()
@@ -50,7 +50,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             return _channel.ExecuteIntermediatesCommand<ListenForLogEntriesRequestDto, LogEntry, ListenForLogEntriesIntermediateDto>(_serviceName, "ListenForLogEntries", request, ConvertListenForLogEntriesIntermediate, ConvertListenForLogEntriesException, _executionManager.CreateCallOptions(request.CommandIdentifier));
         }
         
-        ///  <summary>
+        /// <summary>
         /// Converts the error ocurred during execution of ListenForLogEntries to a proper exception
         /// </summary>
         /// <param name="errorIdentifier">The identifier of the error that has happened</param>
@@ -61,7 +61,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             return null;
         }
         
-        ///  <summary>
+        /// <summary>
         /// Unwraps the response of the ListenForLogEntriesIntermediate command
         /// </summary>
         /// <param name="value">The response data transfer object</param>
@@ -78,7 +78,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// Factory to instantiate clients for the Logging.
     /// </summary>
     [System.ComponentModel.Composition.ExportAttribute(typeof(IClientFactory))]
@@ -86,7 +86,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
     public partial class LoggingServiceClientFactory : IClientFactory
     {
         
-        ///  <summary>
+        /// <summary>
         /// Gets the fully-qualified identifier of the feature for which clients can be generated
         /// </summary>
         public string FeatureIdentifier
@@ -97,7 +97,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the interface type for which clients can be generated
         /// </summary>
         public System.Type InterfaceType
@@ -108,7 +108,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Creates a strongly typed client for the given execution channel and execution manager
         /// </summary>
         /// <param name="channel">The channel that should be used for communication with the server</param>

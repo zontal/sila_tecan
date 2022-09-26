@@ -140,21 +140,21 @@ namespace Tecan.Sila2.Generator.CommandLine
             var featureTypes = assembly.ExportedTypes.Where( t =>
                  t.IsInterface && !t.IsGenericType );
 
+            var configRepo = container.GetExportedValue<IGeneratorConfigSource>();
             if(string.IsNullOrEmpty( InterfaceName ))
             {
-                featureTypes = featureTypes.Where( t => t.GetCustomAttribute<SilaFeatureAttribute>() != null );
+                featureTypes = featureTypes.Where( t => t.GetCustomAttribute<SilaFeatureAttribute>() != null || configRepo.GetFeatureSpec( t ) != null );
+            }
+            else
+            {
+                featureTypes = featureTypes.Where( t => string.Equals( InterfaceName, t.Name, StringComparison.OrdinalIgnoreCase ) || string.Equals( InterfaceName, t.FullName, StringComparison.OrdinalIgnoreCase ) );
             }
             var featureGenerator = container.GetExportedValue<IFeatureDefinitionGenerator>();
 
-            var configRepo = container.GetExportedValue<IGeneratorConfigSource>();
             bool foundFeature = false;
             foreach(var featureType in featureTypes)
             {
                 channel.Info( $"Processing interface {featureType.FullName}" );
-                if(InterfaceName != null && !string.Equals( InterfaceName, featureType.Name, StringComparison.OrdinalIgnoreCase ) && !string.Equals( InterfaceName, featureType.FullName, StringComparison.OrdinalIgnoreCase ))
-                {
-                    continue;
-                }
 
                 foundFeature = true;
                 // First, generate the feature definition

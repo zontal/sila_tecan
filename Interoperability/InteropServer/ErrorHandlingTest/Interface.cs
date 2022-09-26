@@ -12,7 +12,7 @@ namespace Tecan.Sila2.Interop.Server.ErrorHandlingTest
 {
     
     
-    ///  <summary>
+    /// <summary>
     /// Tests that errors are propagated correctly
     /// </summary>
     [Tecan.Sila2.SilaFeatureAttribute(true, "test")]
@@ -21,7 +21,7 @@ namespace Tecan.Sila2.Interop.Server.ErrorHandlingTest
     public partial interface IErrorHandlingTest
     {
         
-        ///  <summary>
+        /// <summary>
         /// A property that raises a "Test Error" on get with error message 'SiLA2_test_error_message'
         /// </summary>
         [Tecan.Sila2.ThrowsAttribute(typeof(TestErrorException))]
@@ -30,7 +30,7 @@ namespace Tecan.Sila2.Interop.Server.ErrorHandlingTest
             get;
         }
         
-        ///  <summary>
+        /// <summary>
         /// A property that raises a "Test Error" on subscribe with error message 'SiLA2_test_error_message'
         /// </summary>
         [Tecan.Sila2.ObservableAttribute()]
@@ -40,7 +40,7 @@ namespace Tecan.Sila2.Interop.Server.ErrorHandlingTest
             get;
         }
         
-        ///  <summary>
+        /// <summary>
         /// A property that raises an Undefined Execution Error on get with error message 'SiLA2_test_error_message'
         /// </summary>
         long RaiseUndefinedExecutionErrorOnGet
@@ -48,7 +48,7 @@ namespace Tecan.Sila2.Interop.Server.ErrorHandlingTest
             get;
         }
         
-        ///  <summary>
+        /// <summary>
         /// A property that raises an Undefined Execution Error on subscribe with error message 'SiLA2_test_error_message'
         /// </summary>
         [Tecan.Sila2.ObservableAttribute()]
@@ -57,38 +57,38 @@ namespace Tecan.Sila2.Interop.Server.ErrorHandlingTest
             get;
         }
         
-        ///  <summary>
+        /// <summary>
         /// Raises the "Test Error" with error message 'SiLA2_test_error_message'
         /// </summary>
         [Tecan.Sila2.ThrowsAttribute(typeof(TestErrorException))]
         void RaiseDefinedExecutionError();
         
-        ///  <summary>
+        /// <summary>
         /// Raises the "Test Error" with error message 'SiLA2_test_error_message'
         /// </summary>
         [Tecan.Sila2.ObservableAttribute()]
         [Tecan.Sila2.ThrowsAttribute(typeof(TestErrorException))]
         Tecan.Sila2.IObservableCommand RaiseDefinedExecutionErrorObservably();
         
-        ///  <summary>
+        /// <summary>
         /// Raises an Undefined Execution Error with error message 'SiLA2_test_error_message'
         /// </summary>
         void RaiseUndefinedExecutionError();
         
-        ///  <summary>
+        /// <summary>
         /// Raises an Undefined Execution Error with error message 'SiLA2_test_error_message'
         /// </summary>
         [Tecan.Sila2.ObservableAttribute()]
         Tecan.Sila2.IObservableCommand RaiseUndefinedExecutionErrorObservably();
     }
     
-    ///  <summary>
+    /// <summary>
     /// An error exclusively used for testing purposes
     /// </summary>
     public class TestErrorException : System.Exception
     {
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="message">The actual error message</param>

@@ -17,7 +17,7 @@ namespace Tecan.Sila2.Authentication.AuthenticationService
 {
     
     
-    ///  <summary>
+    /// <summary>
     /// Class that implements the IAuthenticationService interface through SiLA2
     /// </summary>
     public partial class AuthenticationServiceClient : IAuthenticationService
@@ -29,7 +29,7 @@ namespace Tecan.Sila2.Authentication.AuthenticationService
         
         private const string _serviceName = "sila2.org.silastandard.core.authenticationservice.v1.AuthenticationService";
         
-        ///  <summary>
+        /// <summary>
         /// Creates a new instance
         /// </summary>
         /// <param name="channel">The channel through which calls should be executed</param>
@@ -40,7 +40,7 @@ namespace Tecan.Sila2.Authentication.AuthenticationService
             _channel = channel;
         }
         
-        ///  <summary>
+        /// <summary>
         /// Provides an access token based on user information.
         /// </summary>
         /// <param name="userIdentification">The user identification string (e.g. a user name)</param>
@@ -64,7 +64,7 @@ namespace Tecan.Sila2.Authentication.AuthenticationService
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Converts the error ocurred during execution of Login to a proper exception
         /// </summary>
         /// <param name="errorIdentifier">The identifier of the error that has happened</param>
@@ -80,7 +80,7 @@ namespace Tecan.Sila2.Authentication.AuthenticationService
             return null;
         }
         
-        ///  <summary>
+        /// <summary>
         /// Invalidates the given access token immediately.
         /// </summary>
         /// <param name="accessToken">The access token to be invalidated.</param>
@@ -101,7 +101,7 @@ namespace Tecan.Sila2.Authentication.AuthenticationService
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Converts the error ocurred during execution of Logout to a proper exception
         /// </summary>
         /// <param name="errorIdentifier">The identifier of the error that has happened</param>
@@ -124,7 +124,7 @@ namespace Tecan.Sila2.Authentication.AuthenticationService
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// Factory to instantiate clients for the Authentication Service.
     /// </summary>
     [System.ComponentModel.Composition.ExportAttribute(typeof(IClientFactory))]
@@ -132,7 +132,7 @@ namespace Tecan.Sila2.Authentication.AuthenticationService
     public partial class AuthenticationServiceClientFactory : IClientFactory
     {
         
-        ///  <summary>
+        /// <summary>
         /// Gets the fully-qualified identifier of the feature for which clients can be generated
         /// </summary>
         public string FeatureIdentifier
@@ -143,7 +143,7 @@ namespace Tecan.Sila2.Authentication.AuthenticationService
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the interface type for which clients can be generated
         /// </summary>
         public System.Type InterfaceType
@@ -154,7 +154,7 @@ namespace Tecan.Sila2.Authentication.AuthenticationService
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Creates a strongly typed client for the given execution channel and execution manager
         /// </summary>
         /// <param name="channel">The channel that should be used for communication with the server</param>

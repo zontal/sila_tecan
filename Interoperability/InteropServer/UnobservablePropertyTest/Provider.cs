@@ -17,7 +17,7 @@ namespace Tecan.Sila2.Interop.Server.UnobservablePropertyTest
 {
     
     
-    ///  <summary>
+    /// <summary>
     /// A class that exposes the IUnobservablePropertyTest interface via SiLA2
     /// </summary>
     [System.ComponentModel.Composition.ExportAttribute(typeof(IFeatureProvider))]
@@ -31,7 +31,7 @@ namespace Tecan.Sila2.Interop.Server.UnobservablePropertyTest
         
         private static Tecan.Sila2.Feature _feature = FeatureSerializer.LoadFromAssembly(typeof(UnobservablePropertyTestProvider).Assembly, "UnobservablePropertyTest.sila.xml");
         
-        ///  <summary>
+        /// <summary>
         /// Creates a new instance
         /// </summary>
         /// <param name="implementation">The implementation to exported through SiLA2</param>
@@ -43,7 +43,7 @@ namespace Tecan.Sila2.Interop.Server.UnobservablePropertyTest
             _server = server;
         }
         
-        ///  <summary>
+        /// <summary>
         /// The feature that is exposed by this feature provider
         /// </summary>
         /// <returns>A feature object</returns>
@@ -55,7 +55,7 @@ namespace Tecan.Sila2.Interop.Server.UnobservablePropertyTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Registers the feature in the provided feature registration
         /// </summary>
         /// <param name="registration">The registration component to which the feature should be registered</param>
@@ -65,7 +65,7 @@ namespace Tecan.Sila2.Interop.Server.UnobservablePropertyTest
             registration.RegisterUnobservableProperty("SecondsSince1970", GetSecondsSince1970);
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the current value of the Answer To Everything property
         /// </summary>
         /// <returns>The current value wrapped in a data transfer object</returns>
@@ -74,7 +74,7 @@ namespace Tecan.Sila2.Interop.Server.UnobservablePropertyTest
             return new PropertyResponse<Tecan.Sila2.IntegerDto>(new Tecan.Sila2.IntegerDto(_implementation.AnswerToEverything, _server));
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the current value of the Seconds Since 1970 property
         /// </summary>
         /// <returns>The current value wrapped in a data transfer object</returns>
@@ -83,7 +83,7 @@ namespace Tecan.Sila2.Interop.Server.UnobservablePropertyTest
             return new PropertyResponse<Tecan.Sila2.IntegerDto>(new Tecan.Sila2.IntegerDto(_implementation.SecondsSince1970, _server));
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the command with the given identifier
         /// </summary>
         /// <param name="commandIdentifier">A fully qualified command identifier</param>
@@ -93,7 +93,7 @@ namespace Tecan.Sila2.Interop.Server.UnobservablePropertyTest
             return null;
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the property with the given identifier
         /// </summary>
         /// <param name="propertyIdentifier">A fully qualified property identifier</param>

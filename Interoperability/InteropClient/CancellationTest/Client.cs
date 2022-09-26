@@ -17,7 +17,7 @@ namespace Tecan.Sila2.Interop.Client.CancellationTest.CancellationTest
 {
     
     
-    ///  <summary>
+    /// <summary>
     /// Class that implements the ICancellationTest interface through SiLA2
     /// </summary>
     public partial class CancellationTestClient : ICancellationTest
@@ -29,7 +29,7 @@ namespace Tecan.Sila2.Interop.Client.CancellationTest.CancellationTest
         
         private const string _serviceName = "sila2.org.silastandard.test.cancellationtest.v1.CancellationTest";
         
-        ///  <summary>
+        /// <summary>
         /// Creates a new instance
         /// </summary>
         /// <param name="channel">The channel through which calls should be executed</param>
@@ -40,7 +40,7 @@ namespace Tecan.Sila2.Interop.Client.CancellationTest.CancellationTest
             _channel = channel;
         }
         
-        ///  <summary>
+        /// <summary>
         /// Starts a command and waits for cancellation
         /// </summary>
         /// <param name="duration">The time the server should wait for the cancellation</param>
@@ -50,7 +50,7 @@ namespace Tecan.Sila2.Interop.Client.CancellationTest.CancellationTest
             return _channel.ExecuteObservableCommand<WaitForCancelRequestDto>(_serviceName, "WaitForCancel", request, ConvertWaitForCancelException, _executionManager.CreateCallOptions(request.CommandIdentifier));
         }
         
-        ///  <summary>
+        /// <summary>
         /// Converts the error ocurred during execution of WaitForCancel to a proper exception
         /// </summary>
         /// <param name="errorIdentifier">The identifier of the error that has happened</param>
@@ -73,7 +73,7 @@ namespace Tecan.Sila2.Interop.Client.CancellationTest.CancellationTest
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// Factory to instantiate clients for the Cancellation Test.
     /// </summary>
     [System.ComponentModel.Composition.ExportAttribute(typeof(IClientFactory))]
@@ -81,7 +81,7 @@ namespace Tecan.Sila2.Interop.Client.CancellationTest.CancellationTest
     public partial class CancellationTestClientFactory : IClientFactory
     {
         
-        ///  <summary>
+        /// <summary>
         /// Gets the fully-qualified identifier of the feature for which clients can be generated
         /// </summary>
         public string FeatureIdentifier
@@ -92,7 +92,7 @@ namespace Tecan.Sila2.Interop.Client.CancellationTest.CancellationTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the interface type for which clients can be generated
         /// </summary>
         public System.Type InterfaceType
@@ -103,7 +103,7 @@ namespace Tecan.Sila2.Interop.Client.CancellationTest.CancellationTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Creates a strongly typed client for the given execution channel and execution manager
         /// </summary>
         /// <param name="channel">The channel that should be used for communication with the server</param>

@@ -12,7 +12,7 @@ namespace Tecan.Sila2.Interop.Client.UnobservableCommandTest
 {
     
     
-    ///  <summary>
+    /// <summary>
     /// Response type for the Split String After First Character command
     /// </summary>
     [Tecan.Sila2.SilaDisplayNameAttribute("Split String After First Character - Response")]
@@ -23,7 +23,7 @@ namespace Tecan.Sila2.Interop.Client.UnobservableCommandTest
         
         private string _remainder;
         
-        ///  <summary>
+        /// <summary>
         /// Initializes a new instance
         /// </summary>
         public SplitStringAfterFirstCharacterResponse(string firstCharacter, string remainder)
@@ -32,7 +32,7 @@ namespace Tecan.Sila2.Interop.Client.UnobservableCommandTest
             _remainder = remainder;
         }
         
-        ///  <summary>
+        /// <summary>
         /// The first character, e.g. 'a', or an empty string if the input was empty
         /// </summary>
         [Tecan.Sila2.MaximalLengthAttribute(1)]
@@ -44,7 +44,7 @@ namespace Tecan.Sila2.Interop.Client.UnobservableCommandTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// The remainder, e.g. 'bcde', or an empty string if the input was shorter that two characters
         /// </summary>
         public string Remainder
@@ -56,7 +56,7 @@ namespace Tecan.Sila2.Interop.Client.UnobservableCommandTest
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// Feature for testing unobservable commands
     /// </summary>
     [Tecan.Sila2.SilaFeatureAttribute(true, "test")]
@@ -65,12 +65,12 @@ namespace Tecan.Sila2.Interop.Client.UnobservableCommandTest
     public partial interface IUnobservableCommandTest
     {
         
-        ///  <summary>
+        /// <summary>
         /// A command that takes no parameters and returns no responses
         /// </summary>
         void CommandWithoutParametersAndResponses();
         
-        ///  <summary>
+        /// <summary>
         /// A command that takes one integer parameter and returns its string representation.
         /// </summary>
         /// <param name="integer">An integer, e.g. 12345</param>
@@ -78,7 +78,7 @@ namespace Tecan.Sila2.Interop.Client.UnobservableCommandTest
         [return: Tecan.Sila2.SilaIdentifierAttribute("StringRepresentation")]
         string ConvertIntegerToString(long integer);
         
-        ///  <summary>
+        /// <summary>
         /// A command which takes an integer and a string parameter and returns a string with both joined (e.g.
         /// "123abc")
         /// </summary>
@@ -89,7 +89,7 @@ namespace Tecan.Sila2.Interop.Client.UnobservableCommandTest
         [return: Tecan.Sila2.SilaDisplayNameAttribute("Joined parameters")]
         string JoinIntegerAndString(long integer, string @string);
         
-        ///  <summary>
+        /// <summary>
         /// A command which splits a given string after its first character. Returns empty parts if the input was
         /// too short.
         /// </summary>

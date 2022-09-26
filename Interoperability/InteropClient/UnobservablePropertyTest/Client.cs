@@ -17,7 +17,7 @@ namespace Tecan.Sila2.Interop.Client.UnobservablePropertyTest.UnobservableProper
 {
     
     
-    ///  <summary>
+    /// <summary>
     /// Class that implements the IUnobservablePropertyTest interface through SiLA2
     /// </summary>
     public partial class UnobservablePropertyTestClient : IUnobservablePropertyTest
@@ -33,7 +33,7 @@ namespace Tecan.Sila2.Interop.Client.UnobservablePropertyTest.UnobservableProper
         
         private const string _serviceName = "sila2.org.silastandard.test.unobservablepropertytest.v1.UnobservablePropertyTest";
         
-        ///  <summary>
+        /// <summary>
         /// Creates a new instance
         /// </summary>
         /// <param name="channel">The channel through which calls should be executed</param>
@@ -45,7 +45,7 @@ namespace Tecan.Sila2.Interop.Client.UnobservablePropertyTest.UnobservableProper
             InitLazyRequests();
         }
         
-        ///  <summary>
+        /// <summary>
         /// Returns the answer to the ultimate question of life, the universe, and everything. 42.
         /// </summary>
         public virtual long AnswerToEverything
@@ -56,7 +56,7 @@ namespace Tecan.Sila2.Interop.Client.UnobservablePropertyTest.UnobservableProper
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Returns the unix timestamp: The time in seconds since January 1st of 1970.
         /// </summary>
         public virtual long SecondsSince1970
@@ -99,7 +99,7 @@ namespace Tecan.Sila2.Interop.Client.UnobservablePropertyTest.UnobservableProper
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Initializes lazies for non-observable properties.
         /// </summary>
         private void InitLazyRequests()
@@ -115,7 +115,7 @@ namespace Tecan.Sila2.Interop.Client.UnobservablePropertyTest.UnobservableProper
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// Factory to instantiate clients for the Unobservable Property Test.
     /// </summary>
     [System.ComponentModel.Composition.ExportAttribute(typeof(IClientFactory))]
@@ -123,7 +123,7 @@ namespace Tecan.Sila2.Interop.Client.UnobservablePropertyTest.UnobservableProper
     public partial class UnobservablePropertyTestClientFactory : IClientFactory
     {
         
-        ///  <summary>
+        /// <summary>
         /// Gets the fully-qualified identifier of the feature for which clients can be generated
         /// </summary>
         public string FeatureIdentifier
@@ -134,7 +134,7 @@ namespace Tecan.Sila2.Interop.Client.UnobservablePropertyTest.UnobservableProper
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the interface type for which clients can be generated
         /// </summary>
         public System.Type InterfaceType
@@ -145,7 +145,7 @@ namespace Tecan.Sila2.Interop.Client.UnobservablePropertyTest.UnobservableProper
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Creates a strongly typed client for the given execution channel and execution manager
         /// </summary>
         /// <param name="channel">The channel that should be used for communication with the server</param>

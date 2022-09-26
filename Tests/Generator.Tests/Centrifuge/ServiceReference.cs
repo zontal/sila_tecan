@@ -12,15 +12,11 @@ namespace Tecan.Sila2.Generator.Test.TestReference
 {
 
 
-    ///  <summary>
-    /// </summary>
-    [Tecan.Sila2.SilaFeatureAttribute(true, "testreference")]
-    [Tecan.Sila2.SilaIdentifierAttribute("Centrifuge")]
+    [Tecan.Sila2.SilaFeatureAttribute( true, "testreference" )]
+    [Tecan.Sila2.SilaIdentifierAttribute( "Centrifuge" )]
     public partial interface ICentrifuge
     {
 
-        ///  <summary>
-        /// </summary>
         long Speed
         {
             get;

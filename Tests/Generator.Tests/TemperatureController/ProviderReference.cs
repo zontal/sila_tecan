@@ -15,35 +15,35 @@ using Tecan.Sila2.Server;
 
 namespace Tecan.Sila2.Generator.Test.TestReference
 {
-
-
-    ///  <summary>
+    
+    
+    /// <summary>
     /// A class that exposes the ITemperatureController interface via SiLA2
     /// </summary>
-    [System.ComponentModel.Composition.ExportAttribute( typeof( IFeatureProvider ) )]
-    [System.ComponentModel.Composition.PartCreationPolicyAttribute( System.ComponentModel.Composition.CreationPolicy.Shared )]
+    [System.ComponentModel.Composition.ExportAttribute(typeof(IFeatureProvider))]
+    [System.ComponentModel.Composition.PartCreationPolicyAttribute(System.ComponentModel.Composition.CreationPolicy.Shared)]
     public partial class TemperatureControllerProvider : IFeatureProvider
     {
-
+        
         private ITemperatureController _implementation;
-
+        
         private Tecan.Sila2.Server.ISiLAServer _server;
-
-        private static Tecan.Sila2.Feature _feature = FeatureSerializer.LoadFromAssembly( typeof( TemperatureControllerProvider ).Assembly, "TemperatureController.sila.xml" );
-
-        ///  <summary>
+        
+        private static Tecan.Sila2.Feature _feature = FeatureSerializer.LoadFromAssembly(typeof(TemperatureControllerProvider).Assembly, "TemperatureController.sila.xml");
+        
+        /// <summary>
         /// Creates a new instance
         /// </summary>
         /// <param name="implementation">The implementation to exported through SiLA2</param>
         /// <param name="server">The SiLA2 server instance through which the implementation shall be exported</param>
         [System.ComponentModel.Composition.ImportingConstructorAttribute()]
-        public TemperatureControllerProvider( ITemperatureController implementation, Tecan.Sila2.Server.ISiLAServer server )
+        public TemperatureControllerProvider(ITemperatureController implementation, Tecan.Sila2.Server.ISiLAServer server)
         {
             _implementation = implementation;
             _server = server;
         }
-
-        ///  <summary>
+        
+        /// <summary>
         /// The feature that is exposed by this feature provider
         /// </summary>
         /// <returns>A feature object</returns>
@@ -54,89 +54,86 @@ namespace Tecan.Sila2.Generator.Test.TestReference
                 return _feature;
             }
         }
-
-        private System.Exception ConvertControlTemperatureExceptions( System.Exception exception )
+        
+        private System.Exception ConvertControlTemperatureExceptions(System.Exception exception)
         {
             try
             {
                 throw exception;
-            }
-            catch(System.ArgumentException ex)
+            } catch (System.ArgumentException ex)
             {
-                if((ex.ParamName == "targetTemperature"))
+                if ((ex.ParamName == "targetTemperature"))
                 {
-                    throw _server.ErrorHandling.CreateValidationError( "tecan.sila.generator/test/TemperatureController/v4/Command/ControlTemperature/Par" +
-                            "ameter/TargetTemperature", ex.Message );
+                    throw _server.ErrorHandling.CreateValidationError("tecan.sila.generator/test/TemperatureController/v4/Command/ControlTemperature/Par" +
+                            "ameter/TargetTemperature", ex.Message);
                 }
-                throw _server.ErrorHandling.CreateUnknownValidationError( ex );
-            }
-            catch(TemperatureNotReachableException ex)
+                throw _server.ErrorHandling.CreateUnknownValidationError(ex);
+            } catch (TemperatureNotReachableException ex)
             {
-                throw _server.ErrorHandling.CreateExecutionError( "tecan.sila.generator/test/TemperatureController/v4/DefinedExecutionError/Temperat" +
-                        "ureNotReachable", "The ambient conditions prohibit the device from reaching the target temperature.", ex.Message );
-            }
-            catch(ControlInterruptedException ex)
+                throw _server.ErrorHandling.CreateExecutionError("tecan.sila.generator/test/TemperatureController/v4/DefinedExecutionError/Temperat" +
+                        "ureNotReachable", "The ambient conditions prohibit the device from reaching the target temperature.", ex.Message);
+            } catch (ControlInterruptedException ex)
             {
-                throw _server.ErrorHandling.CreateExecutionError( "tecan.sila.generator/test/TemperatureController/v4/DefinedExecutionError/ControlI" +
+                throw _server.ErrorHandling.CreateExecutionError("tecan.sila.generator/test/TemperatureController/v4/DefinedExecutionError/ControlI" +
                         "nterrupted", "The control of temperature couldn\'t be finished as it was interrupted by another " +
-                        "target temperature.", ex.Message );
+                        "target temperature.", ex.Message);
             }
         }
-
-        ///  <summary>
+        
+        /// <summary>
         /// Registers the feature in the provided feature registration
         /// </summary>
         /// <param name="registration">The registration component to which the feature should be registered</param>
-        public void Register( IServerBuilder registration )
+        public void Register(IServerBuilder registration)
         {
-            registration.RegisterObservableCommand<ControlTemperatureRequestDto>( "ControlTemperature", ControlTemperature, ConvertControlTemperatureExceptions );
-            registration.RegisterObservableProperty( "CurrentTemperature", GetCurrentTemperature, _implementation );
+            registration.RegisterObservableCommand<ControlTemperatureRequestDto>("ControlTemperature", ControlTemperature, ConvertControlTemperatureExceptions);
+            registration.RegisterObservableProperty("CurrentTemperature", GetCurrentTemperature, _implementation);
         }
-
-        ///  <summary>
+        
+        /// <summary>
         /// Executes the Control Temperature command
         /// </summary>
         /// <param name="request">A data transfer object that contains the command parameters</param>
         /// <returns>The command response wrapped in a data transfer object</returns>
-        protected virtual Tecan.Sila2.IObservableCommand ControlTemperature( ControlTemperatureRequestDto request )
+        protected virtual Tecan.Sila2.IObservableCommand ControlTemperature(ControlTemperatureRequestDto request)
         {
             request.Validate();
-            return _implementation.ControlTemperature( request.TargetTemperature.Extract( _server ) );
+            return _implementation.ControlTemperature(request.TargetTemperature.Extract(_server));
         }
-
-        ///  <summary>
+        
+        /// <summary>
         /// Gets the current value of the Current Temperature property
         /// </summary>
         /// <returns>The current value wrapped in a data transfer object</returns>
         protected virtual CurrentTemperatureResponseDto GetCurrentTemperature()
         {
-            return new CurrentTemperatureResponseDto( _implementation.CurrentTemperature, _server );
+            return new CurrentTemperatureResponseDto(_implementation.CurrentTemperature, _server);
         }
-
-        ///  <summary>
+        
+        /// <summary>
         /// Gets the command with the given identifier
         /// </summary>
         /// <param name="commandIdentifier">A fully qualified command identifier</param>
         /// <returns>A method object or null, if the command is not supported</returns>
-        public System.Reflection.MethodInfo GetCommand( string commandIdentifier )
+        public System.Reflection.MethodInfo GetCommand(string commandIdentifier)
         {
-            if((commandIdentifier == "tecan.sila.generator/test/TemperatureController/v4/Command/ControlTemperature"))
+            if ((commandIdentifier == "tecan.sila.generator/test/TemperatureController/v4/Command/ControlTemperature"))
             {
-                return typeof( ITemperatureController ).GetMethod( "ControlTemperature" );
+                return typeof(ITemperatureController).GetMethod("ControlTemperature");
             }
             return null;
         }
-
-        ///  <summary>
+        
+        /// <summary>
         /// Gets the property with the given identifier
         /// </summary>
         /// <param name="propertyIdentifier">A fully qualified property identifier</param>
         /// <returns>A property object or null, if the property is not supported</returns>
-        public System.Reflection.PropertyInfo GetProperty( string propertyIdentifier )
+        public System.Reflection.PropertyInfo GetProperty(string propertyIdentifier)
         {
-            if((propertyIdentifier == "tecan.sila.generator/test/TemperatureController/v4/Property/CurrentTemperature"))
+            if ((propertyIdentifier == "tecan.sila.generator/test/TemperatureController/v4/Property/CurrentTemperature"))
             {
-                return typeof( ITemperatureController ).GetProperty( "CurrentTemperature" );
+                return typeof(ITemperatureController).GetProperty("CurrentTemperature");
             }
             return null;
         }

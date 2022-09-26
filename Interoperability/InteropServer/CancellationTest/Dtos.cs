@@ -13,7 +13,7 @@ namespace Tecan.Sila2.Interop.Server.CancellationTest
     using Tecan.Sila2;
     
     
-    ///  <summary>
+    /// <summary>
     /// Data transfer object for the request of the Wait For Cancel command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
@@ -22,24 +22,24 @@ namespace Tecan.Sila2.Interop.Server.CancellationTest
         
         private Tecan.Sila2.IntegerDto _duration;
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         public WaitForCancelRequestDto()
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
-        ///  <param name="duration">The time the server should wait for the cancellation</param>
+        /// <param name="duration">The time the server should wait for the cancellation</param>
         public WaitForCancelRequestDto(long duration, Tecan.Sila2.IBinaryStore store)
         {
             Duration = new Tecan.Sila2.IntegerDto(duration, store);
         }
         
-        ///  <summary>
+        /// <summary>
         /// The time the server should wait for the cancellation
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute(1)]
@@ -55,7 +55,7 @@ namespace Tecan.Sila2.Interop.Server.CancellationTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the command identifier for this command
         /// </summary>
         /// <returns>The fully qualified command identifier</returns>
@@ -67,7 +67,7 @@ namespace Tecan.Sila2.Interop.Server.CancellationTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the given request object
         /// </summary>
         public void Validate()
@@ -75,7 +75,7 @@ namespace Tecan.Sila2.Interop.Server.CancellationTest
             Argument.Validate(Duration, "duration");
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>

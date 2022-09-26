@@ -13,12 +13,16 @@ namespace Tecan.Sila2.Generator.Test.AmbiguityResolver
     {
         [Observable]
         AmbiguousClass CheckAmbiguousEntries();
+
+        void OverloadedMethod();
+
+        void OverloadedMethod( string method );
     }
 
-    [SilaDescription("Describes a class which has ambiguous parameter")]
+    [SilaDescription( "Describes a class which has ambiguous parameter" )]
     public class AmbiguousClass
     {
-        public AmbiguousClass(string message, string channel)
+        public AmbiguousClass( string message, string channel )
         {
             Message = message;
             AmbiguousChannel = channel;

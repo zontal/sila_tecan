@@ -17,7 +17,7 @@ namespace Tecan.Sila2.Locking.LockController
 {
     
     
-    ///  <summary>
+    /// <summary>
     /// Class that implements the ILockController interface through SiLA2
     /// </summary>
     public partial class LockControllerClient : ILockController
@@ -31,7 +31,7 @@ namespace Tecan.Sila2.Locking.LockController
         
         private const string _serviceName = "sila2.org.silastandard.core.lockcontroller.v1.LockController";
         
-        ///  <summary>
+        /// <summary>
         /// Creates a new instance
         /// </summary>
         /// <param name="channel">The channel through which calls should be executed</param>
@@ -43,7 +43,7 @@ namespace Tecan.Sila2.Locking.LockController
             InitLazyRequests();
         }
         
-        ///  <summary>
+        /// <summary>
         /// Returns true if the SiLA Server is currently locked or false else.
         /// This property MUST NOT be lock protected, so that any SiLA Client can query the current lock state
         /// of a SiLA Server.
@@ -72,7 +72,7 @@ namespace Tecan.Sila2.Locking.LockController
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Initializes lazies for non-observable properties.
         /// </summary>
         private void InitLazyRequests()
@@ -80,19 +80,19 @@ namespace Tecan.Sila2.Locking.LockController
             _isLocked = new System.Lazy<bool>(RequestIsLocked);
         }
         
-        ///  <summary>
+        /// <summary>
         /// Locks a SiLA Server for exclusive use by setting a lock identifier that has to be sent along with
         /// any following (lock protected) request as long as the SiLA Server is locked.
         /// The lock can be reset by issuing the 'Unlock Server' command.
         /// </summary>
         /// <param name="lockIdentifier">
-        ///        The lock identifier that has to be sent along with every (lock protected) request to use the server's
-        ///        functionality.
-        ///      </param>
+        /// The lock identifier that has to be sent along with every (lock protected) request to use the server's
+        /// functionality.
+        /// </param>
         /// <param name="timeout">
-        ///        The time (in seconds) after a SiLA Server is automatically unlocked when no request with a valid lock identifier
-        ///        has been received meanwhile. A timeout of zero seconds specifies an infinite time (no timeout).
-        ///      </param>
+        /// The time (in seconds) after a SiLA Server is automatically unlocked when no request with a valid lock identifier
+        /// has been received meanwhile. A timeout of zero seconds specifies an infinite time (no timeout).
+        /// </param>
         public virtual void LockServer(string lockIdentifier, long timeout)
         {
             LockServerRequestDto request = new LockServerRequestDto(lockIdentifier, timeout, null);
@@ -110,7 +110,7 @@ namespace Tecan.Sila2.Locking.LockController
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Converts the error ocurred during execution of LockServer to a proper exception
         /// </summary>
         /// <param name="errorIdentifier">The identifier of the error that has happened</param>
@@ -126,7 +126,7 @@ namespace Tecan.Sila2.Locking.LockController
             return null;
         }
         
-        ///  <summary>
+        /// <summary>
         /// Unlocks a locked SiLA Server. No lock identifier has to be sent for any following calls until
         /// the server is locked again via the 'Lock Server' command.
         /// </summary>
@@ -148,7 +148,7 @@ namespace Tecan.Sila2.Locking.LockController
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Converts the error ocurred during execution of UnlockServer to a proper exception
         /// </summary>
         /// <param name="errorIdentifier">The identifier of the error that has happened</param>
@@ -175,7 +175,7 @@ namespace Tecan.Sila2.Locking.LockController
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// Factory to instantiate clients for the Lock Controller.
     /// </summary>
     [System.ComponentModel.Composition.ExportAttribute(typeof(IClientFactory))]
@@ -183,7 +183,7 @@ namespace Tecan.Sila2.Locking.LockController
     public partial class LockControllerClientFactory : IClientFactory
     {
         
-        ///  <summary>
+        /// <summary>
         /// Gets the fully-qualified identifier of the feature for which clients can be generated
         /// </summary>
         public string FeatureIdentifier
@@ -194,7 +194,7 @@ namespace Tecan.Sila2.Locking.LockController
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the interface type for which clients can be generated
         /// </summary>
         public System.Type InterfaceType
@@ -205,7 +205,7 @@ namespace Tecan.Sila2.Locking.LockController
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Creates a strongly typed client for the given execution channel and execution manager
         /// </summary>
         /// <param name="channel">The channel that should be used for communication with the server</param>

@@ -13,7 +13,7 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
     using Tecan.Sila2;
     
     
-    ///  <summary>
+    /// <summary>
     /// The data transfer object for Offset
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
@@ -22,7 +22,7 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
         
         private InnerStruct _inner;
         
-        ///  <summary>
+        /// <summary>
         /// Initializes a new instance (to be used by the serializer)
         /// </summary>
         public OffsetDto()
@@ -30,7 +30,7 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
             _inner = new InnerStruct();
         }
         
-        ///  <summary>
+        /// <summary>
         /// Initializes a new data transfer object from the business object
         /// </summary>
         /// <param name="inner">The business object that should be transferred</param>
@@ -40,7 +40,7 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
             _inner = new InnerStruct(inner, store);
         }
         
-        ///  <summary>
+        /// <summary>
         /// The X offset
         /// </summary>
         public Tecan.Sila2.RealDto X
@@ -63,7 +63,7 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// The Y offset
         /// </summary>
         public Tecan.Sila2.RealDto Y
@@ -86,7 +86,7 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// The Z offset
         /// </summary>
         public Tecan.Sila2.RealDto Z
@@ -109,7 +109,7 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// The actual contents of the data transfer object.
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute(1)]
@@ -125,7 +125,7 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Extracts the transferred value
         /// </summary>
         /// <param name="store">The binary store in which to store binary data</param>
@@ -135,7 +135,7 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
             return new Offset(X.Extract(store), Y.Extract(store), Z.Extract(store));
         }
         
-        ///  <summary>
+        /// <summary>
         /// Creates the data transfer object from the given object to transport
         /// </summary>
         /// <param name="inner">The object to transfer</param>
@@ -145,7 +145,7 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
             return new OffsetDto(inner, store);
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
@@ -156,7 +156,7 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
                         + Argument.Require(Z, "z"));
         }
         
-        ///  <summary>
+        /// <summary>
         /// Represents the inner structure for actual content
         /// </summary>
         [ProtoBuf.ProtoContractAttribute()]
@@ -169,14 +169,14 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
             
             private Tecan.Sila2.RealDto _z;
             
-            ///  <summary>
+            /// <summary>
             /// Initializes a new instance (to be used by the serializer)
             /// </summary>
             public InnerStruct()
             {
             }
             
-            ///  <summary>
+            /// <summary>
             /// Initializes a new data transfer object from the business object
             /// </summary>
             /// <param name="inner">The business object that should be transferred</param>
@@ -188,7 +188,7 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
                 Z = new Tecan.Sila2.RealDto(inner.Z, store);
             }
             
-            ///  <summary>
+            /// <summary>
             /// The X offset
             /// </summary>
             [ProtoBuf.ProtoMemberAttribute(1)]
@@ -204,7 +204,7 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
                 }
             }
             
-            ///  <summary>
+            /// <summary>
             /// The Y offset
             /// </summary>
             [ProtoBuf.ProtoMemberAttribute(2)]
@@ -220,7 +220,7 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
                 }
             }
             
-            ///  <summary>
+            /// <summary>
             /// The Z offset
             /// </summary>
             [ProtoBuf.ProtoMemberAttribute(3)]
@@ -238,7 +238,7 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// The data transfer object for Rectangle
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
@@ -247,7 +247,7 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
         
         private InnerStruct _inner;
         
-        ///  <summary>
+        /// <summary>
         /// Initializes a new instance (to be used by the serializer)
         /// </summary>
         public RectangleDto()
@@ -255,7 +255,7 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
             _inner = new InnerStruct();
         }
         
-        ///  <summary>
+        /// <summary>
         /// Initializes a new data transfer object from the business object
         /// </summary>
         /// <param name="inner">The business object that should be transferred</param>
@@ -265,7 +265,7 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
             _inner = new InnerStruct(inner, store);
         }
         
-        ///  <summary>
+        /// <summary>
         /// The width of the rectangle
         /// </summary>
         public Tecan.Sila2.RealDto Width
@@ -288,7 +288,7 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// The depth of the rectangle
         /// </summary>
         public Tecan.Sila2.RealDto Depth
@@ -311,7 +311,7 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// The actual contents of the data transfer object.
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute(1)]
@@ -327,7 +327,7 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Extracts the transferred value
         /// </summary>
         /// <param name="store">The binary store in which to store binary data</param>
@@ -337,7 +337,7 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
             return new Rectangle(Width.Extract(store), Depth.Extract(store));
         }
         
-        ///  <summary>
+        /// <summary>
         /// Creates the data transfer object from the given object to transport
         /// </summary>
         /// <param name="inner">The object to transfer</param>
@@ -347,7 +347,7 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
             return new RectangleDto(inner, store);
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
@@ -357,7 +357,7 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
                         + Argument.Require(Depth, "depth"));
         }
         
-        ///  <summary>
+        /// <summary>
         /// Represents the inner structure for actual content
         /// </summary>
         [ProtoBuf.ProtoContractAttribute()]
@@ -368,14 +368,14 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
             
             private Tecan.Sila2.RealDto _depth;
             
-            ///  <summary>
+            /// <summary>
             /// Initializes a new instance (to be used by the serializer)
             /// </summary>
             public InnerStruct()
             {
             }
             
-            ///  <summary>
+            /// <summary>
             /// Initializes a new data transfer object from the business object
             /// </summary>
             /// <param name="inner">The business object that should be transferred</param>
@@ -386,7 +386,7 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
                 Depth = new Tecan.Sila2.RealDto(inner.Depth, store);
             }
             
-            ///  <summary>
+            /// <summary>
             /// The width of the rectangle
             /// </summary>
             [ProtoBuf.ProtoMemberAttribute(1)]
@@ -402,7 +402,7 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
                 }
             }
             
-            ///  <summary>
+            /// <summary>
             /// The depth of the rectangle
             /// </summary>
             [ProtoBuf.ProtoMemberAttribute(2)]
@@ -420,7 +420,7 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// The data transfer object for Site
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
@@ -429,7 +429,7 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
         
         private InnerStruct _inner;
         
-        ///  <summary>
+        /// <summary>
         /// Initializes a new instance (to be used by the serializer)
         /// </summary>
         public SiteDto()
@@ -437,7 +437,7 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
             _inner = new InnerStruct();
         }
         
-        ///  <summary>
+        /// <summary>
         /// Initializes a new data transfer object from the business object
         /// </summary>
         /// <param name="inner">The business object that should be transferred</param>
@@ -447,7 +447,7 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
             _inner = new InnerStruct(inner, store);
         }
         
-        ///  <summary>
+        /// <summary>
         /// The name of the site
         /// </summary>
         public Tecan.Sila2.StringDto Name
@@ -470,7 +470,7 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// The site template
         /// </summary>
         public Tecan.Sila2.StringDto Template
@@ -493,7 +493,7 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// The offset from the device
         /// </summary>
         public OffsetDto Offset
@@ -516,7 +516,7 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// The rotation
         /// </summary>
         public Tecan.Sila2.RealDto Rotation
@@ -539,7 +539,7 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// The actual contents of the data transfer object.
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute(1)]
@@ -555,7 +555,7 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Extracts the transferred value
         /// </summary>
         /// <param name="store">The binary store in which to store binary data</param>
@@ -565,7 +565,7 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
             return new Site(Name.Extract(store), Template.Extract(store), Offset.Extract(store), Rotation.Extract(store));
         }
         
-        ///  <summary>
+        /// <summary>
         /// Creates the data transfer object from the given object to transport
         /// </summary>
         /// <param name="inner">The object to transfer</param>
@@ -575,7 +575,7 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
             return new SiteDto(inner, store);
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
@@ -587,7 +587,7 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
                         + Argument.Require(Rotation, "rotation"));
         }
         
-        ///  <summary>
+        /// <summary>
         /// Represents the inner structure for actual content
         /// </summary>
         [ProtoBuf.ProtoContractAttribute()]
@@ -602,14 +602,14 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
             
             private Tecan.Sila2.RealDto _rotation;
             
-            ///  <summary>
+            /// <summary>
             /// Initializes a new instance (to be used by the serializer)
             /// </summary>
             public InnerStruct()
             {
             }
             
-            ///  <summary>
+            /// <summary>
             /// Initializes a new data transfer object from the business object
             /// </summary>
             /// <param name="inner">The business object that should be transferred</param>
@@ -622,7 +622,7 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
                 Rotation = new Tecan.Sila2.RealDto(inner.Rotation, store);
             }
             
-            ///  <summary>
+            /// <summary>
             /// The name of the site
             /// </summary>
             [ProtoBuf.ProtoMemberAttribute(1)]
@@ -638,7 +638,7 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
                 }
             }
             
-            ///  <summary>
+            /// <summary>
             /// The site template
             /// </summary>
             [ProtoBuf.ProtoMemberAttribute(2)]
@@ -654,7 +654,7 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
                 }
             }
             
-            ///  <summary>
+            /// <summary>
             /// The offset from the device
             /// </summary>
             [ProtoBuf.ProtoMemberAttribute(3)]
@@ -670,7 +670,7 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
                 }
             }
             
-            ///  <summary>
+            /// <summary>
             /// The rotation
             /// </summary>
             [ProtoBuf.ProtoMemberAttribute(4)]
@@ -688,7 +688,7 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// The data transfer object for Site Template
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
@@ -697,7 +697,7 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
         
         private InnerStruct _inner;
         
-        ///  <summary>
+        /// <summary>
         /// Initializes a new instance (to be used by the serializer)
         /// </summary>
         public SiteTemplateDto()
@@ -705,7 +705,7 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
             _inner = new InnerStruct();
         }
         
-        ///  <summary>
+        /// <summary>
         /// Initializes a new data transfer object from the business object
         /// </summary>
         /// <param name="inner">The business object that should be transferred</param>
@@ -715,7 +715,7 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
             _inner = new InnerStruct(inner, store);
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the name of the site template
         /// </summary>
         public Tecan.Sila2.StringDto Name
@@ -738,7 +738,7 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the size of the site
         /// </summary>
         public RectangleDto SiteRectangle
@@ -761,7 +761,7 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets a collection of custom tags
         /// </summary>
         public System.Collections.Generic.List<Tecan.Sila2.StringDto> Tags
@@ -784,7 +784,7 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// The actual contents of the data transfer object.
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute(1)]
@@ -800,7 +800,7 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Extracts the transferred value
         /// </summary>
         /// <param name="store">The binary store in which to store binary data</param>
@@ -810,7 +810,7 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
             return new SiteTemplate(Name.Extract(store), SiteRectangle.Extract(store), Tags.Extract(store));
         }
         
-        ///  <summary>
+        /// <summary>
         /// Creates the data transfer object from the given object to transport
         /// </summary>
         /// <param name="inner">The object to transfer</param>
@@ -820,7 +820,7 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
             return new SiteTemplateDto(inner, store);
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
@@ -831,7 +831,7 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
                         + Argument.Require(Tags, "tags"));
         }
         
-        ///  <summary>
+        /// <summary>
         /// Represents the inner structure for actual content
         /// </summary>
         [ProtoBuf.ProtoContractAttribute()]
@@ -844,14 +844,14 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
             
             private System.Collections.Generic.List<Tecan.Sila2.StringDto> _tags;
             
-            ///  <summary>
+            /// <summary>
             /// Initializes a new instance (to be used by the serializer)
             /// </summary>
             public InnerStruct()
             {
             }
             
-            ///  <summary>
+            /// <summary>
             /// Initializes a new data transfer object from the business object
             /// </summary>
             /// <param name="inner">The business object that should be transferred</param>
@@ -863,7 +863,7 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
                 Tags = Tecan.Sila2.DtoExtensions.Encapsulate(inner.Tags, Tecan.Sila2.StringDto.Create, store);
             }
             
-            ///  <summary>
+            /// <summary>
             /// Gets the name of the site template
             /// </summary>
             [ProtoBuf.ProtoMemberAttribute(1)]
@@ -879,7 +879,7 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
                 }
             }
             
-            ///  <summary>
+            /// <summary>
             /// Gets the size of the site
             /// </summary>
             [ProtoBuf.ProtoMemberAttribute(2)]
@@ -895,7 +895,7 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
                 }
             }
             
-            ///  <summary>
+            /// <summary>
             /// Gets a collection of custom tags
             /// </summary>
             [ProtoBuf.ProtoMemberAttribute(3)]
@@ -913,7 +913,7 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// The data transfer object for Bounding Box
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
@@ -922,7 +922,7 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
         
         private InnerStruct _inner;
         
-        ///  <summary>
+        /// <summary>
         /// Initializes a new instance (to be used by the serializer)
         /// </summary>
         public BoundingBoxDto()
@@ -930,7 +930,7 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
             _inner = new InnerStruct();
         }
         
-        ///  <summary>
+        /// <summary>
         /// Initializes a new data transfer object from the business object
         /// </summary>
         /// <param name="inner">The business object that should be transferred</param>
@@ -940,7 +940,7 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
             _inner = new InnerStruct(inner, store);
         }
         
-        ///  <summary>
+        /// <summary>
         /// The ground rectangle
         /// </summary>
         public RectangleDto Rectangle
@@ -963,7 +963,7 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// The height of the bounding box
         /// </summary>
         public Tecan.Sila2.RealDto Height
@@ -986,7 +986,7 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// The actual contents of the data transfer object.
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute(1)]
@@ -1002,7 +1002,7 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Extracts the transferred value
         /// </summary>
         /// <param name="store">The binary store in which to store binary data</param>
@@ -1012,7 +1012,7 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
             return new BoundingBox(Rectangle.Extract(store), Height.Extract(store));
         }
         
-        ///  <summary>
+        /// <summary>
         /// Creates the data transfer object from the given object to transport
         /// </summary>
         /// <param name="inner">The object to transfer</param>
@@ -1022,7 +1022,7 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
             return new BoundingBoxDto(inner, store);
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
@@ -1032,7 +1032,7 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
                         + Argument.Require(Height, "height"));
         }
         
-        ///  <summary>
+        /// <summary>
         /// Represents the inner structure for actual content
         /// </summary>
         [ProtoBuf.ProtoContractAttribute()]
@@ -1043,14 +1043,14 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
             
             private Tecan.Sila2.RealDto _height;
             
-            ///  <summary>
+            /// <summary>
             /// Initializes a new instance (to be used by the serializer)
             /// </summary>
             public InnerStruct()
             {
             }
             
-            ///  <summary>
+            /// <summary>
             /// Initializes a new data transfer object from the business object
             /// </summary>
             /// <param name="inner">The business object that should be transferred</param>
@@ -1061,7 +1061,7 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
                 Height = new Tecan.Sila2.RealDto(inner.Height, store);
             }
             
-            ///  <summary>
+            /// <summary>
             /// The ground rectangle
             /// </summary>
             [ProtoBuf.ProtoMemberAttribute(1)]
@@ -1077,7 +1077,7 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
                 }
             }
             
-            ///  <summary>
+            /// <summary>
             /// The height of the bounding box
             /// </summary>
             [ProtoBuf.ProtoMemberAttribute(2)]

@@ -65,7 +65,6 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// Accelerates to a provided speed
         /// </summary>
         /// <param name="target">The speed to reach</param>
-        /// <param name="maxAcceleration"></param>
         /// <param name="timeRange">The time in which to reach the speed</param>
         public virtual void AccelerateTo( Tecan.Sila2.Generator.Test.TestReference.Speed target, double maxAcceleration, System.TimeSpan timeRange )
         {

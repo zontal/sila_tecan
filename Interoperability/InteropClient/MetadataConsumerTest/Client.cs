@@ -17,7 +17,7 @@ namespace Tecan.Sila2.Interop.Client.MetadataConsumerTest.MetadataConsumerTest
 {
     
     
-    ///  <summary>
+    /// <summary>
     /// Class that implements the IMetadataConsumerTest interface through SiLA2
     /// </summary>
     public partial class MetadataConsumerTestClient : IMetadataConsumerTest
@@ -29,7 +29,7 @@ namespace Tecan.Sila2.Interop.Client.MetadataConsumerTest.MetadataConsumerTest
         
         private const string _serviceName = "sila2.org.silastandard.test.metadataconsumertest.v1.MetadataConsumerTest";
         
-        ///  <summary>
+        /// <summary>
         /// Creates a new instance
         /// </summary>
         /// <param name="channel">The channel through which calls should be executed</param>
@@ -40,7 +40,7 @@ namespace Tecan.Sila2.Interop.Client.MetadataConsumerTest.MetadataConsumerTest
             _channel = channel;
         }
         
-        ///  <summary>
+        /// <summary>
         /// Expects the "String Metadata" metadata from the "Metadata Provider Test" feature and responds with its value.
         /// </summary>
         public virtual string EchoStringMetadata()
@@ -60,7 +60,7 @@ namespace Tecan.Sila2.Interop.Client.MetadataConsumerTest.MetadataConsumerTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Expects the "String Metadata" and "Two Integers Metadata" metadata from the "Metadata Provider Test" feature and responds with all three data items.
         /// </summary>
         public virtual UnpackMetadataResponse UnpackMetadata()
@@ -87,7 +87,7 @@ namespace Tecan.Sila2.Interop.Client.MetadataConsumerTest.MetadataConsumerTest
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// Factory to instantiate clients for the Metadata Consumer Test.
     /// </summary>
     [System.ComponentModel.Composition.ExportAttribute(typeof(IClientFactory))]
@@ -95,7 +95,7 @@ namespace Tecan.Sila2.Interop.Client.MetadataConsumerTest.MetadataConsumerTest
     public partial class MetadataConsumerTestClientFactory : IClientFactory
     {
         
-        ///  <summary>
+        /// <summary>
         /// Gets the fully-qualified identifier of the feature for which clients can be generated
         /// </summary>
         public string FeatureIdentifier
@@ -106,7 +106,7 @@ namespace Tecan.Sila2.Interop.Client.MetadataConsumerTest.MetadataConsumerTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the interface type for which clients can be generated
         /// </summary>
         public System.Type InterfaceType
@@ -117,7 +117,7 @@ namespace Tecan.Sila2.Interop.Client.MetadataConsumerTest.MetadataConsumerTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Creates a strongly typed client for the given execution channel and execution manager
         /// </summary>
         /// <param name="channel">The channel that should be used for communication with the server</param>

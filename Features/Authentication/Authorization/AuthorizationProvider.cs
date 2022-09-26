@@ -17,7 +17,7 @@ namespace Tecan.Sila2.Authorization
 {
     
     
-    ///  <summary>
+    /// <summary>
     /// A class that exposes the IAuthorizationService interface via SiLA2
     /// </summary>
     [System.ComponentModel.Composition.ExportAttribute(typeof(IFeatureProvider))]
@@ -31,7 +31,7 @@ namespace Tecan.Sila2.Authorization
         
         private static Tecan.Sila2.Feature _feature = FeatureSerializer.LoadFromAssembly(typeof(AuthorizationServiceProvider).Assembly, "AuthorizationService.sila.xml");
         
-        ///  <summary>
+        /// <summary>
         /// Creates a new instance
         /// </summary>
         /// <param name="implementation">The implementation to exported through SiLA2</param>
@@ -43,7 +43,7 @@ namespace Tecan.Sila2.Authorization
             _server = server;
         }
         
-        ///  <summary>
+        /// <summary>
         /// The feature that is exposed by this feature provider
         /// </summary>
         /// <returns>A feature object</returns>
@@ -55,7 +55,7 @@ namespace Tecan.Sila2.Authorization
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Registers the feature in the provided feature registration
         /// </summary>
         /// <param name="registration">The registration component to which the feature should be registered</param>
@@ -64,7 +64,7 @@ namespace Tecan.Sila2.Authorization
             registration.RegisterMetadata("AccessToken", _implementation.AccessToken);
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the command with the given identifier
         /// </summary>
         /// <param name="commandIdentifier">A fully qualified command identifier</param>
@@ -74,7 +74,7 @@ namespace Tecan.Sila2.Authorization
             return null;
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the property with the given identifier
         /// </summary>
         /// <param name="propertyIdentifier">A fully qualified property identifier</param>
@@ -85,13 +85,13 @@ namespace Tecan.Sila2.Authorization
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// An abstract base class to support the AccessToken metadata
     /// </summary>
     public abstract partial class AccessTokenInterceptorBase : Tecan.Sila2.Server.IRequestInterceptor
     {
         
-        ///  <summary>
+        /// <summary>
         /// Gets whether the metadata applies to commands
         /// </summary>
         /// <returns>True, if the metadata is applicable to commands, otherwise false.</returns>
@@ -100,7 +100,7 @@ namespace Tecan.Sila2.Authorization
             get;
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets whether the metadata applies to properties
         /// </summary>
         /// <returns>True, if the metadata is applicable to properties, otherwise false.</returns>
@@ -109,7 +109,7 @@ namespace Tecan.Sila2.Authorization
             get;
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the priority for the metadata
         /// </summary>
         /// <returns>A relative priority.</returns>
@@ -118,7 +118,7 @@ namespace Tecan.Sila2.Authorization
             get;
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the metadata identifier this request interceptor is connected to or null, if not applicable
         /// </summary>
         public string MetadataIdentifier
@@ -129,7 +129,7 @@ namespace Tecan.Sila2.Authorization
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Decides whether the interceptor is required for the given command
         /// </summary>
         /// <param name="feature">The feature that contains the command or property</param>
@@ -137,7 +137,7 @@ namespace Tecan.Sila2.Authorization
         /// <returns>True, if the interceptor should be applied</returns>
         public abstract bool IsInterceptRequired(Feature feature, string commandIdentifier);
         
-        ///  <summary>
+        /// <summary>
         /// Intercepts the call to the given command
         /// </summary>
         /// <param name="commandIdentifier">The fully qualified identifier of the command or property in question</param>
@@ -145,7 +145,7 @@ namespace Tecan.Sila2.Authorization
         /// <returns>A request interception or null, if this is not necessary</returns>
         public abstract Tecan.Sila2.Server.IRequestInterception Intercept(string commandIdentifier, string accessToken);
         
-        ///  <summary>
+        /// <summary>
         /// Intercepts the call to the given command
         /// </summary>
         /// <param name="commandIdentifier">The fully qualified identifier of the command or property in question</param>

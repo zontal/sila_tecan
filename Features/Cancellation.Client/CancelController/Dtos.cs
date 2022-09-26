@@ -13,7 +13,7 @@ namespace Tecan.Sila2.Cancellation.CancelController
     using Tecan.Sila2;
     
     
-    ///  <summary>
+    /// <summary>
     /// Data transfer object for the request of the Cancel Command command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
@@ -22,24 +22,24 @@ namespace Tecan.Sila2.Cancellation.CancelController
         
         private UuidDto _commandExecutionUUID;
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         public CancelCommandRequestDto()
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
-        ///  <param name="commandExecutionUUID">The Command Execution UUID according to the SiLA Standard.</param>
+        /// <param name="commandExecutionUUID">The Command Execution UUID according to the SiLA Standard.</param>
         public CancelCommandRequestDto(Uuid commandExecutionUUID, Tecan.Sila2.IBinaryStore store)
         {
             CommandExecutionUUID = new UuidDto(commandExecutionUUID, store);
         }
         
-        ///  <summary>
+        /// <summary>
         /// The Command Execution UUID according to the SiLA Standard.
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute(1)]
@@ -55,7 +55,7 @@ namespace Tecan.Sila2.Cancellation.CancelController
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the command identifier for this command
         /// </summary>
         /// <returns>The fully qualified command identifier</returns>
@@ -67,7 +67,7 @@ namespace Tecan.Sila2.Cancellation.CancelController
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the given request object
         /// </summary>
         public void Validate()
@@ -75,7 +75,7 @@ namespace Tecan.Sila2.Cancellation.CancelController
             Argument.Validate(CommandExecutionUUID, "commandExecutionUUID");
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
@@ -85,21 +85,21 @@ namespace Tecan.Sila2.Cancellation.CancelController
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// Data transfer object for the request of the Cancel All command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
     public class CancelAllRequestDto : Tecan.Sila2.ISilaTransferObject, Tecan.Sila2.ISilaRequestObject
     {
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         public CancelAllRequestDto()
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
@@ -107,7 +107,7 @@ namespace Tecan.Sila2.Cancellation.CancelController
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the command identifier for this command
         /// </summary>
         /// <returns>The fully qualified command identifier</returns>
@@ -119,14 +119,14 @@ namespace Tecan.Sila2.Cancellation.CancelController
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the given request object
         /// </summary>
         public void Validate()
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
@@ -136,7 +136,7 @@ namespace Tecan.Sila2.Cancellation.CancelController
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// The data transfer object for UUID
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
@@ -145,19 +145,19 @@ namespace Tecan.Sila2.Cancellation.CancelController
         
         private Tecan.Sila2.StringDto _uUID;
         
-        ///  <summary>
+        /// <summary>
         /// A regular expression to check the validity of UUID
         /// </summary>
         public static System.Text.RegularExpressions.Regex UUIDPattern = new System.Text.RegularExpressions.Regex("[0-9a-f]{8}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{12}");
         
-        ///  <summary>
+        /// <summary>
         /// Initializes a new instance (to be used by the serializer)
         /// </summary>
         public UuidDto()
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Initializes a new data transfer object from the business object
         /// </summary>
         /// <param name="inner">The business object that should be transferred</param>
@@ -167,7 +167,7 @@ namespace Tecan.Sila2.Cancellation.CancelController
             UUID = new Tecan.Sila2.StringDto(inner.Value, store);
         }
         
-        ///  <summary>
+        /// <summary>
         /// A Universally Unique Identifier (UUID) referring to observable command executions.
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute(1)]
@@ -183,7 +183,7 @@ namespace Tecan.Sila2.Cancellation.CancelController
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Extracts the transferred value
         /// </summary>
         /// <param name="store">The binary store in which to store binary data</param>
@@ -193,7 +193,7 @@ namespace Tecan.Sila2.Cancellation.CancelController
             return new Uuid(UUID.Extract(store));
         }
         
-        ///  <summary>
+        /// <summary>
         /// Creates the data transfer object from the given object to transport
         /// </summary>
         /// <param name="inner">The object to transfer</param>
@@ -203,7 +203,7 @@ namespace Tecan.Sila2.Cancellation.CancelController
             return new UuidDto(inner, store);
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>

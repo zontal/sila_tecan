@@ -17,7 +17,7 @@ namespace Tecan.Sila2.Interop.Server.BasicDataTypesTest
 {
     
     
-    ///  <summary>
+    /// <summary>
     /// A class that exposes the IBasicDataTypesTest interface via SiLA2
     /// </summary>
     [System.ComponentModel.Composition.ExportAttribute(typeof(IFeatureProvider))]
@@ -31,7 +31,7 @@ namespace Tecan.Sila2.Interop.Server.BasicDataTypesTest
         
         private static Tecan.Sila2.Feature _feature = FeatureSerializer.LoadFromAssembly(typeof(BasicDataTypesTestProvider).Assembly, "BasicDataTypesTest.sila.xml");
         
-        ///  <summary>
+        /// <summary>
         /// Creates a new instance
         /// </summary>
         /// <param name="implementation">The implementation to exported through SiLA2</param>
@@ -43,7 +43,7 @@ namespace Tecan.Sila2.Interop.Server.BasicDataTypesTest
             _server = server;
         }
         
-        ///  <summary>
+        /// <summary>
         /// The feature that is exposed by this feature provider
         /// </summary>
         /// <returns>A feature object</returns>
@@ -55,7 +55,7 @@ namespace Tecan.Sila2.Interop.Server.BasicDataTypesTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Registers the feature in the provided feature registration
         /// </summary>
         /// <param name="registration">The registration component to which the feature should be registered</param>
@@ -77,7 +77,7 @@ namespace Tecan.Sila2.Interop.Server.BasicDataTypesTest
             registration.RegisterUnobservableProperty("TimestampValue", GetTimestampValue);
         }
         
-        ///  <summary>
+        /// <summary>
         /// Executes the Echo String Value command
         /// </summary>
         /// <param name="request">A data transfer object that contains the command parameters</param>
@@ -99,7 +99,7 @@ namespace Tecan.Sila2.Interop.Server.BasicDataTypesTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Executes the Echo Integer Value command
         /// </summary>
         /// <param name="request">A data transfer object that contains the command parameters</param>
@@ -121,7 +121,7 @@ namespace Tecan.Sila2.Interop.Server.BasicDataTypesTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Executes the Echo Real Value command
         /// </summary>
         /// <param name="request">A data transfer object that contains the command parameters</param>
@@ -143,7 +143,7 @@ namespace Tecan.Sila2.Interop.Server.BasicDataTypesTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Executes the Echo Boolean Value command
         /// </summary>
         /// <param name="request">A data transfer object that contains the command parameters</param>
@@ -165,7 +165,7 @@ namespace Tecan.Sila2.Interop.Server.BasicDataTypesTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Executes the Echo Date Value command
         /// </summary>
         /// <param name="request">A data transfer object that contains the command parameters</param>
@@ -187,7 +187,7 @@ namespace Tecan.Sila2.Interop.Server.BasicDataTypesTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Executes the Echo Time Value command
         /// </summary>
         /// <param name="request">A data transfer object that contains the command parameters</param>
@@ -209,7 +209,7 @@ namespace Tecan.Sila2.Interop.Server.BasicDataTypesTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Executes the Echo Timestamp Value command
         /// </summary>
         /// <param name="request">A data transfer object that contains the command parameters</param>
@@ -231,7 +231,7 @@ namespace Tecan.Sila2.Interop.Server.BasicDataTypesTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the current value of the String Value property
         /// </summary>
         /// <returns>The current value wrapped in a data transfer object</returns>
@@ -240,7 +240,7 @@ namespace Tecan.Sila2.Interop.Server.BasicDataTypesTest
             return new PropertyResponse<Tecan.Sila2.StringDto>(new Tecan.Sila2.StringDto(_implementation.StringValue, _server));
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the current value of the Integer Value property
         /// </summary>
         /// <returns>The current value wrapped in a data transfer object</returns>
@@ -249,7 +249,7 @@ namespace Tecan.Sila2.Interop.Server.BasicDataTypesTest
             return new PropertyResponse<Tecan.Sila2.IntegerDto>(new Tecan.Sila2.IntegerDto(_implementation.IntegerValue, _server));
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the current value of the Real Value property
         /// </summary>
         /// <returns>The current value wrapped in a data transfer object</returns>
@@ -258,7 +258,7 @@ namespace Tecan.Sila2.Interop.Server.BasicDataTypesTest
             return new PropertyResponse<Tecan.Sila2.RealDto>(new Tecan.Sila2.RealDto(_implementation.RealValue, _server));
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the current value of the Boolean Value property
         /// </summary>
         /// <returns>The current value wrapped in a data transfer object</returns>
@@ -267,7 +267,7 @@ namespace Tecan.Sila2.Interop.Server.BasicDataTypesTest
             return new PropertyResponse<Tecan.Sila2.BooleanDto>(new Tecan.Sila2.BooleanDto(_implementation.BooleanValue, _server));
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the current value of the Date Value property
         /// </summary>
         /// <returns>The current value wrapped in a data transfer object</returns>
@@ -276,7 +276,7 @@ namespace Tecan.Sila2.Interop.Server.BasicDataTypesTest
             return new PropertyResponse<Tecan.Sila2.DateDto>(new Tecan.Sila2.DateDto(_implementation.DateValue, _server));
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the current value of the Time Value property
         /// </summary>
         /// <returns>The current value wrapped in a data transfer object</returns>
@@ -285,7 +285,7 @@ namespace Tecan.Sila2.Interop.Server.BasicDataTypesTest
             return new PropertyResponse<Tecan.Sila2.TimeDto>(new Tecan.Sila2.TimeDto(_implementation.TimeValue, _server));
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the current value of the Timestamp Value property
         /// </summary>
         /// <returns>The current value wrapped in a data transfer object</returns>
@@ -294,7 +294,7 @@ namespace Tecan.Sila2.Interop.Server.BasicDataTypesTest
             return new PropertyResponse<Tecan.Sila2.TimestampDto>(new Tecan.Sila2.TimestampDto(_implementation.TimestampValue, _server));
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the command with the given identifier
         /// </summary>
         /// <param name="commandIdentifier">A fully qualified command identifier</param>
@@ -332,7 +332,7 @@ namespace Tecan.Sila2.Interop.Server.BasicDataTypesTest
             return null;
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the property with the given identifier
         /// </summary>
         /// <param name="propertyIdentifier">A fully qualified property identifier</param>

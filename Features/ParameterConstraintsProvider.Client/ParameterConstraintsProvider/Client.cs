@@ -15,84 +15,82 @@ using Tecan.Sila2.Server;
 
 namespace Tecan.Sila2.ParameterConstraintsProvider.ParameterConstraintsProvider
 {
-
-
-    ///  <summary>
+    
+    
+    /// <summary>
     /// Class that implements the IParameterConstraintsProvider interface through SiLA2
     /// </summary>
     public partial class ParameterConstraintsProviderClient : IParameterConstraintsProvider, System.ComponentModel.INotifyPropertyChanged, System.IDisposable
     {
-
+        
         private System.Collections.Generic.ICollection<ParametersConstraint> _parametersConstraints;
-
+        
         private System.Threading.Tasks.Task _parametersConstraintsUpdateTask;
-
+        
         private System.Threading.CancellationTokenSource _cancellationTokenSource = new System.Threading.CancellationTokenSource();
-
+        
         private IClientExecutionManager _executionManager;
-
+        
         private IClientChannel _channel;
-
+        
         private const string _serviceName = "sila2.org.silastandard.core.commands.parameterconstraintsprovider.v1.ParameterCon" +
             "straintsProvider";
-
-        ///  <summary>
+        
+        /// <summary>
         /// Creates a new instance
         /// </summary>
         /// <param name="channel">The channel through which calls should be executed</param>
         /// <param name="executionManager">A component to determine metadata to attach to any requests</param>
-        public ParameterConstraintsProviderClient( IClientChannel channel, IClientExecutionManager executionManager )
+        public ParameterConstraintsProviderClient(IClientChannel channel, IClientExecutionManager executionManager)
         {
             _executionManager = executionManager;
             _channel = channel;
         }
-
-        ///  <summary>
+        
+        /// <summary>
         /// Provides a list of all constraints of Command Parameters of the SiLA Server.
         /// </summary>
         public virtual System.Collections.Generic.ICollection<ParametersConstraint> ParametersConstraints
         {
             get
             {
-                if((_parametersConstraintsUpdateTask == null))
+                if ((_parametersConstraintsUpdateTask == null))
                 {
                     try
                     {
-                        System.Threading.Monitor.Enter( _cancellationTokenSource );
-                        if((_parametersConstraintsUpdateTask == null))
+                        System.Threading.Monitor.Enter(_cancellationTokenSource);
+                        if ((_parametersConstraintsUpdateTask == null))
                         {
-                            _parametersConstraintsUpdateTask = _channel.SubscribeProperty<PropertyResponse<System.Collections.Generic.List<ParametersConstraintDto>>>( _serviceName, "ParametersConstraints", "org.silastandard/core.commands/ParameterConstraintsProvider/v1/Property/Parameter" +
-                                    "sConstraints", ReceiveNewParametersConstraints, _executionManager.CreateCallOptions( "org.silastandard/core.commands/ParameterConstraintsProvider/v1/Property/Parameter" +
-                                        "sConstraints" ), _cancellationTokenSource.Token );
+                            _parametersConstraintsUpdateTask = _channel.SubscribeProperty<PropertyResponse<System.Collections.Generic.List<ParametersConstraintDto>>>(_serviceName, "ParametersConstraints", "org.silastandard/core.commands/ParameterConstraintsProvider/v1/Property/Parameter" +
+                                    "sConstraints", ReceiveNewParametersConstraints, _executionManager.CreateCallOptions("org.silastandard/core.commands/ParameterConstraintsProvider/v1/Property/Parameter" +
+                                        "sConstraints"), _cancellationTokenSource.Token);
                         }
-                    }
-                    finally
+                    } finally
                     {
-                        System.Threading.Monitor.Exit( _cancellationTokenSource );
+                        System.Threading.Monitor.Exit(_cancellationTokenSource);
                     }
                 }
                 return _parametersConstraints;
             }
         }
-
-        /// <inheritdoc />
+        
         public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-
-        private void ReceiveNewParametersConstraints( PropertyResponse<System.Collections.Generic.List<ParametersConstraintDto>> parametersConstraints )
+        
+        private void ReceiveNewParametersConstraints(PropertyResponse<System.Collections.Generic.List<ParametersConstraintDto>> parametersConstraints)
         {
-            System.Collections.Generic.ICollection<ParametersConstraint> inner = parametersConstraints.Value.Extract( _executionManager.DownloadBinaryStore );
-            if((_parametersConstraints != inner))
+            System.Collections.Generic.ICollection<ParametersConstraint> inner = parametersConstraints.Value.Extract(_executionManager.DownloadBinaryStore);
+            if ((_parametersConstraints != inner))
             {
                 _parametersConstraints = inner;
                 System.ComponentModel.PropertyChangedEventHandler handler = PropertyChanged;
-                if((handler != null))
+                if ((handler != null))
                 {
-                    handler.Invoke( this, new System.ComponentModel.PropertyChangedEventArgs( "ParametersConstraints" ) );
+                    handler.Invoke(this, new System.ComponentModel.PropertyChangedEventArgs("ParametersConstraints"));
                 }
             }
         }
-
-        ///  <summary>
+        
+        /// <summary>
         /// Disposes the current client and cancels all subscriptions
         /// </summary>
         public void Dispose()
@@ -100,23 +98,23 @@ namespace Tecan.Sila2.ParameterConstraintsProvider.ParameterConstraintsProvider
             _cancellationTokenSource.Cancel();
             _cancellationTokenSource.Dispose();
         }
-
-        private T Extract<T>( Tecan.Sila2.ISilaTransferObject<T> dto )
-
+        
+        private T Extract<T>(Tecan.Sila2.ISilaTransferObject<T> dto)
+        
         {
-            return dto.Extract( _executionManager.DownloadBinaryStore );
+            return dto.Extract(_executionManager.DownloadBinaryStore);
         }
     }
-
-    ///  <summary>
+    
+    /// <summary>
     /// Factory to instantiate clients for the Parameter Constraints Provider.
     /// </summary>
-    [System.ComponentModel.Composition.ExportAttribute( typeof( IClientFactory ) )]
-    [System.ComponentModel.Composition.PartCreationPolicyAttribute( System.ComponentModel.Composition.CreationPolicy.Shared )]
+    [System.ComponentModel.Composition.ExportAttribute(typeof(IClientFactory))]
+    [System.ComponentModel.Composition.PartCreationPolicyAttribute(System.ComponentModel.Composition.CreationPolicy.Shared)]
     public partial class ParameterConstraintsProviderClientFactory : IClientFactory
     {
-
-        ///  <summary>
+        
+        /// <summary>
         /// Gets the fully-qualified identifier of the feature for which clients can be generated
         /// </summary>
         public string FeatureIdentifier
@@ -126,27 +124,27 @@ namespace Tecan.Sila2.ParameterConstraintsProvider.ParameterConstraintsProvider
                 return "org.silastandard/core.commands/ParameterConstraintsProvider/v1";
             }
         }
-
-        ///  <summary>
+        
+        /// <summary>
         /// Gets the interface type for which clients can be generated
         /// </summary>
         public System.Type InterfaceType
         {
             get
             {
-                return typeof( IParameterConstraintsProvider );
+                return typeof(IParameterConstraintsProvider);
             }
         }
-
-        ///  <summary>
+        
+        /// <summary>
         /// Creates a strongly typed client for the given execution channel and execution manager
         /// </summary>
         /// <param name="channel">The channel that should be used for communication with the server</param>
         /// <param name="executionManager">The execution manager to manage metadata</param>
         /// <returns>A strongly typed client. This object will be an instance of the InterfaceType property</returns>
-        public object CreateClient( IClientChannel channel, IClientExecutionManager executionManager )
+        public object CreateClient(IClientChannel channel, IClientExecutionManager executionManager)
         {
-            return new ParameterConstraintsProviderClient( channel, executionManager );
+            return new ParameterConstraintsProviderClient(channel, executionManager);
         }
     }
 }

@@ -13,7 +13,7 @@ namespace Tecan.Sila2.Interop.Client.ListDataTypeTest.ListDataTypeTest
     using Tecan.Sila2;
     
     
-    ///  <summary>
+    /// <summary>
     /// Data transfer object for the request of the Echo String List command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
@@ -22,24 +22,24 @@ namespace Tecan.Sila2.Interop.Client.ListDataTypeTest.ListDataTypeTest
         
         private System.Collections.Generic.List<Tecan.Sila2.StringDto> _stringList;
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         public EchoStringListRequestDto()
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
-        ///  <param name="stringList">The list of string values to be returned.</param>
+        /// <param name="stringList">The list of string values to be returned.</param>
         public EchoStringListRequestDto(System.Collections.Generic.ICollection<string> stringList, Tecan.Sila2.IBinaryStore store)
         {
             StringList = Tecan.Sila2.DtoExtensions.Encapsulate(stringList, Tecan.Sila2.StringDto.Create, store);
         }
         
-        ///  <summary>
+        /// <summary>
         /// The list of string values to be returned.
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute(1)]
@@ -55,7 +55,7 @@ namespace Tecan.Sila2.Interop.Client.ListDataTypeTest.ListDataTypeTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the command identifier for this command
         /// </summary>
         /// <returns>The fully qualified command identifier</returns>
@@ -67,7 +67,7 @@ namespace Tecan.Sila2.Interop.Client.ListDataTypeTest.ListDataTypeTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the given request object
         /// </summary>
         public void Validate()
@@ -75,7 +75,7 @@ namespace Tecan.Sila2.Interop.Client.ListDataTypeTest.ListDataTypeTest
             Argument.Validate(StringList, "stringList");
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
@@ -85,7 +85,7 @@ namespace Tecan.Sila2.Interop.Client.ListDataTypeTest.ListDataTypeTest
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// Data transfer object for the response of the Echo String List command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
@@ -94,24 +94,24 @@ namespace Tecan.Sila2.Interop.Client.ListDataTypeTest.ListDataTypeTest
         
         private System.Collections.Generic.List<Tecan.Sila2.StringDto> _receivedValues;
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         public EchoStringListResponseDto()
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
-        ///  <param name="receivedValues">A list containing the string values that have been received.</param>
+        /// <param name="receivedValues">A list containing the string values that have been received.</param>
         public EchoStringListResponseDto(System.Collections.Generic.ICollection<string> receivedValues, Tecan.Sila2.IBinaryStore store)
         {
             ReceivedValues = Tecan.Sila2.DtoExtensions.Encapsulate(receivedValues, Tecan.Sila2.StringDto.Create, store);
         }
         
-        ///  <summary>
+        /// <summary>
         /// A list containing the string values that have been received.
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute(1)]
@@ -127,7 +127,7 @@ namespace Tecan.Sila2.Interop.Client.ListDataTypeTest.ListDataTypeTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the given request object
         /// </summary>
         public void Validate()
@@ -135,7 +135,7 @@ namespace Tecan.Sila2.Interop.Client.ListDataTypeTest.ListDataTypeTest
             Argument.Validate(ReceivedValues, "receivedValues");
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
@@ -145,7 +145,7 @@ namespace Tecan.Sila2.Interop.Client.ListDataTypeTest.ListDataTypeTest
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// Data transfer object for the request of the Echo Integer List command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
@@ -154,24 +154,24 @@ namespace Tecan.Sila2.Interop.Client.ListDataTypeTest.ListDataTypeTest
         
         private System.Collections.Generic.List<Tecan.Sila2.IntegerDto> _integerList;
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         public EchoIntegerListRequestDto()
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
-        ///  <param name="integerList">The list of integer values to be returned.</param>
+        /// <param name="integerList">The list of integer values to be returned.</param>
         public EchoIntegerListRequestDto(System.Collections.Generic.ICollection<long> integerList, Tecan.Sila2.IBinaryStore store)
         {
             IntegerList = Tecan.Sila2.DtoExtensions.Encapsulate(integerList, Tecan.Sila2.IntegerDto.Create, store);
         }
         
-        ///  <summary>
+        /// <summary>
         /// The list of integer values to be returned.
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute(1)]
@@ -187,7 +187,7 @@ namespace Tecan.Sila2.Interop.Client.ListDataTypeTest.ListDataTypeTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the command identifier for this command
         /// </summary>
         /// <returns>The fully qualified command identifier</returns>
@@ -199,7 +199,7 @@ namespace Tecan.Sila2.Interop.Client.ListDataTypeTest.ListDataTypeTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the given request object
         /// </summary>
         public void Validate()
@@ -207,7 +207,7 @@ namespace Tecan.Sila2.Interop.Client.ListDataTypeTest.ListDataTypeTest
             Argument.Validate(IntegerList, "integerList");
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
@@ -217,7 +217,7 @@ namespace Tecan.Sila2.Interop.Client.ListDataTypeTest.ListDataTypeTest
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// Data transfer object for the response of the Echo Integer List command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
@@ -226,24 +226,24 @@ namespace Tecan.Sila2.Interop.Client.ListDataTypeTest.ListDataTypeTest
         
         private System.Collections.Generic.List<Tecan.Sila2.IntegerDto> _receivedValues;
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         public EchoIntegerListResponseDto()
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
-        ///  <param name="receivedValues">A list containing the integer values that have been received.</param>
+        /// <param name="receivedValues">A list containing the integer values that have been received.</param>
         public EchoIntegerListResponseDto(System.Collections.Generic.ICollection<long> receivedValues, Tecan.Sila2.IBinaryStore store)
         {
             ReceivedValues = Tecan.Sila2.DtoExtensions.Encapsulate(receivedValues, Tecan.Sila2.IntegerDto.Create, store);
         }
         
-        ///  <summary>
+        /// <summary>
         /// A list containing the integer values that have been received.
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute(1)]
@@ -259,7 +259,7 @@ namespace Tecan.Sila2.Interop.Client.ListDataTypeTest.ListDataTypeTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the given request object
         /// </summary>
         public void Validate()
@@ -267,7 +267,7 @@ namespace Tecan.Sila2.Interop.Client.ListDataTypeTest.ListDataTypeTest
             Argument.Validate(ReceivedValues, "receivedValues");
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
@@ -277,7 +277,7 @@ namespace Tecan.Sila2.Interop.Client.ListDataTypeTest.ListDataTypeTest
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// Data transfer object for the request of the Echo Structure List command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
@@ -286,24 +286,24 @@ namespace Tecan.Sila2.Interop.Client.ListDataTypeTest.ListDataTypeTest
         
         private System.Collections.Generic.List<TestStructureDto> _structureList;
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         public EchoStructureListRequestDto()
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
-        ///  <param name="structureList">The list of structure values to be returned.</param>
+        /// <param name="structureList">The list of structure values to be returned.</param>
         public EchoStructureListRequestDto(System.Collections.Generic.ICollection<TestStructure> structureList, Tecan.Sila2.IBinaryStore store)
         {
             StructureList = Tecan.Sila2.DtoExtensions.Encapsulate(structureList, TestStructureDto.Create, store);
         }
         
-        ///  <summary>
+        /// <summary>
         /// The list of structure values to be returned.
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute(1)]
@@ -319,7 +319,7 @@ namespace Tecan.Sila2.Interop.Client.ListDataTypeTest.ListDataTypeTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the command identifier for this command
         /// </summary>
         /// <returns>The fully qualified command identifier</returns>
@@ -331,7 +331,7 @@ namespace Tecan.Sila2.Interop.Client.ListDataTypeTest.ListDataTypeTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the given request object
         /// </summary>
         public void Validate()
@@ -339,7 +339,7 @@ namespace Tecan.Sila2.Interop.Client.ListDataTypeTest.ListDataTypeTest
             Argument.Validate(StructureList, "structureList");
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
@@ -349,7 +349,7 @@ namespace Tecan.Sila2.Interop.Client.ListDataTypeTest.ListDataTypeTest
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// Data transfer object for the response of the Echo Structure List command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
@@ -358,24 +358,24 @@ namespace Tecan.Sila2.Interop.Client.ListDataTypeTest.ListDataTypeTest
         
         private System.Collections.Generic.List<TestStructureDto> _receivedValues;
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         public EchoStructureListResponseDto()
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
-        ///  <param name="receivedValues">A message containing the content of all structures that have been received.</param>
+        /// <param name="receivedValues">A message containing the content of all structures that have been received.</param>
         public EchoStructureListResponseDto(System.Collections.Generic.ICollection<TestStructure> receivedValues, Tecan.Sila2.IBinaryStore store)
         {
             ReceivedValues = Tecan.Sila2.DtoExtensions.Encapsulate(receivedValues, TestStructureDto.Create, store);
         }
         
-        ///  <summary>
+        /// <summary>
         /// A message containing the content of all structures that have been received.
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute(1)]
@@ -391,7 +391,7 @@ namespace Tecan.Sila2.Interop.Client.ListDataTypeTest.ListDataTypeTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the given request object
         /// </summary>
         public void Validate()
@@ -399,7 +399,7 @@ namespace Tecan.Sila2.Interop.Client.ListDataTypeTest.ListDataTypeTest
             Argument.Validate(ReceivedValues, "receivedValues");
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
@@ -409,7 +409,7 @@ namespace Tecan.Sila2.Interop.Client.ListDataTypeTest.ListDataTypeTest
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// The data transfer object for Test Structure
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
@@ -418,7 +418,7 @@ namespace Tecan.Sila2.Interop.Client.ListDataTypeTest.ListDataTypeTest
         
         private InnerStruct _inner;
         
-        ///  <summary>
+        /// <summary>
         /// Initializes a new instance (to be used by the serializer)
         /// </summary>
         public TestStructureDto()
@@ -426,7 +426,7 @@ namespace Tecan.Sila2.Interop.Client.ListDataTypeTest.ListDataTypeTest
             _inner = new InnerStruct();
         }
         
-        ///  <summary>
+        /// <summary>
         /// Initializes a new data transfer object from the business object
         /// </summary>
         /// <param name="inner">The business object that should be transferred</param>
@@ -436,7 +436,7 @@ namespace Tecan.Sila2.Interop.Client.ListDataTypeTest.ListDataTypeTest
             _inner = new InnerStruct(inner, store);
         }
         
-        ///  <summary>
+        /// <summary>
         /// A value of SiLA data type String.
         /// </summary>
         public Tecan.Sila2.StringDto StringTypeValue
@@ -459,7 +459,7 @@ namespace Tecan.Sila2.Interop.Client.ListDataTypeTest.ListDataTypeTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// A value of SiLA data type Integer.
         /// </summary>
         public Tecan.Sila2.IntegerDto IntegerTypeValue
@@ -482,7 +482,7 @@ namespace Tecan.Sila2.Interop.Client.ListDataTypeTest.ListDataTypeTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// A value of SiLA data type Real.
         /// </summary>
         public Tecan.Sila2.RealDto RealTypeValue
@@ -505,7 +505,7 @@ namespace Tecan.Sila2.Interop.Client.ListDataTypeTest.ListDataTypeTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// A value of SiLA data type Boolean.
         /// </summary>
         public Tecan.Sila2.BooleanDto BooleanTypeValue
@@ -528,7 +528,7 @@ namespace Tecan.Sila2.Interop.Client.ListDataTypeTest.ListDataTypeTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// A value of SiLA data type Binary.
         /// </summary>
         public Tecan.Sila2.BinaryDto BinaryTypeValue
@@ -551,7 +551,7 @@ namespace Tecan.Sila2.Interop.Client.ListDataTypeTest.ListDataTypeTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// A value of SiLA data type Date.
         /// </summary>
         public Tecan.Sila2.DateDto DateTypeValue
@@ -574,7 +574,7 @@ namespace Tecan.Sila2.Interop.Client.ListDataTypeTest.ListDataTypeTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// A value of SiLA data type Time.
         /// </summary>
         public Tecan.Sila2.TimeDto TimeTypeValue
@@ -597,7 +597,7 @@ namespace Tecan.Sila2.Interop.Client.ListDataTypeTest.ListDataTypeTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// A value of SiLA data type Timestamp.
         /// </summary>
         public Tecan.Sila2.TimestampDto TimestampTypeValue
@@ -620,7 +620,7 @@ namespace Tecan.Sila2.Interop.Client.ListDataTypeTest.ListDataTypeTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// A value of SiLA data type Any.
         /// </summary>
         public Tecan.Sila2.DynamicClient.AnyTypeDto AnyTypeValue
@@ -643,7 +643,7 @@ namespace Tecan.Sila2.Interop.Client.ListDataTypeTest.ListDataTypeTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// The actual contents of the data transfer object.
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute(1)]
@@ -659,7 +659,7 @@ namespace Tecan.Sila2.Interop.Client.ListDataTypeTest.ListDataTypeTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Extracts the transferred value
         /// </summary>
         /// <param name="store">The binary store in which to store binary data</param>
@@ -669,7 +669,7 @@ namespace Tecan.Sila2.Interop.Client.ListDataTypeTest.ListDataTypeTest
             return new TestStructure(StringTypeValue.Extract(store), IntegerTypeValue.Extract(store), RealTypeValue.Extract(store), BooleanTypeValue.Extract(store), BinaryTypeValue.Extract(store), DateTypeValue.Extract(store), TimeTypeValue.Extract(store), TimestampTypeValue.Extract(store), AnyTypeValue.Extract(store));
         }
         
-        ///  <summary>
+        /// <summary>
         /// Creates the data transfer object from the given object to transport
         /// </summary>
         /// <param name="inner">The object to transfer</param>
@@ -679,7 +679,7 @@ namespace Tecan.Sila2.Interop.Client.ListDataTypeTest.ListDataTypeTest
             return new TestStructureDto(inner, store);
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
@@ -696,7 +696,7 @@ namespace Tecan.Sila2.Interop.Client.ListDataTypeTest.ListDataTypeTest
                         + Argument.Require(AnyTypeValue, "anyTypeValue"));
         }
         
-        ///  <summary>
+        /// <summary>
         /// Represents the inner structure for actual content
         /// </summary>
         [ProtoBuf.ProtoContractAttribute()]
@@ -721,14 +721,14 @@ namespace Tecan.Sila2.Interop.Client.ListDataTypeTest.ListDataTypeTest
             
             private Tecan.Sila2.DynamicClient.AnyTypeDto _anyTypeValue;
             
-            ///  <summary>
+            /// <summary>
             /// Initializes a new instance (to be used by the serializer)
             /// </summary>
             public InnerStruct()
             {
             }
             
-            ///  <summary>
+            /// <summary>
             /// Initializes a new data transfer object from the business object
             /// </summary>
             /// <param name="inner">The business object that should be transferred</param>
@@ -746,7 +746,7 @@ namespace Tecan.Sila2.Interop.Client.ListDataTypeTest.ListDataTypeTest
                 AnyTypeValue = new Tecan.Sila2.DynamicClient.AnyTypeDto(inner.AnyTypeValue, store);
             }
             
-            ///  <summary>
+            /// <summary>
             /// A value of SiLA data type String.
             /// </summary>
             [ProtoBuf.ProtoMemberAttribute(1)]
@@ -762,7 +762,7 @@ namespace Tecan.Sila2.Interop.Client.ListDataTypeTest.ListDataTypeTest
                 }
             }
             
-            ///  <summary>
+            /// <summary>
             /// A value of SiLA data type Integer.
             /// </summary>
             [ProtoBuf.ProtoMemberAttribute(2)]
@@ -778,7 +778,7 @@ namespace Tecan.Sila2.Interop.Client.ListDataTypeTest.ListDataTypeTest
                 }
             }
             
-            ///  <summary>
+            /// <summary>
             /// A value of SiLA data type Real.
             /// </summary>
             [ProtoBuf.ProtoMemberAttribute(3)]
@@ -794,7 +794,7 @@ namespace Tecan.Sila2.Interop.Client.ListDataTypeTest.ListDataTypeTest
                 }
             }
             
-            ///  <summary>
+            /// <summary>
             /// A value of SiLA data type Boolean.
             /// </summary>
             [ProtoBuf.ProtoMemberAttribute(4)]
@@ -810,7 +810,7 @@ namespace Tecan.Sila2.Interop.Client.ListDataTypeTest.ListDataTypeTest
                 }
             }
             
-            ///  <summary>
+            /// <summary>
             /// A value of SiLA data type Binary.
             /// </summary>
             [ProtoBuf.ProtoMemberAttribute(5)]
@@ -826,7 +826,7 @@ namespace Tecan.Sila2.Interop.Client.ListDataTypeTest.ListDataTypeTest
                 }
             }
             
-            ///  <summary>
+            /// <summary>
             /// A value of SiLA data type Date.
             /// </summary>
             [ProtoBuf.ProtoMemberAttribute(6)]
@@ -842,7 +842,7 @@ namespace Tecan.Sila2.Interop.Client.ListDataTypeTest.ListDataTypeTest
                 }
             }
             
-            ///  <summary>
+            /// <summary>
             /// A value of SiLA data type Time.
             /// </summary>
             [ProtoBuf.ProtoMemberAttribute(7)]
@@ -858,7 +858,7 @@ namespace Tecan.Sila2.Interop.Client.ListDataTypeTest.ListDataTypeTest
                 }
             }
             
-            ///  <summary>
+            /// <summary>
             /// A value of SiLA data type Timestamp.
             /// </summary>
             [ProtoBuf.ProtoMemberAttribute(8)]
@@ -874,7 +874,7 @@ namespace Tecan.Sila2.Interop.Client.ListDataTypeTest.ListDataTypeTest
                 }
             }
             
-            ///  <summary>
+            /// <summary>
             /// A value of SiLA data type Any.
             /// </summary>
             [ProtoBuf.ProtoMemberAttribute(9)]

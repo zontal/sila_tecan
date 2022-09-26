@@ -17,7 +17,7 @@ namespace Tecan.Sila2.Interop.Server.BinaryTransferTest
 {
     
     
-    ///  <summary>
+    /// <summary>
     /// A class that exposes the IBinaryTransferTest interface via SiLA2
     /// </summary>
     [System.ComponentModel.Composition.ExportAttribute(typeof(IFeatureProvider))]
@@ -31,7 +31,7 @@ namespace Tecan.Sila2.Interop.Server.BinaryTransferTest
         
         private static Tecan.Sila2.Feature _feature = FeatureSerializer.LoadFromAssembly(typeof(BinaryTransferTestProvider).Assembly, "BinaryTransferTest.sila.xml");
         
-        ///  <summary>
+        /// <summary>
         /// Creates a new instance
         /// </summary>
         /// <param name="implementation">The implementation to exported through SiLA2</param>
@@ -43,7 +43,7 @@ namespace Tecan.Sila2.Interop.Server.BinaryTransferTest
             _server = server;
         }
         
-        ///  <summary>
+        /// <summary>
         /// The feature that is exposed by this feature provider
         /// </summary>
         /// <returns>A feature object</returns>
@@ -55,7 +55,7 @@ namespace Tecan.Sila2.Interop.Server.BinaryTransferTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Registers the feature in the provided feature registration
         /// </summary>
         /// <param name="registration">The registration component to which the feature should be registered</param>
@@ -66,7 +66,7 @@ namespace Tecan.Sila2.Interop.Server.BinaryTransferTest
             registration.RegisterUnobservableProperty("BinaryValueDownload", GetBinaryValueDownload);
         }
         
-        ///  <summary>
+        /// <summary>
         /// Executes the Echo Binary Value command
         /// </summary>
         /// <param name="request">A data transfer object that contains the command parameters</param>
@@ -88,7 +88,7 @@ namespace Tecan.Sila2.Interop.Server.BinaryTransferTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the current value of the Binary Value Directly property
         /// </summary>
         /// <returns>The current value wrapped in a data transfer object</returns>
@@ -97,7 +97,7 @@ namespace Tecan.Sila2.Interop.Server.BinaryTransferTest
             return new PropertyResponse<Tecan.Sila2.BinaryDto>(new Tecan.Sila2.BinaryDto(_implementation.BinaryValueDirectly, _server));
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the current value of the Binary Value Download property
         /// </summary>
         /// <returns>The current value wrapped in a data transfer object</returns>
@@ -106,7 +106,7 @@ namespace Tecan.Sila2.Interop.Server.BinaryTransferTest
             return new PropertyResponse<Tecan.Sila2.BinaryDto>(new Tecan.Sila2.BinaryDto(_implementation.BinaryValueDownload, _server));
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the command with the given identifier
         /// </summary>
         /// <param name="commandIdentifier">A fully qualified command identifier</param>
@@ -120,7 +120,7 @@ namespace Tecan.Sila2.Interop.Server.BinaryTransferTest
             return null;
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the property with the given identifier
         /// </summary>
         /// <param name="propertyIdentifier">A fully qualified property identifier</param>

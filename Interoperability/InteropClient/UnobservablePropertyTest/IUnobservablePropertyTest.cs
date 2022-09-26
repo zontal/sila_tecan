@@ -12,7 +12,7 @@ namespace Tecan.Sila2.Interop.Client.UnobservablePropertyTest
 {
     
     
-    ///  <summary>
+    /// <summary>
     /// This feature tests a static and a dynamic unobservable property.
     /// </summary>
     [Tecan.Sila2.SilaFeatureAttribute(true, "test")]
@@ -21,7 +21,7 @@ namespace Tecan.Sila2.Interop.Client.UnobservablePropertyTest
     public partial interface IUnobservablePropertyTest
     {
         
-        ///  <summary>
+        /// <summary>
         /// Returns the answer to the ultimate question of life, the universe, and everything. 42.
         /// </summary>
         long AnswerToEverything
@@ -29,7 +29,7 @@ namespace Tecan.Sila2.Interop.Client.UnobservablePropertyTest
             get;
         }
         
-        ///  <summary>
+        /// <summary>
         /// Returns the unix timestamp: The time in seconds since January 1st of 1970.
         /// </summary>
         [Tecan.Sila2.SilaDisplayNameAttribute("Seconds Since 1970")]

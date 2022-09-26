@@ -17,7 +17,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
 {
     
     
-    ///  <summary>
+    /// <summary>
     /// Class that implements the ITestServer interface through SiLA2
     /// </summary>
     public partial class TestServerClient : ITestServer, System.ComponentModel.INotifyPropertyChanged, System.IDisposable
@@ -35,7 +35,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         
         private const string _serviceName = "sila2.tecan.sila.integrationtests.testserver.v1.TestServer";
         
-        ///  <summary>
+        /// <summary>
         /// Creates a new instance
         /// </summary>
         /// <param name="channel">The channel through which calls should be executed</param>
@@ -46,8 +46,6 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             _channel = channel;
         }
         
-        ///  <summary>
-        /// </summary>
         public virtual long DummyValue
         {
             get
@@ -86,7 +84,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Disposes the current client and cancels all subscriptions
         /// </summary>
         public void Dispose()
@@ -95,9 +93,6 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             _cancellationTokenSource.Dispose();
         }
         
-        ///  <summary>
-        /// </summary>
-        /// <param name="data"></param>
         public virtual bool PassBool(bool data)
         {
             PassBoolRequestDto request = new PassBoolRequestDto(data, null);
@@ -115,9 +110,6 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             }
         }
         
-        ///  <summary>
-        /// </summary>
-        /// <param name="data"></param>
         public virtual double PassDouble(double data)
         {
             PassDoubleRequestDto request = new PassDoubleRequestDto(data, null);
@@ -135,9 +127,6 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             }
         }
         
-        ///  <summary>
-        /// </summary>
-        /// <param name="data"></param>
         public virtual long PassLong(long data)
         {
             PassLongRequestDto request = new PassLongRequestDto(data, null);
@@ -155,9 +144,6 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             }
         }
         
-        ///  <summary>
-        /// </summary>
-        /// <param name="data"></param>
         public virtual long PassInt(long data)
         {
             PassIntRequestDto request = new PassIntRequestDto(data, null);
@@ -175,9 +161,6 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             }
         }
         
-        ///  <summary>
-        /// </summary>
-        /// <param name="timestamp"></param>
         public virtual System.DateTimeOffset PassTimestamp(System.DateTimeOffset timestamp)
         {
             PassTimestampRequestDto request = new PassTimestampRequestDto(timestamp, null);
@@ -195,9 +178,6 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             }
         }
         
-        ///  <summary>
-        /// </summary>
-        /// <param name="time"></param>
         public virtual System.TimeSpan PassTime(System.TimeSpan time)
         {
             PassTimeRequestDto request = new PassTimeRequestDto(time, null);
@@ -215,9 +195,6 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             }
         }
         
-        ///  <summary>
-        /// </summary>
-        /// <param name="value"></param>
         public virtual string PassString(string value)
         {
             PassStringRequestDto request = new PassStringRequestDto(value, null);
@@ -235,9 +212,6 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             }
         }
         
-        ///  <summary>
-        /// </summary>
-        /// <param name="value"></param>
         public virtual System.IO.Stream PassStream(System.IO.Stream value)
         {
             PassStreamRequestDto request = new PassStreamRequestDto(value, _executionManager.CreateBinaryStore("tecan.sila/integrationtests/TestServer/v1/Command/PassStream/Parameter/Value"));
@@ -255,9 +229,6 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             }
         }
         
-        ///  <summary>
-        /// </summary>
-        /// <param name="file"></param>
         public virtual System.IO.Stream PassFile(System.IO.Stream file)
         {
             PassFileRequestDto request = new PassFileRequestDto(file, _executionManager.CreateBinaryStore("tecan.sila/integrationtests/TestServer/v1/Command/PassFile/Parameter/File"));
@@ -275,9 +246,6 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             }
         }
         
-        ///  <summary>
-        /// </summary>
-        /// <param name="bytes"></param>
         public virtual System.IO.Stream PassBytes(System.IO.Stream bytes)
         {
             PassBytesRequestDto request = new PassBytesRequestDto(bytes, _executionManager.CreateBinaryStore("tecan.sila/integrationtests/TestServer/v1/Command/PassBytes/Parameter/Bytes"));
@@ -295,9 +263,6 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             }
         }
         
-        ///  <summary>
-        /// </summary>
-        /// <param name="dynamic"></param>
         public virtual Tecan.Sila2.DynamicClient.DynamicObjectProperty PassDynamic(Tecan.Sila2.DynamicClient.DynamicObjectProperty dynamic)
         {
             PassDynamicRequestDto request = new PassDynamicRequestDto(dynamic, null);
@@ -315,9 +280,6 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             }
         }
         
-        ///  <summary>
-        /// </summary>
-        /// <param name="strings"></param>
         public virtual System.Collections.Generic.ICollection<string> PassCollection(System.Collections.Generic.ICollection<string> strings)
         {
             PassCollectionRequestDto request = new PassCollectionRequestDto(strings, null);
@@ -335,9 +297,6 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             }
         }
         
-        ///  <summary>
-        /// </summary>
-        /// <param name="structure"></param>
         public virtual SomeStructure PassStructure(SomeStructure structure)
         {
             PassStructureRequestDto request = new PassStructureRequestDto(structure, null);
@@ -355,15 +314,13 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             }
         }
         
-        ///  <summary>
-        /// </summary>
         public virtual Tecan.Sila2.IObservableCommand<long> RunObservable()
         {
             RunObservableRequestDto request = new RunObservableRequestDto(null);
             return _channel.ExecuteObservableCommand<RunObservableRequestDto, long, RunObservableResponseDto>(_serviceName, "RunObservable", request, ConvertRunObservableResponse, ConvertRunObservableException, _executionManager.CreateCallOptions(request.CommandIdentifier));
         }
         
-        ///  <summary>
+        /// <summary>
         /// Converts the error ocurred during execution of RunObservable to a proper exception
         /// </summary>
         /// <param name="errorIdentifier">The identifier of the error that has happened</param>
@@ -374,7 +331,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             return null;
         }
         
-        ///  <summary>
+        /// <summary>
         /// Unwraps the response of the RunObservableResponse command
         /// </summary>
         /// <param name="value">The response data transfer object</param>
@@ -384,15 +341,13 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             return value.ReturnValue.Extract(_executionManager.DownloadBinaryStore);
         }
         
-        ///  <summary>
-        /// </summary>
         public virtual Tecan.Sila2.IIntermediateObservableCommand<long> RunIntermediateObservableCommand()
         {
             RunIntermediateObservableCommandRequestDto request = new RunIntermediateObservableCommandRequestDto(null);
             return _channel.ExecuteIntermediatesCommand<RunIntermediateObservableCommandRequestDto, long, RunIntermediateObservableCommandIntermediateDto>(_serviceName, "RunIntermediateObservableCommand", request, ConvertRunIntermediateObservableCommandIntermediate, ConvertRunIntermediateObservableCommandException, _executionManager.CreateCallOptions(request.CommandIdentifier));
         }
         
-        ///  <summary>
+        /// <summary>
         /// Converts the error ocurred during execution of RunIntermediateObservableCommand to a proper exception
         /// </summary>
         /// <param name="errorIdentifier">The identifier of the error that has happened</param>
@@ -403,7 +358,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             return null;
         }
         
-        ///  <summary>
+        /// <summary>
         /// Unwraps the response of the RunIntermediateObservableCommandIntermediate command
         /// </summary>
         /// <param name="value">The response data transfer object</param>
@@ -413,16 +368,13 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             return value.Intermediate.Extract(_executionManager.DownloadBinaryStore);
         }
         
-        ///  <summary>
-        /// </summary>
-        /// <param name="duration"></param>
         public virtual Tecan.Sila2.IObservableCommand WaitForCancelOrThrow(System.TimeSpan duration)
         {
             WaitForCancelOrThrowRequestDto request = new WaitForCancelOrThrowRequestDto(duration, null);
             return _channel.ExecuteObservableCommand<WaitForCancelOrThrowRequestDto>(_serviceName, "WaitForCancelOrThrow", request, ConvertWaitForCancelOrThrowException, _executionManager.CreateCallOptions(request.CommandIdentifier));
         }
         
-        ///  <summary>
+        /// <summary>
         /// Converts the error ocurred during execution of WaitForCancelOrThrow to a proper exception
         /// </summary>
         /// <param name="errorIdentifier">The identifier of the error that has happened</param>
@@ -438,8 +390,6 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             return null;
         }
         
-        ///  <summary>
-        /// </summary>
         public virtual void RunIntoFailure()
         {
             RunIntoFailureRequestDto request = new RunIntoFailureRequestDto(null);
@@ -457,7 +407,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Converts the error ocurred during execution of RunIntoFailure to a proper exception
         /// </summary>
         /// <param name="errorIdentifier">The identifier of the error that has happened</param>
@@ -472,15 +422,13 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             return null;
         }
         
-        ///  <summary>
-        /// </summary>
         public virtual Tecan.Sila2.IObservableCommand RunIntoFailureObservably()
         {
             RunIntoFailureObservablyRequestDto request = new RunIntoFailureObservablyRequestDto(null);
             return _channel.ExecuteObservableCommand<RunIntoFailureObservablyRequestDto>(_serviceName, "RunIntoFailureObservably", request, ConvertRunIntoFailureObservablyException, _executionManager.CreateCallOptions(request.CommandIdentifier));
         }
         
-        ///  <summary>
+        /// <summary>
         /// Converts the error ocurred during execution of RunIntoFailureObservably to a proper exception
         /// </summary>
         /// <param name="errorIdentifier">The identifier of the error that has happened</param>
@@ -495,9 +443,6 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             return null;
         }
         
-        ///  <summary>
-        /// </summary>
-        /// <param name="commandId"></param>
         public virtual bool IsCancelled(string commandId)
         {
             IsCancelledRequestDto request = new IsCancelledRequestDto(commandId, null);
@@ -515,8 +460,6 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             }
         }
         
-        ///  <summary>
-        /// </summary>
         public virtual void ThrowRuntimeException()
         {
             ThrowRuntimeExceptionRequestDto request = new ThrowRuntimeExceptionRequestDto(null);
@@ -534,9 +477,6 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             }
         }
         
-        ///  <summary>
-        /// </summary>
-        /// <param name="value"></param>
         public virtual void SetDummy(long value)
         {
             SetDummyRequestDto request = new SetDummyRequestDto(value, null);
@@ -561,7 +501,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// Factory to instantiate clients for the Test Server.
     /// </summary>
     [System.ComponentModel.Composition.ExportAttribute(typeof(IClientFactory))]
@@ -569,7 +509,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
     public partial class TestServerClientFactory : IClientFactory
     {
         
-        ///  <summary>
+        /// <summary>
         /// Gets the fully-qualified identifier of the feature for which clients can be generated
         /// </summary>
         public string FeatureIdentifier
@@ -580,7 +520,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the interface type for which clients can be generated
         /// </summary>
         public System.Type InterfaceType
@@ -591,7 +531,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Creates a strongly typed client for the given execution channel and execution manager
         /// </summary>
         /// <param name="channel">The channel that should be used for communication with the server</param>

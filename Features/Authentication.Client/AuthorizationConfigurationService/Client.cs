@@ -17,7 +17,7 @@ namespace Tecan.Sila2.Authorization.AuthorizationConfigurationService
 {
     
     
-    ///  <summary>
+    /// <summary>
     /// Class that implements the IAuthorizationConfigurationService interface through SiLA2
     /// </summary>
     public partial class AuthorizationConfigurationServiceClient : IAuthorizationConfigurationService
@@ -32,7 +32,7 @@ namespace Tecan.Sila2.Authorization.AuthorizationConfigurationService
         private const string _serviceName = "sila2.org.silastandard.core.authorizationconfigurationservice.v1.AuthorizationCon" +
             "figurationService";
         
-        ///  <summary>
+        /// <summary>
         /// Creates a new instance
         /// </summary>
         /// <param name="channel">The channel through which calls should be executed</param>
@@ -44,7 +44,7 @@ namespace Tecan.Sila2.Authorization.AuthorizationConfigurationService
             InitLazyRequests();
         }
         
-        ///  <summary>
+        /// <summary>
         /// The UUID of the SiLA server that this server uses to verify access tokens.
         /// </summary>
         public virtual string AuthorizationProvider
@@ -73,7 +73,7 @@ namespace Tecan.Sila2.Authorization.AuthorizationConfigurationService
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Initializes lazies for non-observable properties.
         /// </summary>
         private void InitLazyRequests()
@@ -81,7 +81,7 @@ namespace Tecan.Sila2.Authorization.AuthorizationConfigurationService
             _authorizationProvider = new System.Lazy<string>(RequestAuthorizationProvider);
         }
         
-        ///  <summary>
+        /// <summary>
         /// Instructs the server to use the given authorization provider starting from the next request.
         /// </summary>
         /// <param name="authorizationProvider">The UUID of the SiLA server that this server uses to verify access tokens.</param>
@@ -110,7 +110,7 @@ namespace Tecan.Sila2.Authorization.AuthorizationConfigurationService
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// Factory to instantiate clients for the Authorization Configuration.
     /// </summary>
     [System.ComponentModel.Composition.ExportAttribute(typeof(IClientFactory))]
@@ -118,7 +118,7 @@ namespace Tecan.Sila2.Authorization.AuthorizationConfigurationService
     public partial class AuthorizationConfigurationServiceClientFactory : IClientFactory
     {
         
-        ///  <summary>
+        /// <summary>
         /// Gets the fully-qualified identifier of the feature for which clients can be generated
         /// </summary>
         public string FeatureIdentifier
@@ -129,7 +129,7 @@ namespace Tecan.Sila2.Authorization.AuthorizationConfigurationService
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the interface type for which clients can be generated
         /// </summary>
         public System.Type InterfaceType
@@ -140,7 +140,7 @@ namespace Tecan.Sila2.Authorization.AuthorizationConfigurationService
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Creates a strongly typed client for the given execution channel and execution manager
         /// </summary>
         /// <param name="channel">The channel that should be used for communication with the server</param>

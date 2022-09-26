@@ -12,7 +12,7 @@ namespace Tecan.Sila2.ParameterConstraintsProvider
 {
     
     
-    ///  <summary>
+    /// <summary>
     /// This Feature allows a SiLA Client to receive constraints (min./max value, min./max. length for strings etc.) that
     /// given parameters of a given Command have which are not defined in the respective Feature Definition;
     /// also depending on other parameter or state.
@@ -25,7 +25,7 @@ namespace Tecan.Sila2.ParameterConstraintsProvider
     public partial interface IParameterConstraintsProvider
     {
         
-        ///  <summary>
+        /// <summary>
         /// Provides a list of all constraints of Command Parameters of the SiLA Server.
         /// </summary>
         [Tecan.Sila2.ObservableAttribute()]
@@ -35,7 +35,7 @@ namespace Tecan.Sila2.ParameterConstraintsProvider
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// The class ParametersConstraint reflects an anonymous type from the feature definition.
     /// </summary>
     [Tecan.Sila2.SilaDisplayNameAttribute("ParametersConstraint")]
@@ -46,7 +46,7 @@ namespace Tecan.Sila2.ParameterConstraintsProvider
         
         private string _constraints;
         
-        ///  <summary>
+        /// <summary>
         /// Initializes a new instance
         /// </summary>
         public ParametersConstraint(string commandParameterIdentifier, string constraints)
@@ -55,7 +55,7 @@ namespace Tecan.Sila2.ParameterConstraintsProvider
             _constraints = constraints;
         }
         
-        ///  <summary>
+        /// <summary>
         /// The fully qualified identifier of a constrained parameter.
         /// </summary>
         [Tecan.Sila2.SilaIdentifierTypeAttribute(Tecan.Sila2.IdentifierType.CommandParameterIdentifier)]
@@ -67,7 +67,7 @@ namespace Tecan.Sila2.ParameterConstraintsProvider
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// The constraints to apply on the parameter.
         /// </summary>
         [Tecan.Sila2.SchemaAttribute("https://gitlab.com/SiLA2/sila_base/raw/master/schema/Constraints.xsd", Tecan.Sila2.SchemaType.Xml)]

@@ -17,7 +17,7 @@ namespace Tecan.Sila2.Interop.Client.UnobservableCommandTest.UnobservableCommand
 {
     
     
-    ///  <summary>
+    /// <summary>
     /// Class that implements the IUnobservableCommandTest interface through SiLA2
     /// </summary>
     public partial class UnobservableCommandTestClient : IUnobservableCommandTest
@@ -29,7 +29,7 @@ namespace Tecan.Sila2.Interop.Client.UnobservableCommandTest.UnobservableCommand
         
         private const string _serviceName = "sila2.org.silastandard.test.unobservablecommandtest.v1.UnobservableCommandTest";
         
-        ///  <summary>
+        /// <summary>
         /// Creates a new instance
         /// </summary>
         /// <param name="channel">The channel through which calls should be executed</param>
@@ -40,7 +40,7 @@ namespace Tecan.Sila2.Interop.Client.UnobservableCommandTest.UnobservableCommand
             _channel = channel;
         }
         
-        ///  <summary>
+        /// <summary>
         /// A command that takes no parameters and returns no responses
         /// </summary>
         public virtual void CommandWithoutParametersAndResponses()
@@ -61,7 +61,7 @@ namespace Tecan.Sila2.Interop.Client.UnobservableCommandTest.UnobservableCommand
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// A command that takes one integer parameter and returns its string representation.
         /// </summary>
         /// <param name="integer">An integer, e.g. 12345</param>
@@ -82,7 +82,7 @@ namespace Tecan.Sila2.Interop.Client.UnobservableCommandTest.UnobservableCommand
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// A command which takes an integer and a string parameter and returns a string with both joined (e.g.
         /// "123abc")
         /// </summary>
@@ -105,7 +105,7 @@ namespace Tecan.Sila2.Interop.Client.UnobservableCommandTest.UnobservableCommand
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// A command which splits a given string after its first character. Returns empty parts if the input was
         /// too short.
         /// </summary>
@@ -135,7 +135,7 @@ namespace Tecan.Sila2.Interop.Client.UnobservableCommandTest.UnobservableCommand
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// Factory to instantiate clients for the Unobservable Command Test.
     /// </summary>
     [System.ComponentModel.Composition.ExportAttribute(typeof(IClientFactory))]
@@ -143,7 +143,7 @@ namespace Tecan.Sila2.Interop.Client.UnobservableCommandTest.UnobservableCommand
     public partial class UnobservableCommandTestClientFactory : IClientFactory
     {
         
-        ///  <summary>
+        /// <summary>
         /// Gets the fully-qualified identifier of the feature for which clients can be generated
         /// </summary>
         public string FeatureIdentifier
@@ -154,7 +154,7 @@ namespace Tecan.Sila2.Interop.Client.UnobservableCommandTest.UnobservableCommand
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the interface type for which clients can be generated
         /// </summary>
         public System.Type InterfaceType
@@ -165,7 +165,7 @@ namespace Tecan.Sila2.Interop.Client.UnobservableCommandTest.UnobservableCommand
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Creates a strongly typed client for the given execution channel and execution manager
         /// </summary>
         /// <param name="channel">The channel that should be used for communication with the server</param>

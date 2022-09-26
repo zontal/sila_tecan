@@ -12,7 +12,7 @@ namespace Tecan.Sila2.Interop.Client.BasicDataTypesTest
 {
     
     
-    ///  <summary>
+    /// <summary>
     /// Provides commands and properties to set or respectively get all SiLA Basic Data Types via command parameters or property responses respectively.
     /// </summary>
     [Tecan.Sila2.SilaFeatureAttribute(true, "test")]
@@ -21,7 +21,7 @@ namespace Tecan.Sila2.Interop.Client.BasicDataTypesTest
     public partial interface IBasicDataTypesTest
     {
         
-        ///  <summary>
+        /// <summary>
         /// Returns the String value 'SiLA2_Test_String_Value'.
         /// </summary>
         string StringValue
@@ -29,7 +29,7 @@ namespace Tecan.Sila2.Interop.Client.BasicDataTypesTest
             get;
         }
         
-        ///  <summary>
+        /// <summary>
         /// Returns the Integer value 5124.
         /// </summary>
         long IntegerValue
@@ -37,7 +37,7 @@ namespace Tecan.Sila2.Interop.Client.BasicDataTypesTest
             get;
         }
         
-        ///  <summary>
+        /// <summary>
         /// Returns the Real value 3.1415926.
         /// </summary>
         double RealValue
@@ -45,7 +45,7 @@ namespace Tecan.Sila2.Interop.Client.BasicDataTypesTest
             get;
         }
         
-        ///  <summary>
+        /// <summary>
         /// Returns the Boolean value true.
         /// </summary>
         bool BooleanValue
@@ -53,7 +53,7 @@ namespace Tecan.Sila2.Interop.Client.BasicDataTypesTest
             get;
         }
         
-        ///  <summary>
+        /// <summary>
         /// Returns the Date value 05.08.2022 respective 08/05/2018, timezone +2.
         /// </summary>
         System.DateTimeOffset DateValue
@@ -61,7 +61,7 @@ namespace Tecan.Sila2.Interop.Client.BasicDataTypesTest
             get;
         }
         
-        ///  <summary>
+        /// <summary>
         /// Returns the Time value 12:34:56, timezone +2.
         /// </summary>
         System.TimeSpan TimeValue
@@ -69,7 +69,7 @@ namespace Tecan.Sila2.Interop.Client.BasicDataTypesTest
             get;
         }
         
-        ///  <summary>
+        /// <summary>
         /// Returns the Timestamp value 2022-08-05 12:34:56, timezone +2.
         /// </summary>
         System.DateTimeOffset TimestampValue
@@ -77,7 +77,7 @@ namespace Tecan.Sila2.Interop.Client.BasicDataTypesTest
             get;
         }
         
-        ///  <summary>
+        /// <summary>
         /// Receives a String value and returns the String value that has been received.
         /// </summary>
         /// <param name="stringValue">The String value to be returned.</param>
@@ -85,7 +85,7 @@ namespace Tecan.Sila2.Interop.Client.BasicDataTypesTest
         [return: Tecan.Sila2.SilaIdentifierAttribute("ReceivedValue")]
         string EchoStringValue(string stringValue);
         
-        ///  <summary>
+        /// <summary>
         /// Receives an Integer value and returns the Integer value that has been received.
         /// </summary>
         /// <param name="integerValue">The Integer value to be returned.</param>
@@ -93,7 +93,7 @@ namespace Tecan.Sila2.Interop.Client.BasicDataTypesTest
         [return: Tecan.Sila2.SilaIdentifierAttribute("ReceivedValue")]
         long EchoIntegerValue(long integerValue);
         
-        ///  <summary>
+        /// <summary>
         /// Receives a Real value and returns the Real value that has been received.
         /// </summary>
         /// <param name="realValue">The Real value to be returned.</param>
@@ -101,7 +101,7 @@ namespace Tecan.Sila2.Interop.Client.BasicDataTypesTest
         [return: Tecan.Sila2.SilaIdentifierAttribute("ReceivedValue")]
         double EchoRealValue(double realValue);
         
-        ///  <summary>
+        /// <summary>
         /// Receives a Boolean value and returns the Boolean value that has been received.
         /// </summary>
         /// <param name="booleanValue">The Boolean value to be returned.</param>
@@ -109,7 +109,7 @@ namespace Tecan.Sila2.Interop.Client.BasicDataTypesTest
         [return: Tecan.Sila2.SilaIdentifierAttribute("ReceivedValue")]
         bool EchoBooleanValue(bool booleanValue);
         
-        ///  <summary>
+        /// <summary>
         /// Receives a Date value and returns the Date value that has been received.
         /// </summary>
         /// <param name="dateValue">The Date value to be returned.</param>
@@ -117,7 +117,7 @@ namespace Tecan.Sila2.Interop.Client.BasicDataTypesTest
         [return: Tecan.Sila2.SilaIdentifierAttribute("ReceivedValue")]
         System.DateTimeOffset EchoDateValue(System.DateTimeOffset dateValue);
         
-        ///  <summary>
+        /// <summary>
         /// Receives a Time value and returns the Time value that has been received.
         /// </summary>
         /// <param name="timeValue">The Time value to be returned.</param>
@@ -125,7 +125,7 @@ namespace Tecan.Sila2.Interop.Client.BasicDataTypesTest
         [return: Tecan.Sila2.SilaIdentifierAttribute("ReceivedValue")]
         System.TimeSpan EchoTimeValue(System.TimeSpan timeValue);
         
-        ///  <summary>
+        /// <summary>
         /// Receives a Timestamp value and returns a message containing the Timestamp value that has been received.
         /// </summary>
         /// <param name="timestampValue">The Timestamp value to be returned.</param>

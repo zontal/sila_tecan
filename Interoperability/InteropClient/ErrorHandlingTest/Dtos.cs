@@ -13,21 +13,21 @@ namespace Tecan.Sila2.Interop.Client.ErrorHandlingTest.ErrorHandlingTest
     using Tecan.Sila2;
     
     
-    ///  <summary>
+    /// <summary>
     /// Data transfer object for the request of the Raise Defined Execution Error command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
     public class RaiseDefinedExecutionErrorRequestDto : Tecan.Sila2.ISilaTransferObject, Tecan.Sila2.ISilaRequestObject
     {
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         public RaiseDefinedExecutionErrorRequestDto()
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
@@ -35,7 +35,7 @@ namespace Tecan.Sila2.Interop.Client.ErrorHandlingTest.ErrorHandlingTest
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the command identifier for this command
         /// </summary>
         /// <returns>The fully qualified command identifier</returns>
@@ -47,14 +47,14 @@ namespace Tecan.Sila2.Interop.Client.ErrorHandlingTest.ErrorHandlingTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the given request object
         /// </summary>
         public void Validate()
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
@@ -64,21 +64,21 @@ namespace Tecan.Sila2.Interop.Client.ErrorHandlingTest.ErrorHandlingTest
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// Data transfer object for the request of the Raise Defined Execution Error Observably command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
     public class RaiseDefinedExecutionErrorObservablyRequestDto : Tecan.Sila2.ISilaTransferObject, Tecan.Sila2.ISilaRequestObject
     {
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         public RaiseDefinedExecutionErrorObservablyRequestDto()
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
@@ -86,7 +86,7 @@ namespace Tecan.Sila2.Interop.Client.ErrorHandlingTest.ErrorHandlingTest
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the command identifier for this command
         /// </summary>
         /// <returns>The fully qualified command identifier</returns>
@@ -99,14 +99,14 @@ namespace Tecan.Sila2.Interop.Client.ErrorHandlingTest.ErrorHandlingTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the given request object
         /// </summary>
         public void Validate()
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
@@ -116,21 +116,21 @@ namespace Tecan.Sila2.Interop.Client.ErrorHandlingTest.ErrorHandlingTest
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// Data transfer object for the request of the Raise Undefined Execution Error command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
     public class RaiseUndefinedExecutionErrorRequestDto : Tecan.Sila2.ISilaTransferObject, Tecan.Sila2.ISilaRequestObject
     {
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         public RaiseUndefinedExecutionErrorRequestDto()
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
@@ -138,7 +138,7 @@ namespace Tecan.Sila2.Interop.Client.ErrorHandlingTest.ErrorHandlingTest
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the command identifier for this command
         /// </summary>
         /// <returns>The fully qualified command identifier</returns>
@@ -150,14 +150,14 @@ namespace Tecan.Sila2.Interop.Client.ErrorHandlingTest.ErrorHandlingTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the given request object
         /// </summary>
         public void Validate()
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
@@ -167,21 +167,21 @@ namespace Tecan.Sila2.Interop.Client.ErrorHandlingTest.ErrorHandlingTest
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// Data transfer object for the request of the Raise Undefined Execution Error Observably command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
     public class RaiseUndefinedExecutionErrorObservablyRequestDto : Tecan.Sila2.ISilaTransferObject, Tecan.Sila2.ISilaRequestObject
     {
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         public RaiseUndefinedExecutionErrorObservablyRequestDto()
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
@@ -189,7 +189,7 @@ namespace Tecan.Sila2.Interop.Client.ErrorHandlingTest.ErrorHandlingTest
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the command identifier for this command
         /// </summary>
         /// <returns>The fully qualified command identifier</returns>
@@ -202,14 +202,14 @@ namespace Tecan.Sila2.Interop.Client.ErrorHandlingTest.ErrorHandlingTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the given request object
         /// </summary>
         public void Validate()
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>

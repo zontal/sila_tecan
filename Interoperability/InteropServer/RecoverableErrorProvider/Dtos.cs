@@ -13,7 +13,7 @@ namespace Tecan.Sila2.Interop.Server.RecoverableErrorProvider
     using Tecan.Sila2;
     
     
-    ///  <summary>
+    /// <summary>
     /// Data transfer object for the request of the Raise Recoverable Error command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
@@ -24,26 +24,26 @@ namespace Tecan.Sila2.Interop.Server.RecoverableErrorProvider
         
         private Tecan.Sila2.IntegerDto _automaticExecutionTimeout;
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         public RaiseRecoverableErrorRequestDto()
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
-        ///  <param name="durationUntilError">The duration in seconds before the recoverable error is raised.</param>
-        ///  <param name="automaticExecutionTimeout">The duration in seconds after the specified default option is automatically selected (0 means no automatic execution).</param>
+        /// <param name="durationUntilError">The duration in seconds before the recoverable error is raised.</param>
+        /// <param name="automaticExecutionTimeout">The duration in seconds after the specified default option is automatically selected (0 means no automatic execution).</param>
         public RaiseRecoverableErrorRequestDto(long durationUntilError, long automaticExecutionTimeout, Tecan.Sila2.IBinaryStore store)
         {
             DurationUntilError = new Tecan.Sila2.IntegerDto(durationUntilError, store);
             AutomaticExecutionTimeout = new Tecan.Sila2.IntegerDto(automaticExecutionTimeout, store);
         }
         
-        ///  <summary>
+        /// <summary>
         /// The duration in seconds before the recoverable error is raised.
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute(1)]
@@ -59,7 +59,7 @@ namespace Tecan.Sila2.Interop.Server.RecoverableErrorProvider
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// The duration in seconds after the specified default option is automatically selected (0 means no automatic execution).
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute(2)]
@@ -75,7 +75,7 @@ namespace Tecan.Sila2.Interop.Server.RecoverableErrorProvider
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the command identifier for this command
         /// </summary>
         /// <returns>The fully qualified command identifier</returns>
@@ -87,7 +87,7 @@ namespace Tecan.Sila2.Interop.Server.RecoverableErrorProvider
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the given request object
         /// </summary>
         public void Validate()
@@ -96,7 +96,7 @@ namespace Tecan.Sila2.Interop.Server.RecoverableErrorProvider
             Argument.Validate(AutomaticExecutionTimeout, "automaticExecutionTimeout");
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
@@ -107,7 +107,7 @@ namespace Tecan.Sila2.Interop.Server.RecoverableErrorProvider
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// Data transfer object for the response of the Raise Recoverable Error command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
@@ -116,24 +116,24 @@ namespace Tecan.Sila2.Interop.Server.RecoverableErrorProvider
         
         private Tecan.Sila2.StringDto _selectedContinuationOption;
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         public RaiseRecoverableErrorResponseDto()
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
-        ///  <param name="selectedContinuationOption">The identifier of the continuation option which has been selected to handle the error.</param>
+        /// <param name="selectedContinuationOption">The identifier of the continuation option which has been selected to handle the error.</param>
         public RaiseRecoverableErrorResponseDto(string selectedContinuationOption, Tecan.Sila2.IBinaryStore store)
         {
             SelectedContinuationOption = new Tecan.Sila2.StringDto(selectedContinuationOption, store);
         }
         
-        ///  <summary>
+        /// <summary>
         /// The identifier of the continuation option which has been selected to handle the error.
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute(1)]
@@ -149,7 +149,7 @@ namespace Tecan.Sila2.Interop.Server.RecoverableErrorProvider
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the given request object
         /// </summary>
         public void Validate()
@@ -157,7 +157,7 @@ namespace Tecan.Sila2.Interop.Server.RecoverableErrorProvider
             Argument.Validate(SelectedContinuationOption, "selectedContinuationOption");
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>

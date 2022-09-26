@@ -11,58 +11,58 @@
 namespace Tecan.Sila2.Recovery
 {
     using Tecan.Sila2;
-
-
-    ///  <summary>
+    
+    
+    /// <summary>
     /// Data transfer object for the request of the Execute Continuation Option command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
     public class ExecuteContinuationOptionRequestDto : Tecan.Sila2.ISilaTransferObject, Tecan.Sila2.ISilaRequestObject
     {
-
+        
         private Tecan.Sila2.StringDto _commandExecutionUUID;
-
-        ///  <summary>
+        
+        /// <summary>
         /// A regular expression to check the validity of CommandExecutionUUID
         /// </summary>
-        public static System.Text.RegularExpressions.Regex CommandExecutionUUIDPattern = new System.Text.RegularExpressions.Regex( "[0-9a-f]{8}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{12}" );
-
+        public static System.Text.RegularExpressions.Regex CommandExecutionUUIDPattern = new System.Text.RegularExpressions.Regex("[0-9a-f]{8}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{12}");
+        
         private Tecan.Sila2.StringDto _continuationOption;
-
+        
         private Tecan.Sila2.DynamicClient.AnyTypeDto _inputData;
-
-        ///  <summary>
+        
+        /// <summary>
         /// Create a new instance
         /// </summary>
         public ExecuteContinuationOptionRequestDto()
         {
         }
-
-        ///  <summary>
+        
+        /// <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
-        ///  <param name="commandExecutionUUID">The UUID of the observable command execution for which the error shall be handled.</param>
-        ///  <param name="continuationOption">
+        /// <param name="commandExecutionUUID">The UUID of the observable command execution for which the error shall be handled.</param>
+        /// <param name="continuationOption">
         ///        The identifier of the continuation option to be executed. It must match the identifier of one of the continuation options
         ///        specified in the 'ContinuationOptions' list of the according 'RecoverableError' object.
         ///      </param>
-        ///  <param name="inputData">
+        /// <param name="inputData">
         ///        If required this parameter contains the data that has to be sent along with a continuation option in order to execute the requested
         ///        recovery option. The kind of the data as well as the required format must be described in the 'RequiredInputData' field of the
         ///        respective continuation option.
         ///      </param>
-        public ExecuteContinuationOptionRequestDto( string commandExecutionUUID, string continuationOption, Tecan.Sila2.DynamicClient.DynamicObjectProperty inputData, Tecan.Sila2.IBinaryStore store )
+        public ExecuteContinuationOptionRequestDto(string commandExecutionUUID, string continuationOption, Tecan.Sila2.DynamicClient.DynamicObjectProperty inputData, Tecan.Sila2.IBinaryStore store)
         {
-            CommandExecutionUUID = new Tecan.Sila2.StringDto( commandExecutionUUID, store );
-            ContinuationOption = new Tecan.Sila2.StringDto( continuationOption, store );
-            InputData = new Tecan.Sila2.DynamicClient.AnyTypeDto( inputData, store );
+            CommandExecutionUUID = new Tecan.Sila2.StringDto(commandExecutionUUID, store);
+            ContinuationOption = new Tecan.Sila2.StringDto(continuationOption, store);
+            InputData = new Tecan.Sila2.DynamicClient.AnyTypeDto(inputData, store);
         }
-
-        ///  <summary>
+        
+        /// <summary>
         /// The UUID of the observable command execution for which the error shall be handled.
         /// </summary>
-        [ProtoBuf.ProtoMemberAttribute( 1 )]
+        [ProtoBuf.ProtoMemberAttribute(1)]
         public Tecan.Sila2.StringDto CommandExecutionUUID
         {
             get
@@ -74,12 +74,12 @@ namespace Tecan.Sila2.Recovery
                 _commandExecutionUUID = value;
             }
         }
-
-        ///  <summary>
+        
+        /// <summary>
         /// The identifier of the continuation option to be executed. It must match the identifier of one of the continuation options
         /// specified in the 'ContinuationOptions' list of the according 'RecoverableError' object.
         /// </summary>
-        [ProtoBuf.ProtoMemberAttribute( 2 )]
+        [ProtoBuf.ProtoMemberAttribute(2)]
         public Tecan.Sila2.StringDto ContinuationOption
         {
             get
@@ -91,13 +91,13 @@ namespace Tecan.Sila2.Recovery
                 _continuationOption = value;
             }
         }
-
-        ///  <summary>
+        
+        /// <summary>
         /// If required this parameter contains the data that has to be sent along with a continuation option in order to execute the requested
         /// recovery option. The kind of the data as well as the required format must be described in the 'RequiredInputData' field of the
         /// respective continuation option.
         /// </summary>
-        [ProtoBuf.ProtoMemberAttribute( 3 )]
+        [ProtoBuf.ProtoMemberAttribute(3)]
         public Tecan.Sila2.DynamicClient.AnyTypeDto InputData
         {
             get
@@ -109,8 +109,8 @@ namespace Tecan.Sila2.Recovery
                 _inputData = value;
             }
         }
-
-        ///  <summary>
+        
+        /// <summary>
         /// Gets the command identifier for this command
         /// </summary>
         /// <returns>The fully qualified command identifier</returns>
@@ -121,70 +121,70 @@ namespace Tecan.Sila2.Recovery
                 return "org.silastandard/core/ErrorRecoveryService/v1/Command/ExecuteContinuationOption";
             }
         }
-
-        ///  <summary>
+        
+        /// <summary>
         /// Validates the given request object
         /// </summary>
         public void Validate()
         {
-            Argument.Validate( CommandExecutionUUID, "commandExecutionUUID" );
-            Argument.Validate( ContinuationOption, "continuationOption" );
-            Argument.Validate( InputData, "inputData" );
+            Argument.Validate(CommandExecutionUUID, "commandExecutionUUID");
+            Argument.Validate(ContinuationOption, "continuationOption");
+            Argument.Validate(InputData, "inputData");
         }
-
-        ///  <summary>
+        
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            string errors = ((("" + Argument.Require( CommandExecutionUUID, "commandExecutionUUID" ))
-                        + Argument.Require( ContinuationOption, "continuationOption" ))
-                        + Argument.Require( InputData, "inputData" ));
-            if((CommandExecutionUUIDPattern.IsMatch( CommandExecutionUUID.Value ) == false))
+            string errors = ((("" + Argument.Require(CommandExecutionUUID, "commandExecutionUUID")) 
+                        + Argument.Require(ContinuationOption, "continuationOption")) 
+                        + Argument.Require(InputData, "inputData"));
+            if ((CommandExecutionUUIDPattern.IsMatch(CommandExecutionUUID.Value) == false))
             {
-                errors = (errors + string.Format( "CommandExecutionUUID \'{0}\' does not match pattern \'[0-9a-f]{8}\\-[0-9a-f]{4}\\-[0-9" +
-                        "a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{12}\'; ", CommandExecutionUUID.Value ));
+                errors = (errors + string.Format("CommandExecutionUUID \'{0}\' does not match pattern \'[0-9a-f]{8}\\-[0-9a-f]{4}\\-[0-9" +
+                        "a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{12}\'; ", CommandExecutionUUID.Value));
             }
             return errors;
         }
     }
-
-    ///  <summary>
+    
+    /// <summary>
     /// Data transfer object for the request of the Abort Error Handling command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
     public class AbortErrorHandlingRequestDto : Tecan.Sila2.ISilaTransferObject, Tecan.Sila2.ISilaRequestObject
     {
-
+        
         private Tecan.Sila2.StringDto _commandExecutionUUID;
-
-        ///  <summary>
+        
+        /// <summary>
         /// A regular expression to check the validity of CommandExecutionUUID
         /// </summary>
-        public static System.Text.RegularExpressions.Regex CommandExecutionUUIDPattern = new System.Text.RegularExpressions.Regex( "[0-9a-f]{8}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{12}" );
-
-        ///  <summary>
+        public static System.Text.RegularExpressions.Regex CommandExecutionUUIDPattern = new System.Text.RegularExpressions.Regex("[0-9a-f]{8}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{12}");
+        
+        /// <summary>
         /// Create a new instance
         /// </summary>
         public AbortErrorHandlingRequestDto()
         {
         }
-
-        ///  <summary>
+        
+        /// <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
-        ///  <param name="commandExecutionUUID">The UUID of the observable command execution for which the error handling shall be aborted.</param>
-        public AbortErrorHandlingRequestDto( string commandExecutionUUID, Tecan.Sila2.IBinaryStore store )
+        /// <param name="commandExecutionUUID">The UUID of the observable command execution for which the error handling shall be aborted.</param>
+        public AbortErrorHandlingRequestDto(string commandExecutionUUID, Tecan.Sila2.IBinaryStore store)
         {
-            CommandExecutionUUID = new Tecan.Sila2.StringDto( commandExecutionUUID, store );
+            CommandExecutionUUID = new Tecan.Sila2.StringDto(commandExecutionUUID, store);
         }
-
-        ///  <summary>
+        
+        /// <summary>
         /// The UUID of the observable command execution for which the error handling shall be aborted.
         /// </summary>
-        [ProtoBuf.ProtoMemberAttribute( 1 )]
+        [ProtoBuf.ProtoMemberAttribute(1)]
         public Tecan.Sila2.StringDto CommandExecutionUUID
         {
             get
@@ -196,8 +196,8 @@ namespace Tecan.Sila2.Recovery
                 _commandExecutionUUID = value;
             }
         }
-
-        ///  <summary>
+        
+        /// <summary>
         /// Gets the command identifier for this command
         /// </summary>
         /// <returns>The fully qualified command identifier</returns>
@@ -208,61 +208,61 @@ namespace Tecan.Sila2.Recovery
                 return "org.silastandard/core/ErrorRecoveryService/v1/Command/AbortErrorHandling";
             }
         }
-
-        ///  <summary>
+        
+        /// <summary>
         /// Validates the given request object
         /// </summary>
         public void Validate()
         {
-            Argument.Validate( CommandExecutionUUID, "commandExecutionUUID" );
+            Argument.Validate(CommandExecutionUUID, "commandExecutionUUID");
         }
-
-        ///  <summary>
+        
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            string errors = ("" + Argument.Require( CommandExecutionUUID, "commandExecutionUUID" ));
-            if((CommandExecutionUUIDPattern.IsMatch( CommandExecutionUUID.Value ) == false))
+            string errors = ("" + Argument.Require(CommandExecutionUUID, "commandExecutionUUID"));
+            if ((CommandExecutionUUIDPattern.IsMatch(CommandExecutionUUID.Value) == false))
             {
-                errors = (errors + string.Format( "CommandExecutionUUID \'{0}\' does not match pattern \'[0-9a-f]{8}\\-[0-9a-f]{4}\\-[0-9" +
-                        "a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{12}\'; ", CommandExecutionUUID.Value ));
+                errors = (errors + string.Format("CommandExecutionUUID \'{0}\' does not match pattern \'[0-9a-f]{8}\\-[0-9a-f]{4}\\-[0-9" +
+                        "a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{12}\'; ", CommandExecutionUUID.Value));
             }
             return errors;
         }
     }
-
-    ///  <summary>
+    
+    /// <summary>
     /// Data transfer object for the request of the Set Error Handling Timeout command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
     public class SetErrorHandlingTimeoutRequestDto : Tecan.Sila2.ISilaTransferObject, Tecan.Sila2.ISilaRequestObject
     {
-
+        
         private TimeoutDto _errorHandlingTimeout;
-
-        ///  <summary>
+        
+        /// <summary>
         /// Create a new instance
         /// </summary>
         public SetErrorHandlingTimeoutRequestDto()
         {
         }
-
-        ///  <summary>
+        
+        /// <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
-        ///  <param name="errorHandlingTimeout">The timeout in seconds.</param>
-        public SetErrorHandlingTimeoutRequestDto( Timeout errorHandlingTimeout, Tecan.Sila2.IBinaryStore store )
+        /// <param name="errorHandlingTimeout">The timeout in seconds.</param>
+        public SetErrorHandlingTimeoutRequestDto(Timeout errorHandlingTimeout, Tecan.Sila2.IBinaryStore store)
         {
-            ErrorHandlingTimeout = new TimeoutDto( errorHandlingTimeout, store );
+            ErrorHandlingTimeout = new TimeoutDto(errorHandlingTimeout, store);
         }
-
-        ///  <summary>
+        
+        /// <summary>
         /// The timeout in seconds.
         /// </summary>
-        [ProtoBuf.ProtoMemberAttribute( 1 )]
+        [ProtoBuf.ProtoMemberAttribute(1)]
         public TimeoutDto ErrorHandlingTimeout
         {
             get
@@ -274,8 +274,8 @@ namespace Tecan.Sila2.Recovery
                 _errorHandlingTimeout = value;
             }
         }
-
-        ///  <summary>
+        
+        /// <summary>
         /// Gets the command identifier for this command
         /// </summary>
         /// <returns>The fully qualified command identifier</returns>
@@ -286,60 +286,60 @@ namespace Tecan.Sila2.Recovery
                 return "org.silastandard/core/ErrorRecoveryService/v1/Command/SetErrorHandlingTimeout";
             }
         }
-
-        ///  <summary>
+        
+        /// <summary>
         /// Validates the given request object
         /// </summary>
         public void Validate()
         {
-            Argument.Validate( ErrorHandlingTimeout, "errorHandlingTimeout" );
+            Argument.Validate(ErrorHandlingTimeout, "errorHandlingTimeout");
         }
-
-        ///  <summary>
+        
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return ("" + Argument.Require( ErrorHandlingTimeout, "errorHandlingTimeout" ));
+            return ("" + Argument.Require(ErrorHandlingTimeout, "errorHandlingTimeout"));
         }
     }
-
-    ///  <summary>
+    
+    /// <summary>
     /// The data transfer object for Recoverable Error
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
     public class RecoverableErrorDto : Tecan.Sila2.ISilaTransferObject<RecoverableError>
     {
-
+        
         private InnerStruct _inner;
-
-        ///  <summary>
+        
+        /// <summary>
         /// Initializes a new instance (to be used by the serializer)
         /// </summary>
         public RecoverableErrorDto()
         {
             _inner = new InnerStruct();
         }
-
-        ///  <summary>
+        
+        /// <summary>
         /// Initializes a new data transfer object from the business object
         /// </summary>
         /// <param name="inner">The business object that should be transferred</param>
         /// <param name="store">A component to handle binary data</param>
-        public RecoverableErrorDto( RecoverableError inner, Tecan.Sila2.IBinaryStore store )
+        public RecoverableErrorDto(RecoverableError inner, Tecan.Sila2.IBinaryStore store)
         {
-            _inner = new InnerStruct( inner, store );
+            _inner = new InnerStruct(inner, store);
         }
-
-        ///  <summary>
+        
+        /// <summary>
         /// The fully qualified identifier of the command whose execution produced the error.
         /// </summary>
         public Tecan.Sila2.StringDto CommandIdentifier_
         {
             get
             {
-                if((_inner == null))
+                if ((_inner == null))
                 {
                     _inner = new InnerStruct();
                 }
@@ -347,22 +347,22 @@ namespace Tecan.Sila2.Recovery
             }
             set
             {
-                if((_inner == null))
+                if ((_inner == null))
                 {
                     _inner = new InnerStruct();
                 }
                 Inner.CommandIdentifier_ = value;
             }
         }
-
-        ///  <summary>
+        
+        /// <summary>
         /// The UUID of the observable command execution during which the error occurred.
         /// </summary>
         public Tecan.Sila2.StringDto CommandExecutionUUID
         {
             get
             {
-                if((_inner == null))
+                if ((_inner == null))
                 {
                     _inner = new InnerStruct();
                 }
@@ -370,15 +370,15 @@ namespace Tecan.Sila2.Recovery
             }
             set
             {
-                if((_inner == null))
+                if ((_inner == null))
                 {
                     _inner = new InnerStruct();
                 }
                 Inner.CommandExecutionUUID = value;
             }
         }
-
-        ///  <summary>
+        
+        /// <summary>
         /// This message describes the error situation. It should contain the reason of the error and additional error handling
         /// explanation.
         /// </summary>
@@ -386,7 +386,7 @@ namespace Tecan.Sila2.Recovery
         {
             get
             {
-                if((_inner == null))
+                if ((_inner == null))
                 {
                     _inner = new InnerStruct();
                 }
@@ -394,22 +394,22 @@ namespace Tecan.Sila2.Recovery
             }
             set
             {
-                if((_inner == null))
+                if ((_inner == null))
                 {
                     _inner = new InnerStruct();
                 }
                 Inner.ErrorMessage = value;
             }
         }
-
-        ///  <summary>
+        
+        /// <summary>
         /// A list of possible options to recover the error and continue the command execution.
         /// </summary>
         public System.Collections.Generic.List<ContinuationOptionDto> ContinuationOptions
         {
             get
             {
-                if((_inner == null))
+                if ((_inner == null))
                 {
                     _inner = new InnerStruct();
                 }
@@ -417,15 +417,15 @@ namespace Tecan.Sila2.Recovery
             }
             set
             {
-                if((_inner == null))
+                if ((_inner == null))
                 {
                     _inner = new InnerStruct();
                 }
                 Inner.ContinuationOptions = value;
             }
         }
-
-        ///  <summary>
+        
+        /// <summary>
         /// The identifier of a continuation option that is marked as the preferred option. It must be an identifier of one of the
         /// continuation options of the 'ContinuationOptions' list.
         /// It can also be defined to be automatically executed after a timeout specified by the 'AutomaticExecutionTimeout' element.
@@ -434,7 +434,7 @@ namespace Tecan.Sila2.Recovery
         {
             get
             {
-                if((_inner == null))
+                if ((_inner == null))
                 {
                     _inner = new InnerStruct();
                 }
@@ -442,15 +442,15 @@ namespace Tecan.Sila2.Recovery
             }
             set
             {
-                if((_inner == null))
+                if ((_inner == null))
                 {
                     _inner = new InnerStruct();
                 }
                 Inner.DefaultOption = value;
             }
         }
-
-        ///  <summary>
+        
+        /// <summary>
         /// Specifies a timeout for handling the error by the client. If the client does not send a continuation option
         /// within the specified duration, the defined default option will automatically be executed.
         /// A value of 0 means, that no automatic execution will be done by the server.
@@ -460,7 +460,7 @@ namespace Tecan.Sila2.Recovery
         {
             get
             {
-                if((_inner == null))
+                if ((_inner == null))
                 {
                     _inner = new InnerStruct();
                 }
@@ -468,18 +468,18 @@ namespace Tecan.Sila2.Recovery
             }
             set
             {
-                if((_inner == null))
+                if ((_inner == null))
                 {
                     _inner = new InnerStruct();
                 }
                 Inner.AutomaticExecutionTimeout = value;
             }
         }
-
-        ///  <summary>
+        
+        /// <summary>
         /// The actual contents of the data transfer object.
         /// </summary>
-        [ProtoBuf.ProtoMemberAttribute( 1 )]
+        [ProtoBuf.ProtoMemberAttribute(1)]
         public InnerStruct Inner
         {
             get
@@ -491,97 +491,97 @@ namespace Tecan.Sila2.Recovery
                 _inner = value;
             }
         }
-
-        ///  <summary>
+        
+        /// <summary>
         /// Extracts the transferred value
         /// </summary>
         /// <param name="store">The binary store in which to store binary data</param>
         /// <returns>the inner value</returns>
-        public RecoverableError Extract( Tecan.Sila2.IBinaryStore store )
+        public RecoverableError Extract(Tecan.Sila2.IBinaryStore store)
         {
-            return new RecoverableError( CommandIdentifier_.Extract( store ), CommandExecutionUUID.Extract( store ), ErrorMessage.Extract( store ), ContinuationOptions.Extract( store ), DefaultOption.Extract( store ), AutomaticExecutionTimeout.Extract( store ) );
+            return new RecoverableError(CommandIdentifier_.Extract(store), CommandExecutionUUID.Extract(store), ErrorMessage.Extract(store), ContinuationOptions.Extract(store), DefaultOption.Extract(store), AutomaticExecutionTimeout.Extract(store));
         }
-
-        ///  <summary>
+        
+        /// <summary>
         /// Creates the data transfer object from the given object to transport
         /// </summary>
         /// <param name="inner">The object to transfer</param>
         /// <param name="store">An object to store binary data</param>
-        public static RecoverableErrorDto Create( RecoverableError inner, Tecan.Sila2.IBinaryStore store )
+        public static RecoverableErrorDto Create(RecoverableError inner, Tecan.Sila2.IBinaryStore store)
         {
-            return new RecoverableErrorDto( inner, store );
+            return new RecoverableErrorDto(inner, store);
         }
-
-        ///  <summary>
+        
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            string errors = (((((("" + Argument.Require( CommandIdentifier_, "commandIdentifier" ))
-                        + Argument.Require( CommandExecutionUUID, "commandExecutionUUID" ))
-                        + Argument.Require( ErrorMessage, "errorMessage" ))
-                        + Argument.Require( ContinuationOptions, "continuationOptions" ))
-                        + Argument.Require( DefaultOption, "defaultOption" ))
-                        + Argument.Require( AutomaticExecutionTimeout, "automaticExecutionTimeout" ));
-            if((ExecuteContinuationOptionRequestDto.CommandExecutionUUIDPattern.IsMatch( CommandExecutionUUID.Value ) == false))
+            string errors = (((((("" + Argument.Require(CommandIdentifier_, "commandIdentifier")) 
+                        + Argument.Require(CommandExecutionUUID, "commandExecutionUUID")) 
+                        + Argument.Require(ErrorMessage, "errorMessage")) 
+                        + Argument.Require(ContinuationOptions, "continuationOptions")) 
+                        + Argument.Require(DefaultOption, "defaultOption")) 
+                        + Argument.Require(AutomaticExecutionTimeout, "automaticExecutionTimeout"));
+            if ((CommandExecutionUUIDPattern.IsMatch(CommandExecutionUUID.Value) == false))
             {
-                errors = (errors + string.Format( "CommandExecutionUUID \'{0}\' does not match pattern \'[0-9a-f]{8}\\-[0-9a-f]{4}\\-[0-9" +
-                        "a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{12}\'; ", CommandExecutionUUID.Value ));
+                errors = (errors + string.Format("CommandExecutionUUID \'{0}\' does not match pattern \'[0-9a-f]{8}\\-[0-9a-f]{4}\\-[0-9" +
+                        "a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{12}\'; ", CommandExecutionUUID.Value));
             }
             return errors;
         }
-
-        ///  <summary>
+        
+        /// <summary>
         /// Represents the inner structure for actual content
         /// </summary>
         [ProtoBuf.ProtoContractAttribute()]
         public class InnerStruct
         {
-
+            
             private Tecan.Sila2.StringDto _commandIdentifier_;
-
+            
             private Tecan.Sila2.StringDto _commandExecutionUUID;
-
-            ///  <summary>
+            
+            /// <summary>
             /// A regular expression to check the validity of CommandExecutionUUID
             /// </summary>
-            public static System.Text.RegularExpressions.Regex CommandExecutionUUIDPattern = new System.Text.RegularExpressions.Regex( "[0-9a-f]{8}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{12}" );
-
+            public static System.Text.RegularExpressions.Regex CommandExecutionUUIDPattern = new System.Text.RegularExpressions.Regex("[0-9a-f]{8}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{12}");
+            
             private Tecan.Sila2.StringDto _errorMessage;
-
+            
             private System.Collections.Generic.List<ContinuationOptionDto> _continuationOptions;
-
+            
             private Tecan.Sila2.StringDto _defaultOption;
-
+            
             private TimeoutDto _automaticExecutionTimeout;
-
-            ///  <summary>
+            
+            /// <summary>
             /// Initializes a new instance (to be used by the serializer)
             /// </summary>
             public InnerStruct()
             {
             }
-
-            ///  <summary>
+            
+            /// <summary>
             /// Initializes a new data transfer object from the business object
             /// </summary>
             /// <param name="inner">The business object that should be transferred</param>
             /// <param name="store">A component to handle binary data</param>
-            public InnerStruct( RecoverableError inner, Tecan.Sila2.IBinaryStore store )
+            public InnerStruct(RecoverableError inner, Tecan.Sila2.IBinaryStore store)
             {
-                CommandIdentifier_ = new Tecan.Sila2.StringDto( inner.CommandIdentifier, store );
-                CommandExecutionUUID = new Tecan.Sila2.StringDto( inner.CommandExecutionUUID, store );
-                ErrorMessage = new Tecan.Sila2.StringDto( inner.ErrorMessage, store );
-                ContinuationOptions = Tecan.Sila2.DtoExtensions.Encapsulate( inner.ContinuationOptions, ContinuationOptionDto.Create, store );
-                DefaultOption = new Tecan.Sila2.StringDto( inner.DefaultOption, store );
-                AutomaticExecutionTimeout = new TimeoutDto( inner.AutomaticExecutionTimeout, store );
+                CommandIdentifier_ = new Tecan.Sila2.StringDto(inner.CommandIdentifier, store);
+                CommandExecutionUUID = new Tecan.Sila2.StringDto(inner.CommandExecutionUUID, store);
+                ErrorMessage = new Tecan.Sila2.StringDto(inner.ErrorMessage, store);
+                ContinuationOptions = Tecan.Sila2.DtoExtensions.Encapsulate(inner.ContinuationOptions, ContinuationOptionDto.Create, store);
+                DefaultOption = new Tecan.Sila2.StringDto(inner.DefaultOption, store);
+                AutomaticExecutionTimeout = new TimeoutDto(inner.AutomaticExecutionTimeout, store);
             }
-
-            ///  <summary>
+            
+            /// <summary>
             /// The fully qualified identifier of the command whose execution produced the error.
             /// </summary>
-            [ProtoBuf.ProtoMemberAttribute( 1 )]
+            [ProtoBuf.ProtoMemberAttribute(1)]
             public Tecan.Sila2.StringDto CommandIdentifier_
             {
                 get
@@ -593,11 +593,11 @@ namespace Tecan.Sila2.Recovery
                     _commandIdentifier_ = value;
                 }
             }
-
-            ///  <summary>
+            
+            /// <summary>
             /// The UUID of the observable command execution during which the error occurred.
             /// </summary>
-            [ProtoBuf.ProtoMemberAttribute( 2 )]
+            [ProtoBuf.ProtoMemberAttribute(2)]
             public Tecan.Sila2.StringDto CommandExecutionUUID
             {
                 get
@@ -609,12 +609,12 @@ namespace Tecan.Sila2.Recovery
                     _commandExecutionUUID = value;
                 }
             }
-
-            ///  <summary>
+            
+            /// <summary>
             /// This message describes the error situation. It should contain the reason of the error and additional error handling
             /// explanation.
             /// </summary>
-            [ProtoBuf.ProtoMemberAttribute( 3 )]
+            [ProtoBuf.ProtoMemberAttribute(3)]
             public Tecan.Sila2.StringDto ErrorMessage
             {
                 get
@@ -626,11 +626,11 @@ namespace Tecan.Sila2.Recovery
                     _errorMessage = value;
                 }
             }
-
-            ///  <summary>
+            
+            /// <summary>
             /// A list of possible options to recover the error and continue the command execution.
             /// </summary>
-            [ProtoBuf.ProtoMemberAttribute( 4 )]
+            [ProtoBuf.ProtoMemberAttribute(4)]
             public System.Collections.Generic.List<ContinuationOptionDto> ContinuationOptions
             {
                 get
@@ -642,13 +642,13 @@ namespace Tecan.Sila2.Recovery
                     _continuationOptions = value;
                 }
             }
-
-            ///  <summary>
+            
+            /// <summary>
             /// The identifier of a continuation option that is marked as the preferred option. It must be an identifier of one of the
             /// continuation options of the 'ContinuationOptions' list.
             /// It can also be defined to be automatically executed after a timeout specified by the 'AutomaticExecutionTimeout' element.
             /// </summary>
-            [ProtoBuf.ProtoMemberAttribute( 5 )]
+            [ProtoBuf.ProtoMemberAttribute(5)]
             public Tecan.Sila2.StringDto DefaultOption
             {
                 get
@@ -660,14 +660,14 @@ namespace Tecan.Sila2.Recovery
                     _defaultOption = value;
                 }
             }
-
-            ///  <summary>
+            
+            /// <summary>
             /// Specifies a timeout for handling the error by the client. If the client does not send a continuation option
             /// within the specified duration, the defined default option will automatically be executed.
             /// A value of 0 means, that no automatic execution will be done by the server.
             /// This timeout only takes effect if a default option is specified, otherwise it will be ignored.
             /// </summary>
-            [ProtoBuf.ProtoMemberAttribute( 6 )]
+            [ProtoBuf.ProtoMemberAttribute(6)]
             public TimeoutDto AutomaticExecutionTimeout
             {
                 get
@@ -681,42 +681,42 @@ namespace Tecan.Sila2.Recovery
             }
         }
     }
-
-    ///  <summary>
+    
+    /// <summary>
     /// The data transfer object for Continuation Option
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
     public class ContinuationOptionDto : Tecan.Sila2.ISilaTransferObject<ContinuationOption>
     {
-
+        
         private InnerStruct _inner;
-
-        ///  <summary>
+        
+        /// <summary>
         /// Initializes a new instance (to be used by the serializer)
         /// </summary>
         public ContinuationOptionDto()
         {
             _inner = new InnerStruct();
         }
-
-        ///  <summary>
+        
+        /// <summary>
         /// Initializes a new data transfer object from the business object
         /// </summary>
         /// <param name="inner">The business object that should be transferred</param>
         /// <param name="store">A component to handle binary data</param>
-        public ContinuationOptionDto( ContinuationOption inner, Tecan.Sila2.IBinaryStore store )
+        public ContinuationOptionDto(ContinuationOption inner, Tecan.Sila2.IBinaryStore store)
         {
-            _inner = new InnerStruct( inner, store );
+            _inner = new InnerStruct(inner, store);
         }
-
-        ///  <summary>
+        
+        /// <summary>
         /// The identifier of the continuation option. It must be unique within the RecoverableError object.
         /// </summary>
         public Tecan.Sila2.StringDto Identifier
         {
             get
             {
-                if((_inner == null))
+                if ((_inner == null))
                 {
                     _inner = new InnerStruct();
                 }
@@ -724,15 +724,15 @@ namespace Tecan.Sila2.Recovery
             }
             set
             {
-                if((_inner == null))
+                if ((_inner == null))
                 {
                     _inner = new InnerStruct();
                 }
                 Inner.Identifier = value;
             }
         }
-
-        ///  <summary>
+        
+        /// <summary>
         /// A human readable text describing the continuation option. It must explain all required manual actions by the operator
         /// as well as the actions that will be executed by the server and the expectable results when this option is selected.
         /// If there is additional data that can be sent along with the continuation option, the kind of the data as well as the
@@ -742,7 +742,7 @@ namespace Tecan.Sila2.Recovery
         {
             get
             {
-                if((_inner == null))
+                if ((_inner == null))
                 {
                     _inner = new InnerStruct();
                 }
@@ -750,15 +750,15 @@ namespace Tecan.Sila2.Recovery
             }
             set
             {
-                if((_inner == null))
+                if ((_inner == null))
                 {
                     _inner = new InnerStruct();
                 }
                 Inner.Description = value;
             }
         }
-
-        ///  <summary>
+        
+        /// <summary>
         /// This field defines the structure of the additional input data that is required in order to execute this continuation
         /// option. The format is a SiLA data type definition according to the schema DataTypes.xsd. If this field is empty no
         /// additional data is required.
@@ -767,7 +767,7 @@ namespace Tecan.Sila2.Recovery
         {
             get
             {
-                if((_inner == null))
+                if ((_inner == null))
                 {
                     _inner = new InnerStruct();
                 }
@@ -775,18 +775,18 @@ namespace Tecan.Sila2.Recovery
             }
             set
             {
-                if((_inner == null))
+                if ((_inner == null))
                 {
                     _inner = new InnerStruct();
                 }
                 Inner.RequiredInputData = value;
             }
         }
-
-        ///  <summary>
+        
+        /// <summary>
         /// The actual contents of the data transfer object.
         /// </summary>
-        [ProtoBuf.ProtoMemberAttribute( 1 )]
+        [ProtoBuf.ProtoMemberAttribute(1)]
         public InnerStruct Inner
         {
             get
@@ -798,74 +798,74 @@ namespace Tecan.Sila2.Recovery
                 _inner = value;
             }
         }
-
-        ///  <summary>
+        
+        /// <summary>
         /// Extracts the transferred value
         /// </summary>
         /// <param name="store">The binary store in which to store binary data</param>
         /// <returns>the inner value</returns>
-        public ContinuationOption Extract( Tecan.Sila2.IBinaryStore store )
+        public ContinuationOption Extract(Tecan.Sila2.IBinaryStore store)
         {
-            return new ContinuationOption( Identifier.Extract( store ), Description.Extract( store ), RequiredInputData.Extract( store ) );
+            return new ContinuationOption(Identifier.Extract(store), Description.Extract(store), RequiredInputData.Extract(store));
         }
-
-        ///  <summary>
+        
+        /// <summary>
         /// Creates the data transfer object from the given object to transport
         /// </summary>
         /// <param name="inner">The object to transfer</param>
         /// <param name="store">An object to store binary data</param>
-        public static ContinuationOptionDto Create( ContinuationOption inner, Tecan.Sila2.IBinaryStore store )
+        public static ContinuationOptionDto Create(ContinuationOption inner, Tecan.Sila2.IBinaryStore store)
         {
-            return new ContinuationOptionDto( inner, store );
+            return new ContinuationOptionDto(inner, store);
         }
-
-        ///  <summary>
+        
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return ((("" + Argument.Require( Identifier, "identifier" ))
-                        + Argument.Require( Description, "description" ))
-                        + Argument.Require( RequiredInputData, "requiredInputData" ));
+            return ((("" + Argument.Require(Identifier, "identifier")) 
+                        + Argument.Require(Description, "description")) 
+                        + Argument.Require(RequiredInputData, "requiredInputData"));
         }
-
-        ///  <summary>
+        
+        /// <summary>
         /// Represents the inner structure for actual content
         /// </summary>
         [ProtoBuf.ProtoContractAttribute()]
         public class InnerStruct
         {
-
+            
             private Tecan.Sila2.StringDto _identifier;
-
+            
             private Tecan.Sila2.StringDto _description;
-
+            
             private Tecan.Sila2.StringDto _requiredInputData;
-
-            ///  <summary>
+            
+            /// <summary>
             /// Initializes a new instance (to be used by the serializer)
             /// </summary>
             public InnerStruct()
             {
             }
-
-            ///  <summary>
+            
+            /// <summary>
             /// Initializes a new data transfer object from the business object
             /// </summary>
             /// <param name="inner">The business object that should be transferred</param>
             /// <param name="store">A component to handle binary data</param>
-            public InnerStruct( ContinuationOption inner, Tecan.Sila2.IBinaryStore store )
+            public InnerStruct(ContinuationOption inner, Tecan.Sila2.IBinaryStore store)
             {
-                Identifier = new Tecan.Sila2.StringDto( inner.Identifier, store );
-                Description = new Tecan.Sila2.StringDto( inner.Description, store );
-                RequiredInputData = new Tecan.Sila2.StringDto( inner.RequiredInputData, store );
+                Identifier = new Tecan.Sila2.StringDto(inner.Identifier, store);
+                Description = new Tecan.Sila2.StringDto(inner.Description, store);
+                RequiredInputData = new Tecan.Sila2.StringDto(inner.RequiredInputData, store);
             }
-
-            ///  <summary>
+            
+            /// <summary>
             /// The identifier of the continuation option. It must be unique within the RecoverableError object.
             /// </summary>
-            [ProtoBuf.ProtoMemberAttribute( 1 )]
+            [ProtoBuf.ProtoMemberAttribute(1)]
             public Tecan.Sila2.StringDto Identifier
             {
                 get
@@ -877,14 +877,14 @@ namespace Tecan.Sila2.Recovery
                     _identifier = value;
                 }
             }
-
-            ///  <summary>
+            
+            /// <summary>
             /// A human readable text describing the continuation option. It must explain all required manual actions by the operator
             /// as well as the actions that will be executed by the server and the expectable results when this option is selected.
             /// If there is additional data that can be sent along with the continuation option, the kind of the data as well as the
             /// required format must be described as well.
             /// </summary>
-            [ProtoBuf.ProtoMemberAttribute( 2 )]
+            [ProtoBuf.ProtoMemberAttribute(2)]
             public Tecan.Sila2.StringDto Description
             {
                 get
@@ -896,13 +896,13 @@ namespace Tecan.Sila2.Recovery
                     _description = value;
                 }
             }
-
-            ///  <summary>
+            
+            /// <summary>
             /// This field defines the structure of the additional input data that is required in order to execute this continuation
             /// option. The format is a SiLA data type definition according to the schema DataTypes.xsd. If this field is empty no
             /// additional data is required.
             /// </summary>
-            [ProtoBuf.ProtoMemberAttribute( 3 )]
+            [ProtoBuf.ProtoMemberAttribute(3)]
             public Tecan.Sila2.StringDto RequiredInputData
             {
                 get
@@ -916,37 +916,37 @@ namespace Tecan.Sila2.Recovery
             }
         }
     }
-
-    ///  <summary>
+    
+    /// <summary>
     /// The data transfer object for Timeout
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
     public class TimeoutDto : Tecan.Sila2.ISilaTransferObject<Timeout>
     {
-
+        
         private Tecan.Sila2.IntegerDto _timeout;
-
-        ///  <summary>
+        
+        /// <summary>
         /// Initializes a new instance (to be used by the serializer)
         /// </summary>
         public TimeoutDto()
         {
         }
-
-        ///  <summary>
+        
+        /// <summary>
         /// Initializes a new data transfer object from the business object
         /// </summary>
         /// <param name="inner">The business object that should be transferred</param>
         /// <param name="store">A component to handle binary data</param>
-        public TimeoutDto( Timeout inner, Tecan.Sila2.IBinaryStore store )
+        public TimeoutDto(Timeout inner, Tecan.Sila2.IBinaryStore store)
         {
-            Timeout = new Tecan.Sila2.IntegerDto( inner.Value, store );
+            Timeout = new Tecan.Sila2.IntegerDto(inner.Value, store);
         }
-
-        ///  <summary>
+        
+        /// <summary>
         /// The timeout in seconds
         /// </summary>
-        [ProtoBuf.ProtoMemberAttribute( 1 )]
+        [ProtoBuf.ProtoMemberAttribute(1)]
         public Tecan.Sila2.IntegerDto Timeout
         {
             get
@@ -958,34 +958,34 @@ namespace Tecan.Sila2.Recovery
                 _timeout = value;
             }
         }
-
-        ///  <summary>
+        
+        /// <summary>
         /// Extracts the transferred value
         /// </summary>
         /// <param name="store">The binary store in which to store binary data</param>
         /// <returns>the inner value</returns>
-        public Timeout Extract( Tecan.Sila2.IBinaryStore store )
+        public Timeout Extract(Tecan.Sila2.IBinaryStore store)
         {
-            return new Timeout( Timeout.Extract( store ) );
+            return new Timeout(Timeout.Extract(store));
         }
-
-        ///  <summary>
+        
+        /// <summary>
         /// Creates the data transfer object from the given object to transport
         /// </summary>
         /// <param name="inner">The object to transfer</param>
         /// <param name="store">An object to store binary data</param>
-        public static TimeoutDto Create( Timeout inner, Tecan.Sila2.IBinaryStore store )
+        public static TimeoutDto Create(Timeout inner, Tecan.Sila2.IBinaryStore store)
         {
-            return new TimeoutDto( inner, store );
+            return new TimeoutDto(inner, store);
         }
-
-        ///  <summary>
+        
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return ("" + Argument.Require( Timeout, "timeout" ));
+            return ("" + Argument.Require(Timeout, "timeout"));
         }
     }
 }

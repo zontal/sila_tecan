@@ -17,7 +17,7 @@ namespace Tecan.Sila2.Interop.Server.ParameterConstraintsTest
 {
     
     
-    ///  <summary>
+    /// <summary>
     /// A class that exposes the IParameterConstraintsTest interface via SiLA2
     /// </summary>
     [System.ComponentModel.Composition.ExportAttribute(typeof(IFeatureProvider))]
@@ -31,7 +31,7 @@ namespace Tecan.Sila2.Interop.Server.ParameterConstraintsTest
         
         private static Tecan.Sila2.Feature _feature = FeatureSerializer.LoadFromAssembly(typeof(ParameterConstraintsTestProvider).Assembly, "ParameterConstraintsTest.sila.xml");
         
-        ///  <summary>
+        /// <summary>
         /// Creates a new instance
         /// </summary>
         /// <param name="implementation">The implementation to exported through SiLA2</param>
@@ -43,7 +43,7 @@ namespace Tecan.Sila2.Interop.Server.ParameterConstraintsTest
             _server = server;
         }
         
-        ///  <summary>
+        /// <summary>
         /// The feature that is exposed by this feature provider
         /// </summary>
         /// <returns>A feature object</returns>
@@ -55,7 +55,7 @@ namespace Tecan.Sila2.Interop.Server.ParameterConstraintsTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Registers the feature in the provided feature registration
         /// </summary>
         /// <param name="registration">The registration component to which the feature should be registered</param>
@@ -118,7 +118,7 @@ namespace Tecan.Sila2.Interop.Server.ParameterConstraintsTest
             registration.RegisterUnobservableCommand<CheckAllowedStructureTypeConstraintsRequestDto, EmptyRequest>("CheckAllowedStructureTypeConstraints", CheckAllowedStructureTypeConstraints);
         }
         
-        ///  <summary>
+        /// <summary>
         /// Executes the Check String Constraint Length command
         /// </summary>
         /// <param name="request">A data transfer object that contains the command parameters</param>
@@ -141,7 +141,7 @@ namespace Tecan.Sila2.Interop.Server.ParameterConstraintsTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Executes the Check String Constraint Minimal Length command
         /// </summary>
         /// <param name="request">A data transfer object that contains the command parameters</param>
@@ -164,7 +164,7 @@ namespace Tecan.Sila2.Interop.Server.ParameterConstraintsTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Executes the Check String Constraint Maximal Length command
         /// </summary>
         /// <param name="request">A data transfer object that contains the command parameters</param>
@@ -187,7 +187,7 @@ namespace Tecan.Sila2.Interop.Server.ParameterConstraintsTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Executes the Check String Constraint MinMax Length command
         /// </summary>
         /// <param name="request">A data transfer object that contains the command parameters</param>
@@ -210,7 +210,7 @@ namespace Tecan.Sila2.Interop.Server.ParameterConstraintsTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Executes the Check String Constraint Set command
         /// </summary>
         /// <param name="request">A data transfer object that contains the command parameters</param>
@@ -233,7 +233,7 @@ namespace Tecan.Sila2.Interop.Server.ParameterConstraintsTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Executes the Check String Constraint Pattern command
         /// </summary>
         /// <param name="request">A data transfer object that contains the command parameters</param>
@@ -256,7 +256,7 @@ namespace Tecan.Sila2.Interop.Server.ParameterConstraintsTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Executes the Check String Constraint Content Type command
         /// </summary>
         /// <param name="request">A data transfer object that contains the command parameters</param>
@@ -279,7 +279,7 @@ namespace Tecan.Sila2.Interop.Server.ParameterConstraintsTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Executes the Check String Constraint Fully Qualified Identifier command
         /// </summary>
         /// <param name="request">A data transfer object that contains the command parameters</param>
@@ -342,7 +342,7 @@ namespace Tecan.Sila2.Interop.Server.ParameterConstraintsTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Executes the Check String Constraint Schema command
         /// </summary>
         /// <param name="request">A data transfer object that contains the command parameters</param>
@@ -365,7 +365,7 @@ namespace Tecan.Sila2.Interop.Server.ParameterConstraintsTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Executes the Check Integer Constraint Set command
         /// </summary>
         /// <param name="request">A data transfer object that contains the command parameters</param>
@@ -388,7 +388,7 @@ namespace Tecan.Sila2.Interop.Server.ParameterConstraintsTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Executes the Check Scientifically Notated Integer Limit command
         /// </summary>
         /// <param name="request">A data transfer object that contains the command parameters</param>
@@ -411,7 +411,7 @@ namespace Tecan.Sila2.Interop.Server.ParameterConstraintsTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Executes the Check Integer Constraint Maximal Exclusive command
         /// </summary>
         /// <param name="request">A data transfer object that contains the command parameters</param>
@@ -434,7 +434,7 @@ namespace Tecan.Sila2.Interop.Server.ParameterConstraintsTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Executes the Check Integer Constraint Maximal Inclusive command
         /// </summary>
         /// <param name="request">A data transfer object that contains the command parameters</param>
@@ -457,7 +457,7 @@ namespace Tecan.Sila2.Interop.Server.ParameterConstraintsTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Executes the Check Integer Constraint Minimal Exclusive command
         /// </summary>
         /// <param name="request">A data transfer object that contains the command parameters</param>
@@ -480,7 +480,7 @@ namespace Tecan.Sila2.Interop.Server.ParameterConstraintsTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Executes the Check Integer Constraint Minimal Inclusive command
         /// </summary>
         /// <param name="request">A data transfer object that contains the command parameters</param>
@@ -503,7 +503,7 @@ namespace Tecan.Sila2.Interop.Server.ParameterConstraintsTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Executes the Check Integer Constraint MinMax command
         /// </summary>
         /// <param name="request">A data transfer object that contains the command parameters</param>
@@ -526,7 +526,7 @@ namespace Tecan.Sila2.Interop.Server.ParameterConstraintsTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Executes the Check Integer Constraint Unit command
         /// </summary>
         /// <param name="request">A data transfer object that contains the command parameters</param>
@@ -549,7 +549,7 @@ namespace Tecan.Sila2.Interop.Server.ParameterConstraintsTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Executes the Check Real Constraint Set command
         /// </summary>
         /// <param name="request">A data transfer object that contains the command parameters</param>
@@ -572,7 +572,7 @@ namespace Tecan.Sila2.Interop.Server.ParameterConstraintsTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Executes the Check Scientifically Notated Real Limit command
         /// </summary>
         /// <param name="request">A data transfer object that contains the command parameters</param>
@@ -595,7 +595,7 @@ namespace Tecan.Sila2.Interop.Server.ParameterConstraintsTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Executes the Check Real Constraint Maximal Exclusive command
         /// </summary>
         /// <param name="request">A data transfer object that contains the command parameters</param>
@@ -618,7 +618,7 @@ namespace Tecan.Sila2.Interop.Server.ParameterConstraintsTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Executes the Check Real Constraint Maximal Inclusive command
         /// </summary>
         /// <param name="request">A data transfer object that contains the command parameters</param>
@@ -641,7 +641,7 @@ namespace Tecan.Sila2.Interop.Server.ParameterConstraintsTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Executes the Check Real Constraint Minimal Exclusive command
         /// </summary>
         /// <param name="request">A data transfer object that contains the command parameters</param>
@@ -664,7 +664,7 @@ namespace Tecan.Sila2.Interop.Server.ParameterConstraintsTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Executes the Check Real Constraint Minimal Inclusive command
         /// </summary>
         /// <param name="request">A data transfer object that contains the command parameters</param>
@@ -687,7 +687,7 @@ namespace Tecan.Sila2.Interop.Server.ParameterConstraintsTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Executes the Check Real Constraint MinMax command
         /// </summary>
         /// <param name="request">A data transfer object that contains the command parameters</param>
@@ -710,7 +710,7 @@ namespace Tecan.Sila2.Interop.Server.ParameterConstraintsTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Executes the Check Real Constraint Unit command
         /// </summary>
         /// <param name="request">A data transfer object that contains the command parameters</param>
@@ -733,7 +733,7 @@ namespace Tecan.Sila2.Interop.Server.ParameterConstraintsTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Executes the Check Date Constraint Set command
         /// </summary>
         /// <param name="request">A data transfer object that contains the command parameters</param>
@@ -756,7 +756,7 @@ namespace Tecan.Sila2.Interop.Server.ParameterConstraintsTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Executes the Check Date Constraint Maximal Exclusive command
         /// </summary>
         /// <param name="request">A data transfer object that contains the command parameters</param>
@@ -779,7 +779,7 @@ namespace Tecan.Sila2.Interop.Server.ParameterConstraintsTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Executes the Check Date Constraint Maximal Inclusive command
         /// </summary>
         /// <param name="request">A data transfer object that contains the command parameters</param>
@@ -802,7 +802,7 @@ namespace Tecan.Sila2.Interop.Server.ParameterConstraintsTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Executes the Check Date Constraint Minimal Exclusive command
         /// </summary>
         /// <param name="request">A data transfer object that contains the command parameters</param>
@@ -825,7 +825,7 @@ namespace Tecan.Sila2.Interop.Server.ParameterConstraintsTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Executes the Check Date Constraint Minimal Inclusive command
         /// </summary>
         /// <param name="request">A data transfer object that contains the command parameters</param>
@@ -848,7 +848,7 @@ namespace Tecan.Sila2.Interop.Server.ParameterConstraintsTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Executes the Check Date Constraint MinMax command
         /// </summary>
         /// <param name="request">A data transfer object that contains the command parameters</param>
@@ -871,7 +871,7 @@ namespace Tecan.Sila2.Interop.Server.ParameterConstraintsTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Executes the Check Time Constraint Set command
         /// </summary>
         /// <param name="request">A data transfer object that contains the command parameters</param>
@@ -894,7 +894,7 @@ namespace Tecan.Sila2.Interop.Server.ParameterConstraintsTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Executes the Check Time Constraint Maximal Exclusive command
         /// </summary>
         /// <param name="request">A data transfer object that contains the command parameters</param>
@@ -917,7 +917,7 @@ namespace Tecan.Sila2.Interop.Server.ParameterConstraintsTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Executes the Check Time Constraint Maximal Inclusive command
         /// </summary>
         /// <param name="request">A data transfer object that contains the command parameters</param>
@@ -940,7 +940,7 @@ namespace Tecan.Sila2.Interop.Server.ParameterConstraintsTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Executes the Check Time Constraint Minimal Exclusive command
         /// </summary>
         /// <param name="request">A data transfer object that contains the command parameters</param>
@@ -963,7 +963,7 @@ namespace Tecan.Sila2.Interop.Server.ParameterConstraintsTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Executes the Check Time Constraint Minimal Inclusive command
         /// </summary>
         /// <param name="request">A data transfer object that contains the command parameters</param>
@@ -986,7 +986,7 @@ namespace Tecan.Sila2.Interop.Server.ParameterConstraintsTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Executes the Check Time Constraint MinMax command
         /// </summary>
         /// <param name="request">A data transfer object that contains the command parameters</param>
@@ -1009,7 +1009,7 @@ namespace Tecan.Sila2.Interop.Server.ParameterConstraintsTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Executes the Check Timestamp Constraint Set command
         /// </summary>
         /// <param name="request">A data transfer object that contains the command parameters</param>
@@ -1032,7 +1032,7 @@ namespace Tecan.Sila2.Interop.Server.ParameterConstraintsTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Executes the Check Timestamp Constraint Maximal Exclusive command
         /// </summary>
         /// <param name="request">A data transfer object that contains the command parameters</param>
@@ -1055,7 +1055,7 @@ namespace Tecan.Sila2.Interop.Server.ParameterConstraintsTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Executes the Check Timestamp Constraint Maximal Inclusive command
         /// </summary>
         /// <param name="request">A data transfer object that contains the command parameters</param>
@@ -1078,7 +1078,7 @@ namespace Tecan.Sila2.Interop.Server.ParameterConstraintsTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Executes the Check Timestamp Constraint Minimal Exclusive command
         /// </summary>
         /// <param name="request">A data transfer object that contains the command parameters</param>
@@ -1101,7 +1101,7 @@ namespace Tecan.Sila2.Interop.Server.ParameterConstraintsTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Executes the Check Timestamp Constraint Minimal Inclusive command
         /// </summary>
         /// <param name="request">A data transfer object that contains the command parameters</param>
@@ -1124,7 +1124,7 @@ namespace Tecan.Sila2.Interop.Server.ParameterConstraintsTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Executes the Check Timestamp Constraint MinMax command
         /// </summary>
         /// <param name="request">A data transfer object that contains the command parameters</param>
@@ -1147,7 +1147,7 @@ namespace Tecan.Sila2.Interop.Server.ParameterConstraintsTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Executes the Check List Constraint Element Count command
         /// </summary>
         /// <param name="request">A data transfer object that contains the command parameters</param>
@@ -1170,7 +1170,7 @@ namespace Tecan.Sila2.Interop.Server.ParameterConstraintsTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Executes the Check List Constraint Minimal Element Count command
         /// </summary>
         /// <param name="request">A data transfer object that contains the command parameters</param>
@@ -1193,7 +1193,7 @@ namespace Tecan.Sila2.Interop.Server.ParameterConstraintsTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Executes the Check List Constraint Maximal Element Count command
         /// </summary>
         /// <param name="request">A data transfer object that contains the command parameters</param>
@@ -1216,7 +1216,7 @@ namespace Tecan.Sila2.Interop.Server.ParameterConstraintsTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Executes the Check List Constraint MinMax Element Count command
         /// </summary>
         /// <param name="request">A data transfer object that contains the command parameters</param>
@@ -1239,7 +1239,7 @@ namespace Tecan.Sila2.Interop.Server.ParameterConstraintsTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Executes the Check Binary Constraint Length command
         /// </summary>
         /// <param name="request">A data transfer object that contains the command parameters</param>
@@ -1262,7 +1262,7 @@ namespace Tecan.Sila2.Interop.Server.ParameterConstraintsTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Executes the Check Binary Constraint Minimal Length command
         /// </summary>
         /// <param name="request">A data transfer object that contains the command parameters</param>
@@ -1285,7 +1285,7 @@ namespace Tecan.Sila2.Interop.Server.ParameterConstraintsTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Executes the Check Binary Constraint Maximal Length command
         /// </summary>
         /// <param name="request">A data transfer object that contains the command parameters</param>
@@ -1308,7 +1308,7 @@ namespace Tecan.Sila2.Interop.Server.ParameterConstraintsTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Executes the Check Binary Constraint MinMax Length command
         /// </summary>
         /// <param name="request">A data transfer object that contains the command parameters</param>
@@ -1331,7 +1331,7 @@ namespace Tecan.Sila2.Interop.Server.ParameterConstraintsTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Executes the Check Binary Constraint Content Type command
         /// </summary>
         /// <param name="request">A data transfer object that contains the command parameters</param>
@@ -1354,7 +1354,7 @@ namespace Tecan.Sila2.Interop.Server.ParameterConstraintsTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Executes the Check Binary Constraint Schema command
         /// </summary>
         /// <param name="request">A data transfer object that contains the command parameters</param>
@@ -1377,7 +1377,7 @@ namespace Tecan.Sila2.Interop.Server.ParameterConstraintsTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Executes the Check Allowed Types Constraint command
         /// </summary>
         /// <param name="request">A data transfer object that contains the command parameters</param>
@@ -1400,7 +1400,7 @@ namespace Tecan.Sila2.Interop.Server.ParameterConstraintsTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Executes the Check Allowed Structure Type Constraints command
         /// </summary>
         /// <param name="request">A data transfer object that contains the command parameters</param>
@@ -1423,7 +1423,7 @@ namespace Tecan.Sila2.Interop.Server.ParameterConstraintsTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the command with the given identifier
         /// </summary>
         /// <param name="commandIdentifier">A fully qualified command identifier</param>
@@ -1705,7 +1705,7 @@ namespace Tecan.Sila2.Interop.Server.ParameterConstraintsTest
             return null;
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the property with the given identifier
         /// </summary>
         /// <param name="propertyIdentifier">A fully qualified property identifier</param>

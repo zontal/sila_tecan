@@ -17,7 +17,7 @@ namespace Tecan.Sila2.Interop.Client.ObservableCommandTest.ObservableCommandTest
 {
     
     
-    ///  <summary>
+    /// <summary>
     /// Class that implements the IObservableCommandTest interface through SiLA2
     /// </summary>
     public partial class ObservableCommandTestClient : IObservableCommandTest
@@ -29,7 +29,7 @@ namespace Tecan.Sila2.Interop.Client.ObservableCommandTest.ObservableCommandTest
         
         private const string _serviceName = "sila2.org.silastandard.test.observablecommandtest.v1.ObservableCommandTest";
         
-        ///  <summary>
+        /// <summary>
         /// Creates a new instance
         /// </summary>
         /// <param name="channel">The channel through which calls should be executed</param>
@@ -40,7 +40,7 @@ namespace Tecan.Sila2.Interop.Client.ObservableCommandTest.ObservableCommandTest
             _channel = channel;
         }
         
-        ///  <summary>
+        /// <summary>
         /// Count from 0 to N-1 and return the current number as intermediate response.
         /// </summary>
         /// <param name="n">Number to count to</param>
@@ -51,7 +51,7 @@ namespace Tecan.Sila2.Interop.Client.ObservableCommandTest.ObservableCommandTest
             return _channel.ExecuteIntermediatesCommand<CountRequestDto, long, CountIntermediateDto, long, CountResponseDto>(_serviceName, "Count", request, ConvertCountIntermediate, ConvertCountResponse, ConvertCountException, _executionManager.CreateCallOptions(request.CommandIdentifier));
         }
         
-        ///  <summary>
+        /// <summary>
         /// Converts the error ocurred during execution of Count to a proper exception
         /// </summary>
         /// <param name="errorIdentifier">The identifier of the error that has happened</param>
@@ -62,7 +62,7 @@ namespace Tecan.Sila2.Interop.Client.ObservableCommandTest.ObservableCommandTest
             return null;
         }
         
-        ///  <summary>
+        /// <summary>
         /// Unwraps the response of the CountIntermediate command
         /// </summary>
         /// <param name="value">The response data transfer object</param>
@@ -72,7 +72,7 @@ namespace Tecan.Sila2.Interop.Client.ObservableCommandTest.ObservableCommandTest
             return value.CurrentIteration.Extract(_executionManager.DownloadBinaryStore);
         }
         
-        ///  <summary>
+        /// <summary>
         /// Unwraps the response of the CountResponse command
         /// </summary>
         /// <param name="value">The response data transfer object</param>
@@ -82,7 +82,7 @@ namespace Tecan.Sila2.Interop.Client.ObservableCommandTest.ObservableCommandTest
             return value.IterationResponse.Extract(_executionManager.DownloadBinaryStore);
         }
         
-        ///  <summary>
+        /// <summary>
         /// Echo the given value after the specified delay. The command state must be "waiting" until the delay has passed.
         /// </summary>
         /// <param name="value">The value to echo</param>
@@ -93,7 +93,7 @@ namespace Tecan.Sila2.Interop.Client.ObservableCommandTest.ObservableCommandTest
             return _channel.ExecuteObservableCommand<EchoValueAfterDelayRequestDto, long, EchoValueAfterDelayResponseDto>(_serviceName, "EchoValueAfterDelay", request, ConvertEchoValueAfterDelayResponse, ConvertEchoValueAfterDelayException, _executionManager.CreateCallOptions(request.CommandIdentifier));
         }
         
-        ///  <summary>
+        /// <summary>
         /// Converts the error ocurred during execution of EchoValueAfterDelay to a proper exception
         /// </summary>
         /// <param name="errorIdentifier">The identifier of the error that has happened</param>
@@ -104,7 +104,7 @@ namespace Tecan.Sila2.Interop.Client.ObservableCommandTest.ObservableCommandTest
             return null;
         }
         
-        ///  <summary>
+        /// <summary>
         /// Unwraps the response of the EchoValueAfterDelayResponse command
         /// </summary>
         /// <param name="value">The response data transfer object</param>
@@ -121,7 +121,7 @@ namespace Tecan.Sila2.Interop.Client.ObservableCommandTest.ObservableCommandTest
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// Factory to instantiate clients for the Observable Command Test.
     /// </summary>
     [System.ComponentModel.Composition.ExportAttribute(typeof(IClientFactory))]
@@ -129,7 +129,7 @@ namespace Tecan.Sila2.Interop.Client.ObservableCommandTest.ObservableCommandTest
     public partial class ObservableCommandTestClientFactory : IClientFactory
     {
         
-        ///  <summary>
+        /// <summary>
         /// Gets the fully-qualified identifier of the feature for which clients can be generated
         /// </summary>
         public string FeatureIdentifier
@@ -140,7 +140,7 @@ namespace Tecan.Sila2.Interop.Client.ObservableCommandTest.ObservableCommandTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the interface type for which clients can be generated
         /// </summary>
         public System.Type InterfaceType
@@ -151,7 +151,7 @@ namespace Tecan.Sila2.Interop.Client.ObservableCommandTest.ObservableCommandTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Creates a strongly typed client for the given execution channel and execution manager
         /// </summary>
         /// <param name="channel">The channel that should be used for communication with the server</param>

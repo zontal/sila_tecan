@@ -12,7 +12,7 @@ namespace Tecan.Sila2.Authentication
 {
     
     
-    ///  <summary>
+    /// <summary>
     /// Response type for the Login command
     /// </summary>
     [Tecan.Sila2.SilaDisplayNameAttribute("Login - Response")]
@@ -23,7 +23,7 @@ namespace Tecan.Sila2.Authentication
         
         private long _tokenLifetime;
         
-        ///  <summary>
+        /// <summary>
         /// Initializes a new instance
         /// </summary>
         public LoginResponse(string accessToken, long tokenLifetime)
@@ -32,7 +32,7 @@ namespace Tecan.Sila2.Authentication
             _tokenLifetime = tokenLifetime;
         }
         
-        ///  <summary>
+        /// <summary>
         /// The token to be used along with accessing a Command or Property on a SiLA Server.
         /// </summary>
         public string AccessToken
@@ -43,7 +43,7 @@ namespace Tecan.Sila2.Authentication
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// The lifetime (in seconds) of the provided access token as the maximum validity period after the last SiLA Server
         /// request.
         /// </summary>
@@ -57,7 +57,7 @@ namespace Tecan.Sila2.Authentication
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// This Feature provides SiLA Clients with access tokens based on a user identification and password.
     /// 1. the user needs to login with the Login command into the server with a user identification (=user name) and a password
     /// 2. after verification, an Access Token with the Token Lifetime information will be generated and provided by the server.
@@ -69,22 +69,23 @@ namespace Tecan.Sila2.Authentication
     public partial interface IAuthenticationService
     {
         
-        ///  <summary>
+        /// <summary>
         /// Provides an access token based on user information.
         /// </summary>
         /// <param name="userIdentification">The user identification string (e.g. a user name)</param>
         /// <param name="password">The (encrypted) password</param>
         /// <param name="requestedServer">The ServerUUID of the server for which an authorization is requested.</param>
         /// <param name="requestedFeatures">The fully qualified identifiers of features that are requested to access. If no feature is provided, this means that all features are requested.</param>
-        /// <returns>The token to be used along with accessing a Command or Property on a SiLA Server., 
-        ///        The lifetime (in seconds) of the provided access token as the maximum validity period after the last SiLA Server
-        ///        request.
-        ///      </returns>
+        /// <returns>
+        /// The token to be used along with accessing a Command or Property on a SiLA Server.,
+        /// The lifetime (in seconds) of the provided access token as the maximum validity period after the last SiLA Server
+        /// request.
+        /// </returns>
         [Tecan.Sila2.ThrowsAttribute(typeof(AuthenticationFailedException))]
         [return: Tecan.Sila2.InlineStructAttribute()]
         LoginResponse Login(string userIdentification, string password, [Tecan.Sila2.PatternConstraintAttribute("[0-9a-f]{8}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{12}")] string requestedServer, [Tecan.Sila2.SilaIdentifierTypeAttribute(Tecan.Sila2.IdentifierType.FeatureIdentifier)] System.Collections.Generic.ICollection<string> requestedFeatures);
         
-        ///  <summary>
+        /// <summary>
         /// Invalidates the given access token immediately.
         /// </summary>
         /// <param name="accessToken">The access token to be invalidated.</param>
@@ -92,13 +93,13 @@ namespace Tecan.Sila2.Authentication
         void Logout(string accessToken);
     }
     
-    ///  <summary>
+    /// <summary>
     /// The provided credentials are not valid.
     /// </summary>
     public class AuthenticationFailedException : System.Exception
     {
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="message">The actual error message</param>
@@ -108,13 +109,13 @@ namespace Tecan.Sila2.Authentication
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// The sent access token is not valid.
     /// </summary>
     public class InvalidAccessTokenException : System.Exception
     {
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="message">The actual error message</param>

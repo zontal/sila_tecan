@@ -17,7 +17,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
 {
     
     
-    ///  <summary>
+    /// <summary>
     /// Class that implements the IDictionaryService interface through SiLA2
     /// </summary>
     public partial class DictionaryServiceClient : IDictionaryService
@@ -31,7 +31,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         
         private const string _serviceName = "sila2.tecan.sila.generator.test.dictionaryservice.v4.DictionaryService";
         
-        ///  <summary>
+        /// <summary>
         /// Creates a new instance
         /// </summary>
         /// <param name="channel">The channel through which calls should be executed</param>
@@ -43,8 +43,6 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             InitLazyRequests();
         }
         
-        ///  <summary>
-        /// </summary>
         public virtual System.Collections.Generic.IDictionary<long, string> Lookup
         {
             get
@@ -69,7 +67,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Initializes lazies for non-observable properties.
         /// </summary>
         private void InitLazyRequests()
@@ -84,7 +82,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// Factory to instantiate clients for the Dictionary Service.
     /// </summary>
     [System.ComponentModel.Composition.ExportAttribute(typeof(IClientFactory))]
@@ -92,7 +90,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
     public partial class DictionaryServiceClientFactory : IClientFactory
     {
         
-        ///  <summary>
+        /// <summary>
         /// Gets the fully-qualified identifier of the feature for which clients can be generated
         /// </summary>
         public string FeatureIdentifier
@@ -103,7 +101,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the interface type for which clients can be generated
         /// </summary>
         public System.Type InterfaceType
@@ -114,7 +112,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Creates a strongly typed client for the given execution channel and execution manager
         /// </summary>
         /// <param name="channel">The channel that should be used for communication with the server</param>

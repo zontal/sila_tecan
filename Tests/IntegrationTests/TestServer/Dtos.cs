@@ -13,7 +13,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
     using Tecan.Sila2;
     
     
-    ///  <summary>
+    /// <summary>
     /// Data transfer object for the request of the Pass Bool command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
@@ -22,25 +22,22 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         
         private Tecan.Sila2.BooleanDto _data;
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         public PassBoolRequestDto()
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
-        ///  <param name="data"></param>
         public PassBoolRequestDto(bool data, Tecan.Sila2.IBinaryStore store)
         {
             Data = new Tecan.Sila2.BooleanDto(data, store);
         }
         
-        ///  <summary>
-        /// </summary>
         [ProtoBuf.ProtoMemberAttribute(1)]
         public Tecan.Sila2.BooleanDto Data
         {
@@ -54,7 +51,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the command identifier for this command
         /// </summary>
         /// <returns>The fully qualified command identifier</returns>
@@ -66,7 +63,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the given request object
         /// </summary>
         public void Validate()
@@ -74,7 +71,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             Argument.Validate(Data, "data");
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
@@ -84,7 +81,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// Data transfer object for the response of the Pass Bool command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
@@ -93,25 +90,22 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         
         private Tecan.Sila2.BooleanDto _returnValue;
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         public PassBoolResponseDto()
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
-        ///  <param name="returnValue"></param>
         public PassBoolResponseDto(bool returnValue, Tecan.Sila2.IBinaryStore store)
         {
             ReturnValue = new Tecan.Sila2.BooleanDto(returnValue, store);
         }
         
-        ///  <summary>
-        /// </summary>
         [ProtoBuf.ProtoMemberAttribute(1)]
         public Tecan.Sila2.BooleanDto ReturnValue
         {
@@ -125,7 +119,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the given request object
         /// </summary>
         public void Validate()
@@ -133,7 +127,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             Argument.Validate(ReturnValue, "returnValue");
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
@@ -143,7 +137,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// Data transfer object for the request of the Pass Double command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
@@ -152,25 +146,22 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         
         private Tecan.Sila2.RealDto _data;
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         public PassDoubleRequestDto()
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
-        ///  <param name="data"></param>
         public PassDoubleRequestDto(double data, Tecan.Sila2.IBinaryStore store)
         {
             Data = new Tecan.Sila2.RealDto(data, store);
         }
         
-        ///  <summary>
-        /// </summary>
         [ProtoBuf.ProtoMemberAttribute(1)]
         public Tecan.Sila2.RealDto Data
         {
@@ -184,7 +175,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the command identifier for this command
         /// </summary>
         /// <returns>The fully qualified command identifier</returns>
@@ -196,7 +187,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the given request object
         /// </summary>
         public void Validate()
@@ -204,7 +195,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             Argument.Validate(Data, "data");
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
@@ -214,7 +205,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// Data transfer object for the response of the Pass Double command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
@@ -223,25 +214,22 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         
         private Tecan.Sila2.RealDto _returnValue;
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         public PassDoubleResponseDto()
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
-        ///  <param name="returnValue"></param>
         public PassDoubleResponseDto(double returnValue, Tecan.Sila2.IBinaryStore store)
         {
             ReturnValue = new Tecan.Sila2.RealDto(returnValue, store);
         }
         
-        ///  <summary>
-        /// </summary>
         [ProtoBuf.ProtoMemberAttribute(1)]
         public Tecan.Sila2.RealDto ReturnValue
         {
@@ -255,7 +243,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the given request object
         /// </summary>
         public void Validate()
@@ -263,7 +251,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             Argument.Validate(ReturnValue, "returnValue");
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
@@ -273,7 +261,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// Data transfer object for the request of the Pass Long command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
@@ -282,25 +270,22 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         
         private Tecan.Sila2.IntegerDto _data;
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         public PassLongRequestDto()
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
-        ///  <param name="data"></param>
         public PassLongRequestDto(long data, Tecan.Sila2.IBinaryStore store)
         {
             Data = new Tecan.Sila2.IntegerDto(data, store);
         }
         
-        ///  <summary>
-        /// </summary>
         [ProtoBuf.ProtoMemberAttribute(1)]
         public Tecan.Sila2.IntegerDto Data
         {
@@ -314,7 +299,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the command identifier for this command
         /// </summary>
         /// <returns>The fully qualified command identifier</returns>
@@ -326,7 +311,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the given request object
         /// </summary>
         public void Validate()
@@ -334,7 +319,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             Argument.Validate(Data, "data");
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
@@ -344,7 +329,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// Data transfer object for the response of the Pass Long command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
@@ -353,25 +338,22 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         
         private Tecan.Sila2.IntegerDto _returnValue;
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         public PassLongResponseDto()
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
-        ///  <param name="returnValue"></param>
         public PassLongResponseDto(long returnValue, Tecan.Sila2.IBinaryStore store)
         {
             ReturnValue = new Tecan.Sila2.IntegerDto(returnValue, store);
         }
         
-        ///  <summary>
-        /// </summary>
         [ProtoBuf.ProtoMemberAttribute(1)]
         public Tecan.Sila2.IntegerDto ReturnValue
         {
@@ -385,7 +367,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the given request object
         /// </summary>
         public void Validate()
@@ -393,7 +375,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             Argument.Validate(ReturnValue, "returnValue");
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
@@ -403,7 +385,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// Data transfer object for the request of the Pass Int command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
@@ -412,25 +394,22 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         
         private Tecan.Sila2.IntegerDto _data;
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         public PassIntRequestDto()
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
-        ///  <param name="data"></param>
         public PassIntRequestDto(long data, Tecan.Sila2.IBinaryStore store)
         {
             Data = new Tecan.Sila2.IntegerDto(data, store);
         }
         
-        ///  <summary>
-        /// </summary>
         [ProtoBuf.ProtoMemberAttribute(1)]
         public Tecan.Sila2.IntegerDto Data
         {
@@ -444,7 +423,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the command identifier for this command
         /// </summary>
         /// <returns>The fully qualified command identifier</returns>
@@ -456,7 +435,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the given request object
         /// </summary>
         public void Validate()
@@ -464,7 +443,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             Argument.Validate(Data, "data");
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
@@ -474,7 +453,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// Data transfer object for the response of the Pass Int command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
@@ -483,25 +462,22 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         
         private Tecan.Sila2.IntegerDto _returnValue;
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         public PassIntResponseDto()
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
-        ///  <param name="returnValue"></param>
         public PassIntResponseDto(long returnValue, Tecan.Sila2.IBinaryStore store)
         {
             ReturnValue = new Tecan.Sila2.IntegerDto(returnValue, store);
         }
         
-        ///  <summary>
-        /// </summary>
         [ProtoBuf.ProtoMemberAttribute(1)]
         public Tecan.Sila2.IntegerDto ReturnValue
         {
@@ -515,7 +491,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the given request object
         /// </summary>
         public void Validate()
@@ -523,7 +499,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             Argument.Validate(ReturnValue, "returnValue");
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
@@ -533,7 +509,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// Data transfer object for the request of the Pass Timestamp command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
@@ -542,25 +518,22 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         
         private Tecan.Sila2.TimestampDto _timestamp;
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         public PassTimestampRequestDto()
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
-        ///  <param name="timestamp"></param>
         public PassTimestampRequestDto(System.DateTimeOffset timestamp, Tecan.Sila2.IBinaryStore store)
         {
             Timestamp = new Tecan.Sila2.TimestampDto(timestamp, store);
         }
         
-        ///  <summary>
-        /// </summary>
         [ProtoBuf.ProtoMemberAttribute(1)]
         public Tecan.Sila2.TimestampDto Timestamp
         {
@@ -574,7 +547,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the command identifier for this command
         /// </summary>
         /// <returns>The fully qualified command identifier</returns>
@@ -586,7 +559,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the given request object
         /// </summary>
         public void Validate()
@@ -594,7 +567,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             Argument.Validate(Timestamp, "timestamp");
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
@@ -604,7 +577,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// Data transfer object for the response of the Pass Timestamp command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
@@ -613,25 +586,22 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         
         private Tecan.Sila2.TimestampDto _returnValue;
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         public PassTimestampResponseDto()
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
-        ///  <param name="returnValue"></param>
         public PassTimestampResponseDto(System.DateTimeOffset returnValue, Tecan.Sila2.IBinaryStore store)
         {
             ReturnValue = new Tecan.Sila2.TimestampDto(returnValue, store);
         }
         
-        ///  <summary>
-        /// </summary>
         [ProtoBuf.ProtoMemberAttribute(1)]
         public Tecan.Sila2.TimestampDto ReturnValue
         {
@@ -645,7 +615,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the given request object
         /// </summary>
         public void Validate()
@@ -653,7 +623,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             Argument.Validate(ReturnValue, "returnValue");
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
@@ -663,7 +633,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// Data transfer object for the request of the Pass Time command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
@@ -672,25 +642,22 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         
         private Tecan.Sila2.TimeDto _time;
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         public PassTimeRequestDto()
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
-        ///  <param name="time"></param>
         public PassTimeRequestDto(System.TimeSpan time, Tecan.Sila2.IBinaryStore store)
         {
             Time = new Tecan.Sila2.TimeDto(time, store);
         }
         
-        ///  <summary>
-        /// </summary>
         [ProtoBuf.ProtoMemberAttribute(1)]
         public Tecan.Sila2.TimeDto Time
         {
@@ -704,7 +671,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the command identifier for this command
         /// </summary>
         /// <returns>The fully qualified command identifier</returns>
@@ -716,7 +683,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the given request object
         /// </summary>
         public void Validate()
@@ -724,7 +691,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             Argument.Validate(Time, "time");
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
@@ -734,7 +701,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// Data transfer object for the response of the Pass Time command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
@@ -743,25 +710,22 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         
         private Tecan.Sila2.TimeDto _returnValue;
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         public PassTimeResponseDto()
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
-        ///  <param name="returnValue"></param>
         public PassTimeResponseDto(System.TimeSpan returnValue, Tecan.Sila2.IBinaryStore store)
         {
             ReturnValue = new Tecan.Sila2.TimeDto(returnValue, store);
         }
         
-        ///  <summary>
-        /// </summary>
         [ProtoBuf.ProtoMemberAttribute(1)]
         public Tecan.Sila2.TimeDto ReturnValue
         {
@@ -775,7 +739,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the given request object
         /// </summary>
         public void Validate()
@@ -783,7 +747,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             Argument.Validate(ReturnValue, "returnValue");
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
@@ -793,7 +757,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// Data transfer object for the request of the Pass String command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
@@ -802,25 +766,22 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         
         private Tecan.Sila2.StringDto _value;
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         public PassStringRequestDto()
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
-        ///  <param name="value"></param>
         public PassStringRequestDto(string value, Tecan.Sila2.IBinaryStore store)
         {
             Value = new Tecan.Sila2.StringDto(value, store);
         }
         
-        ///  <summary>
-        /// </summary>
         [ProtoBuf.ProtoMemberAttribute(1)]
         public Tecan.Sila2.StringDto Value
         {
@@ -834,7 +795,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the command identifier for this command
         /// </summary>
         /// <returns>The fully qualified command identifier</returns>
@@ -846,7 +807,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the given request object
         /// </summary>
         public void Validate()
@@ -854,7 +815,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             Argument.Validate(Value, "value");
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
@@ -864,7 +825,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// Data transfer object for the response of the Pass String command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
@@ -873,25 +834,22 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         
         private Tecan.Sila2.StringDto _returnValue;
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         public PassStringResponseDto()
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
-        ///  <param name="returnValue"></param>
         public PassStringResponseDto(string returnValue, Tecan.Sila2.IBinaryStore store)
         {
             ReturnValue = new Tecan.Sila2.StringDto(returnValue, store);
         }
         
-        ///  <summary>
-        /// </summary>
         [ProtoBuf.ProtoMemberAttribute(1)]
         public Tecan.Sila2.StringDto ReturnValue
         {
@@ -905,7 +863,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the given request object
         /// </summary>
         public void Validate()
@@ -913,7 +871,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             Argument.Validate(ReturnValue, "returnValue");
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
@@ -923,7 +881,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// Data transfer object for the request of the Pass Stream command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
@@ -932,25 +890,22 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         
         private Tecan.Sila2.BinaryDto _value;
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         public PassStreamRequestDto()
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
-        ///  <param name="value"></param>
         public PassStreamRequestDto(System.IO.Stream value, Tecan.Sila2.IBinaryStore store)
         {
             Value = new Tecan.Sila2.BinaryDto(value, store);
         }
         
-        ///  <summary>
-        /// </summary>
         [ProtoBuf.ProtoMemberAttribute(1)]
         public Tecan.Sila2.BinaryDto Value
         {
@@ -964,7 +919,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the command identifier for this command
         /// </summary>
         /// <returns>The fully qualified command identifier</returns>
@@ -976,7 +931,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the given request object
         /// </summary>
         public void Validate()
@@ -984,7 +939,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             Argument.Validate(Value, "value");
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
@@ -994,7 +949,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// Data transfer object for the response of the Pass Stream command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
@@ -1003,25 +958,22 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         
         private Tecan.Sila2.BinaryDto _returnValue;
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         public PassStreamResponseDto()
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
-        ///  <param name="returnValue"></param>
         public PassStreamResponseDto(System.IO.Stream returnValue, Tecan.Sila2.IBinaryStore store)
         {
             ReturnValue = new Tecan.Sila2.BinaryDto(returnValue, store);
         }
         
-        ///  <summary>
-        /// </summary>
         [ProtoBuf.ProtoMemberAttribute(1)]
         public Tecan.Sila2.BinaryDto ReturnValue
         {
@@ -1035,7 +987,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the given request object
         /// </summary>
         public void Validate()
@@ -1043,7 +995,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             Argument.Validate(ReturnValue, "returnValue");
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
@@ -1053,7 +1005,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// Data transfer object for the request of the Pass File command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
@@ -1062,25 +1014,22 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         
         private Tecan.Sila2.BinaryDto _file;
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         public PassFileRequestDto()
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
-        ///  <param name="file"></param>
         public PassFileRequestDto(System.IO.Stream file, Tecan.Sila2.IBinaryStore store)
         {
             File = new Tecan.Sila2.BinaryDto(file, store);
         }
         
-        ///  <summary>
-        /// </summary>
         [ProtoBuf.ProtoMemberAttribute(1)]
         public Tecan.Sila2.BinaryDto File
         {
@@ -1094,7 +1043,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the command identifier for this command
         /// </summary>
         /// <returns>The fully qualified command identifier</returns>
@@ -1106,7 +1055,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the given request object
         /// </summary>
         public void Validate()
@@ -1114,7 +1063,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             Argument.Validate(File, "file");
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
@@ -1124,7 +1073,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// Data transfer object for the response of the Pass File command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
@@ -1133,25 +1082,22 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         
         private Tecan.Sila2.BinaryDto _returnValue;
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         public PassFileResponseDto()
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
-        ///  <param name="returnValue"></param>
         public PassFileResponseDto(System.IO.Stream returnValue, Tecan.Sila2.IBinaryStore store)
         {
             ReturnValue = new Tecan.Sila2.BinaryDto(returnValue, store);
         }
         
-        ///  <summary>
-        /// </summary>
         [ProtoBuf.ProtoMemberAttribute(1)]
         public Tecan.Sila2.BinaryDto ReturnValue
         {
@@ -1165,7 +1111,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the given request object
         /// </summary>
         public void Validate()
@@ -1173,7 +1119,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             Argument.Validate(ReturnValue, "returnValue");
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
@@ -1183,7 +1129,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// Data transfer object for the request of the Pass Bytes command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
@@ -1192,25 +1138,22 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         
         private Tecan.Sila2.BinaryDto _bytes;
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         public PassBytesRequestDto()
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
-        ///  <param name="bytes"></param>
         public PassBytesRequestDto(System.IO.Stream bytes, Tecan.Sila2.IBinaryStore store)
         {
             Bytes = new Tecan.Sila2.BinaryDto(bytes, store);
         }
         
-        ///  <summary>
-        /// </summary>
         [ProtoBuf.ProtoMemberAttribute(1)]
         public Tecan.Sila2.BinaryDto Bytes
         {
@@ -1224,7 +1167,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the command identifier for this command
         /// </summary>
         /// <returns>The fully qualified command identifier</returns>
@@ -1236,7 +1179,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the given request object
         /// </summary>
         public void Validate()
@@ -1244,7 +1187,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             Argument.Validate(Bytes, "bytes");
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
@@ -1254,7 +1197,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// Data transfer object for the response of the Pass Bytes command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
@@ -1263,25 +1206,22 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         
         private Tecan.Sila2.BinaryDto _returnValue;
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         public PassBytesResponseDto()
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
-        ///  <param name="returnValue"></param>
         public PassBytesResponseDto(System.IO.Stream returnValue, Tecan.Sila2.IBinaryStore store)
         {
             ReturnValue = new Tecan.Sila2.BinaryDto(returnValue, store);
         }
         
-        ///  <summary>
-        /// </summary>
         [ProtoBuf.ProtoMemberAttribute(1)]
         public Tecan.Sila2.BinaryDto ReturnValue
         {
@@ -1295,7 +1235,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the given request object
         /// </summary>
         public void Validate()
@@ -1303,7 +1243,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             Argument.Validate(ReturnValue, "returnValue");
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
@@ -1313,7 +1253,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// Data transfer object for the request of the Pass Dynamic command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
@@ -1322,25 +1262,22 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         
         private Tecan.Sila2.DynamicClient.AnyTypeDto _dynamic;
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         public PassDynamicRequestDto()
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
-        ///  <param name="dynamic"></param>
         public PassDynamicRequestDto(Tecan.Sila2.DynamicClient.DynamicObjectProperty dynamic, Tecan.Sila2.IBinaryStore store)
         {
             Dynamic = new Tecan.Sila2.DynamicClient.AnyTypeDto(dynamic, store);
         }
         
-        ///  <summary>
-        /// </summary>
         [ProtoBuf.ProtoMemberAttribute(1)]
         public Tecan.Sila2.DynamicClient.AnyTypeDto Dynamic
         {
@@ -1354,7 +1291,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the command identifier for this command
         /// </summary>
         /// <returns>The fully qualified command identifier</returns>
@@ -1366,7 +1303,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the given request object
         /// </summary>
         public void Validate()
@@ -1374,7 +1311,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             Argument.Validate(Dynamic, "dynamic");
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
@@ -1384,7 +1321,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// Data transfer object for the response of the Pass Dynamic command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
@@ -1393,25 +1330,22 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         
         private Tecan.Sila2.DynamicClient.AnyTypeDto _returnValue;
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         public PassDynamicResponseDto()
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
-        ///  <param name="returnValue"></param>
         public PassDynamicResponseDto(Tecan.Sila2.DynamicClient.DynamicObjectProperty returnValue, Tecan.Sila2.IBinaryStore store)
         {
             ReturnValue = new Tecan.Sila2.DynamicClient.AnyTypeDto(returnValue, store);
         }
         
-        ///  <summary>
-        /// </summary>
         [ProtoBuf.ProtoMemberAttribute(1)]
         public Tecan.Sila2.DynamicClient.AnyTypeDto ReturnValue
         {
@@ -1425,7 +1359,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the given request object
         /// </summary>
         public void Validate()
@@ -1433,7 +1367,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             Argument.Validate(ReturnValue, "returnValue");
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
@@ -1443,7 +1377,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// Data transfer object for the request of the Pass Collection command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
@@ -1452,25 +1386,22 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         
         private System.Collections.Generic.List<Tecan.Sila2.StringDto> _strings;
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         public PassCollectionRequestDto()
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
-        ///  <param name="strings"></param>
         public PassCollectionRequestDto(System.Collections.Generic.ICollection<string> strings, Tecan.Sila2.IBinaryStore store)
         {
             Strings = Tecan.Sila2.DtoExtensions.Encapsulate(strings, Tecan.Sila2.StringDto.Create, store);
         }
         
-        ///  <summary>
-        /// </summary>
         [ProtoBuf.ProtoMemberAttribute(1)]
         public System.Collections.Generic.List<Tecan.Sila2.StringDto> Strings
         {
@@ -1484,7 +1415,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the command identifier for this command
         /// </summary>
         /// <returns>The fully qualified command identifier</returns>
@@ -1496,7 +1427,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the given request object
         /// </summary>
         public void Validate()
@@ -1504,7 +1435,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             Argument.Validate(Strings, "strings");
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
@@ -1514,7 +1445,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// Data transfer object for the response of the Pass Collection command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
@@ -1523,25 +1454,22 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         
         private System.Collections.Generic.List<Tecan.Sila2.StringDto> _returnValue;
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         public PassCollectionResponseDto()
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
-        ///  <param name="returnValue"></param>
         public PassCollectionResponseDto(System.Collections.Generic.ICollection<string> returnValue, Tecan.Sila2.IBinaryStore store)
         {
             ReturnValue = Tecan.Sila2.DtoExtensions.Encapsulate(returnValue, Tecan.Sila2.StringDto.Create, store);
         }
         
-        ///  <summary>
-        /// </summary>
         [ProtoBuf.ProtoMemberAttribute(1)]
         public System.Collections.Generic.List<Tecan.Sila2.StringDto> ReturnValue
         {
@@ -1555,7 +1483,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the given request object
         /// </summary>
         public void Validate()
@@ -1563,7 +1491,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             Argument.Validate(ReturnValue, "returnValue");
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
@@ -1573,7 +1501,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// Data transfer object for the request of the Pass Structure command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
@@ -1582,25 +1510,22 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         
         private SomeStructureDto _structure;
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         public PassStructureRequestDto()
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
-        ///  <param name="structure"></param>
         public PassStructureRequestDto(SomeStructure structure, Tecan.Sila2.IBinaryStore store)
         {
             Structure = new SomeStructureDto(structure, store);
         }
         
-        ///  <summary>
-        /// </summary>
         [ProtoBuf.ProtoMemberAttribute(1)]
         public SomeStructureDto Structure
         {
@@ -1614,7 +1539,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the command identifier for this command
         /// </summary>
         /// <returns>The fully qualified command identifier</returns>
@@ -1626,7 +1551,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the given request object
         /// </summary>
         public void Validate()
@@ -1634,7 +1559,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             Argument.Validate(Structure, "structure");
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
@@ -1644,7 +1569,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// Data transfer object for the response of the Pass Structure command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
@@ -1653,25 +1578,22 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         
         private SomeStructureDto _returnValue;
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         public PassStructureResponseDto()
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
-        ///  <param name="returnValue"></param>
         public PassStructureResponseDto(SomeStructure returnValue, Tecan.Sila2.IBinaryStore store)
         {
             ReturnValue = new SomeStructureDto(returnValue, store);
         }
         
-        ///  <summary>
-        /// </summary>
         [ProtoBuf.ProtoMemberAttribute(1)]
         public SomeStructureDto ReturnValue
         {
@@ -1685,7 +1607,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the given request object
         /// </summary>
         public void Validate()
@@ -1693,7 +1615,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             Argument.Validate(ReturnValue, "returnValue");
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
@@ -1703,21 +1625,21 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// Data transfer object for the request of the Run Observable command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
     public class RunObservableRequestDto : Tecan.Sila2.ISilaTransferObject, Tecan.Sila2.ISilaRequestObject
     {
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         public RunObservableRequestDto()
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
@@ -1725,7 +1647,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the command identifier for this command
         /// </summary>
         /// <returns>The fully qualified command identifier</returns>
@@ -1737,14 +1659,14 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the given request object
         /// </summary>
         public void Validate()
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
@@ -1754,7 +1676,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// Data transfer object for the response of the Run Observable command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
@@ -1763,25 +1685,22 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         
         private Tecan.Sila2.IntegerDto _returnValue;
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         public RunObservableResponseDto()
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
-        ///  <param name="returnValue"></param>
         public RunObservableResponseDto(long returnValue, Tecan.Sila2.IBinaryStore store)
         {
             ReturnValue = new Tecan.Sila2.IntegerDto(returnValue, store);
         }
         
-        ///  <summary>
-        /// </summary>
         [ProtoBuf.ProtoMemberAttribute(1)]
         public Tecan.Sila2.IntegerDto ReturnValue
         {
@@ -1795,7 +1714,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the given request object
         /// </summary>
         public void Validate()
@@ -1803,7 +1722,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             Argument.Validate(ReturnValue, "returnValue");
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
@@ -1813,21 +1732,21 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// Data transfer object for the request of the Run Intermediate Observable Command command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
     public class RunIntermediateObservableCommandRequestDto : Tecan.Sila2.ISilaTransferObject, Tecan.Sila2.ISilaRequestObject
     {
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         public RunIntermediateObservableCommandRequestDto()
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
@@ -1835,7 +1754,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the command identifier for this command
         /// </summary>
         /// <returns>The fully qualified command identifier</returns>
@@ -1848,14 +1767,14 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the given request object
         /// </summary>
         public void Validate()
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
@@ -1865,7 +1784,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// Data transfer object for the intermediate response of the Run Intermediate Observable Command command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
@@ -1874,25 +1793,22 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         
         private Tecan.Sila2.IntegerDto _intermediate;
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         public RunIntermediateObservableCommandIntermediateDto()
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
-        ///  <param name="intermediate"></param>
         public RunIntermediateObservableCommandIntermediateDto(long intermediate, Tecan.Sila2.IBinaryStore store)
         {
             Intermediate = new Tecan.Sila2.IntegerDto(intermediate, store);
         }
         
-        ///  <summary>
-        /// </summary>
         [ProtoBuf.ProtoMemberAttribute(1)]
         public Tecan.Sila2.IntegerDto Intermediate
         {
@@ -1906,7 +1822,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the given request object
         /// </summary>
         public void Validate()
@@ -1914,7 +1830,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             Argument.Validate(Intermediate, "intermediate");
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
@@ -1924,7 +1840,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// Data transfer object for the request of the Wait For Cancel Or Throw command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
@@ -1933,25 +1849,22 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         
         private Tecan.Sila2.TimeDto _duration;
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         public WaitForCancelOrThrowRequestDto()
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
-        ///  <param name="duration"></param>
         public WaitForCancelOrThrowRequestDto(System.TimeSpan duration, Tecan.Sila2.IBinaryStore store)
         {
             Duration = new Tecan.Sila2.TimeDto(duration, store);
         }
         
-        ///  <summary>
-        /// </summary>
         [ProtoBuf.ProtoMemberAttribute(1)]
         public Tecan.Sila2.TimeDto Duration
         {
@@ -1965,7 +1878,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the command identifier for this command
         /// </summary>
         /// <returns>The fully qualified command identifier</returns>
@@ -1977,7 +1890,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the given request object
         /// </summary>
         public void Validate()
@@ -1985,7 +1898,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             Argument.Validate(Duration, "duration");
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
@@ -1995,21 +1908,21 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// Data transfer object for the request of the Run Into Failure command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
     public class RunIntoFailureRequestDto : Tecan.Sila2.ISilaTransferObject, Tecan.Sila2.ISilaRequestObject
     {
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         public RunIntoFailureRequestDto()
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
@@ -2017,7 +1930,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the command identifier for this command
         /// </summary>
         /// <returns>The fully qualified command identifier</returns>
@@ -2029,14 +1942,14 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the given request object
         /// </summary>
         public void Validate()
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
@@ -2046,21 +1959,21 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// Data transfer object for the request of the Run Into Failure Observably command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
     public class RunIntoFailureObservablyRequestDto : Tecan.Sila2.ISilaTransferObject, Tecan.Sila2.ISilaRequestObject
     {
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         public RunIntoFailureObservablyRequestDto()
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
@@ -2068,7 +1981,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the command identifier for this command
         /// </summary>
         /// <returns>The fully qualified command identifier</returns>
@@ -2080,14 +1993,14 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the given request object
         /// </summary>
         public void Validate()
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
@@ -2097,7 +2010,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// Data transfer object for the request of the Is Cancelled command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
@@ -2106,25 +2019,22 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         
         private Tecan.Sila2.StringDto _commandId;
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         public IsCancelledRequestDto()
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
-        ///  <param name="commandId"></param>
         public IsCancelledRequestDto(string commandId, Tecan.Sila2.IBinaryStore store)
         {
             CommandId = new Tecan.Sila2.StringDto(commandId, store);
         }
         
-        ///  <summary>
-        /// </summary>
         [ProtoBuf.ProtoMemberAttribute(1)]
         public Tecan.Sila2.StringDto CommandId
         {
@@ -2138,7 +2048,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the command identifier for this command
         /// </summary>
         /// <returns>The fully qualified command identifier</returns>
@@ -2150,7 +2060,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the given request object
         /// </summary>
         public void Validate()
@@ -2158,7 +2068,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             Argument.Validate(CommandId, "commandId");
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
@@ -2168,7 +2078,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// Data transfer object for the response of the Is Cancelled command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
@@ -2177,25 +2087,22 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         
         private Tecan.Sila2.BooleanDto _returnValue;
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         public IsCancelledResponseDto()
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
-        ///  <param name="returnValue"></param>
         public IsCancelledResponseDto(bool returnValue, Tecan.Sila2.IBinaryStore store)
         {
             ReturnValue = new Tecan.Sila2.BooleanDto(returnValue, store);
         }
         
-        ///  <summary>
-        /// </summary>
         [ProtoBuf.ProtoMemberAttribute(1)]
         public Tecan.Sila2.BooleanDto ReturnValue
         {
@@ -2209,7 +2116,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the given request object
         /// </summary>
         public void Validate()
@@ -2217,7 +2124,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             Argument.Validate(ReturnValue, "returnValue");
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
@@ -2227,21 +2134,21 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// Data transfer object for the request of the Throw Runtime Exception command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
     public class ThrowRuntimeExceptionRequestDto : Tecan.Sila2.ISilaTransferObject, Tecan.Sila2.ISilaRequestObject
     {
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         public ThrowRuntimeExceptionRequestDto()
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
@@ -2249,7 +2156,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the command identifier for this command
         /// </summary>
         /// <returns>The fully qualified command identifier</returns>
@@ -2261,14 +2168,14 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the given request object
         /// </summary>
         public void Validate()
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
@@ -2278,7 +2185,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// Data transfer object for the request of the Set Dummy command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
@@ -2287,25 +2194,22 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         
         private Tecan.Sila2.IntegerDto _value;
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         public SetDummyRequestDto()
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
-        ///  <param name="value"></param>
         public SetDummyRequestDto(long value, Tecan.Sila2.IBinaryStore store)
         {
             Value = new Tecan.Sila2.IntegerDto(value, store);
         }
         
-        ///  <summary>
-        /// </summary>
         [ProtoBuf.ProtoMemberAttribute(1)]
         public Tecan.Sila2.IntegerDto Value
         {
@@ -2319,7 +2223,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the command identifier for this command
         /// </summary>
         /// <returns>The fully qualified command identifier</returns>
@@ -2331,7 +2235,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the given request object
         /// </summary>
         public void Validate()
@@ -2339,7 +2243,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             Argument.Validate(Value, "value");
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
@@ -2349,7 +2253,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// The data transfer object for Some Structure
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
@@ -2358,7 +2262,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         
         private InnerStruct _inner;
         
-        ///  <summary>
+        /// <summary>
         /// Initializes a new instance (to be used by the serializer)
         /// </summary>
         public SomeStructureDto()
@@ -2366,7 +2270,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             _inner = new InnerStruct();
         }
         
-        ///  <summary>
+        /// <summary>
         /// Initializes a new data transfer object from the business object
         /// </summary>
         /// <param name="inner">The business object that should be transferred</param>
@@ -2376,8 +2280,6 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             _inner = new InnerStruct(inner, store);
         }
         
-        ///  <summary>
-        /// </summary>
         public Tecan.Sila2.BooleanDto Boolean
         {
             get
@@ -2398,8 +2300,6 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             }
         }
         
-        ///  <summary>
-        /// </summary>
         public Tecan.Sila2.RealDto Real
         {
             get
@@ -2420,8 +2320,6 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             }
         }
         
-        ///  <summary>
-        /// </summary>
         public Tecan.Sila2.IntegerDto Long
         {
             get
@@ -2442,8 +2340,6 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             }
         }
         
-        ///  <summary>
-        /// </summary>
         public Tecan.Sila2.IntegerDto Int
         {
             get
@@ -2464,8 +2360,6 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             }
         }
         
-        ///  <summary>
-        /// </summary>
         public Tecan.Sila2.TimestampDto Timestamp
         {
             get
@@ -2486,8 +2380,6 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             }
         }
         
-        ///  <summary>
-        /// </summary>
         public Tecan.Sila2.TimeDto Time
         {
             get
@@ -2508,7 +2400,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// The actual contents of the data transfer object.
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute(1)]
@@ -2524,7 +2416,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Extracts the transferred value
         /// </summary>
         /// <param name="store">The binary store in which to store binary data</param>
@@ -2534,7 +2426,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             return new SomeStructure(Boolean.Extract(store), Real.Extract(store), Long.Extract(store), Int.Extract(store), Timestamp.Extract(store), Time.Extract(store));
         }
         
-        ///  <summary>
+        /// <summary>
         /// Creates the data transfer object from the given object to transport
         /// </summary>
         /// <param name="inner">The object to transfer</param>
@@ -2544,7 +2436,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             return new SomeStructureDto(inner, store);
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
@@ -2558,7 +2450,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
                         + Argument.Require(Time, "time"));
         }
         
-        ///  <summary>
+        /// <summary>
         /// Represents the inner structure for actual content
         /// </summary>
         [ProtoBuf.ProtoContractAttribute()]
@@ -2577,14 +2469,14 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             
             private Tecan.Sila2.TimeDto _time;
             
-            ///  <summary>
+            /// <summary>
             /// Initializes a new instance (to be used by the serializer)
             /// </summary>
             public InnerStruct()
             {
             }
             
-            ///  <summary>
+            /// <summary>
             /// Initializes a new data transfer object from the business object
             /// </summary>
             /// <param name="inner">The business object that should be transferred</param>
@@ -2599,8 +2491,6 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
                 Time = new Tecan.Sila2.TimeDto(inner.Time, store);
             }
             
-            ///  <summary>
-            /// </summary>
             [ProtoBuf.ProtoMemberAttribute(1)]
             public Tecan.Sila2.BooleanDto Boolean
             {
@@ -2614,8 +2504,6 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
                 }
             }
             
-            ///  <summary>
-            /// </summary>
             [ProtoBuf.ProtoMemberAttribute(2)]
             public Tecan.Sila2.RealDto Real
             {
@@ -2629,8 +2517,6 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
                 }
             }
             
-            ///  <summary>
-            /// </summary>
             [ProtoBuf.ProtoMemberAttribute(3)]
             public Tecan.Sila2.IntegerDto Long
             {
@@ -2644,8 +2530,6 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
                 }
             }
             
-            ///  <summary>
-            /// </summary>
             [ProtoBuf.ProtoMemberAttribute(4)]
             public Tecan.Sila2.IntegerDto Int
             {
@@ -2659,8 +2543,6 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
                 }
             }
             
-            ///  <summary>
-            /// </summary>
             [ProtoBuf.ProtoMemberAttribute(5)]
             public Tecan.Sila2.TimestampDto Timestamp
             {
@@ -2674,8 +2556,6 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
                 }
             }
             
-            ///  <summary>
-            /// </summary>
             [ProtoBuf.ProtoMemberAttribute(6)]
             public Tecan.Sila2.TimeDto Time
             {

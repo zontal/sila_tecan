@@ -12,7 +12,7 @@ namespace Tecan.Sila2.Interop.Client.ObservablePropertyTest
 {
     
     
-    ///  <summary>
+    /// <summary>
     /// This is a test feature to test observable properties.
     /// </summary>
     [Tecan.Sila2.SilaFeatureAttribute(true, "test")]
@@ -21,7 +21,7 @@ namespace Tecan.Sila2.Interop.Client.ObservablePropertyTest
     public partial interface IObservablePropertyTest
     {
         
-        ///  <summary>
+        /// <summary>
         /// Always returns 42 and never changes.
         /// </summary>
         [Tecan.Sila2.ObservableAttribute()]
@@ -30,7 +30,7 @@ namespace Tecan.Sila2.Interop.Client.ObservablePropertyTest
             get;
         }
         
-        ///  <summary>
+        /// <summary>
         /// Switches every second between true and false
         /// </summary>
         [Tecan.Sila2.ObservableAttribute()]
@@ -39,7 +39,7 @@ namespace Tecan.Sila2.Interop.Client.ObservablePropertyTest
             get;
         }
         
-        ///  <summary>
+        /// <summary>
         /// Can be set through SetValue command
         /// </summary>
         [Tecan.Sila2.ObservableAttribute()]
@@ -48,7 +48,7 @@ namespace Tecan.Sila2.Interop.Client.ObservablePropertyTest
             get;
         }
         
-        ///  <summary>
+        /// <summary>
         /// Changes the value of Editable
         /// </summary>
         /// <param name="value">The new value</param>

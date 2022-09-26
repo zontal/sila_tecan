@@ -13,7 +13,7 @@ namespace Tecan.Sila2.Interop.Server.ObservableCommandTest
     using Tecan.Sila2;
     
     
-    ///  <summary>
+    /// <summary>
     /// Data transfer object for the request of the Count command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
@@ -24,26 +24,26 @@ namespace Tecan.Sila2.Interop.Server.ObservableCommandTest
         
         private Tecan.Sila2.RealDto _delay;
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         public CountRequestDto()
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
-        ///  <param name="n">Number to count to</param>
-        ///  <param name="delay">The delay for each iteration</param>
+        /// <param name="n">Number to count to</param>
+        /// <param name="delay">The delay for each iteration</param>
         public CountRequestDto(long n, double delay, Tecan.Sila2.IBinaryStore store)
         {
             N = new Tecan.Sila2.IntegerDto(n, store);
             Delay = new Tecan.Sila2.RealDto(delay, store);
         }
         
-        ///  <summary>
+        /// <summary>
         /// Number to count to
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute(1)]
@@ -59,7 +59,7 @@ namespace Tecan.Sila2.Interop.Server.ObservableCommandTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// The delay for each iteration
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute(2)]
@@ -75,7 +75,7 @@ namespace Tecan.Sila2.Interop.Server.ObservableCommandTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the command identifier for this command
         /// </summary>
         /// <returns>The fully qualified command identifier</returns>
@@ -87,7 +87,7 @@ namespace Tecan.Sila2.Interop.Server.ObservableCommandTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the given request object
         /// </summary>
         public void Validate()
@@ -96,7 +96,7 @@ namespace Tecan.Sila2.Interop.Server.ObservableCommandTest
             Argument.Validate(Delay, "delay");
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
@@ -107,7 +107,7 @@ namespace Tecan.Sila2.Interop.Server.ObservableCommandTest
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// Data transfer object for the intermediate response of the Count command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
@@ -116,24 +116,24 @@ namespace Tecan.Sila2.Interop.Server.ObservableCommandTest
         
         private Tecan.Sila2.IntegerDto _currentIteration;
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         public CountIntermediateDto()
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
-        ///  <param name="currentIteration">The current number, from 0 to N-1 (excluded).</param>
+        /// <param name="currentIteration">The current number, from 0 to N-1 (excluded).</param>
         public CountIntermediateDto(long currentIteration, Tecan.Sila2.IBinaryStore store)
         {
             CurrentIteration = new Tecan.Sila2.IntegerDto(currentIteration, store);
         }
         
-        ///  <summary>
+        /// <summary>
         /// The current number, from 0 to N-1 (excluded).
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute(1)]
@@ -149,7 +149,7 @@ namespace Tecan.Sila2.Interop.Server.ObservableCommandTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the given request object
         /// </summary>
         public void Validate()
@@ -157,7 +157,7 @@ namespace Tecan.Sila2.Interop.Server.ObservableCommandTest
             Argument.Validate(CurrentIteration, "currentIteration");
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
@@ -167,7 +167,7 @@ namespace Tecan.Sila2.Interop.Server.ObservableCommandTest
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// Data transfer object for the response of the Count command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
@@ -176,24 +176,24 @@ namespace Tecan.Sila2.Interop.Server.ObservableCommandTest
         
         private Tecan.Sila2.IntegerDto _iterationResponse;
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         public CountResponseDto()
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
-        ///  <param name="iterationResponse">The last number (N-1)</param>
+        /// <param name="iterationResponse">The last number (N-1)</param>
         public CountResponseDto(long iterationResponse, Tecan.Sila2.IBinaryStore store)
         {
             IterationResponse = new Tecan.Sila2.IntegerDto(iterationResponse, store);
         }
         
-        ///  <summary>
+        /// <summary>
         /// The last number (N-1)
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute(1)]
@@ -209,7 +209,7 @@ namespace Tecan.Sila2.Interop.Server.ObservableCommandTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the given request object
         /// </summary>
         public void Validate()
@@ -217,7 +217,7 @@ namespace Tecan.Sila2.Interop.Server.ObservableCommandTest
             Argument.Validate(IterationResponse, "iterationResponse");
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
@@ -227,7 +227,7 @@ namespace Tecan.Sila2.Interop.Server.ObservableCommandTest
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// Data transfer object for the request of the Echo Value After Delay command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
@@ -238,26 +238,26 @@ namespace Tecan.Sila2.Interop.Server.ObservableCommandTest
         
         private Tecan.Sila2.RealDto _delay;
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         public EchoValueAfterDelayRequestDto()
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
-        ///  <param name="value">The value to echo</param>
-        ///  <param name="delay">The delay before the command execution starts</param>
+        /// <param name="value">The value to echo</param>
+        /// <param name="delay">The delay before the command execution starts</param>
         public EchoValueAfterDelayRequestDto(long value, double delay, Tecan.Sila2.IBinaryStore store)
         {
             Value = new Tecan.Sila2.IntegerDto(value, store);
             Delay = new Tecan.Sila2.RealDto(delay, store);
         }
         
-        ///  <summary>
+        /// <summary>
         /// The value to echo
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute(1)]
@@ -273,7 +273,7 @@ namespace Tecan.Sila2.Interop.Server.ObservableCommandTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// The delay before the command execution starts
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute(2)]
@@ -289,7 +289,7 @@ namespace Tecan.Sila2.Interop.Server.ObservableCommandTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the command identifier for this command
         /// </summary>
         /// <returns>The fully qualified command identifier</returns>
@@ -301,7 +301,7 @@ namespace Tecan.Sila2.Interop.Server.ObservableCommandTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the given request object
         /// </summary>
         public void Validate()
@@ -310,7 +310,7 @@ namespace Tecan.Sila2.Interop.Server.ObservableCommandTest
             Argument.Validate(Delay, "delay");
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
@@ -321,7 +321,7 @@ namespace Tecan.Sila2.Interop.Server.ObservableCommandTest
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// Data transfer object for the response of the Echo Value After Delay command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
@@ -330,24 +330,24 @@ namespace Tecan.Sila2.Interop.Server.ObservableCommandTest
         
         private Tecan.Sila2.IntegerDto _receivedValue;
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         public EchoValueAfterDelayResponseDto()
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
-        ///  <param name="receivedValue">The Received Value</param>
+        /// <param name="receivedValue">The Received Value</param>
         public EchoValueAfterDelayResponseDto(long receivedValue, Tecan.Sila2.IBinaryStore store)
         {
             ReceivedValue = new Tecan.Sila2.IntegerDto(receivedValue, store);
         }
         
-        ///  <summary>
+        /// <summary>
         /// The Received Value
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute(1)]
@@ -363,7 +363,7 @@ namespace Tecan.Sila2.Interop.Server.ObservableCommandTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the given request object
         /// </summary>
         public void Validate()
@@ -371,7 +371,7 @@ namespace Tecan.Sila2.Interop.Server.ObservableCommandTest
             Argument.Validate(ReceivedValue, "receivedValue");
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>

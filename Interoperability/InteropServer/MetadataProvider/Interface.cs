@@ -12,7 +12,7 @@ namespace Tecan.Sila2.Interop.Server.MetadataProvider
 {
     
     
-    ///  <summary>
+    /// <summary>
     /// This feature provides SiLA Client Metadata to the "Metadata Consumer Test" feature.
     /// </summary>
     [Tecan.Sila2.SilaFeatureAttribute(true, "test")]
@@ -22,7 +22,7 @@ namespace Tecan.Sila2.Interop.Server.MetadataProvider
     {
     }
     
-    ///  <summary>
+    /// <summary>
     /// The class TwoIntegersMetadata reflects an anonymous type from the feature definition.
     /// </summary>
     [Tecan.Sila2.SilaDisplayNameAttribute("TwoIntegersMetadata")]
@@ -33,7 +33,7 @@ namespace Tecan.Sila2.Interop.Server.MetadataProvider
         
         private long _secondInteger;
         
-        ///  <summary>
+        /// <summary>
         /// Initializes a new instance
         /// </summary>
         public TwoIntegersMetadata(long firstInteger, long secondInteger)
@@ -42,7 +42,7 @@ namespace Tecan.Sila2.Interop.Server.MetadataProvider
             _secondInteger = secondInteger;
         }
         
-        ///  <summary>
+        /// <summary>
         /// The first integer
         /// </summary>
         public long FirstInteger
@@ -53,7 +53,7 @@ namespace Tecan.Sila2.Interop.Server.MetadataProvider
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// The second integer
         /// </summary>
         public long SecondInteger

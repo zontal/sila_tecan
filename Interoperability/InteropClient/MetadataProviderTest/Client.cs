@@ -17,7 +17,7 @@ namespace Tecan.Sila2.Interop.Client.MetadataProvider.MetadataProviderTest
 {
     
     
-    ///  <summary>
+    /// <summary>
     /// Class that implements the IMetadataProviderTest interface through SiLA2
     /// </summary>
     public partial class MetadataProviderTestClient : IMetadataProviderTest
@@ -29,7 +29,7 @@ namespace Tecan.Sila2.Interop.Client.MetadataProvider.MetadataProviderTest
         
         private const string _serviceName = "sila2.org.silastandard.test.metadataprovidertest.v1.MetadataProviderTest";
         
-        ///  <summary>
+        /// <summary>
         /// Creates a new instance
         /// </summary>
         /// <param name="channel">The channel through which calls should be executed</param>
@@ -47,7 +47,7 @@ namespace Tecan.Sila2.Interop.Client.MetadataProvider.MetadataProviderTest
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// Factory to instantiate clients for the Metadata Provider Test.
     /// </summary>
     [System.ComponentModel.Composition.ExportAttribute(typeof(IClientFactory))]
@@ -55,7 +55,7 @@ namespace Tecan.Sila2.Interop.Client.MetadataProvider.MetadataProviderTest
     public partial class MetadataProviderTestClientFactory : IClientFactory
     {
         
-        ///  <summary>
+        /// <summary>
         /// Gets the fully-qualified identifier of the feature for which clients can be generated
         /// </summary>
         public string FeatureIdentifier
@@ -66,7 +66,7 @@ namespace Tecan.Sila2.Interop.Client.MetadataProvider.MetadataProviderTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the interface type for which clients can be generated
         /// </summary>
         public System.Type InterfaceType
@@ -77,7 +77,7 @@ namespace Tecan.Sila2.Interop.Client.MetadataProvider.MetadataProviderTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Creates a strongly typed client for the given execution channel and execution manager
         /// </summary>
         /// <param name="channel">The channel that should be used for communication with the server</param>

@@ -84,14 +84,11 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
-        ///  <param name="intermediate"></param>
         public RunRxObservableIntermediateDto( bool intermediate, Tecan.Sila2.IBinaryStore store )
         {
             Intermediate = new Tecan.Sila2.BooleanDto( intermediate, store );
         }
 
-        ///  <summary>
-        /// </summary>
         [ProtoBuf.ProtoMemberAttribute( 1 )]
         public Tecan.Sila2.BooleanDto Intermediate
         {

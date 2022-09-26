@@ -13,7 +13,7 @@ namespace Tecan.Sila2.ParameterConstraintsProvider.ParameterConstraintsProvider
     using Tecan.Sila2;
     
     
-    ///  <summary>
+    /// <summary>
     /// The data transfer object for Parameters Constraint
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
@@ -24,14 +24,14 @@ namespace Tecan.Sila2.ParameterConstraintsProvider.ParameterConstraintsProvider
         
         private Tecan.Sila2.StringDto _constraints;
         
-        ///  <summary>
+        /// <summary>
         /// Initializes a new instance (to be used by the serializer)
         /// </summary>
         public ParametersConstraintDto()
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Initializes a new data transfer object from the business object
         /// </summary>
         /// <param name="inner">The business object that should be transferred</param>
@@ -42,7 +42,7 @@ namespace Tecan.Sila2.ParameterConstraintsProvider.ParameterConstraintsProvider
             Constraints = new Tecan.Sila2.StringDto(inner.Constraints, store);
         }
         
-        ///  <summary>
+        /// <summary>
         /// The fully qualified identifier of a constrained parameter.
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute(1)]
@@ -58,7 +58,7 @@ namespace Tecan.Sila2.ParameterConstraintsProvider.ParameterConstraintsProvider
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// The constraints to apply on the parameter.
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute(2)]
@@ -74,7 +74,7 @@ namespace Tecan.Sila2.ParameterConstraintsProvider.ParameterConstraintsProvider
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Extracts the transferred value
         /// </summary>
         /// <param name="store">The binary store in which to store binary data</param>
@@ -84,7 +84,7 @@ namespace Tecan.Sila2.ParameterConstraintsProvider.ParameterConstraintsProvider
             return new ParametersConstraint(CommandParameterIdentifier.Extract(store), Constraints.Extract(store));
         }
         
-        ///  <summary>
+        /// <summary>
         /// Creates the data transfer object from the given object to transport
         /// </summary>
         /// <param name="inner">The object to transfer</param>
@@ -94,7 +94,7 @@ namespace Tecan.Sila2.ParameterConstraintsProvider.ParameterConstraintsProvider
             return new ParametersConstraintDto(inner, store);
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>

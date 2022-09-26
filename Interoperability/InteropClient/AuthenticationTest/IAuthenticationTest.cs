@@ -12,7 +12,7 @@ namespace Tecan.Sila2.Interop.Client.AuthenticationTest
 {
     
     
-    ///  <summary>
+    /// <summary>
     /// Contains a command that requires authentication. A client should be able to obtain an authorization Token through a login using the following credentials: username: 'test', password: 'test'
     /// </summary>
     [Tecan.Sila2.SilaFeatureAttribute(true, "test")]
@@ -21,7 +21,7 @@ namespace Tecan.Sila2.Interop.Client.AuthenticationTest
     public partial interface IAuthenticationTest
     {
         
-        ///  <summary>
+        /// <summary>
         /// Requires an authorization token in order to be executed
         /// </summary>
         void RequiresToken();

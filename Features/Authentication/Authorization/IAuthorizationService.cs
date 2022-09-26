@@ -12,7 +12,7 @@ namespace Tecan.Sila2.Authorization
 {
     
     
-    ///  <summary>
+    /// <summary>
     /// This Feature provides access control for the implementing server.
     /// It specifies the SiLA Client Metadata for the access token, that has been provided by the
     /// AuthenticationService core Feature.
@@ -24,13 +24,13 @@ namespace Tecan.Sila2.Authorization
     {
     }
     
-    ///  <summary>
+    /// <summary>
     /// The sent access token is not valid.
     /// </summary>
     public class InvalidAccessTokenException : System.Exception
     {
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="message">The actual error message</param>

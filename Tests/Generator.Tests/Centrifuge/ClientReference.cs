@@ -40,8 +40,6 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             _channel = channel;
         }
 
-        ///  <summary>
-        /// </summary>
         public virtual int Speed
         {
             get

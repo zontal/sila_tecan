@@ -12,7 +12,7 @@ namespace Tecan.Sila2.AuthorizationProvider
 {
     
     
-    ///  <summary>
+    /// <summary>
     /// This Feature provides SiLA Servers with the ability to check a given access token.
     /// </summary>
     [Tecan.Sila2.SilaFeatureAttribute(true, "core")]
@@ -21,7 +21,7 @@ namespace Tecan.Sila2.AuthorizationProvider
     public partial interface IAuthorizationProviderService
     {
         
-        ///  <summary>
+        /// <summary>
         /// Verifies that a given token is valid for the requested server.
         /// </summary>
         /// <param name="accessToken">The token to be used along with accessing a Command or Property on a SiLA Server.</param>
@@ -35,13 +35,13 @@ namespace Tecan.Sila2.AuthorizationProvider
         long Verify(string accessToken, [Tecan.Sila2.PatternConstraintAttribute("[0-9a-f]{8}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{12}")] string requestedServer, [Tecan.Sila2.SilaIdentifierTypeAttribute(Tecan.Sila2.IdentifierType.FeatureIdentifier)] string requestedFeature);
     }
     
-    ///  <summary>
+    /// <summary>
     /// The provided access token is not valid for the given server/feature.
     /// </summary>
     public class AuthorizationFailedException : System.Exception
     {
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="message">The actual error message</param>
@@ -51,13 +51,13 @@ namespace Tecan.Sila2.AuthorizationProvider
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// The sent access token is not valid.
     /// </summary>
     public class InvalidAccessTokenException : System.Exception
     {
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="message">The actual error message</param>

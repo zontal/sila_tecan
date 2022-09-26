@@ -17,7 +17,7 @@ namespace Tecan.Sila2.Interop.Client.BasicDataTypesTest.BasicDataTypesTest
 {
     
     
-    ///  <summary>
+    /// <summary>
     /// Class that implements the IBasicDataTypesTest interface through SiLA2
     /// </summary>
     public partial class BasicDataTypesTestClient : IBasicDataTypesTest
@@ -43,7 +43,7 @@ namespace Tecan.Sila2.Interop.Client.BasicDataTypesTest.BasicDataTypesTest
         
         private const string _serviceName = "sila2.org.silastandard.test.basicdatatypestest.v1.BasicDataTypesTest";
         
-        ///  <summary>
+        /// <summary>
         /// Creates a new instance
         /// </summary>
         /// <param name="channel">The channel through which calls should be executed</param>
@@ -55,7 +55,7 @@ namespace Tecan.Sila2.Interop.Client.BasicDataTypesTest.BasicDataTypesTest
             InitLazyRequests();
         }
         
-        ///  <summary>
+        /// <summary>
         /// Returns the String value 'SiLA2_Test_String_Value'.
         /// </summary>
         public virtual string StringValue
@@ -66,7 +66,7 @@ namespace Tecan.Sila2.Interop.Client.BasicDataTypesTest.BasicDataTypesTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Returns the Integer value 5124.
         /// </summary>
         public virtual long IntegerValue
@@ -77,7 +77,7 @@ namespace Tecan.Sila2.Interop.Client.BasicDataTypesTest.BasicDataTypesTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Returns the Real value 3.1415926.
         /// </summary>
         public virtual double RealValue
@@ -88,7 +88,7 @@ namespace Tecan.Sila2.Interop.Client.BasicDataTypesTest.BasicDataTypesTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Returns the Boolean value true.
         /// </summary>
         public virtual bool BooleanValue
@@ -99,7 +99,7 @@ namespace Tecan.Sila2.Interop.Client.BasicDataTypesTest.BasicDataTypesTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Returns the Date value 05.08.2022 respective 08/05/2018, timezone +2.
         /// </summary>
         public virtual System.DateTimeOffset DateValue
@@ -110,7 +110,7 @@ namespace Tecan.Sila2.Interop.Client.BasicDataTypesTest.BasicDataTypesTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Returns the Time value 12:34:56, timezone +2.
         /// </summary>
         public virtual System.TimeSpan TimeValue
@@ -121,7 +121,7 @@ namespace Tecan.Sila2.Interop.Client.BasicDataTypesTest.BasicDataTypesTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Returns the Timestamp value 2022-08-05 12:34:56, timezone +2.
         /// </summary>
         public virtual System.DateTimeOffset TimestampValue
@@ -244,7 +244,7 @@ namespace Tecan.Sila2.Interop.Client.BasicDataTypesTest.BasicDataTypesTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Initializes lazies for non-observable properties.
         /// </summary>
         private void InitLazyRequests()
@@ -258,7 +258,7 @@ namespace Tecan.Sila2.Interop.Client.BasicDataTypesTest.BasicDataTypesTest
             _timestampValue = new System.Lazy<System.DateTimeOffset>(RequestTimestampValue);
         }
         
-        ///  <summary>
+        /// <summary>
         /// Receives a String value and returns the String value that has been received.
         /// </summary>
         /// <param name="stringValue">The String value to be returned.</param>
@@ -279,7 +279,7 @@ namespace Tecan.Sila2.Interop.Client.BasicDataTypesTest.BasicDataTypesTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Receives an Integer value and returns the Integer value that has been received.
         /// </summary>
         /// <param name="integerValue">The Integer value to be returned.</param>
@@ -300,7 +300,7 @@ namespace Tecan.Sila2.Interop.Client.BasicDataTypesTest.BasicDataTypesTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Receives a Real value and returns the Real value that has been received.
         /// </summary>
         /// <param name="realValue">The Real value to be returned.</param>
@@ -321,7 +321,7 @@ namespace Tecan.Sila2.Interop.Client.BasicDataTypesTest.BasicDataTypesTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Receives a Boolean value and returns the Boolean value that has been received.
         /// </summary>
         /// <param name="booleanValue">The Boolean value to be returned.</param>
@@ -342,7 +342,7 @@ namespace Tecan.Sila2.Interop.Client.BasicDataTypesTest.BasicDataTypesTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Receives a Date value and returns the Date value that has been received.
         /// </summary>
         /// <param name="dateValue">The Date value to be returned.</param>
@@ -363,7 +363,7 @@ namespace Tecan.Sila2.Interop.Client.BasicDataTypesTest.BasicDataTypesTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Receives a Time value and returns the Time value that has been received.
         /// </summary>
         /// <param name="timeValue">The Time value to be returned.</param>
@@ -384,7 +384,7 @@ namespace Tecan.Sila2.Interop.Client.BasicDataTypesTest.BasicDataTypesTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Receives a Timestamp value and returns a message containing the Timestamp value that has been received.
         /// </summary>
         /// <param name="timestampValue">The Timestamp value to be returned.</param>
@@ -412,7 +412,7 @@ namespace Tecan.Sila2.Interop.Client.BasicDataTypesTest.BasicDataTypesTest
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// Factory to instantiate clients for the Basic Data Types Test.
     /// </summary>
     [System.ComponentModel.Composition.ExportAttribute(typeof(IClientFactory))]
@@ -420,7 +420,7 @@ namespace Tecan.Sila2.Interop.Client.BasicDataTypesTest.BasicDataTypesTest
     public partial class BasicDataTypesTestClientFactory : IClientFactory
     {
         
-        ///  <summary>
+        /// <summary>
         /// Gets the fully-qualified identifier of the feature for which clients can be generated
         /// </summary>
         public string FeatureIdentifier
@@ -431,7 +431,7 @@ namespace Tecan.Sila2.Interop.Client.BasicDataTypesTest.BasicDataTypesTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the interface type for which clients can be generated
         /// </summary>
         public System.Type InterfaceType
@@ -442,7 +442,7 @@ namespace Tecan.Sila2.Interop.Client.BasicDataTypesTest.BasicDataTypesTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Creates a strongly typed client for the given execution channel and execution manager
         /// </summary>
         /// <param name="channel">The channel that should be used for communication with the server</param>

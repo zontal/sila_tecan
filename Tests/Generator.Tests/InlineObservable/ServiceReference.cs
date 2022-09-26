@@ -12,18 +12,12 @@ namespace Tecan.Sila2.Generator.Test.TestReference
 {
     
     
-    ///  <summary>
-    /// </summary>
     [Tecan.Sila2.SilaFeatureAttribute(true, "testreference")]
     [Tecan.Sila2.SilaIdentifierAttribute("InlineObservableService")]
     [Tecan.Sila2.SilaDisplayNameAttribute("Inline Observable Service")]
     public partial interface IInlineObservableService
     {
         
-        ///  <summary>
-        /// </summary>
-        /// <param name="parameter"></param>
-        /// <returns></returns>
         [Tecan.Sila2.ObservableAttribute()]
         [return: Tecan.Sila2.SilaIdentifierAttribute("ReturnValue")]
         Tecan.Sila2.IObservableCommand<bool> TestInlineObservable(string parameter);

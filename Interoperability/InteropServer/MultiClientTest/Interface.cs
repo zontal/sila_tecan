@@ -12,7 +12,7 @@ namespace Tecan.Sila2.Interop.Server.MultiClientTest
 {
     
     
-    ///  <summary>
+    /// <summary>
     /// This is a feature to test different server behaviors when multiple clients request execution of the same command.
     /// </summary>
     [Tecan.Sila2.SilaFeatureAttribute(true, "test")]
@@ -21,21 +21,21 @@ namespace Tecan.Sila2.Interop.Server.MultiClientTest
     public partial interface IMultiClientTest
     {
         
-        ///  <summary>
+        /// <summary>
         /// Multiple invocations of this command will be running in parallel
         /// </summary>
         /// <param name="duration">The duration of the command execution</param>
         [Tecan.Sila2.ObservableAttribute()]
         Tecan.Sila2.IObservableCommand RunInParallel([Tecan.Sila2.UnitAttribute("s", Second=1)] double duration);
         
-        ///  <summary>
+        /// <summary>
         /// Multiple invocations of this command will be queued
         /// </summary>
         /// <param name="duration">The duration of the command execution</param>
         [Tecan.Sila2.ObservableAttribute()]
         Tecan.Sila2.IObservableCommand RunQueued([Tecan.Sila2.UnitAttribute("s", Second=1)] double duration);
         
-        ///  <summary>
+        /// <summary>
         /// Invocations will be rejected, if there is another command instance already running
         /// </summary>
         /// <param name="duration">The duration of the command execution</param>

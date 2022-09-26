@@ -12,7 +12,7 @@ namespace Tecan.Sila2.Interop.Server.ListDataTypeTest
 {
     
     
-    ///  <summary>
+    /// <summary>
     /// Provides commands and properties to set or respectively get SiLA List Data Type values via command parameters or property responses respectively.
     /// </summary>
     [Tecan.Sila2.SilaFeatureAttribute(true, "test")]
@@ -21,7 +21,7 @@ namespace Tecan.Sila2.Interop.Server.ListDataTypeTest
     public partial interface IListDataTypeTest
     {
         
-        ///  <summary>
+        /// <summary>
         /// Returns an empty list of String type.
         /// </summary>
         System.Collections.Generic.ICollection<string> EmptyStringList
@@ -29,7 +29,7 @@ namespace Tecan.Sila2.Interop.Server.ListDataTypeTest
             get;
         }
         
-        ///  <summary>
+        /// <summary>
         /// Returns a list with the following string values: 'SiLA 2', 'is', 'great'.
         /// </summary>
         System.Collections.Generic.ICollection<string> StringList
@@ -37,7 +37,7 @@ namespace Tecan.Sila2.Interop.Server.ListDataTypeTest
             get;
         }
         
-        ///  <summary>
+        /// <summary>
         /// Returns a list with the following Integer values: 1, 2, 3.
         /// </summary>
         System.Collections.Generic.ICollection<long> IntegerList
@@ -45,7 +45,7 @@ namespace Tecan.Sila2.Interop.Server.ListDataTypeTest
             get;
         }
         
-        ///  <summary>
+        /// <summary>
         /// Returns a list with 3 structure values, whereas the values of the first element are:
         /// string value = 'SiLA2_Test_String_Value_1'
         /// integer value = 5124
@@ -69,7 +69,7 @@ namespace Tecan.Sila2.Interop.Server.ListDataTypeTest
             get;
         }
         
-        ///  <summary>
+        /// <summary>
         /// Receives a list of string values and returns a list containing the string values that have been received.
         /// </summary>
         /// <param name="stringList">The list of string values to be returned.</param>
@@ -77,7 +77,7 @@ namespace Tecan.Sila2.Interop.Server.ListDataTypeTest
         [return: Tecan.Sila2.SilaIdentifierAttribute("ReceivedValues")]
         System.Collections.Generic.ICollection<string> EchoStringList(System.Collections.Generic.ICollection<string> stringList);
         
-        ///  <summary>
+        /// <summary>
         /// Receives a list of integer values and returns a list containing the integer values that have been received.
         /// </summary>
         /// <param name="integerList">The list of integer values to be returned.</param>
@@ -85,7 +85,7 @@ namespace Tecan.Sila2.Interop.Server.ListDataTypeTest
         [return: Tecan.Sila2.SilaIdentifierAttribute("ReceivedValues")]
         System.Collections.Generic.ICollection<long> EchoIntegerList(System.Collections.Generic.ICollection<long> integerList);
         
-        ///  <summary>
+        /// <summary>
         /// Receives a list of structure values and returns a list containing the structures that have been received.
         /// </summary>
         /// <param name="structureList">The list of structure values to be returned.</param>
@@ -94,7 +94,7 @@ namespace Tecan.Sila2.Interop.Server.ListDataTypeTest
         System.Collections.Generic.ICollection<TestStructure> EchoStructureList(System.Collections.Generic.ICollection<TestStructure> structureList);
     }
     
-    ///  <summary>
+    /// <summary>
     /// An example Structure data type containing all SiLA basic types.
     /// </summary>
     public struct TestStructure
@@ -118,7 +118,7 @@ namespace Tecan.Sila2.Interop.Server.ListDataTypeTest
         
         private Tecan.Sila2.DynamicClient.DynamicObjectProperty _anyTypeValue;
         
-        ///  <summary>
+        /// <summary>
         /// Initializes a new instance
         /// </summary>
         public TestStructure(string stringTypeValue, long integerTypeValue, double realTypeValue, bool booleanTypeValue, System.IO.Stream binaryTypeValue, System.DateTimeOffset dateTypeValue, System.TimeSpan timeTypeValue, System.DateTimeOffset timestampTypeValue, Tecan.Sila2.DynamicClient.DynamicObjectProperty anyTypeValue)
@@ -134,7 +134,7 @@ namespace Tecan.Sila2.Interop.Server.ListDataTypeTest
             _anyTypeValue = anyTypeValue;
         }
         
-        ///  <summary>
+        /// <summary>
         /// A value of SiLA data type String.
         /// </summary>
         public string StringTypeValue
@@ -145,7 +145,7 @@ namespace Tecan.Sila2.Interop.Server.ListDataTypeTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// A value of SiLA data type Integer.
         /// </summary>
         public long IntegerTypeValue
@@ -156,7 +156,7 @@ namespace Tecan.Sila2.Interop.Server.ListDataTypeTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// A value of SiLA data type Real.
         /// </summary>
         public double RealTypeValue
@@ -167,7 +167,7 @@ namespace Tecan.Sila2.Interop.Server.ListDataTypeTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// A value of SiLA data type Boolean.
         /// </summary>
         public bool BooleanTypeValue
@@ -178,7 +178,7 @@ namespace Tecan.Sila2.Interop.Server.ListDataTypeTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// A value of SiLA data type Binary.
         /// </summary>
         public System.IO.Stream BinaryTypeValue
@@ -189,7 +189,7 @@ namespace Tecan.Sila2.Interop.Server.ListDataTypeTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// A value of SiLA data type Date.
         /// </summary>
         public System.DateTimeOffset DateTypeValue
@@ -200,7 +200,7 @@ namespace Tecan.Sila2.Interop.Server.ListDataTypeTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// A value of SiLA data type Time.
         /// </summary>
         public System.TimeSpan TimeTypeValue
@@ -211,7 +211,7 @@ namespace Tecan.Sila2.Interop.Server.ListDataTypeTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// A value of SiLA data type Timestamp.
         /// </summary>
         public System.DateTimeOffset TimestampTypeValue
@@ -222,7 +222,7 @@ namespace Tecan.Sila2.Interop.Server.ListDataTypeTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// A value of SiLA data type Any.
         /// </summary>
         public Tecan.Sila2.DynamicClient.DynamicObjectProperty AnyTypeValue

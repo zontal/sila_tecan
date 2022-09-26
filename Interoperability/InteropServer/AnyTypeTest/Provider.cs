@@ -17,7 +17,7 @@ namespace Tecan.Sila2.Interop.Server.AnyTypeTest
 {
     
     
-    ///  <summary>
+    /// <summary>
     /// A class that exposes the IAnyTypeTest interface via SiLA2
     /// </summary>
     [System.ComponentModel.Composition.ExportAttribute(typeof(IFeatureProvider))]
@@ -31,7 +31,7 @@ namespace Tecan.Sila2.Interop.Server.AnyTypeTest
         
         private static Tecan.Sila2.Feature _feature = FeatureSerializer.LoadFromAssembly(typeof(AnyTypeTestProvider).Assembly, "AnyTypeTest.sila.xml");
         
-        ///  <summary>
+        /// <summary>
         /// Creates a new instance
         /// </summary>
         /// <param name="implementation">The implementation to exported through SiLA2</param>
@@ -43,7 +43,7 @@ namespace Tecan.Sila2.Interop.Server.AnyTypeTest
             _server = server;
         }
         
-        ///  <summary>
+        /// <summary>
         /// The feature that is exposed by this feature provider
         /// </summary>
         /// <returns>A feature object</returns>
@@ -55,7 +55,7 @@ namespace Tecan.Sila2.Interop.Server.AnyTypeTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Registers the feature in the provided feature registration
         /// </summary>
         /// <param name="registration">The registration component to which the feature should be registered</param>
@@ -74,7 +74,7 @@ namespace Tecan.Sila2.Interop.Server.AnyTypeTest
             registration.RegisterUnobservableProperty("AnyTypeStructureValue", GetAnyTypeStructureValue);
         }
         
-        ///  <summary>
+        /// <summary>
         /// Executes the Set Any Type Value command
         /// </summary>
         /// <param name="request">A data transfer object that contains the command parameters</param>
@@ -96,7 +96,7 @@ namespace Tecan.Sila2.Interop.Server.AnyTypeTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the current value of the Any Type String Value property
         /// </summary>
         /// <returns>The current value wrapped in a data transfer object</returns>
@@ -105,7 +105,7 @@ namespace Tecan.Sila2.Interop.Server.AnyTypeTest
             return new PropertyResponse<Tecan.Sila2.DynamicClient.AnyTypeDto>(new Tecan.Sila2.DynamicClient.AnyTypeDto(_implementation.AnyTypeStringValue, _server));
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the current value of the Any Type Integer Value property
         /// </summary>
         /// <returns>The current value wrapped in a data transfer object</returns>
@@ -114,7 +114,7 @@ namespace Tecan.Sila2.Interop.Server.AnyTypeTest
             return new PropertyResponse<Tecan.Sila2.DynamicClient.AnyTypeDto>(new Tecan.Sila2.DynamicClient.AnyTypeDto(_implementation.AnyTypeIntegerValue, _server));
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the current value of the Any Type Real Value property
         /// </summary>
         /// <returns>The current value wrapped in a data transfer object</returns>
@@ -123,7 +123,7 @@ namespace Tecan.Sila2.Interop.Server.AnyTypeTest
             return new PropertyResponse<Tecan.Sila2.DynamicClient.AnyTypeDto>(new Tecan.Sila2.DynamicClient.AnyTypeDto(_implementation.AnyTypeRealValue, _server));
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the current value of the Any Type Boolean Value property
         /// </summary>
         /// <returns>The current value wrapped in a data transfer object</returns>
@@ -132,7 +132,7 @@ namespace Tecan.Sila2.Interop.Server.AnyTypeTest
             return new PropertyResponse<Tecan.Sila2.DynamicClient.AnyTypeDto>(new Tecan.Sila2.DynamicClient.AnyTypeDto(_implementation.AnyTypeBooleanValue, _server));
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the current value of the Any Type Binary Value property
         /// </summary>
         /// <returns>The current value wrapped in a data transfer object</returns>
@@ -141,7 +141,7 @@ namespace Tecan.Sila2.Interop.Server.AnyTypeTest
             return new PropertyResponse<Tecan.Sila2.DynamicClient.AnyTypeDto>(new Tecan.Sila2.DynamicClient.AnyTypeDto(_implementation.AnyTypeBinaryValue, _server));
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the current value of the Any Type Date Value property
         /// </summary>
         /// <returns>The current value wrapped in a data transfer object</returns>
@@ -150,7 +150,7 @@ namespace Tecan.Sila2.Interop.Server.AnyTypeTest
             return new PropertyResponse<Tecan.Sila2.DynamicClient.AnyTypeDto>(new Tecan.Sila2.DynamicClient.AnyTypeDto(_implementation.AnyTypeDateValue, _server));
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the current value of the Any Type Time Value property
         /// </summary>
         /// <returns>The current value wrapped in a data transfer object</returns>
@@ -159,7 +159,7 @@ namespace Tecan.Sila2.Interop.Server.AnyTypeTest
             return new PropertyResponse<Tecan.Sila2.DynamicClient.AnyTypeDto>(new Tecan.Sila2.DynamicClient.AnyTypeDto(_implementation.AnyTypeTimeValue, _server));
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the current value of the Any Type Timestamp Value property
         /// </summary>
         /// <returns>The current value wrapped in a data transfer object</returns>
@@ -168,7 +168,7 @@ namespace Tecan.Sila2.Interop.Server.AnyTypeTest
             return new PropertyResponse<Tecan.Sila2.DynamicClient.AnyTypeDto>(new Tecan.Sila2.DynamicClient.AnyTypeDto(_implementation.AnyTypeTimestampValue, _server));
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the current value of the Any Type List Value property
         /// </summary>
         /// <returns>The current value wrapped in a data transfer object</returns>
@@ -177,7 +177,7 @@ namespace Tecan.Sila2.Interop.Server.AnyTypeTest
             return new PropertyResponse<Tecan.Sila2.DynamicClient.AnyTypeDto>(new Tecan.Sila2.DynamicClient.AnyTypeDto(_implementation.AnyTypeListValue, _server));
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the current value of the Any Type Structure Value property
         /// </summary>
         /// <returns>The current value wrapped in a data transfer object</returns>
@@ -186,7 +186,7 @@ namespace Tecan.Sila2.Interop.Server.AnyTypeTest
             return new PropertyResponse<Tecan.Sila2.DynamicClient.AnyTypeDto>(new Tecan.Sila2.DynamicClient.AnyTypeDto(_implementation.AnyTypeStructureValue, _server));
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the command with the given identifier
         /// </summary>
         /// <param name="commandIdentifier">A fully qualified command identifier</param>
@@ -200,7 +200,7 @@ namespace Tecan.Sila2.Interop.Server.AnyTypeTest
             return null;
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the property with the given identifier
         /// </summary>
         /// <param name="propertyIdentifier">A fully qualified property identifier</param>

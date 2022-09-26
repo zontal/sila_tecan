@@ -12,8 +12,6 @@ namespace Tecan.Sila2.Generator.Test.TestReference
 {
     
     
-    ///  <summary>
-    /// </summary>
     [Tecan.Sila2.SilaFeatureAttribute(true, "test")]
     [Tecan.Sila2.SilaIdentifierAttribute("EmptyService")]
     [Tecan.Sila2.SilaDisplayNameAttribute("Empty Service")]

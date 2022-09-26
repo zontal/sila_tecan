@@ -13,7 +13,7 @@ namespace Tecan.Sila2.Locking.LockController
     using Tecan.Sila2;
     
     
-    ///  <summary>
+    /// <summary>
     /// Data transfer object for the request of the Lock Server command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
@@ -24,22 +24,22 @@ namespace Tecan.Sila2.Locking.LockController
         
         private Tecan.Sila2.IntegerDto _timeout;
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         public LockServerRequestDto()
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
-        ///  <param name="lockIdentifier">
+        /// <param name="lockIdentifier">
         ///        The lock identifier that has to be sent along with every (lock protected) request to use the server's
         ///        functionality.
         ///      </param>
-        ///  <param name="timeout">
+        /// <param name="timeout">
         ///        The time (in seconds) after a SiLA Server is automatically unlocked when no request with a valid lock identifier
         ///        has been received meanwhile. A timeout of zero seconds specifies an infinite time (no timeout).
         ///      </param>
@@ -49,7 +49,7 @@ namespace Tecan.Sila2.Locking.LockController
             Timeout = new Tecan.Sila2.IntegerDto(timeout, store);
         }
         
-        ///  <summary>
+        /// <summary>
         /// The lock identifier that has to be sent along with every (lock protected) request to use the server's
         /// functionality.
         /// </summary>
@@ -66,7 +66,7 @@ namespace Tecan.Sila2.Locking.LockController
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// The time (in seconds) after a SiLA Server is automatically unlocked when no request with a valid lock identifier
         /// has been received meanwhile. A timeout of zero seconds specifies an infinite time (no timeout).
         /// </summary>
@@ -83,7 +83,7 @@ namespace Tecan.Sila2.Locking.LockController
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the command identifier for this command
         /// </summary>
         /// <returns>The fully qualified command identifier</returns>
@@ -95,7 +95,7 @@ namespace Tecan.Sila2.Locking.LockController
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the given request object
         /// </summary>
         public void Validate()
@@ -104,7 +104,7 @@ namespace Tecan.Sila2.Locking.LockController
             Argument.Validate(Timeout, "timeout");
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
@@ -115,7 +115,7 @@ namespace Tecan.Sila2.Locking.LockController
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// Data transfer object for the request of the Unlock Server command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
@@ -124,24 +124,24 @@ namespace Tecan.Sila2.Locking.LockController
         
         private Tecan.Sila2.StringDto _lockIdentifier;
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         public UnlockServerRequestDto()
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
-        ///  <param name="lockIdentifier">The lock identifier that has been used to lock the SiLA Server.</param>
+        /// <param name="lockIdentifier">The lock identifier that has been used to lock the SiLA Server.</param>
         public UnlockServerRequestDto(string lockIdentifier, Tecan.Sila2.IBinaryStore store)
         {
             LockIdentifier = new Tecan.Sila2.StringDto(lockIdentifier, store);
         }
         
-        ///  <summary>
+        /// <summary>
         /// The lock identifier that has been used to lock the SiLA Server.
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute(1)]
@@ -157,7 +157,7 @@ namespace Tecan.Sila2.Locking.LockController
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the command identifier for this command
         /// </summary>
         /// <returns>The fully qualified command identifier</returns>
@@ -169,7 +169,7 @@ namespace Tecan.Sila2.Locking.LockController
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the given request object
         /// </summary>
         public void Validate()
@@ -177,7 +177,7 @@ namespace Tecan.Sila2.Locking.LockController
             Argument.Validate(LockIdentifier, "lockIdentifier");
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>

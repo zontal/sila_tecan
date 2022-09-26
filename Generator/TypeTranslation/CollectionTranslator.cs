@@ -22,11 +22,11 @@ namespace Tecan.Sila2.Generator.TypeTranslation
 
         public bool TryTranslate( ITypeTranslationProvider translationProvider, Type interfaceType, string origin, out DataTypeType silaType )
         {
-            if( IsCollectionType( interfaceType, out var elementType ) && translationProvider.TryTranslate(elementType, origin + ".Item", out var elementSilaType) )
+            if(IsCollectionType( interfaceType, out var elementType ) && translationProvider.TryTranslate( elementType, origin + ".Item", out var elementSilaType ))
             {
-                if( interfaceType.GetGenericTypeDefinition() != typeof(ICollection<>) )
+                if(interfaceType.IsArray || interfaceType.GetGenericTypeDefinition() != typeof( ICollection<> ))
                 {
-                    _nameRegistry.RegisterDifferentType(origin, interfaceType);
+                    _nameRegistry.RegisterDifferentType( origin, interfaceType );
                 }
 
                 silaType = new DataTypeType()
@@ -47,6 +47,13 @@ namespace Tecan.Sila2.Generator.TypeTranslation
         private bool IsCollectionType( Type type, out Type elementType )
         {
             elementType = null;
+
+            if(type.IsArray)
+            {
+                elementType = type.GetElementType();
+                return true;
+            }
+
             if(type.IsGenericType && typeof( IEnumerable ).IsAssignableFrom( type ))
             {
                 var typeDefinition = type.GetGenericTypeDefinition();
@@ -69,7 +76,7 @@ namespace Tecan.Sila2.Generator.TypeTranslation
             Action<Constraints> constraintHandler = null, Action<string, StructureType> structHandler = null )
         {
             translationInfo = null;
-            if( IsCollection( silaType, out var elementType ) && translationProvider.TryTranslate(elementType, CodeGenerationHelper.TurnSingular(suggestedName), out var elementTranslationInfo, constraintHandler, structHandler) )
+            if(IsCollection( silaType, out var elementType ) && translationProvider.TryTranslate( elementType, CodeGenerationHelper.TurnSingular( suggestedName ), out var elementTranslationInfo, constraintHandler, structHandler ))
             {
                 translationInfo = new TranslationInfo( elementTranslationInfo );
                 return true;
@@ -102,7 +109,7 @@ namespace Tecan.Sila2.Generator.TypeTranslation
 
         public bool TraverseTypes( ITypeTranslationProvider translationProvider, Type interfaceType, string origin, Action<Type> typeAction )
         {
-            if( IsCollectionType( interfaceType, out var elementType ) )
+            if(IsCollectionType( interfaceType, out var elementType ))
             {
                 translationProvider.TraverseTypes( elementType, CodeGenerationHelper.TurnSingular( origin ), typeAction );
                 return true;
@@ -122,9 +129,9 @@ namespace Tecan.Sila2.Generator.TypeTranslation
                 _elementTranslationInfo = elementTranslationInfo;
             }
 
-            public CodeTypeReference InterfaceType => new CodeTypeReference(typeof(ICollection<>).FullName, _elementTranslationInfo.InterfaceType);
+            public CodeTypeReference InterfaceType => new CodeTypeReference( typeof( ICollection<> ).FullName, _elementTranslationInfo.InterfaceType );
 
-            public CodeTypeReference DataTransferType => new CodeTypeReference( typeof(List<>).FullName, _elementTranslationInfo.DataTransferType );
+            public CodeTypeReference DataTransferType => new CodeTypeReference( typeof( List<> ).FullName, _elementTranslationInfo.DataTransferType );
 
             public CodeExpression Encapsulate( CodeExpression expression, CodeExpression binaryStorageArgument )
             {

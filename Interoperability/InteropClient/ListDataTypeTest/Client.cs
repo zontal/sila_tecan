@@ -17,7 +17,7 @@ namespace Tecan.Sila2.Interop.Client.ListDataTypeTest.ListDataTypeTest
 {
     
     
-    ///  <summary>
+    /// <summary>
     /// Class that implements the IListDataTypeTest interface through SiLA2
     /// </summary>
     public partial class ListDataTypeTestClient : IListDataTypeTest
@@ -37,7 +37,7 @@ namespace Tecan.Sila2.Interop.Client.ListDataTypeTest.ListDataTypeTest
         
         private const string _serviceName = "sila2.org.silastandard.test.listdatatypetest.v1.ListDataTypeTest";
         
-        ///  <summary>
+        /// <summary>
         /// Creates a new instance
         /// </summary>
         /// <param name="channel">The channel through which calls should be executed</param>
@@ -49,7 +49,7 @@ namespace Tecan.Sila2.Interop.Client.ListDataTypeTest.ListDataTypeTest
             InitLazyRequests();
         }
         
-        ///  <summary>
+        /// <summary>
         /// Returns an empty list of String type.
         /// </summary>
         public virtual System.Collections.Generic.ICollection<string> EmptyStringList
@@ -60,7 +60,7 @@ namespace Tecan.Sila2.Interop.Client.ListDataTypeTest.ListDataTypeTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Returns a list with the following string values: 'SiLA 2', 'is', 'great'.
         /// </summary>
         public virtual System.Collections.Generic.ICollection<string> StringList
@@ -71,7 +71,7 @@ namespace Tecan.Sila2.Interop.Client.ListDataTypeTest.ListDataTypeTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Returns a list with the following Integer values: 1, 2, 3.
         /// </summary>
         public virtual System.Collections.Generic.ICollection<long> IntegerList
@@ -82,7 +82,7 @@ namespace Tecan.Sila2.Interop.Client.ListDataTypeTest.ListDataTypeTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Returns a list with 3 structure values, whereas the values of the first element are:
         /// string value = 'SiLA2_Test_String_Value_1'
         /// integer value = 5124
@@ -173,7 +173,7 @@ namespace Tecan.Sila2.Interop.Client.ListDataTypeTest.ListDataTypeTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Initializes lazies for non-observable properties.
         /// </summary>
         private void InitLazyRequests()
@@ -184,7 +184,7 @@ namespace Tecan.Sila2.Interop.Client.ListDataTypeTest.ListDataTypeTest
             _structureList = new System.Lazy<System.Collections.Generic.ICollection<TestStructure>>(RequestStructureList);
         }
         
-        ///  <summary>
+        /// <summary>
         /// Receives a list of string values and returns a list containing the string values that have been received.
         /// </summary>
         /// <param name="stringList">The list of string values to be returned.</param>
@@ -205,7 +205,7 @@ namespace Tecan.Sila2.Interop.Client.ListDataTypeTest.ListDataTypeTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Receives a list of integer values and returns a list containing the integer values that have been received.
         /// </summary>
         /// <param name="integerList">The list of integer values to be returned.</param>
@@ -226,7 +226,7 @@ namespace Tecan.Sila2.Interop.Client.ListDataTypeTest.ListDataTypeTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Receives a list of structure values and returns a list containing the structures that have been received.
         /// </summary>
         /// <param name="structureList">The list of structure values to be returned.</param>
@@ -255,7 +255,7 @@ namespace Tecan.Sila2.Interop.Client.ListDataTypeTest.ListDataTypeTest
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// Factory to instantiate clients for the List Data Type Test.
     /// </summary>
     [System.ComponentModel.Composition.ExportAttribute(typeof(IClientFactory))]
@@ -263,7 +263,7 @@ namespace Tecan.Sila2.Interop.Client.ListDataTypeTest.ListDataTypeTest
     public partial class ListDataTypeTestClientFactory : IClientFactory
     {
         
-        ///  <summary>
+        /// <summary>
         /// Gets the fully-qualified identifier of the feature for which clients can be generated
         /// </summary>
         public string FeatureIdentifier
@@ -274,7 +274,7 @@ namespace Tecan.Sila2.Interop.Client.ListDataTypeTest.ListDataTypeTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the interface type for which clients can be generated
         /// </summary>
         public System.Type InterfaceType
@@ -285,7 +285,7 @@ namespace Tecan.Sila2.Interop.Client.ListDataTypeTest.ListDataTypeTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Creates a strongly typed client for the given execution channel and execution manager
         /// </summary>
         /// <param name="channel">The channel that should be used for communication with the server</param>

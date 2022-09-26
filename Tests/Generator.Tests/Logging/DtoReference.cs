@@ -13,21 +13,21 @@ namespace Tecan.Sila2.Generator.Test.TestReference
     using Tecan.Sila2;
     
     
-    ///  <summary>
+    /// <summary>
     /// Data transfer object for the request of the Listen for log entries command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
     public class ListenForLogEntriesRequestDto : Tecan.Sila2.ISilaTransferObject, Tecan.Sila2.ISilaRequestObject
     {
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         public ListenForLogEntriesRequestDto()
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
@@ -35,7 +35,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the command identifier for this command
         /// </summary>
         /// <returns>The fully qualified command identifier</returns>
@@ -48,14 +48,14 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the given request object
         /// </summary>
         public void Validate()
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
@@ -65,7 +65,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// Data transfer object for the intermediate response of the Listen for log entries command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
@@ -74,25 +74,22 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         
         private LogEntryDto _intermediate;
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         public ListenForLogEntriesIntermediateDto()
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
-        ///  <param name="intermediate"></param>
         public ListenForLogEntriesIntermediateDto(LogEntry intermediate, Tecan.Sila2.IBinaryStore store)
         {
             Intermediate = new LogEntryDto(intermediate, store);
         }
         
-        ///  <summary>
-        /// </summary>
         [ProtoBuf.ProtoMemberAttribute(1)]
         public LogEntryDto Intermediate
         {
@@ -106,7 +103,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the given request object
         /// </summary>
         public void Validate()
@@ -114,7 +111,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             Argument.Validate(Intermediate, "intermediate");
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
@@ -124,7 +121,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// The data transfer object for Log Entry Data
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
@@ -133,7 +130,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         
         private InnerStruct _inner;
         
-        ///  <summary>
+        /// <summary>
         /// Initializes a new instance (to be used by the serializer)
         /// </summary>
         public LogEntryDataDto()
@@ -141,7 +138,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             _inner = new InnerStruct();
         }
         
-        ///  <summary>
+        /// <summary>
         /// Initializes a new data transfer object from the business object
         /// </summary>
         /// <param name="inner">The business object that should be transferred</param>
@@ -151,8 +148,6 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             _inner = new InnerStruct(inner, store);
         }
         
-        ///  <summary>
-        /// </summary>
         public Tecan.Sila2.StringDto Key
         {
             get
@@ -173,8 +168,6 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             }
         }
         
-        ///  <summary>
-        /// </summary>
         public Tecan.Sila2.StringDto Value
         {
             get
@@ -195,8 +188,6 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             }
         }
         
-        ///  <summary>
-        /// </summary>
         public System.Collections.Generic.List<LogEntryDataDto> Children
         {
             get
@@ -217,7 +208,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// The actual contents of the data transfer object.
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute(1)]
@@ -233,7 +224,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Extracts the transferred value
         /// </summary>
         /// <param name="store">The binary store in which to store binary data</param>
@@ -243,7 +234,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             return new LogEntryData(Key.Extract(store), Value.Extract(store), Children.Extract(store));
         }
         
-        ///  <summary>
+        /// <summary>
         /// Creates the data transfer object from the given object to transport
         /// </summary>
         /// <param name="inner">The object to transfer</param>
@@ -253,7 +244,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             return new LogEntryDataDto(inner, store);
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
@@ -264,7 +255,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
                         + Argument.Require(Children, "children"));
         }
         
-        ///  <summary>
+        /// <summary>
         /// Represents the inner structure for actual content
         /// </summary>
         [ProtoBuf.ProtoContractAttribute()]
@@ -277,14 +268,14 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             
             private System.Collections.Generic.List<LogEntryDataDto> _children;
             
-            ///  <summary>
+            /// <summary>
             /// Initializes a new instance (to be used by the serializer)
             /// </summary>
             public InnerStruct()
             {
             }
             
-            ///  <summary>
+            /// <summary>
             /// Initializes a new data transfer object from the business object
             /// </summary>
             /// <param name="inner">The business object that should be transferred</param>
@@ -296,8 +287,6 @@ namespace Tecan.Sila2.Generator.Test.TestReference
                 Children = Tecan.Sila2.DtoExtensions.Encapsulate(inner.Children, LogEntryDataDto.Create, store);
             }
             
-            ///  <summary>
-            /// </summary>
             [ProtoBuf.ProtoMemberAttribute(1)]
             public Tecan.Sila2.StringDto Key
             {
@@ -311,8 +300,6 @@ namespace Tecan.Sila2.Generator.Test.TestReference
                 }
             }
             
-            ///  <summary>
-            /// </summary>
             [ProtoBuf.ProtoMemberAttribute(2)]
             public Tecan.Sila2.StringDto Value
             {
@@ -326,8 +313,6 @@ namespace Tecan.Sila2.Generator.Test.TestReference
                 }
             }
             
-            ///  <summary>
-            /// </summary>
             [ProtoBuf.ProtoMemberAttribute(3)]
             public System.Collections.Generic.List<LogEntryDataDto> Children
             {
@@ -343,7 +328,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// The data transfer object for the Severity enumeration
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
@@ -352,14 +337,14 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         
         private Tecan.Sila2.StringDto _value;
         
-        ///  <summary>
+        /// <summary>
         /// Initializes a new instance (to be used by the serializer)
         /// </summary>
         public SeverityDto()
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Initializes a new data transfer object from the business object
         /// </summary>
         /// <param name="inner">The business object that should be transferred</param>
@@ -369,7 +354,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             Value = inner.ToString();
         }
         
-        ///  <summary>
+        /// <summary>
         /// The string representation of the given enum member
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute(1)]
@@ -385,7 +370,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Extracts the transferred value
         /// </summary>
         /// <param name="store">The binary store in which to store binary data</param>
@@ -395,7 +380,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             return ((Severity)(System.Enum.Parse(typeof(Severity), Value.Value)));
         }
         
-        ///  <summary>
+        /// <summary>
         /// Creates the data transfer object from the given object to transport
         /// </summary>
         /// <param name="inner">The object to transfer</param>
@@ -405,7 +390,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             return new SeverityDto(inner, store);
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
@@ -415,7 +400,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// The data transfer object for Log Entry
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
@@ -424,7 +409,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         
         private InnerStruct _inner;
         
-        ///  <summary>
+        /// <summary>
         /// Initializes a new instance (to be used by the serializer)
         /// </summary>
         public LogEntryDto()
@@ -432,7 +417,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             _inner = new InnerStruct();
         }
         
-        ///  <summary>
+        /// <summary>
         /// Initializes a new data transfer object from the business object
         /// </summary>
         /// <param name="inner">The business object that should be transferred</param>
@@ -442,8 +427,6 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             _inner = new InnerStruct(inner, store);
         }
         
-        ///  <summary>
-        /// </summary>
         public Tecan.Sila2.StringDto Message
         {
             get
@@ -464,8 +447,6 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             }
         }
         
-        ///  <summary>
-        /// </summary>
         public Tecan.Sila2.StringDto Channel
         {
             get
@@ -486,8 +467,6 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             }
         }
         
-        ///  <summary>
-        /// </summary>
         public SeverityDto Severity
         {
             get
@@ -508,8 +487,6 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             }
         }
         
-        ///  <summary>
-        /// </summary>
         public System.Collections.Generic.List<LogEntryDataDto> Data
         {
             get
@@ -530,7 +507,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// The actual contents of the data transfer object.
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute(1)]
@@ -546,7 +523,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Extracts the transferred value
         /// </summary>
         /// <param name="store">The binary store in which to store binary data</param>
@@ -556,7 +533,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             return new LogEntry(Message.Extract(store), Channel.Extract(store), Severity.Extract(store), Data.Extract(store));
         }
         
-        ///  <summary>
+        /// <summary>
         /// Creates the data transfer object from the given object to transport
         /// </summary>
         /// <param name="inner">The object to transfer</param>
@@ -566,7 +543,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             return new LogEntryDto(inner, store);
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
@@ -578,7 +555,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
                         + Argument.Require(Data, "data"));
         }
         
-        ///  <summary>
+        /// <summary>
         /// Represents the inner structure for actual content
         /// </summary>
         [ProtoBuf.ProtoContractAttribute()]
@@ -593,14 +570,14 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             
             private System.Collections.Generic.List<LogEntryDataDto> _data;
             
-            ///  <summary>
+            /// <summary>
             /// Initializes a new instance (to be used by the serializer)
             /// </summary>
             public InnerStruct()
             {
             }
             
-            ///  <summary>
+            /// <summary>
             /// Initializes a new data transfer object from the business object
             /// </summary>
             /// <param name="inner">The business object that should be transferred</param>
@@ -613,8 +590,6 @@ namespace Tecan.Sila2.Generator.Test.TestReference
                 Data = Tecan.Sila2.DtoExtensions.Encapsulate(inner.Data, LogEntryDataDto.Create, store);
             }
             
-            ///  <summary>
-            /// </summary>
             [ProtoBuf.ProtoMemberAttribute(1)]
             public Tecan.Sila2.StringDto Message
             {
@@ -628,8 +603,6 @@ namespace Tecan.Sila2.Generator.Test.TestReference
                 }
             }
             
-            ///  <summary>
-            /// </summary>
             [ProtoBuf.ProtoMemberAttribute(2)]
             public Tecan.Sila2.StringDto Channel
             {
@@ -643,8 +616,6 @@ namespace Tecan.Sila2.Generator.Test.TestReference
                 }
             }
             
-            ///  <summary>
-            /// </summary>
             [ProtoBuf.ProtoMemberAttribute(3)]
             public SeverityDto Severity
             {
@@ -658,8 +629,6 @@ namespace Tecan.Sila2.Generator.Test.TestReference
                 }
             }
             
-            ///  <summary>
-            /// </summary>
             [ProtoBuf.ProtoMemberAttribute(4)]
             public System.Collections.Generic.List<LogEntryDataDto> Data
             {

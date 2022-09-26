@@ -17,7 +17,7 @@ namespace Tecan.Sila2.Interop.Client.BinaryTransferTest.BinaryTransferTest
 {
     
     
-    ///  <summary>
+    /// <summary>
     /// Class that implements the IBinaryTransferTest interface through SiLA2
     /// </summary>
     public partial class BinaryTransferTestClient : IBinaryTransferTest
@@ -33,7 +33,7 @@ namespace Tecan.Sila2.Interop.Client.BinaryTransferTest.BinaryTransferTest
         
         private const string _serviceName = "sila2.org.silastandard.test.binarytransfertest.v1.BinaryTransferTest";
         
-        ///  <summary>
+        /// <summary>
         /// Creates a new instance
         /// </summary>
         /// <param name="channel">The channel through which calls should be executed</param>
@@ -45,7 +45,7 @@ namespace Tecan.Sila2.Interop.Client.BinaryTransferTest.BinaryTransferTest
             InitLazyRequests();
         }
         
-        ///  <summary>
+        /// <summary>
         /// Returns the UTF-8 encoded string 'SiLA2_Test_String_Value' directly transmitted as Binary value.
         /// </summary>
         public virtual System.IO.Stream BinaryValueDirectly
@@ -56,7 +56,7 @@ namespace Tecan.Sila2.Interop.Client.BinaryTransferTest.BinaryTransferTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Returns the Binary Transfer UUID to be used to download the binary data which is the UTF-8 encoded string
         /// 'A_slightly_longer_SiLA2_Test_String_Value_used_to_demonstrate_the_binary_download', repeated 100,000 times.
         /// </summary>
@@ -100,7 +100,7 @@ namespace Tecan.Sila2.Interop.Client.BinaryTransferTest.BinaryTransferTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Initializes lazies for non-observable properties.
         /// </summary>
         private void InitLazyRequests()
@@ -109,7 +109,7 @@ namespace Tecan.Sila2.Interop.Client.BinaryTransferTest.BinaryTransferTest
             _binaryValueDownload = new System.Lazy<System.IO.Stream>(RequestBinaryValueDownload);
         }
         
-        ///  <summary>
+        /// <summary>
         /// Receives a Binary value (transmitted either directly or via binary transfer) and
         /// returns the received value.
         /// </summary>
@@ -139,7 +139,7 @@ namespace Tecan.Sila2.Interop.Client.BinaryTransferTest.BinaryTransferTest
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// Factory to instantiate clients for the Binary Transfer Test.
     /// </summary>
     [System.ComponentModel.Composition.ExportAttribute(typeof(IClientFactory))]
@@ -147,7 +147,7 @@ namespace Tecan.Sila2.Interop.Client.BinaryTransferTest.BinaryTransferTest
     public partial class BinaryTransferTestClientFactory : IClientFactory
     {
         
-        ///  <summary>
+        /// <summary>
         /// Gets the fully-qualified identifier of the feature for which clients can be generated
         /// </summary>
         public string FeatureIdentifier
@@ -158,7 +158,7 @@ namespace Tecan.Sila2.Interop.Client.BinaryTransferTest.BinaryTransferTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the interface type for which clients can be generated
         /// </summary>
         public System.Type InterfaceType
@@ -169,7 +169,7 @@ namespace Tecan.Sila2.Interop.Client.BinaryTransferTest.BinaryTransferTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Creates a strongly typed client for the given execution channel and execution manager
         /// </summary>
         /// <param name="channel">The channel that should be used for communication with the server</param>

@@ -12,7 +12,7 @@ namespace Tecan.Sila2.Interop.Server.StructureDataTypeTest
 {
     
     
-    ///  <summary>
+    /// <summary>
     /// Provides commands and properties to set or respectively get SiLA Structure Data Type values via command parameters or property responses respectively.
     /// </summary>
     [Tecan.Sila2.SilaFeatureAttribute(true, "test")]
@@ -21,7 +21,7 @@ namespace Tecan.Sila2.Interop.Server.StructureDataTypeTest
     public partial interface IStructureDataTypeTest
     {
         
-        ///  <summary>
+        /// <summary>
         /// Returns a structure with the following elements values:
         /// - String value = 'SiLA2_Test_String_Value'
         /// - Integer value = 5124
@@ -38,7 +38,7 @@ namespace Tecan.Sila2.Interop.Server.StructureDataTypeTest
             get;
         }
         
-        ///  <summary>
+        /// <summary>
         /// Returns a multilevel structure with the following values:
         /// - string value = 'Outer_Test_String'
         /// - integer value = 1111
@@ -54,7 +54,7 @@ namespace Tecan.Sila2.Interop.Server.StructureDataTypeTest
             get;
         }
         
-        ///  <summary>
+        /// <summary>
         /// Receives a structure value and returns the structure that has been received (binary value is expected to be an embedded value, any typer value is expected to be a Basic type).
         /// </summary>
         /// <param name="structureValue">The Structure value to be returned.</param>
@@ -62,7 +62,7 @@ namespace Tecan.Sila2.Interop.Server.StructureDataTypeTest
         [return: Tecan.Sila2.SilaIdentifierAttribute("ReceivedValues")]
         TestStructure EchoStructureValue(TestStructure structureValue);
         
-        ///  <summary>
+        /// <summary>
         /// Receives a multilevel structure value and returns the structure that has been received.
         /// </summary>
         /// <param name="deepStructureValue">The deep Structure value to be set.</param>
@@ -71,7 +71,7 @@ namespace Tecan.Sila2.Interop.Server.StructureDataTypeTest
         DeepStructure EchoDeepStructureValue([Tecan.Sila2.SilaDisplayNameAttribute("DeepStructure Value")] DeepStructure deepStructureValue);
     }
     
-    ///  <summary>
+    /// <summary>
     /// An example Structure data type containing all SiLA basic types.
     /// </summary>
     public struct TestStructure
@@ -95,7 +95,7 @@ namespace Tecan.Sila2.Interop.Server.StructureDataTypeTest
         
         private Tecan.Sila2.DynamicClient.DynamicObjectProperty _anyTypeValue;
         
-        ///  <summary>
+        /// <summary>
         /// Initializes a new instance
         /// </summary>
         public TestStructure(string stringTypeValue, long integerTypeValue, double realTypeValue, bool booleanTypeValue, System.IO.Stream binaryTypeValue, System.DateTimeOffset dateTypeValue, System.TimeSpan timeTypeValue, System.DateTimeOffset timestampTypeValue, Tecan.Sila2.DynamicClient.DynamicObjectProperty anyTypeValue)
@@ -111,7 +111,7 @@ namespace Tecan.Sila2.Interop.Server.StructureDataTypeTest
             _anyTypeValue = anyTypeValue;
         }
         
-        ///  <summary>
+        /// <summary>
         /// A value of SiLA data type String.
         /// </summary>
         public string StringTypeValue
@@ -122,7 +122,7 @@ namespace Tecan.Sila2.Interop.Server.StructureDataTypeTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// A value of SiLA data type Integer.
         /// </summary>
         public long IntegerTypeValue
@@ -133,7 +133,7 @@ namespace Tecan.Sila2.Interop.Server.StructureDataTypeTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// A value of SiLA data type Real.
         /// </summary>
         public double RealTypeValue
@@ -144,7 +144,7 @@ namespace Tecan.Sila2.Interop.Server.StructureDataTypeTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// A value of SiLA data type Boolean.
         /// </summary>
         public bool BooleanTypeValue
@@ -155,7 +155,7 @@ namespace Tecan.Sila2.Interop.Server.StructureDataTypeTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// A value of SiLA data type Binary.
         /// </summary>
         public System.IO.Stream BinaryTypeValue
@@ -166,7 +166,7 @@ namespace Tecan.Sila2.Interop.Server.StructureDataTypeTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// A value of SiLA data type Date.
         /// </summary>
         public System.DateTimeOffset DateTypeValue
@@ -177,7 +177,7 @@ namespace Tecan.Sila2.Interop.Server.StructureDataTypeTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// A value of SiLA data type Time.
         /// </summary>
         public System.TimeSpan TimeTypeValue
@@ -188,7 +188,7 @@ namespace Tecan.Sila2.Interop.Server.StructureDataTypeTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// A value of SiLA data type Timestamp.
         /// </summary>
         public System.DateTimeOffset TimestampTypeValue
@@ -199,7 +199,7 @@ namespace Tecan.Sila2.Interop.Server.StructureDataTypeTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// A value of SiLA data type Any.
         /// </summary>
         public Tecan.Sila2.DynamicClient.DynamicObjectProperty AnyTypeValue
@@ -211,7 +211,7 @@ namespace Tecan.Sila2.Interop.Server.StructureDataTypeTest
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// An example Structure data type that contains other structures within.
     /// </summary>
     public struct DeepStructure
@@ -223,7 +223,7 @@ namespace Tecan.Sila2.Interop.Server.StructureDataTypeTest
         
         private DeepStructureMiddleStructure _middleStructure;
         
-        ///  <summary>
+        /// <summary>
         /// Initializes a new instance
         /// </summary>
         public DeepStructure(string outerStringTypeValue, long outerIntegerTypeValue, DeepStructureMiddleStructure middleStructure)
@@ -233,7 +233,7 @@ namespace Tecan.Sila2.Interop.Server.StructureDataTypeTest
             _middleStructure = middleStructure;
         }
         
-        ///  <summary>
+        /// <summary>
         /// A value of SiLA data type String contained in the topmost structure.
         /// </summary>
         public string OuterStringTypeValue
@@ -244,7 +244,7 @@ namespace Tecan.Sila2.Interop.Server.StructureDataTypeTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// A value of SiLA data type Integer contained in the topmost structure.
         /// </summary>
         public long OuterIntegerTypeValue
@@ -255,7 +255,7 @@ namespace Tecan.Sila2.Interop.Server.StructureDataTypeTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Another structure type that is part of the outer structure.
         /// </summary>
         public DeepStructureMiddleStructure MiddleStructure
@@ -267,7 +267,7 @@ namespace Tecan.Sila2.Interop.Server.StructureDataTypeTest
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// The class DeepStructureMiddleStructureInnerStructure reflects an anonymous type from the feature definition.
     /// </summary>
     [Tecan.Sila2.SilaDisplayNameAttribute("DeepStructureMiddleStructureInnerStructure")]
@@ -278,7 +278,7 @@ namespace Tecan.Sila2.Interop.Server.StructureDataTypeTest
         
         private long _innerIntegerTypeValue;
         
-        ///  <summary>
+        /// <summary>
         /// Initializes a new instance
         /// </summary>
         public DeepStructureMiddleStructureInnerStructure(string innerStringTypeValue, long innerIntegerTypeValue)
@@ -287,7 +287,7 @@ namespace Tecan.Sila2.Interop.Server.StructureDataTypeTest
             _innerIntegerTypeValue = innerIntegerTypeValue;
         }
         
-        ///  <summary>
+        /// <summary>
         /// A value of SiLA data type String contained in the innermost structure.
         /// </summary>
         public string InnerStringTypeValue
@@ -298,7 +298,7 @@ namespace Tecan.Sila2.Interop.Server.StructureDataTypeTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// A value of SiLA data type Integer contained in the innermost structure.
         /// </summary>
         public long InnerIntegerTypeValue
@@ -310,7 +310,7 @@ namespace Tecan.Sila2.Interop.Server.StructureDataTypeTest
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// The class DeepStructureMiddleStructure reflects an anonymous type from the feature definition.
     /// </summary>
     [Tecan.Sila2.SilaDisplayNameAttribute("DeepStructureMiddleStructure")]
@@ -323,7 +323,7 @@ namespace Tecan.Sila2.Interop.Server.StructureDataTypeTest
         
         private DeepStructureMiddleStructureInnerStructure _innerStructure;
         
-        ///  <summary>
+        /// <summary>
         /// Initializes a new instance
         /// </summary>
         public DeepStructureMiddleStructure(string middleStringTypeValue, long middleIntegerTypeValue, DeepStructureMiddleStructureInnerStructure innerStructure)
@@ -333,7 +333,7 @@ namespace Tecan.Sila2.Interop.Server.StructureDataTypeTest
             _innerStructure = innerStructure;
         }
         
-        ///  <summary>
+        /// <summary>
         /// A value of SiLA data type String contained in the middle structure.
         /// </summary>
         public string MiddleStringTypeValue
@@ -344,7 +344,7 @@ namespace Tecan.Sila2.Interop.Server.StructureDataTypeTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// A value of SiLA data type Integer contained in the middle structure.
         /// </summary>
         public long MiddleIntegerTypeValue
@@ -355,7 +355,7 @@ namespace Tecan.Sila2.Interop.Server.StructureDataTypeTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// A structure type that is part of the middle structure.
         /// </summary>
         public DeepStructureMiddleStructureInnerStructure InnerStructure

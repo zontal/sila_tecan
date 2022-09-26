@@ -13,7 +13,7 @@ namespace Tecan.Sila2.Authorization.AuthorizationProviderService
     using Tecan.Sila2;
     
     
-    ///  <summary>
+    /// <summary>
     /// Data transfer object for the request of the Verify command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
@@ -24,27 +24,27 @@ namespace Tecan.Sila2.Authorization.AuthorizationProviderService
         
         private Tecan.Sila2.StringDto _requestedServer;
         
-        ///  <summary>
+        /// <summary>
         /// A regular expression to check the validity of RequestedServer
         /// </summary>
         public static System.Text.RegularExpressions.Regex RequestedServerPattern = new System.Text.RegularExpressions.Regex("[0-9a-f]{8}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{12}");
         
         private Tecan.Sila2.StringDto _requestedFeature;
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         public VerifyRequestDto()
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
-        ///  <param name="accessToken">The token to be used along with accessing a Command or Property on a SiLA Server.</param>
-        ///  <param name="requestedServer">The server for which an authorization is requested.</param>
-        ///  <param name="requestedFeature">The feature that is requested to access.</param>
+        /// <param name="accessToken">The token to be used along with accessing a Command or Property on a SiLA Server.</param>
+        /// <param name="requestedServer">The server for which an authorization is requested.</param>
+        /// <param name="requestedFeature">The feature that is requested to access.</param>
         public VerifyRequestDto(string accessToken, string requestedServer, string requestedFeature, Tecan.Sila2.IBinaryStore store)
         {
             AccessToken = new Tecan.Sila2.StringDto(accessToken, store);
@@ -52,7 +52,7 @@ namespace Tecan.Sila2.Authorization.AuthorizationProviderService
             RequestedFeature = new Tecan.Sila2.StringDto(requestedFeature, store);
         }
         
-        ///  <summary>
+        /// <summary>
         /// The token to be used along with accessing a Command or Property on a SiLA Server.
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute(1)]
@@ -68,7 +68,7 @@ namespace Tecan.Sila2.Authorization.AuthorizationProviderService
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// The server for which an authorization is requested.
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute(2)]
@@ -84,7 +84,7 @@ namespace Tecan.Sila2.Authorization.AuthorizationProviderService
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// The feature that is requested to access.
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute(3)]
@@ -100,7 +100,7 @@ namespace Tecan.Sila2.Authorization.AuthorizationProviderService
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the command identifier for this command
         /// </summary>
         /// <returns>The fully qualified command identifier</returns>
@@ -112,7 +112,7 @@ namespace Tecan.Sila2.Authorization.AuthorizationProviderService
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the given request object
         /// </summary>
         public void Validate()
@@ -122,7 +122,7 @@ namespace Tecan.Sila2.Authorization.AuthorizationProviderService
             Argument.Validate(RequestedFeature, "requestedFeature");
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
@@ -140,7 +140,7 @@ namespace Tecan.Sila2.Authorization.AuthorizationProviderService
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// Data transfer object for the response of the Verify command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
@@ -149,24 +149,24 @@ namespace Tecan.Sila2.Authorization.AuthorizationProviderService
         
         private Tecan.Sila2.IntegerDto _tokenLifetime;
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         public VerifyResponseDto()
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
-        ///  <param name="tokenLifetime">The lifetime of the provided access token as the maximum validity period after the last SiLA Server request.</param>
+        /// <param name="tokenLifetime">The lifetime of the provided access token as the maximum validity period after the last SiLA Server request.</param>
         public VerifyResponseDto(long tokenLifetime, Tecan.Sila2.IBinaryStore store)
         {
             TokenLifetime = new Tecan.Sila2.IntegerDto(tokenLifetime, store);
         }
         
-        ///  <summary>
+        /// <summary>
         /// The lifetime of the provided access token as the maximum validity period after the last SiLA Server request.
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute(1)]
@@ -182,7 +182,7 @@ namespace Tecan.Sila2.Authorization.AuthorizationProviderService
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the given request object
         /// </summary>
         public void Validate()
@@ -190,7 +190,7 @@ namespace Tecan.Sila2.Authorization.AuthorizationProviderService
             Argument.Validate(TokenLifetime, "tokenLifetime");
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>

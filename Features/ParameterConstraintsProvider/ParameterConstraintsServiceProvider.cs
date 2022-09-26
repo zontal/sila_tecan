@@ -17,7 +17,7 @@ namespace Tecan.Sila2.ParameterConstraintsProvider
 {
     
     
-    ///  <summary>
+    /// <summary>
     /// A class that exposes the IParameterConstraintsProvider interface via SiLA2
     /// </summary>
     [System.ComponentModel.Composition.ExportAttribute(typeof(IFeatureProvider))]
@@ -31,7 +31,7 @@ namespace Tecan.Sila2.ParameterConstraintsProvider
         
         private static Tecan.Sila2.Feature _feature = FeatureSerializer.LoadFromAssembly(typeof(ParameterConstraintsProviderProvider).Assembly, "ParameterConstraintsProvider.sila.xml");
         
-        ///  <summary>
+        /// <summary>
         /// Creates a new instance
         /// </summary>
         /// <param name="implementation">The implementation to exported through SiLA2</param>
@@ -43,7 +43,7 @@ namespace Tecan.Sila2.ParameterConstraintsProvider
             _server = server;
         }
         
-        ///  <summary>
+        /// <summary>
         /// The feature that is exposed by this feature provider
         /// </summary>
         /// <returns>A feature object</returns>
@@ -55,7 +55,7 @@ namespace Tecan.Sila2.ParameterConstraintsProvider
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Registers the feature in the provided feature registration
         /// </summary>
         /// <param name="registration">The registration component to which the feature should be registered</param>
@@ -64,7 +64,7 @@ namespace Tecan.Sila2.ParameterConstraintsProvider
             registration.RegisterObservableProperty("ParametersConstraints", GetParametersConstraints, _implementation);
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the current value of the Parameters Constraints property
         /// </summary>
         /// <returns>The current value wrapped in a data transfer object</returns>
@@ -73,7 +73,7 @@ namespace Tecan.Sila2.ParameterConstraintsProvider
             return new PropertyResponse<System.Collections.Generic.List<ParametersConstraintDto>>(Tecan.Sila2.DtoExtensions.Encapsulate(_implementation.ParametersConstraints, ParametersConstraintDto.Create, _server));
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the command with the given identifier
         /// </summary>
         /// <param name="commandIdentifier">A fully qualified command identifier</param>
@@ -83,7 +83,7 @@ namespace Tecan.Sila2.ParameterConstraintsProvider
             return null;
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the property with the given identifier
         /// </summary>
         /// <param name="propertyIdentifier">A fully qualified property identifier</param>

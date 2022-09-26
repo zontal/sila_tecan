@@ -13,21 +13,21 @@ namespace Tecan.Sila2.ConnectionConfiguration.ConnectionConfigurationService
     using Tecan.Sila2;
     
     
-    ///  <summary>
+    /// <summary>
     /// Data transfer object for the request of the Enable Server Initiated Connection Mode command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
     public class EnableServerInitiatedConnectionModeRequestDto : Tecan.Sila2.ISilaTransferObject, Tecan.Sila2.ISilaRequestObject
     {
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         public EnableServerInitiatedConnectionModeRequestDto()
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
@@ -35,7 +35,7 @@ namespace Tecan.Sila2.ConnectionConfiguration.ConnectionConfigurationService
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the command identifier for this command
         /// </summary>
         /// <returns>The fully qualified command identifier</returns>
@@ -48,14 +48,14 @@ namespace Tecan.Sila2.ConnectionConfiguration.ConnectionConfigurationService
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the given request object
         /// </summary>
         public void Validate()
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
@@ -65,21 +65,21 @@ namespace Tecan.Sila2.ConnectionConfiguration.ConnectionConfigurationService
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// Data transfer object for the request of the Disable Server Initiated Connection Mode command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
     public class DisableServerInitiatedConnectionModeRequestDto : Tecan.Sila2.ISilaTransferObject, Tecan.Sila2.ISilaRequestObject
     {
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         public DisableServerInitiatedConnectionModeRequestDto()
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
@@ -87,7 +87,7 @@ namespace Tecan.Sila2.ConnectionConfiguration.ConnectionConfigurationService
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the command identifier for this command
         /// </summary>
         /// <returns>The fully qualified command identifier</returns>
@@ -100,14 +100,14 @@ namespace Tecan.Sila2.ConnectionConfiguration.ConnectionConfigurationService
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the given request object
         /// </summary>
         public void Validate()
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
@@ -117,7 +117,7 @@ namespace Tecan.Sila2.ConnectionConfiguration.ConnectionConfigurationService
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// Data transfer object for the request of the Connect SiLA Client command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
@@ -132,21 +132,21 @@ namespace Tecan.Sila2.ConnectionConfiguration.ConnectionConfigurationService
         
         private Tecan.Sila2.BooleanDto _persist;
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         public ConnectSiLAClientRequestDto()
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
-        ///  <param name="clientName">Human readable name of the SiLA Client. Has to be unique.</param>
-        ///  <param name="siLAClientHost">Host Address of the new SiLA Client.</param>
-        ///  <param name="siLAClientPort">Port of the new SiLA Client.</param>
-        ///  <param name="persist">Whether or not the connection should be persisted.</param>
+        /// <param name="clientName">Human readable name of the SiLA Client. Has to be unique.</param>
+        /// <param name="siLAClientHost">Host Address of the new SiLA Client.</param>
+        /// <param name="siLAClientPort">Port of the new SiLA Client.</param>
+        /// <param name="persist">Whether or not the connection should be persisted.</param>
         public ConnectSiLAClientRequestDto(string clientName, string siLAClientHost, long siLAClientPort, bool persist, Tecan.Sila2.IBinaryStore store)
         {
             ClientName = new Tecan.Sila2.StringDto(clientName, store);
@@ -155,7 +155,7 @@ namespace Tecan.Sila2.ConnectionConfiguration.ConnectionConfigurationService
             Persist = new Tecan.Sila2.BooleanDto(persist, store);
         }
         
-        ///  <summary>
+        /// <summary>
         /// Human readable name of the SiLA Client. Has to be unique.
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute(1)]
@@ -171,7 +171,7 @@ namespace Tecan.Sila2.ConnectionConfiguration.ConnectionConfigurationService
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Host Address of the new SiLA Client.
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute(2)]
@@ -187,7 +187,7 @@ namespace Tecan.Sila2.ConnectionConfiguration.ConnectionConfigurationService
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Port of the new SiLA Client.
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute(3)]
@@ -203,7 +203,7 @@ namespace Tecan.Sila2.ConnectionConfiguration.ConnectionConfigurationService
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Whether or not the connection should be persisted.
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute(4)]
@@ -219,7 +219,7 @@ namespace Tecan.Sila2.ConnectionConfiguration.ConnectionConfigurationService
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the command identifier for this command
         /// </summary>
         /// <returns>The fully qualified command identifier</returns>
@@ -232,7 +232,7 @@ namespace Tecan.Sila2.ConnectionConfiguration.ConnectionConfigurationService
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the given request object
         /// </summary>
         public void Validate()
@@ -243,7 +243,7 @@ namespace Tecan.Sila2.ConnectionConfiguration.ConnectionConfigurationService
             Argument.Validate(Persist, "persist");
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
@@ -267,7 +267,7 @@ namespace Tecan.Sila2.ConnectionConfiguration.ConnectionConfigurationService
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// Data transfer object for the request of the Disconnect SiLA Client command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
@@ -278,26 +278,26 @@ namespace Tecan.Sila2.ConnectionConfiguration.ConnectionConfigurationService
         
         private Tecan.Sila2.BooleanDto _remove;
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         public DisconnectSiLAClientRequestDto()
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
-        ///  <param name="clientName">Human readable name of the SiLA Client.</param>
-        ///  <param name="remove">Whether or not to remove the connection details.</param>
+        /// <param name="clientName">Human readable name of the SiLA Client.</param>
+        /// <param name="remove">Whether or not to remove the connection details.</param>
         public DisconnectSiLAClientRequestDto(string clientName, bool remove, Tecan.Sila2.IBinaryStore store)
         {
             ClientName = new Tecan.Sila2.StringDto(clientName, store);
             Remove = new Tecan.Sila2.BooleanDto(remove, store);
         }
         
-        ///  <summary>
+        /// <summary>
         /// Human readable name of the SiLA Client.
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute(1)]
@@ -313,7 +313,7 @@ namespace Tecan.Sila2.ConnectionConfiguration.ConnectionConfigurationService
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Whether or not to remove the connection details.
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute(2)]
@@ -329,7 +329,7 @@ namespace Tecan.Sila2.ConnectionConfiguration.ConnectionConfigurationService
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the command identifier for this command
         /// </summary>
         /// <returns>The fully qualified command identifier</returns>
@@ -342,7 +342,7 @@ namespace Tecan.Sila2.ConnectionConfiguration.ConnectionConfigurationService
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the given request object
         /// </summary>
         public void Validate()
@@ -351,7 +351,7 @@ namespace Tecan.Sila2.ConnectionConfiguration.ConnectionConfigurationService
             Argument.Validate(Remove, "remove");
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
@@ -368,7 +368,7 @@ namespace Tecan.Sila2.ConnectionConfiguration.ConnectionConfigurationService
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// The data transfer object for Configured Si L A Client
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
@@ -381,14 +381,14 @@ namespace Tecan.Sila2.ConnectionConfiguration.ConnectionConfigurationService
         
         private Tecan.Sila2.IntegerDto _siLAClientPort;
         
-        ///  <summary>
+        /// <summary>
         /// Initializes a new instance (to be used by the serializer)
         /// </summary>
         public ConfiguredSiLAClientDto()
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Initializes a new data transfer object from the business object
         /// </summary>
         /// <param name="inner">The business object that should be transferred</param>
@@ -400,7 +400,7 @@ namespace Tecan.Sila2.ConnectionConfiguration.ConnectionConfigurationService
             SiLAClientPort = new Tecan.Sila2.IntegerDto(inner.SiLAClientPort, store);
         }
         
-        ///  <summary>
+        /// <summary>
         /// Human readable name of the SiLA Client.
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute(1)]
@@ -416,7 +416,7 @@ namespace Tecan.Sila2.ConnectionConfiguration.ConnectionConfigurationService
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Host Address of the SiLA Client.
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute(2)]
@@ -432,7 +432,7 @@ namespace Tecan.Sila2.ConnectionConfiguration.ConnectionConfigurationService
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Port of the SiLA Client.
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute(3)]
@@ -448,7 +448,7 @@ namespace Tecan.Sila2.ConnectionConfiguration.ConnectionConfigurationService
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Extracts the transferred value
         /// </summary>
         /// <param name="store">The binary store in which to store binary data</param>
@@ -458,7 +458,7 @@ namespace Tecan.Sila2.ConnectionConfiguration.ConnectionConfigurationService
             return new ConfiguredSiLAClient(ClientName.Extract(store), SiLAClientHost.Extract(store), SiLAClientPort.Extract(store));
         }
         
-        ///  <summary>
+        /// <summary>
         /// Creates the data transfer object from the given object to transport
         /// </summary>
         /// <param name="inner">The object to transfer</param>
@@ -468,7 +468,7 @@ namespace Tecan.Sila2.ConnectionConfiguration.ConnectionConfigurationService
             return new ConfiguredSiLAClientDto(inner, store);
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>

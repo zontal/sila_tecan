@@ -13,7 +13,7 @@ namespace Tecan.Sila2.Interop.Server.AnyTypeTest
     using Tecan.Sila2;
     
     
-    ///  <summary>
+    /// <summary>
     /// Data transfer object for the request of the Set Any Type Value command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
@@ -22,24 +22,24 @@ namespace Tecan.Sila2.Interop.Server.AnyTypeTest
         
         private Tecan.Sila2.DynamicClient.AnyTypeDto _anyTypeValue;
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         public SetAnyTypeValueRequestDto()
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
-        ///  <param name="anyTypeValue">The Any type value to be set.</param>
+        /// <param name="anyTypeValue">The Any type value to be set.</param>
         public SetAnyTypeValueRequestDto(Tecan.Sila2.DynamicClient.DynamicObjectProperty anyTypeValue, Tecan.Sila2.IBinaryStore store)
         {
             AnyTypeValue = new Tecan.Sila2.DynamicClient.AnyTypeDto(anyTypeValue, store);
         }
         
-        ///  <summary>
+        /// <summary>
         /// The Any type value to be set.
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute(1)]
@@ -55,7 +55,7 @@ namespace Tecan.Sila2.Interop.Server.AnyTypeTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the command identifier for this command
         /// </summary>
         /// <returns>The fully qualified command identifier</returns>
@@ -67,7 +67,7 @@ namespace Tecan.Sila2.Interop.Server.AnyTypeTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the given request object
         /// </summary>
         public void Validate()
@@ -75,7 +75,7 @@ namespace Tecan.Sila2.Interop.Server.AnyTypeTest
             Argument.Validate(AnyTypeValue, "anyTypeValue");
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
@@ -85,7 +85,7 @@ namespace Tecan.Sila2.Interop.Server.AnyTypeTest
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// Data transfer object for the response of the Set Any Type Value command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
@@ -96,14 +96,14 @@ namespace Tecan.Sila2.Interop.Server.AnyTypeTest
         
         private Tecan.Sila2.DynamicClient.AnyTypeDto _receivedValue;
         
-        ///  <summary>
+        /// <summary>
         /// Initializes a new instance (to be used by the serializer)
         /// </summary>
         public SetAnyTypeValueResponseDto()
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Initializes a new data transfer object from the business object
         /// </summary>
         /// <param name="inner">The business object that should be transferred</param>
@@ -114,7 +114,7 @@ namespace Tecan.Sila2.Interop.Server.AnyTypeTest
             ReceivedValue = new Tecan.Sila2.DynamicClient.AnyTypeDto(inner.ReceivedValue, store);
         }
         
-        ///  <summary>
+        /// <summary>
         /// The type that has been received.
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute(1)]
@@ -130,7 +130,7 @@ namespace Tecan.Sila2.Interop.Server.AnyTypeTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// The value that has been received.
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute(2)]
@@ -146,7 +146,7 @@ namespace Tecan.Sila2.Interop.Server.AnyTypeTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Extracts the transferred value
         /// </summary>
         /// <param name="store">The binary store in which to store binary data</param>
@@ -156,7 +156,7 @@ namespace Tecan.Sila2.Interop.Server.AnyTypeTest
             return new SetAnyTypeValueResponse(ReceivedAnyType.Extract(store), ReceivedValue.Extract(store));
         }
         
-        ///  <summary>
+        /// <summary>
         /// Creates the data transfer object from the given object to transport
         /// </summary>
         /// <param name="inner">The object to transfer</param>
@@ -166,7 +166,7 @@ namespace Tecan.Sila2.Interop.Server.AnyTypeTest
             return new SetAnyTypeValueResponseDto(inner, store);
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>

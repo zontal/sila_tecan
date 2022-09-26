@@ -12,7 +12,7 @@ namespace Tecan.Sila2.Interop.Server.CancellationTest
 {
     
     
-    ///  <summary>
+    /// <summary>
     /// Contains a command that can be cancelled via the "Cancel Controller" core feature.
     /// </summary>
     [Tecan.Sila2.SilaFeatureAttribute(true, "test")]
@@ -21,7 +21,7 @@ namespace Tecan.Sila2.Interop.Server.CancellationTest
     public partial interface ICancellationTest
     {
         
-        ///  <summary>
+        /// <summary>
         /// Starts a command and waits for cancellation
         /// </summary>
         /// <param name="duration">The time the server should wait for the cancellation</param>
@@ -30,13 +30,13 @@ namespace Tecan.Sila2.Interop.Server.CancellationTest
         Tecan.Sila2.IObservableCommand WaitForCancel([Tecan.Sila2.UnitAttribute("s", Second=1)] long duration);
     }
     
-    ///  <summary>
+    /// <summary>
     /// Happens if the command did not receive a cancellation
     /// </summary>
     public class ShouldHaveBeenCancelledException : System.Exception
     {
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="message">The actual error message</param>

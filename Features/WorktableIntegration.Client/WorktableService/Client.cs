@@ -17,7 +17,7 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
 {
     
     
-    ///  <summary>
+    /// <summary>
     /// Class that implements the IWorktableService interface through SiLA2
     /// </summary>
     public partial class WorktableServiceClient : IWorktableService
@@ -36,7 +36,7 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
         private const string _serviceName = "sila2.tecan.sila.worktableintegration.infrastructure.worktableservice.v1.Worktabl" +
             "eService";
         
-        ///  <summary>
+        /// <summary>
         /// Creates a new instance
         /// </summary>
         /// <param name="channel">The channel through which calls should be executed</param>
@@ -48,7 +48,7 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
             InitLazyRequests();
         }
         
-        ///  <summary>
+        /// <summary>
         /// The outer hull of the device
         /// </summary>
         public virtual BoundingBox BoundingBox
@@ -59,7 +59,7 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// The templates for sites used by this device
         /// </summary>
         public virtual System.Collections.Generic.ICollection<SiteTemplate> SiteTemplates
@@ -70,7 +70,7 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// The sites that this device offers
         /// </summary>
         public virtual System.Collections.Generic.ICollection<Site> Sites
@@ -135,7 +135,7 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Initializes lazies for non-observable properties.
         /// </summary>
         private void InitLazyRequests()
@@ -152,7 +152,7 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// Factory to instantiate clients for the Worktable Service.
     /// </summary>
     [System.ComponentModel.Composition.ExportAttribute(typeof(IClientFactory))]
@@ -160,7 +160,7 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
     public partial class WorktableServiceClientFactory : IClientFactory
     {
         
-        ///  <summary>
+        /// <summary>
         /// Gets the fully-qualified identifier of the feature for which clients can be generated
         /// </summary>
         public string FeatureIdentifier
@@ -171,7 +171,7 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the interface type for which clients can be generated
         /// </summary>
         public System.Type InterfaceType
@@ -182,7 +182,7 @@ namespace Tecan.Sila2.WorktableIntegration.WorktableService
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Creates a strongly typed client for the given execution channel and execution manager
         /// </summary>
         /// <param name="channel">The channel that should be used for communication with the server</param>

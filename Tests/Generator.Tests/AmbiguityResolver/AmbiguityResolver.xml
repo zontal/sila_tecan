@@ -1,5 +1,6 @@
 <FeatureGenerationConfig xmlns="http://www.sila-standard.org" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sila-standard.org ..\..\..\Generator\FeatureGenerationConfig.xsd">
     <Feature Code="IAmbiguityResolverService">
+        <Command Code="OverloadedMethod" Overload="String" />
         <Type Code="AmbiguousClass">
             <Property Key="channel" Property="AmbiguousChannel" />
         </Type>

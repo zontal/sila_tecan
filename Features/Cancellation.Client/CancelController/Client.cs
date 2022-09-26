@@ -17,7 +17,7 @@ namespace Tecan.Sila2.Cancellation.CancelController
 {
     
     
-    ///  <summary>
+    /// <summary>
     /// Class that implements the ICancelController interface through SiLA2
     /// </summary>
     public partial class CancelControllerClient : ICancelController
@@ -29,7 +29,7 @@ namespace Tecan.Sila2.Cancellation.CancelController
         
         private const string _serviceName = "sila2.org.silastandard.core.commands.cancelcontroller.v1.CancelController";
         
-        ///  <summary>
+        /// <summary>
         /// Creates a new instance
         /// </summary>
         /// <param name="channel">The channel through which calls should be executed</param>
@@ -40,7 +40,7 @@ namespace Tecan.Sila2.Cancellation.CancelController
             _channel = channel;
         }
         
-        ///  <summary>
+        /// <summary>
         /// Cancel a specified currently running Observable Command or cancel all currently running Commands (Observable and
         /// Unobservable).
         /// For any canceled Observable Command the SiLA Server MUST update the Command Execution Status to "Command Finished
@@ -66,7 +66,7 @@ namespace Tecan.Sila2.Cancellation.CancelController
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Converts the error ocurred during execution of CancelCommand to a proper exception
         /// </summary>
         /// <param name="errorIdentifier">The identifier of the error that has happened</param>
@@ -87,7 +87,7 @@ namespace Tecan.Sila2.Cancellation.CancelController
             return null;
         }
         
-        ///  <summary>
+        /// <summary>
         /// Cancels all currently running Observable and Unobservable Commands running on this SiLA Server.
         /// The SiLA Server MUST throw an Execution Error indicating 'cancellation' as the reason for the
         /// Command not being able to finish successfully.
@@ -116,7 +116,7 @@ namespace Tecan.Sila2.Cancellation.CancelController
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// Factory to instantiate clients for the Cancel Controller.
     /// </summary>
     [System.ComponentModel.Composition.ExportAttribute(typeof(IClientFactory))]
@@ -124,7 +124,7 @@ namespace Tecan.Sila2.Cancellation.CancelController
     public partial class CancelControllerClientFactory : IClientFactory
     {
         
-        ///  <summary>
+        /// <summary>
         /// Gets the fully-qualified identifier of the feature for which clients can be generated
         /// </summary>
         public string FeatureIdentifier
@@ -135,7 +135,7 @@ namespace Tecan.Sila2.Cancellation.CancelController
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the interface type for which clients can be generated
         /// </summary>
         public System.Type InterfaceType
@@ -146,7 +146,7 @@ namespace Tecan.Sila2.Cancellation.CancelController
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Creates a strongly typed client for the given execution channel and execution manager
         /// </summary>
         /// <param name="channel">The channel that should be used for communication with the server</param>

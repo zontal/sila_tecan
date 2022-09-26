@@ -24,7 +24,7 @@ namespace Tecan.Sila2.Generator.Generators
         private readonly ITypeTranslationProvider _translationProvider;
         private readonly ILog _loggingChannel = LogManager.GetLogger<FeatureDefinitionGeneratorContext>();
         private readonly IAmbiguityResolver _ambiguityResolver;
-        private readonly FeatureSpec _featureSpec;
+        private FeatureSpec _featureSpec;
         private readonly Type _interfaceType;
 
         private static readonly string[] ArgumentExceptionTypeNames =
@@ -53,7 +53,7 @@ namespace Tecan.Sila2.Generator.Generators
             var executeExceptions = new HashSet<Type>();
             var dataTypes = new HashSet<Type>();
 
-            AddInterfaceMembers( _interfaceType, items, executeExceptions, dataTypes );
+            AddInterfaceMembers( _interfaceType, items, executeExceptions, dataTypes, false );
             namespaceCollector?.Add( _interfaceType.Namespace );
 
             GenerateExceptions( executeExceptions, items, namespaceCollector );
@@ -165,14 +165,14 @@ namespace Tecan.Sila2.Generator.Generators
         }
 
         private void AddInterfaceMembers( Type interfaceType, ICollection<object> items,
-            ICollection<Type> definedExceptions, ICollection<Type> dataTypes )
+            ICollection<Type> definedExceptions, ICollection<Type> dataTypes, bool forceSpec )
         {
             foreach(var methodGroup in interfaceType.GetMethods().GroupBy( m => m.Name ))
             {
                 var methodInfo = methodGroup.FirstOrDefault();
                 if(methodGroup.Count() > 1)
                 {
-                    methodInfo = _ambiguityResolver.GetExposedOverload( methodGroup.ToList() );
+                    methodInfo = ChoseOverload( methodGroup );
 
                     if(methodInfo == null)
                     {
@@ -190,7 +190,16 @@ namespace Tecan.Sila2.Generator.Generators
                         }
                         else
                         {
-                            items.Add( GenerateCommand( methodInfo, definedExceptions, dataTypes ) );
+                            var featureCommand = GenerateCommand( methodInfo, definedExceptions, dataTypes );
+                            if(_featureSpec != null && forceSpec)
+                            {
+                                _featureSpec.Command = _featureSpec.Command.Add( new CommandSpec
+                                {
+                                    Code = methodInfo.Name,
+                                    Identifier = featureCommand.Identifier
+                                } );
+                            }
+                            items.Add( featureCommand );
                         }
                     }
                     catch(NotSupportedException notSupported)
@@ -204,9 +213,26 @@ namespace Tecan.Sila2.Generator.Generators
             {
                 try
                 {
+                    if(_featureSpec != null && _featureSpec.TryGetInlineFor( propertyInfo.Name, out var inline ))
+                    {
+                        var currentSpec = _featureSpec;
+                        _featureSpec = inline;
+                        AddInterfaceMembers( propertyInfo.PropertyType, items, definedExceptions, dataTypes, true );
+                        _featureSpec = currentSpec;
+                        continue;
+                    }
                     if(!typeof( IRequestInterceptor ).IsAssignableFrom( propertyInfo.PropertyType ))
                     {
-                        items.Add( GenerateProperty( propertyInfo, definedExceptions, dataTypes, out var setterCommand ) );
+                        var featureProperty = GenerateProperty( propertyInfo, definedExceptions, dataTypes, out var setterCommand );
+                        if(_featureSpec != null && forceSpec)
+                        {
+                            _featureSpec.Property = _featureSpec.Property.Add( new PropertySpec
+                            {
+                                Code = propertyInfo.Name,
+                                Identifier = featureProperty.Identifier
+                            } );
+                        }
+                        items.Add( featureProperty );
                         if(setterCommand != null)
                         {
                             items.Add( setterCommand );
@@ -222,6 +248,50 @@ namespace Tecan.Sila2.Generator.Generators
                     _loggingChannel.Error( $"Failed to expose property {propertyInfo.Name}", notSupported );
                 }
             }
+        }
+
+        private MethodInfo ChoseOverload( IGrouping<string, MethodInfo> methodGroup )
+        {
+            if(_featureSpec != null && _featureSpec.TryGetCommandFor( methodGroup.Key, out var commandSpec ) && commandSpec.Overload != null)
+            {
+                return ChoseOverloadBasedOnSpec( methodGroup, commandSpec.Overload );
+            }
+            return _ambiguityResolver.GetExposedOverload( methodGroup.ToList() );
+        }
+
+        private MethodInfo ChoseOverloadBasedOnSpec( IEnumerable<MethodInfo> candidates, string overload )
+        {
+            if(string.IsNullOrEmpty( overload ))
+            {
+                return candidates.FirstOrDefault( m => m.GetParameters().Length == 0 );
+            }
+
+            var parameters = overload.Split( new[] { ',', ';' }, StringSplitOptions.RemoveEmptyEntries );
+            for(int i = 0; i < parameters.Length; i++)
+            {
+                parameters[i] = parameters[i].Trim();
+            }
+            return candidates.FirstOrDefault( m =>
+            {
+                var param = m.GetParameters();
+
+                if(param.Length != parameters.Length)
+                {
+                    return false;
+                }
+
+                for(int i = 0; i < param.Length; i++)
+                {
+                    if(!string.Equals( param[i].Name, parameters[i], StringComparison.OrdinalIgnoreCase )
+                    && !string.Equals( param[i].ParameterType.Name, parameters[i], StringComparison.OrdinalIgnoreCase )
+                    && !string.Equals( param[i].ParameterType.FullName, parameters[i], StringComparison.OrdinalIgnoreCase ))
+                    {
+                        return false;
+                    }
+                }
+
+                return true;
+            } );
         }
 
         private FeatureMetadata GenerateMetadata( PropertyInfo propertyInfo, ICollection<Type> definedExceptions, ICollection<Type> dataTypes )
@@ -260,7 +330,7 @@ namespace Tecan.Sila2.Generator.Generators
                 Identifier = id,
                 DisplayName = name,
                 Description = description,
-                DataType = GenerateTypeReference( dataType, dataType.FullName, null, new MemberAttributeReader( dataType ), false, typeAction )
+                DataType = GenerateTypeReference( dataType, dataType.Name, null, new MemberAttributeReader( dataType ), false, typeAction )
             };
         }
 
@@ -433,6 +503,11 @@ namespace Tecan.Sila2.Generator.Generators
             {
                 _nameRegistry?.RegisterDifferentType( origin, type );
                 type = Follow( type, mapping.ValueExpression, ref origin );
+            }
+
+            if(type.Namespace.EndsWith( "." + type.Name ))
+            {
+                _nameRegistry?.RegisterDifferentType( origin, type );
             }
 
             if(!_translationProvider.TryTranslate( type, origin, out var resultType ))

@@ -17,7 +17,7 @@ namespace Tecan.Sila2.Server.ConnectionConfiguration
 {
     
     
-    ///  <summary>
+    /// <summary>
     /// A class that exposes the IConnectionConfigurationService interface via SiLA2
     /// </summary>
     [System.ComponentModel.Composition.ExportAttribute(typeof(IFeatureProvider))]
@@ -31,7 +31,7 @@ namespace Tecan.Sila2.Server.ConnectionConfiguration
         
         private static Tecan.Sila2.Feature _feature = FeatureSerializer.LoadFromAssembly(typeof(ConnectionConfigurationServiceProvider).Assembly, "ConnectionConfigurationService.sila.xml");
         
-        ///  <summary>
+        /// <summary>
         /// Creates a new instance
         /// </summary>
         /// <param name="implementation">The implementation to exported through SiLA2</param>
@@ -43,7 +43,7 @@ namespace Tecan.Sila2.Server.ConnectionConfiguration
             _server = server;
         }
         
-        ///  <summary>
+        /// <summary>
         /// The feature that is exposed by this feature provider
         /// </summary>
         /// <returns>A feature object</returns>
@@ -55,7 +55,7 @@ namespace Tecan.Sila2.Server.ConnectionConfiguration
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Registers the feature in the provided feature registration
         /// </summary>
         /// <param name="registration">The registration component to which the feature should be registered</param>
@@ -69,7 +69,7 @@ namespace Tecan.Sila2.Server.ConnectionConfiguration
             registration.RegisterUnobservableProperty("ConfiguredSiLAClients", GetConfiguredSiLAClients);
         }
         
-        ///  <summary>
+        /// <summary>
         /// Executes the Enable Server Initiated Connection Mode command
         /// </summary>
         /// <param name="request">A data transfer object that contains the command parameters</param>
@@ -81,7 +81,7 @@ namespace Tecan.Sila2.Server.ConnectionConfiguration
             return EmptyRequest.Instance;
         }
         
-        ///  <summary>
+        /// <summary>
         /// Executes the Disable Server Initiated Connection Mode command
         /// </summary>
         /// <param name="request">A data transfer object that contains the command parameters</param>
@@ -93,7 +93,7 @@ namespace Tecan.Sila2.Server.ConnectionConfiguration
             return EmptyRequest.Instance;
         }
         
-        ///  <summary>
+        /// <summary>
         /// Executes the Connect SiLA Client command
         /// </summary>
         /// <param name="request">A data transfer object that contains the command parameters</param>
@@ -131,7 +131,7 @@ namespace Tecan.Sila2.Server.ConnectionConfiguration
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Executes the Disconnect SiLA Client command
         /// </summary>
         /// <param name="request">A data transfer object that contains the command parameters</param>
@@ -159,7 +159,7 @@ namespace Tecan.Sila2.Server.ConnectionConfiguration
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the current value of the Server Initiated Connection Mode Active property
         /// </summary>
         /// <returns>The current value wrapped in a data transfer object</returns>
@@ -168,7 +168,7 @@ namespace Tecan.Sila2.Server.ConnectionConfiguration
             return new PropertyResponse<Tecan.Sila2.BooleanDto>(new Tecan.Sila2.BooleanDto(_implementation.ServerInitiatedConnectionModeStatus, _server));
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the current value of the Get Configured SiLA Clients property
         /// </summary>
         /// <returns>The current value wrapped in a data transfer object</returns>
@@ -177,7 +177,7 @@ namespace Tecan.Sila2.Server.ConnectionConfiguration
             return new PropertyResponse<System.Collections.Generic.List<ConfiguredSiLAClientDto>>(Tecan.Sila2.DtoExtensions.Encapsulate(_implementation.ConfiguredSiLAClients, ConfiguredSiLAClientDto.Create, _server));
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the command with the given identifier
         /// </summary>
         /// <param name="commandIdentifier">A fully qualified command identifier</param>
@@ -207,7 +207,7 @@ namespace Tecan.Sila2.Server.ConnectionConfiguration
             return null;
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the property with the given identifier
         /// </summary>
         /// <param name="propertyIdentifier">A fully qualified property identifier</param>

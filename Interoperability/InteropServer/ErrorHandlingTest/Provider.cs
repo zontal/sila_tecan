@@ -17,7 +17,7 @@ namespace Tecan.Sila2.Interop.Server.ErrorHandlingTest
 {
     
     
-    ///  <summary>
+    /// <summary>
     /// A class that exposes the IErrorHandlingTest interface via SiLA2
     /// </summary>
     [System.ComponentModel.Composition.ExportAttribute(typeof(IFeatureProvider))]
@@ -31,7 +31,7 @@ namespace Tecan.Sila2.Interop.Server.ErrorHandlingTest
         
         private static Tecan.Sila2.Feature _feature = FeatureSerializer.LoadFromAssembly(typeof(ErrorHandlingTestProvider).Assembly, "ErrorHandlingTest.sila.xml");
         
-        ///  <summary>
+        /// <summary>
         /// Creates a new instance
         /// </summary>
         /// <param name="implementation">The implementation to exported through SiLA2</param>
@@ -43,7 +43,7 @@ namespace Tecan.Sila2.Interop.Server.ErrorHandlingTest
             _server = server;
         }
         
-        ///  <summary>
+        /// <summary>
         /// The feature that is exposed by this feature provider
         /// </summary>
         /// <returns>A feature object</returns>
@@ -66,7 +66,7 @@ namespace Tecan.Sila2.Interop.Server.ErrorHandlingTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Registers the feature in the provided feature registration
         /// </summary>
         /// <param name="registration">The registration component to which the feature should be registered</param>
@@ -82,7 +82,7 @@ namespace Tecan.Sila2.Interop.Server.ErrorHandlingTest
             registration.RegisterObservableProperty("RaiseUndefinedExecutionErrorOnSubscribe", GetRaiseUndefinedExecutionErrorOnSubscribe, _implementation);
         }
         
-        ///  <summary>
+        /// <summary>
         /// Executes the Raise Defined Execution Error command
         /// </summary>
         /// <param name="request">A data transfer object that contains the command parameters</param>
@@ -100,17 +100,18 @@ namespace Tecan.Sila2.Interop.Server.ErrorHandlingTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Executes the Raise Defined Execution Error Observably command
         /// </summary>
         /// <param name="request">A data transfer object that contains the command parameters</param>
         /// <returns>The command response wrapped in a data transfer object</returns>
         protected virtual Tecan.Sila2.IObservableCommand RaiseDefinedExecutionErrorObservably(RaiseDefinedExecutionErrorObservablyRequestDto request)
         {
+            request.Validate();
             return _implementation.RaiseDefinedExecutionErrorObservably();
         }
         
-        ///  <summary>
+        /// <summary>
         /// Executes the Raise Undefined Execution Error command
         /// </summary>
         /// <param name="request">A data transfer object that contains the command parameters</param>
@@ -122,17 +123,18 @@ namespace Tecan.Sila2.Interop.Server.ErrorHandlingTest
             return EmptyRequest.Instance;
         }
         
-        ///  <summary>
+        /// <summary>
         /// Executes the Raise Undefined Execution Error Observably command
         /// </summary>
         /// <param name="request">A data transfer object that contains the command parameters</param>
         /// <returns>The command response wrapped in a data transfer object</returns>
         protected virtual Tecan.Sila2.IObservableCommand RaiseUndefinedExecutionErrorObservably(RaiseUndefinedExecutionErrorObservablyRequestDto request)
         {
+            request.Validate();
             return _implementation.RaiseUndefinedExecutionErrorObservably();
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the current value of the Raise Defined Execution Error On Get property
         /// </summary>
         /// <returns>The current value wrapped in a data transfer object</returns>
@@ -147,7 +149,7 @@ namespace Tecan.Sila2.Interop.Server.ErrorHandlingTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the current value of the Raise Defined Execution Error On Subscribe property
         /// </summary>
         /// <returns>The current value wrapped in a data transfer object</returns>
@@ -162,7 +164,7 @@ namespace Tecan.Sila2.Interop.Server.ErrorHandlingTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the current value of the Raise Undefined Execution Error On Get property
         /// </summary>
         /// <returns>The current value wrapped in a data transfer object</returns>
@@ -171,7 +173,7 @@ namespace Tecan.Sila2.Interop.Server.ErrorHandlingTest
             return new PropertyResponse<Tecan.Sila2.IntegerDto>(new Tecan.Sila2.IntegerDto(_implementation.RaiseUndefinedExecutionErrorOnGet, _server));
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the current value of the Raise Undefined Execution Error On Subscribe property
         /// </summary>
         /// <returns>The current value wrapped in a data transfer object</returns>
@@ -180,7 +182,7 @@ namespace Tecan.Sila2.Interop.Server.ErrorHandlingTest
             return new PropertyResponse<Tecan.Sila2.IntegerDto>(new Tecan.Sila2.IntegerDto(_implementation.RaiseUndefinedExecutionErrorOnSubscribe, _server));
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the command with the given identifier
         /// </summary>
         /// <param name="commandIdentifier">A fully qualified command identifier</param>
@@ -208,7 +210,7 @@ namespace Tecan.Sila2.Interop.Server.ErrorHandlingTest
             return null;
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the property with the given identifier
         /// </summary>
         /// <param name="propertyIdentifier">A fully qualified property identifier</param>

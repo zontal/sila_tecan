@@ -17,7 +17,7 @@ namespace Tecan.Sila2.Interop.Client.StructureDataTypeTest.StructureDataTypeTest
 {
     
     
-    ///  <summary>
+    /// <summary>
     /// Class that implements the IStructureDataTypeTest interface through SiLA2
     /// </summary>
     public partial class StructureDataTypeTestClient : IStructureDataTypeTest
@@ -33,7 +33,7 @@ namespace Tecan.Sila2.Interop.Client.StructureDataTypeTest.StructureDataTypeTest
         
         private const string _serviceName = "sila2.org.silastandard.test.structuredatatypetest.v1.StructureDataTypeTest";
         
-        ///  <summary>
+        /// <summary>
         /// Creates a new instance
         /// </summary>
         /// <param name="channel">The channel through which calls should be executed</param>
@@ -45,7 +45,7 @@ namespace Tecan.Sila2.Interop.Client.StructureDataTypeTest.StructureDataTypeTest
             InitLazyRequests();
         }
         
-        ///  <summary>
+        /// <summary>
         /// Returns a structure with the following elements values:
         /// - String value = 'SiLA2_Test_String_Value'
         /// - Integer value = 5124
@@ -65,7 +65,7 @@ namespace Tecan.Sila2.Interop.Client.StructureDataTypeTest.StructureDataTypeTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Returns a multilevel structure with the following values:
         /// - string value = 'Outer_Test_String'
         /// - integer value = 1111
@@ -116,7 +116,7 @@ namespace Tecan.Sila2.Interop.Client.StructureDataTypeTest.StructureDataTypeTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Initializes lazies for non-observable properties.
         /// </summary>
         private void InitLazyRequests()
@@ -125,7 +125,7 @@ namespace Tecan.Sila2.Interop.Client.StructureDataTypeTest.StructureDataTypeTest
             _deepStructureValue = new System.Lazy<DeepStructure>(RequestDeepStructureValue);
         }
         
-        ///  <summary>
+        /// <summary>
         /// Receives a structure value and returns the structure that has been received (binary value is expected to be an embedded value, any typer value is expected to be a Basic type).
         /// </summary>
         /// <param name="structureValue">The Structure value to be returned.</param>
@@ -147,7 +147,7 @@ namespace Tecan.Sila2.Interop.Client.StructureDataTypeTest.StructureDataTypeTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Receives a multilevel structure value and returns the structure that has been received.
         /// </summary>
         /// <param name="deepStructureValue">The deep Structure value to be set.</param>
@@ -175,7 +175,7 @@ namespace Tecan.Sila2.Interop.Client.StructureDataTypeTest.StructureDataTypeTest
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// Factory to instantiate clients for the Structure Data Type Test.
     /// </summary>
     [System.ComponentModel.Composition.ExportAttribute(typeof(IClientFactory))]
@@ -183,7 +183,7 @@ namespace Tecan.Sila2.Interop.Client.StructureDataTypeTest.StructureDataTypeTest
     public partial class StructureDataTypeTestClientFactory : IClientFactory
     {
         
-        ///  <summary>
+        /// <summary>
         /// Gets the fully-qualified identifier of the feature for which clients can be generated
         /// </summary>
         public string FeatureIdentifier
@@ -194,7 +194,7 @@ namespace Tecan.Sila2.Interop.Client.StructureDataTypeTest.StructureDataTypeTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the interface type for which clients can be generated
         /// </summary>
         public System.Type InterfaceType
@@ -205,7 +205,7 @@ namespace Tecan.Sila2.Interop.Client.StructureDataTypeTest.StructureDataTypeTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Creates a strongly typed client for the given execution channel and execution manager
         /// </summary>
         /// <param name="channel">The channel that should be used for communication with the server</param>

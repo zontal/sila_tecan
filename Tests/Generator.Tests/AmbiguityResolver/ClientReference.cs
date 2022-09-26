@@ -17,7 +17,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
 {
     
     
-    ///  <summary>
+    /// <summary>
     /// Class that implements the IAmbiguityResolverService interface through SiLA2
     /// </summary>
     public partial class AmbiguityResolverServiceClient : IAmbiguityResolverService
@@ -30,7 +30,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         private const string _serviceName = "sila2.tecan.sila.generator.test.ambiguityresolver.ambiguityresolverservice.v4.Amb" +
             "iguityResolverService";
         
-        ///  <summary>
+        /// <summary>
         /// Creates a new instance
         /// </summary>
         /// <param name="channel">The channel through which calls should be executed</param>
@@ -41,15 +41,13 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             _channel = channel;
         }
         
-        ///  <summary>
-        /// </summary>
         public virtual Tecan.Sila2.IObservableCommand<AmbiguousClass> CheckAmbiguousEntries()
         {
             CheckAmbiguousEntriesRequestDto request = new CheckAmbiguousEntriesRequestDto(null);
             return _channel.ExecuteObservableCommand<CheckAmbiguousEntriesRequestDto, AmbiguousClass, CheckAmbiguousEntriesResponseDto>(_serviceName, "CheckAmbiguousEntries", request, ConvertCheckAmbiguousEntriesResponse, ConvertCheckAmbiguousEntriesException, _executionManager.CreateCallOptions(request.CommandIdentifier));
         }
         
-        ///  <summary>
+        /// <summary>
         /// Converts the error ocurred during execution of CheckAmbiguousEntries to a proper exception
         /// </summary>
         /// <param name="errorIdentifier">The identifier of the error that has happened</param>
@@ -60,7 +58,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             return null;
         }
         
-        ///  <summary>
+        /// <summary>
         /// Unwraps the response of the CheckAmbiguousEntriesResponse command
         /// </summary>
         /// <param name="value">The response data transfer object</param>
@@ -70,6 +68,24 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             return value.ReturnValue.Extract(_executionManager.DownloadBinaryStore);
         }
         
+        public virtual void OverloadedMethod(string method)
+        {
+            OverloadedMethodRequestDto request = new OverloadedMethodRequestDto(method, null);
+            Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("tecan.sila.generator.test/ambiguityresolver/AmbiguityResolverService/v4/Command/O" +
+                    "verloadedMethod");
+            try
+            {
+                _channel.ExecuteUnobservableCommand<OverloadedMethodRequestDto>(_serviceName, "OverloadedMethod", request, callInfo);
+                callInfo.FinishSuccessful();
+                return;
+            } catch (System.Exception ex)
+            {
+                System.Exception exception = _channel.ConvertException(ex);
+                callInfo.FinishWithErrors(exception);
+                throw exception;
+            }
+        }
+        
         private T Extract<T>(Tecan.Sila2.ISilaTransferObject<T> dto)
         
         {
@@ -77,7 +93,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// Factory to instantiate clients for the Ambiguity Resolver Service.
     /// </summary>
     [System.ComponentModel.Composition.ExportAttribute(typeof(IClientFactory))]
@@ -85,7 +101,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
     public partial class AmbiguityResolverServiceClientFactory : IClientFactory
     {
         
-        ///  <summary>
+        /// <summary>
         /// Gets the fully-qualified identifier of the feature for which clients can be generated
         /// </summary>
         public string FeatureIdentifier
@@ -96,7 +112,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the interface type for which clients can be generated
         /// </summary>
         public System.Type InterfaceType
@@ -107,7 +123,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Creates a strongly typed client for the given execution channel and execution manager
         /// </summary>
         /// <param name="channel">The channel that should be used for communication with the server</param>

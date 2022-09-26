@@ -13,7 +13,7 @@ namespace Tecan.Sila2.Authorization.AuthorizationConfigurationService
     using Tecan.Sila2;
     
     
-    ///  <summary>
+    /// <summary>
     /// Data transfer object for the request of the Set Authorization Provider command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
@@ -22,29 +22,29 @@ namespace Tecan.Sila2.Authorization.AuthorizationConfigurationService
         
         private Tecan.Sila2.StringDto _authorizationProvider;
         
-        ///  <summary>
+        /// <summary>
         /// A regular expression to check the validity of AuthorizationProvider
         /// </summary>
         public static System.Text.RegularExpressions.Regex AuthorizationProviderPattern = new System.Text.RegularExpressions.Regex("[0-9a-f]{8}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{12}");
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         public SetAuthorizationProviderRequestDto()
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
-        ///  <param name="authorizationProvider">The UUID of the SiLA server that this server uses to verify access tokens.</param>
+        /// <param name="authorizationProvider">The UUID of the SiLA server that this server uses to verify access tokens.</param>
         public SetAuthorizationProviderRequestDto(string authorizationProvider, Tecan.Sila2.IBinaryStore store)
         {
             AuthorizationProvider = new Tecan.Sila2.StringDto(authorizationProvider, store);
         }
         
-        ///  <summary>
+        /// <summary>
         /// The UUID of the SiLA server that this server uses to verify access tokens.
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute(1)]
@@ -60,7 +60,7 @@ namespace Tecan.Sila2.Authorization.AuthorizationConfigurationService
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the command identifier for this command
         /// </summary>
         /// <returns>The fully qualified command identifier</returns>
@@ -73,7 +73,7 @@ namespace Tecan.Sila2.Authorization.AuthorizationConfigurationService
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the given request object
         /// </summary>
         public void Validate()
@@ -81,7 +81,7 @@ namespace Tecan.Sila2.Authorization.AuthorizationConfigurationService
             Argument.Validate(AuthorizationProvider, "authorizationProvider");
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
@@ -97,7 +97,7 @@ namespace Tecan.Sila2.Authorization.AuthorizationConfigurationService
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// Data transfer object to encapsulate the response of the Authorization Provider property
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
@@ -106,29 +106,28 @@ namespace Tecan.Sila2.Authorization.AuthorizationConfigurationService
         
         private Tecan.Sila2.StringDto _value;
         
-        ///  <summary>
+        /// <summary>
         /// A regular expression to check the validity of Value
         /// </summary>
         public static System.Text.RegularExpressions.Regex ValuePattern = new System.Text.RegularExpressions.Regex("[0-9a-f]{8}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{12}");
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         public AuthorizationProviderResponseDto()
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
-        ///  <param name="value"></param>
         public AuthorizationProviderResponseDto(string value, Tecan.Sila2.IBinaryStore store)
         {
             Value = new Tecan.Sila2.StringDto(value, store);
         }
         
-        ///  <summary>
+        /// <summary>
         /// The  property
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute(1)]
@@ -144,7 +143,7 @@ namespace Tecan.Sila2.Authorization.AuthorizationConfigurationService
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the given request object
         /// </summary>
         public void Validate()
@@ -152,7 +151,7 @@ namespace Tecan.Sila2.Authorization.AuthorizationConfigurationService
             Argument.Validate(Value, "value");
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>

@@ -17,7 +17,7 @@ namespace Tecan.Sila2.Discovery
 {
     
     
-    ///  <summary>
+    /// <summary>
     /// Class that implements the ISiLAService interface through SiLA2
     /// </summary>
     public partial class SiLAServiceClient : ISiLAService
@@ -43,7 +43,7 @@ namespace Tecan.Sila2.Discovery
         
         private const string _serviceName = "sila2.org.silastandard.core.silaservice.v1.SiLAService";
         
-        ///  <summary>
+        /// <summary>
         /// Creates a new instance
         /// </summary>
         /// <param name="channel">The channel through which calls should be executed</param>
@@ -55,7 +55,7 @@ namespace Tecan.Sila2.Discovery
             InitLazyRequests();
         }
         
-        ///  <summary>
+        /// <summary>
         /// Human readable name of the SiLA Server. The name can be set using the 'Set Server Name' command.
         /// </summary>
         public virtual string ServerName
@@ -66,7 +66,7 @@ namespace Tecan.Sila2.Discovery
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// The type of this server. It, could be, e.g., in the case of a SiLA Device the model name.
         /// It is specified by the implementer of the SiLA Server and MAY not be unique.
         /// </summary>
@@ -78,7 +78,7 @@ namespace Tecan.Sila2.Discovery
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Globally unique identifier that identifies a SiLA Server. The Server UUID MUST be generated once
         /// and remain the same for all times.
         /// </summary>
@@ -90,7 +90,7 @@ namespace Tecan.Sila2.Discovery
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Description of the SiLA Server. This should include the use and purpose of this SiLA Server.
         /// </summary>
         public virtual string ServerDescription
@@ -101,7 +101,7 @@ namespace Tecan.Sila2.Discovery
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Returns the version of the SiLA Server. A "Major" and a "Minor" version number (e.g. 1.0) MUST be provided,
         /// a Patch version number MAY be provided. Optionally, an arbitrary text, separated by an underscore MAY be
         /// appended, e.g. “3.19.373_mighty_lab_devices”.
@@ -114,7 +114,7 @@ namespace Tecan.Sila2.Discovery
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Returns the URL to the website of the vendor or the website of the product of this SiLA Server.
         /// This URL SHOULD be accessible at all times.
         /// The URL is a Uniform Resource Locator as defined in RFC 1738.
@@ -127,7 +127,7 @@ namespace Tecan.Sila2.Discovery
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Returns a list of fully qualified Feature identifiers of all implemented Features of this SiLA Server.
         /// This list SHOULD remain the same throughout the lifetime of the SiLA Server.
         /// </summary>
@@ -251,7 +251,7 @@ namespace Tecan.Sila2.Discovery
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Initializes lazies for non-observable properties.
         /// </summary>
         private void InitLazyRequests()
@@ -265,13 +265,13 @@ namespace Tecan.Sila2.Discovery
             _implementedFeatures = new System.Lazy<System.Collections.Generic.ICollection<string>>(RequestImplementedFeatures);
         }
         
-        ///  <summary>
+        /// <summary>
         /// Get the Feature Definition of an implemented Feature by its fully qualified Feature Identifier.
         /// This command has no preconditions and no further dependencies and can be called at any time.
         /// </summary>
         /// <param name="featureIdentifier">
-        ///        The fully qualified Feature identifier for which the Feature definition shall be retrieved.
-        ///      </param>
+        /// The fully qualified Feature identifier for which the Feature definition shall be retrieved.
+        /// </param>
         public virtual string GetFeatureDefinition(string featureIdentifier)
         {
             GetFeatureDefinitionRequestDto request = new GetFeatureDefinitionRequestDto(featureIdentifier, null);
@@ -289,7 +289,7 @@ namespace Tecan.Sila2.Discovery
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Converts the error ocurred during execution of GetFeatureDefinition to a proper exception
         /// </summary>
         /// <param name="errorIdentifier">The identifier of the error that has happened</param>
@@ -304,7 +304,7 @@ namespace Tecan.Sila2.Discovery
             return null;
         }
         
-        ///  <summary>
+        /// <summary>
         /// Sets a human readable name to the Server Name Property.Command has no preconditions and
         /// no further dependencies and can be called at any time.
         /// </summary>
@@ -333,7 +333,7 @@ namespace Tecan.Sila2.Discovery
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// Factory to instantiate clients for the SiLA Service.
     /// </summary>
     [System.ComponentModel.Composition.ExportAttribute(typeof(IClientFactory))]
@@ -341,7 +341,7 @@ namespace Tecan.Sila2.Discovery
     public partial class SiLAServiceClientFactory : IClientFactory
     {
         
-        ///  <summary>
+        /// <summary>
         /// Gets the fully-qualified identifier of the feature for which clients can be generated
         /// </summary>
         public string FeatureIdentifier
@@ -352,7 +352,7 @@ namespace Tecan.Sila2.Discovery
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the interface type for which clients can be generated
         /// </summary>
         public System.Type InterfaceType
@@ -363,7 +363,7 @@ namespace Tecan.Sila2.Discovery
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Creates a strongly typed client for the given execution channel and execution manager
         /// </summary>
         /// <param name="channel">The channel that should be used for communication with the server</param>

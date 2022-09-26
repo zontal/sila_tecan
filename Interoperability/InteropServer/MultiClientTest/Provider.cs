@@ -17,7 +17,7 @@ namespace Tecan.Sila2.Interop.Server.MultiClientTest
 {
     
     
-    ///  <summary>
+    /// <summary>
     /// A class that exposes the IMultiClientTest interface via SiLA2
     /// </summary>
     [System.ComponentModel.Composition.ExportAttribute(typeof(IFeatureProvider))]
@@ -31,7 +31,7 @@ namespace Tecan.Sila2.Interop.Server.MultiClientTest
         
         private static Tecan.Sila2.Feature _feature = FeatureSerializer.LoadFromAssembly(typeof(MultiClientTestProvider).Assembly, "MultiClientTest.sila.xml");
         
-        ///  <summary>
+        /// <summary>
         /// Creates a new instance
         /// </summary>
         /// <param name="implementation">The implementation to exported through SiLA2</param>
@@ -43,7 +43,7 @@ namespace Tecan.Sila2.Interop.Server.MultiClientTest
             _server = server;
         }
         
-        ///  <summary>
+        /// <summary>
         /// The feature that is exposed by this feature provider
         /// </summary>
         /// <returns>A feature object</returns>
@@ -55,7 +55,7 @@ namespace Tecan.Sila2.Interop.Server.MultiClientTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Registers the feature in the provided feature registration
         /// </summary>
         /// <param name="registration">The registration component to which the feature should be registered</param>
@@ -66,37 +66,40 @@ namespace Tecan.Sila2.Interop.Server.MultiClientTest
             registration.RegisterObservableCommand<RejectParallelExecutionRequestDto>("RejectParallelExecution", RejectParallelExecution, null);
         }
         
-        ///  <summary>
+        /// <summary>
         /// Executes the Run In Parallel command
         /// </summary>
         /// <param name="request">A data transfer object that contains the command parameters</param>
         /// <returns>The command response wrapped in a data transfer object</returns>
         protected virtual Tecan.Sila2.IObservableCommand RunInParallel(RunInParallelRequestDto request)
         {
+            request.Validate();
             return _implementation.RunInParallel(request.Duration.Extract(_server));
         }
         
-        ///  <summary>
+        /// <summary>
         /// Executes the Run Queued command
         /// </summary>
         /// <param name="request">A data transfer object that contains the command parameters</param>
         /// <returns>The command response wrapped in a data transfer object</returns>
         protected virtual Tecan.Sila2.IObservableCommand RunQueued(RunQueuedRequestDto request)
         {
+            request.Validate();
             return _implementation.RunQueued(request.Duration.Extract(_server));
         }
         
-        ///  <summary>
+        /// <summary>
         /// Executes the Reject Parallel Execution command
         /// </summary>
         /// <param name="request">A data transfer object that contains the command parameters</param>
         /// <returns>The command response wrapped in a data transfer object</returns>
         protected virtual Tecan.Sila2.IObservableCommand RejectParallelExecution(RejectParallelExecutionRequestDto request)
         {
+            request.Validate();
             return _implementation.RejectParallelExecution(request.Duration.Extract(_server));
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the command with the given identifier
         /// </summary>
         /// <param name="commandIdentifier">A fully qualified command identifier</param>
@@ -118,7 +121,7 @@ namespace Tecan.Sila2.Interop.Server.MultiClientTest
             return null;
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the property with the given identifier
         /// </summary>
         /// <param name="propertyIdentifier">A fully qualified property identifier</param>

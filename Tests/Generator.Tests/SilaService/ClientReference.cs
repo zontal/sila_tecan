@@ -17,7 +17,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
 {
     
     
-    ///  <summary>
+    /// <summary>
     /// Class that implements the ISiLAService interface through SiLA2
     /// </summary>
     public partial class SiLAServiceClient : ISiLAService
@@ -41,7 +41,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         
         private const string _serviceName = "sila2.tecan.sila.generator.test.silaservice.silaservice.v4.SiLAService";
         
-        ///  <summary>
+        /// <summary>
         /// Creates a new instance
         /// </summary>
         /// <param name="channel">The channel through which calls should be executed</param>
@@ -53,7 +53,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             InitLazyRequests();
         }
         
-        ///  <summary>
+        /// <summary>
         /// Human readable name of the SiLA Server.
         /// </summary>
         public virtual string ServerName
@@ -91,7 +91,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// The type of Server this is. Is specified by the implementer of the server and not unique.
         /// </summary>
         public virtual string ServerType
@@ -102,7 +102,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Globally unique identifier that identifies a SiLA Server. The Server UUID MUST
         /// be generated once and always remain the same.
         /// </summary>
@@ -114,7 +114,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Description of the SiLA Server.
         /// </summary>
         public virtual string ServerDescription
@@ -125,7 +125,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Returns the version of the SiLA Server. A "Major" and a "Minor" version number (e.g. 1.0) MUST be provided,
         /// a Patch version number MAY be provided. Optionally, an arbitrary text, separated by an underscore MAY be appended, e.g. “3.19.373_mighty_lab_devices”
         /// </summary>
@@ -137,7 +137,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Returns the URL to the website of the vendor or the website
         /// of the product of this SiLA Server.
         /// </summary>
@@ -149,7 +149,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Returns a list of qualified Feature identifiers of all
         /// implemented Features of this SiLA Server.
         /// </summary>
@@ -259,7 +259,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Initializes lazies for non-observable properties.
         /// </summary>
         private void InitLazyRequests()
@@ -272,7 +272,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             _implementedFeatures = new System.Lazy<System.Collections.Generic.ICollection<FeatureIdentifier>>(RequestImplementedFeatures);
         }
         
-        ///  <summary>
+        /// <summary>
         /// Get all details on one Feature through the qualified Feature id.
         /// </summary>
         /// <param name="qualifiedFeatureIdentifier">The qualified Feature identifier for which the Feature description should be retrieved.</param>
@@ -294,7 +294,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Converts the error ocurred during execution of GetFeatureDefinition to a proper exception
         /// </summary>
         /// <param name="errorIdentifier">The identifier of the error that has happened</param>
@@ -317,7 +317,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// Factory to instantiate clients for the SiLA Service.
     /// </summary>
     [System.ComponentModel.Composition.ExportAttribute(typeof(IClientFactory))]
@@ -325,7 +325,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
     public partial class SiLAServiceClientFactory : IClientFactory
     {
         
-        ///  <summary>
+        /// <summary>
         /// Gets the fully-qualified identifier of the feature for which clients can be generated
         /// </summary>
         public string FeatureIdentifier
@@ -336,7 +336,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the interface type for which clients can be generated
         /// </summary>
         public System.Type InterfaceType
@@ -347,7 +347,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Creates a strongly typed client for the given execution channel and execution manager
         /// </summary>
         /// <param name="channel">The channel that should be used for communication with the server</param>

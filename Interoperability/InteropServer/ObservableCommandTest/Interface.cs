@@ -12,7 +12,7 @@ namespace Tecan.Sila2.Interop.Server.ObservableCommandTest
 {
     
     
-    ///  <summary>
+    /// <summary>
     /// This is a test feature to test observable commands.
     /// It specifies various observable commands and returns defined answers to validate against.
     /// </summary>
@@ -22,7 +22,7 @@ namespace Tecan.Sila2.Interop.Server.ObservableCommandTest
     public partial interface IObservableCommandTest
     {
         
-        ///  <summary>
+        /// <summary>
         /// Count from 0 to N-1 and return the current number as intermediate response.
         /// </summary>
         /// <param name="n">Number to count to</param>
@@ -32,7 +32,7 @@ namespace Tecan.Sila2.Interop.Server.ObservableCommandTest
         [return: Tecan.Sila2.SilaIdentifierAttribute("IterationResponse")]
         Tecan.Sila2.IIntermediateObservableCommand<long, long> Count(long n, [Tecan.Sila2.UnitAttribute("s", Second=1)] double delay);
         
-        ///  <summary>
+        /// <summary>
         /// Echo the given value after the specified delay. The command state must be "waiting" until the delay has passed.
         /// </summary>
         /// <param name="value">The value to echo</param>

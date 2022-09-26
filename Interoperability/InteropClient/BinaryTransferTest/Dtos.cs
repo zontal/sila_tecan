@@ -13,7 +13,7 @@ namespace Tecan.Sila2.Interop.Client.BinaryTransferTest.BinaryTransferTest
     using Tecan.Sila2;
     
     
-    ///  <summary>
+    /// <summary>
     /// Data transfer object for the request of the Echo Binary Value command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
@@ -22,24 +22,24 @@ namespace Tecan.Sila2.Interop.Client.BinaryTransferTest.BinaryTransferTest
         
         private Tecan.Sila2.BinaryDto _binaryValue;
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         public EchoBinaryValueRequestDto()
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
-        ///  <param name="binaryValue">The Binary value to be returned.</param>
+        /// <param name="binaryValue">The Binary value to be returned.</param>
         public EchoBinaryValueRequestDto(System.IO.Stream binaryValue, Tecan.Sila2.IBinaryStore store)
         {
             BinaryValue = new Tecan.Sila2.BinaryDto(binaryValue, store);
         }
         
-        ///  <summary>
+        /// <summary>
         /// The Binary value to be returned.
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute(1)]
@@ -55,7 +55,7 @@ namespace Tecan.Sila2.Interop.Client.BinaryTransferTest.BinaryTransferTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the command identifier for this command
         /// </summary>
         /// <returns>The fully qualified command identifier</returns>
@@ -67,7 +67,7 @@ namespace Tecan.Sila2.Interop.Client.BinaryTransferTest.BinaryTransferTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the given request object
         /// </summary>
         public void Validate()
@@ -75,7 +75,7 @@ namespace Tecan.Sila2.Interop.Client.BinaryTransferTest.BinaryTransferTest
             Argument.Validate(BinaryValue, "binaryValue");
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
@@ -85,7 +85,7 @@ namespace Tecan.Sila2.Interop.Client.BinaryTransferTest.BinaryTransferTest
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// Data transfer object for the response of the Echo Binary Value command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
@@ -94,24 +94,24 @@ namespace Tecan.Sila2.Interop.Client.BinaryTransferTest.BinaryTransferTest
         
         private Tecan.Sila2.BinaryDto _receivedValue;
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         public EchoBinaryValueResponseDto()
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
-        ///  <param name="receivedValue">The received Binary value transmitted in the same way it has been received.</param>
+        /// <param name="receivedValue">The received Binary value transmitted in the same way it has been received.</param>
         public EchoBinaryValueResponseDto(System.IO.Stream receivedValue, Tecan.Sila2.IBinaryStore store)
         {
             ReceivedValue = new Tecan.Sila2.BinaryDto(receivedValue, store);
         }
         
-        ///  <summary>
+        /// <summary>
         /// The received Binary value transmitted in the same way it has been received.
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute(1)]
@@ -127,7 +127,7 @@ namespace Tecan.Sila2.Interop.Client.BinaryTransferTest.BinaryTransferTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the given request object
         /// </summary>
         public void Validate()
@@ -135,7 +135,7 @@ namespace Tecan.Sila2.Interop.Client.BinaryTransferTest.BinaryTransferTest
             Argument.Validate(ReceivedValue, "receivedValue");
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>

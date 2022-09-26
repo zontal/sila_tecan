@@ -17,7 +17,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
 {
     
     
-    ///  <summary>
+    /// <summary>
     /// Class that implements the ITemperatureController interface through SiLA2
     /// </summary>
     public partial class TemperatureControllerClient : ITemperatureController, System.ComponentModel.INotifyPropertyChanged, System.IDisposable
@@ -35,7 +35,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         
         private const string _serviceName = "sila2.tecan.sila.generator.test.temperaturecontroller.v4.TemperatureController";
         
-        ///  <summary>
+        /// <summary>
         /// Creates a new instance
         /// </summary>
         /// <param name="channel">The channel through which calls should be executed</param>
@@ -46,7 +46,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             _channel = channel;
         }
         
-        ///  <summary>
+        /// <summary>
         /// Current Temperature as measured by the controller.
         /// </summary>
         public virtual double CurrentTemperature
@@ -87,7 +87,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Disposes the current client and cancels all subscriptions
         /// </summary>
         public void Dispose()
@@ -96,18 +96,20 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             _cancellationTokenSource.Dispose();
         }
         
-        ///  <summary>
+        /// <summary>
         /// Control the Temperature gradually to a set target,
         /// </summary>
-        /// <param name="targetTemperature">The target temperature that the device will try to reach. Note that the command might
-        ///be completed at a temperature that is close enough.</param>
+        /// <param name="targetTemperature">
+        /// The target temperature that the device will try to reach. Note that the command might
+        /// be completed at a temperature that is close enough.
+        /// </param>
         public virtual Tecan.Sila2.IObservableCommand ControlTemperature(double targetTemperature)
         {
             ControlTemperatureRequestDto request = new ControlTemperatureRequestDto(targetTemperature, null);
             return _channel.ExecuteObservableCommand<ControlTemperatureRequestDto>(_serviceName, "ControlTemperature", request, ConvertControlTemperatureException, _executionManager.CreateCallOptions(request.CommandIdentifier));
         }
         
-        ///  <summary>
+        /// <summary>
         /// Converts the error ocurred during execution of ControlTemperature to a proper exception
         /// </summary>
         /// <param name="errorIdentifier">The identifier of the error that has happened</param>
@@ -135,7 +137,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// Factory to instantiate clients for the Temperature Controller.
     /// </summary>
     [System.ComponentModel.Composition.ExportAttribute(typeof(IClientFactory))]
@@ -143,7 +145,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
     public partial class TemperatureControllerClientFactory : IClientFactory
     {
         
-        ///  <summary>
+        /// <summary>
         /// Gets the fully-qualified identifier of the feature for which clients can be generated
         /// </summary>
         public string FeatureIdentifier
@@ -154,7 +156,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the interface type for which clients can be generated
         /// </summary>
         public System.Type InterfaceType
@@ -165,7 +167,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Creates a strongly typed client for the given execution channel and execution manager
         /// </summary>
         /// <param name="channel">The channel that should be used for communication with the server</param>

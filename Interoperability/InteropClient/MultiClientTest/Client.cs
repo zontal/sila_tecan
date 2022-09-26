@@ -17,7 +17,7 @@ namespace Tecan.Sila2.Interop.Client.MultiClientTest.MultiClientTest
 {
     
     
-    ///  <summary>
+    /// <summary>
     /// Class that implements the IMultiClientTest interface through SiLA2
     /// </summary>
     public partial class MultiClientTestClient : IMultiClientTest
@@ -29,7 +29,7 @@ namespace Tecan.Sila2.Interop.Client.MultiClientTest.MultiClientTest
         
         private const string _serviceName = "sila2.org.silastandard.test.multiclienttest.v1.MultiClientTest";
         
-        ///  <summary>
+        /// <summary>
         /// Creates a new instance
         /// </summary>
         /// <param name="channel">The channel through which calls should be executed</param>
@@ -40,7 +40,7 @@ namespace Tecan.Sila2.Interop.Client.MultiClientTest.MultiClientTest
             _channel = channel;
         }
         
-        ///  <summary>
+        /// <summary>
         /// Multiple invocations of this command will be running in parallel
         /// </summary>
         /// <param name="duration">The duration of the command execution</param>
@@ -50,7 +50,7 @@ namespace Tecan.Sila2.Interop.Client.MultiClientTest.MultiClientTest
             return _channel.ExecuteObservableCommand<RunInParallelRequestDto>(_serviceName, "RunInParallel", request, ConvertRunInParallelException, _executionManager.CreateCallOptions(request.CommandIdentifier));
         }
         
-        ///  <summary>
+        /// <summary>
         /// Converts the error ocurred during execution of RunInParallel to a proper exception
         /// </summary>
         /// <param name="errorIdentifier">The identifier of the error that has happened</param>
@@ -61,7 +61,7 @@ namespace Tecan.Sila2.Interop.Client.MultiClientTest.MultiClientTest
             return null;
         }
         
-        ///  <summary>
+        /// <summary>
         /// Multiple invocations of this command will be queued
         /// </summary>
         /// <param name="duration">The duration of the command execution</param>
@@ -71,7 +71,7 @@ namespace Tecan.Sila2.Interop.Client.MultiClientTest.MultiClientTest
             return _channel.ExecuteObservableCommand<RunQueuedRequestDto>(_serviceName, "RunQueued", request, ConvertRunQueuedException, _executionManager.CreateCallOptions(request.CommandIdentifier));
         }
         
-        ///  <summary>
+        /// <summary>
         /// Converts the error ocurred during execution of RunQueued to a proper exception
         /// </summary>
         /// <param name="errorIdentifier">The identifier of the error that has happened</param>
@@ -82,7 +82,7 @@ namespace Tecan.Sila2.Interop.Client.MultiClientTest.MultiClientTest
             return null;
         }
         
-        ///  <summary>
+        /// <summary>
         /// Invocations will be rejected, if there is another command instance already running
         /// </summary>
         /// <param name="duration">The duration of the command execution</param>
@@ -92,7 +92,7 @@ namespace Tecan.Sila2.Interop.Client.MultiClientTest.MultiClientTest
             return _channel.ExecuteObservableCommand<RejectParallelExecutionRequestDto>(_serviceName, "RejectParallelExecution", request, ConvertRejectParallelExecutionException, _executionManager.CreateCallOptions(request.CommandIdentifier));
         }
         
-        ///  <summary>
+        /// <summary>
         /// Converts the error ocurred during execution of RejectParallelExecution to a proper exception
         /// </summary>
         /// <param name="errorIdentifier">The identifier of the error that has happened</param>
@@ -110,7 +110,7 @@ namespace Tecan.Sila2.Interop.Client.MultiClientTest.MultiClientTest
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// Factory to instantiate clients for the Multi Client Test.
     /// </summary>
     [System.ComponentModel.Composition.ExportAttribute(typeof(IClientFactory))]
@@ -118,7 +118,7 @@ namespace Tecan.Sila2.Interop.Client.MultiClientTest.MultiClientTest
     public partial class MultiClientTestClientFactory : IClientFactory
     {
         
-        ///  <summary>
+        /// <summary>
         /// Gets the fully-qualified identifier of the feature for which clients can be generated
         /// </summary>
         public string FeatureIdentifier
@@ -129,7 +129,7 @@ namespace Tecan.Sila2.Interop.Client.MultiClientTest.MultiClientTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the interface type for which clients can be generated
         /// </summary>
         public System.Type InterfaceType
@@ -140,7 +140,7 @@ namespace Tecan.Sila2.Interop.Client.MultiClientTest.MultiClientTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Creates a strongly typed client for the given execution channel and execution manager
         /// </summary>
         /// <param name="channel">The channel that should be used for communication with the server</param>

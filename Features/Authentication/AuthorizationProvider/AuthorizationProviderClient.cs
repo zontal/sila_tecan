@@ -17,7 +17,7 @@ namespace Tecan.Sila2.AuthorizationProvider
 {
     
     
-    ///  <summary>
+    /// <summary>
     /// Class that implements the IAuthorizationProviderService interface through SiLA2
     /// </summary>
     public partial class AuthorizationProviderServiceClient : IAuthorizationProviderService
@@ -30,7 +30,7 @@ namespace Tecan.Sila2.AuthorizationProvider
         private const string _serviceName = "sila2.org.silastandard.core.authorizationproviderservice.v1.AuthorizationProvider" +
             "Service";
         
-        ///  <summary>
+        /// <summary>
         /// Creates a new instance
         /// </summary>
         /// <param name="channel">The channel through which calls should be executed</param>
@@ -41,7 +41,7 @@ namespace Tecan.Sila2.AuthorizationProvider
             _channel = channel;
         }
         
-        ///  <summary>
+        /// <summary>
         /// Verifies that a given token is valid for the requested server.
         /// </summary>
         /// <param name="accessToken">The token to be used along with accessing a Command or Property on a SiLA Server.</param>
@@ -64,7 +64,7 @@ namespace Tecan.Sila2.AuthorizationProvider
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Converts the error ocurred during execution of Verify to a proper exception
         /// </summary>
         /// <param name="errorIdentifier">The identifier of the error that has happened</param>
@@ -92,7 +92,7 @@ namespace Tecan.Sila2.AuthorizationProvider
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// Factory to instantiate clients for the Authorization Provider Service.
     /// </summary>
     [System.ComponentModel.Composition.ExportAttribute(typeof(IClientFactory))]
@@ -100,7 +100,7 @@ namespace Tecan.Sila2.AuthorizationProvider
     public partial class AuthorizationProviderServiceClientFactory : IClientFactory
     {
         
-        ///  <summary>
+        /// <summary>
         /// Gets the fully-qualified identifier of the feature for which clients can be generated
         /// </summary>
         public string FeatureIdentifier
@@ -111,7 +111,7 @@ namespace Tecan.Sila2.AuthorizationProvider
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the interface type for which clients can be generated
         /// </summary>
         public System.Type InterfaceType
@@ -122,7 +122,7 @@ namespace Tecan.Sila2.AuthorizationProvider
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Creates a strongly typed client for the given execution channel and execution manager
         /// </summary>
         /// <param name="channel">The channel that should be used for communication with the server</param>

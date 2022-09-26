@@ -13,7 +13,7 @@ namespace Tecan.Sila2.Authentication.AuthenticationService
     using Tecan.Sila2;
     
     
-    ///  <summary>
+    /// <summary>
     /// Data transfer object for the request of the Login command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
@@ -26,28 +26,28 @@ namespace Tecan.Sila2.Authentication.AuthenticationService
         
         private Tecan.Sila2.StringDto _requestedServer;
         
-        ///  <summary>
+        /// <summary>
         /// A regular expression to check the validity of RequestedServer
         /// </summary>
         public static System.Text.RegularExpressions.Regex RequestedServerPattern = new System.Text.RegularExpressions.Regex("[0-9a-f]{8}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{12}");
         
         private System.Collections.Generic.List<Tecan.Sila2.StringDto> _requestedFeatures;
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         public LoginRequestDto()
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
-        ///  <param name="userIdentification">The user identification string (e.g. a user name)</param>
-        ///  <param name="password">The (encrypted) password</param>
-        ///  <param name="requestedServer">The ServerUUID of the server for which an authorization is requested.</param>
-        ///  <param name="requestedFeatures">The fully qualified identifiers of features that are requested to access. If no feature is provided, this means that all features are requested.</param>
+        /// <param name="userIdentification">The user identification string (e.g. a user name)</param>
+        /// <param name="password">The (encrypted) password</param>
+        /// <param name="requestedServer">The ServerUUID of the server for which an authorization is requested.</param>
+        /// <param name="requestedFeatures">The fully qualified identifiers of features that are requested to access. If no feature is provided, this means that all features are requested.</param>
         public LoginRequestDto(string userIdentification, string password, string requestedServer, System.Collections.Generic.ICollection<string> requestedFeatures, Tecan.Sila2.IBinaryStore store)
         {
             UserIdentification = new Tecan.Sila2.StringDto(userIdentification, store);
@@ -56,7 +56,7 @@ namespace Tecan.Sila2.Authentication.AuthenticationService
             RequestedFeatures = Tecan.Sila2.DtoExtensions.Encapsulate(requestedFeatures, Tecan.Sila2.StringDto.Create, store);
         }
         
-        ///  <summary>
+        /// <summary>
         /// The user identification string (e.g. a user name)
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute(1)]
@@ -72,7 +72,7 @@ namespace Tecan.Sila2.Authentication.AuthenticationService
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// The (encrypted) password
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute(2)]
@@ -88,7 +88,7 @@ namespace Tecan.Sila2.Authentication.AuthenticationService
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// The ServerUUID of the server for which an authorization is requested.
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute(3)]
@@ -104,7 +104,7 @@ namespace Tecan.Sila2.Authentication.AuthenticationService
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// The fully qualified identifiers of features that are requested to access. If no feature is provided, this means that all features are requested.
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute(4)]
@@ -120,7 +120,7 @@ namespace Tecan.Sila2.Authentication.AuthenticationService
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the command identifier for this command
         /// </summary>
         /// <returns>The fully qualified command identifier</returns>
@@ -132,7 +132,7 @@ namespace Tecan.Sila2.Authentication.AuthenticationService
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the given request object
         /// </summary>
         public void Validate()
@@ -143,7 +143,7 @@ namespace Tecan.Sila2.Authentication.AuthenticationService
             Argument.Validate(RequestedFeatures, "requestedFeatures");
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
@@ -162,7 +162,7 @@ namespace Tecan.Sila2.Authentication.AuthenticationService
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// Data transfer object for the response of the Login command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
@@ -173,14 +173,14 @@ namespace Tecan.Sila2.Authentication.AuthenticationService
         
         private Tecan.Sila2.IntegerDto _tokenLifetime;
         
-        ///  <summary>
+        /// <summary>
         /// Initializes a new instance (to be used by the serializer)
         /// </summary>
         public LoginResponseDto()
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Initializes a new data transfer object from the business object
         /// </summary>
         /// <param name="inner">The business object that should be transferred</param>
@@ -191,7 +191,7 @@ namespace Tecan.Sila2.Authentication.AuthenticationService
             TokenLifetime = new Tecan.Sila2.IntegerDto(inner.TokenLifetime, store);
         }
         
-        ///  <summary>
+        /// <summary>
         /// The token to be used along with accessing a Command or Property on a SiLA Server.
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute(1)]
@@ -207,7 +207,7 @@ namespace Tecan.Sila2.Authentication.AuthenticationService
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// The lifetime (in seconds) of the provided access token as the maximum validity period after the last SiLA Server
         /// request.
         /// </summary>
@@ -224,7 +224,7 @@ namespace Tecan.Sila2.Authentication.AuthenticationService
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Extracts the transferred value
         /// </summary>
         /// <param name="store">The binary store in which to store binary data</param>
@@ -234,7 +234,7 @@ namespace Tecan.Sila2.Authentication.AuthenticationService
             return new LoginResponse(AccessToken.Extract(store), TokenLifetime.Extract(store));
         }
         
-        ///  <summary>
+        /// <summary>
         /// Creates the data transfer object from the given object to transport
         /// </summary>
         /// <param name="inner">The object to transfer</param>
@@ -244,7 +244,7 @@ namespace Tecan.Sila2.Authentication.AuthenticationService
             return new LoginResponseDto(inner, store);
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
@@ -255,7 +255,7 @@ namespace Tecan.Sila2.Authentication.AuthenticationService
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// Data transfer object for the request of the Logout command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
@@ -264,24 +264,24 @@ namespace Tecan.Sila2.Authentication.AuthenticationService
         
         private Tecan.Sila2.StringDto _accessToken;
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         public LogoutRequestDto()
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
-        ///  <param name="accessToken">The access token to be invalidated.</param>
+        /// <param name="accessToken">The access token to be invalidated.</param>
         public LogoutRequestDto(string accessToken, Tecan.Sila2.IBinaryStore store)
         {
             AccessToken = new Tecan.Sila2.StringDto(accessToken, store);
         }
         
-        ///  <summary>
+        /// <summary>
         /// The access token to be invalidated.
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute(1)]
@@ -297,7 +297,7 @@ namespace Tecan.Sila2.Authentication.AuthenticationService
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the command identifier for this command
         /// </summary>
         /// <returns>The fully qualified command identifier</returns>
@@ -309,7 +309,7 @@ namespace Tecan.Sila2.Authentication.AuthenticationService
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the given request object
         /// </summary>
         public void Validate()
@@ -317,7 +317,7 @@ namespace Tecan.Sila2.Authentication.AuthenticationService
             Argument.Validate(AccessToken, "accessToken");
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>

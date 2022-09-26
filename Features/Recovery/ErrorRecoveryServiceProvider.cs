@@ -17,7 +17,7 @@ namespace Tecan.Sila2.Recovery
 {
     
     
-    ///  <summary>
+    /// <summary>
     /// A class that exposes the IErrorRecoveryService interface via SiLA2
     /// </summary>
     [System.ComponentModel.Composition.ExportAttribute(typeof(IFeatureProvider))]
@@ -31,7 +31,7 @@ namespace Tecan.Sila2.Recovery
         
         private static Tecan.Sila2.Feature _feature = FeatureSerializer.LoadFromAssembly(typeof(ErrorRecoveryServiceProvider).Assembly, "ErrorRecoveryService.sila.xml");
         
-        ///  <summary>
+        /// <summary>
         /// Creates a new instance
         /// </summary>
         /// <param name="implementation">The implementation to exported through SiLA2</param>
@@ -43,7 +43,7 @@ namespace Tecan.Sila2.Recovery
             _server = server;
         }
         
-        ///  <summary>
+        /// <summary>
         /// The feature that is exposed by this feature provider
         /// </summary>
         /// <returns>A feature object</returns>
@@ -55,7 +55,7 @@ namespace Tecan.Sila2.Recovery
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Registers the feature in the provided feature registration
         /// </summary>
         /// <param name="registration">The registration component to which the feature should be registered</param>
@@ -67,7 +67,7 @@ namespace Tecan.Sila2.Recovery
             registration.RegisterObservableProperty("RecoverableErrors", GetRecoverableErrors, _implementation);
         }
         
-        ///  <summary>
+        /// <summary>
         /// Executes the Execute Continuation Option command
         /// </summary>
         /// <param name="request">A data transfer object that contains the command parameters</param>
@@ -112,7 +112,7 @@ namespace Tecan.Sila2.Recovery
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Executes the Abort Error Handling command
         /// </summary>
         /// <param name="request">A data transfer object that contains the command parameters</param>
@@ -142,7 +142,7 @@ namespace Tecan.Sila2.Recovery
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Executes the Set Error Handling Timeout command
         /// </summary>
         /// <param name="request">A data transfer object that contains the command parameters</param>
@@ -165,7 +165,7 @@ namespace Tecan.Sila2.Recovery
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the current value of the Recoverable Errors property
         /// </summary>
         /// <returns>The current value wrapped in a data transfer object</returns>
@@ -174,7 +174,7 @@ namespace Tecan.Sila2.Recovery
             return new PropertyResponse<System.Collections.Generic.List<RecoverableErrorDto>>(Tecan.Sila2.DtoExtensions.Encapsulate(_implementation.RecoverableErrors, RecoverableErrorDto.Create, _server));
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the command with the given identifier
         /// </summary>
         /// <param name="commandIdentifier">A fully qualified command identifier</param>
@@ -196,7 +196,7 @@ namespace Tecan.Sila2.Recovery
             return null;
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the property with the given identifier
         /// </summary>
         /// <param name="propertyIdentifier">A fully qualified property identifier</param>

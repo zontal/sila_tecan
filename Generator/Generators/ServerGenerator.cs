@@ -115,15 +115,17 @@ namespace Tecan.Sila2.Generator.Generators
                 foreach(var featureCommand in feature.Items.OfType<FeatureCommand>())
                 {
                     _loggingChannel.Debug( $"Generating provider for command {featureCommand.Identifier}" );
-                    var commandSpec = spec?.Command?.FirstOrDefault( p => featureCommand.Identifier == (p.Identifier ?? p.Code) );
-                    GenerateServerCommand( feature, featureCommand, commandSpec, server, implementation, serverRef );
+                    string commandPath = null;
+                    var commandSpec = spec?.FindCommandSpec( featureCommand.Identifier, out commandPath );
+                    GenerateServerCommand( feature, featureCommand, commandSpec, server, Follow( implementation, commandPath ), serverRef );
                 }
 
                 foreach(var featureProperty in feature.Items.OfType<FeatureProperty>())
                 {
                     _loggingChannel.Debug( $"Generating property for {featureProperty.Identifier}" );
-                    var propertySpec = spec?.Property?.FirstOrDefault( p => featureProperty.Identifier == (p.Identifier ?? p.Code) );
-                    GenerateServerProperty( feature, featureProperty, propertySpec, server, implementation, id => FindError( feature, id ) );
+                    string propertyPath = null;
+                    var propertySpec = spec?.FindPropertySpec( featureProperty.Identifier, out propertyPath );
+                    GenerateServerProperty( feature, featureProperty, propertySpec, server, Follow( implementation, propertyPath ), id => FindError( feature, id ) );
                 }
             }
             else
@@ -141,6 +143,22 @@ namespace Tecan.Sila2.Generator.Generators
             _diGenerator.AddDependencyInjectionRegistrations( server );
 
             return server;
+        }
+
+        private CodeExpression Follow( CodeExpression expression, string path )
+        {
+            var result = expression;
+
+            if(!string.IsNullOrEmpty( path ))
+            {
+                var segments = path.Split( new[] { '.' }, StringSplitOptions.RemoveEmptyEntries );
+                foreach(var seg in segments)
+                {
+                    result = new CodePropertyReferenceExpression( result, seg );
+                }
+            }
+
+            return result;
         }
 
         private void GenerateServerGetCommand( CodeTypeDeclaration server, Feature feature )
@@ -343,7 +361,7 @@ namespace Tecan.Sila2.Generator.Generators
         }
 
         private void GenerateServerCommand( Feature feature, FeatureCommand featureCommand, CommandSpec spec, CodeTypeDeclaration server,
-            CodeFieldReferenceExpression implementationRef, CodeFieldReferenceExpression serverRef )
+            CodeExpression implementationRef, CodeFieldReferenceExpression serverRef )
         {
             var request =
                 new CodeParameterDeclarationExpression( _nameProvider.GenerateCommandRequestType( featureCommand ),
@@ -375,7 +393,7 @@ namespace Tecan.Sila2.Generator.Generators
         }
 
         private void GenerateServerObservableCommand( Feature feature, FeatureCommand featureCommand, CommandSpec spec, CodeTypeDeclaration server,
-            CodeFieldReferenceExpression implementationRef, CodeFieldReferenceExpression serverRef, CodeMemberMethod commandMethod,
+            CodeExpression implementationRef, CodeFieldReferenceExpression serverRef, CodeMemberMethod commandMethod,
             CodeArgumentReferenceExpression requestRef )
         {
             commandMethod.ReturnType = _nameProvider.GetObservableCommandReturnType( featureCommand, _translationProvider );
@@ -430,7 +448,7 @@ namespace Tecan.Sila2.Generator.Generators
             return new CodeMethodReferenceExpression( null, errorConversion.Name );
         }
 
-        private CodeExpression GenerateCreateCommand( Feature feature, FeatureCommand featureCommand, CommandSpec spec, MethodInfo method, CodeTypeDeclaration server, CodeFieldReferenceExpression implementationRef, CodeFieldReferenceExpression serverRef, CodeArgumentReferenceExpression requestRef )
+        private CodeExpression GenerateCreateCommand( Feature feature, FeatureCommand featureCommand, CommandSpec spec, MethodInfo method, CodeTypeDeclaration server, CodeExpression implementationRef, CodeFieldReferenceExpression serverRef, CodeArgumentReferenceExpression requestRef )
         {
             var commandClass = new CodeTypeDeclaration( featureCommand.Identifier + "Command" )
             {
@@ -467,7 +485,7 @@ namespace Tecan.Sila2.Generator.Generators
                 ReturnType = new CodeTypeReference( method.ReturnType )
             };
             commandClass.Members.Add( runMethod );
-            var commandImplementationRef = new CodeFieldReferenceExpression( parentRef, implementationRef.FieldName );
+            var commandImplementationRef = new CodeFieldReferenceExpression( parentRef, "_implementation" );
             var commandServerRef = new CodeFieldReferenceExpression( parentRef, serverRef.FieldName );
             var actualCall = GenerateCommandImplementationCall( featureCommand, spec, commandImplementationRef, commandRequest, commandServerRef );
             if(method.GetParameters() is var parameters && parameters.Length > 0
@@ -552,7 +570,7 @@ namespace Tecan.Sila2.Generator.Generators
             return conversionMethod;
         }
 
-        private void GenerateServerNonObservableCommand( Feature feature, FeatureCommand featureCommand, CommandSpec spec, CodeFieldReferenceExpression implementationRef,
+        private void GenerateServerNonObservableCommand( Feature feature, FeatureCommand featureCommand, CommandSpec spec, CodeExpression implementationRef,
             CodeMemberMethod commandMethod, CodeArgumentReferenceExpression requestRef, CodeExpression serverRef )
         {
             commandMethod.ReturnType = _nameProvider.GenerateCommandResponseType( featureCommand );

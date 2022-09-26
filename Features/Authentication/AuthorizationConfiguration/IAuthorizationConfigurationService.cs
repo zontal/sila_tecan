@@ -12,7 +12,7 @@ namespace Tecan.Sila2.Authorization
 {
     
     
-    ///  <summary>
+    /// <summary>
     /// This Feature exposes the server configuration which authorization provider to use.
     /// </summary>
     [Tecan.Sila2.SilaFeatureAttribute(true, "core")]
@@ -21,7 +21,7 @@ namespace Tecan.Sila2.Authorization
     public partial interface IAuthorizationConfigurationService
     {
         
-        ///  <summary>
+        /// <summary>
         /// The UUID of the SiLA server that this server uses to verify access tokens.
         /// </summary>
         [Tecan.Sila2.PatternConstraintAttribute("[0-9a-f]{8}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{12}")]
@@ -30,7 +30,7 @@ namespace Tecan.Sila2.Authorization
             get;
         }
         
-        ///  <summary>
+        /// <summary>
         /// Instructs the server to use the given authorization provider starting from the next request.
         /// </summary>
         /// <param name="authorizationProvider">The UUID of the SiLA server that this server uses to verify access tokens.</param>

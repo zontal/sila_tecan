@@ -21,7 +21,7 @@ namespace Tecan.Sila2.Generator.Helper
         /// </summary>
         /// <param name="unit">The CodeDOM unit that contains the generated code</param>
         /// <param name="path">The file path where the code should be generated to</param>
-        public static void GenerateCSharp(CodeCompileUnit unit, string path)
+        public static void GenerateCSharp( CodeCompileUnit unit, string path )
         {
             var options = new CodeGeneratorOptions
             {
@@ -31,11 +31,11 @@ namespace Tecan.Sila2.Generator.Helper
                 IndentString = "    ",
                 VerbatimOrder = false
             };
-            var directory = Path.GetDirectoryName(Path.GetFullPath(path));
-            if (directory != null && !Directory.Exists(directory)) Directory.CreateDirectory(directory);
-            using (var writer = new StreamWriter(Path.GetFullPath(path)))
+            var directory = Path.GetDirectoryName( Path.GetFullPath( path ) );
+            if(directory != null && !Directory.Exists( directory )) Directory.CreateDirectory( directory );
+            using(var writer = new StreamWriter( Path.GetFullPath( path ) ))
             {
-                CSharp.GenerateCodeFromCompileUnit(unit, writer, options);
+                CSharp.GenerateCodeFromCompileUnit( unit, writer, options );
             }
         }
 
@@ -46,7 +46,7 @@ namespace Tecan.Sila2.Generator.Helper
         /// <returns>A camel case representation of the identifier</returns>
         public static string ToCamelCase( this string identifier )
         {
-            return Char.ToLowerInvariant( identifier[0]) + identifier.Substring(1);
+            return Char.ToLowerInvariant( identifier[0] ) + identifier.Substring( 1 );
         }
 
         /// <summary>
@@ -54,9 +54,28 @@ namespace Tecan.Sila2.Generator.Helper
         /// </summary>
         /// <param name="identifier">An identifier (i.e. without whitespaces)</param>
         /// <returns>A Pascal case representation of the identifier</returns>
-        public static string ToPascalCase(this string identifier)
+        public static string ToPascalCase( this string identifier )
         {
-            return Char.ToUpperInvariant(identifier[0]) + identifier.Substring(1);
+            return Char.ToUpperInvariant( identifier[0] ) + identifier.Substring( 1 );
+        }
+
+        /// <summary>
+        /// Adds an element to the given array
+        /// </summary>
+        /// <typeparam name="T">The element type</typeparam>
+        /// <param name="array">The array</param>
+        /// <param name="element">The element</param>
+        /// <returns>The new array</returns>
+        public static T[] Add<T>( this T[] array, T element )
+        {
+            if(array == null || array.Length == 0)
+            {
+                return new[] { element };
+            }
+            var newArray = new T[array.Length + 1];
+            Array.Copy( array, newArray, array.Length );
+            newArray[array.Length] = element;
+            return newArray;
         }
 
         /// <summary>
@@ -66,21 +85,21 @@ namespace Tecan.Sila2.Generator.Helper
         /// <returns>A display name where a blank space is inserted before each upper-case letter</returns>
         public static string ToDisplayName( this string identifier )
         {
-            if( String.IsNullOrEmpty( identifier ) )
+            if(String.IsNullOrEmpty( identifier ))
             {
                 return String.Empty;
             }
 
-            if( identifier.All( Char.IsUpper ) )
+            if(identifier.All( Char.IsUpper ))
             {
                 return identifier;
             }
 
             var sb = new StringBuilder();
             sb.Append( identifier[0] );
-            for( int i = 1; i < identifier.Length; i++ )
+            for(int i = 1; i < identifier.Length; i++)
             {
-                if( Char.IsUpper( identifier[i] ) )
+                if(Char.IsUpper( identifier[i] ))
                 {
                     sb.Append( ' ' );
                 }
@@ -146,11 +165,11 @@ namespace Tecan.Sila2.Generator.Helper
         /// <returns>A singular representation</returns>
         public static string TurnSingular( string name )
         {
-            if( name == null )
+            if(name == null)
             {
                 return null;
             }
-            if( name.EndsWith( "s" ) )
+            if(name.EndsWith( "s" ))
             {
                 return name.Substring( 0, name.Length - 1 );
             }
@@ -166,14 +185,14 @@ namespace Tecan.Sila2.Generator.Helper
         /// <param name="attributes">The attributes collection</param>
         /// <param name="attributeType">The type of the attribute to add</param>
         /// <param name="values">Constructor parameters for the attribute either as code expressions or primitive values</param>
-        public static void AddAttribute(this CodeAttributeDeclarationCollection attributes, Type attributeType, params object[] values)
+        public static void AddAttribute( this CodeAttributeDeclarationCollection attributes, Type attributeType, params object[] values )
         {
-            var declaration = new CodeAttributeDeclaration(new CodeTypeReference(attributeType),
-                values.Select(o => o as CodeAttributeArgument 
-                                   ?? new CodeAttributeArgument(o as CodeExpression 
-                                                                ?? new CodePrimitiveExpression(o))).ToArray());
+            var declaration = new CodeAttributeDeclaration( new CodeTypeReference( attributeType ),
+                values.Select( o => o as CodeAttributeArgument
+                                   ?? new CodeAttributeArgument( o as CodeExpression
+                                                                ?? new CodePrimitiveExpression( o ) ) ).ToArray() );
 
-            attributes.Add(declaration);
+            attributes.Add( declaration );
         }
 
         /// <summary>
@@ -209,38 +228,64 @@ namespace Tecan.Sila2.Generator.Helper
         /// <returns>The member (for chaining purposes)</returns>
         public static CodeTypeMember WriteDocumentation( this CodeTypeMember member, string summary, string returns = null, IReadOnlyDictionary<string, string> parameters = null )
         {
+            var written = false;
             var documentationWriter = new StringBuilder();
-            documentationWriter.AppendLine( " <summary>" );
-            if( summary != null )
+            if(!string.IsNullOrEmpty( summary ))
             {
-                foreach( var line in summary.Split( '\n' ) )
+                Write( "summary", null, summary, documentationWriter, true, ref written );
+            }
+
+            if(parameters != null)
+            {
+                foreach(var parameter in parameters)
+                {
+                    Write( "param", parameter.Key, parameter.Value, documentationWriter, false, ref written );
+                }
+            }
+
+            Write( "returns", null, returns, documentationWriter, false, ref written );
+
+            if(documentationWriter.Length > 0)
+            {
+                member.Comments.Add( new CodeCommentStatement( documentationWriter.ToString(), true ) );
+            }
+            return member;
+        }
+
+        private static void Write( string tag, string name, string value, StringBuilder documentationWriter, bool forceElement, ref bool written )
+        {
+            if(string.IsNullOrEmpty( value ))
+            {
+                return;
+            }
+            if(!written)
+            {
+                written = true;
+            }
+            else
+            {
+                documentationWriter.AppendLine();
+                documentationWriter.Append( " " );
+            }
+            var lines = value.Split( '\n' );
+            var tagWithName = name != null ? tag + $" name=\"{name}\"" : tag;
+            if(lines.Length == 1 && !forceElement)
+            {
+                documentationWriter.Append( $"<{tagWithName}>{value.Trim()}</{tag}>" );
+            }
+            else
+            {
+                documentationWriter.AppendLine( $"<{tagWithName}>" );
+                foreach(var line in lines)
                 {
                     var trimmed = line.Trim();
-                    if( !String.IsNullOrEmpty( trimmed ) )
+                    if(!string.IsNullOrEmpty( trimmed ))
                     {
                         documentationWriter.AppendLine( " " + trimmed );
                     }
                 }
+                documentationWriter.Append( $" </{tag}>" );
             }
-
-            documentationWriter.Append( " </summary>" );
-            if( parameters != null )
-            {
-                foreach( var parameter in parameters )
-                {
-                    documentationWriter.AppendLine();
-                    documentationWriter.Append( $" <param name=\"{parameter.Key}\">{parameter.Value}</param>" );
-                }
-            }
-
-            if( returns != null )
-            {
-                documentationWriter.AppendLine();
-                documentationWriter.Append( $" <returns>{returns}</returns>" );
-            }
-
-            member.Comments.Add( new CodeCommentStatement( documentationWriter.ToString(), true ) );
-            return member;
         }
 
         /// <summary>

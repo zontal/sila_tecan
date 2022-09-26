@@ -15,24 +15,23 @@ namespace Tecan.Sila2.Generator.Test.TestReference
     ///  <summary>
     /// Just a demo how to use generator configuration
     /// </summary>
-    [Tecan.Sila2.SilaFeatureAttribute(true, "testreference")]
-    [Tecan.Sila2.SilaIdentifierAttribute("ConfiguredService")]
-    [Tecan.Sila2.SilaDisplayNameAttribute("Configured Service")]
+    [Tecan.Sila2.SilaFeatureAttribute( true, "testreference" )]
+    [Tecan.Sila2.SilaIdentifierAttribute( "ConfiguredService" )]
+    [Tecan.Sila2.SilaDisplayNameAttribute( "Configured Service" )]
     public partial interface IConfiguredService
     {
 
         ///  <summary>
         /// Returns the speed
         /// </summary>
-        [return: Tecan.Sila2.UnitAttribute("km/h", Meter = 1, Second = -1, Factor = 3.6D)]
+        [return: Tecan.Sila2.UnitAttribute( "km/h", Meter = 1, Second = -1, Factor = 3.6D )]
         double GetSpeed();
 
         ///  <summary>
         /// Accelerates to a provided speed
         /// </summary>
         /// <param name="target">The speed to reach</param>
-        /// <param name="maxAcceleration"></param>
         /// <param name="timeRange">The time in which to reach the speed</param>
-        void AccelerateTo([Tecan.Sila2.SilaDisplayNameAttribute("Target Speed")] double target, [Tecan.Sila2.UnitAttribute("m/s²", Meter = 1, Second = -2)] double maxAcceleration, [Tecan.Sila2.UnitAttribute("s", Second = 1)][Tecan.Sila2.SilaDisplayNameAttribute("Time")] double timeRange);
+        void AccelerateTo( [Tecan.Sila2.SilaDisplayNameAttribute( "Target Speed" )] double target, [Tecan.Sila2.UnitAttribute( "m/s²", Meter = 1, Second = -2 )] double maxAcceleration, [Tecan.Sila2.UnitAttribute( "s", Second = 1 )][Tecan.Sila2.SilaDisplayNameAttribute( "Time" )] double timeRange );
     }
 }

@@ -12,7 +12,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
 {
     
     
-    ///  <summary>
+    /// <summary>
     /// Provides services for integration of device logging
     /// </summary>
     [Tecan.Sila2.SilaFeatureAttribute(true, "infrastructure")]
@@ -21,7 +21,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
     public partial interface ILoggingService
     {
         
-        ///  <summary>
+        /// <summary>
         /// Starts listening for log entries from the device
         /// </summary>
         [Tecan.Sila2.ObservableAttribute()]
@@ -29,8 +29,6 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         Tecan.Sila2.IIntermediateObservableCommand<LogEntry> ListenForLogEntries();
     }
     
-    ///  <summary>
-    /// </summary>
     public struct LogEntryData
     {
         
@@ -40,7 +38,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         
         private System.Collections.Generic.ICollection<LogEntryData> _children;
         
-        ///  <summary>
+        /// <summary>
         /// Initializes a new instance
         /// </summary>
         public LogEntryData(string key, string value, System.Collections.Generic.ICollection<LogEntryData> children)
@@ -50,8 +48,6 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             _children = children;
         }
         
-        ///  <summary>
-        /// </summary>
         public string Key
         {
             get
@@ -60,8 +56,6 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             }
         }
         
-        ///  <summary>
-        /// </summary>
         public string Value
         {
             get
@@ -70,8 +64,6 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             }
         }
         
-        ///  <summary>
-        /// </summary>
         public System.Collections.Generic.ICollection<LogEntryData> Children
         {
             get
@@ -81,7 +73,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// Severity
     /// </summary>
     public enum Severity
@@ -100,7 +92,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         Critical,
     }
     
-    ///  <summary>
+    /// <summary>
     /// Describes a log entry
     /// </summary>
     public struct LogEntry
@@ -114,7 +106,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         
         private System.Collections.Generic.ICollection<LogEntryData> _data;
         
-        ///  <summary>
+        /// <summary>
         /// Initializes a new instance
         /// </summary>
         public LogEntry(string message, string channel, Severity severity, System.Collections.Generic.ICollection<LogEntryData> data)
@@ -125,8 +117,6 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             _data = data;
         }
         
-        ///  <summary>
-        /// </summary>
         public string Message
         {
             get
@@ -135,8 +125,6 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             }
         }
         
-        ///  <summary>
-        /// </summary>
         public string Channel
         {
             get
@@ -145,8 +133,6 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             }
         }
         
-        ///  <summary>
-        /// </summary>
         public Severity Severity
         {
             get
@@ -155,8 +141,6 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             }
         }
         
-        ///  <summary>
-        /// </summary>
         public System.Collections.Generic.ICollection<LogEntryData> Data
         {
             get

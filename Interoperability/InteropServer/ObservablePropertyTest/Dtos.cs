@@ -13,7 +13,7 @@ namespace Tecan.Sila2.Interop.Server.ObservablePropertyTest
     using Tecan.Sila2;
     
     
-    ///  <summary>
+    /// <summary>
     /// Data transfer object for the request of the Set Value command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
@@ -22,24 +22,24 @@ namespace Tecan.Sila2.Interop.Server.ObservablePropertyTest
         
         private Tecan.Sila2.IntegerDto _value;
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         public SetValueRequestDto()
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
-        ///  <param name="value">The new value</param>
+        /// <param name="value">The new value</param>
         public SetValueRequestDto(long value, Tecan.Sila2.IBinaryStore store)
         {
             Value = new Tecan.Sila2.IntegerDto(value, store);
         }
         
-        ///  <summary>
+        /// <summary>
         /// The new value
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute(1)]
@@ -55,7 +55,7 @@ namespace Tecan.Sila2.Interop.Server.ObservablePropertyTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the command identifier for this command
         /// </summary>
         /// <returns>The fully qualified command identifier</returns>
@@ -67,7 +67,7 @@ namespace Tecan.Sila2.Interop.Server.ObservablePropertyTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the given request object
         /// </summary>
         public void Validate()
@@ -75,7 +75,7 @@ namespace Tecan.Sila2.Interop.Server.ObservablePropertyTest
             Argument.Validate(Value, "value");
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>

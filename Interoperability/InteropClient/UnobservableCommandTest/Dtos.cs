@@ -13,21 +13,21 @@ namespace Tecan.Sila2.Interop.Client.UnobservableCommandTest.UnobservableCommand
     using Tecan.Sila2;
     
     
-    ///  <summary>
+    /// <summary>
     /// Data transfer object for the request of the Command Without Parameters And Responses command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
     public class CommandWithoutParametersAndResponsesRequestDto : Tecan.Sila2.ISilaTransferObject, Tecan.Sila2.ISilaRequestObject
     {
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         public CommandWithoutParametersAndResponsesRequestDto()
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
@@ -35,7 +35,7 @@ namespace Tecan.Sila2.Interop.Client.UnobservableCommandTest.UnobservableCommand
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the command identifier for this command
         /// </summary>
         /// <returns>The fully qualified command identifier</returns>
@@ -48,14 +48,14 @@ namespace Tecan.Sila2.Interop.Client.UnobservableCommandTest.UnobservableCommand
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the given request object
         /// </summary>
         public void Validate()
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
@@ -65,7 +65,7 @@ namespace Tecan.Sila2.Interop.Client.UnobservableCommandTest.UnobservableCommand
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// Data transfer object for the request of the Convert Integer To String command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
@@ -74,24 +74,24 @@ namespace Tecan.Sila2.Interop.Client.UnobservableCommandTest.UnobservableCommand
         
         private Tecan.Sila2.IntegerDto _integer;
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         public ConvertIntegerToStringRequestDto()
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
-        ///  <param name="integer">An integer, e.g. 12345</param>
+        /// <param name="integer">An integer, e.g. 12345</param>
         public ConvertIntegerToStringRequestDto(long integer, Tecan.Sila2.IBinaryStore store)
         {
             Integer = new Tecan.Sila2.IntegerDto(integer, store);
         }
         
-        ///  <summary>
+        /// <summary>
         /// An integer, e.g. 12345
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute(1)]
@@ -107,7 +107,7 @@ namespace Tecan.Sila2.Interop.Client.UnobservableCommandTest.UnobservableCommand
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the command identifier for this command
         /// </summary>
         /// <returns>The fully qualified command identifier</returns>
@@ -119,7 +119,7 @@ namespace Tecan.Sila2.Interop.Client.UnobservableCommandTest.UnobservableCommand
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the given request object
         /// </summary>
         public void Validate()
@@ -127,7 +127,7 @@ namespace Tecan.Sila2.Interop.Client.UnobservableCommandTest.UnobservableCommand
             Argument.Validate(Integer, "integer");
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
@@ -137,7 +137,7 @@ namespace Tecan.Sila2.Interop.Client.UnobservableCommandTest.UnobservableCommand
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// Data transfer object for the response of the Convert Integer To String command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
@@ -146,24 +146,24 @@ namespace Tecan.Sila2.Interop.Client.UnobservableCommandTest.UnobservableCommand
         
         private Tecan.Sila2.StringDto _stringRepresentation;
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         public ConvertIntegerToStringResponseDto()
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
-        ///  <param name="stringRepresentation">The string representation of the given integer, e.g. '12345'</param>
+        /// <param name="stringRepresentation">The string representation of the given integer, e.g. '12345'</param>
         public ConvertIntegerToStringResponseDto(string stringRepresentation, Tecan.Sila2.IBinaryStore store)
         {
             StringRepresentation = new Tecan.Sila2.StringDto(stringRepresentation, store);
         }
         
-        ///  <summary>
+        /// <summary>
         /// The string representation of the given integer, e.g. '12345'
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute(1)]
@@ -179,7 +179,7 @@ namespace Tecan.Sila2.Interop.Client.UnobservableCommandTest.UnobservableCommand
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the given request object
         /// </summary>
         public void Validate()
@@ -187,7 +187,7 @@ namespace Tecan.Sila2.Interop.Client.UnobservableCommandTest.UnobservableCommand
             Argument.Validate(StringRepresentation, "stringRepresentation");
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
@@ -197,7 +197,7 @@ namespace Tecan.Sila2.Interop.Client.UnobservableCommandTest.UnobservableCommand
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// Data transfer object for the request of the Join Integer And String command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
@@ -208,26 +208,26 @@ namespace Tecan.Sila2.Interop.Client.UnobservableCommandTest.UnobservableCommand
         
         private Tecan.Sila2.StringDto _string;
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         public JoinIntegerAndStringRequestDto()
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
-        ///  <param name="integer">An integer, e.g. 123</param>
-        ///  <param name="string">A string, e.g. 'abc'</param>
+        /// <param name="integer">An integer, e.g. 123</param>
+        /// <param name="string">A string, e.g. 'abc'</param>
         public JoinIntegerAndStringRequestDto(long integer, string @string, Tecan.Sila2.IBinaryStore store)
         {
             Integer = new Tecan.Sila2.IntegerDto(integer, store);
             String = new Tecan.Sila2.StringDto(@string, store);
         }
         
-        ///  <summary>
+        /// <summary>
         /// An integer, e.g. 123
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute(1)]
@@ -243,7 +243,7 @@ namespace Tecan.Sila2.Interop.Client.UnobservableCommandTest.UnobservableCommand
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// A string, e.g. 'abc'
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute(2)]
@@ -259,7 +259,7 @@ namespace Tecan.Sila2.Interop.Client.UnobservableCommandTest.UnobservableCommand
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the command identifier for this command
         /// </summary>
         /// <returns>The fully qualified command identifier</returns>
@@ -271,7 +271,7 @@ namespace Tecan.Sila2.Interop.Client.UnobservableCommandTest.UnobservableCommand
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the given request object
         /// </summary>
         public void Validate()
@@ -280,7 +280,7 @@ namespace Tecan.Sila2.Interop.Client.UnobservableCommandTest.UnobservableCommand
             Argument.Validate(String, "string");
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
@@ -291,7 +291,7 @@ namespace Tecan.Sila2.Interop.Client.UnobservableCommandTest.UnobservableCommand
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// Data transfer object for the response of the Join Integer And String command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
@@ -300,24 +300,24 @@ namespace Tecan.Sila2.Interop.Client.UnobservableCommandTest.UnobservableCommand
         
         private Tecan.Sila2.StringDto _joinedParameters;
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         public JoinIntegerAndStringResponseDto()
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
-        ///  <param name="joinedParameters">Both parameters joined as string (e.g. '123abc')</param>
+        /// <param name="joinedParameters">Both parameters joined as string (e.g. '123abc')</param>
         public JoinIntegerAndStringResponseDto(string joinedParameters, Tecan.Sila2.IBinaryStore store)
         {
             JoinedParameters = new Tecan.Sila2.StringDto(joinedParameters, store);
         }
         
-        ///  <summary>
+        /// <summary>
         /// Both parameters joined as string (e.g. '123abc')
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute(1)]
@@ -333,7 +333,7 @@ namespace Tecan.Sila2.Interop.Client.UnobservableCommandTest.UnobservableCommand
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the given request object
         /// </summary>
         public void Validate()
@@ -341,7 +341,7 @@ namespace Tecan.Sila2.Interop.Client.UnobservableCommandTest.UnobservableCommand
             Argument.Validate(JoinedParameters, "joinedParameters");
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
@@ -351,7 +351,7 @@ namespace Tecan.Sila2.Interop.Client.UnobservableCommandTest.UnobservableCommand
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// Data transfer object for the request of the Split String After First Character command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
@@ -360,24 +360,24 @@ namespace Tecan.Sila2.Interop.Client.UnobservableCommandTest.UnobservableCommand
         
         private Tecan.Sila2.StringDto _string;
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         public SplitStringAfterFirstCharacterRequestDto()
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
-        ///  <param name="string">A string, e.g. 'abcde'</param>
+        /// <param name="string">A string, e.g. 'abcde'</param>
         public SplitStringAfterFirstCharacterRequestDto(string @string, Tecan.Sila2.IBinaryStore store)
         {
             String = new Tecan.Sila2.StringDto(@string, store);
         }
         
-        ///  <summary>
+        /// <summary>
         /// A string, e.g. 'abcde'
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute(1)]
@@ -393,7 +393,7 @@ namespace Tecan.Sila2.Interop.Client.UnobservableCommandTest.UnobservableCommand
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the command identifier for this command
         /// </summary>
         /// <returns>The fully qualified command identifier</returns>
@@ -406,7 +406,7 @@ namespace Tecan.Sila2.Interop.Client.UnobservableCommandTest.UnobservableCommand
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the given request object
         /// </summary>
         public void Validate()
@@ -414,7 +414,7 @@ namespace Tecan.Sila2.Interop.Client.UnobservableCommandTest.UnobservableCommand
             Argument.Validate(String, "string");
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
@@ -424,7 +424,7 @@ namespace Tecan.Sila2.Interop.Client.UnobservableCommandTest.UnobservableCommand
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// Data transfer object for the response of the Split String After First Character command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
@@ -435,14 +435,14 @@ namespace Tecan.Sila2.Interop.Client.UnobservableCommandTest.UnobservableCommand
         
         private Tecan.Sila2.StringDto _remainder;
         
-        ///  <summary>
+        /// <summary>
         /// Initializes a new instance (to be used by the serializer)
         /// </summary>
         public SplitStringAfterFirstCharacterResponseDto()
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Initializes a new data transfer object from the business object
         /// </summary>
         /// <param name="inner">The business object that should be transferred</param>
@@ -453,7 +453,7 @@ namespace Tecan.Sila2.Interop.Client.UnobservableCommandTest.UnobservableCommand
             Remainder = new Tecan.Sila2.StringDto(inner.Remainder, store);
         }
         
-        ///  <summary>
+        /// <summary>
         /// The first character, e.g. 'a', or an empty string if the input was empty
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute(1)]
@@ -469,7 +469,7 @@ namespace Tecan.Sila2.Interop.Client.UnobservableCommandTest.UnobservableCommand
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// The remainder, e.g. 'bcde', or an empty string if the input was shorter that two characters
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute(2)]
@@ -485,7 +485,7 @@ namespace Tecan.Sila2.Interop.Client.UnobservableCommandTest.UnobservableCommand
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Extracts the transferred value
         /// </summary>
         /// <param name="store">The binary store in which to store binary data</param>
@@ -495,7 +495,7 @@ namespace Tecan.Sila2.Interop.Client.UnobservableCommandTest.UnobservableCommand
             return new SplitStringAfterFirstCharacterResponse(FirstCharacter.Extract(store), Remainder.Extract(store));
         }
         
-        ///  <summary>
+        /// <summary>
         /// Creates the data transfer object from the given object to transport
         /// </summary>
         /// <param name="inner">The object to transfer</param>
@@ -505,7 +505,7 @@ namespace Tecan.Sila2.Interop.Client.UnobservableCommandTest.UnobservableCommand
             return new SplitStringAfterFirstCharacterResponseDto(inner, store);
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>

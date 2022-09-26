@@ -12,7 +12,7 @@ namespace Tecan.Sila2.WorktableIntegration
 {
     
     
-    ///  <summary>
+    /// <summary>
     /// Denotes a service to describe dimensions of a device in order to integrate it into a worktable
     /// </summary>
     [Tecan.Sila2.SilaFeatureAttribute(true, "infrastructure")]
@@ -21,7 +21,7 @@ namespace Tecan.Sila2.WorktableIntegration
     public partial interface IWorktableService
     {
         
-        ///  <summary>
+        /// <summary>
         /// The outer hull of the device
         /// </summary>
         BoundingBox BoundingBox
@@ -29,7 +29,7 @@ namespace Tecan.Sila2.WorktableIntegration
             get;
         }
         
-        ///  <summary>
+        /// <summary>
         /// The templates for sites used by this device
         /// </summary>
         System.Collections.Generic.ICollection<SiteTemplate> SiteTemplates
@@ -37,7 +37,7 @@ namespace Tecan.Sila2.WorktableIntegration
             get;
         }
         
-        ///  <summary>
+        /// <summary>
         /// The sites that this device offers
         /// </summary>
         System.Collections.Generic.ICollection<Site> Sites
@@ -46,7 +46,7 @@ namespace Tecan.Sila2.WorktableIntegration
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// Denotes a positional offset
     /// </summary>
     public struct Offset
@@ -58,7 +58,7 @@ namespace Tecan.Sila2.WorktableIntegration
         
         private double _z;
         
-        ///  <summary>
+        /// <summary>
         /// Initializes a new instance
         /// </summary>
         public Offset(double x, double y, double z)
@@ -68,7 +68,7 @@ namespace Tecan.Sila2.WorktableIntegration
             _z = z;
         }
         
-        ///  <summary>
+        /// <summary>
         /// The X offset
         /// </summary>
         [Tecan.Sila2.UnitAttribute("mm", Meter=1, Factor=0.001D)]
@@ -80,7 +80,7 @@ namespace Tecan.Sila2.WorktableIntegration
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// The Y offset
         /// </summary>
         [Tecan.Sila2.UnitAttribute("mm", Meter=1, Factor=0.001D)]
@@ -92,7 +92,7 @@ namespace Tecan.Sila2.WorktableIntegration
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// The Z offset
         /// </summary>
         [Tecan.Sila2.UnitAttribute("mm", Meter=1, Factor=0.001D)]
@@ -105,7 +105,7 @@ namespace Tecan.Sila2.WorktableIntegration
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// Denotes a rectangle on the ground
     /// </summary>
     public struct Rectangle
@@ -115,7 +115,7 @@ namespace Tecan.Sila2.WorktableIntegration
         
         private double _depth;
         
-        ///  <summary>
+        /// <summary>
         /// Initializes a new instance
         /// </summary>
         public Rectangle(double width, double depth)
@@ -124,7 +124,7 @@ namespace Tecan.Sila2.WorktableIntegration
             _depth = depth;
         }
         
-        ///  <summary>
+        /// <summary>
         /// The width of the rectangle
         /// </summary>
         [Tecan.Sila2.UnitAttribute("mm", Meter=1, Factor=0.001D)]
@@ -136,7 +136,7 @@ namespace Tecan.Sila2.WorktableIntegration
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// The depth of the rectangle
         /// </summary>
         [Tecan.Sila2.UnitAttribute("mm", Meter=1, Factor=0.001D)]
@@ -149,7 +149,7 @@ namespace Tecan.Sila2.WorktableIntegration
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// Denotes a site on the worktable
     /// </summary>
     public struct Site
@@ -163,7 +163,7 @@ namespace Tecan.Sila2.WorktableIntegration
         
         private double _rotation;
         
-        ///  <summary>
+        /// <summary>
         /// Initializes a new instance
         /// </summary>
         public Site(string name, string template, Offset offset, double rotation)
@@ -174,7 +174,7 @@ namespace Tecan.Sila2.WorktableIntegration
             _rotation = rotation;
         }
         
-        ///  <summary>
+        /// <summary>
         /// The name of the site
         /// </summary>
         public string Name
@@ -185,7 +185,7 @@ namespace Tecan.Sila2.WorktableIntegration
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// The site template
         /// </summary>
         public string Template
@@ -196,7 +196,7 @@ namespace Tecan.Sila2.WorktableIntegration
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// The offset from the device
         /// </summary>
         public Offset Offset
@@ -207,7 +207,7 @@ namespace Tecan.Sila2.WorktableIntegration
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// The rotation
         /// </summary>
         [Tecan.Sila2.UnitAttribute("Degree", Factor=57.2957795130823D)]
@@ -220,7 +220,7 @@ namespace Tecan.Sila2.WorktableIntegration
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// Defines a template for a site
     /// </summary>
     public struct SiteTemplate
@@ -232,7 +232,7 @@ namespace Tecan.Sila2.WorktableIntegration
         
         private System.Collections.Generic.ICollection<string> _tags;
         
-        ///  <summary>
+        /// <summary>
         /// Initializes a new instance
         /// </summary>
         public SiteTemplate(string name, Rectangle siteRectangle, System.Collections.Generic.ICollection<string> tags)
@@ -242,7 +242,7 @@ namespace Tecan.Sila2.WorktableIntegration
             _tags = tags;
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the name of the site template
         /// </summary>
         public string Name
@@ -253,7 +253,7 @@ namespace Tecan.Sila2.WorktableIntegration
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the size of the site
         /// </summary>
         public Rectangle SiteRectangle
@@ -264,7 +264,7 @@ namespace Tecan.Sila2.WorktableIntegration
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets a collection of custom tags
         /// </summary>
         public System.Collections.Generic.ICollection<string> Tags
@@ -276,7 +276,7 @@ namespace Tecan.Sila2.WorktableIntegration
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// Denotes a bounding box for a device
     /// </summary>
     public struct BoundingBox
@@ -286,7 +286,7 @@ namespace Tecan.Sila2.WorktableIntegration
         
         private double _height;
         
-        ///  <summary>
+        /// <summary>
         /// Initializes a new instance
         /// </summary>
         public BoundingBox(Rectangle rectangle, double height)
@@ -295,7 +295,7 @@ namespace Tecan.Sila2.WorktableIntegration
             _height = height;
         }
         
-        ///  <summary>
+        /// <summary>
         /// The ground rectangle
         /// </summary>
         public Rectangle Rectangle
@@ -306,7 +306,7 @@ namespace Tecan.Sila2.WorktableIntegration
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// The height of the bounding box
         /// </summary>
         [Tecan.Sila2.UnitAttribute("mm", Meter=1, Factor=0.001D)]

@@ -13,7 +13,7 @@ namespace Tecan.Sila2.Interop.Server.MultiClientTest
     using Tecan.Sila2;
     
     
-    ///  <summary>
+    /// <summary>
     /// Data transfer object for the request of the Run In Parallel command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
@@ -22,24 +22,24 @@ namespace Tecan.Sila2.Interop.Server.MultiClientTest
         
         private Tecan.Sila2.RealDto _duration;
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         public RunInParallelRequestDto()
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
-        ///  <param name="duration">The duration of the command execution</param>
+        /// <param name="duration">The duration of the command execution</param>
         public RunInParallelRequestDto(double duration, Tecan.Sila2.IBinaryStore store)
         {
             Duration = new Tecan.Sila2.RealDto(duration, store);
         }
         
-        ///  <summary>
+        /// <summary>
         /// The duration of the command execution
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute(1)]
@@ -55,7 +55,7 @@ namespace Tecan.Sila2.Interop.Server.MultiClientTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the command identifier for this command
         /// </summary>
         /// <returns>The fully qualified command identifier</returns>
@@ -67,7 +67,7 @@ namespace Tecan.Sila2.Interop.Server.MultiClientTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the given request object
         /// </summary>
         public void Validate()
@@ -75,7 +75,7 @@ namespace Tecan.Sila2.Interop.Server.MultiClientTest
             Argument.Validate(Duration, "duration");
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
@@ -85,7 +85,7 @@ namespace Tecan.Sila2.Interop.Server.MultiClientTest
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// Data transfer object for the request of the Run Queued command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
@@ -94,24 +94,24 @@ namespace Tecan.Sila2.Interop.Server.MultiClientTest
         
         private Tecan.Sila2.RealDto _duration;
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         public RunQueuedRequestDto()
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
-        ///  <param name="duration">The duration of the command execution</param>
+        /// <param name="duration">The duration of the command execution</param>
         public RunQueuedRequestDto(double duration, Tecan.Sila2.IBinaryStore store)
         {
             Duration = new Tecan.Sila2.RealDto(duration, store);
         }
         
-        ///  <summary>
+        /// <summary>
         /// The duration of the command execution
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute(1)]
@@ -127,7 +127,7 @@ namespace Tecan.Sila2.Interop.Server.MultiClientTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the command identifier for this command
         /// </summary>
         /// <returns>The fully qualified command identifier</returns>
@@ -139,7 +139,7 @@ namespace Tecan.Sila2.Interop.Server.MultiClientTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the given request object
         /// </summary>
         public void Validate()
@@ -147,7 +147,7 @@ namespace Tecan.Sila2.Interop.Server.MultiClientTest
             Argument.Validate(Duration, "duration");
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
@@ -157,7 +157,7 @@ namespace Tecan.Sila2.Interop.Server.MultiClientTest
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// Data transfer object for the request of the Reject Parallel Execution command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
@@ -166,24 +166,24 @@ namespace Tecan.Sila2.Interop.Server.MultiClientTest
         
         private Tecan.Sila2.RealDto _duration;
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         public RejectParallelExecutionRequestDto()
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
-        ///  <param name="duration">The duration of the command execution</param>
+        /// <param name="duration">The duration of the command execution</param>
         public RejectParallelExecutionRequestDto(double duration, Tecan.Sila2.IBinaryStore store)
         {
             Duration = new Tecan.Sila2.RealDto(duration, store);
         }
         
-        ///  <summary>
+        /// <summary>
         /// The duration of the command execution
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute(1)]
@@ -199,7 +199,7 @@ namespace Tecan.Sila2.Interop.Server.MultiClientTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the command identifier for this command
         /// </summary>
         /// <returns>The fully qualified command identifier</returns>
@@ -211,7 +211,7 @@ namespace Tecan.Sila2.Interop.Server.MultiClientTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the given request object
         /// </summary>
         public void Validate()
@@ -219,7 +219,7 @@ namespace Tecan.Sila2.Interop.Server.MultiClientTest
             Argument.Validate(Duration, "duration");
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>

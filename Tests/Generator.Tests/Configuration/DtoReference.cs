@@ -38,7 +38,6 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
         ///  <param name="target">The speed to reach</param>
-        ///  <param name="maxAcceleration"></param>
         ///  <param name="timeRange">The time in which to reach the speed</param>
         public AccelerateToRequestDto( double target, double maxAcceleration, double timeRange, Tecan.Sila2.IBinaryStore store )
         {
@@ -63,8 +62,6 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             }
         }
 
-        ///  <summary>
-        /// </summary>
         [ProtoBuf.ProtoMemberAttribute( 2 )]
         public Tecan.Sila2.RealDto MaxAcceleration
         {
@@ -149,7 +146,6 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
-        ///  <param name="value"></param>
         public SpeedResponseDto( double value, Tecan.Sila2.IBinaryStore store )
         {
             Value = new Tecan.Sila2.RealDto( value, store );

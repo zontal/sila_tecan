@@ -44,6 +44,7 @@ namespace Tecan.Sila2.Generator
     }
 
     /// <remarks/>
+    [System.Xml.Serialization.XmlIncludeAttribute( typeof( Inline ) )]
     [System.CodeDom.Compiler.GeneratedCodeAttribute( "xsd", "4.8.3928.0" )]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
@@ -51,6 +52,8 @@ namespace Tecan.Sila2.Generator
     [System.Xml.Serialization.XmlTypeAttribute( Namespace = "http://www.sila-standard.org" )]
     public partial class FeatureSpec : MemberSpec
     {
+
+        private Inline[] inlineField;
 
         private PropertySpec[] propertyField;
 
@@ -67,6 +70,20 @@ namespace Tecan.Sila2.Generator
         private FeatureMaturityLevel maturityField;
 
         private bool maturityFieldSpecified;
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute( "Inline" )]
+        public Inline[] Inline
+        {
+            get
+            {
+                return this.inlineField;
+            }
+            set
+            {
+                this.inlineField = value;
+            }
+        }
 
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute( "Property" )]
@@ -179,6 +196,16 @@ namespace Tecan.Sila2.Generator
                 this.maturityFieldSpecified = value;
             }
         }
+    }
+
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute( "xsd", "4.8.3928.0" )]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute( "code" )]
+    [System.Xml.Serialization.XmlTypeAttribute( Namespace = "http://www.sila-standard.org" )]
+    public partial class Inline : FeatureSpec
+    {
     }
 
     /// <remarks/>
@@ -548,6 +575,7 @@ namespace Tecan.Sila2.Generator
     [System.Xml.Serialization.XmlIncludeAttribute( typeof( CommandSpec ) )]
     [System.Xml.Serialization.XmlIncludeAttribute( typeof( PropertySpec ) )]
     [System.Xml.Serialization.XmlIncludeAttribute( typeof( FeatureSpec ) )]
+    [System.Xml.Serialization.XmlIncludeAttribute( typeof( Inline ) )]
     [System.CodeDom.Compiler.GeneratedCodeAttribute( "xsd", "4.8.3928.0" )]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
@@ -666,6 +694,8 @@ namespace Tecan.Sila2.Generator
 
         private bool observableFieldSpecified;
 
+        private string overloadField;
+
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute( "Parameter" )]
         public PropertyMapping[] Parameter
@@ -734,6 +764,19 @@ namespace Tecan.Sila2.Generator
                 this.observableFieldSpecified = value;
             }
         }
-    }
 
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string Overload
+        {
+            get
+            {
+                return this.overloadField;
+            }
+            set
+            {
+                this.overloadField = value;
+            }
+        }
+    }
 }

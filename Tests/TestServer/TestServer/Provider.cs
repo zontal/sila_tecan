@@ -18,7 +18,7 @@ namespace Tecan.Sila2.IntegrationTests
 {
     
     
-    ///  <summary>
+    /// <summary>
     /// A class that exposes the ITestServer interface via SiLA2
     /// </summary>
     [System.ComponentModel.Composition.ExportAttribute(typeof(IFeatureProvider))]
@@ -32,7 +32,7 @@ namespace Tecan.Sila2.IntegrationTests
         
         private static Tecan.Sila2.Feature _feature = FeatureSerializer.LoadFromAssembly(typeof(TestServerProvider).Assembly, "TestServer.sila.xml");
         
-        ///  <summary>
+        /// <summary>
         /// Creates a new instance
         /// </summary>
         /// <param name="implementation">The implementation to exported through SiLA2</param>
@@ -44,7 +44,7 @@ namespace Tecan.Sila2.IntegrationTests
             _server = server;
         }
         
-        ///  <summary>
+        /// <summary>
         /// The feature that is exposed by this feature provider
         /// </summary>
         /// <returns>A feature object</returns>
@@ -87,7 +87,7 @@ namespace Tecan.Sila2.IntegrationTests
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Registers the feature in the provided feature registration
         /// </summary>
         /// <param name="registration">The registration component to which the feature should be registered</param>
@@ -117,7 +117,7 @@ namespace Tecan.Sila2.IntegrationTests
             registration.RegisterObservableProperty("DummyValue", GetDummyValue, _implementation);
         }
         
-        ///  <summary>
+        /// <summary>
         /// Executes the Pass Bool command
         /// </summary>
         /// <param name="request">A data transfer object that contains the command parameters</param>
@@ -138,7 +138,7 @@ namespace Tecan.Sila2.IntegrationTests
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Executes the Pass Double command
         /// </summary>
         /// <param name="request">A data transfer object that contains the command parameters</param>
@@ -159,7 +159,7 @@ namespace Tecan.Sila2.IntegrationTests
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Executes the Pass Long command
         /// </summary>
         /// <param name="request">A data transfer object that contains the command parameters</param>
@@ -180,7 +180,7 @@ namespace Tecan.Sila2.IntegrationTests
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Executes the Pass Int command
         /// </summary>
         /// <param name="request">A data transfer object that contains the command parameters</param>
@@ -201,7 +201,7 @@ namespace Tecan.Sila2.IntegrationTests
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Executes the Pass Timestamp command
         /// </summary>
         /// <param name="request">A data transfer object that contains the command parameters</param>
@@ -223,7 +223,7 @@ namespace Tecan.Sila2.IntegrationTests
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Executes the Pass Time command
         /// </summary>
         /// <param name="request">A data transfer object that contains the command parameters</param>
@@ -244,7 +244,7 @@ namespace Tecan.Sila2.IntegrationTests
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Executes the Pass String command
         /// </summary>
         /// <param name="request">A data transfer object that contains the command parameters</param>
@@ -265,7 +265,7 @@ namespace Tecan.Sila2.IntegrationTests
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Executes the Pass Stream command
         /// </summary>
         /// <param name="request">A data transfer object that contains the command parameters</param>
@@ -286,7 +286,7 @@ namespace Tecan.Sila2.IntegrationTests
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Executes the Pass File command
         /// </summary>
         /// <param name="request">A data transfer object that contains the command parameters</param>
@@ -307,7 +307,7 @@ namespace Tecan.Sila2.IntegrationTests
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Executes the Pass Bytes command
         /// </summary>
         /// <param name="request">A data transfer object that contains the command parameters</param>
@@ -328,7 +328,7 @@ namespace Tecan.Sila2.IntegrationTests
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Executes the Pass Dynamic command
         /// </summary>
         /// <param name="request">A data transfer object that contains the command parameters</param>
@@ -349,7 +349,7 @@ namespace Tecan.Sila2.IntegrationTests
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Executes the Pass Collection command
         /// </summary>
         /// <param name="request">A data transfer object that contains the command parameters</param>
@@ -371,7 +371,7 @@ namespace Tecan.Sila2.IntegrationTests
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Executes the Pass Structure command
         /// </summary>
         /// <param name="request">A data transfer object that contains the command parameters</param>
@@ -398,13 +398,14 @@ namespace Tecan.Sila2.IntegrationTests
             return new RunObservableResponseDto(result, _server);
         }
         
-        ///  <summary>
+        /// <summary>
         /// Executes the Run Observable command
         /// </summary>
         /// <param name="request">A data transfer object that contains the command parameters</param>
         /// <returns>The command response wrapped in a data transfer object</returns>
         protected virtual Tecan.Sila2.IObservableCommand<int> RunObservable(RunObservableRequestDto request)
         {
+            request.Validate();
             return _implementation.RunObservable();
         }
         
@@ -413,27 +414,29 @@ namespace Tecan.Sila2.IntegrationTests
             return new RunIntermediateObservableCommandIntermediateDto(intermediate, _server);
         }
         
-        ///  <summary>
+        /// <summary>
         /// Executes the Run Intermediate Observable Command command
         /// </summary>
         /// <param name="request">A data transfer object that contains the command parameters</param>
         /// <returns>The command response wrapped in a data transfer object</returns>
         protected virtual Tecan.Sila2.IIntermediateObservableCommand<int> RunIntermediateObservableCommand(RunIntermediateObservableCommandRequestDto request)
         {
+            request.Validate();
             return _implementation.RunIntermediateObservableCommand();
         }
         
-        ///  <summary>
+        /// <summary>
         /// Executes the Wait For Cancel Or Throw command
         /// </summary>
         /// <param name="request">A data transfer object that contains the command parameters</param>
         /// <returns>The command response wrapped in a data transfer object</returns>
         protected virtual Tecan.Sila2.IObservableCommand WaitForCancelOrThrow(WaitForCancelOrThrowRequestDto request)
         {
+            request.Validate();
             return new WaitForCancelOrThrowCommand(this, request);
         }
         
-        ///  <summary>
+        /// <summary>
         /// Executes the Run Into Failure command
         /// </summary>
         /// <param name="request">A data transfer object that contains the command parameters</param>
@@ -451,17 +454,18 @@ namespace Tecan.Sila2.IntegrationTests
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Executes the Run Into Failure Observably command
         /// </summary>
         /// <param name="request">A data transfer object that contains the command parameters</param>
         /// <returns>The command response wrapped in a data transfer object</returns>
         protected virtual Tecan.Sila2.IObservableCommand RunIntoFailureObservably(RunIntoFailureObservablyRequestDto request)
         {
+            request.Validate();
             return new RunIntoFailureObservablyCommand(this, request);
         }
         
-        ///  <summary>
+        /// <summary>
         /// Executes the Is Cancelled command
         /// </summary>
         /// <param name="request">A data transfer object that contains the command parameters</param>
@@ -483,7 +487,7 @@ namespace Tecan.Sila2.IntegrationTests
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Executes the Throw Runtime Exception command
         /// </summary>
         /// <param name="request">A data transfer object that contains the command parameters</param>
@@ -495,7 +499,7 @@ namespace Tecan.Sila2.IntegrationTests
             return EmptyRequest.Instance;
         }
         
-        ///  <summary>
+        /// <summary>
         /// Executes the Set Dummy command
         /// </summary>
         /// <param name="request">A data transfer object that contains the command parameters</param>
@@ -517,7 +521,7 @@ namespace Tecan.Sila2.IntegrationTests
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the current value of the Dummy Value property
         /// </summary>
         /// <returns>The current value wrapped in a data transfer object</returns>
@@ -526,7 +530,7 @@ namespace Tecan.Sila2.IntegrationTests
             return new PropertyResponse<Tecan.Sila2.IntegerDto>(new Tecan.Sila2.IntegerDto(_implementation.DummyValue, _server));
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the command with the given identifier
         /// </summary>
         /// <param name="commandIdentifier">A fully qualified command identifier</param>
@@ -621,7 +625,7 @@ namespace Tecan.Sila2.IntegrationTests
             return null;
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the property with the given identifier
         /// </summary>
         /// <param name="propertyIdentifier">A fully qualified property identifier</param>

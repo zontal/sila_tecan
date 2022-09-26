@@ -12,7 +12,7 @@ namespace Tecan.Sila2.Interop.Server.AnyTypeTest
 {
     
     
-    ///  <summary>
+    /// <summary>
     /// Response type for the Set Any Type Value command
     /// </summary>
     [Tecan.Sila2.SilaDisplayNameAttribute("Set Any Type Value - Response")]
@@ -23,7 +23,7 @@ namespace Tecan.Sila2.Interop.Server.AnyTypeTest
         
         private Tecan.Sila2.DynamicClient.DynamicObjectProperty _receivedValue;
         
-        ///  <summary>
+        /// <summary>
         /// Initializes a new instance
         /// </summary>
         public SetAnyTypeValueResponse(string receivedAnyType, Tecan.Sila2.DynamicClient.DynamicObjectProperty receivedValue)
@@ -32,7 +32,7 @@ namespace Tecan.Sila2.Interop.Server.AnyTypeTest
             _receivedValue = receivedValue;
         }
         
-        ///  <summary>
+        /// <summary>
         /// The type that has been received.
         /// </summary>
         [Tecan.Sila2.SchemaAttribute("https://gitlab.com/SiLA2/sila_base/-/raw/beb5d703ab62b1242695f3a591f04a07ebc7b528" +
@@ -45,7 +45,7 @@ namespace Tecan.Sila2.Interop.Server.AnyTypeTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// The value that has been received.
         /// </summary>
         public Tecan.Sila2.DynamicClient.DynamicObjectProperty ReceivedValue
@@ -57,7 +57,7 @@ namespace Tecan.Sila2.Interop.Server.AnyTypeTest
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// Provides commands and properties to set or respectively get SiLA Any Type values via command parameters or property responses respectively.
     /// </summary>
     [Tecan.Sila2.SilaFeatureAttribute(true, "test")]
@@ -66,7 +66,7 @@ namespace Tecan.Sila2.Interop.Server.AnyTypeTest
     public partial interface IAnyTypeTest
     {
         
-        ///  <summary>
+        /// <summary>
         /// Returns the Any type String value 'SiLA_Any_type_of_String_type'.
         /// </summary>
         Tecan.Sila2.DynamicClient.DynamicObjectProperty AnyTypeStringValue
@@ -74,7 +74,7 @@ namespace Tecan.Sila2.Interop.Server.AnyTypeTest
             get;
         }
         
-        ///  <summary>
+        /// <summary>
         /// Returns the Any type Integer value 5124.
         /// </summary>
         Tecan.Sila2.DynamicClient.DynamicObjectProperty AnyTypeIntegerValue
@@ -82,7 +82,7 @@ namespace Tecan.Sila2.Interop.Server.AnyTypeTest
             get;
         }
         
-        ///  <summary>
+        /// <summary>
         /// Returns an Any type Real value 3.1415926.
         /// </summary>
         Tecan.Sila2.DynamicClient.DynamicObjectProperty AnyTypeRealValue
@@ -90,7 +90,7 @@ namespace Tecan.Sila2.Interop.Server.AnyTypeTest
             get;
         }
         
-        ///  <summary>
+        /// <summary>
         /// Returns the Any type Boolean value true.
         /// </summary>
         Tecan.Sila2.DynamicClient.DynamicObjectProperty AnyTypeBooleanValue
@@ -98,7 +98,7 @@ namespace Tecan.Sila2.Interop.Server.AnyTypeTest
             get;
         }
         
-        ///  <summary>
+        /// <summary>
         /// Returns the Any type ASCII-encoded string value 'SiLA_Any_type_of_Binary_type' as Binary.
         /// </summary>
         Tecan.Sila2.DynamicClient.DynamicObjectProperty AnyTypeBinaryValue
@@ -106,7 +106,7 @@ namespace Tecan.Sila2.Interop.Server.AnyTypeTest
             get;
         }
         
-        ///  <summary>
+        /// <summary>
         /// Returns the Any type Date value 05.08.2022 respective 08/05/2022, timezone +2.
         /// </summary>
         Tecan.Sila2.DynamicClient.DynamicObjectProperty AnyTypeDateValue
@@ -114,7 +114,7 @@ namespace Tecan.Sila2.Interop.Server.AnyTypeTest
             get;
         }
         
-        ///  <summary>
+        /// <summary>
         /// Returns the Any type Time value 12:34:56, timezone +2.
         /// </summary>
         Tecan.Sila2.DynamicClient.DynamicObjectProperty AnyTypeTimeValue
@@ -122,7 +122,7 @@ namespace Tecan.Sila2.Interop.Server.AnyTypeTest
             get;
         }
         
-        ///  <summary>
+        /// <summary>
         /// Returns the Any type Timestamp value 2022-08-05 12:34:56, timezone +2.
         /// </summary>
         Tecan.Sila2.DynamicClient.DynamicObjectProperty AnyTypeTimestampValue
@@ -130,7 +130,7 @@ namespace Tecan.Sila2.Interop.Server.AnyTypeTest
             get;
         }
         
-        ///  <summary>
+        /// <summary>
         /// Returns the Any type String List value ('SiLA 2', 'Any', 'Type', 'String', 'List')
         /// </summary>
         Tecan.Sila2.DynamicClient.DynamicObjectProperty AnyTypeListValue
@@ -138,7 +138,7 @@ namespace Tecan.Sila2.Interop.Server.AnyTypeTest
             get;
         }
         
-        ///  <summary>
+        /// <summary>
         /// Returns the following Any type Structure value:
         /// - String 'StringTypeValue' = 'A String value',
         /// - Integer 'IntegerTypeValue' = 83737665,
@@ -149,7 +149,7 @@ namespace Tecan.Sila2.Interop.Server.AnyTypeTest
             get;
         }
         
-        ///  <summary>
+        /// <summary>
         /// Receives an Any type value and returns the type and the value that has been received.
         /// </summary>
         /// <param name="anyTypeValue">The Any type value to be set.</param>

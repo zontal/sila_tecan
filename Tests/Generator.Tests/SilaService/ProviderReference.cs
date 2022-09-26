@@ -17,7 +17,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
 {
     
     
-    ///  <summary>
+    /// <summary>
     /// A class that exposes the ISiLAService interface via SiLA2
     /// </summary>
     [System.ComponentModel.Composition.ExportAttribute(typeof(IFeatureProvider))]
@@ -31,7 +31,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         
         private static Tecan.Sila2.Feature _feature = FeatureSerializer.LoadFromAssembly(typeof(SiLAServiceProvider).Assembly, "SiLAService.sila.xml");
         
-        ///  <summary>
+        /// <summary>
         /// Creates a new instance
         /// </summary>
         /// <param name="implementation">The implementation to exported through SiLA2</param>
@@ -43,7 +43,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             _server = server;
         }
         
-        ///  <summary>
+        /// <summary>
         /// The feature that is exposed by this feature provider
         /// </summary>
         /// <returns>A feature object</returns>
@@ -55,7 +55,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Registers the feature in the provided feature registration
         /// </summary>
         /// <param name="registration">The registration component to which the feature should be registered</param>
@@ -72,7 +72,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             registration.RegisterUnobservableProperty("ImplementedFeatures", GetImplementedFeatures);
         }
         
-        ///  <summary>
+        /// <summary>
         /// Executes the Get Feature Definition command
         /// </summary>
         /// <param name="request">A data transfer object that contains the command parameters</param>
@@ -99,7 +99,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Executes the Set Server Name command
         /// </summary>
         /// <param name="request">A data transfer object that contains the command parameters</param>
@@ -122,7 +122,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the current value of the Server Name property
         /// </summary>
         /// <returns>The current value wrapped in a data transfer object</returns>
@@ -131,7 +131,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             return new PropertyResponse<Tecan.Sila2.StringDto>(new Tecan.Sila2.StringDto(_implementation.ServerName, _server));
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the current value of the Server Type property
         /// </summary>
         /// <returns>The current value wrapped in a data transfer object</returns>
@@ -140,7 +140,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             return new PropertyResponse<Tecan.Sila2.StringDto>(new Tecan.Sila2.StringDto(_implementation.ServerType, _server));
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the current value of the Server UUID property
         /// </summary>
         /// <returns>The current value wrapped in a data transfer object</returns>
@@ -149,7 +149,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             return new ServerUUIDResponseDto(_implementation.ServerUUID, _server);
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the current value of the Server Description property
         /// </summary>
         /// <returns>The current value wrapped in a data transfer object</returns>
@@ -158,7 +158,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             return new PropertyResponse<Tecan.Sila2.StringDto>(new Tecan.Sila2.StringDto(_implementation.ServerDescription, _server));
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the current value of the Server Version property
         /// </summary>
         /// <returns>The current value wrapped in a data transfer object</returns>
@@ -167,7 +167,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             return new ServerVersionResponseDto(_implementation.ServerVersion, _server);
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the current value of the Server Vendor URL property
         /// </summary>
         /// <returns>The current value wrapped in a data transfer object</returns>
@@ -176,7 +176,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             return new PropertyResponse<UrlDto>(new UrlDto(_implementation.ServerVendorURL, _server));
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the current value of the Implemented Features property
         /// </summary>
         /// <returns>The current value wrapped in a data transfer object</returns>
@@ -185,7 +185,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             return new PropertyResponse<System.Collections.Generic.List<FeatureIdentifierDto>>(Tecan.Sila2.DtoExtensions.Encapsulate(_implementation.ImplementedFeatures, FeatureIdentifierDto.Create, _server));
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the command with the given identifier
         /// </summary>
         /// <param name="commandIdentifier">A fully qualified command identifier</param>
@@ -204,7 +204,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             return null;
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the property with the given identifier
         /// </summary>
         /// <param name="propertyIdentifier">A fully qualified property identifier</param>

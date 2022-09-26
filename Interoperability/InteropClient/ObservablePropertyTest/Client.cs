@@ -17,7 +17,7 @@ namespace Tecan.Sila2.Interop.Client.ObservablePropertyTest.ObservablePropertyTe
 {
     
     
-    ///  <summary>
+    /// <summary>
     /// Class that implements the IObservablePropertyTest interface through SiLA2
     /// </summary>
     public partial class ObservablePropertyTestClient : IObservablePropertyTest, System.ComponentModel.INotifyPropertyChanged, System.IDisposable
@@ -43,7 +43,7 @@ namespace Tecan.Sila2.Interop.Client.ObservablePropertyTest.ObservablePropertyTe
         
         private const string _serviceName = "sila2.org.silastandard.test.observablepropertytest.v1.ObservablePropertyTest";
         
-        ///  <summary>
+        /// <summary>
         /// Creates a new instance
         /// </summary>
         /// <param name="channel">The channel through which calls should be executed</param>
@@ -54,7 +54,7 @@ namespace Tecan.Sila2.Interop.Client.ObservablePropertyTest.ObservablePropertyTe
             _channel = channel;
         }
         
-        ///  <summary>
+        /// <summary>
         /// Always returns 42 and never changes.
         /// </summary>
         public virtual long FixedValue
@@ -79,7 +79,7 @@ namespace Tecan.Sila2.Interop.Client.ObservablePropertyTest.ObservablePropertyTe
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Switches every second between true and false
         /// </summary>
         public virtual bool Alternating
@@ -104,7 +104,7 @@ namespace Tecan.Sila2.Interop.Client.ObservablePropertyTest.ObservablePropertyTe
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Can be set through SetValue command
         /// </summary>
         public virtual long Editable
@@ -173,7 +173,7 @@ namespace Tecan.Sila2.Interop.Client.ObservablePropertyTest.ObservablePropertyTe
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Disposes the current client and cancels all subscriptions
         /// </summary>
         public void Dispose()
@@ -182,7 +182,7 @@ namespace Tecan.Sila2.Interop.Client.ObservablePropertyTest.ObservablePropertyTe
             _cancellationTokenSource.Dispose();
         }
         
-        ///  <summary>
+        /// <summary>
         /// Changes the value of Editable
         /// </summary>
         /// <param name="value">The new value</param>
@@ -210,7 +210,7 @@ namespace Tecan.Sila2.Interop.Client.ObservablePropertyTest.ObservablePropertyTe
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// Factory to instantiate clients for the Observable Property Test.
     /// </summary>
     [System.ComponentModel.Composition.ExportAttribute(typeof(IClientFactory))]
@@ -218,7 +218,7 @@ namespace Tecan.Sila2.Interop.Client.ObservablePropertyTest.ObservablePropertyTe
     public partial class ObservablePropertyTestClientFactory : IClientFactory
     {
         
-        ///  <summary>
+        /// <summary>
         /// Gets the fully-qualified identifier of the feature for which clients can be generated
         /// </summary>
         public string FeatureIdentifier
@@ -229,7 +229,7 @@ namespace Tecan.Sila2.Interop.Client.ObservablePropertyTest.ObservablePropertyTe
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the interface type for which clients can be generated
         /// </summary>
         public System.Type InterfaceType
@@ -240,7 +240,7 @@ namespace Tecan.Sila2.Interop.Client.ObservablePropertyTest.ObservablePropertyTe
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Creates a strongly typed client for the given execution channel and execution manager
         /// </summary>
         /// <param name="channel">The channel that should be used for communication with the server</param>

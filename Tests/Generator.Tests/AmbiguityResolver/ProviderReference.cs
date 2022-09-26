@@ -15,35 +15,35 @@ using Tecan.Sila2.Server;
 
 namespace Tecan.Sila2.Generator.Test.TestReference
 {
-
-
-    ///  <summary>
+    
+    
+    /// <summary>
     /// A class that exposes the IAmbiguityResolverService interface via SiLA2
     /// </summary>
-    [System.ComponentModel.Composition.ExportAttribute( typeof( IFeatureProvider ) )]
-    [System.ComponentModel.Composition.PartCreationPolicyAttribute( System.ComponentModel.Composition.CreationPolicy.Shared )]
+    [System.ComponentModel.Composition.ExportAttribute(typeof(IFeatureProvider))]
+    [System.ComponentModel.Composition.PartCreationPolicyAttribute(System.ComponentModel.Composition.CreationPolicy.Shared)]
     public partial class AmbiguityResolverServiceProvider : IFeatureProvider
     {
-
+        
         private IAmbiguityResolverService _implementation;
-
+        
         private Tecan.Sila2.Server.ISiLAServer _server;
-
-        private static Tecan.Sila2.Feature _feature = FeatureSerializer.LoadFromAssembly( typeof( AmbiguityResolverServiceProvider ).Assembly, "AmbiguityResolverService.sila.xml" );
-
-        ///  <summary>
+        
+        private static Tecan.Sila2.Feature _feature = FeatureSerializer.LoadFromAssembly(typeof(AmbiguityResolverServiceProvider).Assembly, "AmbiguityResolverService.sila.xml");
+        
+        /// <summary>
         /// Creates a new instance
         /// </summary>
         /// <param name="implementation">The implementation to exported through SiLA2</param>
         /// <param name="server">The SiLA2 server instance through which the implementation shall be exported</param>
         [System.ComponentModel.Composition.ImportingConstructorAttribute()]
-        public AmbiguityResolverServiceProvider( IAmbiguityResolverService implementation, Tecan.Sila2.Server.ISiLAServer server )
+        public AmbiguityResolverServiceProvider(IAmbiguityResolverService implementation, Tecan.Sila2.Server.ISiLAServer server)
         {
             _implementation = implementation;
             _server = server;
         }
-
-        ///  <summary>
+        
+        /// <summary>
         /// The feature that is exposed by this feature provider
         /// </summary>
         /// <returns>A feature object</returns>
@@ -54,53 +54,82 @@ namespace Tecan.Sila2.Generator.Test.TestReference
                 return _feature;
             }
         }
-
-        ///  <summary>
+        
+        /// <summary>
         /// Registers the feature in the provided feature registration
         /// </summary>
         /// <param name="registration">The registration component to which the feature should be registered</param>
-        public void Register( IServerBuilder registration )
+        public void Register(IServerBuilder registration)
         {
-            registration.RegisterObservableCommand<CheckAmbiguousEntriesRequestDto, AmbiguousClass, CheckAmbiguousEntriesResponseDto>( "CheckAmbiguousEntries", CheckAmbiguousEntries, ConvertCheckAmbiguousEntriesResponse, null );
+            registration.RegisterObservableCommand<CheckAmbiguousEntriesRequestDto, AmbiguousClass, CheckAmbiguousEntriesResponseDto>("CheckAmbiguousEntries", CheckAmbiguousEntries, ConvertCheckAmbiguousEntriesResponse, null);
+            registration.RegisterUnobservableCommand<OverloadedMethodRequestDto, EmptyRequest>("OverloadedMethod", OverloadedMethod);
         }
-
-        private CheckAmbiguousEntriesResponseDto ConvertCheckAmbiguousEntriesResponse( AmbiguousClass result )
+        
+        private CheckAmbiguousEntriesResponseDto ConvertCheckAmbiguousEntriesResponse(AmbiguousClass result)
         {
-            return new CheckAmbiguousEntriesResponseDto( result, _server );
+            return new CheckAmbiguousEntriesResponseDto(result, _server);
         }
-
-        ///  <summary>
+        
+        /// <summary>
         /// Executes the Check Ambiguous Entries command
         /// </summary>
         /// <param name="request">A data transfer object that contains the command parameters</param>
         /// <returns>The command response wrapped in a data transfer object</returns>
-        protected virtual Tecan.Sila2.IObservableCommand<AmbiguousClass> CheckAmbiguousEntries( CheckAmbiguousEntriesRequestDto request )
+        protected virtual Tecan.Sila2.IObservableCommand<AmbiguousClass> CheckAmbiguousEntries(CheckAmbiguousEntriesRequestDto request)
         {
             request.Validate();
             return _implementation.CheckAmbiguousEntries();
         }
-
-        ///  <summary>
+        
+        /// <summary>
+        /// Executes the Overloaded Method command
+        /// </summary>
+        /// <param name="request">A data transfer object that contains the command parameters</param>
+        /// <returns>The command response wrapped in a data transfer object</returns>
+        protected virtual EmptyRequest OverloadedMethod(OverloadedMethodRequestDto request)
+        {
+            try
+            {
+                request.Validate();
+                _implementation.OverloadedMethod(request.Method.Extract(_server));
+                return EmptyRequest.Instance;
+            } catch (System.ArgumentException ex)
+            {
+                if ((ex.ParamName == "method"))
+                {
+                    throw _server.ErrorHandling.CreateValidationError("tecan.sila.generator.test/ambiguityresolver/AmbiguityResolverService/v4/Command/O" +
+                            "verloadedMethod/Parameter/Method", ex.Message);
+                }
+                throw _server.ErrorHandling.CreateUnknownValidationError(ex);
+            }
+        }
+        
+        /// <summary>
         /// Gets the command with the given identifier
         /// </summary>
         /// <param name="commandIdentifier">A fully qualified command identifier</param>
         /// <returns>A method object or null, if the command is not supported</returns>
-        public System.Reflection.MethodInfo GetCommand( string commandIdentifier )
+        public System.Reflection.MethodInfo GetCommand(string commandIdentifier)
         {
-            if((commandIdentifier == "tecan.sila.generator.test/ambiguityresolver/AmbiguityResolverService/v4/Command/C" +
+            if ((commandIdentifier == "tecan.sila.generator.test/ambiguityresolver/AmbiguityResolverService/v4/Command/C" +
                 "heckAmbiguousEntries"))
             {
-                return typeof( IAmbiguityResolverService ).GetMethod( "CheckAmbiguousEntries" );
+                return typeof(IAmbiguityResolverService).GetMethod("CheckAmbiguousEntries");
+            }
+            if ((commandIdentifier == "tecan.sila.generator.test/ambiguityresolver/AmbiguityResolverService/v4/Command/O" +
+                "verloadedMethod"))
+            {
+                return typeof(IAmbiguityResolverService).GetMethod("OverloadedMethod");
             }
             return null;
         }
-
-        ///  <summary>
+        
+        /// <summary>
         /// Gets the property with the given identifier
         /// </summary>
         /// <param name="propertyIdentifier">A fully qualified property identifier</param>
         /// <returns>A property object or null, if the property is not supported</returns>
-        public System.Reflection.PropertyInfo GetProperty( string propertyIdentifier )
+        public System.Reflection.PropertyInfo GetProperty(string propertyIdentifier)
         {
             return null;
         }

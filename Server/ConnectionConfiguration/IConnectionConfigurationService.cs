@@ -12,7 +12,7 @@ namespace Tecan.Sila2.Server.ConnectionConfiguration
 {
     
     
-    ///  <summary>
+    /// <summary>
     /// This Feature MUST be implemented by each SiLA Server that offers a Server-initiated connection.
     /// The server-initiated connection mode is persistent, it keeps the state after a restart. Connect to a SiLA Client passing the required information and optionally keep the connection details persistent, so the SiLA Server will reconnect after a restart.
     /// </summary>
@@ -22,7 +22,7 @@ namespace Tecan.Sila2.Server.ConnectionConfiguration
     public partial interface IConnectionConfigurationService
     {
         
-        ///  <summary>
+        /// <summary>
         /// Whether or not the server initiated connection mode is active.
         /// </summary>
         [Tecan.Sila2.SilaDisplayNameAttribute("Server Initiated Connection Mode Active")]
@@ -31,7 +31,7 @@ namespace Tecan.Sila2.Server.ConnectionConfiguration
             get;
         }
         
-        ///  <summary>
+        /// <summary>
         /// Get the configured SiLA Clients used for server-initiated connections.
         /// </summary>
         [Tecan.Sila2.SilaDisplayNameAttribute("Get Configured SiLA Clients")]
@@ -40,17 +40,17 @@ namespace Tecan.Sila2.Server.ConnectionConfiguration
             get;
         }
         
-        ///  <summary>
+        /// <summary>
         /// Enable the server initiated connection mode.
         /// </summary>
         void EnableServerInitiatedConnectionMode();
         
-        ///  <summary>
+        /// <summary>
         /// Disable the server initiated connection mode.
         /// </summary>
         void DisableServerInitiatedConnectionMode();
         
-        ///  <summary>
+        /// <summary>
         /// Connect a new SiLA Client.
         /// </summary>
         /// <param name="clientName">Human readable name of the SiLA Client. Has to be unique.</param>
@@ -60,7 +60,7 @@ namespace Tecan.Sila2.Server.ConnectionConfiguration
         [Tecan.Sila2.SilaDisplayNameAttribute("Connect SiLA Client")]
         void ConnectSiLAClient([Tecan.Sila2.MaximalLengthAttribute(255)] string clientName, [Tecan.Sila2.MaximalLengthAttribute(255)] [Tecan.Sila2.SilaDisplayNameAttribute("SiLA Client Host")] string siLAClientHost, [Tecan.Sila2.MaximalInclusiveAttribute(65536D)] [Tecan.Sila2.MinimalExclusiveAttribute(0D)] [Tecan.Sila2.SilaDisplayNameAttribute("SiLA Client Port")] long siLAClientPort, [Tecan.Sila2.SilaDisplayNameAttribute("Persist connection")] bool persist);
         
-        ///  <summary>
+        /// <summary>
         /// Disconnect a configured SiLA Client.
         /// </summary>
         /// <param name="clientName">Human readable name of the SiLA Client.</param>
@@ -69,14 +69,14 @@ namespace Tecan.Sila2.Server.ConnectionConfiguration
         void DisconnectSiLAClient([Tecan.Sila2.MaximalLengthAttribute(255)] string clientName, [Tecan.Sila2.SilaDisplayNameAttribute("Remove connection")] bool remove);
     }
     
-    ///  <summary>
+    /// <summary>
     /// Invalid SiLA Client specified. E.g. invalid hostname
     /// </summary>
     [Tecan.Sila2.SilaDisplayNameAttribute("Invalid SiLA Client")]
     public class InvalidSiLAClientException : System.Exception
     {
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="message">The actual error message</param>
@@ -86,7 +86,7 @@ namespace Tecan.Sila2.Server.ConnectionConfiguration
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// The class ConfiguredSiLAClient reflects an anonymous type from the feature definition.
     /// </summary>
     [Tecan.Sila2.SilaDisplayNameAttribute("ConfiguredSiLAClient")]
@@ -99,7 +99,7 @@ namespace Tecan.Sila2.Server.ConnectionConfiguration
         
         private long _siLAClientPort;
         
-        ///  <summary>
+        /// <summary>
         /// Initializes a new instance
         /// </summary>
         public ConfiguredSiLAClient(string clientName, string siLAClientHost, long siLAClientPort)
@@ -109,7 +109,7 @@ namespace Tecan.Sila2.Server.ConnectionConfiguration
             _siLAClientPort = siLAClientPort;
         }
         
-        ///  <summary>
+        /// <summary>
         /// Human readable name of the SiLA Client.
         /// </summary>
         public string ClientName
@@ -120,7 +120,7 @@ namespace Tecan.Sila2.Server.ConnectionConfiguration
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Host Address of the SiLA Client.
         /// </summary>
         public string SiLAClientHost
@@ -131,7 +131,7 @@ namespace Tecan.Sila2.Server.ConnectionConfiguration
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Port of the SiLA Client.
         /// </summary>
         public long SiLAClientPort

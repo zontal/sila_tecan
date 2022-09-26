@@ -15,7 +15,7 @@ namespace Tecan.Sila2.ParameterDefaultsProvider.Tests
     using Tecan.Sila2;
     
     
-    ///  <summary>
+    /// <summary>
     /// Data transfer object for the request of the File Example Method command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
@@ -24,25 +24,22 @@ namespace Tecan.Sila2.ParameterDefaultsProvider.Tests
         
         private Tecan.Sila2.StringDto _parameter;
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         public FileExampleMethodRequestDto()
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
-        ///  <param name="parameter"></param>
         public FileExampleMethodRequestDto(string parameter, Tecan.Sila2.IBinaryStore store)
         {
             Parameter = new Tecan.Sila2.StringDto(parameter, store);
         }
         
-        ///  <summary>
-        /// </summary>
         [ProtoBuf.ProtoMemberAttribute(1)]
         public Tecan.Sila2.StringDto Parameter
         {
@@ -56,7 +53,7 @@ namespace Tecan.Sila2.ParameterDefaultsProvider.Tests
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the command identifier for this command
         /// </summary>
         /// <returns>The fully qualified command identifier</returns>
@@ -69,7 +66,7 @@ namespace Tecan.Sila2.ParameterDefaultsProvider.Tests
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the given request object
         /// </summary>
         public void Validate()
@@ -77,7 +74,7 @@ namespace Tecan.Sila2.ParameterDefaultsProvider.Tests
             Argument.Validate(Parameter, "parameter");
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>

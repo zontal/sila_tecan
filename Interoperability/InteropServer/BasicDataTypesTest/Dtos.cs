@@ -13,7 +13,7 @@ namespace Tecan.Sila2.Interop.Server.BasicDataTypesTest
     using Tecan.Sila2;
     
     
-    ///  <summary>
+    /// <summary>
     /// Data transfer object for the request of the Echo String Value command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
@@ -22,24 +22,24 @@ namespace Tecan.Sila2.Interop.Server.BasicDataTypesTest
         
         private Tecan.Sila2.StringDto _stringValue;
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         public EchoStringValueRequestDto()
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
-        ///  <param name="stringValue">The String value to be returned.</param>
+        /// <param name="stringValue">The String value to be returned.</param>
         public EchoStringValueRequestDto(string stringValue, Tecan.Sila2.IBinaryStore store)
         {
             StringValue = new Tecan.Sila2.StringDto(stringValue, store);
         }
         
-        ///  <summary>
+        /// <summary>
         /// The String value to be returned.
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute(1)]
@@ -55,7 +55,7 @@ namespace Tecan.Sila2.Interop.Server.BasicDataTypesTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the command identifier for this command
         /// </summary>
         /// <returns>The fully qualified command identifier</returns>
@@ -67,7 +67,7 @@ namespace Tecan.Sila2.Interop.Server.BasicDataTypesTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the given request object
         /// </summary>
         public void Validate()
@@ -75,7 +75,7 @@ namespace Tecan.Sila2.Interop.Server.BasicDataTypesTest
             Argument.Validate(StringValue, "stringValue");
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
@@ -85,7 +85,7 @@ namespace Tecan.Sila2.Interop.Server.BasicDataTypesTest
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// Data transfer object for the response of the Echo String Value command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
@@ -94,24 +94,24 @@ namespace Tecan.Sila2.Interop.Server.BasicDataTypesTest
         
         private Tecan.Sila2.StringDto _receivedValue;
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         public EchoStringValueResponseDto()
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
-        ///  <param name="receivedValue">The String value that has been received.</param>
+        /// <param name="receivedValue">The String value that has been received.</param>
         public EchoStringValueResponseDto(string receivedValue, Tecan.Sila2.IBinaryStore store)
         {
             ReceivedValue = new Tecan.Sila2.StringDto(receivedValue, store);
         }
         
-        ///  <summary>
+        /// <summary>
         /// The String value that has been received.
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute(1)]
@@ -127,7 +127,7 @@ namespace Tecan.Sila2.Interop.Server.BasicDataTypesTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the given request object
         /// </summary>
         public void Validate()
@@ -135,7 +135,7 @@ namespace Tecan.Sila2.Interop.Server.BasicDataTypesTest
             Argument.Validate(ReceivedValue, "receivedValue");
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
@@ -145,7 +145,7 @@ namespace Tecan.Sila2.Interop.Server.BasicDataTypesTest
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// Data transfer object for the request of the Echo Integer Value command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
@@ -154,24 +154,24 @@ namespace Tecan.Sila2.Interop.Server.BasicDataTypesTest
         
         private Tecan.Sila2.IntegerDto _integerValue;
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         public EchoIntegerValueRequestDto()
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
-        ///  <param name="integerValue">The Integer value to be returned.</param>
+        /// <param name="integerValue">The Integer value to be returned.</param>
         public EchoIntegerValueRequestDto(long integerValue, Tecan.Sila2.IBinaryStore store)
         {
             IntegerValue = new Tecan.Sila2.IntegerDto(integerValue, store);
         }
         
-        ///  <summary>
+        /// <summary>
         /// The Integer value to be returned.
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute(1)]
@@ -187,7 +187,7 @@ namespace Tecan.Sila2.Interop.Server.BasicDataTypesTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the command identifier for this command
         /// </summary>
         /// <returns>The fully qualified command identifier</returns>
@@ -199,7 +199,7 @@ namespace Tecan.Sila2.Interop.Server.BasicDataTypesTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the given request object
         /// </summary>
         public void Validate()
@@ -207,7 +207,7 @@ namespace Tecan.Sila2.Interop.Server.BasicDataTypesTest
             Argument.Validate(IntegerValue, "integerValue");
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
@@ -217,7 +217,7 @@ namespace Tecan.Sila2.Interop.Server.BasicDataTypesTest
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// Data transfer object for the response of the Echo Integer Value command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
@@ -226,24 +226,24 @@ namespace Tecan.Sila2.Interop.Server.BasicDataTypesTest
         
         private Tecan.Sila2.IntegerDto _receivedValue;
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         public EchoIntegerValueResponseDto()
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
-        ///  <param name="receivedValue">The Integer value that has been received.</param>
+        /// <param name="receivedValue">The Integer value that has been received.</param>
         public EchoIntegerValueResponseDto(long receivedValue, Tecan.Sila2.IBinaryStore store)
         {
             ReceivedValue = new Tecan.Sila2.IntegerDto(receivedValue, store);
         }
         
-        ///  <summary>
+        /// <summary>
         /// The Integer value that has been received.
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute(1)]
@@ -259,7 +259,7 @@ namespace Tecan.Sila2.Interop.Server.BasicDataTypesTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the given request object
         /// </summary>
         public void Validate()
@@ -267,7 +267,7 @@ namespace Tecan.Sila2.Interop.Server.BasicDataTypesTest
             Argument.Validate(ReceivedValue, "receivedValue");
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
@@ -277,7 +277,7 @@ namespace Tecan.Sila2.Interop.Server.BasicDataTypesTest
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// Data transfer object for the request of the Echo Real Value command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
@@ -286,24 +286,24 @@ namespace Tecan.Sila2.Interop.Server.BasicDataTypesTest
         
         private Tecan.Sila2.RealDto _realValue;
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         public EchoRealValueRequestDto()
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
-        ///  <param name="realValue">The Real value to be returned.</param>
+        /// <param name="realValue">The Real value to be returned.</param>
         public EchoRealValueRequestDto(double realValue, Tecan.Sila2.IBinaryStore store)
         {
             RealValue = new Tecan.Sila2.RealDto(realValue, store);
         }
         
-        ///  <summary>
+        /// <summary>
         /// The Real value to be returned.
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute(1)]
@@ -319,7 +319,7 @@ namespace Tecan.Sila2.Interop.Server.BasicDataTypesTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the command identifier for this command
         /// </summary>
         /// <returns>The fully qualified command identifier</returns>
@@ -331,7 +331,7 @@ namespace Tecan.Sila2.Interop.Server.BasicDataTypesTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the given request object
         /// </summary>
         public void Validate()
@@ -339,7 +339,7 @@ namespace Tecan.Sila2.Interop.Server.BasicDataTypesTest
             Argument.Validate(RealValue, "realValue");
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
@@ -349,7 +349,7 @@ namespace Tecan.Sila2.Interop.Server.BasicDataTypesTest
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// Data transfer object for the response of the Echo Real Value command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
@@ -358,24 +358,24 @@ namespace Tecan.Sila2.Interop.Server.BasicDataTypesTest
         
         private Tecan.Sila2.RealDto _receivedValue;
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         public EchoRealValueResponseDto()
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
-        ///  <param name="receivedValue">The Real value that has been received.</param>
+        /// <param name="receivedValue">The Real value that has been received.</param>
         public EchoRealValueResponseDto(double receivedValue, Tecan.Sila2.IBinaryStore store)
         {
             ReceivedValue = new Tecan.Sila2.RealDto(receivedValue, store);
         }
         
-        ///  <summary>
+        /// <summary>
         /// The Real value that has been received.
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute(1)]
@@ -391,7 +391,7 @@ namespace Tecan.Sila2.Interop.Server.BasicDataTypesTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the given request object
         /// </summary>
         public void Validate()
@@ -399,7 +399,7 @@ namespace Tecan.Sila2.Interop.Server.BasicDataTypesTest
             Argument.Validate(ReceivedValue, "receivedValue");
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
@@ -409,7 +409,7 @@ namespace Tecan.Sila2.Interop.Server.BasicDataTypesTest
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// Data transfer object for the request of the Echo Boolean Value command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
@@ -418,24 +418,24 @@ namespace Tecan.Sila2.Interop.Server.BasicDataTypesTest
         
         private Tecan.Sila2.BooleanDto _booleanValue;
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         public EchoBooleanValueRequestDto()
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
-        ///  <param name="booleanValue">The Boolean value to be returned.</param>
+        /// <param name="booleanValue">The Boolean value to be returned.</param>
         public EchoBooleanValueRequestDto(bool booleanValue, Tecan.Sila2.IBinaryStore store)
         {
             BooleanValue = new Tecan.Sila2.BooleanDto(booleanValue, store);
         }
         
-        ///  <summary>
+        /// <summary>
         /// The Boolean value to be returned.
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute(1)]
@@ -451,7 +451,7 @@ namespace Tecan.Sila2.Interop.Server.BasicDataTypesTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the command identifier for this command
         /// </summary>
         /// <returns>The fully qualified command identifier</returns>
@@ -463,7 +463,7 @@ namespace Tecan.Sila2.Interop.Server.BasicDataTypesTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the given request object
         /// </summary>
         public void Validate()
@@ -471,7 +471,7 @@ namespace Tecan.Sila2.Interop.Server.BasicDataTypesTest
             Argument.Validate(BooleanValue, "booleanValue");
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
@@ -481,7 +481,7 @@ namespace Tecan.Sila2.Interop.Server.BasicDataTypesTest
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// Data transfer object for the response of the Echo Boolean Value command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
@@ -490,24 +490,24 @@ namespace Tecan.Sila2.Interop.Server.BasicDataTypesTest
         
         private Tecan.Sila2.BooleanDto _receivedValue;
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         public EchoBooleanValueResponseDto()
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
-        ///  <param name="receivedValue">The Boolean value that has been received.</param>
+        /// <param name="receivedValue">The Boolean value that has been received.</param>
         public EchoBooleanValueResponseDto(bool receivedValue, Tecan.Sila2.IBinaryStore store)
         {
             ReceivedValue = new Tecan.Sila2.BooleanDto(receivedValue, store);
         }
         
-        ///  <summary>
+        /// <summary>
         /// The Boolean value that has been received.
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute(1)]
@@ -523,7 +523,7 @@ namespace Tecan.Sila2.Interop.Server.BasicDataTypesTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the given request object
         /// </summary>
         public void Validate()
@@ -531,7 +531,7 @@ namespace Tecan.Sila2.Interop.Server.BasicDataTypesTest
             Argument.Validate(ReceivedValue, "receivedValue");
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
@@ -541,7 +541,7 @@ namespace Tecan.Sila2.Interop.Server.BasicDataTypesTest
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// Data transfer object for the request of the Echo Date Value command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
@@ -550,24 +550,24 @@ namespace Tecan.Sila2.Interop.Server.BasicDataTypesTest
         
         private Tecan.Sila2.DateDto _dateValue;
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         public EchoDateValueRequestDto()
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
-        ///  <param name="dateValue">The Date value to be returned.</param>
+        /// <param name="dateValue">The Date value to be returned.</param>
         public EchoDateValueRequestDto(System.DateTimeOffset dateValue, Tecan.Sila2.IBinaryStore store)
         {
             DateValue = new Tecan.Sila2.DateDto(dateValue, store);
         }
         
-        ///  <summary>
+        /// <summary>
         /// The Date value to be returned.
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute(1)]
@@ -583,7 +583,7 @@ namespace Tecan.Sila2.Interop.Server.BasicDataTypesTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the command identifier for this command
         /// </summary>
         /// <returns>The fully qualified command identifier</returns>
@@ -595,7 +595,7 @@ namespace Tecan.Sila2.Interop.Server.BasicDataTypesTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the given request object
         /// </summary>
         public void Validate()
@@ -603,7 +603,7 @@ namespace Tecan.Sila2.Interop.Server.BasicDataTypesTest
             Argument.Validate(DateValue, "dateValue");
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
@@ -613,7 +613,7 @@ namespace Tecan.Sila2.Interop.Server.BasicDataTypesTest
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// Data transfer object for the response of the Echo Date Value command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
@@ -622,24 +622,24 @@ namespace Tecan.Sila2.Interop.Server.BasicDataTypesTest
         
         private Tecan.Sila2.DateDto _receivedValue;
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         public EchoDateValueResponseDto()
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
-        ///  <param name="receivedValue">The Date value that has been received.</param>
+        /// <param name="receivedValue">The Date value that has been received.</param>
         public EchoDateValueResponseDto(System.DateTimeOffset receivedValue, Tecan.Sila2.IBinaryStore store)
         {
             ReceivedValue = new Tecan.Sila2.DateDto(receivedValue, store);
         }
         
-        ///  <summary>
+        /// <summary>
         /// The Date value that has been received.
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute(1)]
@@ -655,7 +655,7 @@ namespace Tecan.Sila2.Interop.Server.BasicDataTypesTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the given request object
         /// </summary>
         public void Validate()
@@ -663,7 +663,7 @@ namespace Tecan.Sila2.Interop.Server.BasicDataTypesTest
             Argument.Validate(ReceivedValue, "receivedValue");
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
@@ -673,7 +673,7 @@ namespace Tecan.Sila2.Interop.Server.BasicDataTypesTest
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// Data transfer object for the request of the Echo Time Value command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
@@ -682,24 +682,24 @@ namespace Tecan.Sila2.Interop.Server.BasicDataTypesTest
         
         private Tecan.Sila2.TimeDto _timeValue;
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         public EchoTimeValueRequestDto()
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
-        ///  <param name="timeValue">The Time value to be returned.</param>
+        /// <param name="timeValue">The Time value to be returned.</param>
         public EchoTimeValueRequestDto(System.TimeSpan timeValue, Tecan.Sila2.IBinaryStore store)
         {
             TimeValue = new Tecan.Sila2.TimeDto(timeValue, store);
         }
         
-        ///  <summary>
+        /// <summary>
         /// The Time value to be returned.
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute(1)]
@@ -715,7 +715,7 @@ namespace Tecan.Sila2.Interop.Server.BasicDataTypesTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the command identifier for this command
         /// </summary>
         /// <returns>The fully qualified command identifier</returns>
@@ -727,7 +727,7 @@ namespace Tecan.Sila2.Interop.Server.BasicDataTypesTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the given request object
         /// </summary>
         public void Validate()
@@ -735,7 +735,7 @@ namespace Tecan.Sila2.Interop.Server.BasicDataTypesTest
             Argument.Validate(TimeValue, "timeValue");
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
@@ -745,7 +745,7 @@ namespace Tecan.Sila2.Interop.Server.BasicDataTypesTest
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// Data transfer object for the response of the Echo Time Value command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
@@ -754,24 +754,24 @@ namespace Tecan.Sila2.Interop.Server.BasicDataTypesTest
         
         private Tecan.Sila2.TimeDto _receivedValue;
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         public EchoTimeValueResponseDto()
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
-        ///  <param name="receivedValue">The Time value that has been received.</param>
+        /// <param name="receivedValue">The Time value that has been received.</param>
         public EchoTimeValueResponseDto(System.TimeSpan receivedValue, Tecan.Sila2.IBinaryStore store)
         {
             ReceivedValue = new Tecan.Sila2.TimeDto(receivedValue, store);
         }
         
-        ///  <summary>
+        /// <summary>
         /// The Time value that has been received.
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute(1)]
@@ -787,7 +787,7 @@ namespace Tecan.Sila2.Interop.Server.BasicDataTypesTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the given request object
         /// </summary>
         public void Validate()
@@ -795,7 +795,7 @@ namespace Tecan.Sila2.Interop.Server.BasicDataTypesTest
             Argument.Validate(ReceivedValue, "receivedValue");
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
@@ -805,7 +805,7 @@ namespace Tecan.Sila2.Interop.Server.BasicDataTypesTest
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// Data transfer object for the request of the Echo Timestamp Value command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
@@ -814,24 +814,24 @@ namespace Tecan.Sila2.Interop.Server.BasicDataTypesTest
         
         private Tecan.Sila2.TimestampDto _timestampValue;
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         public EchoTimestampValueRequestDto()
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
-        ///  <param name="timestampValue">The Timestamp value to be returned.</param>
+        /// <param name="timestampValue">The Timestamp value to be returned.</param>
         public EchoTimestampValueRequestDto(System.DateTimeOffset timestampValue, Tecan.Sila2.IBinaryStore store)
         {
             TimestampValue = new Tecan.Sila2.TimestampDto(timestampValue, store);
         }
         
-        ///  <summary>
+        /// <summary>
         /// The Timestamp value to be returned.
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute(1)]
@@ -847,7 +847,7 @@ namespace Tecan.Sila2.Interop.Server.BasicDataTypesTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the command identifier for this command
         /// </summary>
         /// <returns>The fully qualified command identifier</returns>
@@ -859,7 +859,7 @@ namespace Tecan.Sila2.Interop.Server.BasicDataTypesTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the given request object
         /// </summary>
         public void Validate()
@@ -867,7 +867,7 @@ namespace Tecan.Sila2.Interop.Server.BasicDataTypesTest
             Argument.Validate(TimestampValue, "timestampValue");
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
@@ -877,7 +877,7 @@ namespace Tecan.Sila2.Interop.Server.BasicDataTypesTest
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// Data transfer object for the response of the Echo Timestamp Value command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
@@ -886,24 +886,24 @@ namespace Tecan.Sila2.Interop.Server.BasicDataTypesTest
         
         private Tecan.Sila2.TimestampDto _receivedValue;
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         public EchoTimestampValueResponseDto()
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
-        ///  <param name="receivedValue">The Timestamp value that has been received.</param>
+        /// <param name="receivedValue">The Timestamp value that has been received.</param>
         public EchoTimestampValueResponseDto(System.DateTimeOffset receivedValue, Tecan.Sila2.IBinaryStore store)
         {
             ReceivedValue = new Tecan.Sila2.TimestampDto(receivedValue, store);
         }
         
-        ///  <summary>
+        /// <summary>
         /// The Timestamp value that has been received.
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute(1)]
@@ -919,7 +919,7 @@ namespace Tecan.Sila2.Interop.Server.BasicDataTypesTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the given request object
         /// </summary>
         public void Validate()
@@ -927,7 +927,7 @@ namespace Tecan.Sila2.Interop.Server.BasicDataTypesTest
             Argument.Validate(ReceivedValue, "receivedValue");
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>

@@ -12,16 +12,12 @@ namespace Tecan.Sila2.Generator.Test.TestReference
 {
     
     
-    ///  <summary>
-    /// </summary>
     [Tecan.Sila2.SilaFeatureAttribute(true, "testreference")]
     [Tecan.Sila2.SilaIdentifierAttribute("RxService")]
     [Tecan.Sila2.SilaDisplayNameAttribute("Rx Service")]
     public partial interface IRxService
     {
         
-        ///  <summary>
-        /// </summary>
         [Tecan.Sila2.ObservableAttribute()]
         Tecan.Sila2.IIntermediateObservableCommand<bool> RunRxObservable();
     }

@@ -42,4 +42,18 @@
       </DataType>
     </Response>
   </Command>
+  <Command>
+    <Identifier>OverloadedMethod</Identifier>
+    <DisplayName>Overloaded Method</DisplayName>
+    <Description />
+    <Observable>No</Observable>
+    <Parameter>
+      <Identifier>Method</Identifier>
+      <DisplayName>Method</DisplayName>
+      <Description />
+      <DataType>
+        <Basic>String</Basic>
+      </DataType>
+    </Parameter>
+  </Command>
 </Feature>

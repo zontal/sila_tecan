@@ -12,7 +12,7 @@ namespace Tecan.Sila2.Locking
 {
     
     
-    ///  <summary>
+    /// <summary>
     /// This Feature allows a SiLA Client to lock a SiLA Server for exclusive use, preventing other SiLA Clients
     /// from using the SiLA Server while it is locked. To lock a SiLA Server a Lock Identifier has to be set, using the
     /// 'LockServer' command. This Lock Identifier has to be sent along with every (lock protected)
@@ -28,7 +28,7 @@ namespace Tecan.Sila2.Locking
     public partial interface ILockController
     {
         
-        ///  <summary>
+        /// <summary>
         /// Returns true if the SiLA Server is currently locked or false else.
         /// This property MUST NOT be lock protected, so that any SiLA Client can query the current lock state
         /// of a SiLA Server.
@@ -39,23 +39,23 @@ namespace Tecan.Sila2.Locking
             get;
         }
         
-        ///  <summary>
+        /// <summary>
         /// Locks a SiLA Server for exclusive use by setting a lock identifier that has to be sent along with
         /// any following (lock protected) request as long as the SiLA Server is locked.
         /// The lock can be reset by issuing the 'Unlock Server' command.
         /// </summary>
         /// <param name="lockIdentifier">
-        ///        The lock identifier that has to be sent along with every (lock protected) request to use the server's
-        ///        functionality.
-        ///      </param>
+        /// The lock identifier that has to be sent along with every (lock protected) request to use the server's
+        /// functionality.
+        /// </param>
         /// <param name="timeout">
-        ///        The time (in seconds) after a SiLA Server is automatically unlocked when no request with a valid lock identifier
-        ///        has been received meanwhile. A timeout of zero seconds specifies an infinite time (no timeout).
-        ///      </param>
+        /// The time (in seconds) after a SiLA Server is automatically unlocked when no request with a valid lock identifier
+        /// has been received meanwhile. A timeout of zero seconds specifies an infinite time (no timeout).
+        /// </param>
         [Tecan.Sila2.ThrowsAttribute(typeof(ServerAlreadyLockedException))]
         void LockServer(string lockIdentifier, [Tecan.Sila2.UnitAttribute("s", Second=1)] long timeout);
         
-        ///  <summary>
+        /// <summary>
         /// Unlocks a locked SiLA Server. No lock identifier has to be sent for any following calls until
         /// the server is locked again via the 'Lock Server' command.
         /// </summary>
@@ -65,13 +65,13 @@ namespace Tecan.Sila2.Locking
         void UnlockServer(string lockIdentifier);
     }
     
-    ///  <summary>
+    /// <summary>
     /// The sent lock identifier is not valid.
     /// </summary>
     public class InvalidLockIdentifierException : System.Exception
     {
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="message">The actual error message</param>
@@ -81,13 +81,13 @@ namespace Tecan.Sila2.Locking
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// The SiLA Server can not be locked because it is already locked.
     /// </summary>
     public class ServerAlreadyLockedException : System.Exception
     {
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="message">The actual error message</param>
@@ -97,13 +97,13 @@ namespace Tecan.Sila2.Locking
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// The SiLA Server can not be unlocked because it is not locked.
     /// </summary>
     public class ServerNotLockedException : System.Exception
     {
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="message">The actual error message</param>

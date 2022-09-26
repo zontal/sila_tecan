@@ -12,7 +12,7 @@ namespace Tecan.Sila2.Interop.Server.MetadataConsumerTest
 {
     
     
-    ///  <summary>
+    /// <summary>
     /// Response type for the Echo String And Structure Metadata command
     /// </summary>
     [Tecan.Sila2.SilaDisplayNameAttribute("Echo String And Structure Metadata - Response")]
@@ -25,7 +25,7 @@ namespace Tecan.Sila2.Interop.Server.MetadataConsumerTest
         
         private long _secondReceivedInteger;
         
-        ///  <summary>
+        /// <summary>
         /// Initializes a new instance
         /// </summary>
         public UnpackMetadataResponse(string receivedString, long firstReceivedInteger, long secondReceivedInteger)
@@ -35,7 +35,7 @@ namespace Tecan.Sila2.Interop.Server.MetadataConsumerTest
             _secondReceivedInteger = secondReceivedInteger;
         }
         
-        ///  <summary>
+        /// <summary>
         /// The received string (via "String Metadata")
         /// </summary>
         public string ReceivedString
@@ -46,7 +46,7 @@ namespace Tecan.Sila2.Interop.Server.MetadataConsumerTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// The first element of the received integer structure (via "Two Integers Metadata")
         /// </summary>
         public long FirstReceivedInteger
@@ -57,7 +57,7 @@ namespace Tecan.Sila2.Interop.Server.MetadataConsumerTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// The second element of the received integer structure (via "Two Integers Metadata")
         /// </summary>
         public long SecondReceivedInteger
@@ -69,7 +69,7 @@ namespace Tecan.Sila2.Interop.Server.MetadataConsumerTest
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// This feature consumes SiLA Client Metadata from the "Metadata Provider Test" feature.
     /// </summary>
     [Tecan.Sila2.SilaFeatureAttribute(true, "test")]
@@ -78,14 +78,14 @@ namespace Tecan.Sila2.Interop.Server.MetadataConsumerTest
     public partial interface IMetadataConsumerTest
     {
         
-        ///  <summary>
+        /// <summary>
         /// Expects the "String Metadata" metadata from the "Metadata Provider Test" feature and responds with its value.
         /// </summary>
         /// <returns>The received string metadata</returns>
         [return: Tecan.Sila2.SilaIdentifierAttribute("ReceivedStringMetadata")]
         string EchoStringMetadata();
         
-        ///  <summary>
+        /// <summary>
         /// Expects the "String Metadata" and "Two Integers Metadata" metadata from the "Metadata Provider Test" feature and responds with all three data items.
         /// </summary>
         /// <returns>The received string (via "String Metadata"), The first element of the received integer structure (via "Two Integers Metadata"), The second element of the received integer structure (via "Two Integers Metadata")</returns>

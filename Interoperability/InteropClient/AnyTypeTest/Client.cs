@@ -17,7 +17,7 @@ namespace Tecan.Sila2.Interop.Client.AnyTypeTest.AnyTypeTest
 {
     
     
-    ///  <summary>
+    /// <summary>
     /// Class that implements the IAnyTypeTest interface through SiLA2
     /// </summary>
     public partial class AnyTypeTestClient : IAnyTypeTest
@@ -49,7 +49,7 @@ namespace Tecan.Sila2.Interop.Client.AnyTypeTest.AnyTypeTest
         
         private const string _serviceName = "sila2.org.silastandard.test.anytypetest.v1.AnyTypeTest";
         
-        ///  <summary>
+        /// <summary>
         /// Creates a new instance
         /// </summary>
         /// <param name="channel">The channel through which calls should be executed</param>
@@ -61,7 +61,7 @@ namespace Tecan.Sila2.Interop.Client.AnyTypeTest.AnyTypeTest
             InitLazyRequests();
         }
         
-        ///  <summary>
+        /// <summary>
         /// Returns the Any type String value 'SiLA_Any_type_of_String_type'.
         /// </summary>
         public virtual Tecan.Sila2.DynamicClient.DynamicObjectProperty AnyTypeStringValue
@@ -72,7 +72,7 @@ namespace Tecan.Sila2.Interop.Client.AnyTypeTest.AnyTypeTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Returns the Any type Integer value 5124.
         /// </summary>
         public virtual Tecan.Sila2.DynamicClient.DynamicObjectProperty AnyTypeIntegerValue
@@ -83,7 +83,7 @@ namespace Tecan.Sila2.Interop.Client.AnyTypeTest.AnyTypeTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Returns an Any type Real value 3.1415926.
         /// </summary>
         public virtual Tecan.Sila2.DynamicClient.DynamicObjectProperty AnyTypeRealValue
@@ -94,7 +94,7 @@ namespace Tecan.Sila2.Interop.Client.AnyTypeTest.AnyTypeTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Returns the Any type Boolean value true.
         /// </summary>
         public virtual Tecan.Sila2.DynamicClient.DynamicObjectProperty AnyTypeBooleanValue
@@ -105,7 +105,7 @@ namespace Tecan.Sila2.Interop.Client.AnyTypeTest.AnyTypeTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Returns the Any type ASCII-encoded string value 'SiLA_Any_type_of_Binary_type' as Binary.
         /// </summary>
         public virtual Tecan.Sila2.DynamicClient.DynamicObjectProperty AnyTypeBinaryValue
@@ -116,7 +116,7 @@ namespace Tecan.Sila2.Interop.Client.AnyTypeTest.AnyTypeTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Returns the Any type Date value 05.08.2022 respective 08/05/2022, timezone +2.
         /// </summary>
         public virtual Tecan.Sila2.DynamicClient.DynamicObjectProperty AnyTypeDateValue
@@ -127,7 +127,7 @@ namespace Tecan.Sila2.Interop.Client.AnyTypeTest.AnyTypeTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Returns the Any type Time value 12:34:56, timezone +2.
         /// </summary>
         public virtual Tecan.Sila2.DynamicClient.DynamicObjectProperty AnyTypeTimeValue
@@ -138,7 +138,7 @@ namespace Tecan.Sila2.Interop.Client.AnyTypeTest.AnyTypeTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Returns the Any type Timestamp value 2022-08-05 12:34:56, timezone +2.
         /// </summary>
         public virtual Tecan.Sila2.DynamicClient.DynamicObjectProperty AnyTypeTimestampValue
@@ -149,7 +149,7 @@ namespace Tecan.Sila2.Interop.Client.AnyTypeTest.AnyTypeTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Returns the Any type String List value ('SiLA 2', 'Any', 'Type', 'String', 'List')
         /// </summary>
         public virtual Tecan.Sila2.DynamicClient.DynamicObjectProperty AnyTypeListValue
@@ -160,7 +160,7 @@ namespace Tecan.Sila2.Interop.Client.AnyTypeTest.AnyTypeTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Returns the following Any type Structure value:
         /// - String 'StringTypeValue' = 'A String value',
         /// - Integer 'IntegerTypeValue' = 83737665,
@@ -334,7 +334,7 @@ namespace Tecan.Sila2.Interop.Client.AnyTypeTest.AnyTypeTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Initializes lazies for non-observable properties.
         /// </summary>
         private void InitLazyRequests()
@@ -351,7 +351,7 @@ namespace Tecan.Sila2.Interop.Client.AnyTypeTest.AnyTypeTest
             _anyTypeStructureValue = new System.Lazy<Tecan.Sila2.DynamicClient.DynamicObjectProperty>(RequestAnyTypeStructureValue);
         }
         
-        ///  <summary>
+        /// <summary>
         /// Receives an Any type value and returns the type and the value that has been received.
         /// </summary>
         /// <param name="anyTypeValue">The Any type value to be set.</param>
@@ -379,7 +379,7 @@ namespace Tecan.Sila2.Interop.Client.AnyTypeTest.AnyTypeTest
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// Factory to instantiate clients for the Any Type Test.
     /// </summary>
     [System.ComponentModel.Composition.ExportAttribute(typeof(IClientFactory))]
@@ -387,7 +387,7 @@ namespace Tecan.Sila2.Interop.Client.AnyTypeTest.AnyTypeTest
     public partial class AnyTypeTestClientFactory : IClientFactory
     {
         
-        ///  <summary>
+        /// <summary>
         /// Gets the fully-qualified identifier of the feature for which clients can be generated
         /// </summary>
         public string FeatureIdentifier
@@ -398,7 +398,7 @@ namespace Tecan.Sila2.Interop.Client.AnyTypeTest.AnyTypeTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the interface type for which clients can be generated
         /// </summary>
         public System.Type InterfaceType
@@ -409,7 +409,7 @@ namespace Tecan.Sila2.Interop.Client.AnyTypeTest.AnyTypeTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Creates a strongly typed client for the given execution channel and execution manager
         /// </summary>
         /// <param name="channel">The channel that should be used for communication with the server</param>

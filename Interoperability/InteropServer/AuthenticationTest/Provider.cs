@@ -17,7 +17,7 @@ namespace Tecan.Sila2.Interop.Server.AuthenticationTest
 {
     
     
-    ///  <summary>
+    /// <summary>
     /// A class that exposes the IAuthenticationTest interface via SiLA2
     /// </summary>
     [System.ComponentModel.Composition.ExportAttribute(typeof(IFeatureProvider))]
@@ -31,7 +31,7 @@ namespace Tecan.Sila2.Interop.Server.AuthenticationTest
         
         private static Tecan.Sila2.Feature _feature = FeatureSerializer.LoadFromAssembly(typeof(AuthenticationTestProvider).Assembly, "AuthenticationTest.sila.xml");
         
-        ///  <summary>
+        /// <summary>
         /// Creates a new instance
         /// </summary>
         /// <param name="implementation">The implementation to exported through SiLA2</param>
@@ -43,7 +43,7 @@ namespace Tecan.Sila2.Interop.Server.AuthenticationTest
             _server = server;
         }
         
-        ///  <summary>
+        /// <summary>
         /// The feature that is exposed by this feature provider
         /// </summary>
         /// <returns>A feature object</returns>
@@ -55,7 +55,7 @@ namespace Tecan.Sila2.Interop.Server.AuthenticationTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Registers the feature in the provided feature registration
         /// </summary>
         /// <param name="registration">The registration component to which the feature should be registered</param>
@@ -64,7 +64,7 @@ namespace Tecan.Sila2.Interop.Server.AuthenticationTest
             registration.RegisterUnobservableCommand<RequiresTokenRequestDto, EmptyRequest>("RequiresToken", RequiresToken);
         }
         
-        ///  <summary>
+        /// <summary>
         /// Executes the Requires Token command
         /// </summary>
         /// <param name="request">A data transfer object that contains the command parameters</param>
@@ -76,7 +76,7 @@ namespace Tecan.Sila2.Interop.Server.AuthenticationTest
             return EmptyRequest.Instance;
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the command with the given identifier
         /// </summary>
         /// <param name="commandIdentifier">A fully qualified command identifier</param>
@@ -90,7 +90,7 @@ namespace Tecan.Sila2.Interop.Server.AuthenticationTest
             return null;
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the property with the given identifier
         /// </summary>
         /// <param name="propertyIdentifier">A fully qualified property identifier</param>

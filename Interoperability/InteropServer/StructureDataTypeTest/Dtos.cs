@@ -13,7 +13,7 @@ namespace Tecan.Sila2.Interop.Server.StructureDataTypeTest
     using Tecan.Sila2;
     
     
-    ///  <summary>
+    /// <summary>
     /// Data transfer object for the request of the Echo Structure Value command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
@@ -22,24 +22,24 @@ namespace Tecan.Sila2.Interop.Server.StructureDataTypeTest
         
         private TestStructureDto _structureValue;
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         public EchoStructureValueRequestDto()
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
-        ///  <param name="structureValue">The Structure value to be returned.</param>
+        /// <param name="structureValue">The Structure value to be returned.</param>
         public EchoStructureValueRequestDto(TestStructure structureValue, Tecan.Sila2.IBinaryStore store)
         {
             StructureValue = new TestStructureDto(structureValue, store);
         }
         
-        ///  <summary>
+        /// <summary>
         /// The Structure value to be returned.
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute(1)]
@@ -55,7 +55,7 @@ namespace Tecan.Sila2.Interop.Server.StructureDataTypeTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the command identifier for this command
         /// </summary>
         /// <returns>The fully qualified command identifier</returns>
@@ -67,7 +67,7 @@ namespace Tecan.Sila2.Interop.Server.StructureDataTypeTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the given request object
         /// </summary>
         public void Validate()
@@ -75,7 +75,7 @@ namespace Tecan.Sila2.Interop.Server.StructureDataTypeTest
             Argument.Validate(StructureValue, "structureValue");
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
@@ -85,7 +85,7 @@ namespace Tecan.Sila2.Interop.Server.StructureDataTypeTest
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// Data transfer object for the response of the Echo Structure Value command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
@@ -94,24 +94,24 @@ namespace Tecan.Sila2.Interop.Server.StructureDataTypeTest
         
         private TestStructureDto _receivedValues;
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         public EchoStructureValueResponseDto()
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
-        ///  <param name="receivedValues">The structure that has been received.</param>
+        /// <param name="receivedValues">The structure that has been received.</param>
         public EchoStructureValueResponseDto(TestStructure receivedValues, Tecan.Sila2.IBinaryStore store)
         {
             ReceivedValues = new TestStructureDto(receivedValues, store);
         }
         
-        ///  <summary>
+        /// <summary>
         /// The structure that has been received.
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute(1)]
@@ -127,7 +127,7 @@ namespace Tecan.Sila2.Interop.Server.StructureDataTypeTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the given request object
         /// </summary>
         public void Validate()
@@ -135,7 +135,7 @@ namespace Tecan.Sila2.Interop.Server.StructureDataTypeTest
             Argument.Validate(ReceivedValues, "receivedValues");
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
@@ -145,7 +145,7 @@ namespace Tecan.Sila2.Interop.Server.StructureDataTypeTest
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// Data transfer object for the request of the Echo Deep Structure Value command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
@@ -154,24 +154,24 @@ namespace Tecan.Sila2.Interop.Server.StructureDataTypeTest
         
         private DeepStructureDto _deepStructureValue;
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         public EchoDeepStructureValueRequestDto()
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
-        ///  <param name="deepStructureValue">The deep Structure value to be set.</param>
+        /// <param name="deepStructureValue">The deep Structure value to be set.</param>
         public EchoDeepStructureValueRequestDto(DeepStructure deepStructureValue, Tecan.Sila2.IBinaryStore store)
         {
             DeepStructureValue = new DeepStructureDto(deepStructureValue, store);
         }
         
-        ///  <summary>
+        /// <summary>
         /// The deep Structure value to be set.
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute(1)]
@@ -187,7 +187,7 @@ namespace Tecan.Sila2.Interop.Server.StructureDataTypeTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the command identifier for this command
         /// </summary>
         /// <returns>The fully qualified command identifier</returns>
@@ -199,7 +199,7 @@ namespace Tecan.Sila2.Interop.Server.StructureDataTypeTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the given request object
         /// </summary>
         public void Validate()
@@ -207,7 +207,7 @@ namespace Tecan.Sila2.Interop.Server.StructureDataTypeTest
             Argument.Validate(DeepStructureValue, "deepStructureValue");
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
@@ -217,7 +217,7 @@ namespace Tecan.Sila2.Interop.Server.StructureDataTypeTest
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// Data transfer object for the response of the Echo Deep Structure Value command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
@@ -226,24 +226,24 @@ namespace Tecan.Sila2.Interop.Server.StructureDataTypeTest
         
         private DeepStructureDto _receivedValues;
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         public EchoDeepStructureValueResponseDto()
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
-        ///  <param name="receivedValues">The structure that has been received.</param>
+        /// <param name="receivedValues">The structure that has been received.</param>
         public EchoDeepStructureValueResponseDto(DeepStructure receivedValues, Tecan.Sila2.IBinaryStore store)
         {
             ReceivedValues = new DeepStructureDto(receivedValues, store);
         }
         
-        ///  <summary>
+        /// <summary>
         /// The structure that has been received.
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute(1)]
@@ -259,7 +259,7 @@ namespace Tecan.Sila2.Interop.Server.StructureDataTypeTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the given request object
         /// </summary>
         public void Validate()
@@ -267,7 +267,7 @@ namespace Tecan.Sila2.Interop.Server.StructureDataTypeTest
             Argument.Validate(ReceivedValues, "receivedValues");
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
@@ -277,7 +277,7 @@ namespace Tecan.Sila2.Interop.Server.StructureDataTypeTest
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// The data transfer object for Test Structure
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
@@ -286,7 +286,7 @@ namespace Tecan.Sila2.Interop.Server.StructureDataTypeTest
         
         private InnerStruct _inner;
         
-        ///  <summary>
+        /// <summary>
         /// Initializes a new instance (to be used by the serializer)
         /// </summary>
         public TestStructureDto()
@@ -294,7 +294,7 @@ namespace Tecan.Sila2.Interop.Server.StructureDataTypeTest
             _inner = new InnerStruct();
         }
         
-        ///  <summary>
+        /// <summary>
         /// Initializes a new data transfer object from the business object
         /// </summary>
         /// <param name="inner">The business object that should be transferred</param>
@@ -304,7 +304,7 @@ namespace Tecan.Sila2.Interop.Server.StructureDataTypeTest
             _inner = new InnerStruct(inner, store);
         }
         
-        ///  <summary>
+        /// <summary>
         /// A value of SiLA data type String.
         /// </summary>
         public Tecan.Sila2.StringDto StringTypeValue
@@ -327,7 +327,7 @@ namespace Tecan.Sila2.Interop.Server.StructureDataTypeTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// A value of SiLA data type Integer.
         /// </summary>
         public Tecan.Sila2.IntegerDto IntegerTypeValue
@@ -350,7 +350,7 @@ namespace Tecan.Sila2.Interop.Server.StructureDataTypeTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// A value of SiLA data type Real.
         /// </summary>
         public Tecan.Sila2.RealDto RealTypeValue
@@ -373,7 +373,7 @@ namespace Tecan.Sila2.Interop.Server.StructureDataTypeTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// A value of SiLA data type Boolean.
         /// </summary>
         public Tecan.Sila2.BooleanDto BooleanTypeValue
@@ -396,7 +396,7 @@ namespace Tecan.Sila2.Interop.Server.StructureDataTypeTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// A value of SiLA data type Binary.
         /// </summary>
         public Tecan.Sila2.BinaryDto BinaryTypeValue
@@ -419,7 +419,7 @@ namespace Tecan.Sila2.Interop.Server.StructureDataTypeTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// A value of SiLA data type Date.
         /// </summary>
         public Tecan.Sila2.DateDto DateTypeValue
@@ -442,7 +442,7 @@ namespace Tecan.Sila2.Interop.Server.StructureDataTypeTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// A value of SiLA data type Time.
         /// </summary>
         public Tecan.Sila2.TimeDto TimeTypeValue
@@ -465,7 +465,7 @@ namespace Tecan.Sila2.Interop.Server.StructureDataTypeTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// A value of SiLA data type Timestamp.
         /// </summary>
         public Tecan.Sila2.TimestampDto TimestampTypeValue
@@ -488,7 +488,7 @@ namespace Tecan.Sila2.Interop.Server.StructureDataTypeTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// A value of SiLA data type Any.
         /// </summary>
         public Tecan.Sila2.DynamicClient.AnyTypeDto AnyTypeValue
@@ -511,7 +511,7 @@ namespace Tecan.Sila2.Interop.Server.StructureDataTypeTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// The actual contents of the data transfer object.
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute(1)]
@@ -527,7 +527,7 @@ namespace Tecan.Sila2.Interop.Server.StructureDataTypeTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Extracts the transferred value
         /// </summary>
         /// <param name="store">The binary store in which to store binary data</param>
@@ -537,7 +537,7 @@ namespace Tecan.Sila2.Interop.Server.StructureDataTypeTest
             return new TestStructure(StringTypeValue.Extract(store), IntegerTypeValue.Extract(store), RealTypeValue.Extract(store), BooleanTypeValue.Extract(store), BinaryTypeValue.Extract(store), DateTypeValue.Extract(store), TimeTypeValue.Extract(store), TimestampTypeValue.Extract(store), AnyTypeValue.Extract(store));
         }
         
-        ///  <summary>
+        /// <summary>
         /// Creates the data transfer object from the given object to transport
         /// </summary>
         /// <param name="inner">The object to transfer</param>
@@ -547,7 +547,7 @@ namespace Tecan.Sila2.Interop.Server.StructureDataTypeTest
             return new TestStructureDto(inner, store);
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
@@ -564,7 +564,7 @@ namespace Tecan.Sila2.Interop.Server.StructureDataTypeTest
                         + Argument.Require(AnyTypeValue, "anyTypeValue"));
         }
         
-        ///  <summary>
+        /// <summary>
         /// Represents the inner structure for actual content
         /// </summary>
         [ProtoBuf.ProtoContractAttribute()]
@@ -589,14 +589,14 @@ namespace Tecan.Sila2.Interop.Server.StructureDataTypeTest
             
             private Tecan.Sila2.DynamicClient.AnyTypeDto _anyTypeValue;
             
-            ///  <summary>
+            /// <summary>
             /// Initializes a new instance (to be used by the serializer)
             /// </summary>
             public InnerStruct()
             {
             }
             
-            ///  <summary>
+            /// <summary>
             /// Initializes a new data transfer object from the business object
             /// </summary>
             /// <param name="inner">The business object that should be transferred</param>
@@ -614,7 +614,7 @@ namespace Tecan.Sila2.Interop.Server.StructureDataTypeTest
                 AnyTypeValue = new Tecan.Sila2.DynamicClient.AnyTypeDto(inner.AnyTypeValue, store);
             }
             
-            ///  <summary>
+            /// <summary>
             /// A value of SiLA data type String.
             /// </summary>
             [ProtoBuf.ProtoMemberAttribute(1)]
@@ -630,7 +630,7 @@ namespace Tecan.Sila2.Interop.Server.StructureDataTypeTest
                 }
             }
             
-            ///  <summary>
+            /// <summary>
             /// A value of SiLA data type Integer.
             /// </summary>
             [ProtoBuf.ProtoMemberAttribute(2)]
@@ -646,7 +646,7 @@ namespace Tecan.Sila2.Interop.Server.StructureDataTypeTest
                 }
             }
             
-            ///  <summary>
+            /// <summary>
             /// A value of SiLA data type Real.
             /// </summary>
             [ProtoBuf.ProtoMemberAttribute(3)]
@@ -662,7 +662,7 @@ namespace Tecan.Sila2.Interop.Server.StructureDataTypeTest
                 }
             }
             
-            ///  <summary>
+            /// <summary>
             /// A value of SiLA data type Boolean.
             /// </summary>
             [ProtoBuf.ProtoMemberAttribute(4)]
@@ -678,7 +678,7 @@ namespace Tecan.Sila2.Interop.Server.StructureDataTypeTest
                 }
             }
             
-            ///  <summary>
+            /// <summary>
             /// A value of SiLA data type Binary.
             /// </summary>
             [ProtoBuf.ProtoMemberAttribute(5)]
@@ -694,7 +694,7 @@ namespace Tecan.Sila2.Interop.Server.StructureDataTypeTest
                 }
             }
             
-            ///  <summary>
+            /// <summary>
             /// A value of SiLA data type Date.
             /// </summary>
             [ProtoBuf.ProtoMemberAttribute(6)]
@@ -710,7 +710,7 @@ namespace Tecan.Sila2.Interop.Server.StructureDataTypeTest
                 }
             }
             
-            ///  <summary>
+            /// <summary>
             /// A value of SiLA data type Time.
             /// </summary>
             [ProtoBuf.ProtoMemberAttribute(7)]
@@ -726,7 +726,7 @@ namespace Tecan.Sila2.Interop.Server.StructureDataTypeTest
                 }
             }
             
-            ///  <summary>
+            /// <summary>
             /// A value of SiLA data type Timestamp.
             /// </summary>
             [ProtoBuf.ProtoMemberAttribute(8)]
@@ -742,7 +742,7 @@ namespace Tecan.Sila2.Interop.Server.StructureDataTypeTest
                 }
             }
             
-            ///  <summary>
+            /// <summary>
             /// A value of SiLA data type Any.
             /// </summary>
             [ProtoBuf.ProtoMemberAttribute(9)]
@@ -760,7 +760,7 @@ namespace Tecan.Sila2.Interop.Server.StructureDataTypeTest
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// The data transfer object for Deep Structure
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
@@ -769,7 +769,7 @@ namespace Tecan.Sila2.Interop.Server.StructureDataTypeTest
         
         private InnerStruct _inner;
         
-        ///  <summary>
+        /// <summary>
         /// Initializes a new instance (to be used by the serializer)
         /// </summary>
         public DeepStructureDto()
@@ -777,7 +777,7 @@ namespace Tecan.Sila2.Interop.Server.StructureDataTypeTest
             _inner = new InnerStruct();
         }
         
-        ///  <summary>
+        /// <summary>
         /// Initializes a new data transfer object from the business object
         /// </summary>
         /// <param name="inner">The business object that should be transferred</param>
@@ -787,7 +787,7 @@ namespace Tecan.Sila2.Interop.Server.StructureDataTypeTest
             _inner = new InnerStruct(inner, store);
         }
         
-        ///  <summary>
+        /// <summary>
         /// A value of SiLA data type String contained in the topmost structure.
         /// </summary>
         public Tecan.Sila2.StringDto OuterStringTypeValue
@@ -810,7 +810,7 @@ namespace Tecan.Sila2.Interop.Server.StructureDataTypeTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// A value of SiLA data type Integer contained in the topmost structure.
         /// </summary>
         public Tecan.Sila2.IntegerDto OuterIntegerTypeValue
@@ -833,7 +833,7 @@ namespace Tecan.Sila2.Interop.Server.StructureDataTypeTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Another structure type that is part of the outer structure.
         /// </summary>
         public DeepStructureMiddleStructureDto MiddleStructure
@@ -856,7 +856,7 @@ namespace Tecan.Sila2.Interop.Server.StructureDataTypeTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// The actual contents of the data transfer object.
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute(1)]
@@ -872,7 +872,7 @@ namespace Tecan.Sila2.Interop.Server.StructureDataTypeTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Extracts the transferred value
         /// </summary>
         /// <param name="store">The binary store in which to store binary data</param>
@@ -882,7 +882,7 @@ namespace Tecan.Sila2.Interop.Server.StructureDataTypeTest
             return new DeepStructure(OuterStringTypeValue.Extract(store), OuterIntegerTypeValue.Extract(store), MiddleStructure.Extract(store));
         }
         
-        ///  <summary>
+        /// <summary>
         /// Creates the data transfer object from the given object to transport
         /// </summary>
         /// <param name="inner">The object to transfer</param>
@@ -892,7 +892,7 @@ namespace Tecan.Sila2.Interop.Server.StructureDataTypeTest
             return new DeepStructureDto(inner, store);
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
@@ -903,7 +903,7 @@ namespace Tecan.Sila2.Interop.Server.StructureDataTypeTest
                         + Argument.Require(MiddleStructure, "middleStructure"));
         }
         
-        ///  <summary>
+        /// <summary>
         /// Represents the inner structure for actual content
         /// </summary>
         [ProtoBuf.ProtoContractAttribute()]
@@ -916,14 +916,14 @@ namespace Tecan.Sila2.Interop.Server.StructureDataTypeTest
             
             private DeepStructureMiddleStructureDto _middleStructure;
             
-            ///  <summary>
+            /// <summary>
             /// Initializes a new instance (to be used by the serializer)
             /// </summary>
             public InnerStruct()
             {
             }
             
-            ///  <summary>
+            /// <summary>
             /// Initializes a new data transfer object from the business object
             /// </summary>
             /// <param name="inner">The business object that should be transferred</param>
@@ -935,7 +935,7 @@ namespace Tecan.Sila2.Interop.Server.StructureDataTypeTest
                 MiddleStructure = new DeepStructureMiddleStructureDto(inner.MiddleStructure, store);
             }
             
-            ///  <summary>
+            /// <summary>
             /// A value of SiLA data type String contained in the topmost structure.
             /// </summary>
             [ProtoBuf.ProtoMemberAttribute(1)]
@@ -951,7 +951,7 @@ namespace Tecan.Sila2.Interop.Server.StructureDataTypeTest
                 }
             }
             
-            ///  <summary>
+            /// <summary>
             /// A value of SiLA data type Integer contained in the topmost structure.
             /// </summary>
             [ProtoBuf.ProtoMemberAttribute(2)]
@@ -967,7 +967,7 @@ namespace Tecan.Sila2.Interop.Server.StructureDataTypeTest
                 }
             }
             
-            ///  <summary>
+            /// <summary>
             /// Another structure type that is part of the outer structure.
             /// </summary>
             [ProtoBuf.ProtoMemberAttribute(3)]
@@ -985,7 +985,7 @@ namespace Tecan.Sila2.Interop.Server.StructureDataTypeTest
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// The data transfer object for Deep Structure Middle Structure
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
@@ -998,14 +998,14 @@ namespace Tecan.Sila2.Interop.Server.StructureDataTypeTest
         
         private DeepStructureMiddleStructureInnerStructureDto _innerStructure;
         
-        ///  <summary>
+        /// <summary>
         /// Initializes a new instance (to be used by the serializer)
         /// </summary>
         public DeepStructureMiddleStructureDto()
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Initializes a new data transfer object from the business object
         /// </summary>
         /// <param name="inner">The business object that should be transferred</param>
@@ -1017,7 +1017,7 @@ namespace Tecan.Sila2.Interop.Server.StructureDataTypeTest
             InnerStructure = new DeepStructureMiddleStructureInnerStructureDto(inner.InnerStructure, store);
         }
         
-        ///  <summary>
+        /// <summary>
         /// A value of SiLA data type String contained in the middle structure.
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute(1)]
@@ -1033,7 +1033,7 @@ namespace Tecan.Sila2.Interop.Server.StructureDataTypeTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// A value of SiLA data type Integer contained in the middle structure.
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute(2)]
@@ -1049,7 +1049,7 @@ namespace Tecan.Sila2.Interop.Server.StructureDataTypeTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// A structure type that is part of the middle structure.
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute(3)]
@@ -1065,7 +1065,7 @@ namespace Tecan.Sila2.Interop.Server.StructureDataTypeTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Extracts the transferred value
         /// </summary>
         /// <param name="store">The binary store in which to store binary data</param>
@@ -1075,7 +1075,7 @@ namespace Tecan.Sila2.Interop.Server.StructureDataTypeTest
             return new DeepStructureMiddleStructure(MiddleStringTypeValue.Extract(store), MiddleIntegerTypeValue.Extract(store), InnerStructure.Extract(store));
         }
         
-        ///  <summary>
+        /// <summary>
         /// Creates the data transfer object from the given object to transport
         /// </summary>
         /// <param name="inner">The object to transfer</param>
@@ -1085,7 +1085,7 @@ namespace Tecan.Sila2.Interop.Server.StructureDataTypeTest
             return new DeepStructureMiddleStructureDto(inner, store);
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
@@ -1097,7 +1097,7 @@ namespace Tecan.Sila2.Interop.Server.StructureDataTypeTest
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// The data transfer object for Deep Structure Middle Structure Inner Structure
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
@@ -1108,14 +1108,14 @@ namespace Tecan.Sila2.Interop.Server.StructureDataTypeTest
         
         private Tecan.Sila2.IntegerDto _innerIntegerTypeValue;
         
-        ///  <summary>
+        /// <summary>
         /// Initializes a new instance (to be used by the serializer)
         /// </summary>
         public DeepStructureMiddleStructureInnerStructureDto()
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Initializes a new data transfer object from the business object
         /// </summary>
         /// <param name="inner">The business object that should be transferred</param>
@@ -1126,7 +1126,7 @@ namespace Tecan.Sila2.Interop.Server.StructureDataTypeTest
             InnerIntegerTypeValue = new Tecan.Sila2.IntegerDto(inner.InnerIntegerTypeValue, store);
         }
         
-        ///  <summary>
+        /// <summary>
         /// A value of SiLA data type String contained in the innermost structure.
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute(1)]
@@ -1142,7 +1142,7 @@ namespace Tecan.Sila2.Interop.Server.StructureDataTypeTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// A value of SiLA data type Integer contained in the innermost structure.
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute(2)]
@@ -1158,7 +1158,7 @@ namespace Tecan.Sila2.Interop.Server.StructureDataTypeTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Extracts the transferred value
         /// </summary>
         /// <param name="store">The binary store in which to store binary data</param>
@@ -1168,7 +1168,7 @@ namespace Tecan.Sila2.Interop.Server.StructureDataTypeTest
             return new DeepStructureMiddleStructureInnerStructure(InnerStringTypeValue.Extract(store), InnerIntegerTypeValue.Extract(store));
         }
         
-        ///  <summary>
+        /// <summary>
         /// Creates the data transfer object from the given object to transport
         /// </summary>
         /// <param name="inner">The object to transfer</param>
@@ -1178,7 +1178,7 @@ namespace Tecan.Sila2.Interop.Server.StructureDataTypeTest
             return new DeepStructureMiddleStructureInnerStructureDto(inner, store);
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>

@@ -17,7 +17,7 @@ namespace Tecan.Sila2.Interop.Server.ListDataTypeTest
 {
     
     
-    ///  <summary>
+    /// <summary>
     /// A class that exposes the IListDataTypeTest interface via SiLA2
     /// </summary>
     [System.ComponentModel.Composition.ExportAttribute(typeof(IFeatureProvider))]
@@ -31,7 +31,7 @@ namespace Tecan.Sila2.Interop.Server.ListDataTypeTest
         
         private static Tecan.Sila2.Feature _feature = FeatureSerializer.LoadFromAssembly(typeof(ListDataTypeTestProvider).Assembly, "ListDataTypeTest.sila.xml");
         
-        ///  <summary>
+        /// <summary>
         /// Creates a new instance
         /// </summary>
         /// <param name="implementation">The implementation to exported through SiLA2</param>
@@ -43,7 +43,7 @@ namespace Tecan.Sila2.Interop.Server.ListDataTypeTest
             _server = server;
         }
         
-        ///  <summary>
+        /// <summary>
         /// The feature that is exposed by this feature provider
         /// </summary>
         /// <returns>A feature object</returns>
@@ -55,7 +55,7 @@ namespace Tecan.Sila2.Interop.Server.ListDataTypeTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Registers the feature in the provided feature registration
         /// </summary>
         /// <param name="registration">The registration component to which the feature should be registered</param>
@@ -70,7 +70,7 @@ namespace Tecan.Sila2.Interop.Server.ListDataTypeTest
             registration.RegisterUnobservableProperty("StructureList", GetStructureList);
         }
         
-        ///  <summary>
+        /// <summary>
         /// Executes the Echo String List command
         /// </summary>
         /// <param name="request">A data transfer object that contains the command parameters</param>
@@ -92,7 +92,7 @@ namespace Tecan.Sila2.Interop.Server.ListDataTypeTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Executes the Echo Integer List command
         /// </summary>
         /// <param name="request">A data transfer object that contains the command parameters</param>
@@ -114,7 +114,7 @@ namespace Tecan.Sila2.Interop.Server.ListDataTypeTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Executes the Echo Structure List command
         /// </summary>
         /// <param name="request">A data transfer object that contains the command parameters</param>
@@ -136,7 +136,7 @@ namespace Tecan.Sila2.Interop.Server.ListDataTypeTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the current value of the Empty String List property
         /// </summary>
         /// <returns>The current value wrapped in a data transfer object</returns>
@@ -145,7 +145,7 @@ namespace Tecan.Sila2.Interop.Server.ListDataTypeTest
             return new PropertyResponse<System.Collections.Generic.List<Tecan.Sila2.StringDto>>(Tecan.Sila2.DtoExtensions.Encapsulate(_implementation.EmptyStringList, Tecan.Sila2.StringDto.Create, _server));
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the current value of the String List property
         /// </summary>
         /// <returns>The current value wrapped in a data transfer object</returns>
@@ -154,7 +154,7 @@ namespace Tecan.Sila2.Interop.Server.ListDataTypeTest
             return new PropertyResponse<System.Collections.Generic.List<Tecan.Sila2.StringDto>>(Tecan.Sila2.DtoExtensions.Encapsulate(_implementation.StringList, Tecan.Sila2.StringDto.Create, _server));
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the current value of the Integer List property
         /// </summary>
         /// <returns>The current value wrapped in a data transfer object</returns>
@@ -163,7 +163,7 @@ namespace Tecan.Sila2.Interop.Server.ListDataTypeTest
             return new PropertyResponse<System.Collections.Generic.List<Tecan.Sila2.IntegerDto>>(Tecan.Sila2.DtoExtensions.Encapsulate(_implementation.IntegerList, Tecan.Sila2.IntegerDto.Create, _server));
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the current value of the Structure List property
         /// </summary>
         /// <returns>The current value wrapped in a data transfer object</returns>
@@ -172,7 +172,7 @@ namespace Tecan.Sila2.Interop.Server.ListDataTypeTest
             return new PropertyResponse<System.Collections.Generic.List<TestStructureDto>>(Tecan.Sila2.DtoExtensions.Encapsulate(_implementation.StructureList, TestStructureDto.Create, _server));
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the command with the given identifier
         /// </summary>
         /// <param name="commandIdentifier">A fully qualified command identifier</param>
@@ -194,7 +194,7 @@ namespace Tecan.Sila2.Interop.Server.ListDataTypeTest
             return null;
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the property with the given identifier
         /// </summary>
         /// <param name="propertyIdentifier">A fully qualified property identifier</param>

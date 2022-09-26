@@ -12,162 +12,83 @@ namespace Tecan.Sila2.IntegrationTests
 {
     
     
-    ///  <summary>
-    /// </summary>
     [Tecan.Sila2.SilaFeatureAttribute(true, "integrationtests")]
     [Tecan.Sila2.SilaIdentifierAttribute("TestServer")]
     [Tecan.Sila2.SilaDisplayNameAttribute("Test Server")]
     public partial interface ITestServer
     {
         
-        ///  <summary>
-        /// </summary>
         [Tecan.Sila2.ObservableAttribute()]
         long DummyValue
         {
             get;
         }
         
-        ///  <summary>
-        /// </summary>
-        /// <param name="data"></param>
-        /// <returns></returns>
         [return: Tecan.Sila2.SilaIdentifierAttribute("ReturnValue")]
         bool PassBool(bool data);
         
-        ///  <summary>
-        /// </summary>
-        /// <param name="data"></param>
-        /// <returns></returns>
         [return: Tecan.Sila2.SilaIdentifierAttribute("ReturnValue")]
         double PassDouble(double data);
         
-        ///  <summary>
-        /// </summary>
-        /// <param name="data"></param>
-        /// <returns></returns>
         [return: Tecan.Sila2.SilaIdentifierAttribute("ReturnValue")]
         long PassLong(long data);
         
-        ///  <summary>
-        /// </summary>
-        /// <param name="data"></param>
-        /// <returns></returns>
         [return: Tecan.Sila2.SilaIdentifierAttribute("ReturnValue")]
         long PassInt(long data);
         
-        ///  <summary>
-        /// </summary>
-        /// <param name="timestamp"></param>
-        /// <returns></returns>
         [return: Tecan.Sila2.SilaIdentifierAttribute("ReturnValue")]
         System.DateTimeOffset PassTimestamp(System.DateTimeOffset timestamp);
         
-        ///  <summary>
-        /// </summary>
-        /// <param name="time"></param>
-        /// <returns></returns>
         [return: Tecan.Sila2.SilaIdentifierAttribute("ReturnValue")]
         System.TimeSpan PassTime(System.TimeSpan time);
         
-        ///  <summary>
-        /// </summary>
-        /// <param name="value"></param>
-        /// <returns></returns>
         [return: Tecan.Sila2.SilaIdentifierAttribute("ReturnValue")]
         string PassString(string value);
         
-        ///  <summary>
-        /// </summary>
-        /// <param name="value"></param>
-        /// <returns></returns>
         [return: Tecan.Sila2.SilaIdentifierAttribute("ReturnValue")]
         System.IO.Stream PassStream(System.IO.Stream value);
         
-        ///  <summary>
-        /// </summary>
-        /// <param name="file"></param>
-        /// <returns></returns>
         [return: Tecan.Sila2.SilaIdentifierAttribute("ReturnValue")]
         System.IO.Stream PassFile(System.IO.Stream file);
         
-        ///  <summary>
-        /// </summary>
-        /// <param name="bytes"></param>
-        /// <returns></returns>
         [return: Tecan.Sila2.SilaIdentifierAttribute("ReturnValue")]
         System.IO.Stream PassBytes(System.IO.Stream bytes);
         
-        ///  <summary>
-        /// </summary>
-        /// <param name="dynamic"></param>
-        /// <returns></returns>
         [return: Tecan.Sila2.SilaIdentifierAttribute("ReturnValue")]
         Tecan.Sila2.DynamicClient.DynamicObjectProperty PassDynamic(Tecan.Sila2.DynamicClient.DynamicObjectProperty dynamic);
         
-        ///  <summary>
-        /// </summary>
-        /// <param name="strings"></param>
-        /// <returns></returns>
         [return: Tecan.Sila2.SilaIdentifierAttribute("ReturnValue")]
         System.Collections.Generic.ICollection<string> PassCollection(System.Collections.Generic.ICollection<string> strings);
         
-        ///  <summary>
-        /// </summary>
-        /// <param name="structure"></param>
-        /// <returns></returns>
         [return: Tecan.Sila2.SilaIdentifierAttribute("ReturnValue")]
         SomeStructure PassStructure(SomeStructure structure);
         
-        ///  <summary>
-        /// </summary>
-        /// <returns></returns>
         [Tecan.Sila2.ObservableAttribute()]
         [return: Tecan.Sila2.SilaIdentifierAttribute("ReturnValue")]
         Tecan.Sila2.IObservableCommand<long> RunObservable();
         
-        ///  <summary>
-        /// </summary>
         [Tecan.Sila2.ObservableAttribute()]
         Tecan.Sila2.IIntermediateObservableCommand<long> RunIntermediateObservableCommand();
         
-        ///  <summary>
-        /// </summary>
-        /// <param name="duration"></param>
         [Tecan.Sila2.ObservableAttribute()]
         [Tecan.Sila2.ThrowsAttribute(typeof(ShouldHaveBeenCancelledException))]
         Tecan.Sila2.IObservableCommand WaitForCancelOrThrow(System.TimeSpan duration);
         
-        ///  <summary>
-        /// </summary>
         [Tecan.Sila2.ThrowsAttribute(typeof(FakeException))]
         void RunIntoFailure();
         
-        ///  <summary>
-        /// </summary>
         [Tecan.Sila2.ObservableAttribute()]
         [Tecan.Sila2.ThrowsAttribute(typeof(FakeException))]
         Tecan.Sila2.IObservableCommand RunIntoFailureObservably();
         
-        ///  <summary>
-        /// </summary>
-        /// <param name="commandId"></param>
-        /// <returns></returns>
         [return: Tecan.Sila2.SilaIdentifierAttribute("ReturnValue")]
         bool IsCancelled(string commandId);
         
-        ///  <summary>
-        /// </summary>
         void ThrowRuntimeException();
         
-        ///  <summary>
-        /// </summary>
-        /// <param name="value"></param>
         void SetDummy(long value);
     }
     
-    ///  <summary>
-    /// </summary>
     public struct SomeStructure
     {
         
@@ -183,7 +104,7 @@ namespace Tecan.Sila2.IntegrationTests
         
         private System.TimeSpan _time;
         
-        ///  <summary>
+        /// <summary>
         /// Initializes a new instance
         /// </summary>
         public SomeStructure(bool boolean, double real, long @long, long @int, System.DateTimeOffset timestamp, System.TimeSpan time)
@@ -196,8 +117,6 @@ namespace Tecan.Sila2.IntegrationTests
             _time = time;
         }
         
-        ///  <summary>
-        /// </summary>
         public bool Boolean
         {
             get
@@ -206,8 +125,6 @@ namespace Tecan.Sila2.IntegrationTests
             }
         }
         
-        ///  <summary>
-        /// </summary>
         public double Real
         {
             get
@@ -216,8 +133,6 @@ namespace Tecan.Sila2.IntegrationTests
             }
         }
         
-        ///  <summary>
-        /// </summary>
         public long Long
         {
             get
@@ -226,8 +141,6 @@ namespace Tecan.Sila2.IntegrationTests
             }
         }
         
-        ///  <summary>
-        /// </summary>
         public long Int
         {
             get
@@ -236,8 +149,6 @@ namespace Tecan.Sila2.IntegrationTests
             }
         }
         
-        ///  <summary>
-        /// </summary>
         public System.DateTimeOffset Timestamp
         {
             get
@@ -246,8 +157,6 @@ namespace Tecan.Sila2.IntegrationTests
             }
         }
         
-        ///  <summary>
-        /// </summary>
         public System.TimeSpan Time
         {
             get
@@ -257,12 +166,10 @@ namespace Tecan.Sila2.IntegrationTests
         }
     }
     
-    ///  <summary>
-    /// </summary>
     public class ShouldHaveBeenCancelledException : System.Exception
     {
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="message">The actual error message</param>
@@ -272,12 +179,10 @@ namespace Tecan.Sila2.IntegrationTests
         }
     }
     
-    ///  <summary>
-    /// </summary>
     public class FakeException : System.Exception
     {
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="message">The actual error message</param>

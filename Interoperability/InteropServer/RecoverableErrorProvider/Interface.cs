@@ -12,7 +12,7 @@ namespace Tecan.Sila2.Interop.Server.RecoverableErrorProvider
 {
     
     
-    ///  <summary>
+    /// <summary>
     /// Contains an observable command that raises a recoverable error for testing the "Error Recovery Service" core feature (v 2.0).
     /// </summary>
     [Tecan.Sila2.SilaFeatureAttribute(true, "test")]
@@ -21,7 +21,7 @@ namespace Tecan.Sila2.Interop.Server.RecoverableErrorProvider
     public partial interface IRecoverableErrorProvider
     {
         
-        ///  <summary>
+        /// <summary>
         /// Raises a recoverable error with the error message 'SiLA 2 recoverable error for test' after the specified duration containing the
         /// following continuation options:
         /// - Identifier = 'OptionA', Description = 'Recover the error by choosing option A',

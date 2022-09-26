@@ -17,7 +17,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
 {
     
     
-    ///  <summary>
+    /// <summary>
     /// Class that implements the IParameterConstraintsTest interface through SiLA2
     /// </summary>
     public partial class ParameterConstraintsTestClient : IParameterConstraintsTest
@@ -29,7 +29,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
         
         private const string _serviceName = "sila2.org.silastandard.test.parameterconstraintstest.v1.ParameterConstraintsTest";
         
-        ///  <summary>
+        /// <summary>
         /// Creates a new instance
         /// </summary>
         /// <param name="channel">The channel through which calls should be executed</param>
@@ -40,7 +40,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
             _channel = channel;
         }
         
-        ///  <summary>
+        /// <summary>
         /// Tests the Length constraint on the String type
         /// </summary>
         /// <param name="constrainedParameter">A String parameter with a Length constraint of 10</param>
@@ -62,7 +62,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Tests the MinimalLength constraint on the String type
         /// </summary>
         /// <param name="constrainedParameter">A String parameter with a MinimalLength constraint of 5</param>
@@ -84,7 +84,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Tests the MaximalLength constraint on the String type
         /// </summary>
         /// <param name="constrainedParameter">A String parameter with a MaximalLength constraint of 20</param>
@@ -106,7 +106,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Tests the combination of MinimalLength and MaximalLength constraints on the String type
         /// </summary>
         /// <param name="constrainedParameter">A String parameter with a MinimalLength constraint of 5 and a MaximalLength constraint of 20</param>
@@ -128,7 +128,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Tests the Set constraint on the String type
         /// </summary>
         /// <param name="constrainedParameter">A String parameter with a Set constraint of 'First option', 'Second option', 'Third option'</param>
@@ -150,7 +150,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Tests the Pattern constraint on String type
         /// </summary>
         /// <param name="constrainedParameter">A String parameter with a Pattern constraint of a date of birth in dd/mm/yyyy format</param>
@@ -172,7 +172,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Tests the ContentType constraint on the String type
         /// </summary>
         /// <param name="constrainedParameter">A String parameter with a ContentType constraint allowing only valid XML document as content</param>
@@ -194,7 +194,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// A command that has a parameter for every possible FullyQualifiedIdentifier constraint
         /// </summary>
         /// <param name="featureIdentifier">Tests that the parameter is a valid feature identifier</param>
@@ -224,7 +224,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Tests that the parameter is valid for a given Schema constraint
         /// </summary>
         /// <param name="constrainedParameter">A String parameter with a Schema constraint allowing only content that is compliant with the SiLA 2 Feature Definition schema</param>
@@ -246,7 +246,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Tests the Set constraint on the Integer type
         /// </summary>
         /// <param name="constrainedParameter">An Integer parameter with a Set constraint of 1, 2, 3</param>
@@ -268,7 +268,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Tests if scientific notation is accepted for checking limits of type Integer
         /// </summary>
         /// <param name="constrainedParameter">An Integer parameter with a MinimalInclusive constraint of -1e3 and a MaximalExclusive constraint of 1.23e5</param>
@@ -290,7 +290,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Tests the MaximalExclusive constraint on the Integer type
         /// </summary>
         /// <param name="constrainedParameter">An Integer parameter with a MaximalExclusive constraint of 11</param>
@@ -312,7 +312,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Tests the MaximalInclusive constraint on the Integer type
         /// </summary>
         /// <param name="constrainedParameter">An Integer parameter with a MaximalInclusive constraint of 10</param>
@@ -334,7 +334,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Tests the MinimalExclusive constraint on the Integer type
         /// </summary>
         /// <param name="constrainedParameter">An Integer parameter with a MinimalExclusive constraint of -1</param>
@@ -356,7 +356,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Tests the MinimalInclusive constraint on the Integer type
         /// </summary>
         /// <param name="constrainedParameter">An Integer parameter with a MinimalInclusive constraint of 0</param>
@@ -378,7 +378,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Tests the combination of MinimalExclusive and MaximalInclusive constraints on Integer type
         /// </summary>
         /// <param name="constrainedParameter">An Integer parameter with a MinimalExclusive constraint of -1 and a MaximalInclusive constraint of 10</param>
@@ -400,7 +400,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Tests the Unit constraint on the Integer type
         /// </summary>
         /// <param name="constrainedParameter">An Integer parameter with a Unit constraint for milliliter (mL)</param>
@@ -422,7 +422,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Tests the Set constraint on the Real type
         /// </summary>
         /// <param name="constrainedParameter">A Real parameter with a Set constraint of 1.11, 2.22, 3.33</param>
@@ -443,7 +443,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Tests if scientific notation is accepted for checking limits of type Real
         /// </summary>
         /// <param name="constrainedParameter">A Real parameter with a MinimalInclusive constraint of 1.23e-3 and a MaximalExclusive constraint of 1.23456e2</param>
@@ -465,7 +465,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Tests the MaximalExclusive constraint on the Real type
         /// </summary>
         /// <param name="constrainedParameter">A Real parameter with a MaximalExclusive constraint of 10.5</param>
@@ -487,7 +487,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Tests the MaximalInclusive constraint on the Real type
         /// </summary>
         /// <param name="constrainedParameter">A Real parameter with a MaximalInclusive constraint of 10</param>
@@ -509,7 +509,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Tests the MinimalExclusive constraint on the Real type
         /// </summary>
         /// <param name="constrainedParameter">A Real parameter with a MinimalExclusive constraint of 0</param>
@@ -531,7 +531,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Tests the MinimalInclusive constraint on the Real type
         /// </summary>
         /// <param name="constrainedParameter">A Real parameter with a MinimalInclusive constraint of -1.5</param>
@@ -553,7 +553,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Tests the combination of MinimalExclusive and MaximalInclusive constraints on Real type
         /// </summary>
         /// <param name="constrainedParameter">A Real parameter with a MinimalExclusive constraint of 0.333 and a MaximalInclusive constraint of 11.111</param>
@@ -575,7 +575,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Tests the Unit constraint on the Real type
         /// </summary>
         /// <param name="constrainedParameter">A Real parameter with a Unit constraint for degree celsius (°C)</param>
@@ -597,7 +597,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Tests the Set constraint on the Date type
         /// </summary>
         /// <param name="constrainedParameter">A Date parameter with a Set constraint of 2022-09-10Z, 2022-09-11-00:15, 2022-09-12+11:30</param>
@@ -618,7 +618,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Tests the MaximalExclusive constraint on the Date type
         /// </summary>
         /// <param name="constrainedParameter">A Date parameter with a MaximalExclusive constraint of 2019-12-31+02:30</param>
@@ -640,7 +640,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Tests the MaximalInclusive constraint on the Date type
         /// </summary>
         /// <param name="constrainedParameter">A Date parameter with a MaximalInclusive constraint of 2025-12-31-01:30</param>
@@ -662,7 +662,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Tests the MinimalExclusive constraint on the Date type
         /// </summary>
         /// <param name="constrainedParameter">A Date parameter with a MinimalExclusive constraint of 2019-01-01-01:00</param>
@@ -684,7 +684,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Tests the MinimalInclusive constraint on the Date type
         /// </summary>
         /// <param name="constrainedParameter">A Date parameter with a MinimalInclusive constraint of 1789-07-14+02:00</param>
@@ -706,7 +706,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Tests the combination of MinimalInclusive and MaximalExclusive constraints on Date type
         /// </summary>
         /// <param name="constrainedParameter">A Date parameter with a MinimalInclusive constraint of 1976-06-10+02:00 and a MaximalExclusive constraint of 2076-06-10+02:00</param>
@@ -728,7 +728,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Tests the Set constraint on the Time type
         /// </summary>
         /// <param name="constrainedParameter">A Time parameter with a Set constraint of 18:59:59+02:00, 19:00:00-00:15, 19:59:00Z</param>
@@ -749,7 +749,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Tests the MaximalExclusive constraint on the Time type
         /// </summary>
         /// <param name="constrainedParameter">A Time parameter with a MaximalExclusive constraint of 12:00:00+00:15</param>
@@ -771,7 +771,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Tests the MaximalInclusive constraint on the Time type
         /// </summary>
         /// <param name="constrainedParameter">A Time parameter with a MaximalInclusive constraint of 18:59:59+02:00</param>
@@ -793,7 +793,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Tests the MinimalExclusive constraint on the Time type
         /// </summary>
         /// <param name="constrainedParameter">A Time parameter with a MinimalExclusive constraint of 01:02:03+04:00</param>
@@ -815,7 +815,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Tests the MinimalInclusive constraint on the Time type
         /// </summary>
         /// <param name="constrainedParameter">A Time parameter with a MinimalInclusive constraint of 08:00:00Z</param>
@@ -837,7 +837,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Tests the combination of MinimalExclusive and MaximalInclusive constraints on Time type
         /// </summary>
         /// <param name="constrainedParameter">A Time parameter with a MinimalExclusive constraint of 08:00:00-02:30 and a MaximalInclusive constraint of 18:59:59+02:30</param>
@@ -859,7 +859,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Tests the Set constraint on the Timestamp type
         /// </summary>
         /// <param name="constrainedParameter">A Timestamp parameter with a Set constraint of 1969-07-16T13:32:00Z, 19690720T201740Z, 1969-07-24T16:50:35+00:00</param>
@@ -881,7 +881,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Tests the MaximalExclusive constraint on the Timestamp type
         /// </summary>
         /// <param name="constrainedParameter">A Timestamp parameter with a MaximalExclusive constraint of 2022-09-07T16:00:00+02:00</param>
@@ -903,7 +903,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Tests the MaximalInclusive constraint on the Timestamp type
         /// </summary>
         /// <param name="constrainedParameter">A Timestamp parameter with a MaximalInclusive constraint of 2025-12-31T13:59:59-01:30</param>
@@ -925,7 +925,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Tests the MinimalExclusive constraint on the Timestamp type
         /// </summary>
         /// <param name="constrainedParameter">A Timestamp parameter with a MinimalExclusive constraint of 2019-01-01T00:00:00-01:00</param>
@@ -947,7 +947,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Tests the MinimalInclusive constraint on the Timestamp type
         /// </summary>
         /// <param name="constrainedParameter">A Timestamp parameter with a MinimalInclusive constraint of 2022-09-07T13:48:59+02:00</param>
@@ -969,7 +969,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Tests the combination of MinimalInclusive and MaximalExclusive constraints on Timestamp type
         /// </summary>
         /// <param name="constrainedParameter">A Timestamp parameter with a MinimalInclusive constraint of 19690720T201740Z and a MaximalExclusive constraint of 1972-12-11T19:54:57Z</param>
@@ -991,7 +991,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Tests the ElementCount constraint on the List type
         /// </summary>
         /// <param name="constrainedParameter">A String List parameter with an ElementCount constraint of 5</param>
@@ -1013,7 +1013,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Tests the MinimalElementCount constraint on the List type
         /// </summary>
         /// <param name="constrainedParameter">A String List parameter with an MinimalElementCount constraint of 3</param>
@@ -1035,7 +1035,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Tests the MaximalElementCount constraint on the List type
         /// </summary>
         /// <param name="constrainedParameter">A String List parameter with an MaximalElementCount constraint of 5</param>
@@ -1057,7 +1057,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Tests the combination of MinimalElementCount and MaximalElementCount constraints on the List type
         /// </summary>
         /// <param name="constrainedParameter">A String List parameter with a MinimalElementCount constraint of 2 and a MaximalElementCount constraint of 5</param>
@@ -1079,7 +1079,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Tests the Length constraint on the Binary type
         /// </summary>
         /// <param name="constrainedParameter">A Binary parameter with a Length constraint of 10</param>
@@ -1101,7 +1101,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Tests the MinimalLength constraint on the Binary type
         /// </summary>
         /// <param name="constrainedParameter">A Binary parameter with a MinimalLength constraint of 5</param>
@@ -1123,7 +1123,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Tests the MaximalLength constraint on the Binary type
         /// </summary>
         /// <param name="constrainedParameter">A Binary parameter with a MaximalLength constraint of 20</param>
@@ -1145,7 +1145,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Tests the combination of MinimalLength and MaximalLength constraints on the Binary type
         /// </summary>
         /// <param name="constrainedParameter">A Binary parameter with a MinimalLength constraint of 5 and a MaximalLength constraint of 20</param>
@@ -1167,7 +1167,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Tests the ContentType constraint on the Binary type
         /// </summary>
         /// <param name="constrainedParameter">A Binary parameter with a ContentType constraint allowing only valid XML document as content</param>
@@ -1189,7 +1189,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Tests that the parameter is valid for a given Schema constraint
         /// </summary>
         /// <param name="constrainedParameter">A Binary parameter with a Schema constraint allowing only content that is compliant with the SiLA 2 Feature Definition schema</param>
@@ -1211,7 +1211,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Tests the AllowedTypes constraint on the Any type
         /// </summary>
         /// <param name="constrainedParameter">An Any type parameter with an AllowedTypes constraint that only allows an integer or a list of integers</param>
@@ -1233,7 +1233,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Tests the AllowedTypes constraint with a Structure type on the Any type
         /// </summary>
         /// <param name="constrainedParameter">An Any type parameter with an AllowedTypes constraint that only allows a structure with an integer</param>
@@ -1262,7 +1262,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// Factory to instantiate clients for the Parameter Constraints Test.
     /// </summary>
     [System.ComponentModel.Composition.ExportAttribute(typeof(IClientFactory))]
@@ -1270,7 +1270,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
     public partial class ParameterConstraintsTestClientFactory : IClientFactory
     {
         
-        ///  <summary>
+        /// <summary>
         /// Gets the fully-qualified identifier of the feature for which clients can be generated
         /// </summary>
         public string FeatureIdentifier
@@ -1281,7 +1281,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the interface type for which clients can be generated
         /// </summary>
         public System.Type InterfaceType
@@ -1292,7 +1292,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Creates a strongly typed client for the given execution channel and execution manager
         /// </summary>
         /// <param name="channel">The channel that should be used for communication with the server</param>

@@ -13,21 +13,21 @@ namespace Tecan.Sila2.Generator.Test.TestReference
     using Tecan.Sila2;
     
     
-    ///  <summary>
+    /// <summary>
     /// Data transfer object for the request of the Check Ambiguous Entries command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
     public class CheckAmbiguousEntriesRequestDto : Tecan.Sila2.ISilaTransferObject, Tecan.Sila2.ISilaRequestObject
     {
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         public CheckAmbiguousEntriesRequestDto()
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
@@ -35,7 +35,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the command identifier for this command
         /// </summary>
         /// <returns>The fully qualified command identifier</returns>
@@ -48,14 +48,14 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the given request object
         /// </summary>
         public void Validate()
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
@@ -65,7 +65,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// Data transfer object for the response of the Check Ambiguous Entries command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
@@ -74,25 +74,22 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         
         private AmbiguousClassDto _returnValue;
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         public CheckAmbiguousEntriesResponseDto()
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
-        ///  <param name="returnValue"></param>
         public CheckAmbiguousEntriesResponseDto(AmbiguousClass returnValue, Tecan.Sila2.IBinaryStore store)
         {
             ReturnValue = new AmbiguousClassDto(returnValue, store);
         }
         
-        ///  <summary>
-        /// </summary>
         [ProtoBuf.ProtoMemberAttribute(1)]
         public AmbiguousClassDto ReturnValue
         {
@@ -106,7 +103,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the given request object
         /// </summary>
         public void Validate()
@@ -114,7 +111,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             Argument.Validate(ReturnValue, "returnValue");
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
@@ -124,7 +121,76 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         }
     }
     
-    ///  <summary>
+    /// <summary>
+    /// Data transfer object for the request of the Overloaded Method command
+    /// </summary>
+    [ProtoBuf.ProtoContractAttribute()]
+    public class OverloadedMethodRequestDto : Tecan.Sila2.ISilaTransferObject, Tecan.Sila2.ISilaRequestObject
+    {
+        
+        private Tecan.Sila2.StringDto _method;
+        
+        /// <summary>
+        /// Create a new instance
+        /// </summary>
+        public OverloadedMethodRequestDto()
+        {
+        }
+        
+        /// <summary>
+        /// Create a new instance
+        /// </summary>
+        /// <param name="store">An object to organize binaries.</param>
+        public OverloadedMethodRequestDto(string method, Tecan.Sila2.IBinaryStore store)
+        {
+            Method = new Tecan.Sila2.StringDto(method, store);
+        }
+        
+        [ProtoBuf.ProtoMemberAttribute(1)]
+        public Tecan.Sila2.StringDto Method
+        {
+            get
+            {
+                return _method;
+            }
+            set
+            {
+                _method = value;
+            }
+        }
+        
+        /// <summary>
+        /// Gets the command identifier for this command
+        /// </summary>
+        /// <returns>The fully qualified command identifier</returns>
+        public string CommandIdentifier
+        {
+            get
+            {
+                return "tecan.sila.generator.test/ambiguityresolver/AmbiguityResolverService/v4/Command/O" +
+                    "verloadedMethod";
+            }
+        }
+        
+        /// <summary>
+        /// Validates the given request object
+        /// </summary>
+        public void Validate()
+        {
+            Argument.Validate(Method, "method");
+        }
+        
+        /// <summary>
+        /// Validates the contents of this transfer object
+        /// </summary>
+        /// <returns>A validation error or null, if no validation error occurred.</returns>
+        public string GetValidationErrors()
+        {
+            return ("" + Argument.Require(Method, "method"));
+        }
+    }
+    
+    /// <summary>
     /// The data transfer object for Ambiguous Class
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
@@ -133,7 +199,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         
         private InnerStruct _inner;
         
-        ///  <summary>
+        /// <summary>
         /// Initializes a new instance (to be used by the serializer)
         /// </summary>
         public AmbiguousClassDto()
@@ -141,7 +207,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             _inner = new InnerStruct();
         }
         
-        ///  <summary>
+        /// <summary>
         /// Initializes a new data transfer object from the business object
         /// </summary>
         /// <param name="inner">The business object that should be transferred</param>
@@ -151,8 +217,6 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             _inner = new InnerStruct(inner, store);
         }
         
-        ///  <summary>
-        /// </summary>
         public Tecan.Sila2.StringDto Message
         {
             get
@@ -173,8 +237,6 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             }
         }
         
-        ///  <summary>
-        /// </summary>
         public Tecan.Sila2.StringDto AmbiguousChannel
         {
             get
@@ -195,7 +257,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// The actual contents of the data transfer object.
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute(1)]
@@ -211,7 +273,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Extracts the transferred value
         /// </summary>
         /// <param name="store">The binary store in which to store binary data</param>
@@ -221,7 +283,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             return new AmbiguousClass(Message.Extract(store), AmbiguousChannel.Extract(store));
         }
         
-        ///  <summary>
+        /// <summary>
         /// Creates the data transfer object from the given object to transport
         /// </summary>
         /// <param name="inner">The object to transfer</param>
@@ -231,7 +293,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             return new AmbiguousClassDto(inner, store);
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
@@ -241,7 +303,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
                         + Argument.Require(AmbiguousChannel, "ambiguousChannel"));
         }
         
-        ///  <summary>
+        /// <summary>
         /// Represents the inner structure for actual content
         /// </summary>
         [ProtoBuf.ProtoContractAttribute()]
@@ -252,14 +314,14 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             
             private Tecan.Sila2.StringDto _ambiguousChannel;
             
-            ///  <summary>
+            /// <summary>
             /// Initializes a new instance (to be used by the serializer)
             /// </summary>
             public InnerStruct()
             {
             }
             
-            ///  <summary>
+            /// <summary>
             /// Initializes a new data transfer object from the business object
             /// </summary>
             /// <param name="inner">The business object that should be transferred</param>
@@ -270,8 +332,6 @@ namespace Tecan.Sila2.Generator.Test.TestReference
                 AmbiguousChannel = new Tecan.Sila2.StringDto(inner.AmbiguousChannel, store);
             }
             
-            ///  <summary>
-            /// </summary>
             [ProtoBuf.ProtoMemberAttribute(1)]
             public Tecan.Sila2.StringDto Message
             {
@@ -285,8 +345,6 @@ namespace Tecan.Sila2.Generator.Test.TestReference
                 }
             }
             
-            ///  <summary>
-            /// </summary>
             [ProtoBuf.ProtoMemberAttribute(2)]
             public Tecan.Sila2.StringDto AmbiguousChannel
             {

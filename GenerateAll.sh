@@ -128,7 +128,7 @@ $SILAGEN generate-interface Tests/Generator.Tests/AmbiguityResolver/Feature.xml 
 $SILAGEN generate-provider Tests/Generator.Tests/AmbiguityResolver/Feature.xml Tests/Generator.Tests/AmbiguityResolver/DtoReference.cs Tests/Generator.Tests/AmbiguityResolver/ProviderReference.cs Tests/Generator.Tests/AmbiguityResolver/ClientReference.cs -n Tecan.Sila2.Generator.Test.TestReference
 $SILAGEN generate-feature Build/Test/net472/Tecan.Sila2Generator.Test.dll -i Tecan.Sila2.Generator.Test.AmbiguityResolver.IAmbiguityResolverService Tests/Generator.Tests/AmbiguityResolver/Feature.xml --config-file Tests/Generator.Tests/AmbiguityResolver/AmbiguityResolver.xml
 
-xsd /classes Server\ServerConfiguration.xsd /n:Tecan.Sila2.Server /out:Server
-xsd /classes Server\ConnectionConfiguration\ClientConnection.xsd /n:Tecan.Sila2.Server.ConnectionConfiguration /out:Server\ConnectionConfiguration
-xsd /classes Features\Authentication\AuthConfiguration.xsd /n:Tecan.Sila2 /out:Features\Authentication
-xsd /classes Features\Locking\LockingConfiguration.xsd /n:Tecan.Sila2.Locking /out:Features\Locking
+xsd /classes Server/ServerConfiguration.xsd /n:Tecan.Sila2.Server /out:Server
+xsd /classes Server/ConnectionConfiguration/ClientConnection.xsd /n:Tecan.Sila2.Server.ConnectionConfiguration /out:Server/ConnectionConfiguration
+xsd /classes Features/Authentication/AuthConfiguration.xsd /n:Tecan.Sila2 /out:Features/Authentication
+xsd /classes Features/Locking/LockingConfiguration.xsd /n:Tecan.Sila2.Locking /out:Features/Locking

@@ -13,7 +13,7 @@ namespace Tecan.Sila2.Interop.Server.MetadataProvider
     using Tecan.Sila2;
     
     
-    ///  <summary>
+    /// <summary>
     /// The data transfer object for Two Integers Metadata
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
@@ -24,14 +24,14 @@ namespace Tecan.Sila2.Interop.Server.MetadataProvider
         
         private Tecan.Sila2.IntegerDto _secondInteger;
         
-        ///  <summary>
+        /// <summary>
         /// Initializes a new instance (to be used by the serializer)
         /// </summary>
         public TwoIntegersMetadataDto()
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Initializes a new data transfer object from the business object
         /// </summary>
         /// <param name="inner">The business object that should be transferred</param>
@@ -42,7 +42,7 @@ namespace Tecan.Sila2.Interop.Server.MetadataProvider
             SecondInteger = new Tecan.Sila2.IntegerDto(inner.SecondInteger, store);
         }
         
-        ///  <summary>
+        /// <summary>
         /// The first integer
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute(1)]
@@ -58,7 +58,7 @@ namespace Tecan.Sila2.Interop.Server.MetadataProvider
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// The second integer
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute(2)]
@@ -74,7 +74,7 @@ namespace Tecan.Sila2.Interop.Server.MetadataProvider
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Extracts the transferred value
         /// </summary>
         /// <param name="store">The binary store in which to store binary data</param>
@@ -84,7 +84,7 @@ namespace Tecan.Sila2.Interop.Server.MetadataProvider
             return new TwoIntegersMetadata(FirstInteger.Extract(store), SecondInteger.Extract(store));
         }
         
-        ///  <summary>
+        /// <summary>
         /// Creates the data transfer object from the given object to transport
         /// </summary>
         /// <param name="inner">The object to transfer</param>
@@ -94,7 +94,7 @@ namespace Tecan.Sila2.Interop.Server.MetadataProvider
             return new TwoIntegersMetadataDto(inner, store);
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>

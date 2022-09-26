@@ -17,7 +17,7 @@ namespace Tecan.Sila2.Interop.Server.MetadataConsumerTest
 {
     
     
-    ///  <summary>
+    /// <summary>
     /// A class that exposes the IMetadataConsumerTest interface via SiLA2
     /// </summary>
     [System.ComponentModel.Composition.ExportAttribute(typeof(IFeatureProvider))]
@@ -31,7 +31,7 @@ namespace Tecan.Sila2.Interop.Server.MetadataConsumerTest
         
         private static Tecan.Sila2.Feature _feature = FeatureSerializer.LoadFromAssembly(typeof(MetadataConsumerTestProvider).Assembly, "MetadataConsumerTest.sila.xml");
         
-        ///  <summary>
+        /// <summary>
         /// Creates a new instance
         /// </summary>
         /// <param name="implementation">The implementation to exported through SiLA2</param>
@@ -43,7 +43,7 @@ namespace Tecan.Sila2.Interop.Server.MetadataConsumerTest
             _server = server;
         }
         
-        ///  <summary>
+        /// <summary>
         /// The feature that is exposed by this feature provider
         /// </summary>
         /// <returns>A feature object</returns>
@@ -55,7 +55,7 @@ namespace Tecan.Sila2.Interop.Server.MetadataConsumerTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Registers the feature in the provided feature registration
         /// </summary>
         /// <param name="registration">The registration component to which the feature should be registered</param>
@@ -65,7 +65,7 @@ namespace Tecan.Sila2.Interop.Server.MetadataConsumerTest
             registration.RegisterUnobservableCommand<UnpackMetadataRequestDto, UnpackMetadataResponseDto>("UnpackMetadata", UnpackMetadata);
         }
         
-        ///  <summary>
+        /// <summary>
         /// Executes the Echo String Metadata command
         /// </summary>
         /// <param name="request">A data transfer object that contains the command parameters</param>
@@ -76,7 +76,7 @@ namespace Tecan.Sila2.Interop.Server.MetadataConsumerTest
             return new EchoStringMetadataResponseDto(_implementation.EchoStringMetadata(), _server);
         }
         
-        ///  <summary>
+        /// <summary>
         /// Executes the Echo String And Structure Metadata command
         /// </summary>
         /// <param name="request">A data transfer object that contains the command parameters</param>
@@ -87,7 +87,7 @@ namespace Tecan.Sila2.Interop.Server.MetadataConsumerTest
             return new UnpackMetadataResponseDto(_implementation.UnpackMetadata(), _server);
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the command with the given identifier
         /// </summary>
         /// <param name="commandIdentifier">A fully qualified command identifier</param>
@@ -105,7 +105,7 @@ namespace Tecan.Sila2.Interop.Server.MetadataConsumerTest
             return null;
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the property with the given identifier
         /// </summary>
         /// <param name="propertyIdentifier">A fully qualified property identifier</param>

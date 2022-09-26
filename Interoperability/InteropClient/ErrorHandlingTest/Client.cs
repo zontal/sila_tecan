@@ -17,7 +17,7 @@ namespace Tecan.Sila2.Interop.Client.ErrorHandlingTest.ErrorHandlingTest
 {
     
     
-    ///  <summary>
+    /// <summary>
     /// Class that implements the IErrorHandlingTest interface through SiLA2
     /// </summary>
     public partial class ErrorHandlingTestClient : IErrorHandlingTest, System.ComponentModel.INotifyPropertyChanged, System.IDisposable
@@ -43,7 +43,7 @@ namespace Tecan.Sila2.Interop.Client.ErrorHandlingTest.ErrorHandlingTest
         
         private const string _serviceName = "sila2.org.silastandard.test.errorhandlingtest.v1.ErrorHandlingTest";
         
-        ///  <summary>
+        /// <summary>
         /// Creates a new instance
         /// </summary>
         /// <param name="channel">The channel through which calls should be executed</param>
@@ -55,7 +55,7 @@ namespace Tecan.Sila2.Interop.Client.ErrorHandlingTest.ErrorHandlingTest
             InitLazyRequests();
         }
         
-        ///  <summary>
+        /// <summary>
         /// A property that raises a "Test Error" on get with error message 'SiLA2_test_error_message'
         /// </summary>
         public virtual long RaiseDefinedExecutionErrorOnGet
@@ -66,7 +66,7 @@ namespace Tecan.Sila2.Interop.Client.ErrorHandlingTest.ErrorHandlingTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// A property that raises a "Test Error" on subscribe with error message 'SiLA2_test_error_message'
         /// </summary>
         public virtual long RaiseDefinedExecutionErrorOnSubscribe
@@ -93,7 +93,7 @@ namespace Tecan.Sila2.Interop.Client.ErrorHandlingTest.ErrorHandlingTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// A property that raises an Undefined Execution Error on get with error message 'SiLA2_test_error_message'
         /// </summary>
         public virtual long RaiseUndefinedExecutionErrorOnGet
@@ -104,7 +104,7 @@ namespace Tecan.Sila2.Interop.Client.ErrorHandlingTest.ErrorHandlingTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// A property that raises an Undefined Execution Error on subscribe with error message 'SiLA2_test_error_message'
         /// </summary>
         public virtual long RaiseUndefinedExecutionErrorOnSubscribe
@@ -151,7 +151,7 @@ namespace Tecan.Sila2.Interop.Client.ErrorHandlingTest.ErrorHandlingTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Converts the error ocurred during execution of RaiseDefinedExecutionErrorOnGet to a proper exception
         /// </summary>
         /// <param name="errorIdentifier">The identifier of the error that has happened</param>
@@ -212,7 +212,7 @@ namespace Tecan.Sila2.Interop.Client.ErrorHandlingTest.ErrorHandlingTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Disposes the current client and cancels all subscriptions
         /// </summary>
         public void Dispose()
@@ -221,7 +221,7 @@ namespace Tecan.Sila2.Interop.Client.ErrorHandlingTest.ErrorHandlingTest
             _cancellationTokenSource.Dispose();
         }
         
-        ///  <summary>
+        /// <summary>
         /// Initializes lazies for non-observable properties.
         /// </summary>
         private void InitLazyRequests()
@@ -230,7 +230,7 @@ namespace Tecan.Sila2.Interop.Client.ErrorHandlingTest.ErrorHandlingTest
             _raiseUndefinedExecutionErrorOnGet = new System.Lazy<long>(RequestRaiseUndefinedExecutionErrorOnGet);
         }
         
-        ///  <summary>
+        /// <summary>
         /// Raises the "Test Error" with error message 'SiLA2_test_error_message'
         /// </summary>
         public virtual void RaiseDefinedExecutionError()
@@ -250,7 +250,7 @@ namespace Tecan.Sila2.Interop.Client.ErrorHandlingTest.ErrorHandlingTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Converts the error ocurred during execution of RaiseDefinedExecutionError to a proper exception
         /// </summary>
         /// <param name="errorIdentifier">The identifier of the error that has happened</param>
@@ -265,7 +265,7 @@ namespace Tecan.Sila2.Interop.Client.ErrorHandlingTest.ErrorHandlingTest
             return null;
         }
         
-        ///  <summary>
+        /// <summary>
         /// Raises the "Test Error" with error message 'SiLA2_test_error_message'
         /// </summary>
         public virtual Tecan.Sila2.IObservableCommand RaiseDefinedExecutionErrorObservably()
@@ -274,7 +274,7 @@ namespace Tecan.Sila2.Interop.Client.ErrorHandlingTest.ErrorHandlingTest
             return _channel.ExecuteObservableCommand<RaiseDefinedExecutionErrorObservablyRequestDto>(_serviceName, "RaiseDefinedExecutionErrorObservably", request, ConvertRaiseDefinedExecutionErrorObservablyException, _executionManager.CreateCallOptions(request.CommandIdentifier));
         }
         
-        ///  <summary>
+        /// <summary>
         /// Converts the error ocurred during execution of RaiseDefinedExecutionErrorObservably to a proper exception
         /// </summary>
         /// <param name="errorIdentifier">The identifier of the error that has happened</param>
@@ -289,7 +289,7 @@ namespace Tecan.Sila2.Interop.Client.ErrorHandlingTest.ErrorHandlingTest
             return null;
         }
         
-        ///  <summary>
+        /// <summary>
         /// Raises an Undefined Execution Error with error message 'SiLA2_test_error_message'
         /// </summary>
         public virtual void RaiseUndefinedExecutionError()
@@ -309,7 +309,7 @@ namespace Tecan.Sila2.Interop.Client.ErrorHandlingTest.ErrorHandlingTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Raises an Undefined Execution Error with error message 'SiLA2_test_error_message'
         /// </summary>
         public virtual Tecan.Sila2.IObservableCommand RaiseUndefinedExecutionErrorObservably()
@@ -318,7 +318,7 @@ namespace Tecan.Sila2.Interop.Client.ErrorHandlingTest.ErrorHandlingTest
             return _channel.ExecuteObservableCommand<RaiseUndefinedExecutionErrorObservablyRequestDto>(_serviceName, "RaiseUndefinedExecutionErrorObservably", request, ConvertRaiseUndefinedExecutionErrorObservablyException, _executionManager.CreateCallOptions(request.CommandIdentifier));
         }
         
-        ///  <summary>
+        /// <summary>
         /// Converts the error ocurred during execution of RaiseUndefinedExecutionErrorObservably to a proper exception
         /// </summary>
         /// <param name="errorIdentifier">The identifier of the error that has happened</param>
@@ -336,7 +336,7 @@ namespace Tecan.Sila2.Interop.Client.ErrorHandlingTest.ErrorHandlingTest
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// Factory to instantiate clients for the Error Handling Test.
     /// </summary>
     [System.ComponentModel.Composition.ExportAttribute(typeof(IClientFactory))]
@@ -344,7 +344,7 @@ namespace Tecan.Sila2.Interop.Client.ErrorHandlingTest.ErrorHandlingTest
     public partial class ErrorHandlingTestClientFactory : IClientFactory
     {
         
-        ///  <summary>
+        /// <summary>
         /// Gets the fully-qualified identifier of the feature for which clients can be generated
         /// </summary>
         public string FeatureIdentifier
@@ -355,7 +355,7 @@ namespace Tecan.Sila2.Interop.Client.ErrorHandlingTest.ErrorHandlingTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the interface type for which clients can be generated
         /// </summary>
         public System.Type InterfaceType
@@ -366,7 +366,7 @@ namespace Tecan.Sila2.Interop.Client.ErrorHandlingTest.ErrorHandlingTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Creates a strongly typed client for the given execution channel and execution manager
         /// </summary>
         /// <param name="channel">The channel that should be used for communication with the server</param>

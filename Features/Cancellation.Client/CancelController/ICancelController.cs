@@ -12,7 +12,7 @@ namespace Tecan.Sila2.Cancellation
 {
     
     
-    ///  <summary>
+    /// <summary>
     /// This feature offers commands to cancel/terminate Commands. Cancellation is the act of stopping the running Command execution(s),
     /// irrevocably. The SiLA Server SHOULD be able to be in a state where any further
     /// commands can be issued after a cancellation.
@@ -23,7 +23,7 @@ namespace Tecan.Sila2.Cancellation
     public partial interface ICancelController
     {
         
-        ///  <summary>
+        /// <summary>
         /// Cancel a specified currently running Observable Command or cancel all currently running Commands (Observable and
         /// Unobservable).
         /// For any canceled Observable Command the SiLA Server MUST update the Command Execution Status to "Command Finished
@@ -36,7 +36,7 @@ namespace Tecan.Sila2.Cancellation
         [Tecan.Sila2.ThrowsAttribute(typeof(OperationNotSupportedException))]
         void CancelCommand([Tecan.Sila2.SilaDisplayNameAttribute("Command Execution UUID")] Uuid commandExecutionUUID);
         
-        ///  <summary>
+        /// <summary>
         /// Cancels all currently running Observable and Unobservable Commands running on this SiLA Server.
         /// The SiLA Server MUST throw an Execution Error indicating 'cancellation' as the reason for the
         /// Command not being able to finish successfully.
@@ -44,7 +44,7 @@ namespace Tecan.Sila2.Cancellation
         void CancelAll();
     }
     
-    ///  <summary>
+    /// <summary>
     /// A Universally Unique Identifier (UUID) referring to observable command executions.
     /// </summary>
     [Tecan.Sila2.PatternConstraintAttribute("[0-9a-f]{8}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{12}")]
@@ -53,7 +53,7 @@ namespace Tecan.Sila2.Cancellation
         
         private string _value;
         
-        ///  <summary>
+        /// <summary>
         /// Initializes a new instance
         /// </summary>
         public Uuid(string value)
@@ -61,7 +61,7 @@ namespace Tecan.Sila2.Cancellation
             _value = value;
         }
         
-        ///  <summary>
+        /// <summary>
         /// The inner value
         /// </summary>
         public string Value
@@ -73,14 +73,14 @@ namespace Tecan.Sila2.Cancellation
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// The given Command Execution UUID does not specify a command that is currently being executed.
     /// </summary>
     [Tecan.Sila2.SilaDisplayNameAttribute("Invalid Command Execution UUID")]
     public class InvalidCommandExecutionUUIDException : System.Exception
     {
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="message">The actual error message</param>
@@ -90,14 +90,14 @@ namespace Tecan.Sila2.Cancellation
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// Canceling is not supported for the SiLA 2 Command with the
     /// specified CommandExecutionUUID.
     /// </summary>
     public class OperationNotSupportedException : System.Exception
     {
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="message">The actual error message</param>

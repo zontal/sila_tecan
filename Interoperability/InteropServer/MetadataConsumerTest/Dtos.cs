@@ -13,21 +13,21 @@ namespace Tecan.Sila2.Interop.Server.MetadataConsumerTest
     using Tecan.Sila2;
     
     
-    ///  <summary>
+    /// <summary>
     /// Data transfer object for the request of the Echo String Metadata command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
     public class EchoStringMetadataRequestDto : Tecan.Sila2.ISilaTransferObject, Tecan.Sila2.ISilaRequestObject
     {
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         public EchoStringMetadataRequestDto()
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
@@ -35,7 +35,7 @@ namespace Tecan.Sila2.Interop.Server.MetadataConsumerTest
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the command identifier for this command
         /// </summary>
         /// <returns>The fully qualified command identifier</returns>
@@ -47,14 +47,14 @@ namespace Tecan.Sila2.Interop.Server.MetadataConsumerTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the given request object
         /// </summary>
         public void Validate()
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
@@ -64,7 +64,7 @@ namespace Tecan.Sila2.Interop.Server.MetadataConsumerTest
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// Data transfer object for the response of the Echo String Metadata command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
@@ -73,24 +73,24 @@ namespace Tecan.Sila2.Interop.Server.MetadataConsumerTest
         
         private Tecan.Sila2.StringDto _receivedStringMetadata;
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         public EchoStringMetadataResponseDto()
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
-        ///  <param name="receivedStringMetadata">The received string metadata</param>
+        /// <param name="receivedStringMetadata">The received string metadata</param>
         public EchoStringMetadataResponseDto(string receivedStringMetadata, Tecan.Sila2.IBinaryStore store)
         {
             ReceivedStringMetadata = new Tecan.Sila2.StringDto(receivedStringMetadata, store);
         }
         
-        ///  <summary>
+        /// <summary>
         /// The received string metadata
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute(1)]
@@ -106,7 +106,7 @@ namespace Tecan.Sila2.Interop.Server.MetadataConsumerTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the given request object
         /// </summary>
         public void Validate()
@@ -114,7 +114,7 @@ namespace Tecan.Sila2.Interop.Server.MetadataConsumerTest
             Argument.Validate(ReceivedStringMetadata, "receivedStringMetadata");
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
@@ -124,21 +124,21 @@ namespace Tecan.Sila2.Interop.Server.MetadataConsumerTest
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// Data transfer object for the request of the Echo String And Structure Metadata command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
     public class UnpackMetadataRequestDto : Tecan.Sila2.ISilaTransferObject, Tecan.Sila2.ISilaRequestObject
     {
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         public UnpackMetadataRequestDto()
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
@@ -146,7 +146,7 @@ namespace Tecan.Sila2.Interop.Server.MetadataConsumerTest
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the command identifier for this command
         /// </summary>
         /// <returns>The fully qualified command identifier</returns>
@@ -158,14 +158,14 @@ namespace Tecan.Sila2.Interop.Server.MetadataConsumerTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the given request object
         /// </summary>
         public void Validate()
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
@@ -175,7 +175,7 @@ namespace Tecan.Sila2.Interop.Server.MetadataConsumerTest
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// Data transfer object for the response of the Echo String And Structure Metadata command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
@@ -188,14 +188,14 @@ namespace Tecan.Sila2.Interop.Server.MetadataConsumerTest
         
         private Tecan.Sila2.IntegerDto _secondReceivedInteger;
         
-        ///  <summary>
+        /// <summary>
         /// Initializes a new instance (to be used by the serializer)
         /// </summary>
         public UnpackMetadataResponseDto()
         {
         }
         
-        ///  <summary>
+        /// <summary>
         /// Initializes a new data transfer object from the business object
         /// </summary>
         /// <param name="inner">The business object that should be transferred</param>
@@ -207,7 +207,7 @@ namespace Tecan.Sila2.Interop.Server.MetadataConsumerTest
             SecondReceivedInteger = new Tecan.Sila2.IntegerDto(inner.SecondReceivedInteger, store);
         }
         
-        ///  <summary>
+        /// <summary>
         /// The received string (via "String Metadata")
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute(1)]
@@ -223,7 +223,7 @@ namespace Tecan.Sila2.Interop.Server.MetadataConsumerTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// The first element of the received integer structure (via "Two Integers Metadata")
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute(2)]
@@ -239,7 +239,7 @@ namespace Tecan.Sila2.Interop.Server.MetadataConsumerTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// The second element of the received integer structure (via "Two Integers Metadata")
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute(3)]
@@ -255,7 +255,7 @@ namespace Tecan.Sila2.Interop.Server.MetadataConsumerTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Extracts the transferred value
         /// </summary>
         /// <param name="store">The binary store in which to store binary data</param>
@@ -265,7 +265,7 @@ namespace Tecan.Sila2.Interop.Server.MetadataConsumerTest
             return new UnpackMetadataResponse(ReceivedString.Extract(store), FirstReceivedInteger.Extract(store), SecondReceivedInteger.Extract(store));
         }
         
-        ///  <summary>
+        /// <summary>
         /// Creates the data transfer object from the given object to transport
         /// </summary>
         /// <param name="inner">The object to transfer</param>
@@ -275,7 +275,7 @@ namespace Tecan.Sila2.Interop.Server.MetadataConsumerTest
             return new UnpackMetadataResponseDto(inner, store);
         }
         
-        ///  <summary>
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>

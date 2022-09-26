@@ -12,7 +12,7 @@ namespace Tecan.Sila2.Interop.Client.BinaryTransferTest
 {
     
     
-    ///  <summary>
+    /// <summary>
     /// Provides commands and properties to set or respectively get the SiLA Basic Data Type Binary via command parameters or property responses respectively.
     /// </summary>
     [Tecan.Sila2.SilaFeatureAttribute(true, "test")]
@@ -21,7 +21,7 @@ namespace Tecan.Sila2.Interop.Client.BinaryTransferTest
     public partial interface IBinaryTransferTest
     {
         
-        ///  <summary>
+        /// <summary>
         /// Returns the UTF-8 encoded string 'SiLA2_Test_String_Value' directly transmitted as Binary value.
         /// </summary>
         System.IO.Stream BinaryValueDirectly
@@ -29,7 +29,7 @@ namespace Tecan.Sila2.Interop.Client.BinaryTransferTest
             get;
         }
         
-        ///  <summary>
+        /// <summary>
         /// Returns the Binary Transfer UUID to be used to download the binary data which is the UTF-8 encoded string
         /// 'A_slightly_longer_SiLA2_Test_String_Value_used_to_demonstrate_the_binary_download', repeated 100,000 times.
         /// </summary>
@@ -38,7 +38,7 @@ namespace Tecan.Sila2.Interop.Client.BinaryTransferTest
             get;
         }
         
-        ///  <summary>
+        /// <summary>
         /// Receives a Binary value (transmitted either directly or via binary transfer) and
         /// returns the received value.
         /// </summary>

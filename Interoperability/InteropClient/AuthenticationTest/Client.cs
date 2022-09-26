@@ -17,7 +17,7 @@ namespace Tecan.Sila2.Interop.Client.AuthenticationTest.AuthenticationTest
 {
     
     
-    ///  <summary>
+    /// <summary>
     /// Class that implements the IAuthenticationTest interface through SiLA2
     /// </summary>
     public partial class AuthenticationTestClient : IAuthenticationTest
@@ -29,7 +29,7 @@ namespace Tecan.Sila2.Interop.Client.AuthenticationTest.AuthenticationTest
         
         private const string _serviceName = "sila2.org.silastandard.test.authenticationtest.v1.AuthenticationTest";
         
-        ///  <summary>
+        /// <summary>
         /// Creates a new instance
         /// </summary>
         /// <param name="channel">The channel through which calls should be executed</param>
@@ -40,7 +40,7 @@ namespace Tecan.Sila2.Interop.Client.AuthenticationTest.AuthenticationTest
             _channel = channel;
         }
         
-        ///  <summary>
+        /// <summary>
         /// Requires an authorization token in order to be executed
         /// </summary>
         public virtual void RequiresToken()
@@ -67,7 +67,7 @@ namespace Tecan.Sila2.Interop.Client.AuthenticationTest.AuthenticationTest
         }
     }
     
-    ///  <summary>
+    /// <summary>
     /// Factory to instantiate clients for the Authentication Test.
     /// </summary>
     [System.ComponentModel.Composition.ExportAttribute(typeof(IClientFactory))]
@@ -75,7 +75,7 @@ namespace Tecan.Sila2.Interop.Client.AuthenticationTest.AuthenticationTest
     public partial class AuthenticationTestClientFactory : IClientFactory
     {
         
-        ///  <summary>
+        /// <summary>
         /// Gets the fully-qualified identifier of the feature for which clients can be generated
         /// </summary>
         public string FeatureIdentifier
@@ -86,7 +86,7 @@ namespace Tecan.Sila2.Interop.Client.AuthenticationTest.AuthenticationTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Gets the interface type for which clients can be generated
         /// </summary>
         public System.Type InterfaceType
@@ -97,7 +97,7 @@ namespace Tecan.Sila2.Interop.Client.AuthenticationTest.AuthenticationTest
             }
         }
         
-        ///  <summary>
+        /// <summary>
         /// Creates a strongly typed client for the given execution channel and execution manager
         /// </summary>
         /// <param name="channel">The channel that should be used for communication with the server</param>

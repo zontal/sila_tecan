@@ -50,6 +50,7 @@
         <xs:complexContent>
             <xs:extension base="tns:MemberSpec">
                 <xs:sequence>
+                    <xs:element name="Inline" type="tns:Inline" minOccurs="0" maxOccurs="unbounded" />
                     <xs:element name="Property" type="tns:PropertySpec" minOccurs="0" maxOccurs="unbounded" />
                     <xs:element name="Command" type="tns:CommandSpec" minOccurs="0" maxOccurs="unbounded" />
                     <xs:element name="Type" type="tns:TypeSpec" minOccurs="0" maxOccurs="unbounded" />
@@ -59,6 +60,18 @@
                 <xs:attribute name="Category" type="xs:string" use="optional" />
                 <xs:attribute name="Maturity" type="tns:MaturityLevel" use="optional" />
             </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="Inline">
+        <xs:complexContent>
+            <xs:restriction base="tns:FeatureSpec">
+                <xs:sequence>
+                    <xs:element name="Property" type="tns:PropertySpec" minOccurs="0" maxOccurs="unbounded" />
+                    <xs:element name="Command" type="tns:CommandSpec" minOccurs="0" maxOccurs="unbounded" />
+                    <xs:element name="Type" type="tns:TypeSpec" minOccurs="0" maxOccurs="unbounded" />
+                </xs:sequence>
+                <xs:attribute name="Code" type="xs:string" use="required" />
+            </xs:restriction>
         </xs:complexContent>
     </xs:complexType>
     <xs:simpleType name="MaturityLevel">
@@ -89,6 +102,7 @@
                     <xs:element type="tns:PropertyMapping" name="Response" minOccurs="0" maxOccurs="unbounded" />
                 </xs:sequence>
                 <xs:attribute name="Observable" type="xs:boolean" use="optional" />
+                <xs:attribute name="Overload" type="xs:string" use="optional" />
             </xs:extension>
         </xs:complexContent>
     </xs:complexType>

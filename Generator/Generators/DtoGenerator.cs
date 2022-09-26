@@ -489,8 +489,10 @@ namespace Tecan.Sila2.Generator.Generators
                 var parameter = new CodeParameterDeclarationExpression( type, element.Identifier.ToCamelCase() );
                 constructor.Parameters.Insert( constructor.Parameters.Count - 1, parameter );
                 constructor.Statements.Add( new CodeAssignStatement( property, _translationProvider.EncapsulateAsDto( new CodeArgumentReferenceExpression( parameter.Name ), element.DataType, storeRef, methodIdentifier + element.Identifier ) ) );
-                constructor.Comments.Add( new CodeCommentStatement( $@" <param name=""{parameter.Name}"">{element.Description}</param>", true ) );
-
+                if(!string.IsNullOrEmpty( element.Description ))
+                {
+                    constructor.Comments.Add( new CodeCommentStatement( $@"<param name=""{parameter.Name}"">{element.Description}</param>", true ) );
+                }
                 validateMethod.Statements.Add( new CodeMethodInvokeExpression( validate, property, new CodePrimitiveExpression( element.Identifier.ToCamelCase() ) ) );
             }
 
@@ -500,7 +502,7 @@ namespace Tecan.Sila2.Generator.Generators
         private Action<SiLAElement, Expression, CodePropertyReferenceExpression> ImplementTransferObjectDto( string name,
             CodeTypeDeclaration dto, string identifier )
         {
-            var innerType = _translationProvider.ExtractType( new DataTypeType() { Item = name }, null );
+            var innerType = NameProvider.GetMemberType( name ) ?? _translationProvider.ExtractType( new DataTypeType() { Item = name }, null );
             dto.BaseTypes.Add( new CodeTypeReference( typeof( ISilaTransferObject<> ).FullName, innerType ) );
             var (constructor, innerRef) = GenerateExtractionConstructors( dto, innerType );
             var extracted = GenerateExtraction( dto, innerType );
