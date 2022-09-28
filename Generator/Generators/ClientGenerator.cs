@@ -347,7 +347,7 @@ namespace Tecan.Sila2.Generator.Generators
 
             request.Parameters.Add( GenerateCreateBinaryStore( binaryParameterIdentifier ) );
             requestMethod.Statements.Add( new CodeVariableDeclarationStatement( requestType, nameof( request ), request ) );
-            requestMethod.Statements.Add( new CodeMethodInvokeExpression( requestRef, nameof( ISilaRequestObject.Validate ) ) );
+            requestMethod.Statements.Add( new CodeMethodInvokeExpression( requestRef, nameof( Argument.Validate ) ) );
 
             if(featureCommand.Observable == FeatureCommandObservable.No)
             {

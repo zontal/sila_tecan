@@ -414,7 +414,7 @@ namespace Tecan.Sila2.Generator.Generators
             {
                 actualCall = GenerateCreateCommand( feature, featureCommand, spec, method, server, implementationRef, serverRef, requestRef );
             }
-            commandMethod.Statements.Add( new CodeMethodInvokeExpression( requestRef, nameof( ISilaRequestObject.Validate ) ) );
+            commandMethod.Statements.Add( new CodeMethodInvokeExpression( requestRef, nameof( Argument.Validate ) ) );
             commandMethod.Statements.Add( new CodeMethodReturnStatement( actualCall ) );
 
             if(featureCommand.IntermediateResponse != null && featureCommand.IntermediateResponse.Length > 0)
@@ -576,7 +576,7 @@ namespace Tecan.Sila2.Generator.Generators
             commandMethod.ReturnType = _nameProvider.GenerateCommandResponseType( featureCommand );
             CodeStatementCollection statements = GenerateExceptionHandling( feature, featureCommand, commandMethod, serverRef );
             var actualImplementation = GenerateCommandImplementationCall( featureCommand, spec, implementationRef, requestRef, new CodeFieldReferenceExpression( null, ServerFieldName ) );
-            statements.Add( new CodeMethodInvokeExpression( requestRef, nameof( ISilaRequestObject.Validate ) ) );
+            statements.Add( new CodeMethodInvokeExpression( requestRef, nameof( Argument.Validate ) ) );
             if(CodeGenerationHelper.IsSetterCommand( featureCommand, feature.Items.OfType<FeatureProperty>(), out var property ))
             {
                 var valueExpression = actualImplementation.Parameters[0];

@@ -40,12 +40,15 @@ namespace Tecan.Sila2
         /// <returns>An error message which is blank in case there are no problems</returns>
         public static string Require( IEnumerable<ISilaTransferObject> transferObjects, string name )
         {
-            foreach(var item in transferObjects)
+            if(transferObjects != null)
             {
-                var error = item.GetValidationErrors();
-                if(!string.IsNullOrEmpty( error ))
+                foreach(var item in transferObjects)
                 {
-                    return $"{name}: {error}";
+                    var error = item.GetValidationErrors();
+                    if(!string.IsNullOrEmpty( error ))
+                    {
+                        return $"{name}: {error}";
+                    }
                 }
             }
             return null;
@@ -78,12 +81,15 @@ namespace Tecan.Sila2
         /// <exception cref="ArgumentException">Throws an argument exception with the parameter name provided</exception>
         public static void Validate( IEnumerable<ISilaTransferObject> transferObjects, string name )
         {
-            foreach(var item in transferObjects)
+            if(transferObjects != null)
             {
-                var error = item.GetValidationErrors();
-                if(!string.IsNullOrEmpty( error ))
+                foreach(var item in transferObjects)
                 {
-                    throw new ArgumentException( error, ToCamelCase( name ) );
+                    var error = item.GetValidationErrors();
+                    if(!string.IsNullOrEmpty( error ))
+                    {
+                        throw new ArgumentException( error, ToCamelCase( name ) );
+                    }
                 }
             }
         }

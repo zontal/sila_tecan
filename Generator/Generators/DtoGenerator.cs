@@ -484,7 +484,7 @@ namespace Tecan.Sila2.Generator.Generators
 
             var validateMethod = new CodeMemberMethod
             {
-                Name = nameof( ISilaRequestObject.Validate ),
+                Name = nameof( Argument.Validate ),
                 Attributes = MemberAttributes.Public | MemberAttributes.Final
             };
             validateMethod.WriteDocumentation( "Validates the given request object" );
