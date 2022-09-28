@@ -8,9 +8,12 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
+using System;
+using Tecan.Sila2;
+
+
 namespace Tecan.Sila2.Server.ConnectionConfiguration
 {
-    using Tecan.Sila2;
     
     
     /// <summary>
@@ -238,8 +241,24 @@ namespace Tecan.Sila2.Server.ConnectionConfiguration
         public void Validate()
         {
             Argument.Validate(ClientName, "clientName");
+            if ((ClientName.Value.Length > 255))
+            {
+                throw new ArgumentException("clientName", string.Format("ClientName  has length {0} and is longer than allowed length 255", ClientName.Value.Length));
+            }
             Argument.Validate(SiLAClientHost, "siLAClientHost");
+            if ((SiLAClientHost.Value.Length > 255))
+            {
+                throw new ArgumentException("siLAClientHost", string.Format("SiLAClientHost  has length {0} and is longer than allowed length 255", SiLAClientHost.Value.Length));
+            }
             Argument.Validate(SiLAClientPort, "siLAClientPort");
+            if ((SiLAClientPort.Value <= 0))
+            {
+                throw new ArgumentException("siLAClientPort", string.Format("SiLAClientPort should have been at least more than 0 but was \'{0}\'", SiLAClientPort.Value));
+            }
+            if ((SiLAClientPort.Value > 65536))
+            {
+                throw new ArgumentException("siLAClientPort", string.Format("SiLAClientPort should have been at most 65536 but was \'{0}\'", SiLAClientPort.Value));
+            }
             Argument.Validate(Persist, "persist");
         }
         
@@ -253,15 +272,21 @@ namespace Tecan.Sila2.Server.ConnectionConfiguration
                         + Argument.Require(SiLAClientHost, "siLAClientHost")) 
                         + Argument.Require(SiLAClientPort, "siLAClientPort")) 
                         + Argument.Require(Persist, "persist"));
-            if (((ClientName.Value.Length <= 255) 
-                        == false))
+            if ((ClientName.Value.Length > 255))
             {
-                errors = (errors + string.Format("ClientName \'{0}\' is longer than allowed length 255; ", ClientName.Value));
+                errors = (errors + string.Format("ClientName  has length {0} and is longer than allowed length 255", ClientName.Value.Length));
             }
-            if (((SiLAClientHost.Value.Length <= 255) 
-                        == false))
+            if ((SiLAClientHost.Value.Length > 255))
             {
-                errors = (errors + string.Format("SiLAClientHost \'{0}\' is longer than allowed length 255; ", SiLAClientHost.Value));
+                errors = (errors + string.Format("SiLAClientHost  has length {0} and is longer than allowed length 255", SiLAClientHost.Value.Length));
+            }
+            if ((SiLAClientPort.Value <= 0))
+            {
+                errors = (errors + string.Format("SiLAClientPort should have been at least more than 0 but was \'{0}\'", SiLAClientPort.Value));
+            }
+            if ((SiLAClientPort.Value > 65536))
+            {
+                errors = (errors + string.Format("SiLAClientPort should have been at most 65536 but was \'{0}\'", SiLAClientPort.Value));
             }
             return errors;
         }
@@ -348,6 +373,10 @@ namespace Tecan.Sila2.Server.ConnectionConfiguration
         public void Validate()
         {
             Argument.Validate(ClientName, "clientName");
+            if ((ClientName.Value.Length > 255))
+            {
+                throw new ArgumentException("clientName", string.Format("ClientName  has length {0} and is longer than allowed length 255", ClientName.Value.Length));
+            }
             Argument.Validate(Remove, "remove");
         }
         
@@ -359,10 +388,9 @@ namespace Tecan.Sila2.Server.ConnectionConfiguration
         {
             string errors = (("" + Argument.Require(ClientName, "clientName")) 
                         + Argument.Require(Remove, "remove"));
-            if (((ClientName.Value.Length <= 255) 
-                        == false))
+            if ((ClientName.Value.Length > 255))
             {
-                errors = (errors + string.Format("ClientName \'{0}\' is longer than allowed length 255; ", ClientName.Value));
+                errors = (errors + string.Format("ClientName  has length {0} and is longer than allowed length 255", ClientName.Value.Length));
             }
             return errors;
         }

@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Tecan.Sila2.Generator.Contracts;
+using Tecan.Sila2.Generator.Helper;
 
 namespace Tecan.Sila2.Generator.Validation
 {
@@ -40,12 +41,31 @@ namespace Tecan.Sila2.Generator.Validation
             }
             try
             {
-                var check = new CodeBinaryOperatorExpression( new CodePropertyReferenceExpression( property, "Value" ), operatorType, ParseChallenge( challenge, type ) );
-                validationSets.Add( new ValidationSet( check, $"{property.PropertyName} should have been {GetNeededComparison( operatorType )} {challenge} but was '{{0}}'" ) );
+                var actualValue = CreateActualValue( property, type );
+                var check = new CodeBinaryOperatorExpression( actualValue, operatorType, ParseChallenge( challenge, type ) );
+                validationSets.Add( new ValidationSet( check, actualValue.Format( $"{property.PropertyName} should have been {GetNeededComparison( operatorType )} {challenge} but was '{{0}}'" ) ) );
             }
             catch(Exception ex)
             {
                 _log.Warn( $"Failed to generate request validation for challenge {challenge} as a {type}. Please check the validity manually.", ex );
+            }
+        }
+
+        private CodeExpression CreateActualValue( CodePropertyReferenceExpression property, BasicType type )
+        {
+            switch(type)
+            {
+                case BasicType.String:
+                case BasicType.Integer:
+                case BasicType.Real:
+                case BasicType.Boolean:
+                    return new CodePropertyReferenceExpression( property, "Value" );
+                case BasicType.Date:
+                case BasicType.Time:
+                case BasicType.Timestamp:
+                    return new CodeMethodInvokeExpression( property, nameof( ISilaTransferObject<object>.Extract ), new CodePrimitiveExpression() );
+                default:
+                    throw new ArgumentOutOfRangeException( nameof( type ) );
             }
         }
 

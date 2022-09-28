@@ -8,9 +8,12 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
+using System;
+using Tecan.Sila2;
+
+
 namespace Tecan.Sila2.Authentication.AuthenticationService
 {
-    using Tecan.Sila2;
     
     
     /// <summary>
@@ -135,6 +138,15 @@ namespace Tecan.Sila2.Authentication.AuthenticationService
             Argument.Validate(UserIdentification, "userIdentification");
             Argument.Validate(Password, "password");
             Argument.Validate(RequestedServer, "requestedServer");
+            if ((RequestedServer.Value.Length != 36))
+            {
+                throw new ArgumentException("requestedServer", string.Format("RequestedServer has length {0} but should have been 36", RequestedServer.Value.Length));
+            }
+            if ((RegexConstraint.IsMatch(RequestedServer.Value, "[0-9a-f]{8}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{12}") == false))
+            {
+                throw new ArgumentException("requestedServer", string.Format("RequestedServer \'{0}\' does not match pattern \'[0-9a-f]{8}\\-[0-9a-f]{4}\\-[0-9a-f]{" +
+                            "4}\\-[0-9a-f]{4}\\-[0-9a-f]{12}\'", RequestedServer.Value));
+            }
             Argument.Validate(RequestedFeatures, "requestedFeatures");
         }
         
@@ -148,10 +160,14 @@ namespace Tecan.Sila2.Authentication.AuthenticationService
                         + Argument.Require(Password, "password")) 
                         + Argument.Require(RequestedServer, "requestedServer")) 
                         + Argument.Require(RequestedFeatures, "requestedFeatures"));
+            if ((RequestedServer.Value.Length != 36))
+            {
+                errors = (errors + string.Format("RequestedServer has length {0} but should have been 36", RequestedServer.Value.Length));
+            }
             if ((RegexConstraint.IsMatch(RequestedServer.Value, "[0-9a-f]{8}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{12}") == false))
             {
                 errors = (errors + string.Format("RequestedServer \'{0}\' does not match pattern \'[0-9a-f]{8}\\-[0-9a-f]{4}\\-[0-9a-f]{" +
-                        "4}\\-[0-9a-f]{4}\\-[0-9a-f]{12}\'; ", RequestedServer.Value));
+                        "4}\\-[0-9a-f]{4}\\-[0-9a-f]{12}\'", RequestedServer.Value));
             }
             return errors;
         }

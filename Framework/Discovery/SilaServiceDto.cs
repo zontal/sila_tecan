@@ -8,9 +8,12 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
+using System;
+using Tecan.Sila2;
+
+
 namespace Tecan.Sila2.Discovery
 {
-    using Tecan.Sila2;
     
     
     /// <summary>
@@ -75,6 +78,10 @@ namespace Tecan.Sila2.Discovery
         public void Validate()
         {
             Argument.Validate(FeatureIdentifier, "featureIdentifier");
+            if ((IdentifierConstraint.IsValid(FeatureIdentifier.Value, Tecan.Sila2.IdentifierType.FeatureIdentifier) == false))
+            {
+                throw new ArgumentException("featureIdentifier", string.Format("FeatureIdentifier \'{0}\' is not a valid FeatureIdentifier", FeatureIdentifier.Value));
+            }
         }
         
         /// <summary>
@@ -83,7 +90,12 @@ namespace Tecan.Sila2.Discovery
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return ("" + Argument.Require(FeatureIdentifier, "featureIdentifier"));
+            string errors = ("" + Argument.Require(FeatureIdentifier, "featureIdentifier"));
+            if ((IdentifierConstraint.IsValid(FeatureIdentifier.Value, Tecan.Sila2.IdentifierType.FeatureIdentifier) == false))
+            {
+                errors = (errors + string.Format("FeatureIdentifier \'{0}\' is not a valid FeatureIdentifier", FeatureIdentifier.Value));
+            }
+            return errors;
         }
     }
     
@@ -207,6 +219,10 @@ namespace Tecan.Sila2.Discovery
         public void Validate()
         {
             Argument.Validate(ServerName, "serverName");
+            if ((ServerName.Value.Length > 255))
+            {
+                throw new ArgumentException("serverName", string.Format("ServerName  has length {0} and is longer than allowed length 255", ServerName.Value.Length));
+            }
         }
         
         /// <summary>
@@ -216,10 +232,9 @@ namespace Tecan.Sila2.Discovery
         public string GetValidationErrors()
         {
             string errors = ("" + Argument.Require(ServerName, "serverName"));
-            if (((ServerName.Value.Length <= 255) 
-                        == false))
+            if ((ServerName.Value.Length > 255))
             {
-                errors = (errors + string.Format("ServerName \'{0}\' is longer than allowed length 255; ", ServerName.Value));
+                errors = (errors + string.Format("ServerName  has length {0} and is longer than allowed length 255", ServerName.Value.Length));
             }
             return errors;
         }
@@ -272,6 +287,10 @@ namespace Tecan.Sila2.Discovery
         public void Validate()
         {
             Argument.Validate(Value, "value");
+            if ((Value.Value.Length > 255))
+            {
+                throw new ArgumentException("value", string.Format("Value  has length {0} and is longer than allowed length 255", Value.Value.Length));
+            }
         }
         
         /// <summary>
@@ -281,10 +300,9 @@ namespace Tecan.Sila2.Discovery
         public string GetValidationErrors()
         {
             string errors = ("" + Argument.Require(Value, "value"));
-            if (((Value.Value.Length <= 255) 
-                        == false))
+            if ((Value.Value.Length > 255))
             {
-                errors = (errors + string.Format("Value \'{0}\' is longer than allowed length 255; ", Value.Value));
+                errors = (errors + string.Format("Value  has length {0} and is longer than allowed length 255", Value.Value.Length));
             }
             return errors;
         }
@@ -337,6 +355,10 @@ namespace Tecan.Sila2.Discovery
         public void Validate()
         {
             Argument.Validate(Value, "value");
+            if ((RegexConstraint.IsMatch(Value.Value, "[A-Z][a-zA-Z0-9]*") == false))
+            {
+                throw new ArgumentException("value", string.Format("Value \'{0}\' does not match pattern \'[A-Z][a-zA-Z0-9]*\'", Value.Value));
+            }
         }
         
         /// <summary>
@@ -348,7 +370,7 @@ namespace Tecan.Sila2.Discovery
             string errors = ("" + Argument.Require(Value, "value"));
             if ((RegexConstraint.IsMatch(Value.Value, "[A-Z][a-zA-Z0-9]*") == false))
             {
-                errors = (errors + string.Format("Value \'{0}\' does not match pattern \'[A-Z][a-zA-Z0-9]*\'; ", Value.Value));
+                errors = (errors + string.Format("Value \'{0}\' does not match pattern \'[A-Z][a-zA-Z0-9]*\'", Value.Value));
             }
             return errors;
         }
@@ -401,6 +423,15 @@ namespace Tecan.Sila2.Discovery
         public void Validate()
         {
             Argument.Validate(Value, "value");
+            if ((Value.Value.Length != 36))
+            {
+                throw new ArgumentException("value", string.Format("Value has length {0} but should have been 36", Value.Value.Length));
+            }
+            if ((RegexConstraint.IsMatch(Value.Value, "[0-9a-f]{8}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{12}") == false))
+            {
+                throw new ArgumentException("value", string.Format("Value \'{0}\' does not match pattern \'[0-9a-f]{8}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-" +
+                            "f]{4}\\-[0-9a-f]{12}\'", Value.Value));
+            }
         }
         
         /// <summary>
@@ -410,10 +441,14 @@ namespace Tecan.Sila2.Discovery
         public string GetValidationErrors()
         {
             string errors = ("" + Argument.Require(Value, "value"));
+            if ((Value.Value.Length != 36))
+            {
+                errors = (errors + string.Format("Value has length {0} but should have been 36", Value.Value.Length));
+            }
             if ((RegexConstraint.IsMatch(Value.Value, "[0-9a-f]{8}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{12}") == false))
             {
                 errors = (errors + string.Format("Value \'{0}\' does not match pattern \'[0-9a-f]{8}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-" +
-                        "f]{4}\\-[0-9a-f]{12}\'; ", Value.Value));
+                        "f]{4}\\-[0-9a-f]{12}\'", Value.Value));
             }
             return errors;
         }
@@ -466,6 +501,11 @@ namespace Tecan.Sila2.Discovery
         public void Validate()
         {
             Argument.Validate(Value, "value");
+            if ((RegexConstraint.IsMatch(Value.Value, "(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(\\.(0|[1-9][0-9]*))?(_[_a-zA-Z0-9]+)?") == false))
+            {
+                throw new ArgumentException("value", string.Format("Value \'{0}\' does not match pattern \'(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(\\.(0|[1-9][0" +
+                            "-9]*))?(_[_a-zA-Z0-9]+)?\'", Value.Value));
+            }
         }
         
         /// <summary>
@@ -478,7 +518,7 @@ namespace Tecan.Sila2.Discovery
             if ((RegexConstraint.IsMatch(Value.Value, "(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(\\.(0|[1-9][0-9]*))?(_[_a-zA-Z0-9]+)?") == false))
             {
                 errors = (errors + string.Format("Value \'{0}\' does not match pattern \'(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(\\.(0|[1-9][0" +
-                        "-9]*))?(_[_a-zA-Z0-9]+)?\'; ", Value.Value));
+                        "-9]*))?(_[_a-zA-Z0-9]+)?\'", Value.Value));
             }
             return errors;
         }
@@ -531,6 +571,10 @@ namespace Tecan.Sila2.Discovery
         public void Validate()
         {
             Argument.Validate(Value, "value");
+            if ((RegexConstraint.IsMatch(Value.Value, "https?://.+") == false))
+            {
+                throw new ArgumentException("value", string.Format("Value \'{0}\' does not match pattern \'https?://.+\'", Value.Value));
+            }
         }
         
         /// <summary>
@@ -542,7 +586,7 @@ namespace Tecan.Sila2.Discovery
             string errors = ("" + Argument.Require(Value, "value"));
             if ((RegexConstraint.IsMatch(Value.Value, "https?://.+") == false))
             {
-                errors = (errors + string.Format("Value \'{0}\' does not match pattern \'https?://.+\'; ", Value.Value));
+                errors = (errors + string.Format("Value \'{0}\' does not match pattern \'https?://.+\'", Value.Value));
             }
             return errors;
         }

@@ -8,9 +8,12 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
+using System;
+using Tecan.Sila2;
+
+
 namespace Tecan.Sila2.IntegrationTests.TestServer
 {
-    using Tecan.Sila2;
     
     
     /// <summary>

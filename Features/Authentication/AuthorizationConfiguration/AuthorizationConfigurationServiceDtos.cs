@@ -8,9 +8,12 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
+using System;
+using Tecan.Sila2;
+
+
 namespace Tecan.Sila2.Authorization
 {
-    using Tecan.Sila2;
     
     
     /// <summary>
@@ -74,6 +77,15 @@ namespace Tecan.Sila2.Authorization
         public void Validate()
         {
             Argument.Validate(AuthorizationProvider, "authorizationProvider");
+            if ((AuthorizationProvider.Value.Length != 36))
+            {
+                throw new ArgumentException("authorizationProvider", string.Format("AuthorizationProvider has length {0} but should have been 36", AuthorizationProvider.Value.Length));
+            }
+            if ((RegexConstraint.IsMatch(AuthorizationProvider.Value, "[0-9a-f]{8}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{12}") == false))
+            {
+                throw new ArgumentException("authorizationProvider", string.Format("AuthorizationProvider \'{0}\' does not match pattern \'[0-9a-f]{8}\\-[0-9a-f]{4}\\-[0-" +
+                            "9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{12}\'", AuthorizationProvider.Value));
+            }
         }
         
         /// <summary>
@@ -83,10 +95,14 @@ namespace Tecan.Sila2.Authorization
         public string GetValidationErrors()
         {
             string errors = ("" + Argument.Require(AuthorizationProvider, "authorizationProvider"));
+            if ((AuthorizationProvider.Value.Length != 36))
+            {
+                errors = (errors + string.Format("AuthorizationProvider has length {0} but should have been 36", AuthorizationProvider.Value.Length));
+            }
             if ((RegexConstraint.IsMatch(AuthorizationProvider.Value, "[0-9a-f]{8}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{12}") == false))
             {
                 errors = (errors + string.Format("AuthorizationProvider \'{0}\' does not match pattern \'[0-9a-f]{8}\\-[0-9a-f]{4}\\-[0-" +
-                        "9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{12}\'; ", AuthorizationProvider.Value));
+                        "9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{12}\'", AuthorizationProvider.Value));
             }
             return errors;
         }
@@ -139,6 +155,15 @@ namespace Tecan.Sila2.Authorization
         public void Validate()
         {
             Argument.Validate(Value, "value");
+            if ((Value.Value.Length != 36))
+            {
+                throw new ArgumentException("value", string.Format("Value has length {0} but should have been 36", Value.Value.Length));
+            }
+            if ((RegexConstraint.IsMatch(Value.Value, "[0-9a-f]{8}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{12}") == false))
+            {
+                throw new ArgumentException("value", string.Format("Value \'{0}\' does not match pattern \'[0-9a-f]{8}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-" +
+                            "f]{4}\\-[0-9a-f]{12}\'", Value.Value));
+            }
         }
         
         /// <summary>
@@ -148,10 +173,14 @@ namespace Tecan.Sila2.Authorization
         public string GetValidationErrors()
         {
             string errors = ("" + Argument.Require(Value, "value"));
+            if ((Value.Value.Length != 36))
+            {
+                errors = (errors + string.Format("Value has length {0} but should have been 36", Value.Value.Length));
+            }
             if ((RegexConstraint.IsMatch(Value.Value, "[0-9a-f]{8}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{12}") == false))
             {
                 errors = (errors + string.Format("Value \'{0}\' does not match pattern \'[0-9a-f]{8}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-" +
-                        "f]{4}\\-[0-9a-f]{12}\'; ", Value.Value));
+                        "f]{4}\\-[0-9a-f]{12}\'", Value.Value));
             }
             return errors;
         }

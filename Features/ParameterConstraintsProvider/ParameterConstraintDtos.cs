@@ -8,9 +8,12 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
+using System;
+using Tecan.Sila2;
+
+
 namespace Tecan.Sila2.ParameterConstraintsProvider
 {
-    using Tecan.Sila2;
     
     
     /// <summary>
@@ -100,8 +103,13 @@ namespace Tecan.Sila2.ParameterConstraintsProvider
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return (("" + Argument.Require(CommandParameterIdentifier, "commandParameterIdentifier")) 
+            string errors = (("" + Argument.Require(CommandParameterIdentifier, "commandParameterIdentifier")) 
                         + Argument.Require(Constraints, "constraints"));
+            if ((IdentifierConstraint.IsValid(CommandParameterIdentifier.Value, Tecan.Sila2.IdentifierType.CommandParameterIdentifier) == false))
+            {
+                errors = (errors + string.Format("CommandParameterIdentifier \'{0}\' is not a valid CommandParameterIdentifier", CommandParameterIdentifier.Value));
+            }
+            return errors;
         }
     }
 }

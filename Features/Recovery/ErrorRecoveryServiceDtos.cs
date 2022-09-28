@@ -8,9 +8,12 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
+using System;
+using Tecan.Sila2;
+
+
 namespace Tecan.Sila2.Recovery
 {
-    using Tecan.Sila2;
 
 
     /// <summary>
@@ -123,6 +126,15 @@ namespace Tecan.Sila2.Recovery
         public void Validate()
         {
             Argument.Validate( CommandExecutionUUID, "commandExecutionUUID" );
+            if((CommandExecutionUUID.Value.Length != 36))
+            {
+                throw new ArgumentException( "commandExecutionUUID", string.Format( "CommandExecutionUUID has length {0} but should have been 36", CommandExecutionUUID.Value.Length ) );
+            }
+            if((RegexConstraint.IsMatch( CommandExecutionUUID.Value, "[0-9a-f]{8}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{12}" ) == false))
+            {
+                throw new ArgumentException( "commandExecutionUUID", string.Format( "CommandExecutionUUID \'{0}\' does not match pattern \'[0-9a-f]{8}\\-[0-9a-f]{4}\\-[0-9" +
+                            "a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{12}\'", CommandExecutionUUID.Value ) );
+            }
             Argument.Validate( ContinuationOption, "continuationOption" );
             Argument.Validate( InputData, "inputData" );
         }
@@ -136,10 +148,14 @@ namespace Tecan.Sila2.Recovery
             string errors = ((("" + Argument.Require( CommandExecutionUUID, "commandExecutionUUID" ))
                         + Argument.Require( ContinuationOption, "continuationOption" ))
                         + Argument.Require( InputData, "inputData" ));
+            if((CommandExecutionUUID.Value.Length != 36))
+            {
+                errors = (errors + string.Format( "CommandExecutionUUID has length {0} but should have been 36", CommandExecutionUUID.Value.Length ));
+            }
             if((RegexConstraint.IsMatch( CommandExecutionUUID.Value, "[0-9a-f]{8}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{12}" ) == false))
             {
                 errors = (errors + string.Format( "CommandExecutionUUID \'{0}\' does not match pattern \'[0-9a-f]{8}\\-[0-9a-f]{4}\\-[0-9" +
-                        "a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{12}\'; ", CommandExecutionUUID.Value ));
+                        "a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{12}\'", CommandExecutionUUID.Value ));
             }
             return errors;
         }
@@ -205,6 +221,15 @@ namespace Tecan.Sila2.Recovery
         public void Validate()
         {
             Argument.Validate( CommandExecutionUUID, "commandExecutionUUID" );
+            if((CommandExecutionUUID.Value.Length != 36))
+            {
+                throw new ArgumentException( "commandExecutionUUID", string.Format( "CommandExecutionUUID has length {0} but should have been 36", CommandExecutionUUID.Value.Length ) );
+            }
+            if((RegexConstraint.IsMatch( CommandExecutionUUID.Value, "[0-9a-f]{8}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{12}" ) == false))
+            {
+                throw new ArgumentException( "commandExecutionUUID", string.Format( "CommandExecutionUUID \'{0}\' does not match pattern \'[0-9a-f]{8}\\-[0-9a-f]{4}\\-[0-9" +
+                            "a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{12}\'", CommandExecutionUUID.Value ) );
+            }
         }
 
         /// <summary>
@@ -214,10 +239,14 @@ namespace Tecan.Sila2.Recovery
         public string GetValidationErrors()
         {
             string errors = ("" + Argument.Require( CommandExecutionUUID, "commandExecutionUUID" ));
+            if((CommandExecutionUUID.Value.Length != 36))
+            {
+                errors = (errors + string.Format( "CommandExecutionUUID has length {0} but should have been 36", CommandExecutionUUID.Value.Length ));
+            }
             if((RegexConstraint.IsMatch( CommandExecutionUUID.Value, "[0-9a-f]{8}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{12}" ) == false))
             {
                 errors = (errors + string.Format( "CommandExecutionUUID \'{0}\' does not match pattern \'[0-9a-f]{8}\\-[0-9a-f]{4}\\-[0-9" +
-                        "a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{12}\'; ", CommandExecutionUUID.Value ));
+                        "a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{12}\'", CommandExecutionUUID.Value ));
             }
             return errors;
         }
@@ -514,10 +543,18 @@ namespace Tecan.Sila2.Recovery
                         + Argument.Require( ContinuationOptions, "continuationOptions" ))
                         + Argument.Require( DefaultOption, "defaultOption" ))
                         + Argument.Require( AutomaticExecutionTimeout, "automaticExecutionTimeout" ));
+            if((IdentifierConstraint.IsValid( CommandIdentifier_.Value, Tecan.Sila2.IdentifierType.CommandIdentifier ) == false))
+            {
+                errors = (errors + string.Format( "CommandIdentifier_ \'{0}\' is not a valid CommandIdentifier", CommandIdentifier_.Value ));
+            }
+            if((CommandExecutionUUID.Value.Length != 36))
+            {
+                errors = (errors + string.Format( "CommandExecutionUUID has length {0} but should have been 36", CommandExecutionUUID.Value.Length ));
+            }
             if((RegexConstraint.IsMatch( CommandExecutionUUID.Value, "[0-9a-f]{8}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{12}" ) == false))
             {
                 errors = (errors + string.Format( "CommandExecutionUUID \'{0}\' does not match pattern \'[0-9a-f]{8}\\-[0-9a-f]{4}\\-[0-9" +
-                        "a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{12}\'; ", CommandExecutionUUID.Value ));
+                        "a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{12}\'", CommandExecutionUUID.Value ));
             }
             return errors;
         }
@@ -970,7 +1007,12 @@ namespace Tecan.Sila2.Recovery
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return ("" + Argument.Require( Timeout, "timeout" ));
+            string errors = ("" + Argument.Require( Timeout, "timeout" ));
+            if((Timeout.Value < 0))
+            {
+                errors = (errors + string.Format( "Timeout should have been at least 0 but was \'{0}\'", Timeout.Value ));
+            }
+            return errors;
         }
     }
 }

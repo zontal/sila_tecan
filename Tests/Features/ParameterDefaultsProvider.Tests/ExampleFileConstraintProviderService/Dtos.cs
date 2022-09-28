@@ -8,11 +8,13 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
+using System;
+using Tecan.Sila2;
 using Tecan.Sila2.ParameterDefaultsProvider.Tests;
+
 
 namespace Tecan.Sila2.ParameterDefaultsProvider.Tests
 {
-    using Tecan.Sila2;
     
     
     /// <summary>

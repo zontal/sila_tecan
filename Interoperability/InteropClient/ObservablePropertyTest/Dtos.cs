@@ -8,9 +8,12 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
+using System;
+using Tecan.Sila2;
+
+
 namespace Tecan.Sila2.Interop.Client.ObservablePropertyTest.ObservablePropertyTest
 {
-    using Tecan.Sila2;
     
     
     /// <summary>

@@ -8,12 +8,15 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
+using System;
+using Tecan.Sila2;
+
+
 namespace Tecan.Sila2.Generator.Test.TestReference
 {
-    using Tecan.Sila2;
 
 
-    ///  <summary>
+    /// <summary>
     /// Data transfer object for the request of the Accelerate To command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
@@ -26,19 +29,19 @@ namespace Tecan.Sila2.Generator.Test.TestReference
 
         private Tecan.Sila2.RealDto _timeRange;
 
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         public AccelerateToRequestDto()
         {
         }
 
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
-        ///  <param name="target">The speed to reach</param>
-        ///  <param name="timeRange">The time in which to reach the speed</param>
+        /// <param name="target">The speed to reach</param>
+        /// <param name="timeRange">The time in which to reach the speed</param>
         public AccelerateToRequestDto( double target, double maxAcceleration, double timeRange, Tecan.Sila2.IBinaryStore store )
         {
             Target = new Tecan.Sila2.RealDto( target, store );
@@ -46,7 +49,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             TimeRange = new Tecan.Sila2.RealDto( timeRange, store );
         }
 
-        ///  <summary>
+        /// <summary>
         /// The speed to reach
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute( 1 )]
@@ -75,7 +78,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             }
         }
 
-        ///  <summary>
+        /// <summary>
         /// The time in which to reach the speed
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute( 3 )]
@@ -91,7 +94,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             }
         }
 
-        ///  <summary>
+        /// <summary>
         /// Gets the command identifier for this command
         /// </summary>
         /// <returns>The fully qualified command identifier</returns>
@@ -104,7 +107,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             }
         }
 
-        ///  <summary>
+        /// <summary>
         /// Validates the given request object
         /// </summary>
         public void Validate()
@@ -114,7 +117,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             Argument.Validate( TimeRange, "timeRange" );
         }
 
-        ///  <summary>
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
@@ -126,7 +129,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         }
     }
 
-    ///  <summary>
+    /// <summary>
     /// Data transfer object to encapsulate the response of the Speed property
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
@@ -135,14 +138,14 @@ namespace Tecan.Sila2.Generator.Test.TestReference
 
         private Tecan.Sila2.RealDto _value;
 
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         public SpeedResponseDto()
         {
         }
 
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
@@ -151,7 +154,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             Value = new Tecan.Sila2.RealDto( value, store );
         }
 
-        ///  <summary>
+        /// <summary>
         /// The  property
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute( 1 )]
@@ -167,7 +170,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             }
         }
 
-        ///  <summary>
+        /// <summary>
         /// Validates the given request object
         /// </summary>
         public void Validate()
@@ -175,7 +178,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             Argument.Validate( Value, "value" );
         }
 
-        ///  <summary>
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>

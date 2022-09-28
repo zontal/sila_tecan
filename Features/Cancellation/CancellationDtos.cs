@@ -8,9 +8,12 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
+using System;
+using Tecan.Sila2;
+
+
 namespace Tecan.Sila2.Cancellation
 {
-    using Tecan.Sila2;
     
     
     /// <summary>
@@ -205,10 +208,14 @@ namespace Tecan.Sila2.Cancellation
         public string GetValidationErrors()
         {
             string errors = ("" + Argument.Require(UUID, "uUID"));
+            if ((UUID.Value.Length != 36))
+            {
+                errors = (errors + string.Format("UUID has length {0} but should have been 36", UUID.Value.Length));
+            }
             if ((RegexConstraint.IsMatch(UUID.Value, "[0-9a-f]{8}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{12}") == false))
             {
                 errors = (errors + string.Format("UUID \'{0}\' does not match pattern \'[0-9a-f]{8}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f" +
-                        "]{4}\\-[0-9a-f]{12}\'; ", UUID.Value));
+                        "]{4}\\-[0-9a-f]{12}\'", UUID.Value));
             }
             return errors;
         }

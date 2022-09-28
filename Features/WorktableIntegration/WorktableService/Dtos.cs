@@ -8,11 +8,13 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
+using System;
+using Tecan.Sila2;
 using Tecan.Sila2.WorktableIntegration;
+
 
 namespace Tecan.Sila2.WorktableIntegration
 {
-    using Tecan.Sila2;
     
     
     /// <summary>

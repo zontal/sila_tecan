@@ -8,12 +8,15 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
+using System;
+using Tecan.Sila2;
+
+
 namespace Tecan.Sila2.Generator.Test.TestReference
 {
-    using Tecan.Sila2;
 
 
-    ///  <summary>
+    /// <summary>
     /// Data transfer object for the request of the Test Inline Observable command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
@@ -22,14 +25,14 @@ namespace Tecan.Sila2.Generator.Test.TestReference
 
         private Tecan.Sila2.StringDto _parameter;
 
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         public TestInlineObservableRequestDto()
         {
         }
 
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
@@ -51,7 +54,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             }
         }
 
-        ///  <summary>
+        /// <summary>
         /// Gets the command identifier for this command
         /// </summary>
         /// <returns>The fully qualified command identifier</returns>
@@ -64,7 +67,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             }
         }
 
-        ///  <summary>
+        /// <summary>
         /// Validates the given request object
         /// </summary>
         public void Validate()
@@ -72,7 +75,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             Argument.Validate( Parameter, "parameter" );
         }
 
-        ///  <summary>
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
@@ -82,7 +85,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         }
     }
 
-    ///  <summary>
+    /// <summary>
     /// Data transfer object for the response of the Test Inline Observable command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
@@ -91,14 +94,14 @@ namespace Tecan.Sila2.Generator.Test.TestReference
 
         private Tecan.Sila2.BooleanDto _returnValue;
 
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         public TestInlineObservableResponseDto()
         {
         }
 
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
@@ -120,7 +123,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             }
         }
 
-        ///  <summary>
+        /// <summary>
         /// Validates the given request object
         /// </summary>
         public void Validate()
@@ -128,7 +131,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             Argument.Validate( ReturnValue, "returnValue" );
         }
 
-        ///  <summary>
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>

@@ -8,8 +8,11 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
+using System;
+using Tecan.Sila2;
+
+
 namespace Tecan.Sila2.Interop.Server.UnobservablePropertyTest
 {
-    using Tecan.Sila2;
     
 }

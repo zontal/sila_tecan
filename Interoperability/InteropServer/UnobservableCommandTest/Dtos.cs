@@ -8,9 +8,12 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
+using System;
+using Tecan.Sila2;
+
+
 namespace Tecan.Sila2.Interop.Server.UnobservableCommandTest
 {
-    using Tecan.Sila2;
     
     
     /// <summary>
@@ -513,10 +516,9 @@ namespace Tecan.Sila2.Interop.Server.UnobservableCommandTest
         {
             string errors = (("" + Argument.Require(FirstCharacter, "firstCharacter")) 
                         + Argument.Require(Remainder, "remainder"));
-            if (((FirstCharacter.Value.Length <= 1) 
-                        == false))
+            if ((FirstCharacter.Value.Length > 1))
             {
-                errors = (errors + string.Format("FirstCharacter \'{0}\' is longer than allowed length 1; ", FirstCharacter.Value));
+                errors = (errors + string.Format("FirstCharacter  has length {0} and is longer than allowed length 1", FirstCharacter.Value.Length));
             }
             return errors;
         }

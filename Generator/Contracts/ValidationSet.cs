@@ -16,11 +16,11 @@ namespace Tecan.Sila2.Generator.Contracts
         /// Creates a new validation set
         /// </summary>
         /// <param name="checkExpression">the code expression that represents the actual check</param>
-        /// <param name="errorMessageTemplate">the format for the error message</param>
-        public ValidationSet( CodeExpression checkExpression, string errorMessageTemplate )
+        /// <param name="errorMessage">the error message</param>
+        public ValidationSet( CodeExpression checkExpression, CodeExpression errorMessage )
         {
             CheckExpression = checkExpression;
-            ErrorMessageTemplate = errorMessageTemplate;
+            ErrorMessage = errorMessage;
         }
 
         /// <summary>
@@ -31,6 +31,6 @@ namespace Tecan.Sila2.Generator.Contracts
         /// <summary>
         /// Gets the format for the error message
         /// </summary>
-        public string ErrorMessageTemplate { get; }
+        public CodeExpression ErrorMessage { get; }
     }
 }

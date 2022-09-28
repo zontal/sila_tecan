@@ -8,44 +8,46 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
+using System;
+using Tecan.Sila2;
+
+
 namespace Tecan.Sila2.Generator.Test.TestReference
 {
-    using System;
-    using Tecan.Sila2;
-
-
+    
+    
     /// <summary>
     /// Data transfer object for the request of the Control Temperature command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
     public class ControlTemperatureRequestDto : Tecan.Sila2.ISilaTransferObject, Tecan.Sila2.ISilaRequestObject
     {
-
+        
         private Tecan.Sila2.RealDto _targetTemperature;
-
+        
         /// <summary>
         /// Create a new instance
         /// </summary>
         public ControlTemperatureRequestDto()
         {
         }
-
+        
         /// <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
         /// <param name="targetTemperature">The target temperature that the device will try to reach. Note that the command might
         ///be completed at a temperature that is close enough.</param>
-        public ControlTemperatureRequestDto( double targetTemperature, Tecan.Sila2.IBinaryStore store )
+        public ControlTemperatureRequestDto(double targetTemperature, Tecan.Sila2.IBinaryStore store)
         {
-            TargetTemperature = new Tecan.Sila2.RealDto( targetTemperature, store );
+            TargetTemperature = new Tecan.Sila2.RealDto(targetTemperature, store);
         }
-
+        
         /// <summary>
         /// The target temperature that the device will try to reach. Note that the command might
         /// be completed at a temperature that is close enough.
         /// </summary>
-        [ProtoBuf.ProtoMemberAttribute( 1 )]
+        [ProtoBuf.ProtoMemberAttribute(1)]
         public Tecan.Sila2.RealDto TargetTemperature
         {
             get
@@ -57,7 +59,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
                 _targetTemperature = value;
             }
         }
-
+        
         /// <summary>
         /// Gets the command identifier for this command
         /// </summary>
@@ -69,71 +71,71 @@ namespace Tecan.Sila2.Generator.Test.TestReference
                 return "tecan.sila.generator/test/TemperatureController/v4/Command/ControlTemperature";
             }
         }
-
+        
         /// <summary>
         /// Validates the given request object
         /// </summary>
         public void Validate()
         {
-            Argument.Validate( TargetTemperature, "targetTemperature" );
-            if((TargetTemperature.Value <= 273D))
+            Argument.Validate(TargetTemperature, "targetTemperature");
+            if ((TargetTemperature.Value <= 273D))
             {
-                throw new ArgumentException( "targetTemperature", string.Format( "TargetTemperature should have been at least more than 273 but was \'{0}\'", TargetTemperature ) );
+                throw new ArgumentException("targetTemperature", string.Format("TargetTemperature should have been at least more than 273 but was \'{0}\'", TargetTemperature.Value));
             }
-            if((TargetTemperature.Value > 373D))
+            if ((TargetTemperature.Value > 373D))
             {
-                throw new ArgumentException( "targetTemperature", string.Format( "TargetTemperature should have been at most 373 but was \'{0}\'", TargetTemperature ) );
+                throw new ArgumentException("targetTemperature", string.Format("TargetTemperature should have been at most 373 but was \'{0}\'", TargetTemperature.Value));
             }
         }
-
+        
         /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            string errors = ("" + Argument.Require( TargetTemperature, "targetTemperature" ));
-            if((TargetTemperature.Value <= 273D))
+            string errors = ("" + Argument.Require(TargetTemperature, "targetTemperature"));
+            if ((TargetTemperature.Value <= 273D))
             {
-                errors = (errors + string.Format( "TargetTemperature should have been at least more than 273 but was \'{0}\'; ", TargetTemperature.Value ));
+                errors = (errors + string.Format("TargetTemperature should have been at least more than 273 but was \'{0}\'", TargetTemperature.Value));
             }
-            if((TargetTemperature.Value > 373D))
+            if ((TargetTemperature.Value > 373D))
             {
-                errors = (errors + string.Format( "TargetTemperature should have been at most 373 but was \'{0}\'; ", TargetTemperature.Value ));
+                errors = (errors + string.Format("TargetTemperature should have been at most 373 but was \'{0}\'", TargetTemperature.Value));
             }
             return errors;
         }
     }
-
+    
     /// <summary>
     /// Data transfer object to encapsulate the response of the Current Temperature property
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
     public class CurrentTemperatureResponseDto : Tecan.Sila2.ISilaTransferObject
     {
-
+        
         private Tecan.Sila2.RealDto _value;
-
+        
         /// <summary>
         /// Create a new instance
         /// </summary>
         public CurrentTemperatureResponseDto()
         {
         }
-
+        
         /// <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
-        public CurrentTemperatureResponseDto( double value, Tecan.Sila2.IBinaryStore store )
+        public CurrentTemperatureResponseDto(double value, Tecan.Sila2.IBinaryStore store)
         {
-            Value = new Tecan.Sila2.RealDto( value, store );
+            Value = new Tecan.Sila2.RealDto(value, store);
         }
-
+        
         /// <summary>
         /// The  property
         /// </summary>
-        [ProtoBuf.ProtoMemberAttribute( 1 )]
+        [ProtoBuf.ProtoMemberAttribute(1)]
         public Tecan.Sila2.RealDto Value
         {
             get
@@ -145,37 +147,37 @@ namespace Tecan.Sila2.Generator.Test.TestReference
                 _value = value;
             }
         }
-
+        
         /// <summary>
         /// Validates the given request object
         /// </summary>
         public void Validate()
         {
-            Argument.Validate( Value, "value" );
-            if((Value.Value <= 273D))
+            Argument.Validate(Value, "value");
+            if ((Value.Value <= 273D))
             {
-                throw new ArgumentException( "value", string.Format( "Value should have been at least more than 273 but was \'{0}\'", Value ) );
+                throw new ArgumentException("value", string.Format("Value should have been at least more than 273 but was \'{0}\'", Value.Value));
             }
-            if((Value.Value > 373D))
+            if ((Value.Value > 373D))
             {
-                throw new ArgumentException( "value", string.Format( "Value should have been at most 373 but was \'{0}\'", Value ) );
+                throw new ArgumentException("value", string.Format("Value should have been at most 373 but was \'{0}\'", Value.Value));
             }
         }
-
+        
         /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            string errors = ("" + Argument.Require( Value, "value" ));
-            if((Value.Value <= 273D))
+            string errors = ("" + Argument.Require(Value, "value"));
+            if ((Value.Value <= 273D))
             {
-                errors = (errors + string.Format( "Value should have been at least more than 273 but was \'{0}\'; ", Value.Value ));
+                errors = (errors + string.Format("Value should have been at least more than 273 but was \'{0}\'", Value.Value));
             }
-            if((Value.Value > 373D))
+            if ((Value.Value > 373D))
             {
-                errors = (errors + string.Format( "Value should have been at most 373 but was \'{0}\'; ", Value.Value ));
+                errors = (errors + string.Format("Value should have been at most 373 but was \'{0}\'", Value.Value));
             }
             return errors;
         }

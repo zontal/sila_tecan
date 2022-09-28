@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Tecan.Sila2.Generator.Contracts;
+using Tecan.Sila2.Generator.Helper;
 
 namespace Tecan.Sila2.Generator.Validation
 {
@@ -34,7 +35,7 @@ namespace Tecan.Sila2.Generator.Validation
                 var maxLength = int.Parse( constraints.MaximalLength );
                 var check = new CodeBinaryOperatorExpression( compare, CodeBinaryOperatorType.GreaterThan, new CodePrimitiveExpression( maxLength ) );
 
-                yield return new ValidationSet( check, $"{property.PropertyName} '{{0}}' is longer than allowed length {maxLength}" );
+                yield return new ValidationSet( check, compare.Format( $"{property.PropertyName}  has length {{0}} and is longer than allowed length {maxLength}" ) );
             }
 
             if(!string.IsNullOrEmpty( constraints.MinimalLength ))
@@ -42,7 +43,7 @@ namespace Tecan.Sila2.Generator.Validation
                 var minLength = int.Parse( constraints.MinimalLength );
                 var check = new CodeBinaryOperatorExpression( compare, CodeBinaryOperatorType.LessThan, new CodePrimitiveExpression( minLength ) );
 
-                yield return new ValidationSet( check, $"{property.PropertyName} '{{0}}' is shorter than required length {minLength}" );
+                yield return new ValidationSet( check, compare.Format( $"{property.PropertyName} has length {{0}} and is shorter than required length {minLength}" ) );
             }
 
             if(!string.IsNullOrEmpty( constraints.Length ))
@@ -50,7 +51,7 @@ namespace Tecan.Sila2.Generator.Validation
                 var length = int.Parse( constraints.Length );
                 var check = new CodeBinaryOperatorExpression( compare, CodeBinaryOperatorType.IdentityInequality, new CodePrimitiveExpression( length ) );
 
-                yield return new ValidationSet( check, $"{property.PropertyName} '{{0}}' has not length {length}" );
+                yield return new ValidationSet( check, compare.Format( $"{property.PropertyName} has length {{0}} but should have been {length}" ) );
             }
         }
     }

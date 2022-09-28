@@ -8,9 +8,12 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
+using System;
+using Tecan.Sila2;
+
+
 namespace Tecan.Sila2.Interop.Client.BinaryTransferTest.BinaryTransferTest
 {
-    using Tecan.Sila2;
     
     
     /// <summary>

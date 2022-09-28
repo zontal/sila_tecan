@@ -8,9 +8,12 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
+using System;
+using Tecan.Sila2;
+
+
 namespace Tecan.Sila2.Interop.Client.RecoverableErrorProvider.RecoverableErrorProvider
 {
-    using Tecan.Sila2;
     
     
     /// <summary>
@@ -93,7 +96,15 @@ namespace Tecan.Sila2.Interop.Client.RecoverableErrorProvider.RecoverableErrorPr
         public void Validate()
         {
             Argument.Validate(DurationUntilError, "durationUntilError");
+            if ((DurationUntilError.Value < 0))
+            {
+                throw new ArgumentException("durationUntilError", string.Format("DurationUntilError should have been at least 0 but was \'{0}\'", DurationUntilError.Value));
+            }
             Argument.Validate(AutomaticExecutionTimeout, "automaticExecutionTimeout");
+            if ((AutomaticExecutionTimeout.Value < 0))
+            {
+                throw new ArgumentException("automaticExecutionTimeout", string.Format("AutomaticExecutionTimeout should have been at least 0 but was \'{0}\'", AutomaticExecutionTimeout.Value));
+            }
         }
         
         /// <summary>
@@ -102,8 +113,17 @@ namespace Tecan.Sila2.Interop.Client.RecoverableErrorProvider.RecoverableErrorPr
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return (("" + Argument.Require(DurationUntilError, "durationUntilError")) 
+            string errors = (("" + Argument.Require(DurationUntilError, "durationUntilError")) 
                         + Argument.Require(AutomaticExecutionTimeout, "automaticExecutionTimeout"));
+            if ((DurationUntilError.Value < 0))
+            {
+                errors = (errors + string.Format("DurationUntilError should have been at least 0 but was \'{0}\'", DurationUntilError.Value));
+            }
+            if ((AutomaticExecutionTimeout.Value < 0))
+            {
+                errors = (errors + string.Format("AutomaticExecutionTimeout should have been at least 0 but was \'{0}\'", AutomaticExecutionTimeout.Value));
+            }
+            return errors;
         }
     }
     

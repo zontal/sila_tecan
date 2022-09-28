@@ -8,26 +8,29 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
+using System;
+using Tecan.Sila2;
+
+
 namespace Tecan.Sila2.Generator.Test.TestReference
 {
-    using Tecan.Sila2;
 
 
-    ///  <summary>
+    /// <summary>
     /// Data transfer object for the request of the Run Rx Observable command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
     public class RunRxObservableRequestDto : Tecan.Sila2.ISilaTransferObject, Tecan.Sila2.ISilaRequestObject
     {
 
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         public RunRxObservableRequestDto()
         {
         }
 
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
@@ -35,7 +38,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         {
         }
 
-        ///  <summary>
+        /// <summary>
         /// Gets the command identifier for this command
         /// </summary>
         /// <returns>The fully qualified command identifier</returns>
@@ -47,14 +50,14 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             }
         }
 
-        ///  <summary>
+        /// <summary>
         /// Validates the given request object
         /// </summary>
         public void Validate()
         {
         }
 
-        ///  <summary>
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>
@@ -64,7 +67,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         }
     }
 
-    ///  <summary>
+    /// <summary>
     /// Data transfer object for the intermediate response of the Run Rx Observable command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
@@ -73,14 +76,14 @@ namespace Tecan.Sila2.Generator.Test.TestReference
 
         private Tecan.Sila2.BooleanDto _intermediate;
 
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         public RunRxObservableIntermediateDto()
         {
         }
 
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
@@ -102,7 +105,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             }
         }
 
-        ///  <summary>
+        /// <summary>
         /// Validates the given request object
         /// </summary>
         public void Validate()
@@ -110,7 +113,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             Argument.Validate( Intermediate, "intermediate" );
         }
 
-        ///  <summary>
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>

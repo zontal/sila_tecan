@@ -8,12 +8,15 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
+using System;
+using Tecan.Sila2;
+
+
 namespace Tecan.Sila2.Generator.Test.TestReference
 {
-    using Tecan.Sila2;
 
 
-    ///  <summary>
+    /// <summary>
     /// Data transfer object for the request of the Set Speed command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]
@@ -22,24 +25,24 @@ namespace Tecan.Sila2.Generator.Test.TestReference
 
         private Tecan.Sila2.IntegerDto _value;
 
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         public SetSpeedRequestDto()
         {
         }
 
-        ///  <summary>
+        /// <summary>
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
-        ///  <param name="value">The new Speed</param>
+        /// <param name="value">The new Speed</param>
         public SetSpeedRequestDto( long value, Tecan.Sila2.IBinaryStore store )
         {
             Value = new Tecan.Sila2.IntegerDto( value, store );
         }
 
-        ///  <summary>
+        /// <summary>
         /// The new Speed
         /// </summary>
         [ProtoBuf.ProtoMemberAttribute( 1 )]
@@ -55,7 +58,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             }
         }
 
-        ///  <summary>
+        /// <summary>
         /// Gets the command identifier for this command
         /// </summary>
         /// <returns>The fully qualified command identifier</returns>
@@ -67,7 +70,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             }
         }
 
-        ///  <summary>
+        /// <summary>
         /// Validates the given request object
         /// </summary>
         public void Validate()
@@ -75,7 +78,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             Argument.Validate( Value, "value" );
         }
 
-        ///  <summary>
+        /// <summary>
         /// Validates the contents of this transfer object
         /// </summary>
         /// <returns>A validation error or null, if no validation error occurred.</returns>

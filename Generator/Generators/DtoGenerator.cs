@@ -53,9 +53,16 @@ namespace Tecan.Sila2.Generator.Generators
         {
             _loggingChannel.Info( $"Generating data transfer objects for feature {feature.FullyQualifiedIdentifier}" );
             var unit = new CodeCompileUnit();
+            unit.Namespaces.Add( new CodeNamespace
+            {
+                Imports =
+                {
+                    new CodeNamespaceImport("System"),
+                    new CodeNamespaceImport("Tecan.Sila2")
+                }
+            } );
             var nSpace = new CodeNamespace( ns );
             unit.Namespaces.Add( nSpace );
-            nSpace.Imports.Add( new CodeNamespaceImport( "Tecan.Sila2" ) );
 
             var structureHelper = new AnonymousTypeHelper();
             var structHandler = new Action<string, StructureType>( structureHelper.RegisterAnonymousType );
@@ -504,16 +511,11 @@ namespace Tecan.Sila2.Generator.Generators
                     {
                         foreach(var validation in validationGenerator.CreateValidation( property, constrained.DataType, constrained.Constraints, dto ))
                         {
-                            var formatStatement = new CodeMethodInvokeExpression(
-                                new CodeTypeReferenceExpression( typeof( string ) ),
-                            "Format",
-                                new CodePrimitiveExpression( validation.ErrorMessageTemplate ), property );
-
                             validateMethod.Statements.Add( new CodeConditionStatement(
                                 validation.CheckExpression,
                                 new CodeThrowExceptionStatement( new CodeObjectCreateExpression( nameof( ArgumentException ),
                                     new CodePrimitiveExpression( parameter.Name ),
-                                    formatStatement ) ) ) );
+                                    validation.ErrorMessage ) ) ) );
                         }
                     }
                 }
@@ -761,7 +763,7 @@ namespace Tecan.Sila2.Generator.Generators
                 {
                     foreach(var validation in validator.CreateValidation( propertyReference, dataType, constraints, wrapper ))
                     {
-                        statements.Add( CreateValidityStatement( validation.CheckExpression, validation.ErrorMessageTemplate, propertyReference, resultRef ) );
+                        statements.Add( CreateValidityStatement( validation.CheckExpression, validation.ErrorMessage, propertyReference, resultRef ) );
                     }
                 }
             }
@@ -771,17 +773,12 @@ namespace Tecan.Sila2.Generator.Generators
             }
         }
 
-        private CodeStatement CreateValidityStatement( CodeExpression condition, string format,
+        private CodeStatement CreateValidityStatement( CodeExpression condition, CodeExpression errorMessage,
             CodePropertyReferenceExpression reference, CodeVariableReferenceExpression resultRef )
         {
-            var formatStatement = new CodeMethodInvokeExpression(
-                new CodeTypeReferenceExpression( typeof( string ) ),
-                "Format",
-                new CodePrimitiveExpression( format + "; " ), new CodePropertyReferenceExpression( reference, "Value" ) );
-
             return new CodeConditionStatement( condition,
                 new CodeAssignStatement( resultRef,
-                    new CodeBinaryOperatorExpression( resultRef, CodeBinaryOperatorType.Add, formatStatement ) ) );
+                    new CodeBinaryOperatorExpression( resultRef, CodeBinaryOperatorType.Add, errorMessage ) ) );
         }
 
         private void AddAttribute( CodeAttributeDeclarationCollection attributes, Type attributeType,

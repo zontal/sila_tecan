@@ -79,6 +79,20 @@ namespace Tecan.Sila2.Generator.Helper
         }
 
         /// <summary>
+        /// Creates a code expression that represents the formatted value with the given format
+        /// </summary>
+        /// <param name="targetObject">The object that is to be included in the format string</param>
+        /// <param name="format">The format string</param>
+        /// <returns>A code expression that represents the formatting</returns>
+        public static CodeExpression Format( this CodeExpression targetObject, string format )
+        {
+            return new CodeMethodInvokeExpression( new CodeTypeReferenceExpression( typeof( string ) ),
+                nameof( string.Format ),
+                new CodePrimitiveExpression( format ),
+                targetObject );
+        }
+
+        /// <summary>
         /// Converts the given identifier into a display name
         /// </summary>
         /// <param name="identifier">The identifier</param>
