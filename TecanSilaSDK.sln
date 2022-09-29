@@ -25,6 +25,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DynamicClient", "DynamicCli
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NuSpec", "NuSpec", "{B34C24C7-1092-4634-BB86-EA4FABB6F5B2}"
 	ProjectSection(SolutionItems) = preProject
+		NuSpec\Tecan.Sila2.AnIML.nuspec = NuSpec\Tecan.Sila2.AnIML.nuspec
 		NuSpec\Tecan.Sila2.Annotations.nuspec = NuSpec\Tecan.Sila2.Annotations.nuspec
 		NuSpec\Tecan.Sila2.Client.NetCore.nuspec = NuSpec\Tecan.Sila2.Client.NetCore.nuspec
 		NuSpec\Tecan.Sila2.Client.nuspec = NuSpec\Tecan.Sila2.Client.nuspec
@@ -128,9 +129,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Server.DryIoC", "Server.Dry
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InteropServer.NetCore", "Interoperability\InteropServer.NetCore\InteropServer.NetCore.csproj", "{5400DBF0-921A-40BE-A7ED-FBD39334B349}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Recovery", "Features\Recovery\Recovery.csproj", "{0D4D6784-B918-4BE5-9D70-C422F053B1FD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Recovery", "Features\Recovery\Recovery.csproj", "{0D4D6784-B918-4BE5-9D70-C422F053B1FD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Recovery.Tests", "Tests\Features\Recovery.Tests\Recovery.Tests.csproj", "{0F2EF82C-F80A-440C-A10B-F1FD931C6CC0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Recovery.Tests", "Tests\Features\Recovery.Tests\Recovery.Tests.csproj", "{0F2EF82C-F80A-440C-A10B-F1FD931C6CC0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnIML", "AnIML\AnIML.csproj", "{D862A84F-CEFC-422E-A1B2-7491E1D03D17}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -294,6 +297,10 @@ Global
 		{0F2EF82C-F80A-440C-A10B-F1FD931C6CC0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0F2EF82C-F80A-440C-A10B-F1FD931C6CC0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0F2EF82C-F80A-440C-A10B-F1FD931C6CC0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D862A84F-CEFC-422E-A1B2-7491E1D03D17}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D862A84F-CEFC-422E-A1B2-7491E1D03D17}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D862A84F-CEFC-422E-A1B2-7491E1D03D17}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D862A84F-CEFC-422E-A1B2-7491E1D03D17}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -336,6 +343,7 @@ Global
 		{5400DBF0-921A-40BE-A7ED-FBD39334B349} = {C552BB03-C50A-4F7F-9B67-A080E13AF7C4}
 		{0D4D6784-B918-4BE5-9D70-C422F053B1FD} = {0E82C9E0-FD04-401F-9BB9-4C9E6419FA47}
 		{0F2EF82C-F80A-440C-A10B-F1FD931C6CC0} = {A475D3F2-B710-436D-9014-8B47DF05D799}
+		{D862A84F-CEFC-422E-A1B2-7491E1D03D17} = {C552BB03-C50A-4F7F-9B67-A080E13AF7C4}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F2AE9C9D-34E5-4A2A-8AAA-5EEA105AF08F}
