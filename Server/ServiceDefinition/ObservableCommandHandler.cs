@@ -98,7 +98,7 @@ namespace Tecan.Sila2.Server.ServiceDefinition
 
         private async Task<EmptyRequest> GetResponse( ObservableCommandExecution command )
         {
-            if(!command.Command.Response.IsCompleted)
+            if(command.Command.State.State != CommandState.FinishedSuccess && command.Command.State.State != CommandState.FinishedWithErrors)
             {
                 throw ServerErrorHandling.CreateFrameworkError( FrameworkErrorType.CommandExecutionNotFinished, "The command has not finished execution" );
             }
@@ -312,7 +312,7 @@ namespace Tecan.Sila2.Server.ServiceDefinition
 
         private async Task<TResponseDto> GetCastedResponse( ObservableCommandExecution command )
         {
-            if(!command.Command.Response.IsCompleted)
+            if(command.Command.State.State != CommandState.FinishedSuccess && command.Command.State.State != CommandState.FinishedWithErrors)
             {
                 throw ServerErrorHandling.CreateFrameworkError( FrameworkErrorType.CommandExecutionNotFinished, "The command has not finished execution" );
             }

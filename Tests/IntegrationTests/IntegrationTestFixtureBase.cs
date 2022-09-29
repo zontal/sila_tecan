@@ -693,7 +693,7 @@ namespace Tecan.Sila2.IntegrationTests
             command.Response.Wait( TimeSpan.FromMinutes( 1 ) );
             var result = command.Response.Result;
             Assert.That( result, Is.EqualTo( 42L ) );
-            Assert.That( stateUpdates.Count, Is.EqualTo( 4 ) );
+            Assert.That( stateUpdates.Count, Is.EqualTo( 5 ) );
 
             Unlock( lockId, token );
             Logout( token );
@@ -716,7 +716,7 @@ namespace Tecan.Sila2.IntegrationTests
             command.Response.Wait( TimeSpan.FromMinutes( 1 ) );
             var result = command.Response.Result;
             Assert.That( ((DynamicObject)result.Value).Elements[0].Value, Is.EqualTo( 42L ) );
-            Assert.That( stateUpdates.Count, Is.EqualTo( 4 ) );
+            Assert.That( stateUpdates.Count, Is.EqualTo( 5 ) );
 
 
             Unlock( lockId, token );
@@ -914,7 +914,7 @@ namespace Tecan.Sila2.IntegrationTests
             var testClient = new TestServerClient( _server.Channel, executionManager );
 
             var exception = Assert.Throws<SilaException>( () => testClient.ThrowRuntimeException() );
-            Assert.That( exception.Message, Contains.Substring( nameof( InvalidOperationException ) ) );
+            Assert.That( exception.Message, Is.EqualTo( "This came totally unexpected!" ) );
 
             Unlock( lockId, token );
             Logout( token );
@@ -934,7 +934,7 @@ namespace Tecan.Sila2.IntegrationTests
             var command = commandClient.InvokeAsync( commandClient.CreateRequest() );
 
             var exception = Assert.ThrowsAsync<SilaException>( () => command );
-            Assert.That( exception.Message, Contains.Substring( nameof( InvalidOperationException ) ) );
+            Assert.That( exception.Message, Is.EqualTo( "This came totally unexpected!" ) );
 
             Unlock( lockId, token );
             Logout( token );

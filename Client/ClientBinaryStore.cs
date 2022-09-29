@@ -24,7 +24,7 @@ namespace Tecan.Sila2.Binary
         /// <param name="commandParameterIdentifier">A globally unique identifier for the command parameter or null, if the store is not associated to a command parameter</param>
         /// <param name="channel">The underlying channel</param>
         /// <param name="executionManager">The execution manager to handle requests to the given server</param>
-        public ClientBinaryStore( string commandParameterIdentifier, Channel channel, IClientExecutionManager executionManager ) : base(channel)
+        public ClientBinaryStore( string commandParameterIdentifier, Channel channel, IClientExecutionManager executionManager ) : base( channel )
         {
             _commandParameterIdentifier = commandParameterIdentifier;
             _executionManager = executionManager;
@@ -48,57 +48,57 @@ namespace Tecan.Sila2.Binary
         /// <param name="commandParameterIdentifier">A globally unique identifier for the command parameter or null, if the store is not associated to a command parameter</param>
         /// <param name="configuration">The updated configuration</param>
         /// <param name="executionManager">The execution manager to handle requests to the given server</param>
-        protected ClientBinaryStore(string commandParameterIdentifier, ClientBaseConfiguration configuration, IClientExecutionManager executionManager ) : base(configuration)
+        protected ClientBinaryStore( string commandParameterIdentifier, ClientBaseConfiguration configuration, IClientExecutionManager executionManager ) : base( configuration )
         {
             _commandParameterIdentifier = commandParameterIdentifier;
             _executionManager = executionManager;
         }
 
         /// <inheritdoc />
-        public Stream ResolveStoredBinary(string identifier)
+        public Stream ResolveStoredBinary( string identifier )
         {
             var ms = new MemoryStream();
-            Download(identifier, ms).Wait();
+            Download( identifier, ms ).Wait();
             ms.Position = 0;
             return ms;
         }
 
         /// <inheritdoc />
-        public bool ShouldStoreBinary(long length)
+        public bool ShouldStoreBinary( long length )
         {
             return length > 200 * 1024;
         }
 
         /// <inheritdoc />
-        public string StoreBinary(Stream data)
+        public string StoreBinary( Stream data )
         {
-            var task = Upload(data);
+            var task = Upload( data );
             task.Wait();
             return task.Result;
         }
 
         /// <inheritdoc />
-        public string StoreBinary(FileInfo file)
+        public string StoreBinary( FileInfo file )
         {
-            using (var stream = file.OpenRead())
+            using(var stream = file.OpenRead())
             {
-                return StoreBinary(stream);
+                return StoreBinary( stream );
             }
         }
 
-        private AsyncUnaryCall<CreateBinaryResponseDto> CreateBinaryAsync(CreateBinaryRequestDto request, CallOptions options)
+        private AsyncUnaryCall<CreateBinaryResponseDto> CreateBinaryAsync( CreateBinaryRequestDto request, CallOptions options )
         {
-            return CallInvoker.AsyncUnaryCall(BinaryStorageConstants.CreateBinary, null, options, request);
+            return CallInvoker.AsyncUnaryCall( BinaryStorageConstants.CreateBinary, null, options, request );
         }
 
-        private AsyncUnaryCall<EmptyRequest> DeleteBinaryUploadAsync(DeleteBinaryRequestDto request, CallOptions options)
+        private AsyncUnaryCall<EmptyRequest> DeleteBinaryUploadAsync( DeleteBinaryRequestDto request, CallOptions options )
         {
-            return CallInvoker.AsyncUnaryCall(BinaryStorageConstants.DeleteBinaryUpload, null, options, request);
+            return CallInvoker.AsyncUnaryCall( BinaryStorageConstants.DeleteBinaryUpload, null, options, request );
         }
 
-        private AsyncDuplexStreamingCall<UploadChunkRequestDto, UploadChunkResponseDto> UploadChunk(CallOptions options)
+        private AsyncDuplexStreamingCall<UploadChunkRequestDto, UploadChunkResponseDto> UploadChunk( CallOptions options )
         {
-            return CallInvoker.AsyncDuplexStreamingCall(BinaryStorageConstants.UploadChunk, null, options);
+            return CallInvoker.AsyncDuplexStreamingCall( BinaryStorageConstants.UploadChunk, null, options );
         }
 
         /// <summary>
@@ -106,7 +106,7 @@ namespace Tecan.Sila2.Binary
         /// </summary>
         /// <param name="file">The file to upload</param>
         /// <returns>An awaitable task that returns the storage identifier</returns>
-        public async Task<string> Upload(Stream file)
+        public async Task<string> Upload( Stream file )
         {
             CreateBinaryResponseDto identifier = null;
             try
@@ -146,15 +146,15 @@ namespace Tecan.Sila2.Binary
 
                 return identifier.BinaryTransferUUID;
             }
-            catch (RpcException rpcException)
+            catch(RpcException rpcException)
             {
                 throw ClientErrorHandling.ConvertBinaryException( rpcException, identifier?.BinaryTransferUUID );
             }
         }
 
-        private CallOptions CreateCallOptions(bool useExecutionManager)
+        private CallOptions CreateCallOptions( bool useExecutionManager )
         {
-            if (useExecutionManager && _commandParameterIdentifier != null)
+            if(useExecutionManager && _commandParameterIdentifier != null)
             {
                 var parameterIndex = _commandParameterIdentifier.LastIndexOf( "/Parameter/" );
                 return _executionManager.CreateCallOptions( _commandParameterIdentifier.Substring( 0, parameterIndex ) ).ToCallOptions();
@@ -165,19 +165,19 @@ namespace Tecan.Sila2.Binary
             }
         }
 
-        private AsyncUnaryCall<GetBinaryInfoResponseDto> GetBinaryInfoAsync(GetBinaryInfoRequestDto request, CallOptions options)
+        private AsyncUnaryCall<GetBinaryInfoResponseDto> GetBinaryInfoAsync( GetBinaryInfoRequestDto request, CallOptions options )
         {
-            return CallInvoker.AsyncUnaryCall(BinaryStorageConstants.GetBinaryInfo, null, options, request);
+            return CallInvoker.AsyncUnaryCall( BinaryStorageConstants.GetBinaryInfo, null, options, request );
         }
 
-        private AsyncDuplexStreamingCall<GetChunkRequestDto, GetChunkResponseDto> GetChunk(CallOptions options)
+        private AsyncDuplexStreamingCall<GetChunkRequestDto, GetChunkResponseDto> GetChunk( CallOptions options )
         {
-            return CallInvoker.AsyncDuplexStreamingCall(BinaryStorageConstants.GetChunk, null, options);
+            return CallInvoker.AsyncDuplexStreamingCall( BinaryStorageConstants.GetChunk, null, options );
         }
 
-        private AsyncUnaryCall<EmptyRequest> DeleteBinaryDownloadAsync(DeleteBinaryRequestDto request, CallOptions options)
+        private AsyncUnaryCall<EmptyRequest> DeleteBinaryDownloadAsync( DeleteBinaryRequestDto request, CallOptions options )
         {
-            return CallInvoker.AsyncUnaryCall(BinaryStorageConstants.DeleteBinaryDownload, null, options, request);
+            return CallInvoker.AsyncUnaryCall( BinaryStorageConstants.DeleteBinaryDownload, null, options, request );
         }
 
         /// <summary>
@@ -201,7 +201,7 @@ namespace Tecan.Sila2.Binary
                     await getChunk.RequestStream.WriteAsync( new GetChunkRequestDto()
                     {
                         BinaryTransferUUID = binaryIdentifier,
-                        Length = ChunkSize,
+                        Length = i < chunkCount - 1 ? ChunkSize : (uint)(data.BinarySize - i * ChunkSize),
                         Offset = i * ChunkSize
                     } );
                     await getChunk.ResponseStream.MoveNext( default );
@@ -222,9 +222,9 @@ namespace Tecan.Sila2.Binary
         /// </summary>
         /// <param name="binaryIdentifier">The binary storage identifier</param>
         /// <returns>An awaitable task that completes when the deletion is finished</returns>
-        public async Task DeleteDownload(string binaryIdentifier)
+        public async Task DeleteDownload( string binaryIdentifier )
         {
-            await DeleteBinaryDownloadAsync(new DeleteBinaryRequestDto() { BinaryTransferUUID = binaryIdentifier }, CreateCallOptions(true));
+            await DeleteBinaryDownloadAsync( new DeleteBinaryRequestDto() { BinaryTransferUUID = binaryIdentifier }, CreateCallOptions( true ) );
         }
 
         /// <summary>
@@ -232,20 +232,20 @@ namespace Tecan.Sila2.Binary
         /// </summary>
         /// <param name="configuration">The new client configuration</param>
         /// <returns>A new instance of the binary store</returns>
-        protected override ClientBinaryStore NewInstance(ClientBaseConfiguration configuration)
+        protected override ClientBinaryStore NewInstance( ClientBaseConfiguration configuration )
         {
-            return new ClientBinaryStore( _commandParameterIdentifier, configuration, _executionManager);
+            return new ClientBinaryStore( _commandParameterIdentifier, configuration, _executionManager );
         }
 
         /// <inheritdoc />
         public FileInfo ResolveStoredBinaryFile( string identifier )
         {
             var tempPath = Path.GetTempFileName();
-            using( var stream = File.OpenWrite(tempPath) )
+            using(var stream = File.OpenWrite( tempPath ))
             {
                 Download( identifier, stream ).Wait();
             }
-            return new FileInfo(tempPath);
+            return new FileInfo( tempPath );
         }
 
         /// <inheritdoc />

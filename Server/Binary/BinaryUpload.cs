@@ -300,7 +300,8 @@ namespace Tecan.Sila2.Server.Binary
         {
             if(_openStreams.TryGetValue( binaryIdentifier, out var uploadData ))
             {
-                return uploadData.Completion.Task.IsCompleted;
+                // allow the binary upload to complete within 1s
+                return uploadData.Completion.Task.Wait( 1000 );
             }
             return _fileManagement.Exists( binaryIdentifier );
         }

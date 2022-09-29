@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using Tecan.Sila2.Client;
-using Tecan.Sila2.Interop.Client.MetadataProvider.MetadataProviderTest;
+using Tecan.Sila2.Interop.Client.MetadataProvider.MetadataProvider;
 
 namespace Tecan.Sila2.Interop.Client.MetadataProvider
 {
