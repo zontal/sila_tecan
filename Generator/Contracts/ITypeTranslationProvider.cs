@@ -76,5 +76,16 @@ namespace Tecan.Sila2.Generator.Contracts
         /// <param name="targetType">An overridden target type or null</param>
         /// <returns>A CodeDOM expression that represents the extracted value</returns>
         CodeExpression Extract( CodeExpression expression, DataTypeType dataType, CodeExpression binaryStorageArgument, CodeTypeReference targetType );
+
+        /// <summary>
+        /// Generates code to extract the given expression from a data transfer object into the interface object
+        /// </summary>
+        /// <param name="expression">The expression that should be extracted</param>
+        /// <param name="dataType">The SiLA2 type of the expression</param>
+        /// <param name="binaryStorageArgument">The argument to use as binary store</param>
+        /// <param name="parameterName">The name of the parameter for which the expression should be extracted</param>
+        /// <param name="targetType">An overridden target type or null</param>
+        /// <returns>A CodeDOM expression that represents the extracted value</returns>
+        CodeExpression Extract( CodeExpression expression, DataTypeType dataType, CodeExpression binaryStorageArgument, string parameterName, CodeTypeReference targetType );
     }
 }

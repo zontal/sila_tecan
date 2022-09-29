@@ -16,7 +16,7 @@ namespace Tecan.Sila2
         /// Creates an observable command
         /// </summary>
         /// <param name="cancellationTokenSource">A cancellation token source</param>
-        protected ObservableIntermediatesCommand(CancellationTokenSource cancellationTokenSource) : base(cancellationTokenSource)
+        protected ObservableIntermediatesCommand( CancellationTokenSource cancellationTokenSource ) : base( cancellationTokenSource )
         {
             _intermediatesChannel = Channels.CreateIntermediateChannel<TIntermediate>();
         }
@@ -24,7 +24,7 @@ namespace Tecan.Sila2
         /// <summary>
         /// Creates an observable command
         /// </summary>
-        protected ObservableIntermediatesCommand( )
+        protected ObservableIntermediatesCommand()
         {
             _intermediatesChannel = Channels.CreateIntermediateChannel<TIntermediate>();
         }
@@ -41,8 +41,8 @@ namespace Tecan.Sila2
         /// <inheritdoc />
         protected override void Cleanup( Exception exception )
         {
-            base.Cleanup(exception);
-            _intermediatesChannel.Writer.TryComplete(exception);
+            base.Cleanup( exception );
+            _intermediatesChannel.Writer.TryComplete();
         }
 
         /// <inheritdoc />
@@ -87,7 +87,7 @@ namespace Tecan.Sila2
         protected override void Cleanup( Exception exception )
         {
             base.Cleanup( exception );
-            _intermediatesChannel.Writer.TryComplete( exception );
+            _intermediatesChannel.Writer.TryComplete();
         }
 
         /// <inheritdoc />

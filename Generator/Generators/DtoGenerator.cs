@@ -44,7 +44,7 @@ namespace Tecan.Sila2.Generator.Generators
         {
             _translationProvider = translationProvider;
             _configSource = configSource;
-            _validators = validations.ToList();
+            _validators = validations.OrderBy( v => v.GetType().Name ).ToList();
             NameProvider = nameProvider;
         }
 
@@ -514,8 +514,8 @@ namespace Tecan.Sila2.Generator.Generators
                             validateMethod.Statements.Add( new CodeConditionStatement(
                                 validation.CheckExpression,
                                 new CodeThrowExceptionStatement( new CodeObjectCreateExpression( nameof( ArgumentException ),
-                                    new CodePrimitiveExpression( parameter.Name ),
-                                    validation.ErrorMessage ) ) ) );
+                                    validation.ErrorMessage,
+                                    new CodePrimitiveExpression( parameter.Name ) ) ) ) );
                         }
                     }
                 }

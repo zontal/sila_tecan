@@ -77,7 +77,10 @@ namespace Tecan.Sila2.Recovery
             try
             {
                 request.Validate();
-                _implementation.ExecuteContinuationOption(request.CommandExecutionUUID.Extract(_server), request.ContinuationOption.Extract(_server), request.InputData.Extract(_server));
+                _implementation.ExecuteContinuationOption(request.CommandExecutionUUID.TryExtract(_server, "org.silastandard/core/ErrorRecoveryService/v1/Command/ExecuteContinuationOption/P" +
+                            "arameter/CommandExecutionUUID"), request.ContinuationOption.TryExtract(_server, "org.silastandard/core/ErrorRecoveryService/v1/Command/ExecuteContinuationOption/P" +
+                            "arameter/ContinuationOption"), request.InputData.TryExtract(_server, "org.silastandard/core/ErrorRecoveryService/v1/Command/ExecuteContinuationOption/P" +
+                            "arameter/InputData"));
                 return EmptyRequest.Instance;
             } catch (System.ArgumentException ex)
             {
@@ -122,7 +125,8 @@ namespace Tecan.Sila2.Recovery
             try
             {
                 request.Validate();
-                _implementation.AbortErrorHandling(request.CommandExecutionUUID.Extract(_server));
+                _implementation.AbortErrorHandling(request.CommandExecutionUUID.TryExtract(_server, "org.silastandard/core/ErrorRecoveryService/v1/Command/AbortErrorHandling/Paramete" +
+                            "r/CommandExecutionUUID"));
                 return EmptyRequest.Instance;
             } catch (System.ArgumentException ex)
             {
@@ -152,7 +156,8 @@ namespace Tecan.Sila2.Recovery
             try
             {
                 request.Validate();
-                _implementation.SetErrorHandlingTimeout(request.ErrorHandlingTimeout.Extract(_server));
+                _implementation.SetErrorHandlingTimeout(request.ErrorHandlingTimeout.TryExtract(_server, "org.silastandard/core/ErrorRecoveryService/v1/Command/SetErrorHandlingTimeout/Par" +
+                            "ameter/ErrorHandlingTimeout"));
                 return EmptyRequest.Instance;
             } catch (System.ArgumentException ex)
             {

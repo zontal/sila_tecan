@@ -8,8 +8,8 @@ using Tecan.Sila2.Generator.Helper;
 
 namespace Tecan.Sila2.Generator.TypeTranslation
 {
-    [Export(typeof(ITypeTranslator))]
-    [PartCreationPolicy(CreationPolicy.Shared)]
+    [Export( typeof( ITypeTranslator ) )]
+    [PartCreationPolicy( CreationPolicy.Shared )]
     internal class DictionaryTranslator : ITypeTranslator
     {
         private readonly ICodeNameRegistry _nameRegistry;
@@ -22,12 +22,12 @@ namespace Tecan.Sila2.Generator.TypeTranslation
 
         public bool TryTranslate( ITypeTranslationProvider translationProvider, Type interfaceType, string origin, out DataTypeType silaType )
         {
-            if( IsDictionaryType( interfaceType, out var keyType, out var valueType )
+            if(IsDictionaryType( interfaceType, out var keyType, out var valueType )
                 && translationProvider.TryTranslate( keyType, origin + ".Key", out var keySilaType )
-                && translationProvider.TryTranslate( valueType, origin + ".Value", out var valueSilaType ) )
+                && translationProvider.TryTranslate( valueType, origin + ".Value", out var valueSilaType ))
             {
 
-                if(interfaceType.GetGenericTypeDefinition() != typeof( IDictionary<,>))
+                if(interfaceType.GetGenericTypeDefinition() != typeof( IDictionary<,> ))
                 {
                     _nameRegistry?.RegisterDifferentType( origin, interfaceType );
                 }
@@ -71,15 +71,15 @@ namespace Tecan.Sila2.Generator.TypeTranslation
         public bool TryTranslate( ITypeTranslationProvider translationProvider, DataTypeType silaType, string suggestedName, out ITypeTranslationInfo translationInfo,
             Action<Constraints> constraintHandler = null, Action<string, StructureType> structHandler = null )
         {
-            if( silaType.Item is ListType list && list.DataType.Item is StructureType structure && IsKeyValueStructure( structure ) )
+            if(silaType.Item is ListType list && list.DataType.Item is StructureType structure && IsKeyValueStructure( structure ))
             {
                 var keyType = structure.Element[0].DataType;
                 var valueType = structure.Element[1].DataType;
                 var itemName = CodeGenerationHelper.TurnSingular( suggestedName );
-                if( translationProvider.TryTranslate( keyType, itemName + "Key", out var keyTranslation, null, structHandler )
-                    && translationProvider.TryTranslate( valueType, itemName + "Value", out var valueTranslation, constraintHandler, structHandler ) )
+                if(translationProvider.TryTranslate( keyType, itemName + "Key", out var keyTranslation, null, structHandler )
+                    && translationProvider.TryTranslate( valueType, itemName + "Value", out var valueTranslation, constraintHandler, structHandler ))
                 {
-                    translationInfo = new TranslationInfo(keyTranslation, valueTranslation);
+                    translationInfo = new TranslationInfo( keyTranslation, valueTranslation );
                     return true;
                 }
             }
@@ -95,8 +95,8 @@ namespace Tecan.Sila2.Generator.TypeTranslation
             if(type.IsGenericType && typeof( IEnumerable ).IsAssignableFrom( type ))
             {
                 var typeDefinition = type.GetGenericTypeDefinition();
-                if(typeDefinition == typeof( IReadOnlyDictionary<,>)
-                   || typeDefinition == typeof( IDictionary<,>))
+                if(typeDefinition == typeof( IReadOnlyDictionary<,> )
+                   || typeDefinition == typeof( IDictionary<,> ))
                 {
                     keyType = type.GetGenericArguments()[0];
                     elementType = type.GetGenericArguments()[1];
@@ -121,7 +121,7 @@ namespace Tecan.Sila2.Generator.TypeTranslation
 
         public bool TraverseTypes( ITypeTranslationProvider translationProvider, Type interfaceType, string origin, Action<Type> typeAction )
         {
-            if( IsDictionaryType( interfaceType, out var keyType, out var elementType ) )
+            if(IsDictionaryType( interfaceType, out var keyType, out var elementType ))
             {
                 var itemName = CodeGenerationHelper.TurnSingular( origin );
                 translationProvider.TraverseTypes( keyType, itemName + "Key", typeAction );
@@ -145,7 +145,7 @@ namespace Tecan.Sila2.Generator.TypeTranslation
                 _valueTranslation = valueTranslation;
             }
 
-            public CodeTypeReference InterfaceType => new CodeTypeReference(typeof(IDictionary<,>).FullName, _keyTranslation.InterfaceType, _valueTranslation.InterfaceType);
+            public CodeTypeReference InterfaceType => new CodeTypeReference( typeof( IDictionary<,> ).FullName, _keyTranslation.InterfaceType, _valueTranslation.InterfaceType );
 
             public CodeTypeReference DataTransferType
             {
@@ -167,17 +167,17 @@ namespace Tecan.Sila2.Generator.TypeTranslation
             public CodeExpression Encapsulate( CodeExpression expression, CodeExpression binaryStorageArgument )
             {
                 var valueType = _valueTranslation.DataTransferType;
-                if (valueType.TypeArguments.Count == 1)
+                if(valueType.TypeArguments.Count == 1)
                 {
                     valueType = valueType.TypeArguments[0];
                 }
                 return new CodeMethodInvokeExpression(
-                    new CodeTypeReferenceExpression( typeof(DtoExtensions) ),
-                    nameof(DtoExtensions.Encapsulate),
+                    new CodeTypeReferenceExpression( typeof( DtoExtensions ) ),
+                    nameof( DtoExtensions.Encapsulate ),
                     expression,
                     new CodeMethodReferenceExpression( new CodeTypeReferenceExpression( _keyTranslation.DataTransferType ), "Create" ),
                     new CodeMethodReferenceExpression( new CodeTypeReferenceExpression( valueType ), "Create" ),
-                    binaryStorageArgument);
+                    binaryStorageArgument );
             }
 
             public CodeExpression Extract( CodeExpression expression, CodeTypeReference targetType, CodeExpression binaryStorageArgument )
@@ -186,6 +186,15 @@ namespace Tecan.Sila2.Generator.TypeTranslation
                     new CodeTypeReferenceExpression( typeof( DtoExtensions ) ),
                     nameof( DtoExtensions.Extract ),
                     expression, binaryStorageArgument );
+            }
+
+            public CodeExpression Extract( CodeExpression expression, CodeTypeReference targetType, CodeExpression binaryStorageArgument, string parameterName )
+            {
+                return new CodeMethodInvokeExpression(
+                    new CodeTypeReferenceExpression( typeof( DtoExtensions ) ),
+                    nameof( DtoExtensions.TryExtract ),
+                    expression, binaryStorageArgument,
+                    new CodePrimitiveExpression( parameterName ) );
             }
         }
     }

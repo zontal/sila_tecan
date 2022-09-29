@@ -133,6 +133,49 @@ namespace Tecan.Sila2.Interop.Client.BinaryTransferTest.BinaryTransferTest
             }
         }
         
+        /// <summary>
+        /// Receives a list of binaries, echoes them individually as intermediate responses with a delay of 1 second, and then returns them as a single joint binary
+        /// </summary>
+        /// <param name="binaries">List of binaries to echo</param>
+        public virtual Tecan.Sila2.IIntermediateObservableCommand<System.IO.Stream, System.IO.Stream> EchoBinariesObservably(System.Collections.Generic.ICollection<System.IO.Stream> binaries)
+        {
+            EchoBinariesObservablyRequestDto request = new EchoBinariesObservablyRequestDto(binaries, _executionManager.CreateBinaryStore("org.silastandard/test/BinaryTransferTest/v1/Command/EchoBinariesObservably/Parame" +
+                        "ter/Binaries"));
+            request.Validate();
+            return _channel.ExecuteIntermediatesCommand<EchoBinariesObservablyRequestDto, System.IO.Stream, EchoBinariesObservablyIntermediateDto, System.IO.Stream, EchoBinariesObservablyResponseDto>(_serviceName, "EchoBinariesObservably", request, ConvertEchoBinariesObservablyIntermediate, ConvertEchoBinariesObservablyResponse, ConvertEchoBinariesObservablyException, _executionManager.CreateCallOptions(request.CommandIdentifier));
+        }
+        
+        /// <summary>
+        /// Converts the error ocurred during execution of EchoBinariesObservably to a proper exception
+        /// </summary>
+        /// <param name="errorIdentifier">The identifier of the error that has happened</param>
+        /// <param name="errorMessage">The original error message from the server</param>
+        /// <returns>The converted exception or null, if the error is not understood</returns>
+        private static System.Exception ConvertEchoBinariesObservablyException(string errorIdentifier, string errorMessage)
+        {
+            return null;
+        }
+        
+        /// <summary>
+        /// Unwraps the response of the EchoBinariesObservablyIntermediate command
+        /// </summary>
+        /// <param name="value">The response data transfer object</param>
+        /// <returns>The actual response</returns>
+        private System.IO.Stream ConvertEchoBinariesObservablyIntermediate(EchoBinariesObservablyIntermediateDto value)
+        {
+            return value.Binary.Extract(_executionManager.DownloadBinaryStore);
+        }
+        
+        /// <summary>
+        /// Unwraps the response of the EchoBinariesObservablyResponse command
+        /// </summary>
+        /// <param name="value">The response data transfer object</param>
+        /// <returns>The actual response</returns>
+        private System.IO.Stream ConvertEchoBinariesObservablyResponse(EchoBinariesObservablyResponseDto value)
+        {
+            return value.JointBinary.Extract(_executionManager.DownloadBinaryStore);
+        }
+        
         private T Extract<T>(Tecan.Sila2.ISilaTransferObject<T> dto)
         
         {

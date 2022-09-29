@@ -101,8 +101,11 @@ namespace Tecan.Sila2.IntegrationTests
             registration.RegisterUnobservableCommand<PassTimeRequestDto, PassTimeResponseDto>("PassTime", PassTime);
             registration.RegisterUnobservableCommand<PassStringRequestDto, PassStringResponseDto>("PassString", PassString);
             registration.RegisterUnobservableCommand<PassStreamRequestDto, PassStreamResponseDto>("PassStream", PassStream);
+            registration.RegisterBinaryCommandParameter("tecan.sila/integrationtests/TestServer/v1/Command/PassStream/Parameter/Value");
             registration.RegisterUnobservableCommand<PassFileRequestDto, PassFileResponseDto>("PassFile", PassFile);
+            registration.RegisterBinaryCommandParameter("tecan.sila/integrationtests/TestServer/v1/Command/PassFile/Parameter/File");
             registration.RegisterUnobservableCommand<PassBytesRequestDto, PassBytesResponseDto>("PassBytes", PassBytes);
+            registration.RegisterBinaryCommandParameter("tecan.sila/integrationtests/TestServer/v1/Command/PassBytes/Parameter/Bytes");
             registration.RegisterUnobservableCommand<PassDynamicRequestDto, PassDynamicResponseDto>("PassDynamic", PassDynamic);
             registration.RegisterUnobservableCommand<PassCollectionRequestDto, PassCollectionResponseDto>("PassCollection", PassCollection);
             registration.RegisterUnobservableCommand<PassStructureRequestDto, PassStructureResponseDto>("PassStructure", PassStructure);
@@ -127,7 +130,7 @@ namespace Tecan.Sila2.IntegrationTests
             try
             {
                 request.Validate();
-                return new PassBoolResponseDto(_implementation.PassBool(request.Data.Extract(_server)), _server);
+                return new PassBoolResponseDto(_implementation.PassBool(request.Data.TryExtract(_server, "tecan.sila/integrationtests/TestServer/v1/Command/PassBool/Parameter/Data")), _server);
             } catch (System.ArgumentException ex)
             {
                 if ((ex.ParamName == "data"))
@@ -148,7 +151,7 @@ namespace Tecan.Sila2.IntegrationTests
             try
             {
                 request.Validate();
-                return new PassDoubleResponseDto(_implementation.PassDouble(request.Data.Extract(_server)), _server);
+                return new PassDoubleResponseDto(_implementation.PassDouble(request.Data.TryExtract(_server, "tecan.sila/integrationtests/TestServer/v1/Command/PassDouble/Parameter/Data")), _server);
             } catch (System.ArgumentException ex)
             {
                 if ((ex.ParamName == "data"))
@@ -169,7 +172,7 @@ namespace Tecan.Sila2.IntegrationTests
             try
             {
                 request.Validate();
-                return new PassLongResponseDto(_implementation.PassLong(request.Data.Extract(_server)), _server);
+                return new PassLongResponseDto(_implementation.PassLong(request.Data.TryExtract(_server, "tecan.sila/integrationtests/TestServer/v1/Command/PassLong/Parameter/Data")), _server);
             } catch (System.ArgumentException ex)
             {
                 if ((ex.ParamName == "data"))
@@ -190,7 +193,7 @@ namespace Tecan.Sila2.IntegrationTests
             try
             {
                 request.Validate();
-                return new PassIntResponseDto(_implementation.PassInt(((int)(request.Data.Extract(_server)))), _server);
+                return new PassIntResponseDto(_implementation.PassInt(((int)(request.Data.TryExtract(_server, "tecan.sila/integrationtests/TestServer/v1/Command/PassInt/Parameter/Data")))), _server);
             } catch (System.ArgumentException ex)
             {
                 if ((ex.ParamName == "data"))
@@ -211,7 +214,8 @@ namespace Tecan.Sila2.IntegrationTests
             try
             {
                 request.Validate();
-                return new PassTimestampResponseDto(_implementation.PassTimestamp(request.Timestamp.Extract(_server)), _server);
+                return new PassTimestampResponseDto(_implementation.PassTimestamp(request.Timestamp.TryExtract(_server, "tecan.sila/integrationtests/TestServer/v1/Command/PassTimestamp/Parameter/Timesta" +
+                                "mp")), _server);
             } catch (System.ArgumentException ex)
             {
                 if ((ex.ParamName == "timestamp"))
@@ -233,7 +237,7 @@ namespace Tecan.Sila2.IntegrationTests
             try
             {
                 request.Validate();
-                return new PassTimeResponseDto(_implementation.PassTime(request.Time.Extract(_server)), _server);
+                return new PassTimeResponseDto(_implementation.PassTime(request.Time.TryExtract(_server, "tecan.sila/integrationtests/TestServer/v1/Command/PassTime/Parameter/Time")), _server);
             } catch (System.ArgumentException ex)
             {
                 if ((ex.ParamName == "time"))
@@ -254,7 +258,7 @@ namespace Tecan.Sila2.IntegrationTests
             try
             {
                 request.Validate();
-                return new PassStringResponseDto(_implementation.PassString(request.Value.Extract(_server)), _server);
+                return new PassStringResponseDto(_implementation.PassString(request.Value.TryExtract(_server, "tecan.sila/integrationtests/TestServer/v1/Command/PassString/Parameter/Value")), _server);
             } catch (System.ArgumentException ex)
             {
                 if ((ex.ParamName == "value"))
@@ -275,7 +279,7 @@ namespace Tecan.Sila2.IntegrationTests
             try
             {
                 request.Validate();
-                return new PassStreamResponseDto(_implementation.PassStream(request.Value.Extract(_server)), _server);
+                return new PassStreamResponseDto(_implementation.PassStream(request.Value.TryExtract(_server, "tecan.sila/integrationtests/TestServer/v1/Command/PassStream/Parameter/Value")), _server);
             } catch (System.ArgumentException ex)
             {
                 if ((ex.ParamName == "value"))
@@ -296,7 +300,7 @@ namespace Tecan.Sila2.IntegrationTests
             try
             {
                 request.Validate();
-                return new PassFileResponseDto(_implementation.PassFile(request.File.ExtractToFileInfo(_server)), _server);
+                return new PassFileResponseDto(_implementation.PassFile(request.File.TryExtractToFileInfo(_server, "tecan.sila/integrationtests/TestServer/v1/Command/PassFile/Parameter/File")), _server);
             } catch (System.ArgumentException ex)
             {
                 if ((ex.ParamName == "file"))
@@ -317,7 +321,7 @@ namespace Tecan.Sila2.IntegrationTests
             try
             {
                 request.Validate();
-                return new PassBytesResponseDto(_implementation.PassBytes(request.Bytes.ExtractToBytes(_server)), _server);
+                return new PassBytesResponseDto(_implementation.PassBytes(request.Bytes.TryExtractToBytes(_server, "tecan.sila/integrationtests/TestServer/v1/Command/PassBytes/Parameter/Bytes")), _server);
             } catch (System.ArgumentException ex)
             {
                 if ((ex.ParamName == "bytes"))
@@ -338,7 +342,7 @@ namespace Tecan.Sila2.IntegrationTests
             try
             {
                 request.Validate();
-                return new PassDynamicResponseDto(_implementation.PassDynamic(request.Dynamic.Extract(_server)), _server);
+                return new PassDynamicResponseDto(_implementation.PassDynamic(request.Dynamic.TryExtract(_server, "tecan.sila/integrationtests/TestServer/v1/Command/PassDynamic/Parameter/Dynamic")), _server);
             } catch (System.ArgumentException ex)
             {
                 if ((ex.ParamName == "dynamic"))
@@ -359,7 +363,8 @@ namespace Tecan.Sila2.IntegrationTests
             try
             {
                 request.Validate();
-                return new PassCollectionResponseDto(_implementation.PassCollection(request.Strings.Extract(_server)), _server);
+                return new PassCollectionResponseDto(_implementation.PassCollection(request.Strings.TryExtract(_server, "tecan.sila/integrationtests/TestServer/v1/Command/PassCollection/Parameter/String" +
+                                "s")), _server);
             } catch (System.ArgumentException ex)
             {
                 if ((ex.ParamName == "strings"))
@@ -381,7 +386,8 @@ namespace Tecan.Sila2.IntegrationTests
             try
             {
                 request.Validate();
-                return new PassStructureResponseDto(_implementation.PassStructure(request.Structure.Extract(_server)), _server);
+                return new PassStructureResponseDto(_implementation.PassStructure(request.Structure.TryExtract(_server, "tecan.sila/integrationtests/TestServer/v1/Command/PassStructure/Parameter/Structu" +
+                                "re")), _server);
             } catch (System.ArgumentException ex)
             {
                 if ((ex.ParamName == "structure"))
@@ -475,7 +481,8 @@ namespace Tecan.Sila2.IntegrationTests
             try
             {
                 request.Validate();
-                return new IsCancelledResponseDto(_implementation.IsCancelled(request.CommandId.Extract(_server)), _server);
+                return new IsCancelledResponseDto(_implementation.IsCancelled(request.CommandId.TryExtract(_server, "tecan.sila/integrationtests/TestServer/v1/Command/IsCancelled/Parameter/CommandId" +
+                                "")), _server);
             } catch (System.ArgumentException ex)
             {
                 if ((ex.ParamName == "commandId"))
@@ -509,7 +516,7 @@ namespace Tecan.Sila2.IntegrationTests
             try
             {
                 request.Validate();
-                _implementation.SetDummy(((int)(request.Value.Extract(_server))));
+                _implementation.SetDummy(((int)(request.Value.TryExtract(_server, "tecan.sila/integrationtests/TestServer/v1/Command/SetDummy/Parameter/Value"))));
                 return EmptyRequest.Instance;
             } catch (System.ArgumentException ex)
             {
@@ -655,7 +662,8 @@ namespace Tecan.Sila2.IntegrationTests
             
             public override System.Threading.Tasks.Task Run()
             {
-                return _parent._implementation.WaitForCancelOrThrow(_request.Duration.Extract(_parent._server), CancellationToken);
+                return _parent._implementation.WaitForCancelOrThrow(_request.Duration.TryExtract(_parent._server, "tecan.sila/integrationtests/TestServer/v1/Command/WaitForCancelOrThrow/Parameter/" +
+                            "Duration"), CancellationToken);
             }
         }
         

@@ -75,7 +75,8 @@ namespace Tecan.Sila2.ParameterDefaultsProvider.Tests
             try
             {
                 request.Validate();
-                _implementation.ExampleMethod(request.Parameter.Extract(_server));
+                _implementation.ExampleMethod(request.Parameter.TryExtract(_server, "tecan.sila.parameterdefaultsprovider/tests/ExampleSetProviderService/v1/Command/E" +
+                            "xampleMethod/Parameter/Parameter"));
                 return EmptyRequest.Instance;
             } catch (System.ArgumentException ex)
             {

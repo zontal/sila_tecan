@@ -79,12 +79,12 @@ namespace Tecan.Sila2.Authorization.AuthorizationConfigurationService
             Argument.Validate(AuthorizationProvider, "authorizationProvider");
             if ((AuthorizationProvider.Value.Length != 36))
             {
-                throw new ArgumentException("authorizationProvider", string.Format("AuthorizationProvider has length {0} but should have been 36", AuthorizationProvider.Value.Length));
+                throw new ArgumentException(string.Format("AuthorizationProvider has length {0} but should have been 36", AuthorizationProvider.Value.Length), "authorizationProvider");
             }
             if ((RegexConstraint.IsMatch(AuthorizationProvider.Value, "[0-9a-f]{8}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{12}") == false))
             {
-                throw new ArgumentException("authorizationProvider", string.Format("AuthorizationProvider \'{0}\' does not match pattern \'[0-9a-f]{8}\\-[0-9a-f]{4}\\-[0-" +
-                            "9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{12}\'", AuthorizationProvider.Value));
+                throw new ArgumentException(string.Format("AuthorizationProvider \'{0}\' does not match pattern \'[0-9a-f]{8}\\-[0-9a-f]{4}\\-[0-" +
+                            "9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{12}\'", AuthorizationProvider.Value), "authorizationProvider");
             }
         }
         
@@ -157,12 +157,12 @@ namespace Tecan.Sila2.Authorization.AuthorizationConfigurationService
             Argument.Validate(Value, "value");
             if ((Value.Value.Length != 36))
             {
-                throw new ArgumentException("value", string.Format("Value has length {0} but should have been 36", Value.Value.Length));
+                throw new ArgumentException(string.Format("Value has length {0} but should have been 36", Value.Value.Length), "value");
             }
             if ((RegexConstraint.IsMatch(Value.Value, "[0-9a-f]{8}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{12}") == false))
             {
-                throw new ArgumentException("value", string.Format("Value \'{0}\' does not match pattern \'[0-9a-f]{8}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-" +
-                            "f]{4}\\-[0-9a-f]{12}\'", Value.Value));
+                throw new ArgumentException(string.Format("Value \'{0}\' does not match pattern \'[0-9a-f]{8}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-" +
+                            "f]{4}\\-[0-9a-f]{12}\'", Value.Value), "value");
             }
         }
         

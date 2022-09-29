@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using Tecan.Sila2.Binary;
 using Tecan.Sila2.Server.Binary;
 
@@ -10,12 +11,12 @@ namespace Tecan.Sila2.Server
     public class FileManagement : IFileManagement
     {
         /// <inheritdoc />
-        public string CreateIdentifier(FileInfo file)
+        public string CreateIdentifier( FileInfo file )
         {
-            if( file.DirectoryName != Path.GetTempPath() )
+            if(file.DirectoryName != Path.GetTempPath())
             {
                 var tempFile = Path.GetTempFileName();
-                if( file.Exists )
+                if(file.Exists)
                 {
                     file.CopyTo( tempFile, true );
                 }
@@ -29,15 +30,15 @@ namespace Tecan.Sila2.Server
         }
 
         /// <inheritdoc />
-        public virtual string CreateNew(long length)
+        public virtual string CreateNew( long length )
         {
-            return Path.GetFileName(Path.GetTempFileName());
+            return Guid.NewGuid().ToString();
         }
 
         /// <inheritdoc />
-        public void Delete(string binaryTransferUUID, bool isUploaded)
+        public void Delete( string binaryTransferUUID, bool isUploaded )
         {
-            LocateFileAndCheck( binaryTransferUUID).Delete();
+            LocateFileAndCheck( binaryTransferUUID ).Delete();
         }
 
         /// <inheritdoc />
@@ -47,30 +48,30 @@ namespace Tecan.Sila2.Server
         }
 
         /// <inheritdoc />
-        public bool Exists(string binaryTransferUUID)
+        public bool Exists( string binaryTransferUUID )
         {
-            return LocateFile(binaryTransferUUID).Exists;
+            return LocateFile( binaryTransferUUID ).Exists;
         }
 
         /// <inheritdoc />
-        public Stream OpenRead(string binaryTransferUUID)
+        public Stream OpenRead( string binaryTransferUUID )
         {
-            return LocateFileAndCheck( binaryTransferUUID).OpenRead();
+            return LocateFileAndCheck( binaryTransferUUID ).OpenRead();
         }
 
         /// <inheritdoc />
-        public Stream OpenWrite(string binaryTransferUUID)
+        public Stream OpenWrite( string binaryTransferUUID )
         {
-            return LocateFileAndCheck( binaryTransferUUID).OpenWrite();
+            return Locate( binaryTransferUUID ).Create();
         }
 
         /// <inheritdoc />
-        protected virtual FileInfo LocateFile(string binaryTransferUUID)
+        protected virtual FileInfo LocateFile( string binaryTransferUUID )
         {
-            return new FileInfo(Path.Combine(Path.GetTempPath(), binaryTransferUUID));
+            return new FileInfo( Path.Combine( Path.GetTempPath(), binaryTransferUUID ) );
         }
 
-        private FileInfo LocateFileAndCheck(string binaryTransferUuid)
+        private FileInfo LocateFileAndCheck( string binaryTransferUuid )
         {
             var file = LocateFile( binaryTransferUuid );
             if(file.Exists)

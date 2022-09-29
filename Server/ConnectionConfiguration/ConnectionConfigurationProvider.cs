@@ -103,7 +103,11 @@ namespace Tecan.Sila2.Server.ConnectionConfiguration
             try
             {
                 request.Validate();
-                _implementation.ConnectSiLAClient(request.ClientName.Extract(_server), request.SiLAClientHost.Extract(_server), request.SiLAClientPort.Extract(_server), request.Persist.Extract(_server));
+                _implementation.ConnectSiLAClient(request.ClientName.TryExtract(_server, "org.silastandard/core/ConnectionConfigurationService/v1/Command/ConnectSiLAClient" +
+                            "/Parameter/ClientName"), request.SiLAClientHost.TryExtract(_server, "org.silastandard/core/ConnectionConfigurationService/v1/Command/ConnectSiLAClient" +
+                            "/Parameter/SiLAClientHost"), request.SiLAClientPort.TryExtract(_server, "org.silastandard/core/ConnectionConfigurationService/v1/Command/ConnectSiLAClient" +
+                            "/Parameter/SiLAClientPort"), request.Persist.TryExtract(_server, "org.silastandard/core/ConnectionConfigurationService/v1/Command/ConnectSiLAClient" +
+                            "/Parameter/Persist"));
                 return EmptyRequest.Instance;
             } catch (System.ArgumentException ex)
             {
@@ -141,7 +145,9 @@ namespace Tecan.Sila2.Server.ConnectionConfiguration
             try
             {
                 request.Validate();
-                _implementation.DisconnectSiLAClient(request.ClientName.Extract(_server), request.Remove.Extract(_server));
+                _implementation.DisconnectSiLAClient(request.ClientName.TryExtract(_server, "org.silastandard/core/ConnectionConfigurationService/v1/Command/DisconnectSiLACli" +
+                            "ent/Parameter/ClientName"), request.Remove.TryExtract(_server, "org.silastandard/core/ConnectionConfigurationService/v1/Command/DisconnectSiLACli" +
+                            "ent/Parameter/Remove"));
                 return EmptyRequest.Instance;
             } catch (System.ArgumentException ex)
             {

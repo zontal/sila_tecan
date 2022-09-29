@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Net.Http.Headers;
 using ProtoBuf;
 using Tecan.Sila2.Binary;
 
@@ -656,9 +657,13 @@ namespace Tecan.Sila2
             {
                 return new MemoryStream( Value );
             }
+            else if(ShouldSerializeBinaryTransferUUID())
+            {
+                return resolver.ResolveStoredBinary( BinaryTransferUUID );
+            }
             else
             {
-                return new LazyBinaryStream( resolver, BinaryTransferUUID );
+                throw new InvalidOperationException( "Message contained neither bytes nor binary storage identifier" );
             }
         }
 
@@ -673,16 +678,38 @@ namespace Tecan.Sila2
             {
                 return Value;
             }
-            else
+            else if(ShouldSerializeBinaryTransferUUID())
             {
                 using(var ms = new MemoryStream())
                 {
-                    using(var resolvedStream = new LazyBinaryStream( resolver, BinaryTransferUUID ))
+                    using(var resolvedStream = resolver.ResolveStoredBinary( BinaryTransferUUID ))
                     {
                         resolvedStream.CopyTo( ms );
                         return ms.ToArray();
                     }
                 }
+            }
+            else
+            {
+                throw new InvalidOperationException( "Message contained neither bytes nor binary storage identifier" );
+            }
+        }
+
+        /// <summary>
+        /// Extracts the value from the dto into a byte array
+        /// </summary>
+        /// <param name="resolver">A resolver component to resolve binary data</param>
+        /// <param name="parameterName">The name of the parameter for which the value should be extracted</param>
+        /// <returns>The actual value</returns>
+        public byte[] TryExtractToBytes( IBinaryStore resolver, string parameterName )
+        {
+            try
+            {
+                return ExtractToBytes( resolver );
+            }
+            catch(Exception ex)
+            {
+                throw new ArgumentException( ex.Message, parameterName, ex );
             }
         }
 
@@ -699,9 +726,31 @@ namespace Tecan.Sila2
                 File.WriteAllBytes( path, Value );
                 return new FileInfo( path );
             }
-            else
+            else if(ShouldSerializeBinaryTransferUUID())
             {
                 return resolver.ResolveStoredBinaryFile( BinaryTransferUUID );
+            }
+            else
+            {
+                throw new InvalidOperationException( "Message contained neither bytes nor binary storage identifier" );
+            }
+        }
+
+        /// <summary>
+        /// Extracts the value from the dto into a file info
+        /// </summary>
+        /// <param name="resolver">A resolver component to resolve binary data</param>
+        /// <param name="parameterName">The name of the parameter for which the value should be extracted</param>
+        /// <returns>The actual value</returns>
+        public FileInfo TryExtractToFileInfo( IBinaryStore resolver, string parameterName )
+        {
+            try
+            {
+                return ExtractToFileInfo( resolver );
+            }
+            catch(Exception ex)
+            {
+                throw new ArgumentException( ex.Message, parameterName, ex );
             }
         }
 
@@ -712,6 +761,39 @@ namespace Tecan.Sila2
         public string GetValidationErrors()
         {
             return null;
+        }
+
+        /// <summary>
+        /// Creates a new dto for the given value
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="store">A binary store</param>
+        /// <returns>The encapsulated value</returns>
+        public static BinaryDto Create( Stream value, IBinaryStore store )
+        {
+            return new BinaryDto( value, store );
+        }
+
+        /// <summary>
+        /// Creates a new dto for the given value
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="store">A binary store</param>
+        /// <returns>The encapsulated value</returns>
+        public static BinaryDto Create( byte[] value, IBinaryStore store )
+        {
+            return new BinaryDto( value, store );
+        }
+
+        /// <summary>
+        /// Creates a new dto for the given value
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="store">A binary store</param>
+        /// <returns>The encapsulated value</returns>
+        public static BinaryDto Create( FileInfo value, IBinaryStore store )
+        {
+            return new BinaryDto( value, store );
         }
     }
 
@@ -1603,6 +1685,75 @@ namespace Tecan.Sila2
     /// </summary>
     public static class DtoExtensions
     {
+        /// <summary>
+        /// Tries to extract the given data transfer objects
+        /// </summary>
+        /// <typeparam name="T">The type of the encapsulated object</typeparam>
+        /// <param name="transferObject">The DTO object</param>
+        /// <param name="resolver">The binary resolver</param>
+        /// <param name="parameterName">The name of the parameter in case of exceptions</param>
+        /// <returns>The inner object</returns>
+        /// <exception cref="ArgumentException">Raised if something goes wrong during extraction</exception>
+        public static T TryExtract<T>( this ISilaTransferObject<T> transferObject, IBinaryStore resolver, string parameterName )
+        {
+            try
+            {
+                return transferObject.Extract( resolver );
+            }
+            catch(Exception ex)
+            {
+                throw new ArgumentException( ex.Message, parameterName, ex );
+            }
+        }
+
+        /// <summary>
+        /// Tries to extract the given data transfer objects
+        /// </summary>
+        /// <typeparam name="T">The type of the encapsulated object</typeparam>
+        /// <param name="transferObject">The DTO object</param>
+        /// <param name="resolver">The binary resolver</param>
+        /// <param name="parameterName">The name of the parameter in case of exceptions</param>
+        /// <returns>The inner object</returns>
+        /// <exception cref="ArgumentException">Raised if something goes wrong during extraction</exception>
+        public static List<T> TryExtract<T>( this IEnumerable<ISilaTransferObject<T>> transferObject, IBinaryStore resolver, string parameterName )
+        {
+            try
+            {
+                return transferObject.Extract( resolver );
+            }
+            catch(Exception ex)
+            {
+                throw new ArgumentException( ex.Message, parameterName, ex );
+            }
+        }
+
+        /// <summary>
+        /// Tries to extract the given data transfer objects into a dictionary
+        /// </summary>
+        /// <typeparam name="TKey">The key type of the dictionary</typeparam>
+        /// <typeparam name="TKeyDto">The data transfer object type for the key</typeparam>
+        /// <typeparam name="TValue">The value type of the dictionary</typeparam>
+        /// <typeparam name="TValueDto">The data transfer object type for the value</typeparam>
+        /// <param name="source">The DTO representation of the dictionary</param>
+        /// <param name="resolver">The binary resolver</param>
+        /// <param name="parameterName">The name of the parameter in case of exceptions</param>
+        /// <returns>The inner object</returns>
+        /// <exception cref="ArgumentException">Raised if something goes wrong during extraction</exception>
+        public static Dictionary<TKey, TValue> TryExtract<TKey, TKeyDto, TValue, TValueDto>( this IEnumerable<KeyValuePairDto<TKey, TKeyDto, TValue, TValueDto>> source,
+            IBinaryStore resolver, string parameterName )
+            where TKeyDto : ISilaTransferObject<TKey>
+            where TValueDto : ISilaTransferObject<TValue>
+        {
+            try
+            {
+                return source.Extract( resolver );
+            }
+            catch(Exception ex)
+            {
+                throw new ArgumentException( ex.Message, parameterName, ex );
+            }
+        }
+
         /// <summary>
         /// Extracts the collection of values in the collection of data transfer objects
         /// </summary>

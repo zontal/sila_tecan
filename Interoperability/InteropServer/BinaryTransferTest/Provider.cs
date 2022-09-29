@@ -55,6 +55,22 @@ namespace Tecan.Sila2.Interop.Server.BinaryTransferTest
             }
         }
         
+        private System.Exception ConvertEchoBinariesObservablyExceptions(System.Exception exception)
+        {
+            try
+            {
+                throw exception;
+            } catch (System.ArgumentException ex)
+            {
+                if ((ex.ParamName == "binaries"))
+                {
+                    throw _server.ErrorHandling.CreateValidationError("org.silastandard/test/BinaryTransferTest/v1/Command/EchoBinariesObservably/Parame" +
+                            "ter/Binaries", ex.Message);
+                }
+                throw _server.ErrorHandling.CreateUnknownValidationError(ex);
+            }
+        }
+        
         /// <summary>
         /// Registers the feature in the provided feature registration
         /// </summary>
@@ -62,6 +78,11 @@ namespace Tecan.Sila2.Interop.Server.BinaryTransferTest
         public void Register(IServerBuilder registration)
         {
             registration.RegisterUnobservableCommand<EchoBinaryValueRequestDto, EchoBinaryValueResponseDto>("EchoBinaryValue", EchoBinaryValue);
+            registration.RegisterBinaryCommandParameter("org.silastandard/test/BinaryTransferTest/v1/Command/EchoBinaryValue/Parameter/Bin" +
+                    "aryValue");
+            registration.RegisterCommandWithIntermediates<EchoBinariesObservablyRequestDto, System.IO.Stream, EchoBinariesObservablyIntermediateDto, System.IO.Stream, EchoBinariesObservablyResponseDto>("EchoBinariesObservably", EchoBinariesObservably, ConvertEchoBinariesObservablyIntermediate, ConvertEchoBinariesObservablyResponse, ConvertEchoBinariesObservablyExceptions);
+            registration.RegisterBinaryCommandParameter("org.silastandard/test/BinaryTransferTest/v1/Command/EchoBinariesObservably/Parame" +
+                    "ter/Binaries");
             registration.RegisterUnobservableProperty("BinaryValueDirectly", GetBinaryValueDirectly);
             registration.RegisterUnobservableProperty("BinaryValueDownload", GetBinaryValueDownload);
         }
@@ -76,7 +97,8 @@ namespace Tecan.Sila2.Interop.Server.BinaryTransferTest
             try
             {
                 request.Validate();
-                return new EchoBinaryValueResponseDto(_implementation.EchoBinaryValue(request.BinaryValue.Extract(_server)), _server);
+                return new EchoBinaryValueResponseDto(_implementation.EchoBinaryValue(request.BinaryValue.TryExtract(_server, "org.silastandard/test/BinaryTransferTest/v1/Command/EchoBinaryValue/Parameter/Bin" +
+                                "aryValue")), _server);
             } catch (System.ArgumentException ex)
             {
                 if ((ex.ParamName == "binaryValue"))
@@ -86,6 +108,28 @@ namespace Tecan.Sila2.Interop.Server.BinaryTransferTest
                 }
                 throw _server.ErrorHandling.CreateUnknownValidationError(ex);
             }
+        }
+        
+        private EchoBinariesObservablyIntermediateDto ConvertEchoBinariesObservablyIntermediate(System.IO.Stream intermediate)
+        {
+            return new EchoBinariesObservablyIntermediateDto(intermediate, _server);
+        }
+        
+        private EchoBinariesObservablyResponseDto ConvertEchoBinariesObservablyResponse(System.IO.Stream result)
+        {
+            return new EchoBinariesObservablyResponseDto(result, _server);
+        }
+        
+        /// <summary>
+        /// Executes the Echo Binaries Observably command
+        /// </summary>
+        /// <param name="request">A data transfer object that contains the command parameters</param>
+        /// <returns>The command response wrapped in a data transfer object</returns>
+        protected virtual Tecan.Sila2.IIntermediateObservableCommand<System.IO.Stream, System.IO.Stream> EchoBinariesObservably(EchoBinariesObservablyRequestDto request)
+        {
+            request.Validate();
+            return _implementation.EchoBinariesObservably(request.Binaries.TryExtract(_server, "org.silastandard/test/BinaryTransferTest/v1/Command/EchoBinariesObservably/Parame" +
+                        "ter/Binaries"));
         }
         
         /// <summary>
@@ -116,6 +160,10 @@ namespace Tecan.Sila2.Interop.Server.BinaryTransferTest
             if ((commandIdentifier == "org.silastandard/test/BinaryTransferTest/v1/Command/EchoBinaryValue"))
             {
                 return typeof(IBinaryTransferTest).GetMethod("EchoBinaryValue");
+            }
+            if ((commandIdentifier == "org.silastandard/test/BinaryTransferTest/v1/Command/EchoBinariesObservably"))
+            {
+                return typeof(IBinaryTransferTest).GetMethod("EchoBinariesObservably");
             }
             return null;
         }

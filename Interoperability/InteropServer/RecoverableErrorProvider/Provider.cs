@@ -55,13 +55,34 @@ namespace Tecan.Sila2.Interop.Server.RecoverableErrorProvider
             }
         }
         
+        private System.Exception ConvertRaiseRecoverableErrorExceptions(System.Exception exception)
+        {
+            try
+            {
+                throw exception;
+            } catch (System.ArgumentException ex)
+            {
+                if ((ex.ParamName == "durationUntilError"))
+                {
+                    throw _server.ErrorHandling.CreateValidationError("org.silastandard/test/RecoverableErrorProvider/v1/Command/RaiseRecoverableError/P" +
+                            "arameter/DurationUntilError", ex.Message);
+                }
+                if ((ex.ParamName == "automaticExecutionTimeout"))
+                {
+                    throw _server.ErrorHandling.CreateValidationError("org.silastandard/test/RecoverableErrorProvider/v1/Command/RaiseRecoverableError/P" +
+                            "arameter/AutomaticExecutionTimeout", ex.Message);
+                }
+                throw _server.ErrorHandling.CreateUnknownValidationError(ex);
+            }
+        }
+        
         /// <summary>
         /// Registers the feature in the provided feature registration
         /// </summary>
         /// <param name="registration">The registration component to which the feature should be registered</param>
         public void Register(IServerBuilder registration)
         {
-            registration.RegisterObservableCommand<RaiseRecoverableErrorRequestDto, string, RaiseRecoverableErrorResponseDto>("RaiseRecoverableError", RaiseRecoverableError, ConvertRaiseRecoverableErrorResponse, null);
+            registration.RegisterObservableCommand<RaiseRecoverableErrorRequestDto, string, RaiseRecoverableErrorResponseDto>("RaiseRecoverableError", RaiseRecoverableError, ConvertRaiseRecoverableErrorResponse, ConvertRaiseRecoverableErrorExceptions);
         }
         
         private RaiseRecoverableErrorResponseDto ConvertRaiseRecoverableErrorResponse(string result)
@@ -77,7 +98,9 @@ namespace Tecan.Sila2.Interop.Server.RecoverableErrorProvider
         protected virtual Tecan.Sila2.IObservableCommand<string> RaiseRecoverableError(RaiseRecoverableErrorRequestDto request)
         {
             request.Validate();
-            return _implementation.RaiseRecoverableError(request.DurationUntilError.Extract(_server), request.AutomaticExecutionTimeout.Extract(_server));
+            return _implementation.RaiseRecoverableError(request.DurationUntilError.TryExtract(_server, "org.silastandard/test/RecoverableErrorProvider/v1/Command/RaiseRecoverableError/P" +
+                        "arameter/DurationUntilError"), request.AutomaticExecutionTimeout.TryExtract(_server, "org.silastandard/test/RecoverableErrorProvider/v1/Command/RaiseRecoverableError/P" +
+                        "arameter/AutomaticExecutionTimeout"));
         }
         
         /// <summary>

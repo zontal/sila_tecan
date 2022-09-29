@@ -35,7 +35,43 @@
     </Response>
   </Command>
 
-  <Property>
+    <Command>
+        <Identifier>EchoBinariesObservably</Identifier>
+        <DisplayName>Echo Binaries Observably</DisplayName>
+        <Description>Receives a list of binaries, echoes them individually as intermediate responses with a delay of 1 second, and then returns them as a single joint binary</Description>
+        <Observable>Yes</Observable>
+        <Parameter>
+            <Identifier>Binaries</Identifier>
+            <DisplayName>Binaries</DisplayName>
+            <Description>List of binaries to echo</Description>
+            <DataType>
+                <List>
+                    <DataType>
+                        <Basic>Binary</Basic>
+                    </DataType>
+                </List>
+            </DataType>
+        </Parameter>
+        <Response>
+            <Identifier>JointBinary</Identifier>
+            <DisplayName>Joint Binary</DisplayName>
+            <Description>A single binary comprised of binaries received as parameter</Description>
+            <DataType>
+                <Basic>Binary</Basic>
+            </DataType>
+        </Response>
+        <IntermediateResponse>
+            <Identifier>Binary</Identifier>
+            <DisplayName>Binary</DisplayName>
+            <Description>Single binary from the parameter list</Description>
+            <DataType>
+                <Basic>Binary</Basic>
+            </DataType>
+        </IntermediateResponse>
+    </Command>
+
+
+    <Property>
     <Identifier>BinaryValueDirectly</Identifier>
     <DisplayName>Binary Value Directly</DisplayName>
     <Description>Returns the UTF-8 encoded string 'SiLA2_Test_String_Value' directly transmitted as Binary value.</Description>

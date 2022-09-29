@@ -70,7 +70,6 @@ namespace Microsoft.Extensions.DependencyInjection
                 serverStartInfo = ServerConfigReader.ReadServerStartInformation();
             }
             services.TryAddSingleton( serverStartInfo );
-
             return builder;
         }
 

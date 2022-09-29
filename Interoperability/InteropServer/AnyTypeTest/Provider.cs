@@ -84,7 +84,8 @@ namespace Tecan.Sila2.Interop.Server.AnyTypeTest
             try
             {
                 request.Validate();
-                return new SetAnyTypeValueResponseDto(_implementation.SetAnyTypeValue(request.AnyTypeValue.Extract(_server)), _server);
+                return new SetAnyTypeValueResponseDto(_implementation.SetAnyTypeValue(request.AnyTypeValue.TryExtract(_server, "org.silastandard/test/AnyTypeTest/v1/Command/SetAnyTypeValue/Parameter/AnyTypeVal" +
+                                "ue")), _server);
             } catch (System.ArgumentException ex)
             {
                 if ((ex.ParamName == "anyTypeValue"))

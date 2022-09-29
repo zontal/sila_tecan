@@ -6,9 +6,9 @@ using Tecan.Sila2.Server;
 
 namespace Tecan.Sila2.Interop.Server.MetadataProvider
 {
-    [Export( typeof( IMetadataProviderTest ) )]
+    [Export( typeof( IMetadataProvider ) )]
     [PartCreationPolicy( CreationPolicy.Shared )]
-    internal class MetadataProvider : IMetadataProviderTest
+    internal class MetadataProvider : IMetadataProvider
     {
         private readonly StringMetadataProvider _stringMetadataProvider;
         private readonly TwoIntegersMetadataProvider _twoIntegersProvider;

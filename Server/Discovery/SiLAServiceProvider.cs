@@ -82,7 +82,8 @@ namespace Tecan.Sila2.Discovery
             try
             {
                 request.Validate();
-                return new GetFeatureDefinitionResponseDto(_implementation.GetFeatureDefinition(request.FeatureIdentifier.Extract(_server)), _server);
+                return new GetFeatureDefinitionResponseDto(_implementation.GetFeatureDefinition(request.FeatureIdentifier.TryExtract(_server, "org.silastandard/core/SiLAService/v1/Command/GetFeatureDefinition/Parameter/Featu" +
+                                "reIdentifier")), _server);
             } catch (System.ArgumentException ex)
             {
                 if ((ex.ParamName == "featureIdentifier"))
@@ -108,7 +109,7 @@ namespace Tecan.Sila2.Discovery
             try
             {
                 request.Validate();
-                _implementation.SetServerName(request.ServerName.Extract(_server));
+                _implementation.SetServerName(request.ServerName.TryExtract(_server, "org.silastandard/core/SiLAService/v1/Command/SetServerName/Parameter/ServerName"));
                 return EmptyRequest.Instance;
             } catch (System.ArgumentException ex)
             {

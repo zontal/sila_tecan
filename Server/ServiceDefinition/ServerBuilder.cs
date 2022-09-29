@@ -188,5 +188,10 @@ namespace Tecan.Sila2.Server.ServiceDefinition
             RegisterObservableCommandCore( commandName, implementation, responseConverter, exceptionConverter, ProtobufMarshaller<TRequest>.FromByteSerializer( requestSerializer ), ProtobufMarshaller<TResponseDto>.FromByteSerializer( responseSerializer ), builder );
             _serviceDefinitionBuilder.AddMethod( intermediateResults, builder.GetIntermediateResponses );
         }
+
+        public void RegisterBinaryCommandParameter( string commandParameter )
+        {
+            _server.RegisterBinaryParameter( commandParameter );
+        }
     }
 }

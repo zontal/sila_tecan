@@ -80,7 +80,8 @@ namespace Tecan.Sila2.Interop.Server.ListDataTypeTest
             try
             {
                 request.Validate();
-                return new EchoStringListResponseDto(_implementation.EchoStringList(request.StringList.Extract(_server)), _server);
+                return new EchoStringListResponseDto(_implementation.EchoStringList(request.StringList.TryExtract(_server, "org.silastandard/test/ListDataTypeTest/v1/Command/EchoStringList/Parameter/String" +
+                                "List")), _server);
             } catch (System.ArgumentException ex)
             {
                 if ((ex.ParamName == "stringList"))
@@ -102,7 +103,8 @@ namespace Tecan.Sila2.Interop.Server.ListDataTypeTest
             try
             {
                 request.Validate();
-                return new EchoIntegerListResponseDto(_implementation.EchoIntegerList(request.IntegerList.Extract(_server)), _server);
+                return new EchoIntegerListResponseDto(_implementation.EchoIntegerList(request.IntegerList.TryExtract(_server, "org.silastandard/test/ListDataTypeTest/v1/Command/EchoIntegerList/Parameter/Integ" +
+                                "erList")), _server);
             } catch (System.ArgumentException ex)
             {
                 if ((ex.ParamName == "integerList"))
@@ -124,7 +126,8 @@ namespace Tecan.Sila2.Interop.Server.ListDataTypeTest
             try
             {
                 request.Validate();
-                return new EchoStructureListResponseDto(_implementation.EchoStructureList(request.StructureList.Extract(_server)), _server);
+                return new EchoStructureListResponseDto(_implementation.EchoStructureList(request.StructureList.TryExtract(_server, "org.silastandard/test/ListDataTypeTest/v1/Command/EchoStructureList/Parameter/Str" +
+                                "uctureList")), _server);
             } catch (System.ArgumentException ex)
             {
                 if ((ex.ParamName == "structureList"))

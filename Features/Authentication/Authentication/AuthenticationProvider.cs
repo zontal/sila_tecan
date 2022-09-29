@@ -75,7 +75,10 @@ namespace Tecan.Sila2.Authentication
             try
             {
                 request.Validate();
-                return new LoginResponseDto(_implementation.Login(request.UserIdentification.Extract(_server), request.Password.Extract(_server), request.RequestedServer.Extract(_server), request.RequestedFeatures.Extract(_server)), _server);
+                return new LoginResponseDto(_implementation.Login(request.UserIdentification.TryExtract(_server, "org.silastandard/core/AuthenticationService/v1/Command/Login/Parameter/UserIdenti" +
+                                "fication"), request.Password.TryExtract(_server, "org.silastandard/core/AuthenticationService/v1/Command/Login/Parameter/Password"), request.RequestedServer.TryExtract(_server, "org.silastandard/core/AuthenticationService/v1/Command/Login/Parameter/RequestedS" +
+                                "erver"), request.RequestedFeatures.TryExtract(_server, "org.silastandard/core/AuthenticationService/v1/Command/Login/Parameter/RequestedF" +
+                                "eatures")), _server);
             } catch (System.ArgumentException ex)
             {
                 if ((ex.ParamName == "userIdentification"))
@@ -115,7 +118,8 @@ namespace Tecan.Sila2.Authentication
             try
             {
                 request.Validate();
-                _implementation.Logout(request.AccessToken.Extract(_server));
+                _implementation.Logout(request.AccessToken.TryExtract(_server, "org.silastandard/core/AuthenticationService/v1/Command/Logout/Parameter/AccessTok" +
+                            "en"));
                 return EmptyRequest.Instance;
             } catch (System.ArgumentException ex)
             {

@@ -16,9 +16,9 @@ namespace Tecan.Sila2.Interop.Server.MetadataProvider
     /// This feature provides SiLA Client Metadata to the "Metadata Consumer Test" feature.
     /// </summary>
     [Tecan.Sila2.SilaFeatureAttribute(true, "test")]
-    [Tecan.Sila2.SilaIdentifierAttribute("MetadataProviderTest")]
-    [Tecan.Sila2.SilaDisplayNameAttribute("Metadata Provider Test")]
-    public partial interface IMetadataProviderTest
+    [Tecan.Sila2.SilaIdentifierAttribute("MetadataProvider")]
+    [Tecan.Sila2.SilaDisplayNameAttribute("Metadata Provider")]
+    public partial interface IMetadataProvider
     {
     }
     

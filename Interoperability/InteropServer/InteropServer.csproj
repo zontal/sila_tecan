@@ -28,7 +28,7 @@
         <None Remove="ListDataTypeTest.sila.xml" />
         <None Remove="LockableCommandProvider.sila.xml" />
         <None Remove="MetadataConsumerTest.sila.xml" />
-        <None Remove="MetadataProviderTest.sila.xml" />
+        <None Remove="MetadataProvider.sila.xml" />
         <None Remove="MultiClientTest.sila.xml" />
         <None Remove="ObservableCommandTest.sila.xml" />
         <None Remove="ObservablePropertyTest.sila.xml" />
@@ -54,7 +54,7 @@
         <EmbeddedResource Include="ListDataTypeTest.sila.xml" />
         <EmbeddedResource Include="LockableCommandProvider.sila.xml" />
         <EmbeddedResource Include="MetadataConsumerTest.sila.xml" />
-        <EmbeddedResource Include="MetadataProviderTest.sila.xml" />
+        <EmbeddedResource Include="MetadataProvider.sila.xml" />
         <EmbeddedResource Include="MultiClientTest.sila.xml" />
         <EmbeddedResource Include="ObservableCommandTest.sila.xml" />
         <EmbeddedResource Include="ObservablePropertyTest.sila.xml" />

@@ -52,8 +52,19 @@ namespace Tecan.Sila2.Server.Binary
 
         private Task<EmptyRequest> DeleteBinary( DeleteBinaryRequestDto request, ServerCallContext context )
         {
-            _server.Delete( request.BinaryTransferUUID, false );
-            return Task.FromResult( EmptyRequest.Instance );
+            try
+            {
+                _server.Delete( request.BinaryTransferUUID, false );
+                return Task.FromResult( EmptyRequest.Instance );
+            }
+            catch(InvalidBinaryTransferIdException transferException)
+            {
+                return Task.FromException<EmptyRequest>( ServerErrorHandling.Instance.CreateBinaryError( new BinaryTransferError
+                {
+                    Type = BinaryTransferError.ErrorType.InvalidBinaryTransferUuid,
+                    Message = transferException.Message
+                } ) );
+            }
         }
 
         private Task<GetBinaryInfoResponseDto> GetBinaryInfo( GetBinaryInfoRequestDto request, ServerCallContext context )
@@ -145,6 +156,10 @@ namespace Tecan.Sila2.Server.Binary
             {
                 fileData = OpenFile( request.BinaryTransferUUID, fileData.expiration );
             }
+            if(request.Offset + request.Length > (ulong)fileData.stream.Length)
+            {
+                throw new InvalidOperationException( "Requested offset out of bounds" );
+            }
             fileData.stream.Position = (long)request.Offset;
             var newExpiration = DateTimeOffset.Now.AddMinutes( 5 );
             _openStreams.TryUpdate( request.BinaryTransferUUID, (fileData.stream, newExpiration), fileData );
@@ -159,6 +174,7 @@ namespace Tecan.Sila2.Server.Binary
             return new GetChunkResponseDto()
             {
                 Payload = bytesToSend,
+                Offset = request.Offset,
                 BinaryTransferUUID = request.BinaryTransferUUID,
                 LifetimeOfBinary = new TimestampDto( newExpiration ),
             };

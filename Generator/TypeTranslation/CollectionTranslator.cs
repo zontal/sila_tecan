@@ -152,6 +152,15 @@ namespace Tecan.Sila2.Generator.TypeTranslation
                     nameof( DtoExtensions.Extract ),
                     binaryStorageArgument );
             }
+
+            public CodeExpression Extract( CodeExpression expression, CodeTypeReference targetType, CodeExpression binaryStorageArgument, string parameterName )
+            {
+                return new CodeMethodInvokeExpression(
+                    expression,
+                    nameof( DtoExtensions.TryExtract ),
+                    binaryStorageArgument,
+                    new CodePrimitiveExpression( parameterName ) );
+            }
         }
     }
 }

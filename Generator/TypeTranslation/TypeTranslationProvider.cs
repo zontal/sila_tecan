@@ -8,8 +8,8 @@ using Tecan.Sila2.Generator.Contracts;
 
 namespace Tecan.Sila2.Generator.TypeTranslation
 {
-    [Export(typeof(ITypeTranslationProvider))]
-    [PartCreationPolicy(CreationPolicy.Shared)]
+    [Export( typeof( ITypeTranslationProvider ) )]
+    [PartCreationPolicy( CreationPolicy.Shared )]
     internal class TypeTranslationProvider : ITypeTranslationProvider
     {
         private readonly IReadOnlyList<ITypeTranslator> _translators;
@@ -18,7 +18,7 @@ namespace Tecan.Sila2.Generator.TypeTranslation
         [ImportingConstructor]
         public TypeTranslationProvider( [ImportMany] IEnumerable<ITypeTranslator> translators )
         {
-            _translators = translators.OrderByDescending(t => t.Priority).ToList();
+            _translators = translators.OrderByDescending( t => t.Priority ).ToList();
         }
 
         public CodeExpression EncapsulateAsDto( CodeExpression argument, DataTypeType dataType, CodeExpression binaryStoreArgument, string suggestedName )
@@ -42,7 +42,7 @@ namespace Tecan.Sila2.Generator.TypeTranslation
 
         public CodeExpression Extract( CodeExpression expression, DataTypeType dataType, CodeExpression binaryStorageArgument, CodeTypeReference targetType )
         {
-            if( TryTranslate( dataType, null, out var translationInfo ) )
+            if(TryTranslate( dataType, null, out var translationInfo ))
             {
                 return translationInfo.Extract( expression, targetType, binaryStorageArgument );
             }
@@ -60,9 +60,9 @@ namespace Tecan.Sila2.Generator.TypeTranslation
 
         public bool TryTranslate( Type interfaceType, string origin, out DataTypeType silaType )
         {
-            foreach( var typeTranslator in _translators )
+            foreach(var typeTranslator in _translators)
             {
-                if( typeTranslator.TryTranslate( this, interfaceType, origin, out silaType ) )
+                if(typeTranslator.TryTranslate( this, interfaceType, origin, out silaType ))
                 {
                     _loggingChannel.Debug( $"Type {interfaceType.FullName} translated using {typeTranslator}" );
                     return true;
@@ -75,11 +75,11 @@ namespace Tecan.Sila2.Generator.TypeTranslation
 
         public bool TryTranslate( DataTypeType dataType, string suggestedName, out ITypeTranslationInfo translationInfo, Action<Constraints> constraintHandler = null, Action<string, StructureType> structHandler = null )
         {
-            foreach( var typeTranslator in _translators )
+            foreach(var typeTranslator in _translators)
             {
-                if( typeTranslator.TryTranslate( this, dataType, suggestedName, out translationInfo, constraintHandler, structHandler ) && translationInfo != null )
+                if(typeTranslator.TryTranslate( this, dataType, suggestedName, out translationInfo, constraintHandler, structHandler ) && translationInfo != null)
                 {
-                    _loggingChannel.Debug($"SiLA2 Type {dataType.Item} translated using {typeTranslator}");
+                    _loggingChannel.Debug( $"SiLA2 Type {dataType.Item} translated using {typeTranslator}" );
                     return true;
                 }
             }
@@ -90,13 +90,22 @@ namespace Tecan.Sila2.Generator.TypeTranslation
 
         public void TraverseTypes( Type interfaceType, string origin, Action<Type> typeAction )
         {
-            foreach( var typeTranslator in _translators )
+            foreach(var typeTranslator in _translators)
             {
-                if( typeTranslator.TraverseTypes( this, interfaceType, origin, typeAction ) )
+                if(typeTranslator.TraverseTypes( this, interfaceType, origin, typeAction ))
                 {
                     return;
                 }
             }
+        }
+
+        public CodeExpression Extract( CodeExpression expression, DataTypeType dataType, CodeExpression binaryStorageArgument, string parameterName, CodeTypeReference targetType )
+        {
+            if(TryTranslate( dataType, null, out var translationInfo ))
+            {
+                return translationInfo.Extract( expression, targetType, binaryStorageArgument, parameterName );
+            }
+            throw new NotSupportedException();
         }
     }
 }

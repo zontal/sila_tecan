@@ -98,12 +98,12 @@ namespace Tecan.Sila2.Interop.Server.RecoverableErrorProvider
             Argument.Validate(DurationUntilError, "durationUntilError");
             if ((DurationUntilError.Value < 0))
             {
-                throw new ArgumentException("durationUntilError", string.Format("DurationUntilError should have been at least 0 but was \'{0}\'", DurationUntilError.Value));
+                throw new ArgumentException(string.Format("DurationUntilError should have been at least 0 but was \'{0}\'", DurationUntilError.Value), "durationUntilError");
             }
             Argument.Validate(AutomaticExecutionTimeout, "automaticExecutionTimeout");
             if ((AutomaticExecutionTimeout.Value < 0))
             {
-                throw new ArgumentException("automaticExecutionTimeout", string.Format("AutomaticExecutionTimeout should have been at least 0 but was \'{0}\'", AutomaticExecutionTimeout.Value));
+                throw new ArgumentException(string.Format("AutomaticExecutionTimeout should have been at least 0 but was \'{0}\'", AutomaticExecutionTimeout.Value), "automaticExecutionTimeout");
             }
         }
         

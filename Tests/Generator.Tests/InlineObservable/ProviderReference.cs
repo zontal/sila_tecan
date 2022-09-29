@@ -17,7 +17,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
 {
 
 
-    ///  <summary>
+    /// <summary>
     /// A class that exposes the IInlineObservableService interface via SiLA2
     /// </summary>
     [System.ComponentModel.Composition.ExportAttribute( typeof( IFeatureProvider ) )]
@@ -31,7 +31,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
 
         private static Tecan.Sila2.Feature _feature = FeatureSerializer.LoadFromAssembly( typeof( InlineObservableServiceProvider ).Assembly, "InlineObservableService.sila.xml" );
 
-        ///  <summary>
+        /// <summary>
         /// Creates a new instance
         /// </summary>
         /// <param name="implementation">The implementation to exported through SiLA2</param>
@@ -43,7 +43,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             _server = server;
         }
 
-        ///  <summary>
+        /// <summary>
         /// The feature that is exposed by this feature provider
         /// </summary>
         /// <returns>A feature object</returns>
@@ -55,14 +55,30 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             }
         }
 
+        private System.Exception ConvertTestInlineObservableExceptions( System.Exception exception )
+        {
+            try
+            {
+                throw exception;
+            }
+            catch(System.ArgumentException ex)
+            {
+                if((ex.ParamName == "parameter"))
+                {
+                    throw _server.ErrorHandling.CreateValidationError( "tecan.sila.generator.test/testreference/InlineObservableService/v4/Command/TestIn" +
+                            "lineObservable/Parameter/Parameter", ex.Message );
+                }
+                throw _server.ErrorHandling.CreateUnknownValidationError( ex );
+            }
+        }
 
-        ///  <summary>
+        /// <summary>
         /// Registers the feature in the provided feature registration
         /// </summary>
         /// <param name="registration">The registration component to which the feature should be registered</param>
         public void Register( IServerBuilder registration )
         {
-            registration.RegisterObservableCommand<TestInlineObservableRequestDto, bool, TestInlineObservableResponseDto>( "TestInlineObservable", TestInlineObservable, ConvertTestInlineObservableResponse, null );
+            registration.RegisterObservableCommand<TestInlineObservableRequestDto, bool, TestInlineObservableResponseDto>( "TestInlineObservable", TestInlineObservable, ConvertTestInlineObservableResponse, ConvertTestInlineObservableExceptions );
         }
 
         private TestInlineObservableResponseDto ConvertTestInlineObservableResponse( bool result )
@@ -70,7 +86,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             return new TestInlineObservableResponseDto( result, _server );
         }
 
-        ///  <summary>
+        /// <summary>
         /// Executes the Test Inline Observable command
         /// </summary>
         /// <param name="request">A data transfer object that contains the command parameters</param>
@@ -81,7 +97,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             return new TestInlineObservableCommand( this, request );
         }
 
-        ///  <summary>
+        /// <summary>
         /// Gets the command with the given identifier
         /// </summary>
         /// <param name="commandIdentifier">A fully qualified command identifier</param>
@@ -96,7 +112,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             return null;
         }
 
-        ///  <summary>
+        /// <summary>
         /// Gets the property with the given identifier
         /// </summary>
         /// <param name="propertyIdentifier">A fully qualified property identifier</param>
@@ -127,7 +143,8 @@ namespace Tecan.Sila2.Generator.Test.TestReference
 
             private bool RunCore()
             {
-                return _parent._implementation.TestInlineObservable( _request.Parameter.Extract( _parent._server ), CancellationToken );
+                return _parent._implementation.TestInlineObservable( _request.Parameter.TryExtract( _parent._server, "tecan.sila.generator.test/testreference/InlineObservableService/v4/Command/TestIn" +
+                            "lineObservable/Parameter/Parameter" ), CancellationToken );
             }
         }
     }

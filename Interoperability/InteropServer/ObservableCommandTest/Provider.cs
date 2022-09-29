@@ -55,14 +55,54 @@ namespace Tecan.Sila2.Interop.Server.ObservableCommandTest
             }
         }
         
+        private System.Exception ConvertCountExceptions(System.Exception exception)
+        {
+            try
+            {
+                throw exception;
+            } catch (System.ArgumentException ex)
+            {
+                if ((ex.ParamName == "n"))
+                {
+                    throw _server.ErrorHandling.CreateValidationError("org.silastandard/test/ObservableCommandTest/v1/Command/Count/Parameter/N", ex.Message);
+                }
+                if ((ex.ParamName == "delay"))
+                {
+                    throw _server.ErrorHandling.CreateValidationError("org.silastandard/test/ObservableCommandTest/v1/Command/Count/Parameter/Delay", ex.Message);
+                }
+                throw _server.ErrorHandling.CreateUnknownValidationError(ex);
+            }
+        }
+        
+        private System.Exception ConvertEchoValueAfterDelayExceptions(System.Exception exception)
+        {
+            try
+            {
+                throw exception;
+            } catch (System.ArgumentException ex)
+            {
+                if ((ex.ParamName == "value"))
+                {
+                    throw _server.ErrorHandling.CreateValidationError("org.silastandard/test/ObservableCommandTest/v1/Command/EchoValueAfterDelay/Parame" +
+                            "ter/Value", ex.Message);
+                }
+                if ((ex.ParamName == "delay"))
+                {
+                    throw _server.ErrorHandling.CreateValidationError("org.silastandard/test/ObservableCommandTest/v1/Command/EchoValueAfterDelay/Parame" +
+                            "ter/Delay", ex.Message);
+                }
+                throw _server.ErrorHandling.CreateUnknownValidationError(ex);
+            }
+        }
+        
         /// <summary>
         /// Registers the feature in the provided feature registration
         /// </summary>
         /// <param name="registration">The registration component to which the feature should be registered</param>
         public void Register(IServerBuilder registration)
         {
-            registration.RegisterCommandWithIntermediates<CountRequestDto, long, CountIntermediateDto, long, CountResponseDto>("Count", Count, ConvertCountIntermediate, ConvertCountResponse, null);
-            registration.RegisterObservableCommand<EchoValueAfterDelayRequestDto, long, EchoValueAfterDelayResponseDto>("EchoValueAfterDelay", EchoValueAfterDelay, ConvertEchoValueAfterDelayResponse, null);
+            registration.RegisterCommandWithIntermediates<CountRequestDto, long, CountIntermediateDto, long, CountResponseDto>("Count", Count, ConvertCountIntermediate, ConvertCountResponse, ConvertCountExceptions);
+            registration.RegisterObservableCommand<EchoValueAfterDelayRequestDto, long, EchoValueAfterDelayResponseDto>("EchoValueAfterDelay", EchoValueAfterDelay, ConvertEchoValueAfterDelayResponse, ConvertEchoValueAfterDelayExceptions);
         }
         
         private CountIntermediateDto ConvertCountIntermediate(long intermediate)
@@ -83,7 +123,7 @@ namespace Tecan.Sila2.Interop.Server.ObservableCommandTest
         protected virtual Tecan.Sila2.IIntermediateObservableCommand<long, long> Count(CountRequestDto request)
         {
             request.Validate();
-            return _implementation.Count(request.N.Extract(_server), request.Delay.Extract(_server));
+            return _implementation.Count(request.N.TryExtract(_server, "org.silastandard/test/ObservableCommandTest/v1/Command/Count/Parameter/N"), request.Delay.TryExtract(_server, "org.silastandard/test/ObservableCommandTest/v1/Command/Count/Parameter/Delay"));
         }
         
         private EchoValueAfterDelayResponseDto ConvertEchoValueAfterDelayResponse(long result)
@@ -99,7 +139,9 @@ namespace Tecan.Sila2.Interop.Server.ObservableCommandTest
         protected virtual Tecan.Sila2.IObservableCommand<long> EchoValueAfterDelay(EchoValueAfterDelayRequestDto request)
         {
             request.Validate();
-            return _implementation.EchoValueAfterDelay(request.Value.Extract(_server), request.Delay.Extract(_server));
+            return _implementation.EchoValueAfterDelay(request.Value.TryExtract(_server, "org.silastandard/test/ObservableCommandTest/v1/Command/EchoValueAfterDelay/Parame" +
+                        "ter/Value"), request.Delay.TryExtract(_server, "org.silastandard/test/ObservableCommandTest/v1/Command/EchoValueAfterDelay/Parame" +
+                        "ter/Delay"));
         }
         
         /// <summary>

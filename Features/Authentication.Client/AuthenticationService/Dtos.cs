@@ -140,12 +140,12 @@ namespace Tecan.Sila2.Authentication.AuthenticationService
             Argument.Validate(RequestedServer, "requestedServer");
             if ((RequestedServer.Value.Length != 36))
             {
-                throw new ArgumentException("requestedServer", string.Format("RequestedServer has length {0} but should have been 36", RequestedServer.Value.Length));
+                throw new ArgumentException(string.Format("RequestedServer has length {0} but should have been 36", RequestedServer.Value.Length), "requestedServer");
             }
             if ((RegexConstraint.IsMatch(RequestedServer.Value, "[0-9a-f]{8}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{12}") == false))
             {
-                throw new ArgumentException("requestedServer", string.Format("RequestedServer \'{0}\' does not match pattern \'[0-9a-f]{8}\\-[0-9a-f]{4}\\-[0-9a-f]{" +
-                            "4}\\-[0-9a-f]{4}\\-[0-9a-f]{12}\'", RequestedServer.Value));
+                throw new ArgumentException(string.Format("RequestedServer \'{0}\' does not match pattern \'[0-9a-f]{8}\\-[0-9a-f]{4}\\-[0-9a-f]{" +
+                            "4}\\-[0-9a-f]{4}\\-[0-9a-f]{12}\'", RequestedServer.Value), "requestedServer");
             }
             Argument.Validate(RequestedFeatures, "requestedFeatures");
         }

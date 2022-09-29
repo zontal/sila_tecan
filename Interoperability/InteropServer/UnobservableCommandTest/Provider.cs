@@ -89,7 +89,8 @@ namespace Tecan.Sila2.Interop.Server.UnobservableCommandTest
             try
             {
                 request.Validate();
-                return new ConvertIntegerToStringResponseDto(_implementation.ConvertIntegerToString(request.Integer.Extract(_server)), _server);
+                return new ConvertIntegerToStringResponseDto(_implementation.ConvertIntegerToString(request.Integer.TryExtract(_server, "org.silastandard/test/UnobservableCommandTest/v1/Command/ConvertIntegerToString/P" +
+                                "arameter/Integer")), _server);
             } catch (System.ArgumentException ex)
             {
                 if ((ex.ParamName == "integer"))
@@ -111,7 +112,9 @@ namespace Tecan.Sila2.Interop.Server.UnobservableCommandTest
             try
             {
                 request.Validate();
-                return new JoinIntegerAndStringResponseDto(_implementation.JoinIntegerAndString(request.Integer.Extract(_server), request.String.Extract(_server)), _server);
+                return new JoinIntegerAndStringResponseDto(_implementation.JoinIntegerAndString(request.Integer.TryExtract(_server, "org.silastandard/test/UnobservableCommandTest/v1/Command/JoinIntegerAndString/Par" +
+                                "ameter/Integer"), request.String.TryExtract(_server, "org.silastandard/test/UnobservableCommandTest/v1/Command/JoinIntegerAndString/Par" +
+                                "ameter/String")), _server);
             } catch (System.ArgumentException ex)
             {
                 if ((ex.ParamName == "integer"))
@@ -138,7 +141,8 @@ namespace Tecan.Sila2.Interop.Server.UnobservableCommandTest
             try
             {
                 request.Validate();
-                return new SplitStringAfterFirstCharacterResponseDto(_implementation.SplitStringAfterFirstCharacter(request.String.Extract(_server)), _server);
+                return new SplitStringAfterFirstCharacterResponseDto(_implementation.SplitStringAfterFirstCharacter(request.String.TryExtract(_server, "org.silastandard/test/UnobservableCommandTest/v1/Command/SplitStringAfterFirstCha" +
+                                "racter/Parameter/String")), _server);
             } catch (System.ArgumentException ex)
             {
                 if ((ex.ParamName == "string"))

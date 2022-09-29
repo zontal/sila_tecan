@@ -19,7 +19,7 @@ namespace Tecan.Sila2.Server.ServiceDefinition
         {
             _server = server;
             _implementation = implementation;
-            _errorConverter = errorConverter;
+            _errorConverter = errorConverter ?? server.ErrorHandling.CreateUndefinedExecutionError;
             _intermediateHandler = intermediateHandler;
         }
 
@@ -30,6 +30,11 @@ namespace Tecan.Sila2.Server.ServiceDefinition
 
         private async Task QueryState( ObservableCommandExecution command, IAsyncStreamWriter<ExecutionState> responseStream, CancellationToken cancellationToken )
         {
+            if(command.Command.State.State == CommandState.FinishedSuccess)
+            {
+                await responseStream.WriteAsync( ConvertStateUpdate( command.Command.State ) );
+                return;
+            }
             var stateReader = command.Command.StateUpdates;
             try
             {
@@ -47,7 +52,7 @@ namespace Tecan.Sila2.Server.ServiceDefinition
             }
             catch(Exception exception)
             {
-                var convertedException = _errorConverter?.Invoke( exception );
+                var convertedException = _errorConverter.Invoke( exception );
                 if(convertedException != null && convertedException != exception)
                 {
                     throw convertedException;
@@ -93,6 +98,10 @@ namespace Tecan.Sila2.Server.ServiceDefinition
 
         private async Task<EmptyRequest> GetResponse( ObservableCommandExecution command )
         {
+            if(!command.Command.Response.IsCompleted)
+            {
+                throw ServerErrorHandling.CreateFrameworkError( FrameworkErrorType.CommandExecutionNotFinished, "The command has not finished execution" );
+            }
             try
             {
                 await command.Command.Response;
@@ -108,7 +117,7 @@ namespace Tecan.Sila2.Server.ServiceDefinition
             }
             catch(Exception otherException)
             {
-                var convertedException = _errorConverter?.Invoke( otherException );
+                var convertedException = _errorConverter.Invoke( otherException );
                 if(convertedException != null && convertedException != otherException)
                 {
                     throw convertedException;
@@ -122,8 +131,23 @@ namespace Tecan.Sila2.Server.ServiceDefinition
 
         public Task<CommandConfirmation> Execute( TRequest request, ServerCallContext context )
         {
-            var executionId = _server.AddObservableCommandExecution( request.CommandIdentifier, _implementation?.Invoke( request ), new MetadataRepository( context ) );
-            return Task.FromResult( new CommandConfirmation( executionId ) );
+            try
+            {
+                var executionId = _server.AddObservableCommandExecution( request.CommandIdentifier, _implementation?.Invoke( request ), new MetadataRepository( context ) );
+                return Task.FromResult( new CommandConfirmation( executionId ) );
+            }
+            catch(Exception ex)
+            {
+                var convertedException = _errorConverter.Invoke( ex );
+                if(convertedException != null && convertedException != ex)
+                {
+                    return Task.FromException<CommandConfirmation>( convertedException );
+                }
+                else
+                {
+                    return Task.FromException<CommandConfirmation>( ex );
+                }
+            }
         }
 
         public async void HandleRequest( SilaClientMessage message, IClientStreamWriter<SilaServerMessage> responseWriter, ServerPoolDispatcher dispatcher )
@@ -288,7 +312,10 @@ namespace Tecan.Sila2.Server.ServiceDefinition
 
         private async Task<TResponseDto> GetCastedResponse( ObservableCommandExecution command )
         {
-
+            if(!command.Command.Response.IsCompleted)
+            {
+                throw ServerErrorHandling.CreateFrameworkError( FrameworkErrorType.CommandExecutionNotFinished, "The command has not finished execution" );
+            }
             try
             {
                 var resultTask = command.Command.Response as Task<TResponse>;
@@ -309,7 +336,7 @@ namespace Tecan.Sila2.Server.ServiceDefinition
             }
             catch(Exception otherException)
             {
-                var convertedException = _errorConverter?.Invoke( otherException );
+                var convertedException = _errorConverter.Invoke( otherException );
                 if(convertedException != null && convertedException != otherException)
                 {
                     throw convertedException;

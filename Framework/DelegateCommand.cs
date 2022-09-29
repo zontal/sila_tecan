@@ -14,6 +14,7 @@ namespace Tecan.Sila2
 
         public override Task Run()
         {
+            PushStateUpdate( 0, TimeSpan.Zero, CommandState.Running );
             return _command( PushStateUpdate );
         }
     }
@@ -29,6 +30,7 @@ namespace Tecan.Sila2
 
         public override Task<T> Run()
         {
+            PushStateUpdate( 0, TimeSpan.Zero, CommandState.Running );
             return _command( PushStateUpdate );
         }
     }
@@ -44,6 +46,7 @@ namespace Tecan.Sila2
 
         public override Task Run()
         {
+            PushStateUpdate( 0, TimeSpan.Zero, CommandState.Running );
             return _command( PushStateUpdate, PushIntermediate );
         }
     }
@@ -59,6 +62,7 @@ namespace Tecan.Sila2
 
         public override Task<T> Run()
         {
+            PushStateUpdate( 0, TimeSpan.Zero, CommandState.Running );
             return _command( PushStateUpdate, PushIntermediate );
         }
     }

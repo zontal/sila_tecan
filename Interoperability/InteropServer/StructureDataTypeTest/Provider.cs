@@ -77,7 +77,8 @@ namespace Tecan.Sila2.Interop.Server.StructureDataTypeTest
             try
             {
                 request.Validate();
-                return new EchoStructureValueResponseDto(_implementation.EchoStructureValue(request.StructureValue.Extract(_server)), _server);
+                return new EchoStructureValueResponseDto(_implementation.EchoStructureValue(request.StructureValue.TryExtract(_server, "org.silastandard/test/StructureDataTypeTest/v1/Command/EchoStructureValue/Paramet" +
+                                "er/StructureValue")), _server);
             } catch (System.ArgumentException ex)
             {
                 if ((ex.ParamName == "structureValue"))
@@ -99,7 +100,8 @@ namespace Tecan.Sila2.Interop.Server.StructureDataTypeTest
             try
             {
                 request.Validate();
-                return new EchoDeepStructureValueResponseDto(_implementation.EchoDeepStructureValue(request.DeepStructureValue.Extract(_server)), _server);
+                return new EchoDeepStructureValueResponseDto(_implementation.EchoDeepStructureValue(request.DeepStructureValue.TryExtract(_server, "org.silastandard/test/StructureDataTypeTest/v1/Command/EchoDeepStructureValue/Par" +
+                                "ameter/DeepStructureValue")), _server);
             } catch (System.ArgumentException ex)
             {
                 if ((ex.ParamName == "deepStructureValue"))

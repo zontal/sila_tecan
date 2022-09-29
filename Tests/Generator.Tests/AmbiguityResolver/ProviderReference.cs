@@ -91,7 +91,8 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             try
             {
                 request.Validate();
-                _implementation.OverloadedMethod(request.Method.Extract(_server));
+                _implementation.OverloadedMethod(request.Method.TryExtract(_server, "tecan.sila.generator.test/ambiguityresolver/AmbiguityResolverService/v4/Command/O" +
+                            "verloadedMethod/Parameter/Method"));
                 return EmptyRequest.Instance;
             } catch (System.ArgumentException ex)
             {

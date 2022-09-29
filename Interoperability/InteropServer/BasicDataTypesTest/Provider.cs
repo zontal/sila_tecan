@@ -87,7 +87,8 @@ namespace Tecan.Sila2.Interop.Server.BasicDataTypesTest
             try
             {
                 request.Validate();
-                return new EchoStringValueResponseDto(_implementation.EchoStringValue(request.StringValue.Extract(_server)), _server);
+                return new EchoStringValueResponseDto(_implementation.EchoStringValue(request.StringValue.TryExtract(_server, "org.silastandard/test/BasicDataTypesTest/v1/Command/EchoStringValue/Parameter/Str" +
+                                "ingValue")), _server);
             } catch (System.ArgumentException ex)
             {
                 if ((ex.ParamName == "stringValue"))
@@ -109,7 +110,8 @@ namespace Tecan.Sila2.Interop.Server.BasicDataTypesTest
             try
             {
                 request.Validate();
-                return new EchoIntegerValueResponseDto(_implementation.EchoIntegerValue(request.IntegerValue.Extract(_server)), _server);
+                return new EchoIntegerValueResponseDto(_implementation.EchoIntegerValue(request.IntegerValue.TryExtract(_server, "org.silastandard/test/BasicDataTypesTest/v1/Command/EchoIntegerValue/Parameter/In" +
+                                "tegerValue")), _server);
             } catch (System.ArgumentException ex)
             {
                 if ((ex.ParamName == "integerValue"))
@@ -131,7 +133,8 @@ namespace Tecan.Sila2.Interop.Server.BasicDataTypesTest
             try
             {
                 request.Validate();
-                return new EchoRealValueResponseDto(_implementation.EchoRealValue(request.RealValue.Extract(_server)), _server);
+                return new EchoRealValueResponseDto(_implementation.EchoRealValue(request.RealValue.TryExtract(_server, "org.silastandard/test/BasicDataTypesTest/v1/Command/EchoRealValue/Parameter/RealV" +
+                                "alue")), _server);
             } catch (System.ArgumentException ex)
             {
                 if ((ex.ParamName == "realValue"))
@@ -153,7 +156,8 @@ namespace Tecan.Sila2.Interop.Server.BasicDataTypesTest
             try
             {
                 request.Validate();
-                return new EchoBooleanValueResponseDto(_implementation.EchoBooleanValue(request.BooleanValue.Extract(_server)), _server);
+                return new EchoBooleanValueResponseDto(_implementation.EchoBooleanValue(request.BooleanValue.TryExtract(_server, "org.silastandard/test/BasicDataTypesTest/v1/Command/EchoBooleanValue/Parameter/Bo" +
+                                "oleanValue")), _server);
             } catch (System.ArgumentException ex)
             {
                 if ((ex.ParamName == "booleanValue"))
@@ -175,7 +179,8 @@ namespace Tecan.Sila2.Interop.Server.BasicDataTypesTest
             try
             {
                 request.Validate();
-                return new EchoDateValueResponseDto(_implementation.EchoDateValue(request.DateValue.Extract(_server)), _server);
+                return new EchoDateValueResponseDto(_implementation.EchoDateValue(request.DateValue.TryExtract(_server, "org.silastandard/test/BasicDataTypesTest/v1/Command/EchoDateValue/Parameter/DateV" +
+                                "alue")), _server);
             } catch (System.ArgumentException ex)
             {
                 if ((ex.ParamName == "dateValue"))
@@ -197,7 +202,8 @@ namespace Tecan.Sila2.Interop.Server.BasicDataTypesTest
             try
             {
                 request.Validate();
-                return new EchoTimeValueResponseDto(_implementation.EchoTimeValue(request.TimeValue.Extract(_server)), _server);
+                return new EchoTimeValueResponseDto(_implementation.EchoTimeValue(request.TimeValue.TryExtract(_server, "org.silastandard/test/BasicDataTypesTest/v1/Command/EchoTimeValue/Parameter/TimeV" +
+                                "alue")), _server);
             } catch (System.ArgumentException ex)
             {
                 if ((ex.ParamName == "timeValue"))
@@ -219,7 +225,8 @@ namespace Tecan.Sila2.Interop.Server.BasicDataTypesTest
             try
             {
                 request.Validate();
-                return new EchoTimestampValueResponseDto(_implementation.EchoTimestampValue(request.TimestampValue.Extract(_server)), _server);
+                return new EchoTimestampValueResponseDto(_implementation.EchoTimestampValue(request.TimestampValue.TryExtract(_server, "org.silastandard/test/BasicDataTypesTest/v1/Command/EchoTimestampValue/Parameter/" +
+                                "TimestampValue")), _server);
             } catch (System.ArgumentException ex)
             {
                 if ((ex.ParamName == "timestampValue"))

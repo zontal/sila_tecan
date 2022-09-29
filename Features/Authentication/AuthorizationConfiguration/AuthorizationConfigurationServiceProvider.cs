@@ -75,7 +75,8 @@ namespace Tecan.Sila2.Authorization
             try
             {
                 request.Validate();
-                _implementation.SetAuthorizationProvider(request.AuthorizationProvider.Extract(_server));
+                _implementation.SetAuthorizationProvider(request.AuthorizationProvider.TryExtract(_server, "org.silastandard/core/AuthorizationConfigurationService/v1/Command/SetAuthorizati" +
+                            "onProvider/Parameter/AuthorizationProvider"));
                 return EmptyRequest.Instance;
             } catch (System.ArgumentException ex)
             {

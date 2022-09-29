@@ -77,7 +77,8 @@ namespace Tecan.Sila2.Locking
             try
             {
                 request.Validate();
-                _implementation.LockServer(request.LockIdentifier.Extract(_server), request.Timeout.Extract(_server));
+                _implementation.LockServer(request.LockIdentifier.TryExtract(_server, "org.silastandard/core/LockController/v1/Command/LockServer/Parameter/LockIdentifi" +
+                            "er"), request.Timeout.TryExtract(_server, "org.silastandard/core/LockController/v1/Command/LockServer/Parameter/Timeout"));
                 return EmptyRequest.Instance;
             } catch (System.ArgumentException ex)
             {
@@ -108,7 +109,8 @@ namespace Tecan.Sila2.Locking
             try
             {
                 request.Validate();
-                _implementation.UnlockServer(request.LockIdentifier.Extract(_server));
+                _implementation.UnlockServer(request.LockIdentifier.TryExtract(_server, "org.silastandard/core/LockController/v1/Command/UnlockServer/Parameter/LockIdenti" +
+                            "fier"));
                 return EmptyRequest.Instance;
             } catch (System.ArgumentException ex)
             {

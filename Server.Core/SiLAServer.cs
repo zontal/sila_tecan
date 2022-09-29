@@ -478,6 +478,8 @@ namespace Tecan.Sila2.Server
                 command.Start();
             }
 
+            command.Response.ContinueWith( execution.Complete );
+
             return commandExecutionId;
         }
 
@@ -496,14 +498,26 @@ namespace Tecan.Sila2.Server
             {
                 _logger.Error( $"Exception happened obtaining the value for {propertyIdentifier}", exception );
                 _requestPipeline.ReportError( interceptors, exception );
-                throw;
+                if(exception is RpcException)
+                {
+                    throw;
+                }
+                throw ErrorHandling.CreateUndefinedExecutionError( exception );
             }
+        }
+
+        internal void RegisterBinaryParameter( string commandParameter )
+        {
+            _upload.RegisterCommandParameter( commandParameter );
         }
 
         /// <inheritdoc />
         public Stream ResolveStoredBinary( string identifier )
         {
-            _upload.WaitUploadComplete( identifier );
+            if(!_upload.IsUploadCompleted( identifier ))
+            {
+                throw new ArgumentException( $"Upload of the binary {identifier} is not yet complete" );
+            }
             return _fileManagement.OpenRead( identifier );
         }
 
@@ -540,7 +554,10 @@ namespace Tecan.Sila2.Server
         /// <inheritdoc />
         public FileInfo ResolveStoredBinaryFile( string identifier )
         {
-            _upload.WaitUploadComplete( identifier );
+            if(!_upload.IsUploadCompleted( identifier ))
+            {
+                throw new ArgumentException( $"Upload of the binary {identifier} is not yet complete" );
+            }
             return _fileManagement.Locate( identifier );
         }
 

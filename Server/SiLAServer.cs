@@ -455,6 +455,11 @@ namespace Tecan.Sila2.Server
             }
         }
 
+        internal void RegisterBinaryParameter( string commandParameter )
+        {
+            _upload.RegisterCommandParameter( commandParameter );
+        }
+
         /// <summary>
         /// Registers an observable command execution
         /// </summary>
@@ -482,6 +487,8 @@ namespace Tecan.Sila2.Server
             {
                 command.Start();
             }
+
+            command.Response.ContinueWith( execution.Complete );
 
             return commandExecutionId;
         }

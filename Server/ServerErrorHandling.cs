@@ -74,7 +74,7 @@ namespace Tecan.Sila2.Server
             {
                 UndefinedExecutionError = new UndefinedExecutionErrorDto
                 {
-                    Message = $"{exception.GetType().Name}: {exception.Message}"
+                    Message = exception.Message
                 }
             } ) ) );
         }
@@ -102,7 +102,7 @@ namespace Tecan.Sila2.Server
             {
                 DefinedExecutionError = new DefinedExecutionErrorDto()
                 {
-                    Message = details != null ? $"{description}: {details}" : description,
+                    Message = details ?? description,
                     ErrorIdentifier = identifier
                 }
             } ) ) );

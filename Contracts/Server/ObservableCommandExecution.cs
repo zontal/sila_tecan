@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Tecan.Sila2.Server
 {
@@ -15,7 +16,7 @@ namespace Tecan.Sila2.Server
         /// <param name="commandIdentifier">The unique identifier of the command that is executed</param>
         /// <param name="command">The running command instance</param>
         /// <param name="interceptions">The interceptions applied to this command execution</param>
-        public ObservableCommandExecution(string commandExecutionUUID, string commandIdentifier, IObservableCommand command, IEnumerable<IRequestInterception> interceptions)
+        public ObservableCommandExecution( string commandExecutionUUID, string commandIdentifier, IObservableCommand command, IEnumerable<IRequestInterception> interceptions )
         {
             CommandExecutionID = commandExecutionUUID;
             CommandIdentifier = commandIdentifier;
@@ -56,6 +57,31 @@ namespace Tecan.Sila2.Server
         public IEnumerable<IRequestInterception> Interceptions
         {
             get;
+        }
+
+        /// <summary>
+        /// Completes the command execution
+        /// </summary>
+        /// <param name="responseTask">The completed response task</param>
+        public void Complete( Task responseTask )
+        {
+            if(Interceptions != null)
+            {
+                if(responseTask.Exception != null)
+                {
+                    foreach(var interception in Interceptions)
+                    {
+                        interception.ReportException( responseTask.Exception );
+                    }
+                }
+                else
+                {
+                    foreach(var interception in Interceptions)
+                    {
+                        interception.ReportSuccess();
+                    }
+                }
+            }
         }
     }
 }

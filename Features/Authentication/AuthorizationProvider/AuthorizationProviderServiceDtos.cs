@@ -119,17 +119,17 @@ namespace Tecan.Sila2.AuthorizationProvider
             Argument.Validate(RequestedServer, "requestedServer");
             if ((RequestedServer.Value.Length != 36))
             {
-                throw new ArgumentException("requestedServer", string.Format("RequestedServer has length {0} but should have been 36", RequestedServer.Value.Length));
+                throw new ArgumentException(string.Format("RequestedServer has length {0} but should have been 36", RequestedServer.Value.Length), "requestedServer");
             }
             if ((RegexConstraint.IsMatch(RequestedServer.Value, "[0-9a-f]{8}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{12}") == false))
             {
-                throw new ArgumentException("requestedServer", string.Format("RequestedServer \'{0}\' does not match pattern \'[0-9a-f]{8}\\-[0-9a-f]{4}\\-[0-9a-f]{" +
-                            "4}\\-[0-9a-f]{4}\\-[0-9a-f]{12}\'", RequestedServer.Value));
+                throw new ArgumentException(string.Format("RequestedServer \'{0}\' does not match pattern \'[0-9a-f]{8}\\-[0-9a-f]{4}\\-[0-9a-f]{" +
+                            "4}\\-[0-9a-f]{4}\\-[0-9a-f]{12}\'", RequestedServer.Value), "requestedServer");
             }
             Argument.Validate(RequestedFeature, "requestedFeature");
             if ((IdentifierConstraint.IsValid(RequestedFeature.Value, Tecan.Sila2.IdentifierType.FeatureIdentifier) == false))
             {
-                throw new ArgumentException("requestedFeature", string.Format("RequestedFeature \'{0}\' is not a valid FeatureIdentifier", RequestedFeature.Value));
+                throw new ArgumentException(string.Format("RequestedFeature \'{0}\' is not a valid FeatureIdentifier", RequestedFeature.Value), "requestedFeature");
             }
         }
         

@@ -13,14 +13,17 @@ namespace Tecan.Sila2.Server.Binary
 
         public uint ChunkIndex { get; set; }
 
+        public long Size { get; }
+
         public DateTimeOffset ExpirationTime { get; set; }
 
         public SortedDictionary<uint, byte[]> Cached { get; } = new SortedDictionary<uint, byte[]>();
 
-        public FileUploadData(Stream stream, uint chunkCount)
+        public FileUploadData( Stream stream, uint chunkCount, long size )
         {
             FileStream = stream;
             ChunkCount = chunkCount;
+            Size = size;
             Completion = new TaskCompletionSource<object>();
         }
 

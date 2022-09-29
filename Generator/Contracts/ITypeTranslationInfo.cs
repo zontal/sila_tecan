@@ -39,5 +39,15 @@ namespace Tecan.Sila2.Generator.Contracts
         /// <param name="binaryStorageArgument">An expression for the binary storage argument</param>
         /// <returns>A code expression that extracts the given code expression</returns>
         CodeExpression Extract( CodeExpression expression, CodeTypeReference targetType, CodeExpression binaryStorageArgument );
+
+        /// <summary>
+        /// Generates a code expression that extracts the business object from the given data transfer expression
+        /// </summary>
+        /// <param name="expression">The expression with the data transfer object</param>
+        /// <param name="targetType">The target type reference</param>
+        /// <param name="binaryStorageArgument">An expression for the binary storage argument</param>
+        /// <param name="parameterName">The parameter for which the element should be extracted</param>
+        /// <returns>A code expression that extracts the given code expression</returns>
+        CodeExpression Extract( CodeExpression expression, CodeTypeReference targetType, CodeExpression binaryStorageArgument, string parameterName );
     }
 }

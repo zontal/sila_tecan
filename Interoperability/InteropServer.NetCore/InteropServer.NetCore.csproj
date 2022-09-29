@@ -87,6 +87,7 @@
         <Content Include="..\InteropServer\default.MetadataConfigurationSet.xml" Link="default.MetadataConfigurationSet.xml">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Content>
+        <EmbeddedResource Include="..\InteropServer\MetadataProvider.sila.xml" Link="MetadataProvider.sila.xml" />
     </ItemGroup>
 
     <ItemGroup>
@@ -99,7 +100,6 @@
         <EmbeddedResource Include="..\InteropServer\ListDataTypeTest.sila.xml" Link="ListDataTypeTest.sila.xml" />
         <EmbeddedResource Include="..\InteropServer\LockableCommandProvider.sila.xml" Link="LockableCommandProvider.sila.xml" />
         <EmbeddedResource Include="..\InteropServer\MetadataConsumerTest.sila.xml" Link="MetadataConsumerTest.sila.xml" />
-        <EmbeddedResource Include="..\InteropServer\MetadataProviderTest.sila.xml" Link="MetadataProviderTest.sila.xml" />
         <EmbeddedResource Include="..\InteropServer\MultiClientTest.sila.xml" Link="MultiClientTest.sila.xml" />
         <EmbeddedResource Include="..\InteropServer\ObservableCommandTest.sila.xml" Link="ObservableCommandTest.sila.xml" />
         <EmbeddedResource Include="..\InteropServer\ObservablePropertyTest.sila.xml" Link="ObservablePropertyTest.sila.xml" />

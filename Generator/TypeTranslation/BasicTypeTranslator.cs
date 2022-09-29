@@ -8,8 +8,8 @@ using Tecan.Sila2.Generator.Contracts;
 
 namespace Tecan.Sila2.Generator.TypeTranslation
 {
-    [Export(typeof(ITypeTranslator))]
-    [PartCreationPolicy(CreationPolicy.Shared)]
+    [Export( typeof( ITypeTranslator ) )]
+    [PartCreationPolicy( CreationPolicy.Shared )]
     internal class BasicTypeTranslator : ITypeTranslator
     {
         private readonly ICodeNameRegistry _nameRegistry;
@@ -59,11 +59,11 @@ namespace Tecan.Sila2.Generator.TypeTranslation
 
         public bool TryTranslate( ITypeTranslationProvider translationProvider, Type interfaceType, string origin, out DataTypeType silaType )
         {
-            if( BasicTypes.TryGetValue( interfaceType, out var tuple ) )
+            if(BasicTypes.TryGetValue( interfaceType, out var tuple ))
             {
-                if( tuple.IsNonDefault )
+                if(tuple.IsNonDefault)
                 {
-                    _nameRegistry?.RegisterDifferentType(origin, interfaceType);
+                    _nameRegistry?.RegisterDifferentType( origin, interfaceType );
                 }
 
                 silaType = new DataTypeType()
@@ -84,37 +84,37 @@ namespace Tecan.Sila2.Generator.TypeTranslation
 
         public bool TryTranslate( ITypeTranslationProvider translationProvider, DataTypeType silaType, string suggestedName, out ITypeTranslationInfo translationInfo, Action<Constraints> constraintHandler = null, Action<string, StructureType> structHandler = null )
         {
-            switch( silaType.Item )
+            switch(silaType.Item)
             {
                 case BasicType basic:
-                    switch( basic )
+                    switch(basic)
                     {
                         case BasicType.Boolean:
-                            translationInfo = new TranslationInfo( typeof(bool), new CodeTypeReference( typeof( BooleanDto ) ) );
+                            translationInfo = new TranslationInfo( typeof( bool ), new CodeTypeReference( typeof( BooleanDto ) ) );
                             return true;
                         case BasicType.Date:
-                            translationInfo = new TranslationInfo( typeof(DateTimeOffset), new CodeTypeReference( typeof( DateDto ) ) );
+                            translationInfo = new TranslationInfo( typeof( DateTimeOffset ), new CodeTypeReference( typeof( DateDto ) ) );
                             return true;
                         case BasicType.Timestamp:
-                            translationInfo = new TranslationInfo( typeof(DateTimeOffset), new CodeTypeReference( typeof( TimestampDto ) ) );
+                            translationInfo = new TranslationInfo( typeof( DateTimeOffset ), new CodeTypeReference( typeof( TimestampDto ) ) );
                             return true;
                         case BasicType.Time:
-                            translationInfo = new TranslationInfo( typeof(TimeSpan), new CodeTypeReference( typeof( TimeDto ) ) );
+                            translationInfo = new TranslationInfo( typeof( TimeSpan ), new CodeTypeReference( typeof( TimeDto ) ) );
                             return true;
                         case BasicType.Integer:
-                            translationInfo = new TranslationInfo( typeof(long), new CodeTypeReference( typeof( IntegerDto ) ) );
+                            translationInfo = new TranslationInfo( typeof( long ), new CodeTypeReference( typeof( IntegerDto ) ) );
                             return true;
                         case BasicType.Binary:
-                            translationInfo = new TranslationInfo( typeof(Stream), new CodeTypeReference( typeof( BinaryDto ) ) );
+                            translationInfo = new TranslationInfo( typeof( Stream ), new CodeTypeReference( typeof( BinaryDto ) ) );
                             return true;
                         case BasicType.String:
-                            translationInfo = new TranslationInfo( typeof(string), new CodeTypeReference( typeof( StringDto ) ) );
+                            translationInfo = new TranslationInfo( typeof( string ), new CodeTypeReference( typeof( StringDto ) ) );
                             return true;
                         case BasicType.Real:
-                            translationInfo = new TranslationInfo( typeof(double), new CodeTypeReference( typeof( RealDto ) ) );
+                            translationInfo = new TranslationInfo( typeof( double ), new CodeTypeReference( typeof( RealDto ) ) );
                             return true;
                         case BasicType.Any:
-                            translationInfo = new TranslationInfo( typeof(DynamicObjectProperty), new CodeTypeReference( typeof(AnyTypeDto) ) );
+                            translationInfo = new TranslationInfo( typeof( DynamicObjectProperty ), new CodeTypeReference( typeof( AnyTypeDto ) ) );
                             return true;
                     }
 
@@ -135,7 +135,7 @@ namespace Tecan.Sila2.Generator.TypeTranslation
                 DataTransferType = dataTransferType;
             }
 
-            public CodeTypeReference InterfaceType => new CodeTypeReference(_interfaceType);
+            public CodeTypeReference InterfaceType => new CodeTypeReference( _interfaceType );
 
             public CodeTypeReference DataTransferType
             {
@@ -149,23 +149,23 @@ namespace Tecan.Sila2.Generator.TypeTranslation
 
             public CodeExpression Extract( CodeExpression expression, CodeTypeReference targetType, CodeExpression binaryStorageArgument )
             {
-                var extractedResult = new CodeMethodInvokeExpression( expression, nameof(ISilaTransferObject<string>.Extract), binaryStorageArgument );
-                if( BasicTypes.TryGetValue( _interfaceType, out var tuple ) )
+                var extractedResult = new CodeMethodInvokeExpression( expression, nameof( ISilaTransferObject<string>.Extract ), binaryStorageArgument );
+                if(BasicTypes.TryGetValue( _interfaceType, out var tuple ))
                 {
-                    if( targetType == null )
+                    if(targetType == null)
                     {
                         return extractedResult;
                     }
 
-                    if( tuple.Type == BasicType.Binary )
+                    if(tuple.Type == BasicType.Binary)
                     {
-                        if( targetType.ArrayRank == 1 )
+                        if(targetType.ArrayRank == 1)
                         {
-                            extractedResult.Method.MethodName = nameof(BinaryDto.ExtractToBytes);
+                            extractedResult.Method.MethodName = nameof( BinaryDto.ExtractToBytes );
                         }
-                        else if( targetType.BaseType == typeof(FileInfo).FullName )
+                        else if(targetType.BaseType == typeof( FileInfo ).FullName)
                         {
-                            extractedResult.Method.MethodName = nameof(BinaryDto.ExtractToFileInfo);
+                            extractedResult.Method.MethodName = nameof( BinaryDto.ExtractToFileInfo );
                         }
 
                         return extractedResult;
@@ -179,6 +179,37 @@ namespace Tecan.Sila2.Generator.TypeTranslation
                 }
             }
 
+            public CodeExpression Extract( CodeExpression expression, CodeTypeReference targetType, CodeExpression binaryStorageArgument, string parameterName )
+            {
+                var extractedResult = new CodeMethodInvokeExpression( expression, nameof( DtoExtensions.TryExtract ), binaryStorageArgument, new CodePrimitiveExpression( parameterName ) );
+                if(BasicTypes.TryGetValue( _interfaceType, out var tuple ))
+                {
+                    if(targetType == null)
+                    {
+                        return extractedResult;
+                    }
+
+                    if(tuple.Type == BasicType.Binary)
+                    {
+                        if(targetType.ArrayRank == 1)
+                        {
+                            extractedResult.Method.MethodName = nameof( BinaryDto.TryExtractToBytes );
+                        }
+                        else if(targetType.BaseType == typeof( FileInfo ).FullName)
+                        {
+                            extractedResult.Method.MethodName = nameof( BinaryDto.TryExtractToFileInfo );
+                        }
+
+                        return extractedResult;
+                    }
+
+                    return new CodeCastExpression( targetType, extractedResult );
+                }
+                else
+                {
+                    throw new InvalidOperationException();
+                }
+            }
         }
     }
 }

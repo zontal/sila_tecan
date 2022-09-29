@@ -18,18 +18,18 @@ namespace Tecan.Sila2.Interop.Server.MetadataProvider
     
     
     /// <summary>
-    /// A class that exposes the IMetadataProviderTest interface via SiLA2
+    /// A class that exposes the IMetadataProvider interface via SiLA2
     /// </summary>
     [System.ComponentModel.Composition.ExportAttribute(typeof(IFeatureProvider))]
     [System.ComponentModel.Composition.PartCreationPolicyAttribute(System.ComponentModel.Composition.CreationPolicy.Shared)]
-    public partial class MetadataProviderTestProvider : IFeatureProvider
+    public partial class MetadataProviderProvider : IFeatureProvider
     {
         
-        private IMetadataProviderTest _implementation;
+        private IMetadataProvider _implementation;
         
         private Tecan.Sila2.Server.ISiLAServer _server;
         
-        private static Tecan.Sila2.Feature _feature = FeatureSerializer.LoadFromAssembly(typeof(MetadataProviderTestProvider).Assembly, "MetadataProviderTest.sila.xml");
+        private static Tecan.Sila2.Feature _feature = FeatureSerializer.LoadFromAssembly(typeof(MetadataProviderProvider).Assembly, "MetadataProvider.sila.xml");
         
         /// <summary>
         /// Creates a new instance
@@ -37,7 +37,7 @@ namespace Tecan.Sila2.Interop.Server.MetadataProvider
         /// <param name="implementation">The implementation to exported through SiLA2</param>
         /// <param name="server">The SiLA2 server instance through which the implementation shall be exported</param>
         [System.ComponentModel.Composition.ImportingConstructorAttribute()]
-        public MetadataProviderTestProvider(IMetadataProviderTest implementation, Tecan.Sila2.Server.ISiLAServer server)
+        public MetadataProviderProvider(IMetadataProvider implementation, Tecan.Sila2.Server.ISiLAServer server)
         {
             _implementation = implementation;
             _server = server;
@@ -126,7 +126,7 @@ namespace Tecan.Sila2.Interop.Server.MetadataProvider
         {
             get
             {
-                return "org.silastandard/test/MetadataProviderTest/v1/Metadata/StringMetadata";
+                return "org.silastandard/test/MetadataProvider/v1/Metadata/StringMetadata";
             }
         }
         
@@ -199,7 +199,7 @@ namespace Tecan.Sila2.Interop.Server.MetadataProvider
         {
             get
             {
-                return "org.silastandard/test/MetadataProviderTest/v1/Metadata/TwoIntegersMetadata";
+                return "org.silastandard/test/MetadataProvider/v1/Metadata/TwoIntegersMetadata";
             }
         }
         

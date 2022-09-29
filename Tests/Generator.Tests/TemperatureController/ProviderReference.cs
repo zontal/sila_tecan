@@ -98,7 +98,8 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         protected virtual Tecan.Sila2.IObservableCommand ControlTemperature(ControlTemperatureRequestDto request)
         {
             request.Validate();
-            return _implementation.ControlTemperature(request.TargetTemperature.Extract(_server));
+            return _implementation.ControlTemperature(request.TargetTemperature.TryExtract(_server, "tecan.sila.generator/test/TemperatureController/v4/Command/ControlTemperature/Par" +
+                        "ameter/TargetTemperature"));
         }
         
         /// <summary>

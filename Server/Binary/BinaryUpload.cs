@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Common.Logging;
 using Grpc.Core;
 using Tecan.Sila2.Binary;
 using Tecan.Sila2.ServerPooling;
@@ -23,6 +24,11 @@ namespace Tecan.Sila2.Server.Binary
         private readonly SiLAServer _server;
         private readonly ConcurrentDictionary<string, FileUploadData> _openStreams = new ConcurrentDictionary<string, FileUploadData>();
         private readonly Timer _cleanupTimer;
+        private readonly ILog _log = LogManager.GetLogger( typeof( BinaryUpload ) );
+
+        private const double WaitTimeInMinutes = 1;
+
+        private readonly HashSet<string> _allowedCommandParameters = new HashSet<string>();
 
         /// <summary>
         /// Create a binary upload for the given file management
@@ -33,7 +39,7 @@ namespace Tecan.Sila2.Server.Binary
         {
             _fileManagement = fileManagement;
             _server = server;
-            _cleanupTimer = new Timer( Cleanup, null, TimeSpan.FromMinutes( 5 ), TimeSpan.FromMinutes( 5 ) );
+            _cleanupTimer = new Timer( Cleanup, null, TimeSpan.FromMinutes( WaitTimeInMinutes ), TimeSpan.FromMinutes( 5 ) );
         }
 
         private void Cleanup( object state )
@@ -50,9 +56,20 @@ namespace Tecan.Sila2.Server.Binary
             {
                 if(fileUploadData.Value.ExpirationTime <= DateTimeOffset.Now)
                 {
-                    fileUploadData.Value.Completion.SetCanceled();
-                    _fileManagement.Delete( fileUploadData.Key, true );
-                    _openStreams.TryRemove( fileUploadData.Key, out _ );
+                    try
+                    {
+                        if(!fileUploadData.Value.Completion.Task.IsCompleted)
+                        {
+                            fileUploadData.Value.Completion.SetCanceled();
+                            _openStreams.TryRemove( fileUploadData.Key, out var stream );
+                            stream.FileStream.Dispose();
+                        }
+                        _fileManagement.Delete( fileUploadData.Key, true );
+                    }
+                    catch(Exception ex)
+                    {
+                        _log.Error( $"Error cleaning up stored binary {fileUploadData.Key}", ex );
+                    }
                 }
             }
         }
@@ -78,6 +95,13 @@ namespace Tecan.Sila2.Server.Binary
         {
             try
             {
+                lock(_allowedCommandParameters)
+                {
+                    if(!_allowedCommandParameters.Contains( request.CommandIdentifier ))
+                    {
+                        throw new InvalidOperationException( $"{request.CommandIdentifier} does not support parameters" );
+                    }
+                }
                 var commandIdentifier = GetCommandIdentifier( request.CommandIdentifier );
                 var internalRequest = new InternalCreateBinaryRequest( commandIdentifier, request );
                 return _server.InvokeCommand( CreateBinaryCore, internalRequest, new MetadataRepository( context ) );
@@ -104,8 +128,8 @@ namespace Tecan.Sila2.Server.Binary
         {
             string identifier = _fileManagement.CreateNew( (long)request.ActualRequest.BinarySize );
             var stream = _fileManagement.OpenWrite( identifier );
-            var expiration = DateTimeOffset.Now.AddMinutes( 5 );
-            _openStreams.TryAdd( identifier, new FileUploadData( stream, request.ActualRequest.ChunkCount )
+            var expiration = DateTimeOffset.Now.AddMinutes( WaitTimeInMinutes );
+            _openStreams.TryAdd( identifier, new FileUploadData( stream, request.ActualRequest.ChunkCount, (long)request.ActualRequest.BinarySize )
             {
                 ExpirationTime = expiration
             } );
@@ -193,6 +217,18 @@ namespace Tecan.Sila2.Server.Binary
         {
             if(_openStreams.TryGetValue( request.BinaryTransferUUID, out var uploadData ))
             {
+                if(request.ChunkIndex >= uploadData.ChunkCount)
+                {
+                    throw new InvalidOperationException( "Chunk index is invalid" );
+                }
+                if(uploadData.Completion.Task.IsCompleted)
+                {
+                    throw new InvalidOperationException( $"The binary {request.BinaryTransferUUID} has already been uploaded" );
+                }
+                if(request.ChunkIndex < uploadData.ChunkIndex)
+                {
+                    throw new InvalidOperationException( $"The chunk {request.ChunkIndex} was already uploaded" );
+                }
                 if(request.ChunkIndex == uploadData.ChunkIndex)
                 {
                     await uploadData.FileStream.WriteAsync( request.Payload, 0, request.Payload.Length );
@@ -211,12 +247,21 @@ namespace Tecan.Sila2.Server.Binary
                         await uploadData.FileStream.WriteAsync( cached.Value, 0, cached.Value.Length );
                         uploadData.ChunkIndex++;
                     }
+
+                    if(uploadData.FileStream.Length > uploadData.Size)
+                    {
+                        uploadData.FileStream.Close();
+                        uploadData.FileStream.Dispose();
+
+                        var exception = new InvalidOperationException( $"Expected {uploadData.Size} bytes but received {uploadData.FileStream.Length} bytes" );
+                        uploadData.Completion.SetException( exception );
+                        throw exception;
+                    }
                     if(uploadData.ChunkIndex == uploadData.ChunkCount)
                     {
                         uploadData.FileStream.Close();
                         uploadData.FileStream.Dispose();
                         uploadData.Completion.SetResult( null );
-                        _openStreams.TryRemove( request.BinaryTransferUUID, out _ );
                     }
                 }
                 else if(request.ChunkIndex > uploadData.ChunkIndex)
@@ -233,16 +278,31 @@ namespace Tecan.Sila2.Server.Binary
                         }
                     }
                 }
-                uploadData.ExpirationTime = DateTimeOffset.Now.AddMinutes( 5 );
+                uploadData.ExpirationTime = DateTimeOffset.Now.AddMinutes( WaitTimeInMinutes );
                 return new UploadChunkResponseDto()
                 {
-                    LifetimeOfBinary = new TimestampDto( uploadData.ExpirationTime )
+                    LifetimeOfBinary = new TimestampDto( uploadData.ExpirationTime ),
+                    BinaryTransferUUID = request.BinaryTransferUUID,
+                    ChunkIndex = request.ChunkIndex
                 };
             }
             else
             {
-                throw new InvalidOperationException( "Unknown file." );
+                throw new InvalidBinaryTransferIdException( "Unknown file.", request.BinaryTransferUUID );
             }
+        }
+
+        /// <summary>
+        /// Waits until the upload of the file with the given binary identifier is complete
+        /// </summary>
+        /// <param name="binaryIdentifier"></param>
+        public bool IsUploadCompleted( string binaryIdentifier )
+        {
+            if(_openStreams.TryGetValue( binaryIdentifier, out var uploadData ))
+            {
+                return uploadData.Completion.Task.IsCompleted;
+            }
+            return _fileManagement.Exists( binaryIdentifier );
         }
 
         /// <summary>
@@ -251,7 +311,7 @@ namespace Tecan.Sila2.Server.Binary
         /// <param name="binaryIdentifier"></param>
         public void WaitUploadComplete( string binaryIdentifier )
         {
-            if(_openStreams.TryGetValue( binaryIdentifier, out var uploadData ))
+            if(_openStreams.TryGetValue( binaryIdentifier, out var uploadData ) && !uploadData.Completion.Task.IsCompleted)
             {
                 uploadData.Completion.Task.Wait();
             }
@@ -343,6 +403,13 @@ namespace Tecan.Sila2.Server.Binary
         {
             try
             {
+                lock(_allowedCommandParameters)
+                {
+                    if(!_allowedCommandParameters.Contains( createBinaryRequest.CreateBinaryRequest.CommandIdentifier ))
+                    {
+                        throw new InvalidOperationException( $"{createBinaryRequest.CreateBinaryRequest.CommandIdentifier} does not accept binaries" );
+                    }
+                }
                 var request = createBinaryRequest.CreateBinaryRequest;
                 var commandIdentifier = GetCommandIdentifier( request.CommandIdentifier );
                 var internalRequest = new InternalCreateBinaryRequest( commandIdentifier, request );
@@ -452,6 +519,14 @@ namespace Tecan.Sila2.Server.Binary
                         Message = exception.Message
                     }
                 } );
+            }
+        }
+
+        internal void RegisterCommandParameter( string commandParameter )
+        {
+            lock(_allowedCommandParameters)
+            {
+                _allowedCommandParameters.Add( commandParameter );
             }
         }
     }

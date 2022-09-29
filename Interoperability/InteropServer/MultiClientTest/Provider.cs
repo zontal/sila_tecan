@@ -55,15 +55,62 @@ namespace Tecan.Sila2.Interop.Server.MultiClientTest
             }
         }
         
+        private System.Exception ConvertRunInParallelExceptions(System.Exception exception)
+        {
+            try
+            {
+                throw exception;
+            } catch (System.ArgumentException ex)
+            {
+                if ((ex.ParamName == "duration"))
+                {
+                    throw _server.ErrorHandling.CreateValidationError("org.silastandard/test/MultiClientTest/v1/Command/RunInParallel/Parameter/Duration" +
+                            "", ex.Message);
+                }
+                throw _server.ErrorHandling.CreateUnknownValidationError(ex);
+            }
+        }
+        
+        private System.Exception ConvertRunQueuedExceptions(System.Exception exception)
+        {
+            try
+            {
+                throw exception;
+            } catch (System.ArgumentException ex)
+            {
+                if ((ex.ParamName == "duration"))
+                {
+                    throw _server.ErrorHandling.CreateValidationError("org.silastandard/test/MultiClientTest/v1/Command/RunQueued/Parameter/Duration", ex.Message);
+                }
+                throw _server.ErrorHandling.CreateUnknownValidationError(ex);
+            }
+        }
+        
+        private System.Exception ConvertRejectParallelExecutionExceptions(System.Exception exception)
+        {
+            try
+            {
+                throw exception;
+            } catch (System.ArgumentException ex)
+            {
+                if ((ex.ParamName == "duration"))
+                {
+                    throw _server.ErrorHandling.CreateValidationError("org.silastandard/test/MultiClientTest/v1/Command/RejectParallelExecution/Paramete" +
+                            "r/Duration", ex.Message);
+                }
+                throw _server.ErrorHandling.CreateUnknownValidationError(ex);
+            }
+        }
+        
         /// <summary>
         /// Registers the feature in the provided feature registration
         /// </summary>
         /// <param name="registration">The registration component to which the feature should be registered</param>
         public void Register(IServerBuilder registration)
         {
-            registration.RegisterObservableCommand<RunInParallelRequestDto>("RunInParallel", RunInParallel, null);
-            registration.RegisterObservableCommand<RunQueuedRequestDto>("RunQueued", RunQueued, null);
-            registration.RegisterObservableCommand<RejectParallelExecutionRequestDto>("RejectParallelExecution", RejectParallelExecution, null);
+            registration.RegisterObservableCommand<RunInParallelRequestDto>("RunInParallel", RunInParallel, ConvertRunInParallelExceptions);
+            registration.RegisterObservableCommand<RunQueuedRequestDto>("RunQueued", RunQueued, ConvertRunQueuedExceptions);
+            registration.RegisterObservableCommand<RejectParallelExecutionRequestDto>("RejectParallelExecution", RejectParallelExecution, ConvertRejectParallelExecutionExceptions);
         }
         
         /// <summary>
@@ -74,7 +121,8 @@ namespace Tecan.Sila2.Interop.Server.MultiClientTest
         protected virtual Tecan.Sila2.IObservableCommand RunInParallel(RunInParallelRequestDto request)
         {
             request.Validate();
-            return _implementation.RunInParallel(request.Duration.Extract(_server));
+            return _implementation.RunInParallel(request.Duration.TryExtract(_server, "org.silastandard/test/MultiClientTest/v1/Command/RunInParallel/Parameter/Duration" +
+                        ""));
         }
         
         /// <summary>
@@ -85,7 +133,7 @@ namespace Tecan.Sila2.Interop.Server.MultiClientTest
         protected virtual Tecan.Sila2.IObservableCommand RunQueued(RunQueuedRequestDto request)
         {
             request.Validate();
-            return _implementation.RunQueued(request.Duration.Extract(_server));
+            return _implementation.RunQueued(request.Duration.TryExtract(_server, "org.silastandard/test/MultiClientTest/v1/Command/RunQueued/Parameter/Duration"));
         }
         
         /// <summary>
@@ -96,7 +144,8 @@ namespace Tecan.Sila2.Interop.Server.MultiClientTest
         protected virtual Tecan.Sila2.IObservableCommand RejectParallelExecution(RejectParallelExecutionRequestDto request)
         {
             request.Validate();
-            return _implementation.RejectParallelExecution(request.Duration.Extract(_server));
+            return _implementation.RejectParallelExecution(request.Duration.TryExtract(_server, "org.silastandard/test/MultiClientTest/v1/Command/RejectParallelExecution/Paramete" +
+                        "r/Duration"));
         }
         
         /// <summary>

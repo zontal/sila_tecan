@@ -22,7 +22,7 @@ namespace Tecan.Sila2.Interop.Client.ErrorHandlingTest
     {
         
         /// <summary>
-        /// A property that raises a "Test Error" on get with error message 'SiLA2_test_error_message'
+        /// A property that raises a "Test Error" on get with the error message 'SiLA2_test_error_message'
         /// </summary>
         [Tecan.Sila2.ThrowsAttribute(typeof(TestErrorException))]
         long RaiseDefinedExecutionErrorOnGet
@@ -31,7 +31,7 @@ namespace Tecan.Sila2.Interop.Client.ErrorHandlingTest
         }
         
         /// <summary>
-        /// A property that raises a "Test Error" on subscribe with error message 'SiLA2_test_error_message'
+        /// A property that raises a "Test Error" on subscribe with the error message 'SiLA2_test_error_message'
         /// </summary>
         [Tecan.Sila2.ObservableAttribute()]
         [Tecan.Sila2.ThrowsAttribute(typeof(TestErrorException))]
@@ -41,7 +41,7 @@ namespace Tecan.Sila2.Interop.Client.ErrorHandlingTest
         }
         
         /// <summary>
-        /// A property that raises an Undefined Execution Error on get with error message 'SiLA2_test_error_message'
+        /// A property that raises an Undefined Execution Error on get with the error message 'SiLA2_test_error_message'
         /// </summary>
         long RaiseUndefinedExecutionErrorOnGet
         {
@@ -49,7 +49,7 @@ namespace Tecan.Sila2.Interop.Client.ErrorHandlingTest
         }
         
         /// <summary>
-        /// A property that raises an Undefined Execution Error on subscribe with error message 'SiLA2_test_error_message'
+        /// A property that raises an Undefined Execution Error on subscribe with the error message 'SiLA2_test_error_message'
         /// </summary>
         [Tecan.Sila2.ObservableAttribute()]
         long RaiseUndefinedExecutionErrorOnSubscribe
@@ -58,25 +58,44 @@ namespace Tecan.Sila2.Interop.Client.ErrorHandlingTest
         }
         
         /// <summary>
-        /// Raises the "Test Error" with error message 'SiLA2_test_error_message'
+        /// A property that first sends the integer value 1 and then raises a Defined Execution Error with the error message 'SiLA2_test_error_message'
+        /// </summary>
+        [Tecan.Sila2.ObservableAttribute()]
+        [Tecan.Sila2.ThrowsAttribute(typeof(TestErrorException))]
+        long RaiseDefinedExecutionErrorAfterValueWasSent
+        {
+            get;
+        }
+        
+        /// <summary>
+        /// A property that first sends the integer value 1 and then raises a Undefined Execution Error with the error message 'SiLA2_test_error_message'
+        /// </summary>
+        [Tecan.Sila2.ObservableAttribute()]
+        long RaiseUndefinedExecutionErrorAfterValueWasSent
+        {
+            get;
+        }
+        
+        /// <summary>
+        /// Raises the "Test Error" with the error message 'SiLA2_test_error_message'
         /// </summary>
         [Tecan.Sila2.ThrowsAttribute(typeof(TestErrorException))]
         void RaiseDefinedExecutionError();
         
         /// <summary>
-        /// Raises the "Test Error" with error message 'SiLA2_test_error_message'
+        /// Raises the "Test Error" with the error message 'SiLA2_test_error_message'
         /// </summary>
         [Tecan.Sila2.ObservableAttribute()]
         [Tecan.Sila2.ThrowsAttribute(typeof(TestErrorException))]
         Tecan.Sila2.IObservableCommand RaiseDefinedExecutionErrorObservably();
         
         /// <summary>
-        /// Raises an Undefined Execution Error with error message 'SiLA2_test_error_message'
+        /// Raises an Undefined Execution Error with the error message 'SiLA2_test_error_message'
         /// </summary>
         void RaiseUndefinedExecutionError();
         
         /// <summary>
-        /// Raises an Undefined Execution Error with error message 'SiLA2_test_error_message'
+        /// Raises an Undefined Execution Error with the error message 'SiLA2_test_error_message'
         /// </summary>
         [Tecan.Sila2.ObservableAttribute()]
         Tecan.Sila2.IObservableCommand RaiseUndefinedExecutionErrorObservably();

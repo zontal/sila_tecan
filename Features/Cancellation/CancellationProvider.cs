@@ -75,7 +75,8 @@ namespace Tecan.Sila2.Cancellation
             try
             {
                 request.Validate();
-                _implementation.CancelCommand(request.CommandExecutionUUID.Extract(_server));
+                _implementation.CancelCommand(request.CommandExecutionUUID.TryExtract(_server, "org.silastandard/core.commands/CancelController/v1/Command/CancelCommand/Paramete" +
+                            "r/CommandExecutionUUID"));
                 return EmptyRequest.Instance;
             } catch (System.ArgumentException ex)
             {

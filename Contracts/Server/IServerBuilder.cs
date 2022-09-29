@@ -211,5 +211,11 @@ namespace Tecan.Sila2.Server
             where TRequest : class, ISilaRequestObject
             where TIntermediateDto : class
             where TResponseDto : class;
+
+        /// <summary>
+        /// Registers that the server should allow to upload binaries for the provided command parameter
+        /// </summary>
+        /// <param name="commandParameter">The fully qualified identifier of the parameter</param>
+        void RegisterBinaryCommandParameter( string commandParameter );
     }
 }

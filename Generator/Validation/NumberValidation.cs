@@ -114,11 +114,23 @@ namespace Tecan.Sila2.Generator.Validation
                             nameof( TimeSpan.FromMinutes ),
                             new CodePrimitiveExpression( date.Offset.TotalMinutes ) ) );
                 case BasicType.Time:
-                    var time = TimeSpan.Parse( input, CultureInfo.InvariantCulture );
-                    return new CodeObjectCreateExpression( typeof( TimeSpan ),
-                        new CodePrimitiveExpression( time.Hours + 24 * ((int)time.TotalDays) ),
-                        new CodePrimitiveExpression( time.Minutes ),
-                        new CodePrimitiveExpression( time.Seconds ) );
+                    try
+                    {
+                        var time = TimeSpan.Parse( input, CultureInfo.InvariantCulture );
+                        return new CodeObjectCreateExpression( typeof( TimeSpan ),
+                            new CodePrimitiveExpression( time.Hours + 24 * ((int)time.TotalDays) ),
+                            new CodePrimitiveExpression( time.Minutes ),
+                            new CodePrimitiveExpression( time.Seconds ) );
+                    }
+                    catch(FormatException)
+                    {
+
+                        var time = DateTimeOffset.Parse( input, CultureInfo.InvariantCulture ) - new DateTimeOffset( DateTime.SpecifyKind( DateTime.Today, DateTimeKind.Unspecified ), TimeSpan.Zero );
+                        return new CodeObjectCreateExpression( typeof( TimeSpan ),
+                            new CodePrimitiveExpression( time.Hours + 24 * ((int)time.TotalDays) ),
+                            new CodePrimitiveExpression( time.Minutes ),
+                            new CodePrimitiveExpression( time.Seconds ) );
+                    }
                 case BasicType.Timestamp:
                     var timeStamp = DateTimeOffset.Parse( input, CultureInfo.InvariantCulture );
                     return new CodeObjectCreateExpression( typeof( DateTimeOffset ),

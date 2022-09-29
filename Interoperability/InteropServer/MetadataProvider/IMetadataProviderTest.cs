@@ -5,7 +5,7 @@ using Tecan.Sila2.Server;
 
 namespace Tecan.Sila2.Interop.Server.MetadataProvider
 {
-    public partial interface IMetadataProviderTest
+    public partial interface IMetadataProvider
     {
         [MetadataType( typeof( string ) )]
         IRequestInterceptor StringMetadata { get; }

@@ -147,4 +147,196 @@ namespace Tecan.Sila2.Interop.Client.BinaryTransferTest.BinaryTransferTest
             return ("" + Argument.Require(ReceivedValue, "receivedValue"));
         }
     }
+    
+    /// <summary>
+    /// Data transfer object for the request of the Echo Binaries Observably command
+    /// </summary>
+    [ProtoBuf.ProtoContractAttribute()]
+    public class EchoBinariesObservablyRequestDto : Tecan.Sila2.ISilaTransferObject, Tecan.Sila2.ISilaRequestObject
+    {
+        
+        private System.Collections.Generic.List<Tecan.Sila2.BinaryDto> _binaries;
+        
+        /// <summary>
+        /// Create a new instance
+        /// </summary>
+        public EchoBinariesObservablyRequestDto()
+        {
+        }
+        
+        /// <summary>
+        /// Create a new instance
+        /// </summary>
+        /// <param name="store">An object to organize binaries.</param>
+        /// <param name="binaries">List of binaries to echo</param>
+        public EchoBinariesObservablyRequestDto(System.Collections.Generic.ICollection<System.IO.Stream> binaries, Tecan.Sila2.IBinaryStore store)
+        {
+            Binaries = Tecan.Sila2.DtoExtensions.Encapsulate(binaries, Tecan.Sila2.BinaryDto.Create, store);
+        }
+        
+        /// <summary>
+        /// List of binaries to echo
+        /// </summary>
+        [ProtoBuf.ProtoMemberAttribute(1)]
+        public System.Collections.Generic.List<Tecan.Sila2.BinaryDto> Binaries
+        {
+            get
+            {
+                return _binaries;
+            }
+            set
+            {
+                _binaries = value;
+            }
+        }
+        
+        /// <summary>
+        /// Gets the command identifier for this command
+        /// </summary>
+        /// <returns>The fully qualified command identifier</returns>
+        public string CommandIdentifier
+        {
+            get
+            {
+                return "org.silastandard/test/BinaryTransferTest/v1/Command/EchoBinariesObservably";
+            }
+        }
+        
+        /// <summary>
+        /// Validates the given request object
+        /// </summary>
+        public void Validate()
+        {
+            Argument.Validate(Binaries, "binaries");
+        }
+        
+        /// <summary>
+        /// Validates the contents of this transfer object
+        /// </summary>
+        /// <returns>A validation error or null, if no validation error occurred.</returns>
+        public string GetValidationErrors()
+        {
+            return ("" + Argument.Require(Binaries, "binaries"));
+        }
+    }
+    
+    /// <summary>
+    /// Data transfer object for the intermediate response of the Echo Binaries Observably command
+    /// </summary>
+    [ProtoBuf.ProtoContractAttribute()]
+    public class EchoBinariesObservablyIntermediateDto : Tecan.Sila2.ISilaTransferObject
+    {
+        
+        private Tecan.Sila2.BinaryDto _binary;
+        
+        /// <summary>
+        /// Create a new instance
+        /// </summary>
+        public EchoBinariesObservablyIntermediateDto()
+        {
+        }
+        
+        /// <summary>
+        /// Create a new instance
+        /// </summary>
+        /// <param name="store">An object to organize binaries.</param>
+        /// <param name="binary">Single binary from the parameter list</param>
+        public EchoBinariesObservablyIntermediateDto(System.IO.Stream binary, Tecan.Sila2.IBinaryStore store)
+        {
+            Binary = new Tecan.Sila2.BinaryDto(binary, store);
+        }
+        
+        /// <summary>
+        /// Single binary from the parameter list
+        /// </summary>
+        [ProtoBuf.ProtoMemberAttribute(1)]
+        public Tecan.Sila2.BinaryDto Binary
+        {
+            get
+            {
+                return _binary;
+            }
+            set
+            {
+                _binary = value;
+            }
+        }
+        
+        /// <summary>
+        /// Validates the given request object
+        /// </summary>
+        public void Validate()
+        {
+            Argument.Validate(Binary, "binary");
+        }
+        
+        /// <summary>
+        /// Validates the contents of this transfer object
+        /// </summary>
+        /// <returns>A validation error or null, if no validation error occurred.</returns>
+        public string GetValidationErrors()
+        {
+            return ("" + Argument.Require(Binary, "binary"));
+        }
+    }
+    
+    /// <summary>
+    /// Data transfer object for the response of the Echo Binaries Observably command
+    /// </summary>
+    [ProtoBuf.ProtoContractAttribute()]
+    public class EchoBinariesObservablyResponseDto : Tecan.Sila2.ISilaTransferObject
+    {
+        
+        private Tecan.Sila2.BinaryDto _jointBinary;
+        
+        /// <summary>
+        /// Create a new instance
+        /// </summary>
+        public EchoBinariesObservablyResponseDto()
+        {
+        }
+        
+        /// <summary>
+        /// Create a new instance
+        /// </summary>
+        /// <param name="store">An object to organize binaries.</param>
+        /// <param name="jointBinary">A single binary comprised of binaries received as parameter</param>
+        public EchoBinariesObservablyResponseDto(System.IO.Stream jointBinary, Tecan.Sila2.IBinaryStore store)
+        {
+            JointBinary = new Tecan.Sila2.BinaryDto(jointBinary, store);
+        }
+        
+        /// <summary>
+        /// A single binary comprised of binaries received as parameter
+        /// </summary>
+        [ProtoBuf.ProtoMemberAttribute(1)]
+        public Tecan.Sila2.BinaryDto JointBinary
+        {
+            get
+            {
+                return _jointBinary;
+            }
+            set
+            {
+                _jointBinary = value;
+            }
+        }
+        
+        /// <summary>
+        /// Validates the given request object
+        /// </summary>
+        public void Validate()
+        {
+            Argument.Validate(JointBinary, "jointBinary");
+        }
+        
+        /// <summary>
+        /// Validates the contents of this transfer object
+        /// </summary>
+        /// <returns>A validation error or null, if no validation error occurred.</returns>
+        public string GetValidationErrors()
+        {
+            return ("" + Argument.Require(JointBinary, "jointBinary"));
+        }
+    }
 }

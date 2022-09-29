@@ -77,7 +77,7 @@ namespace Tecan.Sila2.Interop.Server.ObservablePropertyTest
             try
             {
                 request.Validate();
-                _implementation.SetValue(request.Value.Extract(_server));
+                _implementation.SetValue(request.Value.TryExtract(_server, "org.silastandard/test/ObservablePropertyTest/v1/Command/SetValue/Parameter/Value"));
                 return EmptyRequest.Instance;
             } catch (System.ArgumentException ex)
             {

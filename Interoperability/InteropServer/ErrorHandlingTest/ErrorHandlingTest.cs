@@ -18,6 +18,42 @@ namespace Tecan.Sila2.Interop.Server.ErrorHandlingTest
 
         public long RaiseUndefinedExecutionErrorOnSubscribe => throw new ApplicationException( "SiLA2_test_error_message" );
 
+        private bool _raiseDefinedExecutionError = false;
+        public long RaiseDefinedExecutionErrorAfterValueWasSent
+        {
+            get
+            {
+                if(_raiseDefinedExecutionError)
+                {
+                    _raiseDefinedExecutionError = false;
+                    throw new TestErrorException( "SiLA2_test_error_message" );
+                }
+                else
+                {
+                    _raiseDefinedExecutionError = true;
+                    return 1;
+                }
+            }
+        }
+
+        private bool _raiseUndefinedExecutionError = false;
+        public long RaiseUndefinedExecutionErrorAfterValueWasSent
+        {
+            get
+            {
+                if(_raiseUndefinedExecutionError)
+                {
+                    _raiseUndefinedExecutionError = false;
+                    throw new ApplicationException( "SiLA2_test_error_message" );
+                }
+                else
+                {
+                    _raiseUndefinedExecutionError = true;
+                    return 1;
+                }
+            }
+        }
+
         public void RaiseDefinedExecutionError()
         {
             throw new TestErrorException( "SiLA2_test_error_message" );

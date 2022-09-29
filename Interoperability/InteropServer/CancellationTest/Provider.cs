@@ -92,7 +92,8 @@ namespace Tecan.Sila2.Interop.Server.CancellationTest
         protected virtual Tecan.Sila2.IObservableCommand WaitForCancel(WaitForCancelRequestDto request)
         {
             request.Validate();
-            return _implementation.WaitForCancel(request.Duration.Extract(_server));
+            return _implementation.WaitForCancel(request.Duration.TryExtract(_server, "org.silastandard/test/CancellationTest/v1/Command/WaitForCancel/Parameter/Duratio" +
+                        "n"));
         }
         
         /// <summary>

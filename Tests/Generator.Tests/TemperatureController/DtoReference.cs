@@ -80,11 +80,11 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             Argument.Validate(TargetTemperature, "targetTemperature");
             if ((TargetTemperature.Value <= 273D))
             {
-                throw new ArgumentException("targetTemperature", string.Format("TargetTemperature should have been at least more than 273 but was \'{0}\'", TargetTemperature.Value));
+                throw new ArgumentException(string.Format("TargetTemperature should have been at least more than 273 but was \'{0}\'", TargetTemperature.Value), "targetTemperature");
             }
             if ((TargetTemperature.Value > 373D))
             {
-                throw new ArgumentException("targetTemperature", string.Format("TargetTemperature should have been at most 373 but was \'{0}\'", TargetTemperature.Value));
+                throw new ArgumentException(string.Format("TargetTemperature should have been at most 373 but was \'{0}\'", TargetTemperature.Value), "targetTemperature");
             }
         }
         
@@ -156,11 +156,11 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             Argument.Validate(Value, "value");
             if ((Value.Value <= 273D))
             {
-                throw new ArgumentException("value", string.Format("Value should have been at least more than 273 but was \'{0}\'", Value.Value));
+                throw new ArgumentException(string.Format("Value should have been at least more than 273 but was \'{0}\'", Value.Value), "value");
             }
             if ((Value.Value > 373D))
             {
-                throw new ArgumentException("value", string.Format("Value should have been at most 373 but was \'{0}\'", Value.Value));
+                throw new ArgumentException(string.Format("Value should have been at most 373 but was \'{0}\'", Value.Value), "value");
             }
         }
         

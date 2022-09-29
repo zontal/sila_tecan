@@ -46,5 +46,14 @@ namespace Tecan.Sila2.Interop.Client.BinaryTransferTest
         /// <returns>The received Binary value transmitted in the same way it has been received.</returns>
         [return: Tecan.Sila2.SilaIdentifierAttribute("ReceivedValue")]
         System.IO.Stream EchoBinaryValue(System.IO.Stream binaryValue);
+        
+        /// <summary>
+        /// Receives a list of binaries, echoes them individually as intermediate responses with a delay of 1 second, and then returns them as a single joint binary
+        /// </summary>
+        /// <param name="binaries">List of binaries to echo</param>
+        /// <returns>A single binary comprised of binaries received as parameter</returns>
+        [Tecan.Sila2.ObservableAttribute()]
+        [return: Tecan.Sila2.SilaIdentifierAttribute("JointBinary")]
+        Tecan.Sila2.IIntermediateObservableCommand<System.IO.Stream, System.IO.Stream> EchoBinariesObservably(System.Collections.Generic.ICollection<System.IO.Stream> binaries);
     }
 }

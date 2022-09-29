@@ -109,11 +109,23 @@ namespace Tecan.Sila2.Interop.Server.ParameterConstraintsTest
             registration.RegisterUnobservableCommand<CheckListConstraintMaximalElementCountRequestDto, EmptyRequest>("CheckListConstraintMaximalElementCount", CheckListConstraintMaximalElementCount);
             registration.RegisterUnobservableCommand<CheckListConstraintMinMaxElementCountRequestDto, EmptyRequest>("CheckListConstraintMinMaxElementCount", CheckListConstraintMinMaxElementCount);
             registration.RegisterUnobservableCommand<CheckBinaryConstraintLengthRequestDto, EmptyRequest>("CheckBinaryConstraintLength", CheckBinaryConstraintLength);
+            registration.RegisterBinaryCommandParameter("org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckBinaryConstraintLe" +
+                    "ngth/Parameter/ConstrainedParameter");
             registration.RegisterUnobservableCommand<CheckBinaryConstraintMinimalLengthRequestDto, EmptyRequest>("CheckBinaryConstraintMinimalLength", CheckBinaryConstraintMinimalLength);
+            registration.RegisterBinaryCommandParameter("org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckBinaryConstraintMi" +
+                    "nimalLength/Parameter/ConstrainedParameter");
             registration.RegisterUnobservableCommand<CheckBinaryConstraintMaximalLengthRequestDto, EmptyRequest>("CheckBinaryConstraintMaximalLength", CheckBinaryConstraintMaximalLength);
+            registration.RegisterBinaryCommandParameter("org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckBinaryConstraintMa" +
+                    "ximalLength/Parameter/ConstrainedParameter");
             registration.RegisterUnobservableCommand<CheckBinaryConstraintMinMaxLengthRequestDto, EmptyRequest>("CheckBinaryConstraintMinMaxLength", CheckBinaryConstraintMinMaxLength);
+            registration.RegisterBinaryCommandParameter("org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckBinaryConstraintMi" +
+                    "nMaxLength/Parameter/ConstrainedParameter");
             registration.RegisterUnobservableCommand<CheckBinaryConstraintContentTypeRequestDto, EmptyRequest>("CheckBinaryConstraintContentType", CheckBinaryConstraintContentType);
+            registration.RegisterBinaryCommandParameter("org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckBinaryConstraintCo" +
+                    "ntentType/Parameter/ConstrainedParameter");
             registration.RegisterUnobservableCommand<CheckBinaryConstraintSchemaRequestDto, EmptyRequest>("CheckBinaryConstraintSchema", CheckBinaryConstraintSchema);
+            registration.RegisterBinaryCommandParameter("org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckBinaryConstraintSc" +
+                    "hema/Parameter/ConstrainedParameter");
             registration.RegisterUnobservableCommand<CheckAllowedTypesConstraintRequestDto, EmptyRequest>("CheckAllowedTypesConstraint", CheckAllowedTypesConstraint);
             registration.RegisterUnobservableCommand<CheckAllowedStructureTypeConstraintsRequestDto, EmptyRequest>("CheckAllowedStructureTypeConstraints", CheckAllowedStructureTypeConstraints);
         }
@@ -128,7 +140,8 @@ namespace Tecan.Sila2.Interop.Server.ParameterConstraintsTest
             try
             {
                 request.Validate();
-                _implementation.CheckStringConstraintLength(request.ConstrainedParameter.Extract(_server));
+                _implementation.CheckStringConstraintLength(request.ConstrainedParameter.TryExtract(_server, "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckStringConstraintLe" +
+                            "ngth/Parameter/ConstrainedParameter"));
                 return EmptyRequest.Instance;
             } catch (System.ArgumentException ex)
             {
@@ -151,7 +164,8 @@ namespace Tecan.Sila2.Interop.Server.ParameterConstraintsTest
             try
             {
                 request.Validate();
-                _implementation.CheckStringConstraintMinimalLength(request.ConstrainedParameter.Extract(_server));
+                _implementation.CheckStringConstraintMinimalLength(request.ConstrainedParameter.TryExtract(_server, "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckStringConstraintMi" +
+                            "nimalLength/Parameter/ConstrainedParameter"));
                 return EmptyRequest.Instance;
             } catch (System.ArgumentException ex)
             {
@@ -174,7 +188,8 @@ namespace Tecan.Sila2.Interop.Server.ParameterConstraintsTest
             try
             {
                 request.Validate();
-                _implementation.CheckStringConstraintMaximalLength(request.ConstrainedParameter.Extract(_server));
+                _implementation.CheckStringConstraintMaximalLength(request.ConstrainedParameter.TryExtract(_server, "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckStringConstraintMa" +
+                            "ximalLength/Parameter/ConstrainedParameter"));
                 return EmptyRequest.Instance;
             } catch (System.ArgumentException ex)
             {
@@ -197,7 +212,8 @@ namespace Tecan.Sila2.Interop.Server.ParameterConstraintsTest
             try
             {
                 request.Validate();
-                _implementation.CheckStringConstraintMinMaxLength(request.ConstrainedParameter.Extract(_server));
+                _implementation.CheckStringConstraintMinMaxLength(request.ConstrainedParameter.TryExtract(_server, "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckStringConstraintMi" +
+                            "nMaxLength/Parameter/ConstrainedParameter"));
                 return EmptyRequest.Instance;
             } catch (System.ArgumentException ex)
             {
@@ -220,7 +236,8 @@ namespace Tecan.Sila2.Interop.Server.ParameterConstraintsTest
             try
             {
                 request.Validate();
-                _implementation.CheckStringConstraintSet(request.ConstrainedParameter.Extract(_server));
+                _implementation.CheckStringConstraintSet(request.ConstrainedParameter.TryExtract(_server, "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckStringConstraintSe" +
+                            "t/Parameter/ConstrainedParameter"));
                 return EmptyRequest.Instance;
             } catch (System.ArgumentException ex)
             {
@@ -243,7 +260,8 @@ namespace Tecan.Sila2.Interop.Server.ParameterConstraintsTest
             try
             {
                 request.Validate();
-                _implementation.CheckStringConstraintPattern(request.ConstrainedParameter.Extract(_server));
+                _implementation.CheckStringConstraintPattern(request.ConstrainedParameter.TryExtract(_server, "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckStringConstraintPa" +
+                            "ttern/Parameter/ConstrainedParameter"));
                 return EmptyRequest.Instance;
             } catch (System.ArgumentException ex)
             {
@@ -266,7 +284,8 @@ namespace Tecan.Sila2.Interop.Server.ParameterConstraintsTest
             try
             {
                 request.Validate();
-                _implementation.CheckStringConstraintContentType(request.ConstrainedParameter.Extract(_server));
+                _implementation.CheckStringConstraintContentType(request.ConstrainedParameter.TryExtract(_server, "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckStringConstraintCo" +
+                            "ntentType/Parameter/ConstrainedParameter"));
                 return EmptyRequest.Instance;
             } catch (System.ArgumentException ex)
             {
@@ -289,7 +308,16 @@ namespace Tecan.Sila2.Interop.Server.ParameterConstraintsTest
             try
             {
                 request.Validate();
-                _implementation.CheckStringConstraintFullyQualifiedIdentifier(request.FeatureIdentifier.Extract(_server), request.CommandIdentifier_.Extract(_server), request.CommandParameterIdentifier.Extract(_server), request.CommandResponseIdentifier.Extract(_server), request.IntermediateCommandResponseIdentifier.Extract(_server), request.ExecutionErrorIdentifier.Extract(_server), request.PropertyIdentifier.Extract(_server), request.CustomDataTypeIdentifier.Extract(_server), request.MetadataIdentifier.Extract(_server));
+                _implementation.CheckStringConstraintFullyQualifiedIdentifier(request.FeatureIdentifier.TryExtract(_server, "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckStringConstraintFu" +
+                            "llyQualifiedIdentifier/Parameter/FeatureIdentifier"), request.CommandIdentifier_.TryExtract(_server, "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckStringConstraintFu" +
+                            "llyQualifiedIdentifier/Parameter/CommandIdentifier"), request.CommandParameterIdentifier.TryExtract(_server, "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckStringConstraintFu" +
+                            "llyQualifiedIdentifier/Parameter/CommandParameterIdentifier"), request.CommandResponseIdentifier.TryExtract(_server, "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckStringConstraintFu" +
+                            "llyQualifiedIdentifier/Parameter/CommandResponseIdentifier"), request.IntermediateCommandResponseIdentifier.TryExtract(_server, "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckStringConstraintFu" +
+                            "llyQualifiedIdentifier/Parameter/IntermediateCommandResponseIdentifier"), request.ExecutionErrorIdentifier.TryExtract(_server, "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckStringConstraintFu" +
+                            "llyQualifiedIdentifier/Parameter/ExecutionErrorIdentifier"), request.PropertyIdentifier.TryExtract(_server, "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckStringConstraintFu" +
+                            "llyQualifiedIdentifier/Parameter/PropertyIdentifier"), request.CustomDataTypeIdentifier.TryExtract(_server, "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckStringConstraintFu" +
+                            "llyQualifiedIdentifier/Parameter/CustomDataTypeIdentifier"), request.MetadataIdentifier.TryExtract(_server, "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckStringConstraintFu" +
+                            "llyQualifiedIdentifier/Parameter/MetadataIdentifier"));
                 return EmptyRequest.Instance;
             } catch (System.ArgumentException ex)
             {
@@ -352,7 +380,8 @@ namespace Tecan.Sila2.Interop.Server.ParameterConstraintsTest
             try
             {
                 request.Validate();
-                _implementation.CheckStringConstraintSchema(request.ConstrainedParameter.Extract(_server));
+                _implementation.CheckStringConstraintSchema(request.ConstrainedParameter.TryExtract(_server, "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckStringConstraintSc" +
+                            "hema/Parameter/ConstrainedParameter"));
                 return EmptyRequest.Instance;
             } catch (System.ArgumentException ex)
             {
@@ -375,7 +404,8 @@ namespace Tecan.Sila2.Interop.Server.ParameterConstraintsTest
             try
             {
                 request.Validate();
-                _implementation.CheckIntegerConstraintSet(request.ConstrainedParameter.Extract(_server));
+                _implementation.CheckIntegerConstraintSet(request.ConstrainedParameter.TryExtract(_server, "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckIntegerConstraintS" +
+                            "et/Parameter/ConstrainedParameter"));
                 return EmptyRequest.Instance;
             } catch (System.ArgumentException ex)
             {
@@ -398,7 +428,8 @@ namespace Tecan.Sila2.Interop.Server.ParameterConstraintsTest
             try
             {
                 request.Validate();
-                _implementation.CheckScientificallyNotatedIntegerLimit(request.ConstrainedParameter.Extract(_server));
+                _implementation.CheckScientificallyNotatedIntegerLimit(request.ConstrainedParameter.TryExtract(_server, "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckScientificallyNota" +
+                            "tedIntegerLimit/Parameter/ConstrainedParameter"));
                 return EmptyRequest.Instance;
             } catch (System.ArgumentException ex)
             {
@@ -421,7 +452,8 @@ namespace Tecan.Sila2.Interop.Server.ParameterConstraintsTest
             try
             {
                 request.Validate();
-                _implementation.CheckIntegerConstraintMaximalExclusive(request.ConstrainedParameter.Extract(_server));
+                _implementation.CheckIntegerConstraintMaximalExclusive(request.ConstrainedParameter.TryExtract(_server, "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckIntegerConstraintM" +
+                            "aximalExclusive/Parameter/ConstrainedParameter"));
                 return EmptyRequest.Instance;
             } catch (System.ArgumentException ex)
             {
@@ -444,7 +476,8 @@ namespace Tecan.Sila2.Interop.Server.ParameterConstraintsTest
             try
             {
                 request.Validate();
-                _implementation.CheckIntegerConstraintMaximalInclusive(request.ConstrainedParameter.Extract(_server));
+                _implementation.CheckIntegerConstraintMaximalInclusive(request.ConstrainedParameter.TryExtract(_server, "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckIntegerConstraintM" +
+                            "aximalInclusive/Parameter/ConstrainedParameter"));
                 return EmptyRequest.Instance;
             } catch (System.ArgumentException ex)
             {
@@ -467,7 +500,8 @@ namespace Tecan.Sila2.Interop.Server.ParameterConstraintsTest
             try
             {
                 request.Validate();
-                _implementation.CheckIntegerConstraintMinimalExclusive(request.ConstrainedParameter.Extract(_server));
+                _implementation.CheckIntegerConstraintMinimalExclusive(request.ConstrainedParameter.TryExtract(_server, "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckIntegerConstraintM" +
+                            "inimalExclusive/Parameter/ConstrainedParameter"));
                 return EmptyRequest.Instance;
             } catch (System.ArgumentException ex)
             {
@@ -490,7 +524,8 @@ namespace Tecan.Sila2.Interop.Server.ParameterConstraintsTest
             try
             {
                 request.Validate();
-                _implementation.CheckIntegerConstraintMinimalInclusive(request.ConstrainedParameter.Extract(_server));
+                _implementation.CheckIntegerConstraintMinimalInclusive(request.ConstrainedParameter.TryExtract(_server, "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckIntegerConstraintM" +
+                            "inimalInclusive/Parameter/ConstrainedParameter"));
                 return EmptyRequest.Instance;
             } catch (System.ArgumentException ex)
             {
@@ -513,7 +548,8 @@ namespace Tecan.Sila2.Interop.Server.ParameterConstraintsTest
             try
             {
                 request.Validate();
-                _implementation.CheckIntegerConstraintMinMax(request.ConstrainedParameter.Extract(_server));
+                _implementation.CheckIntegerConstraintMinMax(request.ConstrainedParameter.TryExtract(_server, "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckIntegerConstraintM" +
+                            "inMax/Parameter/ConstrainedParameter"));
                 return EmptyRequest.Instance;
             } catch (System.ArgumentException ex)
             {
@@ -536,7 +572,8 @@ namespace Tecan.Sila2.Interop.Server.ParameterConstraintsTest
             try
             {
                 request.Validate();
-                _implementation.CheckIntegerConstraintUnit(request.ConstrainedParameter.Extract(_server));
+                _implementation.CheckIntegerConstraintUnit(request.ConstrainedParameter.TryExtract(_server, "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckIntegerConstraintU" +
+                            "nit/Parameter/ConstrainedParameter"));
                 return EmptyRequest.Instance;
             } catch (System.ArgumentException ex)
             {
@@ -559,7 +596,8 @@ namespace Tecan.Sila2.Interop.Server.ParameterConstraintsTest
             try
             {
                 request.Validate();
-                _implementation.CheckRealConstraintSet(request.ConstrainedParameter.Extract(_server));
+                _implementation.CheckRealConstraintSet(request.ConstrainedParameter.TryExtract(_server, "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckRealConstraintSet/" +
+                            "Parameter/ConstrainedParameter"));
                 return EmptyRequest.Instance;
             } catch (System.ArgumentException ex)
             {
@@ -582,7 +620,8 @@ namespace Tecan.Sila2.Interop.Server.ParameterConstraintsTest
             try
             {
                 request.Validate();
-                _implementation.CheckScientificallyNotatedRealLimit(request.ConstrainedParameter.Extract(_server));
+                _implementation.CheckScientificallyNotatedRealLimit(request.ConstrainedParameter.TryExtract(_server, "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckScientificallyNota" +
+                            "tedRealLimit/Parameter/ConstrainedParameter"));
                 return EmptyRequest.Instance;
             } catch (System.ArgumentException ex)
             {
@@ -605,7 +644,8 @@ namespace Tecan.Sila2.Interop.Server.ParameterConstraintsTest
             try
             {
                 request.Validate();
-                _implementation.CheckRealConstraintMaximalExclusive(request.ConstrainedParameter.Extract(_server));
+                _implementation.CheckRealConstraintMaximalExclusive(request.ConstrainedParameter.TryExtract(_server, "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckRealConstraintMaxi" +
+                            "malExclusive/Parameter/ConstrainedParameter"));
                 return EmptyRequest.Instance;
             } catch (System.ArgumentException ex)
             {
@@ -628,7 +668,8 @@ namespace Tecan.Sila2.Interop.Server.ParameterConstraintsTest
             try
             {
                 request.Validate();
-                _implementation.CheckRealConstraintMaximalInclusive(request.ConstrainedParameter.Extract(_server));
+                _implementation.CheckRealConstraintMaximalInclusive(request.ConstrainedParameter.TryExtract(_server, "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckRealConstraintMaxi" +
+                            "malInclusive/Parameter/ConstrainedParameter"));
                 return EmptyRequest.Instance;
             } catch (System.ArgumentException ex)
             {
@@ -651,7 +692,8 @@ namespace Tecan.Sila2.Interop.Server.ParameterConstraintsTest
             try
             {
                 request.Validate();
-                _implementation.CheckRealConstraintMinimalExclusive(request.ConstrainedParameter.Extract(_server));
+                _implementation.CheckRealConstraintMinimalExclusive(request.ConstrainedParameter.TryExtract(_server, "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckRealConstraintMini" +
+                            "malExclusive/Parameter/ConstrainedParameter"));
                 return EmptyRequest.Instance;
             } catch (System.ArgumentException ex)
             {
@@ -674,7 +716,8 @@ namespace Tecan.Sila2.Interop.Server.ParameterConstraintsTest
             try
             {
                 request.Validate();
-                _implementation.CheckRealConstraintMinimalInclusive(request.ConstrainedParameter.Extract(_server));
+                _implementation.CheckRealConstraintMinimalInclusive(request.ConstrainedParameter.TryExtract(_server, "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckRealConstraintMini" +
+                            "malInclusive/Parameter/ConstrainedParameter"));
                 return EmptyRequest.Instance;
             } catch (System.ArgumentException ex)
             {
@@ -697,7 +740,8 @@ namespace Tecan.Sila2.Interop.Server.ParameterConstraintsTest
             try
             {
                 request.Validate();
-                _implementation.CheckRealConstraintMinMax(request.ConstrainedParameter.Extract(_server));
+                _implementation.CheckRealConstraintMinMax(request.ConstrainedParameter.TryExtract(_server, "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckRealConstraintMinM" +
+                            "ax/Parameter/ConstrainedParameter"));
                 return EmptyRequest.Instance;
             } catch (System.ArgumentException ex)
             {
@@ -720,7 +764,8 @@ namespace Tecan.Sila2.Interop.Server.ParameterConstraintsTest
             try
             {
                 request.Validate();
-                _implementation.CheckRealConstraintUnit(request.ConstrainedParameter.Extract(_server));
+                _implementation.CheckRealConstraintUnit(request.ConstrainedParameter.TryExtract(_server, "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckRealConstraintUnit" +
+                            "/Parameter/ConstrainedParameter"));
                 return EmptyRequest.Instance;
             } catch (System.ArgumentException ex)
             {
@@ -743,7 +788,8 @@ namespace Tecan.Sila2.Interop.Server.ParameterConstraintsTest
             try
             {
                 request.Validate();
-                _implementation.CheckDateConstraintSet(request.ConstrainedParameter.Extract(_server));
+                _implementation.CheckDateConstraintSet(request.ConstrainedParameter.TryExtract(_server, "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckDateConstraintSet/" +
+                            "Parameter/ConstrainedParameter"));
                 return EmptyRequest.Instance;
             } catch (System.ArgumentException ex)
             {
@@ -766,7 +812,8 @@ namespace Tecan.Sila2.Interop.Server.ParameterConstraintsTest
             try
             {
                 request.Validate();
-                _implementation.CheckDateConstraintMaximalExclusive(request.ConstrainedParameter.Extract(_server));
+                _implementation.CheckDateConstraintMaximalExclusive(request.ConstrainedParameter.TryExtract(_server, "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckDateConstraintMaxi" +
+                            "malExclusive/Parameter/ConstrainedParameter"));
                 return EmptyRequest.Instance;
             } catch (System.ArgumentException ex)
             {
@@ -789,7 +836,8 @@ namespace Tecan.Sila2.Interop.Server.ParameterConstraintsTest
             try
             {
                 request.Validate();
-                _implementation.CheckDateConstraintMaximalInclusive(request.ConstrainedParameter.Extract(_server));
+                _implementation.CheckDateConstraintMaximalInclusive(request.ConstrainedParameter.TryExtract(_server, "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckDateConstraintMaxi" +
+                            "malInclusive/Parameter/ConstrainedParameter"));
                 return EmptyRequest.Instance;
             } catch (System.ArgumentException ex)
             {
@@ -812,7 +860,8 @@ namespace Tecan.Sila2.Interop.Server.ParameterConstraintsTest
             try
             {
                 request.Validate();
-                _implementation.CheckDateConstraintMinimalExclusive(request.ConstrainedParameter.Extract(_server));
+                _implementation.CheckDateConstraintMinimalExclusive(request.ConstrainedParameter.TryExtract(_server, "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckDateConstraintMini" +
+                            "malExclusive/Parameter/ConstrainedParameter"));
                 return EmptyRequest.Instance;
             } catch (System.ArgumentException ex)
             {
@@ -835,7 +884,8 @@ namespace Tecan.Sila2.Interop.Server.ParameterConstraintsTest
             try
             {
                 request.Validate();
-                _implementation.CheckDateConstraintMinimalInclusive(request.ConstrainedParameter.Extract(_server));
+                _implementation.CheckDateConstraintMinimalInclusive(request.ConstrainedParameter.TryExtract(_server, "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckDateConstraintMini" +
+                            "malInclusive/Parameter/ConstrainedParameter"));
                 return EmptyRequest.Instance;
             } catch (System.ArgumentException ex)
             {
@@ -858,7 +908,8 @@ namespace Tecan.Sila2.Interop.Server.ParameterConstraintsTest
             try
             {
                 request.Validate();
-                _implementation.CheckDateConstraintMinMax(request.ConstrainedParameter.Extract(_server));
+                _implementation.CheckDateConstraintMinMax(request.ConstrainedParameter.TryExtract(_server, "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckDateConstraintMinM" +
+                            "ax/Parameter/ConstrainedParameter"));
                 return EmptyRequest.Instance;
             } catch (System.ArgumentException ex)
             {
@@ -881,7 +932,8 @@ namespace Tecan.Sila2.Interop.Server.ParameterConstraintsTest
             try
             {
                 request.Validate();
-                _implementation.CheckTimeConstraintSet(request.ConstrainedParameter.Extract(_server));
+                _implementation.CheckTimeConstraintSet(request.ConstrainedParameter.TryExtract(_server, "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckTimeConstraintSet/" +
+                            "Parameter/ConstrainedParameter"));
                 return EmptyRequest.Instance;
             } catch (System.ArgumentException ex)
             {
@@ -904,7 +956,8 @@ namespace Tecan.Sila2.Interop.Server.ParameterConstraintsTest
             try
             {
                 request.Validate();
-                _implementation.CheckTimeConstraintMaximalExclusive(request.ConstrainedParameter.Extract(_server));
+                _implementation.CheckTimeConstraintMaximalExclusive(request.ConstrainedParameter.TryExtract(_server, "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckTimeConstraintMaxi" +
+                            "malExclusive/Parameter/ConstrainedParameter"));
                 return EmptyRequest.Instance;
             } catch (System.ArgumentException ex)
             {
@@ -927,7 +980,8 @@ namespace Tecan.Sila2.Interop.Server.ParameterConstraintsTest
             try
             {
                 request.Validate();
-                _implementation.CheckTimeConstraintMaximalInclusive(request.ConstrainedParameter.Extract(_server));
+                _implementation.CheckTimeConstraintMaximalInclusive(request.ConstrainedParameter.TryExtract(_server, "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckTimeConstraintMaxi" +
+                            "malInclusive/Parameter/ConstrainedParameter"));
                 return EmptyRequest.Instance;
             } catch (System.ArgumentException ex)
             {
@@ -950,7 +1004,8 @@ namespace Tecan.Sila2.Interop.Server.ParameterConstraintsTest
             try
             {
                 request.Validate();
-                _implementation.CheckTimeConstraintMinimalExclusive(request.ConstrainedParameter.Extract(_server));
+                _implementation.CheckTimeConstraintMinimalExclusive(request.ConstrainedParameter.TryExtract(_server, "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckTimeConstraintMini" +
+                            "malExclusive/Parameter/ConstrainedParameter"));
                 return EmptyRequest.Instance;
             } catch (System.ArgumentException ex)
             {
@@ -973,7 +1028,8 @@ namespace Tecan.Sila2.Interop.Server.ParameterConstraintsTest
             try
             {
                 request.Validate();
-                _implementation.CheckTimeConstraintMinimalInclusive(request.ConstrainedParameter.Extract(_server));
+                _implementation.CheckTimeConstraintMinimalInclusive(request.ConstrainedParameter.TryExtract(_server, "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckTimeConstraintMini" +
+                            "malInclusive/Parameter/ConstrainedParameter"));
                 return EmptyRequest.Instance;
             } catch (System.ArgumentException ex)
             {
@@ -996,7 +1052,8 @@ namespace Tecan.Sila2.Interop.Server.ParameterConstraintsTest
             try
             {
                 request.Validate();
-                _implementation.CheckTimeConstraintMinMax(request.ConstrainedParameter.Extract(_server));
+                _implementation.CheckTimeConstraintMinMax(request.ConstrainedParameter.TryExtract(_server, "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckTimeConstraintMinM" +
+                            "ax/Parameter/ConstrainedParameter"));
                 return EmptyRequest.Instance;
             } catch (System.ArgumentException ex)
             {
@@ -1019,7 +1076,8 @@ namespace Tecan.Sila2.Interop.Server.ParameterConstraintsTest
             try
             {
                 request.Validate();
-                _implementation.CheckTimestampConstraintSet(request.ConstrainedParameter.Extract(_server));
+                _implementation.CheckTimestampConstraintSet(request.ConstrainedParameter.TryExtract(_server, "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckTimestampConstrain" +
+                            "tSet/Parameter/ConstrainedParameter"));
                 return EmptyRequest.Instance;
             } catch (System.ArgumentException ex)
             {
@@ -1042,7 +1100,8 @@ namespace Tecan.Sila2.Interop.Server.ParameterConstraintsTest
             try
             {
                 request.Validate();
-                _implementation.CheckTimestampConstraintMaximalExclusive(request.ConstrainedParameter.Extract(_server));
+                _implementation.CheckTimestampConstraintMaximalExclusive(request.ConstrainedParameter.TryExtract(_server, "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckTimestampConstrain" +
+                            "tMaximalExclusive/Parameter/ConstrainedParameter"));
                 return EmptyRequest.Instance;
             } catch (System.ArgumentException ex)
             {
@@ -1065,7 +1124,8 @@ namespace Tecan.Sila2.Interop.Server.ParameterConstraintsTest
             try
             {
                 request.Validate();
-                _implementation.CheckTimestampConstraintMaximalInclusive(request.ConstrainedParameter.Extract(_server));
+                _implementation.CheckTimestampConstraintMaximalInclusive(request.ConstrainedParameter.TryExtract(_server, "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckTimestampConstrain" +
+                            "tMaximalInclusive/Parameter/ConstrainedParameter"));
                 return EmptyRequest.Instance;
             } catch (System.ArgumentException ex)
             {
@@ -1088,7 +1148,8 @@ namespace Tecan.Sila2.Interop.Server.ParameterConstraintsTest
             try
             {
                 request.Validate();
-                _implementation.CheckTimestampConstraintMinimalExclusive(request.ConstrainedParameter.Extract(_server));
+                _implementation.CheckTimestampConstraintMinimalExclusive(request.ConstrainedParameter.TryExtract(_server, "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckTimestampConstrain" +
+                            "tMinimalExclusive/Parameter/ConstrainedParameter"));
                 return EmptyRequest.Instance;
             } catch (System.ArgumentException ex)
             {
@@ -1111,7 +1172,8 @@ namespace Tecan.Sila2.Interop.Server.ParameterConstraintsTest
             try
             {
                 request.Validate();
-                _implementation.CheckTimestampConstraintMinimalInclusive(request.ConstrainedParameter.Extract(_server));
+                _implementation.CheckTimestampConstraintMinimalInclusive(request.ConstrainedParameter.TryExtract(_server, "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckTimestampConstrain" +
+                            "tMinimalInclusive/Parameter/ConstrainedParameter"));
                 return EmptyRequest.Instance;
             } catch (System.ArgumentException ex)
             {
@@ -1134,7 +1196,8 @@ namespace Tecan.Sila2.Interop.Server.ParameterConstraintsTest
             try
             {
                 request.Validate();
-                _implementation.CheckTimestampConstraintMinMax(request.ConstrainedParameter.Extract(_server));
+                _implementation.CheckTimestampConstraintMinMax(request.ConstrainedParameter.TryExtract(_server, "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckTimestampConstrain" +
+                            "tMinMax/Parameter/ConstrainedParameter"));
                 return EmptyRequest.Instance;
             } catch (System.ArgumentException ex)
             {
@@ -1157,7 +1220,8 @@ namespace Tecan.Sila2.Interop.Server.ParameterConstraintsTest
             try
             {
                 request.Validate();
-                _implementation.CheckListConstraintElementCount(request.ConstrainedParameter.Extract(_server));
+                _implementation.CheckListConstraintElementCount(request.ConstrainedParameter.TryExtract(_server, "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckListConstraintElem" +
+                            "entCount/Parameter/ConstrainedParameter"));
                 return EmptyRequest.Instance;
             } catch (System.ArgumentException ex)
             {
@@ -1180,7 +1244,8 @@ namespace Tecan.Sila2.Interop.Server.ParameterConstraintsTest
             try
             {
                 request.Validate();
-                _implementation.CheckListConstraintMinimalElementCount(request.ConstrainedParameter.Extract(_server));
+                _implementation.CheckListConstraintMinimalElementCount(request.ConstrainedParameter.TryExtract(_server, "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckListConstraintMini" +
+                            "malElementCount/Parameter/ConstrainedParameter"));
                 return EmptyRequest.Instance;
             } catch (System.ArgumentException ex)
             {
@@ -1203,7 +1268,8 @@ namespace Tecan.Sila2.Interop.Server.ParameterConstraintsTest
             try
             {
                 request.Validate();
-                _implementation.CheckListConstraintMaximalElementCount(request.ConstrainedParameter.Extract(_server));
+                _implementation.CheckListConstraintMaximalElementCount(request.ConstrainedParameter.TryExtract(_server, "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckListConstraintMaxi" +
+                            "malElementCount/Parameter/ConstrainedParameter"));
                 return EmptyRequest.Instance;
             } catch (System.ArgumentException ex)
             {
@@ -1226,7 +1292,8 @@ namespace Tecan.Sila2.Interop.Server.ParameterConstraintsTest
             try
             {
                 request.Validate();
-                _implementation.CheckListConstraintMinMaxElementCount(request.ConstrainedParameter.Extract(_server));
+                _implementation.CheckListConstraintMinMaxElementCount(request.ConstrainedParameter.TryExtract(_server, "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckListConstraintMinM" +
+                            "axElementCount/Parameter/ConstrainedParameter"));
                 return EmptyRequest.Instance;
             } catch (System.ArgumentException ex)
             {
@@ -1249,7 +1316,8 @@ namespace Tecan.Sila2.Interop.Server.ParameterConstraintsTest
             try
             {
                 request.Validate();
-                _implementation.CheckBinaryConstraintLength(request.ConstrainedParameter.Extract(_server));
+                _implementation.CheckBinaryConstraintLength(request.ConstrainedParameter.TryExtract(_server, "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckBinaryConstraintLe" +
+                            "ngth/Parameter/ConstrainedParameter"));
                 return EmptyRequest.Instance;
             } catch (System.ArgumentException ex)
             {
@@ -1272,7 +1340,8 @@ namespace Tecan.Sila2.Interop.Server.ParameterConstraintsTest
             try
             {
                 request.Validate();
-                _implementation.CheckBinaryConstraintMinimalLength(request.ConstrainedParameter.Extract(_server));
+                _implementation.CheckBinaryConstraintMinimalLength(request.ConstrainedParameter.TryExtract(_server, "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckBinaryConstraintMi" +
+                            "nimalLength/Parameter/ConstrainedParameter"));
                 return EmptyRequest.Instance;
             } catch (System.ArgumentException ex)
             {
@@ -1295,7 +1364,8 @@ namespace Tecan.Sila2.Interop.Server.ParameterConstraintsTest
             try
             {
                 request.Validate();
-                _implementation.CheckBinaryConstraintMaximalLength(request.ConstrainedParameter.Extract(_server));
+                _implementation.CheckBinaryConstraintMaximalLength(request.ConstrainedParameter.TryExtract(_server, "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckBinaryConstraintMa" +
+                            "ximalLength/Parameter/ConstrainedParameter"));
                 return EmptyRequest.Instance;
             } catch (System.ArgumentException ex)
             {
@@ -1318,7 +1388,8 @@ namespace Tecan.Sila2.Interop.Server.ParameterConstraintsTest
             try
             {
                 request.Validate();
-                _implementation.CheckBinaryConstraintMinMaxLength(request.ConstrainedParameter.Extract(_server));
+                _implementation.CheckBinaryConstraintMinMaxLength(request.ConstrainedParameter.TryExtract(_server, "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckBinaryConstraintMi" +
+                            "nMaxLength/Parameter/ConstrainedParameter"));
                 return EmptyRequest.Instance;
             } catch (System.ArgumentException ex)
             {
@@ -1341,7 +1412,8 @@ namespace Tecan.Sila2.Interop.Server.ParameterConstraintsTest
             try
             {
                 request.Validate();
-                _implementation.CheckBinaryConstraintContentType(request.ConstrainedParameter.Extract(_server));
+                _implementation.CheckBinaryConstraintContentType(request.ConstrainedParameter.TryExtract(_server, "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckBinaryConstraintCo" +
+                            "ntentType/Parameter/ConstrainedParameter"));
                 return EmptyRequest.Instance;
             } catch (System.ArgumentException ex)
             {
@@ -1364,7 +1436,8 @@ namespace Tecan.Sila2.Interop.Server.ParameterConstraintsTest
             try
             {
                 request.Validate();
-                _implementation.CheckBinaryConstraintSchema(request.ConstrainedParameter.Extract(_server));
+                _implementation.CheckBinaryConstraintSchema(request.ConstrainedParameter.TryExtract(_server, "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckBinaryConstraintSc" +
+                            "hema/Parameter/ConstrainedParameter"));
                 return EmptyRequest.Instance;
             } catch (System.ArgumentException ex)
             {
@@ -1387,7 +1460,8 @@ namespace Tecan.Sila2.Interop.Server.ParameterConstraintsTest
             try
             {
                 request.Validate();
-                _implementation.CheckAllowedTypesConstraint(request.ConstrainedParameter.Extract(_server));
+                _implementation.CheckAllowedTypesConstraint(request.ConstrainedParameter.TryExtract(_server, "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckAllowedTypesConstr" +
+                            "aint/Parameter/ConstrainedParameter"));
                 return EmptyRequest.Instance;
             } catch (System.ArgumentException ex)
             {
@@ -1410,7 +1484,8 @@ namespace Tecan.Sila2.Interop.Server.ParameterConstraintsTest
             try
             {
                 request.Validate();
-                _implementation.CheckAllowedStructureTypeConstraints(request.ConstrainedParameter.Extract(_server));
+                _implementation.CheckAllowedStructureTypeConstraints(request.ConstrainedParameter.TryExtract(_server, "org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckAllowedStructureTy" +
+                            "peConstraints/Parameter/ConstrainedParameter"));
                 return EmptyRequest.Instance;
             } catch (System.ArgumentException ex)
             {

@@ -17,12 +17,12 @@ namespace Tecan.Sila2
         /// <summary>
         /// Creates an observable command
         /// </summary>
-        protected ObservableCommand() : this(null) { }
+        protected ObservableCommand() : this( null ) { }
 
         /// <summary>
         /// Creates an observable command
         /// </summary>
-        protected ObservableCommand(CancellationTokenSource cancellationTokenSource)
+        protected ObservableCommand( CancellationTokenSource cancellationTokenSource )
         {
             _stateUpdateChannel = Channels.CreateStateUpdateChannel();
             _cancellationTokenSource = cancellationTokenSource;
@@ -31,9 +31,9 @@ namespace Tecan.Sila2
         /// <inheritdoc />
         public virtual void Start()
         {
-            if( Response != null )
+            if(Response != null)
             {
-                throw new InvalidOperationException("The command was already started");
+                throw new InvalidOperationException( "The command was already started" );
             }
             Response = WrapRun();
         }
@@ -45,26 +45,26 @@ namespace Tecan.Sila2
         public abstract Task Run();
 
 
-        private async Task WrapRun( )
+        private async Task WrapRun()
         {
             Exception exception = null;
             try
             {
                 await Run();
             }
-            catch( Exception ex )
+            catch(Exception ex)
             {
                 exception = ex;
                 throw;
             }
             finally
             {
-                if( SendLastUpdate )
+                if(SendLastUpdate)
                 {
                     PushStateUpdate( 1, TimeSpan.Zero, exception != null ? CommandState.FinishedWithErrors : CommandState.FinishedSuccess );
                 }
 
-                Cleanup(exception);
+                Cleanup( exception );
             }
         }
 
@@ -102,7 +102,7 @@ namespace Tecan.Sila2
         /// <param name="exception">An exception that caused the command to terminate or null, if the command completed successfully</param>
         protected virtual void Cleanup( Exception exception )
         {
-            _stateUpdateChannel.Writer.TryComplete( exception );
+            _stateUpdateChannel.Writer.TryComplete();
             _cancellationTokenSource?.Dispose();
         }
 
@@ -131,7 +131,7 @@ namespace Tecan.Sila2
         /// <inheritdoc />
         public virtual void Cancel()
         {
-            if( _cancellationTokenSource != null )
+            if(_cancellationTokenSource != null)
             {
                 try
                 {
@@ -150,7 +150,7 @@ namespace Tecan.Sila2
         /// <inheritdoc />
         public void Dispose()
         {
-            Cleanup(null);
+            Cleanup( null );
         }
     }
 
@@ -203,12 +203,12 @@ namespace Tecan.Sila2
             }
             finally
             {
-                if( SendLastUpdate )
+                if(SendLastUpdate)
                 {
                     PushStateUpdate( 1, TimeSpan.Zero, exception != null ? CommandState.FinishedWithErrors : CommandState.FinishedSuccess );
                 }
 
-                Cleanup(exception);
+                Cleanup( exception );
             }
         }
 
@@ -223,7 +223,7 @@ namespace Tecan.Sila2
         /// <param name="exception">An exception that caused the command to terminate or null, if the command completed successfully</param>
         protected virtual void Cleanup( Exception exception )
         {
-            _stateUpdateChannel.Writer.TryComplete( exception );
+            _stateUpdateChannel.Writer.TryComplete();
             _cancellationTokenSource?.Dispose();
         }
 
@@ -275,7 +275,7 @@ namespace Tecan.Sila2
                 {
                     _cancellationTokenSource.Cancel();
                 }
-                catch (ObjectDisposedException)
+                catch(ObjectDisposedException)
                 {
                 }
             }

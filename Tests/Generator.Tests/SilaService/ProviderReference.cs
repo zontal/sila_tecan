@@ -82,7 +82,8 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             try
             {
                 request.Validate();
-                return new GetFeatureDefinitionResponseDto(_implementation.GetFeatureDefinition(request.QualifiedFeatureIdentifier.Extract(_server)), _server);
+                return new GetFeatureDefinitionResponseDto(_implementation.GetFeatureDefinition(request.QualifiedFeatureIdentifier.TryExtract(_server, "tecan.sila.generator.test/silaservice/SiLAService/v4/Command/GetFeatureDefinition" +
+                                "/Parameter/QualifiedFeatureIdentifier")), _server);
             } catch (System.ArgumentException ex)
             {
                 if ((ex.ParamName == "qualifiedFeatureIdentifier"))
@@ -109,7 +110,8 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             try
             {
                 request.Validate();
-                _implementation.ServerName = request.ServerName.Extract(_server);
+                _implementation.ServerName = request.ServerName.TryExtract(_server, "tecan.sila.generator.test/silaservice/SiLAService/v4/Command/SetServerName/Parame" +
+                        "ter/ServerName");
                 return EmptyRequest.Instance;
             } catch (System.ArgumentException ex)
             {

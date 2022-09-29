@@ -35,6 +35,14 @@ namespace Tecan.Sila2.Interop.Client.ErrorHandlingTest.ErrorHandlingTest
         
         private System.Threading.Tasks.Task _raiseUndefinedExecutionErrorOnSubscribeUpdateTask;
         
+        private long _raiseDefinedExecutionErrorAfterValueWasSent;
+        
+        private System.Threading.Tasks.Task _raiseDefinedExecutionErrorAfterValueWasSentUpdateTask;
+        
+        private long _raiseUndefinedExecutionErrorAfterValueWasSent;
+        
+        private System.Threading.Tasks.Task _raiseUndefinedExecutionErrorAfterValueWasSentUpdateTask;
+        
         private System.Threading.CancellationTokenSource _cancellationTokenSource = new System.Threading.CancellationTokenSource();
         
         private IClientExecutionManager _executionManager;
@@ -56,7 +64,7 @@ namespace Tecan.Sila2.Interop.Client.ErrorHandlingTest.ErrorHandlingTest
         }
         
         /// <summary>
-        /// A property that raises a "Test Error" on get with error message 'SiLA2_test_error_message'
+        /// A property that raises a "Test Error" on get with the error message 'SiLA2_test_error_message'
         /// </summary>
         public virtual long RaiseDefinedExecutionErrorOnGet
         {
@@ -67,7 +75,7 @@ namespace Tecan.Sila2.Interop.Client.ErrorHandlingTest.ErrorHandlingTest
         }
         
         /// <summary>
-        /// A property that raises a "Test Error" on subscribe with error message 'SiLA2_test_error_message'
+        /// A property that raises a "Test Error" on subscribe with the error message 'SiLA2_test_error_message'
         /// </summary>
         public virtual long RaiseDefinedExecutionErrorOnSubscribe
         {
@@ -94,7 +102,7 @@ namespace Tecan.Sila2.Interop.Client.ErrorHandlingTest.ErrorHandlingTest
         }
         
         /// <summary>
-        /// A property that raises an Undefined Execution Error on get with error message 'SiLA2_test_error_message'
+        /// A property that raises an Undefined Execution Error on get with the error message 'SiLA2_test_error_message'
         /// </summary>
         public virtual long RaiseUndefinedExecutionErrorOnGet
         {
@@ -105,7 +113,7 @@ namespace Tecan.Sila2.Interop.Client.ErrorHandlingTest.ErrorHandlingTest
         }
         
         /// <summary>
-        /// A property that raises an Undefined Execution Error on subscribe with error message 'SiLA2_test_error_message'
+        /// A property that raises an Undefined Execution Error on subscribe with the error message 'SiLA2_test_error_message'
         /// </summary>
         public virtual long RaiseUndefinedExecutionErrorOnSubscribe
         {
@@ -128,6 +136,60 @@ namespace Tecan.Sila2.Interop.Client.ErrorHandlingTest.ErrorHandlingTest
                     }
                 }
                 return _raiseUndefinedExecutionErrorOnSubscribe;
+            }
+        }
+        
+        /// <summary>
+        /// A property that first sends the integer value 1 and then raises a Defined Execution Error with the error message 'SiLA2_test_error_message'
+        /// </summary>
+        public virtual long RaiseDefinedExecutionErrorAfterValueWasSent
+        {
+            get
+            {
+                if ((_raiseDefinedExecutionErrorAfterValueWasSentUpdateTask == null))
+                {
+                    try
+                    {
+                        System.Threading.Monitor.Enter(_cancellationTokenSource);
+                        if ((_raiseDefinedExecutionErrorAfterValueWasSentUpdateTask == null))
+                        {
+                            _raiseDefinedExecutionErrorAfterValueWasSentUpdateTask = _channel.SubscribeProperty<PropertyResponse<Tecan.Sila2.IntegerDto>>(_serviceName, "RaiseDefinedExecutionErrorAfterValueWasSent", "org.silastandard/test/ErrorHandlingTest/v1/Property/RaiseDefinedExecutionErrorAft" +
+                                    "erValueWasSent", ReceiveNewRaiseDefinedExecutionErrorAfterValueWasSent, _executionManager.CreateCallOptions("org.silastandard/test/ErrorHandlingTest/v1/Property/RaiseDefinedExecutionErrorAft" +
+                                        "erValueWasSent"), _cancellationTokenSource.Token);
+                        }
+                    } finally
+                    {
+                        System.Threading.Monitor.Exit(_cancellationTokenSource);
+                    }
+                }
+                return _raiseDefinedExecutionErrorAfterValueWasSent;
+            }
+        }
+        
+        /// <summary>
+        /// A property that first sends the integer value 1 and then raises a Undefined Execution Error with the error message 'SiLA2_test_error_message'
+        /// </summary>
+        public virtual long RaiseUndefinedExecutionErrorAfterValueWasSent
+        {
+            get
+            {
+                if ((_raiseUndefinedExecutionErrorAfterValueWasSentUpdateTask == null))
+                {
+                    try
+                    {
+                        System.Threading.Monitor.Enter(_cancellationTokenSource);
+                        if ((_raiseUndefinedExecutionErrorAfterValueWasSentUpdateTask == null))
+                        {
+                            _raiseUndefinedExecutionErrorAfterValueWasSentUpdateTask = _channel.SubscribeProperty<PropertyResponse<Tecan.Sila2.IntegerDto>>(_serviceName, "RaiseUndefinedExecutionErrorAfterValueWasSent", "org.silastandard/test/ErrorHandlingTest/v1/Property/RaiseUndefinedExecutionErrorA" +
+                                    "fterValueWasSent", ReceiveNewRaiseUndefinedExecutionErrorAfterValueWasSent, _executionManager.CreateCallOptions("org.silastandard/test/ErrorHandlingTest/v1/Property/RaiseUndefinedExecutionErrorA" +
+                                        "fterValueWasSent"), _cancellationTokenSource.Token);
+                        }
+                    } finally
+                    {
+                        System.Threading.Monitor.Exit(_cancellationTokenSource);
+                    }
+                }
+                return _raiseUndefinedExecutionErrorAfterValueWasSent;
             }
         }
         
@@ -212,6 +274,34 @@ namespace Tecan.Sila2.Interop.Client.ErrorHandlingTest.ErrorHandlingTest
             }
         }
         
+        private void ReceiveNewRaiseDefinedExecutionErrorAfterValueWasSent(PropertyResponse<Tecan.Sila2.IntegerDto> raiseDefinedExecutionErrorAfterValueWasSent)
+        {
+            long inner = raiseDefinedExecutionErrorAfterValueWasSent.Value.Extract(_executionManager.DownloadBinaryStore);
+            if ((_raiseDefinedExecutionErrorAfterValueWasSent != inner))
+            {
+                _raiseDefinedExecutionErrorAfterValueWasSent = inner;
+                System.ComponentModel.PropertyChangedEventHandler handler = PropertyChanged;
+                if ((handler != null))
+                {
+                    handler.Invoke(this, new System.ComponentModel.PropertyChangedEventArgs("RaiseDefinedExecutionErrorAfterValueWasSent"));
+                }
+            }
+        }
+        
+        private void ReceiveNewRaiseUndefinedExecutionErrorAfterValueWasSent(PropertyResponse<Tecan.Sila2.IntegerDto> raiseUndefinedExecutionErrorAfterValueWasSent)
+        {
+            long inner = raiseUndefinedExecutionErrorAfterValueWasSent.Value.Extract(_executionManager.DownloadBinaryStore);
+            if ((_raiseUndefinedExecutionErrorAfterValueWasSent != inner))
+            {
+                _raiseUndefinedExecutionErrorAfterValueWasSent = inner;
+                System.ComponentModel.PropertyChangedEventHandler handler = PropertyChanged;
+                if ((handler != null))
+                {
+                    handler.Invoke(this, new System.ComponentModel.PropertyChangedEventArgs("RaiseUndefinedExecutionErrorAfterValueWasSent"));
+                }
+            }
+        }
+        
         /// <summary>
         /// Disposes the current client and cancels all subscriptions
         /// </summary>
@@ -231,7 +321,7 @@ namespace Tecan.Sila2.Interop.Client.ErrorHandlingTest.ErrorHandlingTest
         }
         
         /// <summary>
-        /// Raises the "Test Error" with error message 'SiLA2_test_error_message'
+        /// Raises the "Test Error" with the error message 'SiLA2_test_error_message'
         /// </summary>
         public virtual void RaiseDefinedExecutionError()
         {
@@ -267,7 +357,7 @@ namespace Tecan.Sila2.Interop.Client.ErrorHandlingTest.ErrorHandlingTest
         }
         
         /// <summary>
-        /// Raises the "Test Error" with error message 'SiLA2_test_error_message'
+        /// Raises the "Test Error" with the error message 'SiLA2_test_error_message'
         /// </summary>
         public virtual Tecan.Sila2.IObservableCommand RaiseDefinedExecutionErrorObservably()
         {
@@ -292,7 +382,7 @@ namespace Tecan.Sila2.Interop.Client.ErrorHandlingTest.ErrorHandlingTest
         }
         
         /// <summary>
-        /// Raises an Undefined Execution Error with error message 'SiLA2_test_error_message'
+        /// Raises an Undefined Execution Error with the error message 'SiLA2_test_error_message'
         /// </summary>
         public virtual void RaiseUndefinedExecutionError()
         {
@@ -313,7 +403,7 @@ namespace Tecan.Sila2.Interop.Client.ErrorHandlingTest.ErrorHandlingTest
         }
         
         /// <summary>
-        /// Raises an Undefined Execution Error with error message 'SiLA2_test_error_message'
+        /// Raises an Undefined Execution Error with the error message 'SiLA2_test_error_message'
         /// </summary>
         public virtual Tecan.Sila2.IObservableCommand RaiseUndefinedExecutionErrorObservably()
         {

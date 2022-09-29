@@ -75,7 +75,8 @@ namespace Tecan.Sila2.ParameterDefaultsProvider.Tests
             try
             {
                 request.Validate();
-                _implementation.FileExampleMethod(request.Parameter.Extract(_server));
+                _implementation.FileExampleMethod(request.Parameter.TryExtract(_server, "tecan.sila.parameterdefaultsprovider/tests/ExampleFileConstraintProviderService/v" +
+                            "1/Command/FileExampleMethod/Parameter/Parameter"));
                 return EmptyRequest.Instance;
             } catch (System.ArgumentException ex)
             {

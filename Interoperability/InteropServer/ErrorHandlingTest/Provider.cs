@@ -80,6 +80,8 @@ namespace Tecan.Sila2.Interop.Server.ErrorHandlingTest
             registration.RegisterObservableProperty("RaiseDefinedExecutionErrorOnSubscribe", GetRaiseDefinedExecutionErrorOnSubscribe, _implementation);
             registration.RegisterUnobservableProperty("RaiseUndefinedExecutionErrorOnGet", GetRaiseUndefinedExecutionErrorOnGet);
             registration.RegisterObservableProperty("RaiseUndefinedExecutionErrorOnSubscribe", GetRaiseUndefinedExecutionErrorOnSubscribe, _implementation);
+            registration.RegisterObservableProperty("RaiseDefinedExecutionErrorAfterValueWasSent", GetRaiseDefinedExecutionErrorAfterValueWasSent, _implementation);
+            registration.RegisterObservableProperty("RaiseUndefinedExecutionErrorAfterValueWasSent", GetRaiseUndefinedExecutionErrorAfterValueWasSent, _implementation);
         }
         
         /// <summary>
@@ -183,6 +185,30 @@ namespace Tecan.Sila2.Interop.Server.ErrorHandlingTest
         }
         
         /// <summary>
+        /// Gets the current value of the Raise Defined Execution Error After Value Was Sent property
+        /// </summary>
+        /// <returns>The current value wrapped in a data transfer object</returns>
+        protected virtual PropertyResponse<Tecan.Sila2.IntegerDto> GetRaiseDefinedExecutionErrorAfterValueWasSent()
+        {
+            try
+            {
+                return new PropertyResponse<Tecan.Sila2.IntegerDto>(new Tecan.Sila2.IntegerDto(_implementation.RaiseDefinedExecutionErrorAfterValueWasSent, _server));
+            } catch (TestErrorException ex)
+            {
+                throw _server.ErrorHandling.CreateExecutionError("org.silastandard/test/ErrorHandlingTest/v1/DefinedExecutionError/TestError", "An error exclusively used for testing purposes", ex.Message);
+            }
+        }
+        
+        /// <summary>
+        /// Gets the current value of the Raise Undefined Execution Error After Value Was Sent property
+        /// </summary>
+        /// <returns>The current value wrapped in a data transfer object</returns>
+        protected virtual PropertyResponse<Tecan.Sila2.IntegerDto> GetRaiseUndefinedExecutionErrorAfterValueWasSent()
+        {
+            return new PropertyResponse<Tecan.Sila2.IntegerDto>(new Tecan.Sila2.IntegerDto(_implementation.RaiseUndefinedExecutionErrorAfterValueWasSent, _server));
+        }
+        
+        /// <summary>
         /// Gets the command with the given identifier
         /// </summary>
         /// <param name="commandIdentifier">A fully qualified command identifier</param>
@@ -236,6 +262,16 @@ namespace Tecan.Sila2.Interop.Server.ErrorHandlingTest
                 "nSubscribe"))
             {
                 return typeof(IErrorHandlingTest).GetProperty("RaiseUndefinedExecutionErrorOnSubscribe");
+            }
+            if ((propertyIdentifier == "org.silastandard/test/ErrorHandlingTest/v1/Property/RaiseDefinedExecutionErrorAft" +
+                "erValueWasSent"))
+            {
+                return typeof(IErrorHandlingTest).GetProperty("RaiseDefinedExecutionErrorAfterValueWasSent");
+            }
+            if ((propertyIdentifier == "org.silastandard/test/ErrorHandlingTest/v1/Property/RaiseUndefinedExecutionErrorA" +
+                "fterValueWasSent"))
+            {
+                return typeof(IErrorHandlingTest).GetProperty("RaiseUndefinedExecutionErrorAfterValueWasSent");
             }
             return null;
         }
