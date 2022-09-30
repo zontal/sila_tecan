@@ -116,6 +116,7 @@ namespace Tecan.Sila2.Generator.Test
             var feature = FeatureSerializer.Load( FeatureDefinitionFile );
             var dtoGenerator = new DtoGenerator( _typeTranslationProvider, CreateNameProvider(), CreateConfigSource(), new IValidationCreator[]
             {
+                new IdentifierValidation(),
                 new LengthValidation(),
                 new NumberValidation(),
                 new RegexValidationCreator()

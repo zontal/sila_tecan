@@ -124,12 +124,11 @@ namespace Tecan.Sila2.Generator.Validation
                     }
                     catch(FormatException)
                     {
-
-                        var time = DateTimeOffset.Parse( input, CultureInfo.InvariantCulture ) - new DateTimeOffset( DateTime.SpecifyKind( DateTime.Today, DateTimeKind.Unspecified ), TimeSpan.Zero );
+                        var time = DateTimeOffset.Parse( input, CultureInfo.InvariantCulture ).ToUniversalTime();
                         return new CodeObjectCreateExpression( typeof( TimeSpan ),
-                            new CodePrimitiveExpression( time.Hours + 24 * ((int)time.TotalDays) ),
-                            new CodePrimitiveExpression( time.Minutes ),
-                            new CodePrimitiveExpression( time.Seconds ) );
+                            new CodePrimitiveExpression( time.Hour ),
+                            new CodePrimitiveExpression( time.Minute ),
+                            new CodePrimitiveExpression( time.Second ) );
                     }
                 case BasicType.Timestamp:
                     var timeStamp = DateTimeOffset.Parse( input, CultureInfo.InvariantCulture );

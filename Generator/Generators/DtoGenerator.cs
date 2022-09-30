@@ -44,7 +44,7 @@ namespace Tecan.Sila2.Generator.Generators
         {
             _translationProvider = translationProvider;
             _configSource = configSource;
-            _validators = validations.OrderBy( v => v.GetType().Name ).ToList();
+            _validators = validations.OrderBy( v => v.GetType().Name, StringComparer.InvariantCulture ).ToList();
             NameProvider = nameProvider;
         }
 

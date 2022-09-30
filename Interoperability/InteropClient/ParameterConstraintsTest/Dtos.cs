@@ -3250,7 +3250,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
                 throw new ArgumentException(string.Format("ConstrainedParameter should have been at least more than 08:00:00-02:30 but was \'" +
                             "{0}\'", ConstrainedParameter.Extract(null)), "constrainedParameter");
             }
-            if ((ConstrainedParameter.Extract(null) > new System.TimeSpan(40, 29, 59)))
+            if ((ConstrainedParameter.Extract(null) > new System.TimeSpan(16, 29, 59)))
             {
                 throw new ArgumentException(string.Format("ConstrainedParameter should have been at most 18:59:59+02:30 but was \'{0}\'", ConstrainedParameter.Extract(null)), "constrainedParameter");
             }
@@ -3268,7 +3268,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
                 errors = (errors + string.Format("ConstrainedParameter should have been at least more than 08:00:00-02:30 but was \'" +
                         "{0}\'", ConstrainedParameter.Extract(null)));
             }
-            if ((ConstrainedParameter.Extract(null) > new System.TimeSpan(40, 29, 59)))
+            if ((ConstrainedParameter.Extract(null) > new System.TimeSpan(16, 29, 59)))
             {
                 errors = (errors + string.Format("ConstrainedParameter should have been at most 18:59:59+02:30 but was \'{0}\'", ConstrainedParameter.Extract(null)));
             }
