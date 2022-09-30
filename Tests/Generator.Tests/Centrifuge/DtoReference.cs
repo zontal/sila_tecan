@@ -17,6 +17,74 @@ namespace Tecan.Sila2.Generator.Test.TestReference
 
 
     /// <summary>
+    /// Data transfer object for the request of the Run Crazy command
+    /// </summary>
+    [ProtoBuf.ProtoContractAttribute()]
+    public class RunCrazyRequestDto : Tecan.Sila2.ISilaTransferObject, Tecan.Sila2.ISilaRequestObject
+    {
+
+        private System.Collections.Generic.List<Tecan.Sila2.IntegerDto> _speeds;
+
+        /// <summary>
+        /// Create a new instance
+        /// </summary>
+        public RunCrazyRequestDto()
+        {
+        }
+
+        /// <summary>
+        /// Create a new instance
+        /// </summary>
+        /// <param name="store">An object to organize binaries.</param>
+        public RunCrazyRequestDto( System.Collections.Generic.ICollection<int> speeds, Tecan.Sila2.IBinaryStore store )
+        {
+            Speeds = Tecan.Sila2.DtoExtensions.Encapsulate( speeds, Tecan.Sila2.IntegerDto.Create, store );
+        }
+
+        [ProtoBuf.ProtoMemberAttribute( 1 )]
+        public System.Collections.Generic.List<Tecan.Sila2.IntegerDto> Speeds
+        {
+            get
+            {
+                return _speeds;
+            }
+            set
+            {
+                _speeds = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets the command identifier for this command
+        /// </summary>
+        /// <returns>The fully qualified command identifier</returns>
+        public string CommandIdentifier
+        {
+            get
+            {
+                return "tecan.sila.generator.test/testreference/Centrifuge/v4/Command/RunCrazy";
+            }
+        }
+
+        /// <summary>
+        /// Validates the given request object
+        /// </summary>
+        public void Validate()
+        {
+            Argument.Validate( Speeds, "speeds" );
+        }
+
+        /// <summary>
+        /// Validates the contents of this transfer object
+        /// </summary>
+        /// <returns>A validation error or null, if no validation error occurred.</returns>
+        public string GetValidationErrors()
+        {
+            return ("" + Argument.Require( Speeds, "speeds" ));
+        }
+    }
+
+    /// <summary>
     /// Data transfer object for the request of the Set Speed command
     /// </summary>
     [ProtoBuf.ProtoContractAttribute()]

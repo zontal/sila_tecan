@@ -61,8 +61,34 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// <param name="registration">The registration component to which the feature should be registered</param>
         public void Register( IServerBuilder registration )
         {
+            registration.RegisterUnobservableCommand<RunCrazyRequestDto, EmptyRequest>( "RunCrazy", RunCrazy );
             registration.RegisterUnobservableCommand<SetSpeedRequestDto, EmptyRequest>( "SetSpeed", SetSpeed );
             registration.RegisterUnobservableProperty( "Speed", GetSpeed );
+        }
+
+        /// <summary>
+        /// Executes the Run Crazy command
+        /// </summary>
+        /// <param name="request">A data transfer object that contains the command parameters</param>
+        /// <returns>The command response wrapped in a data transfer object</returns>
+        protected virtual EmptyRequest RunCrazy( RunCrazyRequestDto request )
+        {
+            try
+            {
+                request.Validate();
+                _implementation.RunCrazy( request.Speeds.TryExtractConverted<long, int>( _server, "tecan.sila.generator.test/testreference/Centrifuge/v4/Command/RunCrazy/Parameter/" +
+                            "Speeds" ) );
+                return EmptyRequest.Instance;
+            }
+            catch(System.ArgumentException ex)
+            {
+                if((ex.ParamName == "speeds"))
+                {
+                    throw _server.ErrorHandling.CreateValidationError( "tecan.sila.generator.test/testreference/Centrifuge/v4/Command/RunCrazy/Parameter/" +
+                            "Speeds", ex.Message );
+                }
+                throw _server.ErrorHandling.CreateUnknownValidationError( ex );
+            }
         }
 
         /// <summary>
@@ -106,6 +132,10 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// <returns>A method object or null, if the command is not supported</returns>
         public System.Reflection.MethodInfo GetCommand( string commandIdentifier )
         {
+            if((commandIdentifier == "tecan.sila.generator.test/testreference/Centrifuge/v4/Command/RunCrazy"))
+            {
+                return typeof( ICentrifuge ).GetMethod( "RunCrazy" );
+            }
             if((commandIdentifier == "tecan.sila.generator.test/testreference/Centrifuge/v4/Command/SetSpeed"))
             {
                 return typeof( ICentrifuge ).GetMethod( "SetSpeed" );

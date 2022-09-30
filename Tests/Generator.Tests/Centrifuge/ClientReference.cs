@@ -17,7 +17,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
 {
 
 
-    ///  <summary>
+    /// <summary>
     /// Class that implements the ICentrifuge interface through SiLA2
     /// </summary>
     public partial class CentrifugeClient : ICentrifuge
@@ -29,7 +29,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
 
         private const string _serviceName = "sila2.tecan.sila.generator.test.testreference.centrifuge.v4.Centrifuge";
 
-        ///  <summary>
+        /// <summary>
         /// Creates a new instance
         /// </summary>
         /// <param name="channel">The channel through which calls should be executed</param>
@@ -77,6 +77,25 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             }
         }
 
+        public virtual void RunCrazy( System.Collections.Generic.ICollection<int> speeds )
+        {
+            RunCrazyRequestDto request = new RunCrazyRequestDto( speeds, null );
+            request.Validate();
+            Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions( "tecan.sila.generator.test/testreference/Centrifuge/v4/Command/RunCrazy" );
+            try
+            {
+                _channel.ExecuteUnobservableCommand<RunCrazyRequestDto>( _serviceName, "RunCrazy", request, callInfo );
+                callInfo.FinishSuccessful();
+                return;
+            }
+            catch(System.Exception ex)
+            {
+                System.Exception exception = _channel.ConvertException( ex );
+                callInfo.FinishWithErrors( exception );
+                throw exception;
+            }
+        }
+
         private T Extract<T>( Tecan.Sila2.ISilaTransferObject<T> dto )
 
         {
@@ -84,7 +103,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         }
     }
 
-    ///  <summary>
+    /// <summary>
     /// Factory to instantiate clients for the Centrifuge.
     /// </summary>
     [System.ComponentModel.Composition.ExportAttribute( typeof( IClientFactory ) )]
@@ -92,7 +111,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
     public partial class CentrifugeClientFactory : IClientFactory
     {
 
-        ///  <summary>
+        /// <summary>
         /// Gets the fully-qualified identifier of the feature for which clients can be generated
         /// </summary>
         public string FeatureIdentifier
@@ -103,7 +122,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             }
         }
 
-        ///  <summary>
+        /// <summary>
         /// Gets the interface type for which clients can be generated
         /// </summary>
         public System.Type InterfaceType
@@ -114,7 +133,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             }
         }
 
-        ///  <summary>
+        /// <summary>
         /// Creates a strongly typed client for the given execution channel and execution manager
         /// </summary>
         /// <param name="channel">The channel that should be used for communication with the server</param>

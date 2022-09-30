@@ -195,5 +195,10 @@ namespace Tecan.Sila2.Generator.Generators
 
             return null;
         }
+
+        public bool IsDifferentTypeRegistered( string identifier )
+        {
+            return _typeOverrides.ContainsKey( identifier );
+        }
     }
 }

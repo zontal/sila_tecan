@@ -3,6 +3,24 @@
   <Identifier>Centrifuge</Identifier>
   <DisplayName>Centrifuge</DisplayName>
   <Description />
+  <Command>
+    <Identifier>RunCrazy</Identifier>
+    <DisplayName>Run Crazy</DisplayName>
+    <Description />
+    <Observable>No</Observable>
+    <Parameter>
+      <Identifier>Speeds</Identifier>
+      <DisplayName>Speeds</DisplayName>
+      <Description />
+      <DataType>
+        <List>
+          <DataType>
+            <Basic>Integer</Basic>
+          </DataType>
+        </List>
+      </DataType>
+    </Parameter>
+  </Command>
   <Property>
     <Identifier>Speed</Identifier>
     <DisplayName>Speed</DisplayName>

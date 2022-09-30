@@ -23,16 +23,18 @@ namespace Tecan.Sila2.Generator.Test
 
         private ITypeTranslationProvider _typeTranslationProvider;
         private IAmbiguityResolver _ambiguityResolver;
+        private ICodeNameRegistry _codeNameRegistry;
 
         [SetUp]
         public void SetCurrentDirectory()
         {
             Environment.CurrentDirectory = Path.GetDirectoryName( Assembly.GetExecutingAssembly().Location );
+            _codeNameRegistry = new CodeNameProvider();
             _typeTranslationProvider = new TypeTranslationProvider( new ITypeTranslator[]
             {
-                new BasicTypeTranslator( null ),
-                new CollectionTranslator( null ),
-                new DictionaryTranslator( null ),
+                new BasicTypeTranslator( _codeNameRegistry ),
+                new CollectionTranslator( _codeNameRegistry ),
+                new DictionaryTranslator( _codeNameRegistry ),
                 new ConstraintsTranslator(),
                 new GeneratedTypeTranslator()
             } );
@@ -72,7 +74,7 @@ namespace Tecan.Sila2.Generator.Test
         [Test]
         public virtual void Test_GenerateFeature_SilaFeature()
         {
-            var generator = new FeatureDefinitionGenerator( null, _typeTranslationProvider, CreateConfigSource(), null, _ambiguityResolver );
+            var generator = new FeatureDefinitionGenerator( _codeNameRegistry, _typeTranslationProvider, CreateConfigSource(), null, _ambiguityResolver );
 
             var feature = generator.GenerateFeature( Interface );
             var xmlCode = FeatureSerializer.SaveToString( feature );

@@ -22,5 +22,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             get;
             set;
         }
+
+        void RunCrazy( System.Collections.Generic.ICollection<long> speeds );
     }
 }

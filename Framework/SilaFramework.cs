@@ -1726,6 +1726,26 @@ namespace Tecan.Sila2
                 throw new ArgumentException( ex.Message, parameterName, ex );
             }
         }
+        /// <summary>
+        /// Tries to extract the given data transfer objects
+        /// </summary>
+        /// <typeparam name="T">The type of the encapsulated object</typeparam>
+        /// <param name="transferObject">The DTO object</param>
+        /// <param name="resolver">The binary resolver</param>
+        /// <param name="parameterName">The name of the parameter in case of exceptions</param>
+        /// <returns>The inner object</returns>
+        /// <exception cref="ArgumentException">Raised if something goes wrong during extraction</exception>
+        public static T[] TryExtractToArray<T>( this IEnumerable<ISilaTransferObject<T>> transferObject, IBinaryStore resolver, string parameterName )
+        {
+            try
+            {
+                return transferObject.ExtractToArray( resolver );
+            }
+            catch(Exception ex)
+            {
+                throw new ArgumentException( ex.Message, parameterName, ex );
+            }
+        }
 
         /// <summary>
         /// Tries to extract the given data transfer objects into a dictionary
@@ -1764,6 +1784,90 @@ namespace Tecan.Sila2
         public static List<T> Extract<T>( this IEnumerable<ISilaTransferObject<T>> source, IBinaryStore resolver )
         {
             return source?.Select( it => it.Extract( resolver ) ).ToList();
+        }
+
+        /// <summary>
+        /// Extracts the collection of values in the collection of data transfer objects
+        /// </summary>
+        /// <typeparam name="TSource">The type of objects</typeparam>
+        /// <typeparam name="TConverted">The type of the converted data</typeparam>
+        /// <param name="source">A collection with data transfer objects</param>
+        /// <param name="resolver">A component that resolves binary storage identifiers</param>
+        /// <returns>A collection with the underlying data</returns>
+        /// <remarks>This only works if the types <typeparamref name="TSource"/> and <typeparamref name="TConverted"/> are compatible.</remarks>
+        public static List<TConverted> ExtractConverted<TSource, TConverted>( this IEnumerable<ISilaTransferObject<TSource>> source, IBinaryStore resolver )
+        {
+            return source?.Select( it => (TConverted)Convert.ChangeType( it.Extract( resolver ), typeof( TConverted ) ) ).ToList();
+        }
+
+        /// <summary>
+        /// Tries to extract the collection of values in the collection of data transfer objects
+        /// </summary>
+        /// <typeparam name="TSource">The type of objects</typeparam>
+        /// <typeparam name="TConverted">The type of the converted data</typeparam>
+        /// <param name="source">A collection with data transfer objects</param>
+        /// <param name="resolver">A component that resolves binary storage identifiers</param>
+        /// <param name="parameterName">The name of the parameter in case of exceptions</param>
+        /// <returns>A collection with the underlying data</returns>
+        /// <remarks>This only works if the types <typeparamref name="TSource"/> and <typeparamref name="TConverted"/> are compatible.</remarks>
+        public static List<TConverted> TryExtractConverted<TSource, TConverted>( this IEnumerable<ISilaTransferObject<TSource>> source, IBinaryStore resolver, string parameterName )
+        {
+            try
+            {
+                return ExtractConverted<TSource, TConverted>( source, resolver );
+            }
+            catch(Exception ex)
+            {
+                throw new ArgumentException( ex.Message, parameterName, ex );
+            }
+        }
+
+        /// <summary>
+        /// Extracts the collection of values in the collection of data transfer objects
+        /// </summary>
+        /// <typeparam name="T">The type of objects</typeparam>
+        /// <param name="source">A collection with data transfer objects</param>
+        /// <param name="resolver">A component that resolves binary storage identifiers</param>
+        /// <returns>An array with the underlying data</returns>
+        public static T[] ExtractToArray<T>( this IEnumerable<ISilaTransferObject<T>> source, IBinaryStore resolver )
+        {
+            return source?.Select( it => it.Extract( resolver ) ).ToArray();
+        }
+
+        /// <summary>
+        /// Extracts the collection of values in the collection of data transfer objects
+        /// </summary>
+        /// <typeparam name="TSource">The type of objects</typeparam>
+        /// <typeparam name="TConverted">The type of the converted data</typeparam>
+        /// <param name="source">A collection with data transfer objects</param>
+        /// <param name="resolver">A component that resolves binary storage identifiers</param>
+        /// <returns>A collection with the underlying data</returns>
+        /// <remarks>This only works if the types <typeparamref name="TSource"/> and <typeparamref name="TConverted"/> are compatible.</remarks>
+        public static TConverted[] ExtractConvertedToArray<TSource, TConverted>( this IEnumerable<ISilaTransferObject<TSource>> source, IBinaryStore resolver )
+        {
+            return source?.Select( it => (TConverted)Convert.ChangeType( it.Extract( resolver ), typeof( TConverted ) ) ).ToArray();
+        }
+
+        /// <summary>
+        /// Tries to extract the collection of values in the collection of data transfer objects
+        /// </summary>
+        /// <typeparam name="TSource">The type of objects</typeparam>
+        /// <typeparam name="TConverted">The type of the converted data</typeparam>
+        /// <param name="source">A collection with data transfer objects</param>
+        /// <param name="resolver">A component that resolves binary storage identifiers</param>
+        /// <param name="parameterName">The name of the parameter in case of exceptions</param>
+        /// <returns>A collection with the underlying data</returns>
+        /// <remarks>This only works if the types <typeparamref name="TSource"/> and <typeparamref name="TConverted"/> are compatible.</remarks>
+        public static TConverted[] TryExtractConvertedToArray<TSource, TConverted>( this IEnumerable<ISilaTransferObject<TSource>> source, IBinaryStore resolver, string parameterName )
+        {
+            try
+            {
+                return ExtractConvertedToArray<TSource, TConverted>( source, resolver );
+            }
+            catch(Exception ex)
+            {
+                throw new ArgumentException( ex.Message, parameterName, ex );
+            }
         }
 
         /// <summary>

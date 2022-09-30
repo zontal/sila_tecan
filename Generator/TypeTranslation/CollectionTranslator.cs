@@ -3,6 +3,7 @@ using System.CodeDom;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
+using System.Diagnostics;
 using Tecan.Sila2.Generator.Contracts;
 using Tecan.Sila2.Generator.Helper;
 
@@ -24,7 +25,9 @@ namespace Tecan.Sila2.Generator.TypeTranslation
         {
             if(IsCollectionType( interfaceType, out var elementType ) && translationProvider.TryTranslate( elementType, origin + ".Item", out var elementSilaType ))
             {
-                if(interfaceType.IsArray || interfaceType.GetGenericTypeDefinition() != typeof( ICollection<> ))
+                if(interfaceType.IsArray
+                    || interfaceType.GetGenericTypeDefinition() != typeof( ICollection<> )
+                    || _nameRegistry.IsDifferentTypeRegistered( origin + ".Item" ))
                 {
                     _nameRegistry.RegisterDifferentType( origin, interfaceType );
                 }
@@ -147,6 +150,45 @@ namespace Tecan.Sila2.Generator.TypeTranslation
 
             public CodeExpression Extract( CodeExpression expression, CodeTypeReference targetType, CodeExpression binaryStorageArgument )
             {
+                if(targetType != null)
+                {
+                    if(targetType.ArrayRank != 0)
+                    {
+
+                        if(targetType.BaseType != _elementTranslationInfo.InterfaceType.BaseType)
+                        {
+                            return new CodeMethodInvokeExpression(
+                                new CodeMethodReferenceExpression(
+                                    expression,
+                                    nameof( DtoExtensions.ExtractConvertedToArray ),
+                                    _elementTranslationInfo.InterfaceType,
+                                    new CodeTypeReference( targetType.BaseType )
+                                    ),
+                                binaryStorageArgument );
+                        }
+
+                        return new CodeMethodInvokeExpression(
+                            expression,
+                            nameof( DtoExtensions.ExtractToArray ),
+                            binaryStorageArgument );
+                    }
+                    if(targetType.TypeArguments.Count == 0)
+                    {
+                        throw new NotSupportedException( "Custom collection types are not supported" );
+                    }
+
+                    if(targetType.TypeArguments[0].BaseType != _elementTranslationInfo.InterfaceType.BaseType)
+                    {
+                        return new CodeMethodInvokeExpression(
+                            new CodeMethodReferenceExpression(
+                                expression,
+                                nameof( DtoExtensions.ExtractConverted ),
+                                _elementTranslationInfo.InterfaceType,
+                                targetType.TypeArguments[0]
+                                ),
+                            binaryStorageArgument );
+                    }
+                }
                 return new CodeMethodInvokeExpression(
                     expression,
                     nameof( DtoExtensions.Extract ),
@@ -155,6 +197,48 @@ namespace Tecan.Sila2.Generator.TypeTranslation
 
             public CodeExpression Extract( CodeExpression expression, CodeTypeReference targetType, CodeExpression binaryStorageArgument, string parameterName )
             {
+                if(targetType != null)
+                {
+                    if(targetType.ArrayRank != 0)
+                    {
+
+                        if(targetType.BaseType != _elementTranslationInfo.InterfaceType.BaseType)
+                        {
+                            return new CodeMethodInvokeExpression(
+                                new CodeMethodReferenceExpression(
+                                    expression,
+                                    nameof( DtoExtensions.TryExtractConvertedToArray ),
+                                    _elementTranslationInfo.InterfaceType,
+                                    new CodeTypeReference( targetType.BaseType )
+                                    ),
+                                binaryStorageArgument,
+                                new CodePrimitiveExpression( parameterName ) );
+                        }
+
+                        return new CodeMethodInvokeExpression(
+                            expression,
+                            nameof( DtoExtensions.TryExtractToArray ),
+                            binaryStorageArgument,
+                            new CodePrimitiveExpression( parameterName ) );
+                    }
+                    if(targetType.TypeArguments.Count == 0)
+                    {
+                        throw new NotSupportedException( "Custom collection types are not supported" );
+                    }
+
+                    if(targetType.TypeArguments[0].BaseType != _elementTranslationInfo.InterfaceType.BaseType)
+                    {
+                        return new CodeMethodInvokeExpression(
+                            new CodeMethodReferenceExpression(
+                                expression,
+                                nameof( DtoExtensions.TryExtractConverted ),
+                                _elementTranslationInfo.InterfaceType,
+                                targetType.TypeArguments[0]
+                                ),
+                            binaryStorageArgument,
+                            new CodePrimitiveExpression( parameterName ) );
+                    }
+                }
                 return new CodeMethodInvokeExpression(
                     expression,
                     nameof( DtoExtensions.TryExtract ),
