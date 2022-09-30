@@ -10,6 +10,7 @@ namespace Tecan.Sila2
     /// <summary>
     /// Denotes a data transfer object for AnIML documents
     /// </summary>
+    [ProtoBuf.ProtoContract()]
     public class AniMlDto : BinaryDto, ISilaTransferObject<AniMlDocument>
     {
         /// <summary>
