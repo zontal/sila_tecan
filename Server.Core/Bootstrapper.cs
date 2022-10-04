@@ -104,12 +104,14 @@ namespace Tecan.Sila2.Server
                         }
                         var startup = new ServerStartInformation( selfInfo, args.Port, args.InterfaceFilter, args.ServerUuid, args.Name );
                         _container.ComposeExportedValue( startup );
-                        configurationBuilder = new ServiceConfigurationBuilder( _container.GetExportedValue<IServerCertificateProvider>() );
+                        var certificateProvider = _container.GetExportedValue<IServerCertificateProvider>();
+                        configurationBuilder = new ServiceConfigurationBuilder( certificateProvider );
                         _container.ComposeExportedValue<IServiceConfigurationBuilder<ISiLAServer>>( configurationBuilder );
                         _server = _container.GetExportedValue<ISiLAServer>();
 
                         _server.StartServer();
 
+                        services.AddSingleton( certificateProvider );
                         services.AddSingleton( _server );
                         services.AddSingleton<IServiceConfigurationBuilder<ISiLAServer>>( configurationBuilder );
                         var features = _container.GetExportedValues<IFeatureProvider>();
