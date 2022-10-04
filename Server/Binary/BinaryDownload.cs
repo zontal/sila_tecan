@@ -18,6 +18,8 @@ namespace Tecan.Sila2.Server.Binary
         , IServiceHandler<ISiLAServer>
 #endif
     {
+        internal const uint MaxChunkSize = 2 * 1024 * 1024;
+
         private readonly Timer _disposeTimer;
         private readonly IFileManagement _server;
         private readonly ConcurrentDictionary<string, (Stream stream, DateTimeOffset expiration)> _openStreams = new ConcurrentDictionary<string, (Stream, DateTimeOffset)>();
@@ -156,7 +158,7 @@ namespace Tecan.Sila2.Server.Binary
             {
                 fileData = OpenFile( request.BinaryTransferUUID, fileData.expiration );
             }
-            if(request.Offset + request.Length > (ulong)fileData.stream.Length)
+            if(request.Offset + request.Length > (ulong)fileData.stream.Length || request.Length > MaxChunkSize)
             {
                 throw new InvalidOperationException( "Requested offset out of bounds" );
             }

@@ -191,7 +191,6 @@ namespace Tecan.Sila2.Server.Binary
             {
                 try
                 {
-
                     await responseStream.WriteAsync( await UploadChunkCore( requestStream.Current, context ) );
                 }
                 catch(InvalidBinaryTransferIdException transferException)
@@ -229,22 +228,31 @@ namespace Tecan.Sila2.Server.Binary
                 {
                     throw new InvalidOperationException( $"The chunk {request.ChunkIndex} was already uploaded" );
                 }
+                if(request.Payload != null && request.Payload.Length > BinaryDownload.MaxChunkSize)
+                {
+                    throw new InvalidOperationException( "The request is larger than the allowed maximum chunk size." );
+                }
                 if(request.ChunkIndex == uploadData.ChunkIndex)
                 {
-                    await uploadData.FileStream.WriteAsync( request.Payload, 0, request.Payload.Length );
+                    if(request.Payload != null && request.Payload.Length > 0)
+                    {
+                        await uploadData.FileStream.WriteAsync( request.Payload, 0, request.Payload.Length );
+                    }
                     uploadData.ChunkIndex++;
                     while(true)
                     {
-                        KeyValuePair<uint, byte[]> cached;
+                        byte[] cached;
                         lock(uploadData)
                         {
-                            cached = uploadData.Cached.Count > 0 ? uploadData.Cached.First() : default;
-                            if(cached.Key != uploadData.ChunkIndex)
+                            if(!uploadData.Cached.TryGetValue( uploadData.ChunkIndex, out cached ))
                             {
                                 break;
                             }
                         }
-                        await uploadData.FileStream.WriteAsync( cached.Value, 0, cached.Value.Length );
+                        if(cached != null && cached.Length > 0)
+                        {
+                            await uploadData.FileStream.WriteAsync( cached, 0, cached.Length );
+                        }
                         uploadData.ChunkIndex++;
                     }
 
