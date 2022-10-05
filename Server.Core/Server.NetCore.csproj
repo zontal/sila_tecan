@@ -60,6 +60,7 @@
         <Compile Include="..\Server\ServiceDefinition\ServerBuilder.cs" Link="ServiceDefinition\ServerBuilder.cs" />
         <Compile Include="..\Server\ServiceDefinition\UnobservableCommandHandler.cs" Link="ServiceDefinition\UnobservableCommandHandler.cs" />
         <Compile Include="..\Server\ServiceDefinition\UnobservablePropertyHandler.cs" Link="ServiceDefinition\UnobservablePropertyHandler.cs" />
+        <Compile Include="..\Server\SiLAServer.Common.cs" Link="SiLAServer.Common.cs" />
     </ItemGroup>
 
     <ItemGroup>
