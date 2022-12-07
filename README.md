@@ -7,7 +7,7 @@ It is intended to provide the content for all operating systems that support the
 |||
 | ---------------| ----------------------------------------------------------- |
 | SiLA Homepage  | [https://sila-standard.com](https://sila-standard.com)      |
-| Chat group     | [Join the group on Slack](https://join.slack.com/t/sila-standard/shared_invite/enQtNDI0ODcxMDg5NzkzLTBhOTU3N2I0NTc4NDcyMjg2ZDIwZDc1Yjg4N2FmYjZkMzljZDAyZjAwNTc5OTVjYjIwZWJjYjA0YTY0NTFiNDA)|
+| Chat group     | [Join the group on Slack](https://sila-standard.org/slack)|
 | Maintainer     | Georg Hinkel ([georg.hinkel@tecan.com](mailto:georg.hinkel@tecan.com)) of [Tecan](http://www.tecan.com)|
 
 
