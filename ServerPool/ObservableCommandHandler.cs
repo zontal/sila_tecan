@@ -95,14 +95,13 @@ namespace Tecan.Sila2.ServerPooling
             {
                 case ExecutionState.CommandStatus.Waiting:
                     return CommandState.NotStarted;
-                case ExecutionState.CommandStatus.Running:
-                    return CommandState.Running;
                 case ExecutionState.CommandStatus.FinishedSuccessfully:
                     return CommandState.FinishedSuccess;
                 case ExecutionState.CommandStatus.FinishedWithError:
                     return CommandState.FinishedWithErrors;
+                case ExecutionState.CommandStatus.Running:
                 default:
-                    return CommandState.Unknown;
+                    return CommandState.Running;
             }
         }
 

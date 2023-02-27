@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
 using System.ComponentModel.Composition.Primitives;
+using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using CommandLine;
 using Common.Logging;
 using Microsoft.Build.Locator;
@@ -47,6 +49,9 @@ namespace Tecan.Sila2.Generator
         public static void Main(string[] args)
         {
             MSBuildLocator.RegisterDefaults();
+
+            Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
+            Thread.CurrentThread.CurrentUICulture = CultureInfo.InvariantCulture;
 
             CreateCompositionContainer();
 

@@ -1,4 +1,5 @@
-﻿using Grpc.Core;
+﻿using Common.Logging;
+using Grpc.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +13,7 @@ namespace Tecan.Sila2.Discovery
     internal class GrpcChannel : ClientBase<GrpcChannel>, IClientChannel
     {
         private readonly Channel _channel;
+        private static readonly ILog _log = LogManager.GetLogger(typeof(GrpcChannel));
 
         public Client.ChannelState State => (Client.ChannelState)_channel.State;
 
@@ -80,10 +82,26 @@ namespace Tecan.Sila2.Discovery
 
             var firstResponse = responseStream.MoveNext( cancellationToken );
 
-            if ( firstResponse.ConfigureAwait(false).GetAwaiter().GetResult() )
+            var retrievedFirstResult = false;
+            try
+            {
+                retrievedFirstResult = firstResponse.ConfigureAwait(false).GetAwaiter().GetResult();
+            }
+            catch (Exception exc)
+            {
+                throw ClientErrorHandling.ConvertException(exc);
+            }
+
+            if ( retrievedFirstResult )
             {
                 newValueReceived( responseStream.Current );
-                return ContinueSubscription( newValueReceived, responseStream, cancellationToken );
+                return ContinueSubscription(newValueReceived, responseStream, cancellationToken).ContinueWith(t =>
+                {
+                    if (t.IsFaulted)
+                    {
+                        _log.Error($"Subscription of property {propertyName} resulted in an exception", ClientErrorHandling.ConvertException( t.Exception ));
+                    }
+                }, cancellationToken);
             }
             else
             {

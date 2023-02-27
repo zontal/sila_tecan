@@ -46,9 +46,9 @@ namespace Tecan.Sila2.Client
                     while( await responseStream.MoveNext(default) )
                     {
                         var state = ConvertState( responseStream.Current.Status );
-                        var estimated = responseStream.Current.EstimatedRemainingTime.Extract( null );
-                        var progress = responseStream.Current.Progress.Value;
-                        PushStateUpdate( progress, estimated, state );
+                        var estimated = responseStream.Current.EstimatedRemainingTime?.Extract( null );
+                        var progress = responseStream.Current.Progress?.Value ?? double.NaN;
+                        PushStateUpdate( progress, estimated ?? TimeSpan.Zero, state );
                         if(state == CommandState.FinishedSuccess || state == CommandState.FinishedWithErrors)
                         {
                             break;
@@ -63,6 +63,10 @@ namespace Tecan.Sila2.Client
             {
                 var ex = ClientErrorHandling.ConvertException(exception, ErrorConverter);
                 CallInfo.FinishWithErrors(exception);
+                if (ex == exception)
+                {
+                    throw;
+                }
                 throw ex;
             }
         }
@@ -73,14 +77,13 @@ namespace Tecan.Sila2.Client
             {
                 case ExecutionState.CommandStatus.Waiting:
                     return CommandState.NotStarted;
-                case ExecutionState.CommandStatus.Running:
-                    return CommandState.Running;
                 case ExecutionState.CommandStatus.FinishedWithError:
                     return CommandState.FinishedWithErrors;
                 case ExecutionState.CommandStatus.FinishedSuccessfully:
                     return CommandState.FinishedSuccess;
+                case ExecutionState.CommandStatus.Running:
                 default:
-                    return CommandState.Unknown;
+                    return CommandState.Running;
             }
         }
     }

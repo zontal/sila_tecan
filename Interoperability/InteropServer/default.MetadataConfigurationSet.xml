@@ -16,5 +16,21 @@
         <string>org.silastandard/test/AuthenticationTest/v1/Command/RequiresToken</string>
       </Affected>
     </MetadataConfiguration>
+    <MetadataConfiguration Identifier="org.silastandard/test/BinaryTransferTest/v1/Metadata/String">
+      <Affected>
+        <string>org.silastandard/test/BinaryTransferTest/v1/Command/EchoBinaryAndMetadataString</string>
+      </Affected>
+    </MetadataConfiguration>
+    <MetadataConfiguration Identifier="org.silastandard/test/MetadataProvider/v1/Metadata/StringMetadata">
+      <Affected>
+        <string>org.silastandard/test/MetadataConsumerTest/v1/Command/EchoStringMetadata</string>
+        <string>org.silastandard/test/MetadataConsumerTest/v1/Command/UnpackMetadata</string>
+      </Affected>
+    </MetadataConfiguration>
+    <MetadataConfiguration Identifier="org.silastandard/test/MetadataProvider/v1/Metadata/TwoIntegersMetadata">
+      <Affected>
+        <string>org.silastandard/test/MetadataConsumerTest/v1/Command/UnpackMetadata</string>
+      </Affected>
+    </MetadataConfiguration>
   </Configurations>
 </MetadataConfigurationSet>

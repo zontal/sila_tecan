@@ -10,7 +10,7 @@ namespace Tecan.Sila2.Interop.Client.MetadataProvider
     {
         public static TwoIntegersMetadata Metadata { get; set; }
 
-        public string MetadataIdentifier => "org.silastandard/test/MetadataProviderTest/v1/Metadata/TwoIntegersMetadata";
+        public string MetadataIdentifier => "org.silastandard/test/MetadataProvider/v1/Metadata/TwoIntegersMetadata";
 
         public IClientRequestInterception Intercept( ServerData server, IClientExecutionManager executionManager, IDictionary<string, byte[]> metadata )
         {

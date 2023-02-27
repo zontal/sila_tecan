@@ -4,12 +4,14 @@ using System.ComponentModel.Composition;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
+using Tecan.Sila2.Server;
 
 namespace Tecan.Sila2.Interop.Server.BinaryTransferTest
 {
     [Export( typeof( IBinaryTransferTest ) )]
+    [Export( typeof( IRequestInterceptor ) )]
     [PartCreationPolicy( CreationPolicy.Shared )]
-    internal class BinaryTransferTest : IBinaryTransferTest
+    internal class BinaryTransferTest : StringInterceptorBase, IBinaryTransferTest
     {
         public Stream BinaryValueDirectly
         {
@@ -38,6 +40,14 @@ namespace Tecan.Sila2.Interop.Server.BinaryTransferTest
             }
         }
 
+        public IRequestInterceptor String => this;
+
+        public override bool AppliesToCommands => true;
+
+        public override bool AppliesToProperties => false;
+
+        public override int Priority => 0;
+
         [return: SilaIdentifier( "JointBinary" )]
         public IIntermediateObservableCommand<Stream, Stream> EchoBinariesObservably( ICollection<Stream> binaries )
         {
@@ -62,6 +72,25 @@ namespace Tecan.Sila2.Interop.Server.BinaryTransferTest
         public Stream EchoBinaryValue( Stream binaryValue )
         {
             return binaryValue;
+        }
+
+        private string _stringCollectedByMetadata;
+
+        [return: InlineStruct]
+        public EchoBinaryAndMetadataStringResponse EchoBinaryAndMetadataString(Stream binary)
+        {
+            return new EchoBinaryAndMetadataStringResponse(binary, _stringCollectedByMetadata);
+        }
+
+        public override bool IsInterceptRequired(Feature feature, string commandIdentifier)
+        {
+            return commandIdentifier == "org.silastandard/test/BinaryTransferTest/v1/Command/EchoBinaryAndMetadataString";
+        }
+
+        public override IRequestInterception Intercept(string commandIdentifier, string @string)
+        {
+            _stringCollectedByMetadata = @string;
+            return null;
         }
     }
 }

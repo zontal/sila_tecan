@@ -92,4 +92,42 @@
       <Basic>Binary</Basic>
     </DataType>
   </Property>
+	<Command>
+		<Identifier>EchoBinaryAndMetadataString</Identifier>
+		<DisplayName>Echo Binary And Metadata String</DisplayName>
+		<Description>Receives a Binary and requires String Metadata, returns both</Description>
+		<Observable>No</Observable>
+		<Parameter>
+			<Identifier>Binary</Identifier>
+			<DisplayName>Binary</DisplayName>
+			<Description>The binary to echo</Description>
+			<DataType>
+				<Basic>Binary</Basic>
+			</DataType>
+		</Parameter>
+		<Response>
+			<Identifier>Binary</Identifier>
+			<DisplayName>Binary</DisplayName>
+			<Description>The received binary</Description>
+			<DataType>
+				<Basic>Binary</Basic>
+			</DataType>
+		</Response>
+		<Response>
+			<Identifier>StringMetadata</Identifier>
+			<DisplayName>String Metadata</DisplayName>
+			<Description>The received String Metadata</Description>
+			<DataType>
+				<Basic>String</Basic>
+			</DataType>
+		</Response>
+	</Command>
+	<Metadata>
+		<Identifier>String</Identifier>
+		<DisplayName>String</DisplayName>
+		<Description>A string</Description>
+		<DataType>
+			<Basic>String</Basic>
+		</DataType>
+	</Metadata>
 </Feature>

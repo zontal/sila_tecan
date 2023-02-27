@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 using Grpc.Core;
 using Tecan.Sila2.Client;
@@ -186,14 +187,26 @@ namespace Tecan.Sila2.Binary
         /// <param name="binaryIdentifier">The binary storage identifier</param>
         /// <param name="file">The stream in which to download the remote file</param>
         /// <returns>An awaitable task that completes when the download completes.</returns>
-        public async Task Download( string binaryIdentifier, Stream file )
+        public Task Download(string binaryIdentifier, Stream file)
+        {
+            return Download(binaryIdentifier, file, default);
+        }
+
+        /// <summary>
+        /// Downloads the file with the given storage identifier to the given stream
+        /// </summary>
+        /// <param name="binaryIdentifier">The binary storage identifier</param>
+        /// <param name="file">The stream in which to download the remote file</param>
+        /// <param name="cancellationToken">A cancellation token to cancel the download</param>
+        /// <returns>An awaitable task that completes when the download completes.</returns>
+        public async Task Download( string binaryIdentifier, Stream file, CancellationToken cancellationToken )
         {
             try
             {
                 var data = await GetBinaryInfoAsync( new GetBinaryInfoRequestDto()
                 {
                     BinaryTransferUUID = binaryIdentifier
-                }, CreateCallOptions( false ) );
+                }, CreateCallOptions( false ).WithCancellationToken(cancellationToken) );
                 var getChunk = GetChunk( CreateCallOptions( false ) );
                 var chunkCount = (uint)(data.BinarySize + ChunkSize - 1) / ChunkSize;
                 for(ulong i = 0; i < chunkCount; i++)
@@ -204,7 +217,7 @@ namespace Tecan.Sila2.Binary
                         Length = i < chunkCount - 1 ? ChunkSize : (uint)(data.BinarySize - i * ChunkSize),
                         Offset = i * ChunkSize
                     } );
-                    await getChunk.ResponseStream.MoveNext( default );
+                    await getChunk.ResponseStream.MoveNext( cancellationToken );
                     var chunk = getChunk.ResponseStream.Current;
                     await file.WriteAsync( chunk.Payload, 0, chunk.Payload.Length );
                 }

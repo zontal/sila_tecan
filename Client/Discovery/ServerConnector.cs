@@ -189,6 +189,7 @@ namespace Tecan.Sila2.Discovery
         /// <returns>The connected server or null, if the connection should be refused</returns>
         protected virtual ServerData ServerCertificateCouldNotBeRead( ServerData server )
         {
+            _loggingChannel.Error($"Connection to server {server.Config.Uuid} could not be established because the server certificate could not be read.");
             return null;
         }
 
@@ -248,27 +249,51 @@ namespace Tecan.Sila2.Discovery
             return server;
         }
 
-        private static List<Feature> GetImplementedFeatures( ISiLAService silaService )
+        private List<Feature> GetImplementedFeatures( ISiLAService silaService )
         {
-            return silaService.ImplementedFeatures.Select( f => FeatureSerializer.LoadFromXml( silaService.GetFeatureDefinition( f ) ) ).ToList();
+            return silaService.ImplementedFeatures.Select( f =>
+            {
+                try
+                {
+                    return FeatureSerializer.LoadFromXml(silaService.GetFeatureDefinition(f));
+                }
+                catch (Exception ex)
+                {
+                    _loggingChannel.Error($"Error reading feature {f}", ex);
+                    return null;
+                }
+            }).Where(f => f != null).ToList();
         }
 
-        private static ServerConfig GetServerConfig( ISiLAService silaService )
+        private ServerConfig GetServerConfig( ISiLAService silaService )
         {
-            var name = silaService.ServerName;
-            var uuid = Guid.Parse( silaService.ServerUUID );
+            var name = ReadOrSwallow(() => silaService.ServerName) ?? "(unknown server name)";
+            Guid.TryParse( ReadOrSwallow(() => silaService.ServerUUID), out var uuid );
             var config = new ServerConfig( name, uuid );
             return config;
         }
 
-        private static ServerInformation GetServerInfo( ISiLAService silaService )
+        private ServerInformation GetServerInfo( ISiLAService silaService )
         {
-            var type = silaService.ServerType;
-            var description = silaService.ServerDescription;
-            var vendorUri = silaService.ServerVendorURL;
-            var version = silaService.ServerVersion;
+            var type = ReadOrSwallow(() => silaService.ServerType) ?? "(unknown server type)";
+            var description = ReadOrSwallow(() => silaService.ServerDescription) ?? string.Empty;
+            var vendorUri = ReadOrSwallow(() => silaService.ServerVendorURL) ?? string.Empty;
+            var version = ReadOrSwallow(() => silaService.ServerVersion) ?? string.Empty;
             var info = new ServerInformation( type, description, vendorUri, version );
             return info;
+        }
+
+        private string ReadOrSwallow(Func<string> property)
+        {
+            try
+            {
+                return property();
+            }
+            catch (Exception ex)
+            {
+                _loggingChannel.Error("Error reading server property", ex);
+                return null;
+            }
         }
 
         /// <inheritdoc />

@@ -96,7 +96,7 @@ namespace Tecan.Sila2.Server
                 serviceHandlerRepository.ConfigureForServer( uuid, port, null );
             }
 
-            if(serviceHandlerRepository.AnnouncementDetails != null)
+            if(serviceHandlerRepository.AnnouncementDetails != null && _announcer != null)
             {
                 foreach(var pair in serviceHandlerRepository.AnnouncementDetails)
                 {

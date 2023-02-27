@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using Common.Logging;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using Tecan.Sila2.Discovery;
 
@@ -8,6 +10,7 @@ namespace Tecan.Sila2.Client.ExecutionManagement
     {
         private readonly InterceptionRepository _interceptionRepository;
         private readonly ServerData _serverData;
+        private readonly ILog _loggingChannel = LogManager.GetLogger<ExecutionManager>();
 
         public IBinaryStore DownloadBinaryStore { get; }
 
@@ -28,7 +31,15 @@ namespace Tecan.Sila2.Client.ExecutionManagement
                 var serviceName = feature.Namespace + "." + feature.Identifier;
                 foreach(var metadata in feature.Items.OfType<FeatureMetadata>())
                 {
-                    _interceptionRepository.RegisterAffected( feature.GetFullyQualifiedIdentifier( metadata ), _serverData.Channel.GetAffected( serviceName, metadata.Identifier, feature.GetFullyQualifiedIdentifier(metadata) ) );
+                    try
+                    {
+                        var affected = _serverData.Channel.GetAffected(serviceName, metadata.Identifier, feature.GetFullyQualifiedIdentifier(metadata));
+                        _interceptionRepository.RegisterAffected(feature.GetFullyQualifiedIdentifier(metadata), affected );
+                    }
+                    catch (Exception ex)
+                    {
+                        _loggingChannel.Error($"Error reading affected commands and properties for metadata {metadata.DisplayName}. Ignoring metadata.", ex);
+                    }
                 }
             }
         }

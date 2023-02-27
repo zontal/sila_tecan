@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -12,6 +13,8 @@ using Tecan.Sila2.Client;
 using Tecan.Sila2.Client.ExecutionManagement;
 using Tecan.Sila2.Discovery;
 using Tecan.Sila2.DynamicClient;
+using Tecan.Sila2.Interop.Client.BinaryTransferTest;
+using Tecan.Sila2.Interop.Client.BinaryTransferTest.BinaryTransferTest;
 using Tecan.Sila2.Interop.Client.ErrorHandlingTest;
 using Tecan.Sila2.Interop.Client.ErrorHandlingTest.ErrorHandlingTest;
 using Tecan.Sila2.Interop.Client.MetadataConsumerTest.MetadataConsumerTest;
@@ -38,11 +41,12 @@ namespace Tecan.Sila2.Interop.Client
 
             var channel = new Channel( serverAddress, int.Parse( port ), ChannelCredentials.Insecure );
 
-            var executionManagerFactory = new ExecutionManagerFactory( new IClientRequestInterceptor[]
+            var executionManagerFactory = new ExecutionManagerFactory(new IClientRequestInterceptor[]
             {
                 new StringMetadataInterceptor(),
-                new TwoIntegersMetadataInterceptor()
-            } );
+                new TwoIntegersMetadataInterceptor(),
+                new BinaryTestStringInterceptor()
+            });
 
             var connector = new ServerConnector( new DiscoveryExecutionManager() );
             var server = connector.GetServerData( channel );
@@ -61,6 +65,7 @@ namespace Tecan.Sila2.Interop.Client
             RunTest( TestErrorHandling );
             RunTest( TestObservableProperty );
             RunTest( TestObservableCommand );
+            RunTest( TestBinaryTransfer );
         }
 
         private void RunTest( Action test )
@@ -87,7 +92,7 @@ namespace Tecan.Sila2.Interop.Client
             }
         }
 
-        private T AssertException<T>( Action action ) where T : Exception
+        private T AssertException<T>( Action action, bool allowAggregate = false ) where T : Exception
         {
             try
             {
@@ -100,12 +105,78 @@ namespace Tecan.Sila2.Interop.Client
             {
                 return expectedException;
             }
+            catch(AggregateException aggregateException)
+            {
+                if (allowAggregate && aggregateException.InnerException is T exc)
+                {
+                    return exc;
+                }
+                Console.Error.WriteLine($"Expected {typeof(T).Name}, but received {aggregateException.InnerException.GetType().Name}");
+                Console.Error.WriteLine(aggregateException.InnerException.Message);
+                Environment.ExitCode = 1;
+                return default(T);
+            }
             catch(Exception otherException)
             {
                 Console.Error.WriteLine( $"Expected {typeof( T ).Name}, but received {otherException.GetType().Name}" );
                 Console.Error.WriteLine( otherException.Message );
                 Environment.ExitCode = 1;
                 return default( T );
+            }
+        }
+
+        private void TestBinaryTransfer()
+        {
+            var client = new BinaryTransferTestClient(_channel, _executionManager);
+
+            Assert("SiLA2_Test_String_Value", ReadStream(client.BinaryValueDirectly));
+            AssertRepetition(client.BinaryValueDownload, "A_slightly_longer_SiLA2_Test_String_Value_used_to_demonstrate_the_binary_download", 100_000);
+
+            Assert("abc", ReadStream(client.EchoBinaryValue(CreateStream("abc"))));
+            AssertRepetition(client.EchoBinaryValue(CreateStream(Repeat("abc", 1_000_000))), "abc", 1_000_000);
+
+            var echo1 = client.EchoBinaryAndMetadataString(CreateStream("abc"));
+            var echo2 = client.EchoBinaryAndMetadataString(CreateStream(Repeat("abc", 1_000_000)));
+
+            Assert("abc", ReadStream(echo1.Binary));
+            Assert("abc", echo1.StringMetadata);
+            AssertRepetition( echo2.Binary, "abc", 1_000_000);
+            Assert("abc", echo2.StringMetadata);
+        }
+
+        private static Stream CreateStream(string contents)
+        {
+            var ms = new MemoryStream(Encoding.UTF8.GetBytes( contents ));
+            ms.Position = 0;
+            return ms;
+        }
+
+        private static string Repeat(string text, int n)
+        {
+            var sb = new StringBuilder(text.Length * n);
+            for (int i = 0; i < n; i++)
+            {
+                sb.Append(text);
+            }
+            return sb.ToString();
+        }
+
+        private static string ReadStream(Stream stream)
+        {
+            var reader = new StreamReader( stream );
+            return reader.ReadToEnd();
+        }
+
+        private void AssertRepetition(Stream stream, string repeatedString, int n)
+        {
+            var actual = ReadStream(stream);
+            Assert(n * repeatedString.Length, actual.Length);
+            if (actual.Length == n * repeatedString.Length)
+            {
+                for (int i = 0; i < n; i++)
+                {
+                    Assert(actual.Substring(i * repeatedString.Length, repeatedString.Length), repeatedString);
+                }
             }
         }
 
@@ -158,6 +229,8 @@ namespace Tecan.Sila2.Interop.Client
                 Assert( false, alternating.All( v => !v ) );
 
                 var receivedValues = new List<long>();
+                // need to show interest into observable property
+                var initialValue = client.Editable;
                 client.PropertyChanged += ( o, e ) =>
                 {
                     if(e.PropertyName == nameof( IObservablePropertyTest.Editable ))
@@ -184,10 +257,13 @@ namespace Tecan.Sila2.Interop.Client
                 AssertException<SilaException>( client.RaiseUndefinedExecutionError );
                 AssertException<TestErrorException>( () => _ = client.RaiseDefinedExecutionErrorOnGet );
                 AssertException<SilaException>( () => _ = client.RaiseUndefinedExecutionErrorOnGet );
-                AssertException<TestErrorException>( () => client.RaiseDefinedExecutionErrorObservably().Response.Wait() );
-                AssertException<SilaException>( () => client.RaiseUndefinedExecutionErrorObservably().Response.Wait() );
-                AssertException<TestErrorException>( () => _ = client.RaiseDefinedExecutionErrorOnSubscribe );
+                AssertException<TestErrorException>( () => client.RaiseDefinedExecutionErrorObservably().Response.Wait(), true );
+                AssertException<SilaException>( () => client.RaiseUndefinedExecutionErrorObservably().Response.Wait(), true );
+                AssertException<DefinedErrorException>( () => _ = client.RaiseDefinedExecutionErrorOnSubscribe );
                 AssertException<SilaException>( () => _ = client.RaiseUndefinedExecutionErrorOnSubscribe );
+
+                Assert(1, client.RaiseDefinedExecutionErrorAfterValueWasSent );
+                Assert(1, client.RaiseUndefinedExecutionErrorAfterValueWasSent);
             }
         }
 

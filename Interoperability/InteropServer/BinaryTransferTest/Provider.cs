@@ -83,8 +83,12 @@ namespace Tecan.Sila2.Interop.Server.BinaryTransferTest
             registration.RegisterCommandWithIntermediates<EchoBinariesObservablyRequestDto, System.IO.Stream, EchoBinariesObservablyIntermediateDto, System.IO.Stream, EchoBinariesObservablyResponseDto>("EchoBinariesObservably", EchoBinariesObservably, ConvertEchoBinariesObservablyIntermediate, ConvertEchoBinariesObservablyResponse, ConvertEchoBinariesObservablyExceptions);
             registration.RegisterBinaryCommandParameter("org.silastandard/test/BinaryTransferTest/v1/Command/EchoBinariesObservably/Parame" +
                     "ter/Binaries");
+            registration.RegisterUnobservableCommand<EchoBinaryAndMetadataStringRequestDto, EchoBinaryAndMetadataStringResponseDto>("EchoBinaryAndMetadataString", EchoBinaryAndMetadataString);
+            registration.RegisterBinaryCommandParameter("org.silastandard/test/BinaryTransferTest/v1/Command/EchoBinaryAndMetadataString/P" +
+                    "arameter/Binary");
             registration.RegisterUnobservableProperty("BinaryValueDirectly", GetBinaryValueDirectly);
             registration.RegisterUnobservableProperty("BinaryValueDownload", GetBinaryValueDownload);
+            registration.RegisterMetadata("String", _implementation.String);
         }
         
         /// <summary>
@@ -133,6 +137,29 @@ namespace Tecan.Sila2.Interop.Server.BinaryTransferTest
         }
         
         /// <summary>
+        /// Executes the Echo Binary And Metadata String command
+        /// </summary>
+        /// <param name="request">A data transfer object that contains the command parameters</param>
+        /// <returns>The command response wrapped in a data transfer object</returns>
+        protected virtual EchoBinaryAndMetadataStringResponseDto EchoBinaryAndMetadataString(EchoBinaryAndMetadataStringRequestDto request)
+        {
+            try
+            {
+                request.Validate();
+                return new EchoBinaryAndMetadataStringResponseDto(_implementation.EchoBinaryAndMetadataString(request.Binary.TryExtract(_server, "org.silastandard/test/BinaryTransferTest/v1/Command/EchoBinaryAndMetadataString/P" +
+                                "arameter/Binary")), _server);
+            } catch (System.ArgumentException ex)
+            {
+                if ((ex.ParamName == "binary"))
+                {
+                    throw _server.ErrorHandling.CreateValidationError("org.silastandard/test/BinaryTransferTest/v1/Command/EchoBinaryAndMetadataString/P" +
+                            "arameter/Binary", ex.Message);
+                }
+                throw _server.ErrorHandling.CreateUnknownValidationError(ex);
+            }
+        }
+        
+        /// <summary>
         /// Gets the current value of the Binary Value Directly property
         /// </summary>
         /// <returns>The current value wrapped in a data transfer object</returns>
@@ -165,6 +192,10 @@ namespace Tecan.Sila2.Interop.Server.BinaryTransferTest
             {
                 return typeof(IBinaryTransferTest).GetMethod("EchoBinariesObservably");
             }
+            if ((commandIdentifier == "org.silastandard/test/BinaryTransferTest/v1/Command/EchoBinaryAndMetadataString"))
+            {
+                return typeof(IBinaryTransferTest).GetMethod("EchoBinaryAndMetadataString");
+            }
             return null;
         }
         
@@ -184,6 +215,79 @@ namespace Tecan.Sila2.Interop.Server.BinaryTransferTest
                 return typeof(IBinaryTransferTest).GetProperty("BinaryValueDownload");
             }
             return null;
+        }
+    }
+    
+    /// <summary>
+    /// An abstract base class to support the String metadata
+    /// </summary>
+    public abstract partial class StringInterceptorBase : Tecan.Sila2.Server.IRequestInterceptor
+    {
+        
+        /// <summary>
+        /// Gets whether the metadata applies to commands
+        /// </summary>
+        /// <returns>True, if the metadata is applicable to commands, otherwise false.</returns>
+        public abstract bool AppliesToCommands
+        {
+            get;
+        }
+        
+        /// <summary>
+        /// Gets whether the metadata applies to properties
+        /// </summary>
+        /// <returns>True, if the metadata is applicable to properties, otherwise false.</returns>
+        public abstract bool AppliesToProperties
+        {
+            get;
+        }
+        
+        /// <summary>
+        /// Gets the priority for the metadata
+        /// </summary>
+        /// <returns>A relative priority.</returns>
+        public abstract int Priority
+        {
+            get;
+        }
+        
+        /// <summary>
+        /// Gets the metadata identifier this request interceptor is connected to or null, if not applicable
+        /// </summary>
+        public string MetadataIdentifier
+        {
+            get
+            {
+                return "org.silastandard/test/BinaryTransferTest/v1/Metadata/String";
+            }
+        }
+        
+        /// <summary>
+        /// Decides whether the interceptor is required for the given command
+        /// </summary>
+        /// <param name="feature">The feature that contains the command or property</param>
+        /// <param name="commandIdentifier">The fully qualified identifier of the command or property in question</param>
+        /// <returns>True, if the interceptor should be applied</returns>
+        public abstract bool IsInterceptRequired(Feature feature, string commandIdentifier);
+        
+        /// <summary>
+        /// Intercepts the call to the given command
+        /// </summary>
+        /// <param name="commandIdentifier">The fully qualified identifier of the command or property in question</param>
+        /// <param name="string">The parsed metadata</param>
+        /// <returns>A request interception or null, if this is not necessary</returns>
+        public abstract Tecan.Sila2.Server.IRequestInterception Intercept(string commandIdentifier, string @string);
+        
+        /// <summary>
+        /// Intercepts the call to the given command
+        /// </summary>
+        /// <param name="commandIdentifier">The fully qualified identifier of the command or property in question</param>
+        /// <param name="server">The server that should execute the request</param>
+        /// <param name="metadata">The metadata attached to the request</param>
+        /// <returns>A request interception or null, if this is not necessary</returns>
+        public Tecan.Sila2.Server.IRequestInterception Intercept(string commandIdentifier, Tecan.Sila2.Server.ISiLAServer server, Tecan.Sila2.Server.IMetadataRepository metadata)
+        {
+            return Intercept(commandIdentifier, Tecan.Sila2.Server.Metadata.Extract<Tecan.Sila2.StringDto>(metadata, MetadataIdentifier).Extract(server));
         }
     }
 }

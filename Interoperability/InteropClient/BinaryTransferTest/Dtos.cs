@@ -339,4 +339,168 @@ namespace Tecan.Sila2.Interop.Client.BinaryTransferTest.BinaryTransferTest
             return ("" + Argument.Require(JointBinary, "jointBinary"));
         }
     }
+    
+    /// <summary>
+    /// Data transfer object for the request of the Echo Binary And Metadata String command
+    /// </summary>
+    [ProtoBuf.ProtoContractAttribute()]
+    public class EchoBinaryAndMetadataStringRequestDto : Tecan.Sila2.ISilaTransferObject, Tecan.Sila2.ISilaRequestObject
+    {
+        
+        private Tecan.Sila2.BinaryDto _binary;
+        
+        /// <summary>
+        /// Create a new instance
+        /// </summary>
+        public EchoBinaryAndMetadataStringRequestDto()
+        {
+        }
+        
+        /// <summary>
+        /// Create a new instance
+        /// </summary>
+        /// <param name="store">An object to organize binaries.</param>
+        /// <param name="binary">The binary to echo</param>
+        public EchoBinaryAndMetadataStringRequestDto(System.IO.Stream binary, Tecan.Sila2.IBinaryStore store)
+        {
+            Binary = new Tecan.Sila2.BinaryDto(binary, store);
+        }
+        
+        /// <summary>
+        /// The binary to echo
+        /// </summary>
+        [ProtoBuf.ProtoMemberAttribute(1)]
+        public Tecan.Sila2.BinaryDto Binary
+        {
+            get
+            {
+                return _binary;
+            }
+            set
+            {
+                _binary = value;
+            }
+        }
+        
+        /// <summary>
+        /// Gets the command identifier for this command
+        /// </summary>
+        /// <returns>The fully qualified command identifier</returns>
+        public string CommandIdentifier
+        {
+            get
+            {
+                return "org.silastandard/test/BinaryTransferTest/v1/Command/EchoBinaryAndMetadataString";
+            }
+        }
+        
+        /// <summary>
+        /// Validates the given request object
+        /// </summary>
+        public void Validate()
+        {
+            Argument.Validate(Binary, "binary");
+        }
+        
+        /// <summary>
+        /// Validates the contents of this transfer object
+        /// </summary>
+        /// <returns>A validation error or null, if no validation error occurred.</returns>
+        public string GetValidationErrors()
+        {
+            return ("" + Argument.Require(Binary, "binary"));
+        }
+    }
+    
+    /// <summary>
+    /// Data transfer object for the response of the Echo Binary And Metadata String command
+    /// </summary>
+    [ProtoBuf.ProtoContractAttribute()]
+    public class EchoBinaryAndMetadataStringResponseDto : Tecan.Sila2.ISilaTransferObject<EchoBinaryAndMetadataStringResponse>
+    {
+        
+        private Tecan.Sila2.BinaryDto _binary;
+        
+        private Tecan.Sila2.StringDto _stringMetadata;
+        
+        /// <summary>
+        /// Initializes a new instance (to be used by the serializer)
+        /// </summary>
+        public EchoBinaryAndMetadataStringResponseDto()
+        {
+        }
+        
+        /// <summary>
+        /// Initializes a new data transfer object from the business object
+        /// </summary>
+        /// <param name="inner">The business object that should be transferred</param>
+        /// <param name="store">A component to handle binary data</param>
+        public EchoBinaryAndMetadataStringResponseDto(EchoBinaryAndMetadataStringResponse inner, Tecan.Sila2.IBinaryStore store)
+        {
+            Binary = new Tecan.Sila2.BinaryDto(inner.Binary, store);
+            StringMetadata = new Tecan.Sila2.StringDto(inner.StringMetadata, store);
+        }
+        
+        /// <summary>
+        /// The received binary
+        /// </summary>
+        [ProtoBuf.ProtoMemberAttribute(1)]
+        public Tecan.Sila2.BinaryDto Binary
+        {
+            get
+            {
+                return _binary;
+            }
+            set
+            {
+                _binary = value;
+            }
+        }
+        
+        /// <summary>
+        /// The received String Metadata
+        /// </summary>
+        [ProtoBuf.ProtoMemberAttribute(2)]
+        public Tecan.Sila2.StringDto StringMetadata
+        {
+            get
+            {
+                return _stringMetadata;
+            }
+            set
+            {
+                _stringMetadata = value;
+            }
+        }
+        
+        /// <summary>
+        /// Extracts the transferred value
+        /// </summary>
+        /// <param name="store">The binary store in which to store binary data</param>
+        /// <returns>the inner value</returns>
+        public EchoBinaryAndMetadataStringResponse Extract(Tecan.Sila2.IBinaryStore store)
+        {
+            return new EchoBinaryAndMetadataStringResponse(Binary.Extract(store), StringMetadata.Extract(store));
+        }
+        
+        /// <summary>
+        /// Creates the data transfer object from the given object to transport
+        /// </summary>
+        /// <param name="inner">The object to transfer</param>
+        /// <param name="store">An object to store binary data</param>
+        public static EchoBinaryAndMetadataStringResponseDto Create(EchoBinaryAndMetadataStringResponse inner, Tecan.Sila2.IBinaryStore store)
+        {
+            return new EchoBinaryAndMetadataStringResponseDto(inner, store);
+        }
+        
+        /// <summary>
+        /// Validates the contents of this transfer object
+        /// </summary>
+        /// <returns>A validation error or null, if no validation error occurred.</returns>
+        public string GetValidationErrors()
+        {
+            return (("" + Argument.Require(Binary, "binary")) 
+                        + Argument.Require(StringMetadata, "stringMetadata"));
+        }
+    }
 }

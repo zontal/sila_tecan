@@ -3,7 +3,7 @@
     <PropertyGroup>
         <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
         <OutputType>Exe</OutputType>
-        <TargetFrameworks>netcoreapp3.1;net6.0</TargetFrameworks>
+        <TargetFrameworks>net48;net6.0</TargetFrameworks>
         <RootNamespace>Tecan.Sila2.Interop.Server</RootNamespace>
     </PropertyGroup>
 

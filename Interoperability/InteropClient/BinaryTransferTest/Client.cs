@@ -176,6 +176,29 @@ namespace Tecan.Sila2.Interop.Client.BinaryTransferTest.BinaryTransferTest
             return value.JointBinary.Extract(_executionManager.DownloadBinaryStore);
         }
         
+        /// <summary>
+        /// Receives a Binary and requires String Metadata, returns both
+        /// </summary>
+        /// <param name="binary">The binary to echo</param>
+        public virtual EchoBinaryAndMetadataStringResponse EchoBinaryAndMetadataString(System.IO.Stream binary)
+        {
+            EchoBinaryAndMetadataStringRequestDto request = new EchoBinaryAndMetadataStringRequestDto(binary, _executionManager.CreateBinaryStore("org.silastandard/test/BinaryTransferTest/v1/Command/EchoBinaryAndMetadataString/P" +
+                        "arameter/Binary"));
+            request.Validate();
+            Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/BinaryTransferTest/v1/Command/EchoBinaryAndMetadataString");
+            try
+            {
+                EchoBinaryAndMetadataStringResponse response = _channel.ExecuteUnobservableCommand<EchoBinaryAndMetadataStringRequestDto, EchoBinaryAndMetadataStringResponseDto>(_serviceName, "EchoBinaryAndMetadataString", request, callInfo).Extract(_executionManager.DownloadBinaryStore);
+                callInfo.FinishSuccessful();
+                return response;
+            } catch (System.Exception ex)
+            {
+                System.Exception exception = _channel.ConvertException(ex);
+                callInfo.FinishWithErrors(exception);
+                throw exception;
+            }
+        }
+        
         private T Extract<T>(Tecan.Sila2.ISilaTransferObject<T> dto)
         
         {

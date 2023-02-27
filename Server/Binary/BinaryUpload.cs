@@ -182,7 +182,7 @@ namespace Tecan.Sila2.Server.Binary
 
         private void DeleteBinaryCore( DeleteBinaryRequestDto request )
         {
-            _fileManagement.Delete( request.BinaryTransferUUID, true );
+            DeleteUpload(request.BinaryTransferUUID);
         }
 
         private async Task UploadChunk( IAsyncStreamReader<UploadChunkRequestDto> requestStream, IServerStreamWriter<UploadChunkResponseDto> responseStream, ServerCallContext context )
@@ -403,7 +403,10 @@ namespace Tecan.Sila2.Server.Binary
         /// <param name="binaryStorageIdentifier"></param>
         public void DeleteUpload( string binaryStorageIdentifier )
         {
-            _openStreams.TryRemove( binaryStorageIdentifier, out _ );
+            if (_openStreams.TryRemove( binaryStorageIdentifier, out var openStream ))
+            {
+                openStream.FileStream.Dispose();
+            }
             _fileManagement.Delete( binaryStorageIdentifier, true );
         }
 

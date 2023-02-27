@@ -13,6 +13,49 @@ namespace Tecan.Sila2.Interop.Client.BinaryTransferTest
     
     
     /// <summary>
+    /// Response type for the Echo Binary And Metadata String command
+    /// </summary>
+    [Tecan.Sila2.SilaDisplayNameAttribute("Echo Binary And Metadata String - Response")]
+    public struct EchoBinaryAndMetadataStringResponse
+    {
+        
+        private System.IO.Stream _binary;
+        
+        private string _stringMetadata;
+        
+        /// <summary>
+        /// Initializes a new instance
+        /// </summary>
+        public EchoBinaryAndMetadataStringResponse(System.IO.Stream binary, string stringMetadata)
+        {
+            _binary = binary;
+            _stringMetadata = stringMetadata;
+        }
+        
+        /// <summary>
+        /// The received binary
+        /// </summary>
+        public System.IO.Stream Binary
+        {
+            get
+            {
+                return _binary;
+            }
+        }
+        
+        /// <summary>
+        /// The received String Metadata
+        /// </summary>
+        public string StringMetadata
+        {
+            get
+            {
+                return _stringMetadata;
+            }
+        }
+    }
+    
+    /// <summary>
     /// Provides commands and properties to set or respectively get the SiLA Basic Data Type Binary via command parameters or property responses respectively.
     /// </summary>
     [Tecan.Sila2.SilaFeatureAttribute(true, "test")]
@@ -55,5 +98,13 @@ namespace Tecan.Sila2.Interop.Client.BinaryTransferTest
         [Tecan.Sila2.ObservableAttribute()]
         [return: Tecan.Sila2.SilaIdentifierAttribute("JointBinary")]
         Tecan.Sila2.IIntermediateObservableCommand<System.IO.Stream, System.IO.Stream> EchoBinariesObservably(System.Collections.Generic.ICollection<System.IO.Stream> binaries);
+        
+        /// <summary>
+        /// Receives a Binary and requires String Metadata, returns both
+        /// </summary>
+        /// <param name="binary">The binary to echo</param>
+        /// <returns>The received binary, The received String Metadata</returns>
+        [return: Tecan.Sila2.InlineStructAttribute()]
+        EchoBinaryAndMetadataStringResponse EchoBinaryAndMetadataString(System.IO.Stream binary);
     }
 }

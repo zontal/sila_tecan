@@ -95,7 +95,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest
         /// Tests if scientific notation is accepted for checking limits of type Integer
         /// </summary>
         /// <param name="constrainedParameter">An Integer parameter with a MinimalInclusive constraint of -1e3 and a MaximalExclusive constraint of 1.23e5</param>
-        void CheckScientificallyNotatedIntegerLimit([Tecan.Sila2.MaximalExclusiveAttribute(12300000D)] [Tecan.Sila2.MinimalInclusiveAttribute(-1000D)] long constrainedParameter);
+        void CheckScientificallyNotatedIntegerLimit([Tecan.Sila2.MaximalExclusiveAttribute(123000D)] [Tecan.Sila2.MinimalInclusiveAttribute(-1000D)] long constrainedParameter);
         
         /// <summary>
         /// Tests the MaximalExclusive constraint on the Integer type
@@ -144,13 +144,13 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest
         /// Tests if scientific notation is accepted for checking limits of type Real
         /// </summary>
         /// <param name="constrainedParameter">A Real parameter with a MinimalInclusive constraint of 1.23e-3 and a MaximalExclusive constraint of 1.23456e2</param>
-        void CheckScientificallyNotatedRealLimit([Tecan.Sila2.MaximalExclusiveAttribute(12345600D)] [Tecan.Sila2.MinimalInclusiveAttribute(0.123D)] double constrainedParameter);
+        void CheckScientificallyNotatedRealLimit([Tecan.Sila2.MaximalExclusiveAttribute(123.456D)] [Tecan.Sila2.MinimalInclusiveAttribute(0.00123D)] double constrainedParameter);
         
         /// <summary>
         /// Tests the MaximalExclusive constraint on the Real type
         /// </summary>
         /// <param name="constrainedParameter">A Real parameter with a MaximalExclusive constraint of 10.5</param>
-        void CheckRealConstraintMaximalExclusive([Tecan.Sila2.MaximalExclusiveAttribute(105D)] double constrainedParameter);
+        void CheckRealConstraintMaximalExclusive([Tecan.Sila2.MaximalExclusiveAttribute(10.5D)] double constrainedParameter);
         
         /// <summary>
         /// Tests the MaximalInclusive constraint on the Real type
@@ -168,14 +168,14 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest
         /// Tests the MinimalInclusive constraint on the Real type
         /// </summary>
         /// <param name="constrainedParameter">A Real parameter with a MinimalInclusive constraint of -1.5</param>
-        void CheckRealConstraintMinimalInclusive([Tecan.Sila2.MinimalInclusiveAttribute(-15D)] double constrainedParameter);
+        void CheckRealConstraintMinimalInclusive([Tecan.Sila2.MinimalInclusiveAttribute(-1.5D)] double constrainedParameter);
         
         /// <summary>
         /// Tests the combination of MinimalExclusive and MaximalInclusive constraints on Real type
         /// </summary>
         /// <param name="constrainedParameter">A Real parameter with a MinimalExclusive constraint of 0.333 and a MaximalInclusive constraint of 11.111</param>
         [Tecan.Sila2.SilaDisplayNameAttribute("Check Real Constraint MinMax")]
-        void CheckRealConstraintMinMax([Tecan.Sila2.MaximalInclusiveAttribute(11111D)] [Tecan.Sila2.MinimalExclusiveAttribute(333D)] double constrainedParameter);
+        void CheckRealConstraintMinMax([Tecan.Sila2.MaximalInclusiveAttribute(11.111D)] [Tecan.Sila2.MinimalExclusiveAttribute(0.333D)] double constrainedParameter);
         
         /// <summary>
         /// Tests the Unit constraint on the Real type
