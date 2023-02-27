@@ -155,7 +155,7 @@ namespace Tecan.Sila2.Binary
         /// The lifetime of the binary
         /// </summary>
         [ProtoMember(2)]
-        public TimestampDto LifetimeOfBinary { get; set; }
+        public DurationDto LifetimeOfBinary { get; set; }
 
     }
 
@@ -215,7 +215,7 @@ namespace Tecan.Sila2.Binary
         /// The lifetime of the binary
         /// </summary>
         [ProtoMember(4)]
-        public TimestampDto LifetimeOfBinary { get; set; }
+        public DurationDto LifetimeOfBinary { get; set; }
 
     }
 

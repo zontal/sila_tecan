@@ -209,6 +209,8 @@ namespace Tecan.Sila2.Binary
                 }, CreateCallOptions( false ).WithCancellationToken(cancellationToken) );
                 var getChunk = GetChunk( CreateCallOptions( false ) );
                 var chunkCount = (uint)(data.BinarySize + ChunkSize - 1) / ChunkSize;
+                var chunkCancellation = new CancellationTokenSource(data.LifetimeOfBinary.Extract(null));
+                cancellationToken.Register(chunkCancellation.Cancel);
                 for(ulong i = 0; i < chunkCount; i++)
                 {
                     await getChunk.RequestStream.WriteAsync( new GetChunkRequestDto()
@@ -217,8 +219,9 @@ namespace Tecan.Sila2.Binary
                         Length = i < chunkCount - 1 ? ChunkSize : (uint)(data.BinarySize - i * ChunkSize),
                         Offset = i * ChunkSize
                     } );
-                    await getChunk.ResponseStream.MoveNext( cancellationToken );
+                    await getChunk.ResponseStream.MoveNext( chunkCancellation.Token );
                     var chunk = getChunk.ResponseStream.Current;
+                    chunkCancellation.CancelAfter(chunk.LifetimeOfBinary.Extract(null));
                     await file.WriteAsync( chunk.Payload, 0, chunk.Payload.Length );
                 }
 

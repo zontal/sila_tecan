@@ -1068,7 +1068,7 @@ namespace Tecan.Sila2
         /// <returns>The actual value</returns>
         public DateTimeOffset Extract( IBinaryStore resolver )
         {
-            return new DateTimeOffset( (int)Year, (int)Month, (int)Day, (int)Hour, (int)Minute, (int)Second, Timezone.Extract( resolver ) );
+            return new DateTimeOffset( (int)Year, (int)Month, (int)Day, (int)Hour, (int)Minute, (int)Second, Timezone?.Extract( resolver ) ?? default );
         }
 
         /// <summary>
