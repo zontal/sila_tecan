@@ -37,7 +37,7 @@
         <ProjectReference Include="..\Contracts\Contracts.csproj" />
         <ProjectReference Include="..\Framework.NetCore\Framework.NetCore.csproj" />
         <ProjectReference Include="..\Framework\Framework.csproj" />
-        <PackageReference Include="Grpc.AspNetCore.Server" Version="2.40.0" />
+        <PackageReference Include="Grpc.AspNetCore.Server" Version="2.51.0" />
     </ItemGroup>
 
 </Project>

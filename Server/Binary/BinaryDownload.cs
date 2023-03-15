@@ -103,7 +103,7 @@ namespace Tecan.Sila2.Server.Binary
             return new GetBinaryInfoResponseDto()
             {
                 BinarySize = (ulong)fileData.stream.Length,
-                LifetimeOfBinary = new TimestampDto( fileData.expiration )
+                LifetimeOfBinary = new DurationDto( fileData.expiration - DateTimeOffset.UtcNow )
             };
         }
 
@@ -178,7 +178,7 @@ namespace Tecan.Sila2.Server.Binary
                 Payload = bytesToSend,
                 Offset = request.Offset,
                 BinaryTransferUUID = request.BinaryTransferUUID,
-                LifetimeOfBinary = new TimestampDto( newExpiration ),
+                LifetimeOfBinary = new DurationDto( TimeSpan.FromMinutes(5) ),
             };
         }
 

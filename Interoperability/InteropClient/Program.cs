@@ -58,13 +58,13 @@ namespace Tecan.Sila2.Interop.Client
 
         private void Run()
         {
-            RunTest( TestSilaService );
-            RunTest( TestUnobservableCommand );
-            RunTest( TestUnobservableProperty );
-            RunTest( TestMetadataConsumer );
-            RunTest( TestErrorHandling );
-            RunTest( TestObservableProperty );
-            RunTest( TestObservableCommand );
+            RunTest(TestSilaService);
+            RunTest(TestUnobservableCommand);
+            RunTest(TestUnobservableProperty);
+            RunTest(TestMetadataConsumer);
+            RunTest(TestErrorHandling);
+            RunTest(TestObservableProperty);
+            RunTest(TestObservableCommand);
             RunTest( TestBinaryTransfer );
         }
 

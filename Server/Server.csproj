@@ -40,9 +40,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <!-- include grpc as a project reference if it is available in parent folder (mechanism for changing grpc-implementation when necessary) -->
-        <ProjectReference Condition=" Exists('../../grpc/src/csharp/Grpc.Core/Grpc.Core.csproj')" Include="../../grpc/src/csharp/Grpc.Core/Grpc.Core.csproj" />
-        <PackageReference Condition="!Exists('../../grpc/src/csharp/Grpc.Core/Grpc.Core.csproj')" Include="Grpc.Core" Version="2.40.0" />
+        <PackageReference Include="Grpc.Core" Version="2.46.6" />
 
         <PackageReference Include="CommandLineParser" Version="2.8.0" />
         <PackageReference Include="IPNetwork2" Version="2.1.2" />

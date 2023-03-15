@@ -42,7 +42,7 @@ namespace Tecan.Sila2.ServerPooling
                 case SilaServerMessageType.ObservableCommandExecutionInfo:
                     var stateUpdate = serverMessage.ObservableCommandExecutionInfo.ExecutionInfo;
                     PushStateUpdate( stateUpdate.Progress.Value, stateUpdate.EstimatedRemainingTime.Extract( null ), ConvertCommandState( stateUpdate.Status ) );
-                    if(stateUpdate.Status == ExecutionState.CommandStatus.FinishedSuccessfully && _executionUuid.Task.IsCompleted)
+                    if(stateUpdate.IsFinished && _executionUuid.Task.IsCompleted)
                     {
                         _ = _requestStream.WriteAsync( new SilaClientMessage
                         {
@@ -175,7 +175,7 @@ namespace Tecan.Sila2.ServerPooling
                 case SilaServerMessageType.ObservableCommandExecutionInfo:
                     var stateUpdate = serverMessage.ObservableCommandExecutionInfo.ExecutionInfo;
                     PushStateUpdate( stateUpdate.Progress.Value, stateUpdate.EstimatedRemainingTime.Extract( null ), ObservableCommandHandler.ConvertCommandState( stateUpdate.Status ) );
-                    if(stateUpdate.Status == ExecutionState.CommandStatus.FinishedSuccessfully && _executionUuid.Task.IsCompleted)
+                    if(stateUpdate.IsFinished && _executionUuid.Task.IsCompleted)
                     {
                         _ = _requestStream.WriteAsync( new SilaClientMessage
                         {

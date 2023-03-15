@@ -93,7 +93,7 @@ namespace Tecan.Sila2.Discovery
                     {
                         _log.Error($"Subscription of property {propertyName} resulted in an exception", ClientErrorHandling.ConvertException(t.Exception));
                     }
-                }, cancellationToken);
+                }, CancellationToken.None);
             }
             else
             {

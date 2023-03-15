@@ -44,9 +44,15 @@ namespace Tecan.Sila2.IntegrationTests
                 payloadArguments = "debug " + payloadArguments;
             }
             ProcessStartInfo processStartInfo = GetTestServerStartInfo( payloadArguments );
-            if(processStartInfo != null)
+            if (processStartInfo != null)
             {
-                _serverProcess = Process.Start( processStartInfo );
+                processStartInfo.RedirectStandardError = true;
+                processStartInfo.RedirectStandardOutput = true;
+                processStartInfo.RedirectStandardInput = true;
+                _serverProcess = Process.Start(processStartInfo);
+
+                _serverProcess.StandardOutput.ReadToEndAsync().ContinueWith(t => Console.WriteLine(t.Result));
+                _serverProcess.StandardError.ReadToEndAsync().ContinueWith(t => Console.Error.WriteLine(t.Result));
             }
 
             if(attachDebugger)
@@ -55,7 +61,7 @@ namespace Tecan.Sila2.IntegrationTests
             }
             else
             {
-                Thread.Sleep( TimeSpan.FromSeconds( 1 ) );
+                Thread.Sleep( TimeSpan.FromSeconds( 1.5 ) );
             }
             _server = FindServer( serverId );
             Assert.That( _server, Is.Not.Null );
@@ -71,20 +77,14 @@ namespace Tecan.Sila2.IntegrationTests
 #if NET6_0
                 Arguments = Path.Combine( dir, "net6.0", "TestServer.dll" ) + " " + payloadArguments,
 #else
-                Arguments = Path.Combine( dir, "netcoreapp3.1", "TestServer.dll" ) + " " + payloadArguments,
+                Arguments = Path.Combine( dir, "net7.0", "TestServer.dll" ) + " " + payloadArguments,
 #endif
-#elif NET461
-                FileName = Path.Combine(dir, "net461", "TestServer.exe"),
-                Arguments = payloadArguments,
-#elif NET472
-                FileName = Path.Combine(dir, "net472", "TestServer.exe"),
+#else
+                FileName = Path.Combine(dir, "net48", "TestServer.exe"),
                 Arguments = payloadArguments,
 #endif
                 CreateNoWindow = true,
                 ErrorDialog = false,
-                RedirectStandardInput = true,
-                RedirectStandardError = false,
-                RedirectStandardOutput = false,
                 UseShellExecute = false,
                 WorkingDirectory = dir
             };
@@ -769,6 +769,9 @@ namespace Tecan.Sila2.IntegrationTests
             command.Cancel();
 
             Assert.ThrowsAsync<OperationCanceledException>( () => command.Response );
+            // the cancellation is very fast, because it does not wait for the server.
+            // we need to wait a bit in order to make sure the command was also cancelled at the server
+            Thread.Sleep(1000);
             Assert.That( testClient.IsCancelled( command.CommandId.CommandId ), Is.True );
 
             Unlock( lockId, token );

@@ -429,28 +429,28 @@ namespace Tecan.Sila2.DynamicClient
         private static void WriteTimestamp( ProtoWriter writer, object value )
         {
             var dateTimeOffset = GetDateTimeOffset( value );
-            ProtoWriter.WriteFieldHeader( 1, WireType.Variant, writer );
+            ProtoWriter.WriteFieldHeader( 1, WireType.Varint, writer );
             ProtoWriter.WriteUInt32( (uint)dateTimeOffset.Second, writer );
-            ProtoWriter.WriteFieldHeader( 2, WireType.Variant, writer );
+            ProtoWriter.WriteFieldHeader( 2, WireType.Varint, writer );
             ProtoWriter.WriteUInt32( (uint)dateTimeOffset.Minute, writer );
-            ProtoWriter.WriteFieldHeader( 3, WireType.Variant, writer );
+            ProtoWriter.WriteFieldHeader( 3, WireType.Varint, writer );
             ProtoWriter.WriteUInt32( (uint)dateTimeOffset.Hour, writer );
-            ProtoWriter.WriteFieldHeader( 4, WireType.Variant, writer );
+            ProtoWriter.WriteFieldHeader( 4, WireType.Varint, writer );
             ProtoWriter.WriteUInt32( (uint)dateTimeOffset.Day, writer );
-            ProtoWriter.WriteFieldHeader( 5, WireType.Variant, writer );
+            ProtoWriter.WriteFieldHeader( 5, WireType.Varint, writer );
             ProtoWriter.WriteUInt32( (uint)dateTimeOffset.Month, writer );
-            ProtoWriter.WriteFieldHeader( 6, WireType.Variant, writer );
+            ProtoWriter.WriteFieldHeader( 6, WireType.Varint, writer );
             ProtoWriter.WriteUInt32( (uint)dateTimeOffset.Year, writer );
             ProtoWriter.WriteFieldHeader( 7, WireType.String, writer );
             var subToken = ProtoWriter.StartSubItem( dateTimeOffset, writer );
             if(dateTimeOffset.Offset.Hours != 0)
             {
-                ProtoWriter.WriteFieldHeader( 1, WireType.Variant, writer );
+                ProtoWriter.WriteFieldHeader( 1, WireType.Varint, writer );
                 ProtoWriter.WriteInt32( dateTimeOffset.Offset.Hours, writer );
             }
             if(dateTimeOffset.Offset.Minutes != 0)
             {
-                ProtoWriter.WriteFieldHeader( 2, WireType.Variant, writer );
+                ProtoWriter.WriteFieldHeader( 2, WireType.Varint, writer );
                 ProtoWriter.WriteInt32( dateTimeOffset.Offset.Minutes, writer );
             }
             ProtoWriter.EndSubItem( subToken, writer );
@@ -459,22 +459,22 @@ namespace Tecan.Sila2.DynamicClient
         private static void WriteDate( ProtoWriter writer, object value )
         {
             DateTimeOffset date = GetDateTimeOffset( value );
-            ProtoWriter.WriteFieldHeader( 1, WireType.Variant, writer );
+            ProtoWriter.WriteFieldHeader( 1, WireType.Varint, writer );
             ProtoWriter.WriteUInt32( (uint)date.Day, writer );
-            ProtoWriter.WriteFieldHeader( 2, WireType.Variant, writer );
+            ProtoWriter.WriteFieldHeader( 2, WireType.Varint, writer );
             ProtoWriter.WriteUInt32( (uint)date.Month, writer );
-            ProtoWriter.WriteFieldHeader( 3, WireType.Variant, writer );
+            ProtoWriter.WriteFieldHeader( 3, WireType.Varint, writer );
             ProtoWriter.WriteUInt32( (uint)date.Year, writer );
             ProtoWriter.WriteFieldHeader( 4, WireType.String, writer );
             var subToken = ProtoWriter.StartSubItem( date, writer );
             if(date.Offset.Hours != 0)
             {
-                ProtoWriter.WriteFieldHeader( 1, WireType.Variant, writer );
+                ProtoWriter.WriteFieldHeader( 1, WireType.Varint, writer );
                 ProtoWriter.WriteInt32( date.Offset.Hours, writer );
             }
             if(date.Offset.Minutes != 0)
             {
-                ProtoWriter.WriteFieldHeader( 2, WireType.Variant, writer );
+                ProtoWriter.WriteFieldHeader( 2, WireType.Varint, writer );
                 ProtoWriter.WriteInt32( date.Offset.Minutes, writer );
             }
             ProtoWriter.EndSubItem( subToken, writer );
@@ -496,11 +496,11 @@ namespace Tecan.Sila2.DynamicClient
         private static void WriteTime( ProtoWriter writer, object value )
         {
             var timeSpan = (TimeSpan)value;
-            ProtoWriter.WriteFieldHeader( 1, WireType.Variant, writer );
+            ProtoWriter.WriteFieldHeader( 1, WireType.Varint, writer );
             ProtoWriter.WriteUInt32( (uint)timeSpan.Seconds, writer );
-            ProtoWriter.WriteFieldHeader( 2, WireType.Variant, writer );
+            ProtoWriter.WriteFieldHeader( 2, WireType.Varint, writer );
             ProtoWriter.WriteUInt32( (uint)timeSpan.Minutes, writer );
-            ProtoWriter.WriteFieldHeader( 3, WireType.Variant, writer );
+            ProtoWriter.WriteFieldHeader( 3, WireType.Varint, writer );
             ProtoWriter.WriteUInt32( (uint)timeSpan.Hours, writer );
             ProtoWriter.WriteFieldHeader( 4, WireType.String, writer );
             var subToken = ProtoWriter.StartSubItem( timeSpan, writer );

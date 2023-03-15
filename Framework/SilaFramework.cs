@@ -1384,6 +1384,11 @@ namespace Tecan.Sila2
             FinishedWithError = 3,
         }
 
+        /// <summary>
+        /// True, if the execution state indicates that the command finished, otherwise False
+        /// </summary>
+        public bool IsFinished => Status == CommandStatus.FinishedSuccessfully
+            || Status == CommandStatus.FinishedWithError;
     }
 
     /// <summary>

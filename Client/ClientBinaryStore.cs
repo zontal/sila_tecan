@@ -213,6 +213,7 @@ namespace Tecan.Sila2.Binary
                 cancellationToken.Register(chunkCancellation.Cancel);
                 for(ulong i = 0; i < chunkCount; i++)
                 {
+                    getChunk.RequestStream.WriteOptions = new WriteOptions(WriteFlags.NoCompress);
                     await getChunk.RequestStream.WriteAsync( new GetChunkRequestDto()
                     {
                         BinaryTransferUUID = binaryIdentifier,
