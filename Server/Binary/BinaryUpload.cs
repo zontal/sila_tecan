@@ -136,7 +136,7 @@ namespace Tecan.Sila2.Server.Binary
             return new CreateBinaryResponseDto()
             {
                 BinaryTransferUUID = identifier,
-                LifetimeOfBinary = new TimestampDto( expiration )
+                LifetimeOfBinary = new DurationDto( TimeSpan.FromMinutes(5) )
             };
         }
 
@@ -289,7 +289,7 @@ namespace Tecan.Sila2.Server.Binary
                 uploadData.ExpirationTime = DateTimeOffset.Now.AddMinutes( WaitTimeInMinutes );
                 return new UploadChunkResponseDto()
                 {
-                    LifetimeOfBinary = new TimestampDto( uploadData.ExpirationTime ),
+                    LifetimeOfBinary = new DurationDto(TimeSpan.FromMinutes(WaitTimeInMinutes)),
                     BinaryTransferUUID = request.BinaryTransferUUID,
                     ChunkIndex = request.ChunkIndex
                 };

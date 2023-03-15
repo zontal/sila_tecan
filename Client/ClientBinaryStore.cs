@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
@@ -120,11 +121,17 @@ namespace Tecan.Sila2.Binary
                     ChunkCount = chunkCount,
                     CommandIdentifier = _commandParameterIdentifier
                 }, options );
+                var uploadCancellation = new CancellationTokenSource();
+                if (identifier.LifetimeOfBinary != null)
+                {
+                    uploadCancellation.CancelAfter(identifier.LifetimeOfBinary.Extract(null));
+                }
                 var uploadChannel = UploadChunk( new CallOptions() );
+                var readResponses = WaitForUploadToFinish(uploadChannel.ResponseStream, uploadCancellation, chunkCount - 1);
                 var bytes = new byte[ChunkSize];
                 for(uint i = 0; i < chunkCount; i++)
                 {
-                    var bytesRead = await file.ReadAsync( bytes, 0, ChunkSize );
+                    var bytesRead = await file.ReadAsync( bytes, 0, ChunkSize, uploadCancellation.Token );
                     byte[] bytesToSend;
                     if(bytesRead == ChunkSize)
                     {
@@ -144,12 +151,27 @@ namespace Tecan.Sila2.Binary
                     } );
                 }
                 await uploadChannel.RequestStream.CompleteAsync();
-
+                await readResponses;
                 return identifier.BinaryTransferUUID;
             }
             catch(RpcException rpcException)
             {
                 throw ClientErrorHandling.ConvertBinaryException( rpcException, identifier?.BinaryTransferUUID );
+            }
+        }
+
+        private async Task WaitForUploadToFinish(IAsyncStreamReader<UploadChunkResponseDto> responses, CancellationTokenSource uploadCancellation, uint lastChunk)
+        {
+            while (await responses.MoveNext(uploadCancellation.Token))
+            {
+                if (responses.Current.LifetimeOfBinary != null)
+                {
+                    uploadCancellation.CancelAfter(responses.Current.LifetimeOfBinary.Extract(null));
+                }
+                if (responses.Current.ChunkIndex == lastChunk)
+                {
+                    break;
+                }
             }
         }
 
@@ -203,34 +225,85 @@ namespace Tecan.Sila2.Binary
         {
             try
             {
-                var data = await GetBinaryInfoAsync( new GetBinaryInfoRequestDto()
+                var data = await GetBinaryInfoAsync(new GetBinaryInfoRequestDto()
                 {
                     BinaryTransferUUID = binaryIdentifier
-                }, CreateCallOptions( false ).WithCancellationToken(cancellationToken) );
-                var getChunk = GetChunk( CreateCallOptions( false ) );
+                }, CreateCallOptions(false).WithCancellationToken(cancellationToken));
+                var getChunk = GetChunk(CreateCallOptions(false));
                 var chunkCount = (uint)(data.BinarySize + ChunkSize - 1) / ChunkSize;
-                var chunkCancellation = new CancellationTokenSource(data.LifetimeOfBinary.Extract(null));
-                cancellationToken.Register(chunkCancellation.Cancel);
-                for(ulong i = 0; i < chunkCount; i++)
+                var chunkCancellation = new CancellationTokenSource();
+                if (data.LifetimeOfBinary != null)
                 {
-                    getChunk.RequestStream.WriteOptions = new WriteOptions(WriteFlags.NoCompress);
-                    await getChunk.RequestStream.WriteAsync( new GetChunkRequestDto()
-                    {
-                        BinaryTransferUUID = binaryIdentifier,
-                        Length = i < chunkCount - 1 ? ChunkSize : (uint)(data.BinarySize - i * ChunkSize),
-                        Offset = i * ChunkSize
-                    } );
-                    await getChunk.ResponseStream.MoveNext( chunkCancellation.Token );
-                    var chunk = getChunk.ResponseStream.Current;
-                    chunkCancellation.CancelAfter(chunk.LifetimeOfBinary.Extract(null));
-                    await file.WriteAsync( chunk.Payload, 0, chunk.Payload.Length );
+                    chunkCancellation.CancelAfter(data.LifetimeOfBinary.Extract(null));
                 }
+                cancellationToken.Register(chunkCancellation.Cancel);
+                var sendChunks = SendChunks(binaryIdentifier, data, getChunk.RequestStream, chunkCount, chunkCancellation.Token);
+                var receiveChunks = ReceiveChunks(file, getChunk.ResponseStream, chunkCancellation);
 
-                await getChunk.RequestStream.CompleteAsync();
+                await sendChunks;
+                await receiveChunks;
             }
-            catch(RpcException rpcException)
+            catch (RpcException rpcException)
             {
                 throw ClientErrorHandling.ConvertBinaryException( rpcException, binaryIdentifier );
+            }
+        }
+
+        private static async Task SendChunks(string binaryIdentifier, GetBinaryInfoResponseDto data, IClientStreamWriter<GetChunkRequestDto> requests, uint chunkCount, CancellationToken chunkCancellation)
+        {
+            for (ulong i = 0; i < chunkCount; i++)
+            {
+                if (chunkCancellation.IsCancellationRequested)
+                {
+                    return;
+                }
+                await requests.WriteAsync(new GetChunkRequestDto()
+                {
+                    BinaryTransferUUID = binaryIdentifier,
+                    Length = i < chunkCount - 1 ? ChunkSize : (uint)(data.BinarySize - i * ChunkSize),
+                    Offset = i * ChunkSize
+                });
+            }
+            await requests.CompleteAsync();
+        }
+
+        private static async Task ReceiveChunks(Stream file, IAsyncStreamReader<GetChunkResponseDto> responses, CancellationTokenSource chunkCancellation)
+        {
+            var expectedOffset = 0ul;
+            List<GetChunkResponseDto> wrongChunks = null;
+            while (await responses.MoveNext(chunkCancellation.Token))
+            {
+                var chunk = responses.Current;
+                if (chunk.LifetimeOfBinary != null)
+                {
+                    chunkCancellation.CancelAfter(chunk.LifetimeOfBinary.Extract(null));
+                }
+                if (chunk.Offset == expectedOffset)
+                {
+                    await file.WriteAsync(chunk.Payload, 0, chunk.Payload.Length, chunkCancellation.Token);
+                    expectedOffset = chunk.Offset + (ulong)chunk.Payload.Length;
+                    if (wrongChunks != null)
+                    {
+                        foreach (var ch in wrongChunks)
+                        {
+                            if (expectedOffset == ch.Offset)
+                            {
+                                await file.WriteAsync(ch.Payload, 0, ch.Payload.Length, chunkCancellation.Token);
+                                expectedOffset = ch.Offset + (ulong)ch.Payload.Length;
+                            }
+                            else
+                            {
+                                break;
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    wrongChunks ??= new List<GetChunkResponseDto>();
+                    wrongChunks.Add(chunk);
+                    wrongChunks.Sort((c1, c2) => c1.Offset.CompareTo(c2.Offset));
+                }
             }
         }
 

@@ -1,0 +1,105 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DefineConstants>$(DefineConstants);MANAGED_GRPC</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DefineConstants>$(DefineConstants);MANAGED_GRPC</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\InteropClient\AnyTypeTest\Client.cs" Link="AnyTypeTest\Client.cs" />
+    <Compile Include="..\InteropClient\AnyTypeTest\Dtos.cs" Link="AnyTypeTest\Dtos.cs" />
+    <Compile Include="..\InteropClient\AnyTypeTest\IAnyTypeTest.cs" Link="AnyTypeTest\IAnyTypeTest.cs" />
+    <Compile Include="..\InteropClient\AuthenticationTest\Client.cs" Link="AuthenticationTest\Client.cs" />
+    <Compile Include="..\InteropClient\AuthenticationTest\Dtos.cs" Link="AuthenticationTest\Dtos.cs" />
+    <Compile Include="..\InteropClient\AuthenticationTest\IAuthenticationTest.cs" Link="AuthenticationTest\IAuthenticationTest.cs" />
+    <Compile Include="..\InteropClient\BasicDataTypesTest\Client.cs" Link="BasicDataTypesTest\Client.cs" />
+    <Compile Include="..\InteropClient\BasicDataTypesTest\Dtos.cs" Link="BasicDataTypesTest\Dtos.cs" />
+    <Compile Include="..\InteropClient\BasicDataTypesTest\IBasicDataTypesTest.cs" Link="BasicDataTypesTest\IBasicDataTypesTest.cs" />
+    <Compile Include="..\InteropClient\BinaryTransferTest\BinaryTestStringInterceptor.cs" Link="BinaryTransferTest\BinaryTestStringInterceptor.cs" />
+    <Compile Include="..\InteropClient\BinaryTransferTest\Client.cs" Link="BinaryTransferTest\Client.cs" />
+    <Compile Include="..\InteropClient\BinaryTransferTest\Dtos.cs" Link="BinaryTransferTest\Dtos.cs" />
+    <Compile Include="..\InteropClient\BinaryTransferTest\IBinaryTransferTest.cs" Link="BinaryTransferTest\IBinaryTransferTest.cs" />
+    <Compile Include="..\InteropClient\CancellationTest\Client.cs" Link="CancellationTest\Client.cs" />
+    <Compile Include="..\InteropClient\CancellationTest\Dtos.cs" Link="CancellationTest\Dtos.cs" />
+    <Compile Include="..\InteropClient\CancellationTest\ICancellationTest.cs" Link="CancellationTest\ICancellationTest.cs" />
+    <Compile Include="..\InteropClient\ErrorHandlingTest\Client.cs" Link="ErrorHandlingTest\Client.cs" />
+    <Compile Include="..\InteropClient\ErrorHandlingTest\Dtos.cs" Link="ErrorHandlingTest\Dtos.cs" />
+    <Compile Include="..\InteropClient\ErrorHandlingTest\IErrorHandlingTest.cs" Link="ErrorHandlingTest\IErrorHandlingTest.cs" />
+    <Compile Include="..\InteropClient\ListDataTypeTest\Client.cs" Link="ListDataTypeTest\Client.cs" />
+    <Compile Include="..\InteropClient\ListDataTypeTest\Dtos.cs" Link="ListDataTypeTest\Dtos.cs" />
+    <Compile Include="..\InteropClient\ListDataTypeTest\IListDataTypeTest.cs" Link="ListDataTypeTest\IListDataTypeTest.cs" />
+    <Compile Include="..\InteropClient\MetadataConsumerTest\Client.cs" Link="MetadataConsumerTest\Client.cs" />
+    <Compile Include="..\InteropClient\MetadataConsumerTest\Dtos.cs" Link="MetadataConsumerTest\Dtos.cs" />
+    <Compile Include="..\InteropClient\MetadataConsumerTest\IMetadataConsumerTest.cs" Link="MetadataConsumerTest\IMetadataConsumerTest.cs" />
+    <Compile Include="..\InteropClient\MetadataProvider\Client.cs" Link="MetadataProvider\Client.cs" />
+    <Compile Include="..\InteropClient\MetadataProvider\Dtos.cs" Link="MetadataProvider\Dtos.cs" />
+    <Compile Include="..\InteropClient\MetadataProvider\IMetadataProvider.cs" Link="MetadataProvider\IMetadataProvider.cs" />
+    <Compile Include="..\InteropClient\MetadataProvider\StringMetadataInterceptor.cs" Link="MetadataProvider\StringMetadataInterceptor.cs" />
+    <Compile Include="..\InteropClient\MetadataProvider\TwoIntegersMetadataInterceptor.cs" Link="MetadataProvider\TwoIntegersMetadataInterceptor.cs" />
+    <Compile Include="..\InteropClient\MultiClientTest\Client.cs" Link="MultiClientTest\Client.cs" />
+    <Compile Include="..\InteropClient\MultiClientTest\Dtos.cs" Link="MultiClientTest\Dtos.cs" />
+    <Compile Include="..\InteropClient\MultiClientTest\IMultiClientTest.cs" Link="MultiClientTest\IMultiClientTest.cs" />
+    <Compile Include="..\InteropClient\ObservableCommandTest\Client.cs" Link="ObservableCommandTest\Client.cs" />
+    <Compile Include="..\InteropClient\ObservableCommandTest\Dtos.cs" Link="ObservableCommandTest\Dtos.cs" />
+    <Compile Include="..\InteropClient\ObservableCommandTest\IObservableCommandTest.cs" Link="ObservableCommandTest\IObservableCommandTest.cs" />
+    <Compile Include="..\InteropClient\ObservablePropertyTest\Client.cs" Link="ObservablePropertyTest\Client.cs" />
+    <Compile Include="..\InteropClient\ObservablePropertyTest\Dtos.cs" Link="ObservablePropertyTest\Dtos.cs" />
+    <Compile Include="..\InteropClient\ObservablePropertyTest\IObservablePropertyTest.cs" Link="ObservablePropertyTest\IObservablePropertyTest.cs" />
+    <Compile Include="..\InteropClient\ParameterConstraintsTest\Client.cs" Link="ParameterConstraintsTest\Client.cs" />
+    <Compile Include="..\InteropClient\ParameterConstraintsTest\Dtos.cs" Link="ParameterConstraintsTest\Dtos.cs" />
+    <Compile Include="..\InteropClient\ParameterConstraintsTest\IParameterConstraintsTest.cs" Link="ParameterConstraintsTest\IParameterConstraintsTest.cs" />
+    <Compile Include="..\InteropClient\Program.cs" Link="Program.cs" />
+    <Compile Include="..\InteropClient\RecoverableErrorProvider\Client.cs" Link="RecoverableErrorProvider\Client.cs" />
+    <Compile Include="..\InteropClient\RecoverableErrorProvider\Dtos.cs" Link="RecoverableErrorProvider\Dtos.cs" />
+    <Compile Include="..\InteropClient\RecoverableErrorProvider\IRecoverableErrorProvider.cs" Link="RecoverableErrorProvider\IRecoverableErrorProvider.cs" />
+    <Compile Include="..\InteropClient\StructureDataTypeTest\Client.cs" Link="StructureDataTypeTest\Client.cs" />
+    <Compile Include="..\InteropClient\StructureDataTypeTest\Dtos.cs" Link="StructureDataTypeTest\Dtos.cs" />
+    <Compile Include="..\InteropClient\StructureDataTypeTest\IStructureDataTypeTest.cs" Link="StructureDataTypeTest\IStructureDataTypeTest.cs" />
+    <Compile Include="..\InteropClient\UnobservableCommandTest\Client.cs" Link="UnobservableCommandTest\Client.cs" />
+    <Compile Include="..\InteropClient\UnobservableCommandTest\Dtos.cs" Link="UnobservableCommandTest\Dtos.cs" />
+    <Compile Include="..\InteropClient\UnobservableCommandTest\IUnobservableCommandTest.cs" Link="UnobservableCommandTest\IUnobservableCommandTest.cs" />
+    <Compile Include="..\InteropClient\UnobservablePropertyTest\Client.cs" Link="UnobservablePropertyTest\Client.cs" />
+    <Compile Include="..\InteropClient\UnobservablePropertyTest\Dtos.cs" Link="UnobservablePropertyTest\Dtos.cs" />
+    <Compile Include="..\InteropClient\UnobservablePropertyTest\IUnobservablePropertyTest.cs" Link="UnobservablePropertyTest\IUnobservablePropertyTest.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="AnyTypeTest\" />
+    <Folder Include="AuthenticationTest\" />
+    <Folder Include="BasicDataTypesTest\" />
+    <Folder Include="BinaryTransferTest\" />
+    <Folder Include="CancellationTest\" />
+    <Folder Include="ErrorHandlingTest\" />
+    <Folder Include="ListDataTypeTest\" />
+    <Folder Include="MetadataConsumerTest\" />
+    <Folder Include="MetadataProvider\" />
+    <Folder Include="MultiClientTest\" />
+    <Folder Include="UnobservablePropertyTest\" />
+    <Folder Include="UnobservableCommandTest\" />
+    <Folder Include="StructureDataTypeTest\" />
+    <Folder Include="RecoverableErrorProvider\" />
+    <Folder Include="ParameterConstraintsTest\" />
+    <Folder Include="ObservablePropertyTest\" />
+    <Folder Include="ObservableCommandTest\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Annotations\Annotations.csproj" />
+    <ProjectReference Include="..\..\Client.Core\Client.NetCore.csproj" />
+    <ProjectReference Include="..\..\Contracts\Contracts.csproj" />
+    <ProjectReference Include="..\..\DynamicClient\DynamicClient.csproj" />
+    <ProjectReference Include="..\..\Framework.NetCore\Framework.NetCore.csproj" />
+    <ProjectReference Include="..\..\Framework\Framework.csproj" />
+  </ItemGroup>
+
+</Project>
