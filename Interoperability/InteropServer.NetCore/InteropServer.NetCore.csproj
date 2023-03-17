@@ -2,7 +2,7 @@
 
     <PropertyGroup>
         <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-        <TargetFramework>net6.0</TargetFramework>
+        <TargetFrameworks>net6.0;net7.0</TargetFrameworks>
         <RootNamespace>Tecan.Sila2.Interop.Server</RootNamespace>
         <AssemblyName>Tecan.Sila2.Interop.Server</AssemblyName>
         <OutputPath>..\..\Build\Interop\ServerNetCore</OutputPath>

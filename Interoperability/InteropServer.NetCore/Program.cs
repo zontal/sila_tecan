@@ -1,6 +1,3 @@
-using CommandLine;
-using DryIoc;
-using InteropServer.NetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.Extensions.DependencyInjection;
@@ -8,7 +5,7 @@ using Microsoft.Extensions.Hosting;
 using System;
 using Tecan.Sila2.Server;
 
-var serverInfo = ServerConfigReader.ReadServerStartInformation();
+var serverInfo = ServerConfigReader.ReadServerStartInformation(new [] {"-i", "127.0.0.1"});
 var serverId = Environment.GetEnvironmentVariable( "ServerID" );
 if(Guid.TryParse( serverId, out var serverUuid ))
 {

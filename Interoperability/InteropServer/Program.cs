@@ -23,6 +23,9 @@ namespace Tecan.Sila2.Interop.Server
                     {
                         parsedArgs.Port = port;
                     }
+                    
+                    parsedArgs.InterfaceFilter = "127.0.0.1";
+                    
                     return bootstrapper.StartServer( parsedArgs );
                 }, bootstrapper.HandleError ))
             {
