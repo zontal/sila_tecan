@@ -29,7 +29,7 @@ namespace Tecan.Sila2.Interop.Server
                     return bootstrapper.StartServer( parsedArgs );
                 }, bootstrapper.HandleError ))
             {
-                Console.ReadLine();
+                bootstrapper.RunUntilSigInt();
             }
         }
     }

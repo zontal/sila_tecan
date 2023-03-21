@@ -44,11 +44,9 @@ namespace Tecan.Sila2
             {
                 networkInterfaces = networkInterfaces.Where( nic => networkInterfaceFilter( nic ) );
             }
-            Console.WriteLine($"{networkInterfaces.Count()} interfaces where requireMulticast: {requireMulticast}");
             var unicastAddresses = networkInterfaces
                 .SelectMany(nic => nic.GetIPProperties().UnicastAddresses.Select(u => u.Address))
                 .Where(a => a.AddressFamily == AddressFamily.InterNetwork);
-            Console.WriteLine($"Found {unicastAddresses.Count()} matching unicast addresses");
             return unicastAddresses;
         }
 

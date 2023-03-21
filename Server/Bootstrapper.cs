@@ -6,6 +6,7 @@ using System.ComponentModel.Composition.Primitives;
 using System.IO;
 using System.Reflection;
 using System.Text;
+using System.Threading.Tasks;
 using CommandLine;
 using Common.Logging;
 using Common.Logging.Simple;
@@ -46,6 +47,29 @@ namespace Tecan.Sila2.Server
         public void RunUntilReadline()
         {
             Console.ReadLine();
+        }
+
+        /// <summary>
+        /// Runs the server until the process is terminated through SIGTERM
+        /// </summary>
+        public void RunUntilSigInt()
+        {
+            var tcs = new TaskCompletionSource<bool>();
+            var sigintReceived = false;
+            Console.CancelKeyPress += (_, ea) =>
+            {
+                ea.Cancel = true;
+                tcs.SetResult(true);
+                sigintReceived = true;
+            };
+            AppDomain.CurrentDomain.ProcessExit += (_, _) =>
+            {
+                if (!sigintReceived)
+                {
+                    tcs.SetResult(false);
+                }
+            };
+            tcs.Task.Wait();
         }
 
         /// <summary>
