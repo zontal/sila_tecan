@@ -50,7 +50,7 @@ namespace Tecan.Sila2
         /// <param name="networkFilter">A predicate that filters network interfaces to advertise on</param>
         public ServiceAnnouncer( string instanceName, ushort portNumber, Predicate<NetworkInterface> networkFilter )
         {
-            var selectedAddresses = Networking.ListInterNetworkAddresses( networkFilter );
+            var selectedAddresses = Networking.ListInterNetworkAddresses( networkFilter, true );
             Profile = new ServiceProfile( instanceName, DiscoveryConstants.ServiceName, portNumber, selectedAddresses );
             _multicastService = new MulticastService( Networking.CreateFilter( networkFilter ) );
         }

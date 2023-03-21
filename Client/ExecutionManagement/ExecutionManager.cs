@@ -56,7 +56,7 @@ namespace Tecan.Sila2.Client.ExecutionManagement
             var interceptions = new List<IClientRequestInterception>();
             foreach(var interceptor in interceptors)
             {
-                var intercept = interceptor.Intercept( _serverData, this, metadata );
+                var intercept = interceptor.Intercept( _serverData, commandIdentifier, this, metadata );
                 if(intercept != null)
                 {
                     interceptions.Add( intercept );

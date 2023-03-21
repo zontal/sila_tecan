@@ -39,6 +39,24 @@ namespace Tecan.Sila2
         /// <summary>
         /// Checks whether the given parameter is a valid identifier of the given type
         /// </summary>
+        /// <param name="parameters">The parameters</param>
+        /// <param name="identifierType">The type of identifier</param>
+        /// <param name="parameterName">The name of the parameter</param>
+        /// <exception cref="ArgumentOutOfRangeException">Thrown if an identifier type is passed that is not supported</exception>
+        public static void CheckParameters(IEnumerable<string> parameters, IdentifierType identifierType, string parameterName)
+        {
+            foreach (string parameter in parameters)
+            {
+                if (!IsValid(parameter, identifierType))
+                {
+                    throw new ArgumentException($"{parameter} is not a valid {identifierType}", parameterName);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Checks whether the given parameter is a valid identifier of the given type
+        /// </summary>
         /// <param name="parameter">The parameter</param>
         /// <param name="identifierType">The type of identifier</param>
         /// <returns>True, if the parameter is valid, otherwise False</returns>

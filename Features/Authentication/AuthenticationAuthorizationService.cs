@@ -104,6 +104,8 @@ namespace Tecan.Sila2
                 throw new AuthenticationFailedException( $"Cannot provide access token for server {server}. This server can only serve authentication requests for server {_silaService.Value.ServerName} ({_silaService.Value.ServerUUID})." );
             }
 
+            IdentifierConstraint.CheckParameters(requestedFeatures, IdentifierType.FeatureIdentifier, nameof(requestedFeatures));
+
             var user = _configurationProvider.Login( userIdentification, password );
             if(user == null)
             {
@@ -146,7 +148,7 @@ namespace Tecan.Sila2
         {
             if(accessToken == null || !_currentAuthorizations.TryGetValue( accessToken, out var token ) || token.Expiry < DateTime.Now)
             {
-                throw new InvalidAccessTokenException( $"The sent AccessToken is not valid anymore." );
+                throw new Tecan.Sila2.Authentication.InvalidAccessTokenException( $"The sent AccessToken is not valid anymore." );
             }
             _currentAuthorizations.TryRemove( accessToken, out _ );
         }

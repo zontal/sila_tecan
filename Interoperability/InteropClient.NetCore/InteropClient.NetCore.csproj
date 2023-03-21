@@ -20,6 +20,7 @@
     <Compile Include="..\InteropClient\AnyTypeTest\Client.cs" Link="AnyTypeTest\Client.cs" />
     <Compile Include="..\InteropClient\AnyTypeTest\Dtos.cs" Link="AnyTypeTest\Dtos.cs" />
     <Compile Include="..\InteropClient\AnyTypeTest\IAnyTypeTest.cs" Link="AnyTypeTest\IAnyTypeTest.cs" />
+    <Compile Include="..\InteropClient\AuthenticationTest\AuthenticationHandler.cs" Link="AuthenticationTest\AuthenticationHandler.cs" />
     <Compile Include="..\InteropClient\AuthenticationTest\Client.cs" Link="AuthenticationTest\Client.cs" />
     <Compile Include="..\InteropClient\AuthenticationTest\Dtos.cs" Link="AuthenticationTest\Dtos.cs" />
     <Compile Include="..\InteropClient\AuthenticationTest\IAuthenticationTest.cs" Link="AuthenticationTest\IAuthenticationTest.cs" />
@@ -99,6 +100,7 @@
     <ProjectReference Include="..\..\Client.Core\Client.NetCore.csproj" />
     <ProjectReference Include="..\..\Contracts\Contracts.csproj" />
     <ProjectReference Include="..\..\DynamicClient\DynamicClient.csproj" />
+    <ProjectReference Include="..\..\Features\Authentication.Client\Authentication.Client.csproj" />
     <ProjectReference Include="..\..\Framework.NetCore\Framework.NetCore.csproj" />
     <ProjectReference Include="..\..\Framework\Framework.csproj" />
   </ItemGroup>

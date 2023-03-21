@@ -21,7 +21,7 @@ namespace Tecan.Sila2.Locking
         public string MetadataIdentifier => "org.silastandard/core/LockController/v1/Metadata/LockIdentifier";
 
         /// <inheritdoc />
-        public IClientRequestInterception Intercept( ServerData server, IClientExecutionManager executionManager, IDictionary<string, byte[]> metadata )
+        public IClientRequestInterception Intercept( ServerData server, string interceptedCommand, IClientExecutionManager executionManager, IDictionary<string, byte[]> metadata )
         {
             if(!_serverLockData.TryGetValue( server, out var lockData ))
             {

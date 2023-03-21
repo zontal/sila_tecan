@@ -47,7 +47,14 @@ namespace Tecan.Sila2.Server.Binary
                         item.Value.stream.Dispose();
                     }
                     _openStreams.TryRemove( item.Key, out _ );
-                    _server.Delete( item.Key, false );
+                    try
+                    {
+                        _server.Delete(item.Key, false);
+                    }
+                    catch (InvalidBinaryTransferIdException)
+                    {
+                        // already deleted
+                    }
                 }
             }
         }

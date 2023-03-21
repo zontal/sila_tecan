@@ -61,6 +61,29 @@ namespace Tecan.Sila2.Interop.Client.AuthenticationTest.AuthenticationTest
             }
         }
         
+        /// <summary>
+        /// Requires an authorization token in order to be executed and to upload a binary parameter
+        /// </summary>
+        /// <param name="binaryToUpload">A binary that needs to be uploaded</param>
+        public virtual void RequiresTokenForBinaryUpload(System.IO.Stream binaryToUpload)
+        {
+            RequiresTokenForBinaryUploadRequestDto request = new RequiresTokenForBinaryUploadRequestDto(binaryToUpload, _executionManager.CreateBinaryStore("org.silastandard/test/AuthenticationTest/v1/Command/RequiresTokenForBinaryUpload/" +
+                        "Parameter/BinaryToUpload"));
+            request.Validate();
+            Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/AuthenticationTest/v1/Command/RequiresTokenForBinaryUpload");
+            try
+            {
+                _channel.ExecuteUnobservableCommand<RequiresTokenForBinaryUploadRequestDto>(_serviceName, "RequiresTokenForBinaryUpload", request, callInfo);
+                callInfo.FinishSuccessful();
+                return;
+            } catch (System.Exception ex)
+            {
+                System.Exception exception = _channel.ConvertException(ex);
+                callInfo.FinishWithErrors(exception);
+                throw exception;
+            }
+        }
+        
         private T Extract<T>(Tecan.Sila2.ISilaTransferObject<T> dto)
         
         {

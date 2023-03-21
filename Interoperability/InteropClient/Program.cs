@@ -8,10 +8,13 @@ using System.Threading;
 using System.Threading.Channels;
 using System.Threading.Tasks;
 using Grpc.Core;
+using Tecan.Sila2.Authentication;
 using Tecan.Sila2.Client;
 using Tecan.Sila2.Client.ExecutionManagement;
 using Tecan.Sila2.Discovery;
 using Tecan.Sila2.DynamicClient;
+using Tecan.Sila2.Interop.Client.AuthenticationTest;
+using Tecan.Sila2.Interop.Client.AuthenticationTest.AuthenticationTest;
 using Tecan.Sila2.Interop.Client.BinaryTransferTest;
 using Tecan.Sila2.Interop.Client.BinaryTransferTest.BinaryTransferTest;
 using Tecan.Sila2.Interop.Client.ErrorHandlingTest;
@@ -29,6 +32,7 @@ namespace Tecan.Sila2.Interop.Client
 {
     class Program
     {
+        private static IExecutionManagerFactory _executionManagerFactory;
         private readonly IClientExecutionManager _executionManager;
         private readonly IClientChannel _channel;
 
@@ -43,16 +47,17 @@ namespace Tecan.Sila2.Interop.Client
             var channel = new Grpc.Core.Channel( serverAddress, int.Parse( port ), ChannelCredentials.Insecure );
 #endif
 
-            var executionManagerFactory = new ExecutionManagerFactory(new IClientRequestInterceptor[]
+            _executionManagerFactory = new ExecutionManagerFactory(new IClientRequestInterceptor[]
             {
                 new StringMetadataInterceptor(),
                 new TwoIntegersMetadataInterceptor(),
-                new BinaryTestStringInterceptor()
+                new BinaryTestStringInterceptor(),
+                new AuthenticationInterceptor(new AuthenticationHandler(), null, new Lazy<IExecutionManagerFactory>(() => _executionManagerFactory))
             });
 
             var connector = new ServerConnector( new DiscoveryExecutionManager() );
             var server = connector.GetServerData( channel );
-            var executionManager = executionManagerFactory.CreateExecutionManager( server );
+            var executionManager = _executionManagerFactory.CreateExecutionManager( server );
 
             var program = new Program( server.Channel, executionManager );
             program.Run();
@@ -68,6 +73,7 @@ namespace Tecan.Sila2.Interop.Client
             RunTest(TestObservableProperty);
             RunTest(TestObservableCommand);
             RunTest( TestBinaryTransfer );
+            RunTest(TestAuthentication);
         }
 
         private void RunTest( Action test )
@@ -124,6 +130,18 @@ namespace Tecan.Sila2.Interop.Client
                 Console.Error.WriteLine( otherException.Message );
                 Environment.ExitCode = 1;
                 return default( T );
+            }
+        }
+
+        private void TestAuthentication()
+        {
+            var client = new AuthenticationTestClient(_channel, _executionManager);
+
+            using (new AuthenticationScope())
+            {
+                client.RequiresToken();
+                client.RequiresTokenForBinaryUpload(CreateStream("abc"));
+                client.RequiresTokenForBinaryUpload(CreateStream(Repeat("abc", 1_000_000)));
             }
         }
 

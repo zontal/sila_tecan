@@ -66,4 +66,76 @@ namespace Tecan.Sila2.Interop.Server.AuthenticationTest
             return null;
         }
     }
+    
+    /// <summary>
+    /// Data transfer object for the request of the Requires Token For Binary Upload command
+    /// </summary>
+    [ProtoBuf.ProtoContractAttribute()]
+    public class RequiresTokenForBinaryUploadRequestDto : Tecan.Sila2.ISilaTransferObject, Tecan.Sila2.ISilaRequestObject
+    {
+        
+        private Tecan.Sila2.BinaryDto _binaryToUpload;
+        
+        /// <summary>
+        /// Create a new instance
+        /// </summary>
+        public RequiresTokenForBinaryUploadRequestDto()
+        {
+        }
+        
+        /// <summary>
+        /// Create a new instance
+        /// </summary>
+        /// <param name="store">An object to organize binaries.</param>
+        /// <param name="binaryToUpload">A binary that needs to be uploaded</param>
+        public RequiresTokenForBinaryUploadRequestDto(System.IO.Stream binaryToUpload, Tecan.Sila2.IBinaryStore store)
+        {
+            BinaryToUpload = new Tecan.Sila2.BinaryDto(binaryToUpload, store);
+        }
+        
+        /// <summary>
+        /// A binary that needs to be uploaded
+        /// </summary>
+        [ProtoBuf.ProtoMemberAttribute(1)]
+        public Tecan.Sila2.BinaryDto BinaryToUpload
+        {
+            get
+            {
+                return _binaryToUpload;
+            }
+            set
+            {
+                _binaryToUpload = value;
+            }
+        }
+        
+        /// <summary>
+        /// Gets the command identifier for this command
+        /// </summary>
+        /// <returns>The fully qualified command identifier</returns>
+        public string CommandIdentifier
+        {
+            get
+            {
+                return "org.silastandard/test/AuthenticationTest/v1/Command/RequiresTokenForBinaryUpload";
+            }
+        }
+        
+        /// <summary>
+        /// Validates the given request object
+        /// </summary>
+        public void Validate()
+        {
+            Argument.Validate(BinaryToUpload, "binaryToUpload");
+        }
+        
+        /// <summary>
+        /// Validates the contents of this transfer object
+        /// </summary>
+        /// <returns>A validation error or null, if no validation error occurred.</returns>
+        public string GetValidationErrors()
+        {
+            return ("" + Argument.Require(BinaryToUpload, "binaryToUpload"));
+        }
+    }
 }

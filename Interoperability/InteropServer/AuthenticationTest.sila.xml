@@ -12,4 +12,18 @@
     <Description>Requires an authorization token in order to be executed</Description>
     <Observable>No</Observable>
   </Command>
+  <Command>
+	<Identifier>RequiresTokenForBinaryUpload</Identifier>
+	<DisplayName>Requires Token For Binary Upload</DisplayName>
+	<Description>Requires an authorization token in order to be executed and to upload a binary parameter</Description>
+	<Observable>No</Observable>
+	<Parameter>
+	  <Identifier>BinaryToUpload</Identifier>
+	  <DisplayName>Binary To Upload</DisplayName>
+	  <Description>A binary that needs to be uploaded</Description>
+		<DataType>
+		<Basic>Binary</Basic>
+		</DataType>
+	</Parameter>
+  </Command>
 </Feature>

@@ -25,6 +25,7 @@ builder.Host.UseDryIoc( container =>
      container.AddSila2Defaults();
  } );
 builder.Services.AddRazorPages();
+
 builder.Services.AddSila2( serverInfo, opt => opt.IgnoreUnknownServices = true );
 
 builder.WebHost.ConfigureKestrelForSila2( serverInfo, options =>
@@ -34,6 +35,7 @@ builder.WebHost.ConfigureKestrelForSila2( serverInfo, options =>
  } );
 
 var app = builder.Build();
+app.Services.InitializeLogging();
 
 // Configure the HTTP request pipeline.
 if(!app.Environment.IsDevelopment())

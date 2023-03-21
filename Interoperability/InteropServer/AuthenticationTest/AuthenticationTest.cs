@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
+using System.IO;
 using System.Text;
 
 namespace Tecan.Sila2.Interop.Server.AuthenticationTest
@@ -11,7 +12,10 @@ namespace Tecan.Sila2.Interop.Server.AuthenticationTest
     {
         public void RequiresToken()
         {
-            throw new NotImplementedException();
+        }
+
+        public void RequiresTokenForBinaryUpload(Stream binaryToUpload)
+        {
         }
     }
 }

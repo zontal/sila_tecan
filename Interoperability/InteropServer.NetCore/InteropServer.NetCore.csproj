@@ -14,6 +14,7 @@
         <Compile Include="..\InteropServer\AnyTypeTest\Dtos.cs" Link="AnyTypeTest\Dtos.cs" />
         <Compile Include="..\InteropServer\AnyTypeTest\Interface.cs" Link="AnyTypeTest\Interface.cs" />
         <Compile Include="..\InteropServer\AnyTypeTest\Provider.cs" Link="AnyTypeTest\Provider.cs" />
+        <Compile Include="..\InteropServer\AuthenticationTest\AuthenticationProvider.cs" Link="AuthenticationTest\AuthenticationProvider.cs" />
         <Compile Include="..\InteropServer\AuthenticationTest\AuthenticationTest.cs" Link="AuthenticationTest\AuthenticationTest.cs" />
         <Compile Include="..\InteropServer\AuthenticationTest\Dtos.cs" Link="AuthenticationTest\Dtos.cs" />
         <Compile Include="..\InteropServer\AuthenticationTest\Interface.cs" Link="AuthenticationTest\Interface.cs" />
@@ -25,6 +26,7 @@
         <Compile Include="..\InteropServer\BinaryTransferTest\BinaryTransferTest.cs" Link="BinaryTransferTest\BinaryTransferTest.cs" />
         <Compile Include="..\InteropServer\BinaryTransferTest\Dtos.cs" Link="BinaryTransferTest\Dtos.cs" />
         <Compile Include="..\InteropServer\BinaryTransferTest\Interface.cs" Link="BinaryTransferTest\Interface.cs" />
+        <Compile Include="..\InteropServer\BinaryTransferTest\Interface.Extension.cs" Link="BinaryTransferTest\Interface.Extension.cs" />
         <Compile Include="..\InteropServer\BinaryTransferTest\Provider.cs" Link="BinaryTransferTest\Provider.cs" />
         <Compile Include="..\InteropServer\CancellationTest\CancellationTest.cs" Link="CancellationTest\CancellationTest.cs" />
         <Compile Include="..\InteropServer\CancellationTest\Dtos.cs" Link="CancellationTest\Dtos.cs" />
@@ -112,6 +114,7 @@
 
     <ItemGroup>
         <ProjectReference Include="..\..\DynamicClient\DynamicClient.csproj" />
+        <ProjectReference Include="..\..\Features\Authentication\Authentication.csproj" />
         <ProjectReference Include="..\..\Features\Recovery\Recovery.csproj" />
         <ProjectReference Include="..\..\Server.DryIoC\Server.DryIoC.csproj" />
     </ItemGroup>

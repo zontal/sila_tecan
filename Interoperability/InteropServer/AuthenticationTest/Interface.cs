@@ -25,5 +25,11 @@ namespace Tecan.Sila2.Interop.Server.AuthenticationTest
         /// Requires an authorization token in order to be executed
         /// </summary>
         void RequiresToken();
+        
+        /// <summary>
+        /// Requires an authorization token in order to be executed and to upload a binary parameter
+        /// </summary>
+        /// <param name="binaryToUpload">A binary that needs to be uploaded</param>
+        void RequiresTokenForBinaryUpload(System.IO.Stream binaryToUpload);
     }
 }

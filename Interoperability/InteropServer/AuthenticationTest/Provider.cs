@@ -62,6 +62,9 @@ namespace Tecan.Sila2.Interop.Server.AuthenticationTest
         public void Register(IServerBuilder registration)
         {
             registration.RegisterUnobservableCommand<RequiresTokenRequestDto, EmptyRequest>("RequiresToken", RequiresToken);
+            registration.RegisterUnobservableCommand<RequiresTokenForBinaryUploadRequestDto, EmptyRequest>("RequiresTokenForBinaryUpload", RequiresTokenForBinaryUpload);
+            registration.RegisterBinaryCommandParameter("org.silastandard/test/AuthenticationTest/v1/Command/RequiresTokenForBinaryUpload/" +
+                    "Parameter/BinaryToUpload");
         }
         
         /// <summary>
@@ -77,6 +80,30 @@ namespace Tecan.Sila2.Interop.Server.AuthenticationTest
         }
         
         /// <summary>
+        /// Executes the Requires Token For Binary Upload command
+        /// </summary>
+        /// <param name="request">A data transfer object that contains the command parameters</param>
+        /// <returns>The command response wrapped in a data transfer object</returns>
+        protected virtual EmptyRequest RequiresTokenForBinaryUpload(RequiresTokenForBinaryUploadRequestDto request)
+        {
+            try
+            {
+                request.Validate();
+                _implementation.RequiresTokenForBinaryUpload(request.BinaryToUpload.TryExtract(_server, "org.silastandard/test/AuthenticationTest/v1/Command/RequiresTokenForBinaryUpload/" +
+                            "Parameter/BinaryToUpload"));
+                return EmptyRequest.Instance;
+            } catch (System.ArgumentException ex)
+            {
+                if ((ex.ParamName == "binaryToUpload"))
+                {
+                    throw _server.ErrorHandling.CreateValidationError("org.silastandard/test/AuthenticationTest/v1/Command/RequiresTokenForBinaryUpload/" +
+                            "Parameter/BinaryToUpload", ex.Message);
+                }
+                throw _server.ErrorHandling.CreateUnknownValidationError(ex);
+            }
+        }
+        
+        /// <summary>
         /// Gets the command with the given identifier
         /// </summary>
         /// <param name="commandIdentifier">A fully qualified command identifier</param>
@@ -86,6 +113,10 @@ namespace Tecan.Sila2.Interop.Server.AuthenticationTest
             if ((commandIdentifier == "org.silastandard/test/AuthenticationTest/v1/Command/RequiresToken"))
             {
                 return typeof(IAuthenticationTest).GetMethod("RequiresToken");
+            }
+            if ((commandIdentifier == "org.silastandard/test/AuthenticationTest/v1/Command/RequiresTokenForBinaryUpload"))
+            {
+                return typeof(IAuthenticationTest).GetMethod("RequiresTokenForBinaryUpload");
             }
             return null;
         }

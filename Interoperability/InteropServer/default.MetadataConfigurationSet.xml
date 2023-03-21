@@ -14,6 +14,7 @@
     <MetadataConfiguration Identifier="org.silastandard/core/AuthorizationService/v1/Metadata/AccessToken">
       <Affected>
         <string>org.silastandard/test/AuthenticationTest/v1/Command/RequiresToken</string>
+		<string>org.silastandard/test/AuthenticationTest/v1/Command/RequiresTokenForBinaryUpload</string>
       </Affected>
     </MetadataConfiguration>
     <MetadataConfiguration Identifier="org.silastandard/test/BinaryTransferTest/v1/Metadata/String">

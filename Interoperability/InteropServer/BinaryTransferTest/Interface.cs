@@ -8,8 +8,6 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-using Tecan.Sila2.Server;
-
 namespace Tecan.Sila2.Interop.Server.BinaryTransferTest
 {
     
@@ -108,8 +106,5 @@ namespace Tecan.Sila2.Interop.Server.BinaryTransferTest
         /// <returns>The received binary, The received String Metadata</returns>
         [return: Tecan.Sila2.InlineStructAttribute()]
         EchoBinaryAndMetadataStringResponse EchoBinaryAndMetadataString(System.IO.Stream binary);
-
-        [MetadataType(typeof(string))]
-        IRequestInterceptor String { get; }
     }
 }

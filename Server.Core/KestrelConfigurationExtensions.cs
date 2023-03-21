@@ -40,7 +40,7 @@ namespace Tecan.Sila2.Server
                  var port = (serverStartInfo?.Port).GetValueOrDefault( ServerStartInformation.DefaultPort );
                  if(serverStartInfo?.NetworkInterfaces != null)
                  {
-                     foreach(var net in Networking.ListInterNetworkAddresses( Networking.CreateNetworkInterfaceFilter( serverStartInfo.NetworkInterfaces ) ))
+                     foreach(var net in Networking.ListInterNetworkAddresses( Networking.CreateNetworkInterfaceFilter( serverStartInfo.NetworkInterfaces ), false ))
                      {
                          options.Listen( net, port, connectionOptions );
                      }

@@ -16,9 +16,10 @@ namespace Tecan.Sila2.Client
         /// Intercepts a call to the given server with the given metadata, filling metadata for a given call
         /// </summary>
         /// <param name="server">The server that should be connected</param>
+        /// <param name="interceptedCommand">The fully qualified identifier of the intercepted command</param>
         /// <param name="executionManager">The execution manager that handles the calls to this server</param>
         /// <param name="metadata">The metadata that should be filled</param>
         /// <returns></returns>
-        IClientRequestInterception Intercept( ServerData server, IClientExecutionManager executionManager, IDictionary<string, byte[]> metadata );
+        IClientRequestInterception Intercept( ServerData server, string interceptedCommand, IClientExecutionManager executionManager, IDictionary<string, byte[]> metadata );
     }
 }

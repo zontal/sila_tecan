@@ -22,15 +22,34 @@ namespace Tecan.Sila2
         /// </summary>
         /// <param name="networkInterfaceFilter">A filter of network interfaces to inspect</param>
         /// <returns>list of InterNetwork Unicast IP v4 addresses</returns>
-        public static IEnumerable<IPAddress> ListInterNetworkAddresses( Predicate<NetworkInterface> networkInterfaceFilter )
+        public static IEnumerable<IPAddress> ListInterNetworkAddresses(Predicate<NetworkInterface> networkInterfaceFilter)
+        {
+            return ListInterNetworkAddresses(networkInterfaceFilter, true);
+        }
+
+        /// <summary>
+        /// Enumerates the InterNetwork Unicast addresses for a given network interface.
+        /// </summary>
+        /// <param name="networkInterfaceFilter">A filter of network interfaces to inspect</param>
+        /// <param name="requireMulticast">True, if only multicast network addresses are to be used, otherwise False</param>
+        /// <returns>list of InterNetwork Unicast IP v4 addresses</returns>
+        public static IEnumerable<IPAddress> ListInterNetworkAddresses( Predicate<NetworkInterface> networkInterfaceFilter, bool requireMulticast )
         {
             IEnumerable<NetworkInterface> networkInterfaces = NetworkInterface.GetAllNetworkInterfaces();
+            if (requireMulticast)
+            {
+                networkInterfaces = networkInterfaces.Where(nic => nic.SupportsMulticast);
+            }
             if(networkInterfaceFilter != null)
             {
                 networkInterfaces = networkInterfaces.Where( nic => networkInterfaceFilter( nic ) );
             }
-            var unicastAddresses = networkInterfaces.SelectMany( nic => nic.GetIPProperties().UnicastAddresses.Select( u => u.Address ) );
-            return unicastAddresses.Where( a => a.AddressFamily == AddressFamily.InterNetwork );
+            Console.WriteLine($"{networkInterfaces.Count()} interfaces where requireMulticast: {requireMulticast}");
+            var unicastAddresses = networkInterfaces
+                .SelectMany(nic => nic.GetIPProperties().UnicastAddresses.Select(u => u.Address))
+                .Where(a => a.AddressFamily == AddressFamily.InterNetwork);
+            Console.WriteLine($"Found {unicastAddresses.Count()} matching unicast addresses");
+            return unicastAddresses;
         }
 
 
@@ -44,7 +63,7 @@ namespace Tecan.Sila2
         {
             if(string.IsNullOrEmpty( filterString ) || filterString == "*")
             {
-                return nic => nic.OperationalStatus == OperationalStatus.Up && nic.SupportsMulticast;
+                return nic => nic.OperationalStatus == OperationalStatus.Up;
             }
 
             var parts = new List<NetworkInterfaceFilter>();
@@ -71,7 +90,7 @@ namespace Tecan.Sila2
 
         private static bool CheckOperationalStatus( NetworkInterface nic )
         {
-            if(nic.OperationalStatus != OperationalStatus.Up || !nic.SupportsMulticast)
+            if(nic.OperationalStatus != OperationalStatus.Up)
             {
                 _loggingChannel.Warn( $"Network {nic.Name} matches the filter criteria but is {nic.OperationalStatus}." );
                 return false;
