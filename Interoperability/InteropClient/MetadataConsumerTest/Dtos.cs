@@ -289,4 +289,72 @@ namespace Tecan.Sila2.Interop.Client.MetadataConsumerTest.MetadataConsumerTest
                         + Argument.Require(SecondReceivedInteger, "secondReceivedInteger"));
         }
     }
+    
+    /// <summary>
+    /// Data transfer object to encapsulate the response of the Received String Metadata As Characters property
+    /// </summary>
+    [ProtoBuf.ProtoContractAttribute()]
+    public class ReceivedStringMetadataAsCharactersResponseDto : Tecan.Sila2.ISilaTransferObject
+    {
+        
+        private Tecan.Sila2.StringDto _value;
+        
+        /// <summary>
+        /// Create a new instance
+        /// </summary>
+        public ReceivedStringMetadataAsCharactersResponseDto()
+        {
+        }
+        
+        /// <summary>
+        /// Create a new instance
+        /// </summary>
+        /// <param name="store">An object to organize binaries.</param>
+        public ReceivedStringMetadataAsCharactersResponseDto(string value, Tecan.Sila2.IBinaryStore store)
+        {
+            Value = new Tecan.Sila2.StringDto(value, store);
+        }
+        
+        /// <summary>
+        /// The  property
+        /// </summary>
+        [ProtoBuf.ProtoMemberAttribute(1)]
+        public Tecan.Sila2.StringDto Value
+        {
+            get
+            {
+                return _value;
+            }
+            set
+            {
+                _value = value;
+            }
+        }
+        
+        /// <summary>
+        /// Validates the given request object
+        /// </summary>
+        public void Validate()
+        {
+            Argument.Validate(Value, "value");
+            if ((Value.Value.Length != 1))
+            {
+                throw new ArgumentException(string.Format("Value has length {0} but should have been 1", Value.Value.Length), "value");
+            }
+        }
+        
+        /// <summary>
+        /// Validates the contents of this transfer object
+        /// </summary>
+        /// <returns>A validation error or null, if no validation error occurred.</returns>
+        public string GetValidationErrors()
+        {
+            string errors = ("" + Argument.Require(Value, "value"));
+            if ((Value.Value.Length != 1))
+            {
+                errors = (errors + string.Format("Value has length {0} but should have been 1", Value.Value.Length));
+            }
+            return errors;
+        }
+    }
 }

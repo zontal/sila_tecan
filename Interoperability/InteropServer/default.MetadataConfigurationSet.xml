@@ -1,11 +1,6 @@
 <?xml version="1.0"?>
 <MetadataConfigurationSet xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Configurations>
-    <MetadataConfiguration Identifier="org.silastandard/test/MetadataProviderTest/v1/Metadata/StringMetadata">
-      <Affected>
-        <string>org.silastandard/test/MetadataConsumerTest/v1</string>
-      </Affected>
-    </MetadataConfiguration>
     <MetadataConfiguration Identifier="org.silastandard/test/MetadataProviderTest/v1/Metadata/TwoIntegersMetadata">
       <Affected>
         <string>org.silastandard/test/MetadataConsumerTest/v1/Command/UnpackMetadata</string>
@@ -24,8 +19,7 @@
     </MetadataConfiguration>
     <MetadataConfiguration Identifier="org.silastandard/test/MetadataProvider/v1/Metadata/StringMetadata">
       <Affected>
-        <string>org.silastandard/test/MetadataConsumerTest/v1/Command/EchoStringMetadata</string>
-        <string>org.silastandard/test/MetadataConsumerTest/v1/Command/UnpackMetadata</string>
+		  <string>org.silastandard/test/MetadataConsumerTest/v1</string>
       </Affected>
     </MetadataConfiguration>
     <MetadataConfiguration Identifier="org.silastandard/test/MetadataProvider/v1/Metadata/TwoIntegersMetadata">

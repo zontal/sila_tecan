@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Text;
+using System.Threading;
 using Tecan.Sila2.Server;
 
 namespace Tecan.Sila2.Interop.Server.MetadataProvider
@@ -11,20 +12,19 @@ namespace Tecan.Sila2.Interop.Server.MetadataProvider
     [PartCreationPolicy( CreationPolicy.Shared )]
     internal class StringMetadataProvider : StringMetadataInterceptorBase
     {
-        [ThreadStatic]
-        private static string _value;
+        private static AsyncLocal<string> _value = new AsyncLocal<string>();
 
-        public static string Value => _value;
+        public static string Value { get => _value.Value; set => _value.Value = value; }
 
         public override bool AppliesToCommands => true;
 
-        public override bool AppliesToProperties => false;
+        public override bool AppliesToProperties => true;
 
         public override int Priority => 0;
 
         public override IRequestInterception Intercept( string commandIdentifier, string stringMetadata )
         {
-            _value = stringMetadata;
+            _value.Value = stringMetadata;
             return null;
         }
 

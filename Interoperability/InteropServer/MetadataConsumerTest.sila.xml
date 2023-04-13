@@ -50,4 +50,29 @@
       </DataType>
     </Response>
   </Command>
+	<Property>
+		<Identifier>ReceivedStringMetadata</Identifier>
+		<DisplayName>Received String Metadata</DisplayName>
+		<Description>Expects the "String Metadata" metadata from the "Metadata Provider" feature and returns the metadata value.</Description>
+		<Observable>No</Observable>
+		<DataType>
+			<Basic>String</Basic>
+		</DataType>
+	</Property>
+	<Property>
+		<Identifier>ReceivedStringMetadataAsCharacters</Identifier>
+		<DisplayName>Received String Metadata As Characters</DisplayName>
+		<Description>Expects the "String Metadata" metadata from the "Metadata Provider" feature and returns all characters of its string value as separate responses.</Description>
+		<Observable>Yes</Observable>
+		<DataType>
+			<Constrained>
+				<DataType>
+					<Basic>String</Basic>
+				</DataType>
+				<Constraints>
+					<Length>1</Length>
+				</Constraints>
+			</Constrained>
+		</DataType>
+	</Property>
 </Feature>

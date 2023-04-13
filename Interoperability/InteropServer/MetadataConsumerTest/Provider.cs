@@ -63,6 +63,8 @@ namespace Tecan.Sila2.Interop.Server.MetadataConsumerTest
         {
             registration.RegisterUnobservableCommand<EchoStringMetadataRequestDto, EchoStringMetadataResponseDto>("EchoStringMetadata", EchoStringMetadata);
             registration.RegisterUnobservableCommand<UnpackMetadataRequestDto, UnpackMetadataResponseDto>("UnpackMetadata", UnpackMetadata);
+            registration.RegisterUnobservableProperty("ReceivedStringMetadata", GetReceivedStringMetadata);
+            registration.RegisterObservableProperty("ReceivedStringMetadataAsCharacters", GetReceivedStringMetadataAsCharacters, _implementation);
         }
         
         /// <summary>
@@ -85,6 +87,24 @@ namespace Tecan.Sila2.Interop.Server.MetadataConsumerTest
         {
             request.Validate();
             return new UnpackMetadataResponseDto(_implementation.UnpackMetadata(), _server);
+        }
+        
+        /// <summary>
+        /// Gets the current value of the Received String Metadata property
+        /// </summary>
+        /// <returns>The current value wrapped in a data transfer object</returns>
+        protected virtual PropertyResponse<Tecan.Sila2.StringDto> GetReceivedStringMetadata()
+        {
+            return new PropertyResponse<Tecan.Sila2.StringDto>(new Tecan.Sila2.StringDto(_implementation.ReceivedStringMetadata, _server));
+        }
+        
+        /// <summary>
+        /// Gets the current value of the Received String Metadata As Characters property
+        /// </summary>
+        /// <returns>The current value wrapped in a data transfer object</returns>
+        protected virtual ReceivedStringMetadataAsCharactersResponseDto GetReceivedStringMetadataAsCharacters()
+        {
+            return new ReceivedStringMetadataAsCharactersResponseDto(_implementation.ReceivedStringMetadataAsCharacters, _server);
         }
         
         /// <summary>
@@ -112,6 +132,15 @@ namespace Tecan.Sila2.Interop.Server.MetadataConsumerTest
         /// <returns>A property object or null, if the property is not supported</returns>
         public System.Reflection.PropertyInfo GetProperty(string propertyIdentifier)
         {
+            if ((propertyIdentifier == "org.silastandard/test/MetadataConsumerTest/v1/Property/ReceivedStringMetadata"))
+            {
+                return typeof(IMetadataConsumerTest).GetProperty("ReceivedStringMetadata");
+            }
+            if ((propertyIdentifier == "org.silastandard/test/MetadataConsumerTest/v1/Property/ReceivedStringMetadataAsCh" +
+                "aracters"))
+            {
+                return typeof(IMetadataConsumerTest).GetProperty("ReceivedStringMetadataAsCharacters");
+            }
             return null;
         }
     }

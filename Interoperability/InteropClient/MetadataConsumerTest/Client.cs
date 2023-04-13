@@ -20,8 +20,16 @@ namespace Tecan.Sila2.Interop.Client.MetadataConsumerTest.MetadataConsumerTest
     /// <summary>
     /// Class that implements the IMetadataConsumerTest interface through SiLA2
     /// </summary>
-    public partial class MetadataConsumerTestClient : IMetadataConsumerTest
+    public partial class MetadataConsumerTestClient : IMetadataConsumerTest, System.ComponentModel.INotifyPropertyChanged, System.IDisposable
     {
+        
+        private System.Lazy<string> _receivedStringMetadata;
+        
+        private string _receivedStringMetadataAsCharacters;
+        
+        private System.Threading.Tasks.Task _receivedStringMetadataAsCharactersUpdateTask;
+        
+        private System.Threading.CancellationTokenSource _cancellationTokenSource = new System.Threading.CancellationTokenSource();
         
         private IClientExecutionManager _executionManager;
         
@@ -38,6 +46,94 @@ namespace Tecan.Sila2.Interop.Client.MetadataConsumerTest.MetadataConsumerTest
         {
             _executionManager = executionManager;
             _channel = channel;
+            InitLazyRequests();
+        }
+        
+        /// <summary>
+        /// Expects the "String Metadata" metadata from the "Metadata Provider" feature and returns the metadata value.
+        /// </summary>
+        public virtual string ReceivedStringMetadata
+        {
+            get
+            {
+                return _receivedStringMetadata.Value;
+            }
+        }
+        
+        /// <summary>
+        /// Expects the "String Metadata" metadata from the "Metadata Provider" feature and returns all characters of its string value as separate responses.
+        /// </summary>
+        public virtual string ReceivedStringMetadataAsCharacters
+        {
+            get
+            {
+                if ((_receivedStringMetadataAsCharactersUpdateTask == null))
+                {
+                    try
+                    {
+                        System.Threading.Monitor.Enter(_cancellationTokenSource);
+                        if ((_receivedStringMetadataAsCharactersUpdateTask == null))
+                        {
+                            _receivedStringMetadataAsCharactersUpdateTask = _channel.SubscribeProperty<ReceivedStringMetadataAsCharactersResponseDto>(_serviceName, "ReceivedStringMetadataAsCharacters", "org.silastandard/test/MetadataConsumerTest/v1/Property/ReceivedStringMetadataAsCh" +
+                                    "aracters", ReceiveNewReceivedStringMetadataAsCharacters, _executionManager.CreateCallOptions("org.silastandard/test/MetadataConsumerTest/v1/Property/ReceivedStringMetadataAsCh" +
+                                        "aracters"), _cancellationTokenSource.Token);
+                        }
+                    } finally
+                    {
+                        System.Threading.Monitor.Exit(_cancellationTokenSource);
+                    }
+                }
+                return _receivedStringMetadataAsCharacters;
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        private string RequestReceivedStringMetadata()
+        {
+            Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/MetadataConsumerTest/v1/Property/ReceivedStringMetadata");
+            try
+            {
+                string response = _channel.ReadProperty<PropertyResponse<Tecan.Sila2.StringDto>>(_serviceName, "ReceivedStringMetadata", "org.silastandard/test/MetadataConsumerTest/v1/Property/ReceivedStringMetadata", callInfo).Value.Extract(_executionManager.DownloadBinaryStore);
+                callInfo.FinishSuccessful();
+                return response;
+            } catch (System.Exception ex)
+            {
+                System.Exception exception = _channel.ConvertException(ex);
+                callInfo.FinishWithErrors(exception);
+                throw exception;
+            }
+        }
+        
+        private void ReceiveNewReceivedStringMetadataAsCharacters(ReceivedStringMetadataAsCharactersResponseDto receivedStringMetadataAsCharacters)
+        {
+            string inner = receivedStringMetadataAsCharacters.Value.Extract(_executionManager.DownloadBinaryStore);
+            if ((_receivedStringMetadataAsCharacters != inner))
+            {
+                _receivedStringMetadataAsCharacters = inner;
+                System.ComponentModel.PropertyChangedEventHandler handler = PropertyChanged;
+                if ((handler != null))
+                {
+                    handler.Invoke(this, new System.ComponentModel.PropertyChangedEventArgs("ReceivedStringMetadataAsCharacters"));
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Disposes the current client and cancels all subscriptions
+        /// </summary>
+        public void Dispose()
+        {
+            _cancellationTokenSource.Cancel();
+            _cancellationTokenSource.Dispose();
+        }
+        
+        /// <summary>
+        /// Initializes lazies for non-observable properties.
+        /// </summary>
+        private void InitLazyRequests()
+        {
+            _receivedStringMetadata = new System.Lazy<string>(RequestReceivedStringMetadata);
         }
         
         /// <summary>

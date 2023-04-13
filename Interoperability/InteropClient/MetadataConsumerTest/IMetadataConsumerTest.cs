@@ -79,6 +79,23 @@ namespace Tecan.Sila2.Interop.Client.MetadataConsumerTest
     {
         
         /// <summary>
+        /// Expects the "String Metadata" metadata from the "Metadata Provider" feature and returns the metadata value.
+        /// </summary>
+        string ReceivedStringMetadata
+        {
+            get;
+        }
+        
+        /// <summary>
+        /// Expects the "String Metadata" metadata from the "Metadata Provider" feature and returns all characters of its string value as separate responses.
+        /// </summary>
+        [Tecan.Sila2.ObservableAttribute()]
+        string ReceivedStringMetadataAsCharacters
+        {
+            get;
+        }
+        
+        /// <summary>
         /// Expects the "String Metadata" metadata from the "Metadata Provider Test" feature and responds with its value.
         /// </summary>
         /// <returns>The received string metadata</returns>

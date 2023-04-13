@@ -1,15 +1,52 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.Composition;
+using System.Linq;
 using System.Text;
+using System.Threading.Channels;
+using System.Threading.Tasks;
 using Tecan.Sila2.Interop.Server.MetadataProvider;
 
 namespace Tecan.Sila2.Interop.Server.MetadataConsumerTest
 {
     [Export( typeof( IMetadataConsumerTest ) )]
     [PartCreationPolicy( CreationPolicy.Shared )]
-    internal class MetadataConsumerTest : IMetadataConsumerTest
+    internal class MetadataConsumerTest : IMetadataConsumerTest, INotifyPropertyChanged
     {
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private readonly Queue<char> _receivedStringMetadataChannel = new Queue<char>();
+
+        public string ReceivedStringMetadata => StringMetadataProvider.Value;
+
+        public string ReceivedStringMetadataAsCharacters
+        {
+            get
+            {
+                if (StringMetadataProvider.Value != null)
+                {
+                    foreach ( char c in StringMetadataProvider.Value )
+                    {
+                        _receivedStringMetadataChannel.Enqueue( c );
+                    }
+                    StringMetadataProvider.Value = null;
+                }
+                var returnVal = _receivedStringMetadataChannel.Dequeue();
+                if (_receivedStringMetadataChannel.Count > 0 )
+                {
+                    DelayedNotify();
+                }
+                return returnVal.ToString();
+            }
+        }
+
+        private async void DelayedNotify()
+        {
+            await Task.Delay(10);
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ReceivedStringMetadataAsCharacters)));
+        }
+
         [return: SilaIdentifier( "ReceivedStringMetadata" )]
         public string EchoStringMetadata()
         {
