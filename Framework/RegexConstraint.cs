@@ -14,6 +14,14 @@ namespace Tecan.Sila2
         private static readonly ConcurrentDictionary<string, Regex> _regexes = new ConcurrentDictionary<string, Regex>();
 
         /// <summary>
+        /// Determines whether the checks for regular expressions are enabled or not
+        /// </summary>
+        public static bool IsEnabled
+        {
+            get; set;
+        } = true;
+
+        /// <summary>
         /// Determines whether the given input string is a match for the given pattern
         /// </summary>
         /// <param name="input">The input provided by the user</param>
@@ -27,7 +35,7 @@ namespace Tecan.Sila2
                 throw new ArgumentNullException( nameof( pattern ) );
             }
 
-            if(input == null)
+            if(input == null || !IsEnabled)
             {
                 return false;
             }

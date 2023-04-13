@@ -16,6 +16,15 @@ namespace Tecan.Sila2
         private static ILog _loggingChannel = LogManager.GetLogger( typeof( SchemaConstraint ) );
 
         /// <summary>
+        /// Determines whether checks of schema constraints are enabled or not
+        /// </summary>
+        public static bool IsEnabled
+        {
+            get;
+            set;
+        } = true;
+
+        /// <summary>
         /// Checks the given parameter value whether it complies with the given schema
         /// </summary>
         /// <param name="parameter">The parameter value</param>
@@ -97,6 +106,12 @@ namespace Tecan.Sila2
         /// <returns>Null, if the schema constraint is satisfied, otherwise the first exception</returns>
         public static Exception IsValid( TextReader parameter, SchemaType schemaType, string schema )
         {
+            if (!IsEnabled)
+            {
+                _loggingChannel.Warn("Skipping schema constraint check because it is explicitly disabled.");
+                return null;
+            }
+
             if(schemaType != SchemaType.Xml)
             {
                 _loggingChannel.Warn( $"Validating schemas of type {schemaType} is not supported. Bypassing schema validation." );

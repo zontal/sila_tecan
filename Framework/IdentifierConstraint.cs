@@ -10,6 +10,11 @@ namespace Tecan.Sila2
     /// </summary>
     public static class IdentifierConstraint
     {
+        /// <summary>
+        /// Determines whether checks of identifier constraints are enabled
+        /// </summary>
+        public static bool IsEnabled { get; set; } = true;
+
         private static readonly Regex FeatureIdentifierRegex = new Regex( @"\w+(\.\w+)*\/(\w+(\.\w+)*\/)?\w+(\.\w+)*\/v\d+" );
         private static readonly Regex IdentifierRegex = new Regex( @"[A-Z][a-zA-Z0-9]*" );
         private const string CommandInfix = "/Command/";
@@ -63,6 +68,10 @@ namespace Tecan.Sila2
         /// <exception cref="ArgumentOutOfRangeException">Thrown if an identifier type is passed that is not supported</exception>
         public static bool IsValid( string parameter, IdentifierType identifierType )
         {
+            if (!IsEnabled)
+            {
+                return true;
+            }
             switch(identifierType)
             {
                 case IdentifierType.FeatureIdentifier:
