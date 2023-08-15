@@ -115,6 +115,7 @@
     <ItemGroup>
         <ProjectReference Include="..\..\DynamicClient\DynamicClient.csproj" />
         <ProjectReference Include="..\..\Features\Authentication\Authentication.csproj" />
+        <ProjectReference Include="..\..\Features\Cancellation\Cancellation.csproj" />
         <ProjectReference Include="..\..\Features\Recovery\Recovery.csproj" />
         <ProjectReference Include="..\..\Server.DryIoC\Server.DryIoC.csproj" />
     </ItemGroup>

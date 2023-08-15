@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Tecan.Sila2.Client;
 
 namespace Tecan.Sila2.Discovery
@@ -8,7 +9,7 @@ namespace Tecan.Sila2.Discovery
     /// Denotes an execution manager for discovery purposes
     /// </summary>
     /// <remarks>By the standard, the SiLA service must not require any metadata and also does not use any binaries.</remarks>
-    public class DiscoveryExecutionManager : IClientExecutionManager
+    public class DiscoveryExecutionManager : IClientExecutionManagerEx
     {
         /// <summary>
         /// Denotes an empty call info object that does not have any metadata
@@ -28,6 +29,12 @@ namespace Tecan.Sila2.Discovery
         public IBinaryStore CreateBinaryStore( string commandParameterIdentifier )
         {
             return null;
+        }
+
+        /// <inheritdoc />
+        public IEnumerable<string> GetRequiredMetadata(string commandIdentifier)
+        {
+            return Enumerable.Empty<string>();
         }
 
         private class EmptyCallInfo : IClientCallInfo
