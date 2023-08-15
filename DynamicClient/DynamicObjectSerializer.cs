@@ -45,7 +45,7 @@ namespace Tecan.Sila2.DynamicClient
             {
                 using(var reader = ProtoReader.Create( ms, null ))
                 {
-                    if(readFieldHeader && !(property.Type.Item is ListType))
+                    if(readFieldHeader && !(property.Type.Item is ListType || (property.Type.Item is ConstrainedType constrained && constrained.DataType.Item is ListType )))
                     {
                         reader.ReadFieldHeader();
                         var token = ProtoReader.StartSubItem( reader );
