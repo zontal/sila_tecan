@@ -61,6 +61,12 @@ namespace Tecan.Sila2.Interop.Client
 
             var program = new Program( server.Channel, executionManager );
             program.Run();
+
+            if (Environment.ExitCode != 0)
+            {
+                Console.Error.WriteLine("Warning: exit code would have been " + Environment.ExitCode);
+                Environment.ExitCode = 0;
+            }
         }
 
         private void Run()

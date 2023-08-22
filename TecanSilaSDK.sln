@@ -62,6 +62,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WorktableIntegration", "Fea
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{4FAAA323-D87E-4B6F-953D-A6C0D8E39CE6}"
 	ProjectSection(SolutionItems) = preProject
+		.gitlab-ci.yml = .gitlab-ci.yml
 		CommonAssemblyInfo.cs = CommonAssemblyInfo.cs
 		GenerateAll.bat = GenerateAll.bat
 		GenerateAll.sh = GenerateAll.sh
@@ -137,7 +138,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AnIML", "AnIML\AnIML.csproj
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DiscoveryTester", "Tests\DiscoveryTester\DiscoveryTester.csproj", "{A7E98C31-80CA-47C3-B854-AA910C17F59A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InteropClient.NetCore", "Interoperability\InteropClient.NetCore\InteropClient.NetCore.csproj", "{3878C493-269F-4C6F-8E2C-CFBDE63B71E7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InteropClient.NetCore", "Interoperability\InteropClient.NetCore\InteropClient.NetCore.csproj", "{3878C493-269F-4C6F-8E2C-CFBDE63B71E7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

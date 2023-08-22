@@ -72,14 +72,13 @@ interop_client_managed:
     - sleep 5
     - dotnet build Interoperability/InteropClient.NetCore/InteropClient.NetCore.csproj
     - cd Build/Interop/Client.NetCore/net7.0
-    - dotnet InteropClient.NetCore.dll > client.log 2>&1
+    - dotnet InteropClient.NetCore.dll
     - sleep 5
     - kill -INT $server_pid
     - wait $server_pid
   artifacts:
     when: always
     paths:
-      - client.log
       - managed_client7-test-report.xml
       - managed_client7-test-report.html
 
@@ -115,13 +114,12 @@ interop_client_unmanaged:
     - sleep 5
     - dotnet build Interoperability/InteropClient.NetCore/InteropClient.NetCore.csproj
     - cd Build/Interop/Client.NetCore/net7.0
-    - dotnet InteropClient.NetCore.dll > client.log 2>&1
+    - dotnet InteropClient.NetCore.dll
     - sleep 5
     - kill -INT $server_pid
     - wait $server_pid
   artifacts:
     when: always
     paths:
-      - client.log
       - unmanaged_client7-test-report.xml
       - unmanaged_client7-test-report.html
