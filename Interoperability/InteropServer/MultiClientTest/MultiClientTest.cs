@@ -1,6 +1,9 @@
-﻿using System;
+﻿using ProtoBuf.WellKnownTypes;
+using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
+using System.Diagnostics;
 using System.Text;
 using System.Threading;
 using System.Threading.Channels;
@@ -12,70 +15,130 @@ namespace Tecan.Sila2.Interop.Server.MultiClientTest
     [PartCreationPolicy( CreationPolicy.Shared )]
     internal class MultiClientTest : IMultiClientTest, IDisposable
     {
-        private object _parallelExceptionLock = new object();
 
         public IObservableCommand RejectParallelExecution( [Unit( "s", Second = 1 )] double duration )
         {
-            return ObservableCommands.Create( update => RejectParallelExecution( TimeSpan.FromSeconds( duration ), update ) );
+            return new RejectParallelExecutionCommand( TimeSpan.FromSeconds( duration / 2.0 ));
         }
 
-        private async Task RejectParallelExecution( TimeSpan duration, Action<double, TimeSpan, CommandState> update )
+        private class RejectParallelExecutionCommand : ObservableCommand
         {
-            if(Monitor.TryEnter( _parallelExceptionLock ))
+            private static bool _isAlreadyRunning;
+            private TimeSpan _duration;
+
+            public RejectParallelExecutionCommand( TimeSpan duration )
             {
-                update( 0, duration, CommandState.Running );
-                await Task.Delay( duration );
-                Monitor.Exit( _parallelExceptionLock );
+                _duration = duration;
             }
-            else
+
+            public override void Start()
             {
-                throw new CommandExecutionRejectedException();
+                Debug.WriteLine("Requested: " + DateTime.Now);
+                if (!_isAlreadyRunning)
+                {
+                    _isAlreadyRunning = true;
+                    base.Start();
+                }
+                else
+                {
+                    // we need to fail already when creating the task, not inside the task
+                    // otherwise the command is created successfully and "only" the result is an error
+                    throw new CommandExecutionRejectedException();
+                }
+            }
+
+            public override async Task Run()
+            {
+                PushStateUpdate(0, _duration, CommandState.Running);
+                await Task.Delay(_duration);
+                _isAlreadyRunning = false;
+                Debug.WriteLine("Released: " + DateTime.Now);
             }
         }
 
         public IObservableCommand RunInParallel( [Unit( "s", Second = 1 )] double duration )
         {
+            // default behaviour is to run in parallel
             return ObservableCommands.Create( () => Task.Delay( TimeSpan.FromSeconds( duration ) ) );
         }
 
-        private Channel<(double Duration, TaskCompletionSource<bool> CompletionSource)> _queue = Channel.CreateUnbounded<(double, TaskCompletionSource<bool>)>( new UnboundedChannelOptions
-        {
-            SingleReader = true,
-            SingleWriter = false
-        } );
-        private Thread _queueThread;
 
         public IObservableCommand RunQueued( [Unit( "s", Second = 1 )] double duration )
         {
-            return ObservableCommands.Create( () =>
+            return new QueueingCommand(TimeSpan.FromSeconds(duration));
+        }
+
+        private class QueueingCommand : ObservableCommand
+        {
+
+            private static ConcurrentQueue<QueueingCommand> _queue = new ConcurrentQueue<QueueingCommand>();
+            private static ManualResetEventSlim _waitEvent = new ManualResetEventSlim( false );
+            private static Thread _queueThread;
+
+            private TaskCompletionSource<bool> _taskCompletionSource = new TaskCompletionSource<bool>();
+            private TimeSpan _duration;
+
+            public QueueingCommand(TimeSpan duration)
             {
-                var tcs = new TaskCompletionSource<bool>();
-                _queue.Writer.WriteAsync( (duration, tcs) );
-                return tcs.Task;
-            } );
+                _duration = duration;
+
+                _queue.Enqueue( this );
+                _waitEvent.Set();
+            }
+
+            public override async Task Run()
+            {
+                if (_waitEvent.IsSet)
+                {
+                    PushStateUpdate(0, _duration, CommandState.NotStarted);
+                }
+                await _taskCompletionSource.Task;
+            }
+
+            public async Task RunCore()
+            {
+                PushStateUpdate(0, _duration, CommandState.Running );
+                await Task.Delay(_duration);
+                _taskCompletionSource.TrySetResult( true );
+            }
+
+            public static void StartQueue()
+            {
+                _queueThread = new Thread(ExecuteQueuedCommands);
+                _queueThread.Start();
+            }
+
+            public static void StopQueue()
+            {
+                _queue = null;
+            }
+
+            private static void ExecuteQueuedCommands()
+            {
+                ConcurrentQueue<QueueingCommand> queue;
+                while ((queue = _queue) != null)
+                {
+                    while (queue.IsEmpty)
+                    {
+                        _waitEvent.Wait();
+                    }
+                    if (queue.TryDequeue(out var task))
+                    {
+                        _waitEvent.Reset();
+                        task.RunCore().Wait();
+                    }
+                }
+            }
         }
 
         public void Dispose()
         {
-            _queue.Writer.Complete();
+            QueueingCommand.StopQueue();
         }
 
         public MultiClientTest()
         {
-            _queueThread = new Thread( ExecuteQueuedCommands );
-            _queueThread.Start();
-        }
-
-        private async void ExecuteQueuedCommands()
-        {
-            while(await _queue.Reader.WaitToReadAsync())
-            {
-                if(_queue.Reader.TryRead( out var task ))
-                {
-                    await Task.Delay( TimeSpan.FromSeconds( task.Duration ) );
-                    task.CompletionSource.SetResult( true );
-                }
-            }
+            QueueingCommand.StartQueue();
         }
     }
 }

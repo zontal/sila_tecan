@@ -136,6 +136,10 @@ namespace Tecan.Sila2.Server.ServiceDefinition
                 var executionId = _server.AddObservableCommandExecution( request.CommandIdentifier, _implementation?.Invoke( request ), new MetadataRepository( context ) );
                 return Task.FromResult( new CommandConfirmation( executionId ) );
             }
+            catch(CommandExecutionRejectedException)
+            {
+                throw ServerErrorHandling.CreateFrameworkError( FrameworkErrorType.CommandExecutionNotAccepted );
+            }
             catch(Exception ex)
             {
                 var convertedException = _errorConverter.Invoke( ex );

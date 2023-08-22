@@ -318,6 +318,18 @@ namespace Tecan.Sila2.Interop.Client
             Assert( "abc", response.ReceivedString );
             Assert( 123, response.FirstReceivedInteger );
             Assert( 456, response.SecondReceivedInteger );
+            Assert("abc", client.ReceivedStringMetadata);
+            var receivedTotal = string.Empty;
+            client.PropertyChanged += (o, e) =>
+            {
+                if (e.PropertyName == nameof(client.ReceivedStringMetadataAsCharacters))
+                {
+                    receivedTotal += client.ReceivedStringMetadataAsCharacters;
+                }
+            };
+            receivedTotal += client.ReceivedStringMetadataAsCharacters;
+            Thread.Sleep(1000);
+            Assert("abc", receivedTotal);
         }
 
         private void TestUnobservableProperty()
