@@ -34,6 +34,7 @@ namespace Tecan.Sila2.Interop.Server.MultiClientTest
             public override void Start()
             {
                 Debug.WriteLine("Requested: " + DateTime.Now);
+                // in a production scenario, it would probably be better to use Interlocked.CompareExchange for this
                 if (!_isAlreadyRunning)
                 {
                     _isAlreadyRunning = true;
