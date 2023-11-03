@@ -50,11 +50,14 @@ namespace Tecan.Sila2
         /// <exception cref="ArgumentOutOfRangeException">Thrown if an identifier type is passed that is not supported</exception>
         public static void CheckParameters(IEnumerable<string> parameters, IdentifierType identifierType, string parameterName)
         {
-            foreach (string parameter in parameters)
+            if (parameters != null)
             {
-                if (!IsValid(parameter, identifierType))
+                foreach (string parameter in parameters)
                 {
-                    throw new ArgumentException($"{parameter} is not a valid {identifierType}", parameterName);
+                    if (!IsValid(parameter, identifierType))
+                    {
+                        throw new ArgumentException($"{parameter} is not a valid {identifierType}", parameterName);
+                    }
                 }
             }
         }

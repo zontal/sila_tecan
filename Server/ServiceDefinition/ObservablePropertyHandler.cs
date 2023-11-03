@@ -49,13 +49,13 @@ namespace Tecan.Sila2.Server.ServiceDefinition
         private static async Task<int> SendValueAsync( IAsyncStreamWriter<T> responseStream, Func<T> factory, INotifyPropertyChanged changeSource, string clientPropertyName,
             CancellationToken cancellationToken )
         {
-            var semaphore = new SemaphoreSlim(0, 1 );
+            var channel = Channels.CreateIntermediateChannel<T>();
 
             void HandlePropertyChanged( object sender, PropertyChangedEventArgs e )
             {
                 if( e.PropertyName == clientPropertyName )
                 {
-                    semaphore.Release();
+                    channel.Writer.TryWrite(factory());
                 }
             }
 
@@ -67,7 +67,13 @@ namespace Tecan.Sila2.Server.ServiceDefinition
                 do
                 {
                     await responseStream.WriteAsync( factory() );
-                    await semaphore.WaitAsync( cancellationToken );
+                    if (await channel.Reader.WaitToReadAsync(cancellationToken))
+                    {
+                        if (channel.Reader.TryRead(out var update))
+                        {
+                            await responseStream.WriteAsync(update);
+                        }
+                    }
                 } while( !cancellationToken.IsCancellationRequested );
 
                 return 0;
