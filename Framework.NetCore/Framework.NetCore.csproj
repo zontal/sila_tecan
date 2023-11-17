@@ -2,7 +2,7 @@
 
     <PropertyGroup>
         <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <TargetFrameworks>netcoreapp3.1;net6.0</TargetFrameworks>
+    <TargetFrameworks>net6.0;net8.0</TargetFrameworks>
         <AssemblyName>Tecan.Sila2.NetCore</AssemblyName>
         <RootNamespace>Tecan.Sila2</RootNamespace>
     </PropertyGroup>

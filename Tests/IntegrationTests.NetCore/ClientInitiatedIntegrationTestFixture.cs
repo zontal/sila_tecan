@@ -21,7 +21,7 @@ namespace Tecan.Sila2.IntegrationTests
 #if NET6_0
                 Arguments = Path.Combine( dir, "net6.0", "TestServer.NetCore.dll" ) + " " + payloadArguments,
 #else
-                Arguments = Path.Combine( dir, "net7.0", "TestServer.NetCore.dll" ) + " " + payloadArguments,
+                Arguments = Path.Combine( dir, "net8.0", "TestServer.NetCore.dll" ) + " " + payloadArguments,
 #endif
                 CreateNoWindow = true,
                 ErrorDialog = false,

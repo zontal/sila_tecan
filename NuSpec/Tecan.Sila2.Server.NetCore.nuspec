@@ -19,12 +19,12 @@
         </dependencies>
     </metadata>
     <files>
-        <file src="..\Build\ManagedGrpc\netcoreapp3.1\Tecan.Sila2.Server.dll" target="lib\netcoreapp3.1\" />
-        <file src="..\Build\ManagedGrpc\netcoreapp3.1\Tecan.Sila2.Server.pdb" target="lib\netcoreapp3.1\" />
-        <file src="..\Build\ManagedGrpc\netcoreapp3.1\Tecan.Sila2.Server.xml" target="lib\netcoreapp3.1\" />
-
         <file src="..\Build\ManagedGrpc\net6.0\Tecan.Sila2.Server.dll" target="lib\net6.0\" />
         <file src="..\Build\ManagedGrpc\net6.0\Tecan.Sila2.Server.pdb" target="lib\net6.0\" />
         <file src="..\Build\ManagedGrpc\net6.0\Tecan.Sila2.Server.xml" target="lib\net6.0\" />
+
+		<file src="..\Build\ManagedGrpc\net8.0\Tecan.Sila2.Server.dll" target="lib\net8.0\" />
+		<file src="..\Build\ManagedGrpc\net8.0\Tecan.Sila2.Server.pdb" target="lib\net8.0\" />
+		<file src="..\Build\ManagedGrpc\net8.0\Tecan.Sila2.Server.xml" target="lib\net8.0\" />
     </files>
 </package>

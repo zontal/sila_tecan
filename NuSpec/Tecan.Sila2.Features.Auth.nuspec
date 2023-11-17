@@ -24,5 +24,9 @@
         <file src="..\Build\Features\net6.0\Tecan.Sila2.Auth.dll" target="lib\net6.0\" />
         <file src="..\Build\Features\net6.0\Tecan.Sila2.Auth.pdb" target="lib\net6.0\" />
         <file src="..\Build\Features\net6.0\Tecan.Sila2.Auth.xml" target="lib\net6.0\" />
+
+		<file src="..\Build\Features\net8.0\Tecan.Sila2.Auth.dll" target="lib\net8.0\" />
+		<file src="..\Build\Features\net8.0\Tecan.Sila2.Auth.pdb" target="lib\net8.0\" />
+		<file src="..\Build\Features\net8.0\Tecan.Sila2.Auth.xml" target="lib\net8.0\" />
     </files>
 </package>

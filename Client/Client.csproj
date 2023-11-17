@@ -2,7 +2,7 @@
 
 
     <PropertyGroup>
-        <TargetFrameworks>netstandard2.0;net6.0</TargetFrameworks>
+        <TargetFrameworks>netstandard2.0;net6.0;net8.0</TargetFrameworks>
         <RootNamespace>Tecan.Sila2.Client</RootNamespace>
         <AssemblyName>Tecan.Sila2.Client</AssemblyName>
         <GenerateAssemblyInfo>false</GenerateAssemblyInfo>

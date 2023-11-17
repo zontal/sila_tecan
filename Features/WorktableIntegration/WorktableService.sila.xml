@@ -3,6 +3,41 @@
   <Identifier>WorktableService</Identifier>
   <DisplayName>Worktable Service</DisplayName>
   <Description>Denotes a service to describe dimensions of a device in order to integrate it into a worktable</Description>
+  <Property>
+    <Identifier>BoundingBox</Identifier>
+    <DisplayName>Bounding Box</DisplayName>
+    <Description>The outer hull of the device</Description>
+    <Observable>No</Observable>
+    <DataType>
+      <DataTypeIdentifier>BoundingBox</DataTypeIdentifier>
+    </DataType>
+  </Property>
+  <Property>
+    <Identifier>SiteTemplates</Identifier>
+    <DisplayName>Site Templates</DisplayName>
+    <Description>The templates for sites used by this device</Description>
+    <Observable>No</Observable>
+    <DataType>
+      <List>
+        <DataType>
+          <DataTypeIdentifier>SiteTemplate</DataTypeIdentifier>
+        </DataType>
+      </List>
+    </DataType>
+  </Property>
+  <Property>
+    <Identifier>Sites</Identifier>
+    <DisplayName>Sites</DisplayName>
+    <Description>The sites that this device offers</Description>
+    <Observable>No</Observable>
+    <DataType>
+      <List>
+        <DataType>
+          <DataTypeIdentifier>Site</DataTypeIdentifier>
+        </DataType>
+      </List>
+    </DataType>
+  </Property>
   <DataTypeDefinition>
     <Identifier>Offset</Identifier>
     <DisplayName>Offset</DisplayName>
@@ -269,39 +304,4 @@
       </Structure>
     </DataType>
   </DataTypeDefinition>
-  <Property>
-    <Identifier>BoundingBox</Identifier>
-    <DisplayName>Bounding Box</DisplayName>
-    <Description>The outer hull of the device</Description>
-    <Observable>No</Observable>
-    <DataType>
-      <DataTypeIdentifier>BoundingBox</DataTypeIdentifier>
-    </DataType>
-  </Property>
-  <Property>
-    <Identifier>SiteTemplates</Identifier>
-    <DisplayName>Site Templates</DisplayName>
-    <Description>The templates for sites used by this device</Description>
-    <Observable>No</Observable>
-    <DataType>
-      <List>
-        <DataType>
-          <DataTypeIdentifier>SiteTemplate</DataTypeIdentifier>
-        </DataType>
-      </List>
-    </DataType>
-  </Property>
-  <Property>
-    <Identifier>Sites</Identifier>
-    <DisplayName>Sites</DisplayName>
-    <Description>The sites that this device offers</Description>
-    <Observable>No</Observable>
-    <DataType>
-      <List>
-        <DataType>
-          <DataTypeIdentifier>Site</DataTypeIdentifier>
-        </DataType>
-      </List>
-    </DataType>
-  </Property>
 </Feature>

@@ -26,6 +26,8 @@ namespace Tecan.Sila2.Generator.Generators
         private readonly IAmbiguityResolver _ambiguityResolver;
         private FeatureSpec _featureSpec;
         private readonly Type _interfaceType;
+        private readonly HashSet<string> _identifiers = new HashSet<string>();
+        private readonly List<object> _items = new List<object>();
 
         private static readonly string[] ArgumentExceptionTypeNames =
         {
@@ -49,17 +51,16 @@ namespace Tecan.Sila2.Generator.Generators
 
         public object[] GenerateFeature( ICollection<string> namespaceCollector )
         {
-            var items = new List<object>();
             var executeExceptions = new HashSet<Type>();
             var dataTypes = new HashSet<Type>();
 
-            AddInterfaceMembers( _interfaceType, items, executeExceptions, dataTypes, false );
+            AddInterfaceMembers( _interfaceType, executeExceptions, dataTypes, false );
             namespaceCollector?.Add( _interfaceType.Namespace );
 
-            GenerateExceptions( executeExceptions, items, namespaceCollector );
-            var dataTypeItems = GenerateDataTypes( dataTypes, namespaceCollector );
+            GenerateExceptions( executeExceptions, namespaceCollector );
+            GenerateDataTypes( dataTypes, namespaceCollector );
 
-            return dataTypeItems.Concat( items ).ToArray();
+            return _items.ToArray();
         }
 
         public void TryLoadDocumentation( Assembly assembly )
@@ -104,7 +105,7 @@ namespace Tecan.Sila2.Generator.Generators
             }
         }
 
-        private List<object> GenerateDataTypes( HashSet<Type> dataTypes,
+        private void GenerateDataTypes( HashSet<Type> dataTypes,
             ICollection<string> namespaceCollector )
         {
             // to keep the unitelabs browser happy we want to define types in order if we can
@@ -147,25 +148,32 @@ namespace Tecan.Sila2.Generator.Generators
                 sortedElements.Insert( insertPosition, typeAndItem );
             }
 
-            return sortedElements.Select( typeAndItem =>
+            _items.AddRange(sortedElements.Select(typeAndItem =>
                                           {
                                               object item = typeAndItem.Item2;
                                               return item;
-                                          } ).ToList();
+                                          }).ToList());
         }
 
-        private void GenerateExceptions( ICollection<Type> exceptions, ICollection<object> items,
-            ICollection<string> namespaceCollector )
+        private void GenerateExceptions( ICollection<Type> exceptions, ICollection<string> namespaceCollector )
         {
             foreach(var executeException in exceptions)
             {
-                items.Add( GenerateExecuteException( executeException ) );
+                var exception = GenerateExecuteException(executeException);
+                AddFeatureItem(exception.Identifier, exception);
                 namespaceCollector?.Add( executeException.Namespace );
             }
         }
 
-        private void AddInterfaceMembers( Type interfaceType, ICollection<object> items,
-            ICollection<Type> definedExceptions, ICollection<Type> dataTypes, bool forceSpec )
+        private void AddFeatureItem(string identifier, object featureItem)
+        {
+            if (_identifiers.Add( identifier ))
+            {
+                _items.Add(featureItem);
+            }
+        }
+
+        private void AddInterfaceMembers( Type interfaceType, ICollection<Type> definedExceptions, ICollection<Type> dataTypes, bool forceSpec )
         {
             foreach(var methodGroup in interfaceType.GetMethods().GroupBy( m => m.Name ))
             {
@@ -185,8 +193,8 @@ namespace Tecan.Sila2.Generator.Generators
                     {
                         if(_featureSpec != null && _featureSpec.TryGetPropertyFor( methodInfo.Name, out var propertySpec ))
                         {
-                            // method should render as property
-                            items.Add( GenerateProperty( methodInfo, propertySpec, definedExceptions, dataTypes ) );
+                            var property = GenerateProperty(methodInfo, propertySpec, definedExceptions, dataTypes);
+                            AddFeatureItem(property.Identifier, property);
                         }
                         else
                         {
@@ -199,7 +207,7 @@ namespace Tecan.Sila2.Generator.Generators
                                     Identifier = featureCommand.Identifier
                                 } );
                             }
-                            items.Add( featureCommand );
+                            AddFeatureItem(featureCommand.Identifier, featureCommand);
                         }
                     }
                     catch(NotSupportedException notSupported)
@@ -217,7 +225,7 @@ namespace Tecan.Sila2.Generator.Generators
                     {
                         var currentSpec = _featureSpec;
                         _featureSpec = inline;
-                        AddInterfaceMembers( propertyInfo.PropertyType, items, definedExceptions, dataTypes, true );
+                        AddInterfaceMembers( propertyInfo.PropertyType, definedExceptions, dataTypes, true );
                         _featureSpec = currentSpec;
                         continue;
                     }
@@ -232,15 +240,16 @@ namespace Tecan.Sila2.Generator.Generators
                                 Identifier = featureProperty.Identifier
                             } );
                         }
-                        items.Add( featureProperty );
+                        AddFeatureItem(featureProperty.Identifier, featureProperty);
                         if(setterCommand != null)
                         {
-                            items.Add( setterCommand );
+                            AddFeatureItem(setterCommand.Identifier, setterCommand);
                         }
                     }
                     else
                     {
-                        items.Add( GenerateMetadata( propertyInfo, definedExceptions, dataTypes ) );
+                        var metadata = GenerateMetadata(propertyInfo, definedExceptions, dataTypes);
+                        AddFeatureItem(metadata.Identifier, metadata);
                     }
                 }
                 catch(NotSupportedException notSupported)

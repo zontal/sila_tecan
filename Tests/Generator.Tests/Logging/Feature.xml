@@ -3,6 +3,28 @@
   <Identifier>LoggingService</Identifier>
   <DisplayName>Logging</DisplayName>
   <Description>Provides services for integration of device logging</Description>
+  <Command>
+    <Identifier>ListenForLogEntries</Identifier>
+    <DisplayName>Listen for log entries</DisplayName>
+    <Description>Starts listening for log entries from the device</Description>
+    <Observable>Yes</Observable>
+    <IntermediateResponse>
+      <Identifier>Intermediate</Identifier>
+      <DisplayName>Intermediate</DisplayName>
+      <Description />
+      <DataType>
+        <DataTypeIdentifier>LogEntry</DataTypeIdentifier>
+      </DataType>
+    </IntermediateResponse>
+  </Command>
+  <Metadata>
+    <Identifier>LoggingActivity</Identifier>
+    <DisplayName>Logging Activity</DisplayName>
+    <Description />
+    <DataType>
+      <Basic>String</Basic>
+    </DataType>
+  </Metadata>
   <DataTypeDefinition>
     <Identifier>LogEntryData</Identifier>
     <DisplayName>Log Entry Data</DisplayName>
@@ -107,26 +129,4 @@
       </Structure>
     </DataType>
   </DataTypeDefinition>
-  <Command>
-    <Identifier>ListenForLogEntries</Identifier>
-    <DisplayName>Listen for log entries</DisplayName>
-    <Description>Starts listening for log entries from the device</Description>
-    <Observable>Yes</Observable>
-    <IntermediateResponse>
-      <Identifier>Intermediate</Identifier>
-      <DisplayName>Intermediate</DisplayName>
-      <Description />
-      <DataType>
-        <DataTypeIdentifier>LogEntry</DataTypeIdentifier>
-      </DataType>
-    </IntermediateResponse>
-  </Command>
-  <Metadata>
-    <Identifier>LoggingActivity</Identifier>
-    <DisplayName>Logging Activity</DisplayName>
-    <Description />
-    <DataType>
-      <Basic>String</Basic>
-    </DataType>
-  </Metadata>
 </Feature>

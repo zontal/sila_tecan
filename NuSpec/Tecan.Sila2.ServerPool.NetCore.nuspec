@@ -17,17 +17,16 @@
             <dependency id="Tecan.Sila2.NetCore" version="[$version$,5.0)" />
             <dependency id="Tecan.Sila2.Client.NetCore" version="[$version$,5.0)" />
             <dependency id="Grpc.AspNetCore.Server" version="2.40" />
-            <dependency id="IPNetwork2" version="2.1.2" />
             <dependency id="Makaretu.Dns.Multicast" version="0.25.0" />
         </dependencies>
     </metadata>
     <files>
-        <file src="..\Build\ManagedGrpc\netcoreapp3.1\Tecan.Sila2.ServerPool.dll" target="lib\netcoreapp3.1\" />
-        <file src="..\Build\ManagedGrpc\netcoreapp3.1\Tecan.Sila2.ServerPool.pdb" target="lib\netcoreapp3.1\" />
-        <file src="..\Build\ManagedGrpc\netcoreapp3.1\Tecan.Sila2.ServerPool.xml" target="lib\netcoreapp3.1\" />
-
         <file src="..\Build\ManagedGrpc\net6.0\Tecan.Sila2.ServerPool.dll" target="lib\net6.0\" />
         <file src="..\Build\ManagedGrpc\net6.0\Tecan.Sila2.ServerPool.pdb" target="lib\net6.0\" />
         <file src="..\Build\ManagedGrpc\net6.0\Tecan.Sila2.ServerPool.xml" target="lib\net6.0\" />
+
+		<file src="..\Build\ManagedGrpc\net8.0\Tecan.Sila2.ServerPool.dll" target="lib\net8.0\" />
+		<file src="..\Build\ManagedGrpc\net8.0\Tecan.Sila2.ServerPool.pdb" target="lib\net8.0\" />
+		<file src="..\Build\ManagedGrpc\net8.0\Tecan.Sila2.ServerPool.xml" target="lib\net8.0\" />
     </files>
 </package>

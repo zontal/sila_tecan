@@ -8,9 +8,12 @@ using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Console;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Text;
 using Tecan.Sila2.Logging;
@@ -93,6 +96,18 @@ namespace Tecan.Sila2.Server
                      } )
                     .ConfigureServices( services =>
                     {
+#if NET8_0_OR_GREATER
+                        // for some reason, some invalid service descriptions
+                        // (where the implementation does not implement the service type)
+                        // end up in the DI container and need to be removed
+                        void Remove(Type type)
+                        {
+                            var serviceDescription = services.FirstOrDefault(sd => sd.ServiceType == type);
+                            if (serviceDescription != null) services.Remove(serviceDescription);
+                        }
+                        Remove(typeof(IConfigureOptions<JsonConsoleFormatterOptions>));
+                        Remove(typeof(IConfigureOptions<SimpleConsoleFormatterOptions>));
+#endif
                         services.AddSila2();
                         OnConfigureServices( services );
                     } )

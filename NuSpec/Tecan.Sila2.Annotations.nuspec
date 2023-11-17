@@ -21,5 +21,9 @@
         <file src="..\Build\net6.0\Tecan.Sila2.Annotations.dll" target="lib\net6.0\" />
         <file src="..\Build\net6.0\Tecan.Sila2.Annotations.pdb" target="lib\net6.0\" />
         <file src="..\Build\net6.0\Tecan.Sila2.Annotations.xml" target="lib\net6.0\" />
+
+		<file src="..\Build\net8.0\Tecan.Sila2.Annotations.dll" target="lib\net8.0\" />
+		<file src="..\Build\net8.0\Tecan.Sila2.Annotations.pdb" target="lib\net8.0\" />
+		<file src="..\Build\net8.0\Tecan.Sila2.Annotations.xml" target="lib\net8.0\" />
     </files>
 </package>

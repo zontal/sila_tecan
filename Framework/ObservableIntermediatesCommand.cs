@@ -18,15 +18,21 @@ namespace Tecan.Sila2
         /// <param name="cancellationTokenSource">A cancellation token source</param>
         protected ObservableIntermediatesCommand( CancellationTokenSource cancellationTokenSource ) : base( cancellationTokenSource )
         {
-            _intermediatesChannel = Channels.CreateIntermediateChannel<TIntermediate>();
+            _intermediatesChannel = CreateIntermediatesChannel();
         }
+
+        /// <summary>
+        /// Creates the channel to send intermediate values
+        /// </summary>
+        /// <returns>The channel created for intermediate values</returns>
+        protected virtual Channel<TIntermediate> CreateIntermediatesChannel() => Channels.CreateIntermediateChannel<TIntermediate>();
 
         /// <summary>
         /// Creates an observable command
         /// </summary>
         protected ObservableIntermediatesCommand()
         {
-            _intermediatesChannel = Channels.CreateIntermediateChannel<TIntermediate>();
+            _intermediatesChannel = CreateIntermediatesChannel();
         }
 
         /// <summary>
@@ -63,7 +69,7 @@ namespace Tecan.Sila2
         /// <param name="cancellationTokenSource">A cancellation token source</param>
         protected ObservableIntermediatesCommand( CancellationTokenSource cancellationTokenSource ) : base( cancellationTokenSource )
         {
-            _intermediatesChannel = Channels.CreateIntermediateChannel<TIntermediate>();
+            _intermediatesChannel = CreateIntermediatesChannel();
         }
 
         /// <summary>
@@ -71,8 +77,14 @@ namespace Tecan.Sila2
         /// </summary>
         protected ObservableIntermediatesCommand()
         {
-            _intermediatesChannel = Channels.CreateIntermediateChannel<TIntermediate>();
+            _intermediatesChannel = CreateIntermediatesChannel();
         }
+
+        /// <summary>
+        /// Creates the channel to send intermediate values
+        /// </summary>
+        /// <returns>The channel created for intermediate values</returns>
+        protected virtual Channel<TIntermediate> CreateIntermediatesChannel() => Channels.CreateIntermediateChannel<TIntermediate>();
 
         /// <summary>
         /// Pushes the provided intermediate value

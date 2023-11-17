@@ -77,7 +77,7 @@ namespace Tecan.Sila2.IntegrationTests
 #if NET6_0
                 Arguments = Path.Combine( dir, "net6.0", "TestServer.dll" ) + " " + payloadArguments,
 #else
-                Arguments = Path.Combine( dir, "net7.0", "TestServer.dll" ) + " " + payloadArguments,
+                Arguments = Path.Combine( dir, "net8.0", "TestServer.dll" ) + " " + payloadArguments,
 #endif
 #else
                 FileName = Path.Combine(dir, "net48", "TestServer.exe"),
@@ -995,7 +995,9 @@ namespace Tecan.Sila2.IntegrationTests
 
             var cts = new CancellationTokenSource();
             var receivedValues = new List<long>();
-            var subscription = propertyClient.Subscribe( d => receivedValues.Add( (long)d.Value ), cts.Token );
+            var subscription = propertyClient.Subscribe( d => {
+                receivedValues.Add((long)d.Value);
+            }, cts.Token );
 
             testClient.SetDummy( 8 );
             testClient.SetDummy( 15 );

@@ -26,8 +26,9 @@
         <file src="..\Build\Generator\net472\SilaGen.exe" target="lib\net472\" />
         <file src="..\Build\Generator\net472\SilaGen.pdb" target="lib\net472\" />
         <file src="..\Build\Generator\SilaGen.xml" target="lib\net472\" />
-        <file src="..\Build\Generator\netcoreapp3.1\SilaGen.dll" target="lib\netcoreapp3.1\" />
-        <file src="..\Build\Generator\netcoreapp3.1\SilaGen.pdb" target="lib\netcoreapp3.1\" />
-        <file src="..\Build\Generator\SilaGen.xml" target="lib\netcoreapp2.1\" />
+		
+        <file src="..\Build\Generator\net8.0\SilaGen.dll" target="lib\net8.0\" />
+        <file src="..\Build\Generator\net8.0\SilaGen.pdb" target="lib\net8.0\" />
+        <file src="..\Build\Generator\SilaGen.xml" target="lib\net8.0\" />
     </files>
 </package>

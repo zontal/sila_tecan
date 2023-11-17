@@ -64,9 +64,9 @@ namespace Tecan.Sila2.Server.ServiceDefinition
             changeSource.PropertyChanged += handler;
             try
             {
+                await responseStream.WriteAsync( factory() );
                 do
                 {
-                    await responseStream.WriteAsync( factory() );
                     if (await channel.Reader.WaitToReadAsync(cancellationToken))
                     {
                         if (channel.Reader.TryRead(out var update))

@@ -36,7 +36,7 @@ namespace Tecan.Sila2.Generator.Generators
         /// <inheritdoc />
         public void RegisterConstructionMethod( Type type, MethodInfo constructorMethod )
         {
-            _constructorReplacements.Add( type.Name, constructorMethod );
+            _constructorReplacements[type.Name] = constructorMethod;
         }
 
         /// <inheritdoc />
@@ -49,7 +49,7 @@ namespace Tecan.Sila2.Generator.Generators
         /// <inheritdoc />
         public void RegisterRename( string memberName, string identifier )
         {
-            _renames.Add( identifier, memberName );
+            _renames[identifier] = memberName;
         }
 
         /// <inheritdoc />
@@ -76,12 +76,12 @@ namespace Tecan.Sila2.Generator.Generators
         /// <inheritdoc />
         public void RegisterDifferentType( string identifier, Type type )
         {
-            _typeOverrides.Add( identifier, type );
+            _typeOverrides[ identifier ] = type;
         }
 
         public void RegisterMethod( string commandIdentifier, MethodInfo method )
         {
-            _nonstandardMethods.Add( commandIdentifier, method );
+            _nonstandardMethods[ commandIdentifier ] = method;
         }
 
         /// <inheritdoc />

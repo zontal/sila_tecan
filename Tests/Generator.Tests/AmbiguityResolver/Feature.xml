@@ -3,31 +3,6 @@
   <Identifier>AmbiguityResolverService</Identifier>
   <DisplayName>Ambiguity Resolver Service</DisplayName>
   <Description />
-  <DataTypeDefinition>
-    <Identifier>AmbiguousClass</Identifier>
-    <DisplayName>Ambiguous Class</DisplayName>
-    <Description>Describes a class which has ambiguous parameter</Description>
-    <DataType>
-      <Structure>
-        <Element>
-          <Identifier>Message</Identifier>
-          <DisplayName>Message</DisplayName>
-          <Description />
-          <DataType>
-            <Basic>String</Basic>
-          </DataType>
-        </Element>
-        <Element>
-          <Identifier>AmbiguousChannel</Identifier>
-          <DisplayName>AmbiguousChannel</DisplayName>
-          <Description />
-          <DataType>
-            <Basic>String</Basic>
-          </DataType>
-        </Element>
-      </Structure>
-    </DataType>
-  </DataTypeDefinition>
   <Command>
     <Identifier>CheckAmbiguousEntries</Identifier>
     <DisplayName>Check Ambiguous Entries</DisplayName>
@@ -56,4 +31,29 @@
       </DataType>
     </Parameter>
   </Command>
+  <DataTypeDefinition>
+    <Identifier>AmbiguousClass</Identifier>
+    <DisplayName>Ambiguous Class</DisplayName>
+    <Description>Describes a class which has ambiguous parameter</Description>
+    <DataType>
+      <Structure>
+        <Element>
+          <Identifier>Message</Identifier>
+          <DisplayName>Message</DisplayName>
+          <Description />
+          <DataType>
+            <Basic>String</Basic>
+          </DataType>
+        </Element>
+        <Element>
+          <Identifier>AmbiguousChannel</Identifier>
+          <DisplayName>AmbiguousChannel</DisplayName>
+          <Description />
+          <DataType>
+            <Basic>String</Basic>
+          </DataType>
+        </Element>
+      </Structure>
+    </DataType>
+  </DataTypeDefinition>
 </Feature>
