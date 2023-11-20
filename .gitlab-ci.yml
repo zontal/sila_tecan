@@ -50,7 +50,7 @@ interop_server_managed:
     - echo "Interop server started"
     - apt-get update
     - apt-get install -yq python3-pip
-    - pip install sila2_interop_communication_tester
+    - pip install sila2_interop_communication_tester --break-system-packages
     - python3 -m sila2_interop_communication_tester.test_client --report-file managed_server8-test-report.xml --testsuite-name "Managed gRPC .NET 8 Server" --html-file managed_server8-test-report.html
     - kill -INT $server_pid
   artifacts:
@@ -66,7 +66,7 @@ interop_client_managed:
   before_script:
     - apt-get update
     - apt-get install -yq python3-pip
-    - pip install sila2_interop_communication_tester
+    - pip install sila2_interop_communication_tester --break-system-packages
   script:
     - python3 -m sila2_interop_communication_tester.test_server --report-file managed_client8-test-report.xml --testsuite-name "Managed gRPC .NET 8 Client" --html-file managed_client8-test-report.html & server_pid=$!
     - sleep 5
@@ -92,7 +92,7 @@ interop_server_unmanaged:
     - echo "Interop server started"
     - apt-get update
     - apt-get install -yq python3-pip
-    - pip install sila2_interop_communication_tester
+    - pip install sila2_interop_communication_tester --break-system-packages
     - python3 -m sila2_interop_communication_tester.test_client --report-file unmanaged_server8-test-report.xml --testsuite-name "Unmanaged gRPC .NET 8 Server" --html-file unmanaged_server8-test-report.html
     - kill -INT $server_pid
   artifacts:
@@ -108,7 +108,7 @@ interop_client_unmanaged:
   before_script:
     - apt-get update
     - apt-get install -yq python3-pip
-    - pip install sila2_interop_communication_tester
+    - pip install sila2_interop_communication_tester --break-system-packages
   script:
     - python3 -m sila2_interop_communication_tester.test_server --report-file unmanaged_client8-test-report.xml --testsuite-name "Unmanaged gRPC .NET 8 Client" --html-file unmanaged_client8-test-report.html & server_pid=$!
     - sleep 5
