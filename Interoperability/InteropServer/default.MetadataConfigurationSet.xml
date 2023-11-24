@@ -1,11 +1,6 @@
 <?xml version="1.0"?>
 <MetadataConfigurationSet xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Configurations>
-    <MetadataConfiguration Identifier="org.silastandard/test/MetadataProviderTest/v1/Metadata/TwoIntegersMetadata">
-      <Affected>
-        <string>org.silastandard/test/MetadataConsumerTest/v1/Command/UnpackMetadata</string>
-      </Affected>
-    </MetadataConfiguration>
     <MetadataConfiguration Identifier="org.silastandard/core/AuthorizationService/v1/Metadata/AccessToken">
       <Affected>
         <string>org.silastandard/test/AuthenticationTest/v1/Command/RequiresToken</string>
