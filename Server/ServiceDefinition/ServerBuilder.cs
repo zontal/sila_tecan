@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Threading;
 using System.Threading.Channels;
 using Grpc.Core;
 using Tecan.Sila2.ServerPooling;
@@ -72,6 +73,8 @@ namespace Tecan.Sila2.Server.ServiceDefinition
                 INotifyPropertyChanged notifyPropertyChanged
                     => new ObservablePropertyHandler<T>(_server, fullId, implementation, notifyPropertyChanged, clientPropertyName ?? propertyName),
                 Func<ChannelReader<T>> valueChannel
+                    => new ObservablePropertyChannelHandler<T>(_server, fullId, _ => valueChannel()),
+                Func<CancellationToken, ChannelReader<T>> valueChannel
                     => new ObservablePropertyChannelHandler<T>(_server, fullId, valueChannel),
                 _ => new ObservablePollingHandler<T>(_server, fullId, implementation)
             };
