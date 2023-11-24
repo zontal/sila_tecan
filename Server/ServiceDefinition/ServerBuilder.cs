@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Threading.Channels;
 using Grpc.Core;
 using Tecan.Sila2.ServerPooling;
 
@@ -65,7 +66,15 @@ namespace Tecan.Sila2.Server.ServiceDefinition
         {
             var method = new Method<EmptyRequest, T>( MethodType.Unary, ServiceName, "Subscribe_" + propertyName, EmptyRequestMarshaller.Instance, propertySerializer );
             var property = _feature.Items.OfType<FeatureProperty>().FirstOrDefault( p => p.Identifier == propertyName );
-            var builder = new ObservablePropertyHandler<T>( _server, _feature.GetFullyQualifiedIdentifier( property ), implementation, changeSource as INotifyPropertyChanged, clientPropertyName ?? propertyName );
+            var fullId = _feature.GetFullyQualifiedIdentifier(property);
+            ObservablePropertyHandlerBase<T> builder = changeSource switch
+            {
+                INotifyPropertyChanged notifyPropertyChanged
+                    => new ObservablePropertyHandler<T>(_server, fullId, implementation, notifyPropertyChanged, clientPropertyName ?? propertyName),
+                Func<ChannelReader<T>> valueChannel
+                    => new ObservablePropertyChannelHandler<T>(_server, fullId, valueChannel),
+                _ => new ObservablePollingHandler<T>(_server, fullId, implementation)
+            };
             _serviceDefinitionBuilder.AddMethod( method, builder.Subscribe );
             _dispatcher.RegisterHandler( _feature.FullyQualifiedIdentifier + "/Property/" + propertyName, builder );
         }
