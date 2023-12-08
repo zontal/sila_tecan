@@ -5,8 +5,11 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Console;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Tecan.Sila2;
 using Tecan.Sila2.Logging;
@@ -61,6 +64,20 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <returns>A gRPC server builder</returns>
         public static IGrpcServerBuilder AddSila2( this IServiceCollection services, ServerStartInformation serverStartInfo, Action<GrpcServiceOptions> configureOptions )
         {
+
+#if NET8_0_OR_GREATER
+            // for some reason, some invalid service descriptions
+            // (where the implementation does not implement the service type)
+            // end up in the DI container and need to be removed
+            void Remove(Type type)
+            {
+                var serviceDescription = services.FirstOrDefault(sd => sd.ServiceType == type);
+                if (serviceDescription != null) services.Remove(serviceDescription);
+            }
+            Remove(typeof(IConfigureOptions<JsonConsoleFormatterOptions>));
+            Remove(typeof(IConfigureOptions<SimpleConsoleFormatterOptions>));
+#endif
+
             services.AddSingleton<IServiceConfigurationBuilder<ISiLAServer>, ServiceConfigurationBuilder>();
             var builder = configureOptions != null ? services.AddGrpc( configureOptions ) : services.AddGrpc();
             services.TryAddEnumerable( ServiceDescriptor.Singleton( typeof( IServiceMethodProvider<> ), typeof( ServiceMethodProvider<> ) ) );
