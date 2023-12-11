@@ -11,11 +11,13 @@ namespace Tecan.Sila2.Server.ServiceDefinition
 
         private readonly SiLAServer _server;
         private readonly string _identifier;
+        private readonly Marshaller<T> _marshaller;
 
-        protected ObservablePropertyHandlerBase( SiLAServer server, string identifier )
+        protected ObservablePropertyHandlerBase( SiLAServer server, string identifier, Marshaller<T> marshaller )
         {
             _server = server;
             _identifier = identifier;
+            _marshaller = marshaller;
         }
 
         public Task Subscribe( EmptyRequest request, IServerStreamWriter<T> responseStream, ServerCallContext context )
@@ -37,7 +39,7 @@ namespace Tecan.Sila2.Server.ServiceDefinition
             var parameters = message.PropertySubscription;
             try
             {
-                var wrappedStream = new BackwardStreamWriter( responseWriter, message.RequestUuid );
+                var wrappedStream = new BackwardStreamWriter( responseWriter, message.RequestUuid, _marshaller );
                 var cancellationToken = dispatcher.CreateCancellationToken( message.RequestUuid );
                 await _server.InvokeCommand(CreateSubscriptionHandler(wrappedStream, cancellationToken), _identifier, parameters);
             }
@@ -59,12 +61,14 @@ namespace Tecan.Sila2.Server.ServiceDefinition
         private class BackwardStreamWriter : IAsyncStreamWriter<T>
         {
             private readonly IClientStreamWriter<SilaServerMessage> _baseWriter;
+            private readonly Marshaller<T> _marshaller;
             private readonly string _uuid;
 
-            public BackwardStreamWriter(IClientStreamWriter<SilaServerMessage> baseWriter, string uuid)
+            public BackwardStreamWriter(IClientStreamWriter<SilaServerMessage> baseWriter, string uuid, Marshaller<T> marshaller)
             {
                 _baseWriter = baseWriter;
                 _uuid = uuid;
+                _marshaller = marshaller;
             }
 
             public WriteOptions WriteOptions { get => _baseWriter.WriteOptions; set => _baseWriter.WriteOptions = value; }
@@ -76,7 +80,7 @@ namespace Tecan.Sila2.Server.ServiceDefinition
                     RequestUuid = _uuid,
                     ObservablePropertyValue = new PropertyValue
                     {
-                        Result = ProtobufMarshaller<T>.ToByteArray( message )
+                        Result = _marshaller.Serializer( message )
                     }
                 } );
             }

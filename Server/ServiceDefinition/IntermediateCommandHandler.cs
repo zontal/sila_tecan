@@ -10,13 +10,15 @@ namespace Tecan.Sila2.Server.ServiceDefinition
     {
         private readonly SiLAServer _server;
         private readonly Func<TIntermediate, TIntermediateDto> _intermediateConverter;
+        private readonly Marshaller<TIntermediateDto> _marshaller;
         private readonly Func<Exception, Exception> _errorConverter;
 
-        public IntermediateCommandHandler( SiLAServer server, Func<TIntermediate, TIntermediateDto> intermediateConverter, Func<Exception, Exception> errorConverter )
+        public IntermediateCommandHandler( SiLAServer server, Func<TIntermediate, TIntermediateDto> intermediateConverter, Func<Exception, Exception> errorConverter, Marshaller<TIntermediateDto> marshaller )
         {
             _server = server;
             _errorConverter = errorConverter;
             _intermediateConverter = intermediateConverter;
+            _marshaller = marshaller;
         }
 
         public Task GetIntermediateResponses( CommandExecutionUuid commandId, IServerStreamWriter<TIntermediateDto> responseStream, ServerCallContext context )
@@ -62,7 +64,7 @@ namespace Tecan.Sila2.Server.ServiceDefinition
             {
                 var cancellationToken = dispatcher.CreateCancellationToken( requestUuid );
                 var executionId = new CommandExecutionUuid( command.CommandExecutionID );
-                await GetIntermediateResponses( command, new IntermediateResponseStream( responseWriter, requestUuid, executionId ), cancellationToken );
+                await GetIntermediateResponses( command, new IntermediateResponseStream( responseWriter, requestUuid, executionId, _marshaller ), cancellationToken );
             }
             finally
             {
@@ -75,12 +77,14 @@ namespace Tecan.Sila2.Server.ServiceDefinition
             private readonly IClientStreamWriter<SilaServerMessage> _responseWriter;
             private readonly string _requestUuid;
             private readonly CommandExecutionUuid _executionId;
+            private readonly Marshaller<TIntermediateDto> _responseMarshaller;
 
-            public IntermediateResponseStream( IClientStreamWriter<SilaServerMessage> responseWriter, string requestUuid, CommandExecutionUuid executionId )
+            public IntermediateResponseStream( IClientStreamWriter<SilaServerMessage> responseWriter, string requestUuid, CommandExecutionUuid executionId, Marshaller<TIntermediateDto> marshaller )
             {
                 _responseWriter = responseWriter;
                 _requestUuid = requestUuid;
                 _executionId = executionId;
+                _responseMarshaller = marshaller;
             }
 
             public WriteOptions WriteOptions { get => _responseWriter.WriteOptions; set => _responseWriter.WriteOptions = value; }
@@ -93,7 +97,7 @@ namespace Tecan.Sila2.Server.ServiceDefinition
                     ObservableCommandIntermediateResponse = new ObservableCommandResponse
                     {
                         ExecutionUUID = _executionId,
-                        Result = ProtobufMarshaller<TIntermediateDto>.ToByteArray( message )
+                        Result = _responseMarshaller.Serializer( message )
                     }
                 } );
             }

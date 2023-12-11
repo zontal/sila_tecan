@@ -11,12 +11,14 @@ namespace Tecan.Sila2.Server.ServiceDefinition
         private readonly SiLAServer _server;
         private readonly string _identifier;
         private readonly Func<T> _implementation;
+        private readonly Marshaller<T> _marshaller;
 
-        public UnobservablePropertyHandler( SiLAServer server, string identifier, Func<T> implementation )
+        public UnobservablePropertyHandler( SiLAServer server, string identifier, Func<T> implementation, Marshaller<T> marshaller )
         {
             _server = server;
             _identifier = identifier;
             _implementation = implementation;
+            _marshaller = marshaller;
         }
 
         public Task<T> Execute( EmptyRequest request, ServerCallContext context )
@@ -40,7 +42,7 @@ namespace Tecan.Sila2.Server.ServiceDefinition
                         RequestUuid = message.RequestUuid,
                         PropertyValue = new PropertyValue
                         {
-                            Result = ProtobufMarshaller<T>.ToByteArray( response )
+                            Result = _marshaller.Serializer( response )
                         }
                     } );
             }

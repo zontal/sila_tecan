@@ -15,12 +15,15 @@ namespace Tecan.Sila2.Server.ServiceDefinition
         protected readonly Func<Exception, Exception> _errorConverter;
         private readonly IIntermediateRequestHandler _intermediateHandler;
 
-        public ObservableCommandHandler( SiLAServer server, Func<TRequest, IObservableCommand> implementation, Func<Exception, Exception> errorConverter, IIntermediateRequestHandler intermediateHandler )
+        private readonly Marshaller<TRequest> _requestMarshaller;
+
+        public ObservableCommandHandler( SiLAServer server, Func<TRequest, IObservableCommand> implementation, Func<Exception, Exception> errorConverter, IIntermediateRequestHandler intermediateHandler, Marshaller<TRequest> requestMarshaller )
         {
             _server = server;
             _implementation = implementation;
             _errorConverter = errorConverter ?? server.ErrorHandling.CreateUndefinedExecutionError;
             _intermediateHandler = intermediateHandler;
+            _requestMarshaller = requestMarshaller;
         }
 
         public Task QueryState( CommandExecutionUuid commandId, IServerStreamWriter<ExecutionState> responseStream, ServerCallContext context )
@@ -162,7 +165,7 @@ namespace Tecan.Sila2.Server.ServiceDefinition
             }
 
             var parameters = message.CommandInitiation.CommandParameter;
-            var request = ProtobufMarshaller<TRequest>.Default.Deserializer( parameters.Parameters );
+            var request = _requestMarshaller.Deserializer( parameters.Parameters );
             try
             {
                 var executionId = _server.AddObservableCommandExecution( request.CommandIdentifier, _implementation?.Invoke( request ), parameters );
@@ -302,11 +305,20 @@ namespace Tecan.Sila2.Server.ServiceDefinition
     internal class ObservableCommandHandler<TRequest, TResponse, TResponseDto> : ObservableCommandHandler<TRequest> where TRequest : ISilaRequestObject
     {
         private readonly Func<TResponse, TResponseDto> _responseConverter;
+        private readonly Marshaller<TResponseDto> _responseMarshaller;
 
-        public ObservableCommandHandler( SiLAServer server, Func<TRequest, IObservableCommand> implementation, Func<TResponse, TResponseDto> responseConverter, Func<Exception, Exception> errorConverter, IIntermediateRequestHandler intermediateHandler )
-            : base( server, implementation, errorConverter, intermediateHandler )
+        public ObservableCommandHandler( 
+            SiLAServer server,
+            Func<TRequest, IObservableCommand> implementation,
+            Func<TResponse, TResponseDto> responseConverter,
+            Func<Exception, Exception> errorConverter,
+            IIntermediateRequestHandler intermediateHandler,
+            Marshaller<TRequest> requestMarshaller,
+            Marshaller<TResponseDto> responseMarshaller )
+            : base( server, implementation, errorConverter, intermediateHandler, requestMarshaller )
         {
             _responseConverter = responseConverter;
+            _responseMarshaller = responseMarshaller;
         }
 
         public Task<TResponseDto> GetCastedResponse( CommandExecutionUuid commandId, ServerCallContext context )
@@ -363,7 +375,7 @@ namespace Tecan.Sila2.Server.ServiceDefinition
                     ObservableCommandResponse = new ObservableCommandResponse
                     {
                         ExecutionUUID = new CommandExecutionUuid( command.CommandExecutionID ),
-                        Result = ProtobufMarshaller<TResponseDto>.ToByteArray( result )
+                        Result = _responseMarshaller.Serializer( result )
                     }
                 } );
             }

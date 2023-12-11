@@ -15,7 +15,7 @@ namespace Tecan.Sila2.Server.ServiceDefinition
         private readonly string _clientPropertyName;
         protected readonly Func<T> _implementation;
 
-        public ObservablePropertyHandler(SiLAServer server, string identifier, Func<T> implementation, INotifyPropertyChanged changeSource, string clientPropertyName) : base(server, identifier)
+        public ObservablePropertyHandler(SiLAServer server, string identifier, Func<T> implementation, INotifyPropertyChanged changeSource, string clientPropertyName, Marshaller<T> marshaller) : base(server, identifier, marshaller)
         {
             _changeSource = changeSource;
             _clientPropertyName = clientPropertyName;

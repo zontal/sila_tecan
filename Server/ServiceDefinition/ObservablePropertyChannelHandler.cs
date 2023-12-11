@@ -10,7 +10,7 @@ namespace Tecan.Sila2.Server.ServiceDefinition
     {
         private readonly Func<CancellationToken, ChannelReader<T>> _channelFactory;
 
-        public ObservablePropertyChannelHandler(SiLAServer server, string identifier, Func<CancellationToken, ChannelReader<T>> channelFactory) : base(server, identifier)
+        public ObservablePropertyChannelHandler(SiLAServer server, string identifier, Func<CancellationToken, ChannelReader<T>> channelFactory, Marshaller<T> marshaller) : base(server, identifier, marshaller)
         {
             _channelFactory = channelFactory;
         }

@@ -9,7 +9,7 @@ namespace Tecan.Sila2.Server.ServiceDefinition
     {
         protected readonly Func<T> _implementation;
 
-        public ObservablePollingHandler(SiLAServer server, string identifier, Func<T> implementation) : base(server, identifier)
+        public ObservablePollingHandler(SiLAServer server, string identifier, Func<T> implementation, Marshaller<T> marshaller) : base(server, identifier, marshaller)
         {
             _implementation = implementation;
         }

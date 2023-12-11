@@ -11,10 +11,16 @@ namespace Tecan.Sila2.Server.ServiceDefinition
         private readonly SiLAServer _server;
         private readonly Func<TRequest, TResponse> _implementation;
 
-        public UnobservableCommandHandler( SiLAServer server, Func<TRequest, TResponse> implementation )
+        private readonly Marshaller<TRequest> _requestMarshaller;
+        private readonly Marshaller<TResponse> _responseMarshaller;
+
+        public UnobservableCommandHandler(SiLAServer server, Func<TRequest, TResponse> implementation, Marshaller<TRequest> requestMarshaller, Marshaller<TResponse> responseMarshaller )
         {
             _server = server;
             _implementation = implementation;
+
+            _requestMarshaller = requestMarshaller;
+            _responseMarshaller = responseMarshaller;
         }
 
         public Task<TResponse> Execute( TRequest request, ServerCallContext context )
@@ -30,7 +36,7 @@ namespace Tecan.Sila2.Server.ServiceDefinition
             }
 
             var parameters = message.CommandExecution.CommandParameter;
-            var request = ProtobufMarshaller<TRequest>.Default.Deserializer( parameters.Parameters );
+            var request = _requestMarshaller.Deserializer( parameters.Parameters );
             try
             {
                 var response = await _server.InvokeCommand( _implementation, request, parameters );
@@ -39,7 +45,7 @@ namespace Tecan.Sila2.Server.ServiceDefinition
                     RequestUuid = message.RequestUuid,
                     CommandResponse = new CommandResponse
                     {
-                        Result = ProtobufMarshaller<TResponse>.ToByteArray( response )
+                        Result = _responseMarshaller.Serializer( response )
                     }
                 } );
             }
