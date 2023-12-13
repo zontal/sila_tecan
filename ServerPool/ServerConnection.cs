@@ -65,6 +65,8 @@ namespace Tecan.Sila2.ServerPooling
 
         public Client.ChannelState State => _cancellationToken.IsCancellationRequested ? Client.ChannelState.Shutdown : Client.ChannelState.Ready;
 
+        public bool IsServerInitiated => true;
+
         /// <inheritdoc />
         public T ReadProperty<T>( string serviceName, string propertyName, string propertyIdentifier, IClientCallInfo callInfo ) where T : class, ISilaTransferObject
         {

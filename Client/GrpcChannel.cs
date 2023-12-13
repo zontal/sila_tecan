@@ -17,6 +17,8 @@ namespace Tecan.Sila2.Discovery
 
         public Client.ChannelState State => (Client.ChannelState)_channel.State;
 
+        public bool IsServerInitiated => false;
+
         public GrpcChannel( Channel channel ) : base( channel )
         {
             _channel = channel;

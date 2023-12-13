@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Security.Cryptography.X509Certificates;
 using Tecan.Sila2.Client;
 
 namespace Tecan.Sila2
@@ -29,6 +30,11 @@ namespace Tecan.Sila2
         public IEnumerable<Feature> Features { get; }
 
         /// <summary>
+        /// Gets the certificate from the server
+        /// </summary>
+        public X509Certificate2 Certificate { get; }
+
+        /// <summary>
         /// Server model constructor (immutable object)
         /// </summary>
         /// <param name="serverConfig">Server configuration data</param>
@@ -36,11 +42,25 @@ namespace Tecan.Sila2
         /// <param name="features">Server features</param>
         /// <param name="channel">The channel to the server</param>
         public ServerData(ServerConfig serverConfig, ServerInformation serverInformation, IEnumerable<Feature> features, IClientChannel channel)
+            : this(serverConfig, serverInformation, features, channel, null)
+        {
+        }
+
+        /// <summary>
+        /// Server model constructor (immutable object)
+        /// </summary>
+        /// <param name="serverConfig">Server configuration data</param>
+        /// <param name="serverInformation">Server information</param>
+        /// <param name="features">Server features</param>
+        /// <param name="channel">The channel to the server</param>
+        /// <param name="certificate">the certificate from the server</param>
+        public ServerData(ServerConfig serverConfig, ServerInformation serverInformation, IEnumerable<Feature> features, IClientChannel channel, X509Certificate2 certificate)
         {
             Config = serverConfig;
             Info = serverInformation;
             Features = features;
             Channel = channel;
+            Certificate = certificate;
         }
     }
 }

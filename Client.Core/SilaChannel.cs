@@ -20,6 +20,8 @@ namespace Tecan.Sila2.Discovery
 
         public CallInvoker CallInvoker { get; }
 
+        public bool IsServerInitiated => false;
+
         public SilaChannel( GrpcChannel channel )
         {
             _channel = channel;

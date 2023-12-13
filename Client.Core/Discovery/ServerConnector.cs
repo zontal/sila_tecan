@@ -70,7 +70,7 @@ namespace Tecan.Sila2.Discovery
                             {
                                 HttpHandler = clientHandler,
                             } );
-                            var server = CheckCertificateAuthority( GetServerData( channel ), certificateValidator.ServerCertificate, ca );
+                            var server = CheckCertificateAuthority( GetServerData( channel, () => certificateValidator.ServerCertificate ), certificateValidator.ServerCertificate, ca );
                             return CheckExpectedGuid( CheckCertificate( server, certificateValidator.ServerCertificate ), expectedGuid );
                         }
                         catch(Exception e)
@@ -97,7 +97,7 @@ namespace Tecan.Sila2.Discovery
                     {
                         HttpHandler = clientHandler,
                     } );
-                    return CheckExpectedGuid( CheckCertificate( GetServerData( channel ), certificateValidator.ServerCertificate ), expectedGuid );
+                    return CheckExpectedGuid( CheckCertificate( GetServerData( channel, () => certificateValidator.ServerCertificate ), certificateValidator.ServerCertificate ), expectedGuid );
                 }
                 catch(Exception e)
                 {
@@ -258,19 +258,26 @@ namespace Tecan.Sila2.Discovery
             return Connect( $"{host}:{port}", null, null, !host.StartsWith( "http" ) );
         }
 
+        /// <summary>
+        /// Load all server properties 
+        /// </summary>
+        protected ServerData GetServerData( GrpcChannel channel, Func<X509Certificate2> certificate )
+        {
+            var clientChannel = new SilaChannel(channel);
+            var silaService = new SiLAServiceClient(clientChannel, _executionManager);
+            var config = GetServerConfig(silaService);
+            var info = GetServerInfo(silaService);
+            var features = GetImplementedFeatures(silaService);
+            var server = new ServerData(config, info, features, clientChannel, certificate?.Invoke());
+            return server;
+        }
 
         /// <summary>
         /// Load all server properties 
         /// </summary>
         public ServerData GetServerData( GrpcChannel channel )
         {
-            var clientChannel = new SilaChannel( channel );
-            var silaService = new SiLAServiceClient( clientChannel, _executionManager );
-            var config = GetServerConfig( silaService );
-            var info = GetServerInfo( silaService );
-            var features = GetImplementedFeatures( silaService );
-            var server = new ServerData( config, info, features, clientChannel );
-            return server;
+            return GetServerData( channel, null );
         }
 
         private static List<Feature> GetImplementedFeatures( ISiLAService silaService )

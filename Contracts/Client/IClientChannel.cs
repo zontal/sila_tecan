@@ -16,6 +16,11 @@ namespace Tecan.Sila2.Client
         ChannelState State { get; }
 
         /// <summary>
+        /// Determines whether the client channel was initiated by the server
+        /// </summary>
+        bool IsServerInitiated { get; }
+
+        /// <summary>
         /// Reads a property through the channel
         /// </summary>
         /// <typeparam name="T">The data transfer object type of the property response</typeparam>

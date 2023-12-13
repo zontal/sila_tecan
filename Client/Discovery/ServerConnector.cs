@@ -57,10 +57,10 @@ namespace Tecan.Sila2.Discovery
             _loggingChannel.Info( $"Connecting to {target}" );
             if(details == null || !details.TryGetValue( "encrypted", out var encryption ) || encryption != "false")
             {
-                string certificate = null;
+                X509Certificate2 certificate = null;
                 VerifyPeerCallback verify = context =>
                 {
-                    certificate = context.PeerPem;
+                    certificate = ExtractCertificate(context.PeerPem);
                     return true;
                 };
                 if(details != null && details.ContainsKey( "ca0" ))
@@ -69,8 +69,8 @@ namespace Tecan.Sila2.Discovery
                     {
                         var ca = RestoreCa( details );
                         var channel = new Channel( target, new SslCredentials( ca, null, verify ), _defaultChannelOptions );
-                        var server = GetServerData( channel );
-                        return CheckExpectedGuid( CheckCertificate( server, ExtractCertificate( certificate ) ), expectedGuid );
+                        var server = GetServerData( channel, () => certificate );
+                        return CheckExpectedGuid( CheckCertificate( server, certificate ), expectedGuid );
                     }
                     catch(Exception e)
                     {
@@ -83,7 +83,7 @@ namespace Tecan.Sila2.Discovery
                     try
                     {
                         var channel = new Channel( target, new SslCredentials( null, null, verify ), _defaultChannelOptions );
-                        return CheckExpectedGuid( CheckCertificate( GetServerData( channel ), ExtractCertificate( certificate ) ), expectedGuid );
+                        return CheckExpectedGuid( CheckCertificate( GetServerData( channel, () => certificate ), certificate ), expectedGuid );
                     }
                     catch(Exception e)
                     {
@@ -240,12 +240,20 @@ namespace Tecan.Sila2.Discovery
         /// </summary>
         public ServerData GetServerData( Channel channel )
         {
-            var clientChannel = new GrpcChannel( channel );
-            var silaService = new SiLAServiceClient( clientChannel, _executionManager );
-            var config = GetServerConfig( silaService );
-            var info = GetServerInfo( silaService );
-            var features = GetImplementedFeatures( silaService );
-            var server = new ServerData( config, info, features, clientChannel );
+            return GetServerData( channel, null );
+        }
+
+        /// <summary>
+        /// Load all server properties 
+        /// </summary>
+        public ServerData GetServerData(Channel channel, Func<X509Certificate2> serverCertificate)
+        {
+            var clientChannel = new GrpcChannel(channel);
+            var silaService = new SiLAServiceClient(clientChannel, _executionManager);
+            var config = GetServerConfig(silaService);
+            var info = GetServerInfo(silaService);
+            var features = GetImplementedFeatures(silaService);
+            var server = new ServerData(config, info, features, clientChannel, serverCertificate?.Invoke());
             return server;
         }
 

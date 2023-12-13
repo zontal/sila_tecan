@@ -5,6 +5,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using Tecan.Sila2.Client;
 using Tecan.Sila2.Discovery;
@@ -41,23 +42,35 @@ namespace Tecan.Sila2.ServerPooling
 
         private Task ConnectServer( IAsyncStreamReader<SilaServerMessage> requestStream, IServerStreamWriter<SilaClientMessage> responseStream, ServerCallContext context )
         {
-            var bufferedWriter = new BufferedStreamWriter<SilaClientMessage>( responseStream );
-            var channel = new ServerConnection( bufferedWriter, requestStream, context.CancellationToken );
-            var runTask = Task.WhenAll( channel.Run(), bufferedWriter.StartWriting( channel.CancellationToken ) );
-            var server = CreateServerData( channel );
-            _pooledServers.Add( server );
-            ServerConnected?.Invoke( this, new ServerDataEventArgs( server ) );
+            var bufferedWriter = new BufferedStreamWriter<SilaClientMessage>(responseStream);
+            var channel = new ServerConnection(bufferedWriter, requestStream, context.CancellationToken);
+            var runTask = Task.WhenAll(channel.Run(), bufferedWriter.StartWriting(channel.CancellationToken));
+            X509Certificate2 certificate = ExtractCertificate(context);
+            var server = CreateServerData(channel, certificate);
+            _pooledServers.Add(server);
+            ServerConnected?.Invoke(this, new ServerDataEventArgs(server));
             return runTask;
         }
 
+        private static X509Certificate2 ExtractCertificate(ServerCallContext context)
+        {
+            try
+            {
+                return context.GetHttpContext()?.Connection?.ClientCertificate;
+            }
+            catch (InvalidOperationException)
+            {
+                return null;
+            }
+        }
 
-        private ServerData CreateServerData( IClientChannel channel )
+        private ServerData CreateServerData( IClientChannel channel, X509Certificate2 serverCertificate )
         {
             var silaService = new SiLAServiceClient( channel, _discoveryExecutionManager );
             var config = GetServerConfig( silaService );
             var info = GetServerInfo( silaService );
             var features = GetImplementedFeatures( silaService );
-            var server = new ServerData( config, info, features, channel );
+            var server = new ServerData( config, info, features, channel, serverCertificate );
             return server;
         }
 
