@@ -12,10 +12,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Tecan.Sila2;
+using Tecan.Sila2.Discovery;
 using Tecan.Sila2.Logging;
 using Tecan.Sila2.Security;
 using Tecan.Sila2.Server;
 using Tecan.Sila2.Server.Binary;
+using Tecan.Sila2.Server.ConnectionConfiguration;
 using Tecan.Sila2.Server.ServerPooling;
 
 namespace Microsoft.Extensions.DependencyInjection
@@ -115,6 +117,25 @@ namespace Microsoft.Extensions.DependencyInjection
         {
             var loggerFactory = serviceProvider.GetRequiredService<ILoggerFactory>();
             LogManager.Adapter = new AspNetAdapter( loggerFactory );
+        }
+
+        /// <summary>
+        /// Adds the default components for SiLA2
+        /// </summary>
+        /// <param name="services">The service collection to which the SiLA2 services shall be added to</param>
+        public static void AddSila2Components(this IServiceCollection services)
+        {
+            services.TryAddSingleton<SiLAServer, SiLAServer>();
+            services.TryAddSingleton<ISiLAServer>(sp => sp.GetRequiredService<SiLAServer>());
+            services.TryAddSingleton<ISiLAService>(sp => sp.GetRequiredService<SiLAServer>());
+            services.TryAddSingleton<IConnectionConfigurationService, ConnectionConfigurationService>();
+            services.TryAddEnumerable(ServiceDescriptor.Singleton<IRequestInterceptor, CheckNoMetadataAllowedInterceptor>());
+            services.TryAddEnumerable(ServiceDescriptor.Singleton<IFeatureProvider, SiLAServiceProvider>());
+            services.TryAddEnumerable(ServiceDescriptor.Singleton<IFeatureProvider, ConnectionConfigurationServiceProvider>());
+            services.TryAddSingleton<IServerCertificateProvider, FileCertificateProvider>();
+            services.TryAddSingleton<IConfigurationStore, FileConfigurationStore>();
+            services.TryAddSingleton<IServerPoolConnectionFactory, DefaultServerPoolConnectionFactory>();
+            services.TryAddSingleton<IFileManagement, FileManagement>();
         }
 
         private sealed class ServiceMethodProvider<TService> : IServiceMethodProvider<TService> where TService : class

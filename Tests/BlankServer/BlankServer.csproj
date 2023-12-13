@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\..\Interoperability\InteropServer\BasicDataTypesTest\BasicDataTypesTest.cs" Link="BasicDataTypesTest.cs" />
+    <Compile Include="..\..\Interoperability\InteropServer\BasicDataTypesTest\Dtos.cs" Link="Dtos.cs" />
+    <Compile Include="..\..\Interoperability\InteropServer\BasicDataTypesTest\Interface.cs" Link="Interface.cs" />
+    <Compile Include="..\..\Interoperability\InteropServer\BasicDataTypesTest\Provider.cs" Link="Provider.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="..\..\Interoperability\InteropServer\BasicDataTypesTest.sila.xml" Link="BasicDataTypesTest.sila.xml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Annotations\Annotations.csproj" />
+    <ProjectReference Include="..\..\Framework.NetCore\Framework.NetCore.csproj" />
+    <ProjectReference Include="..\..\Framework\Framework.csproj" />
+    <ProjectReference Include="..\..\Server.Core\Server.NetCore.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+
+</Project>

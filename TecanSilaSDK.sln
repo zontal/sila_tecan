@@ -140,6 +140,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DiscoveryTester", "Tests\Di
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InteropClient.NetCore", "Interoperability\InteropClient.NetCore\InteropClient.NetCore.csproj", "{3878C493-269F-4C6F-8E2C-CFBDE63B71E7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlankServer", "Tests\BlankServer\BlankServer.csproj", "{C9DDA7E4-04C3-4BFB-8EFA-BC3ABFDCF0B2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -314,6 +316,10 @@ Global
 		{3878C493-269F-4C6F-8E2C-CFBDE63B71E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3878C493-269F-4C6F-8E2C-CFBDE63B71E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3878C493-269F-4C6F-8E2C-CFBDE63B71E7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C9DDA7E4-04C3-4BFB-8EFA-BC3ABFDCF0B2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C9DDA7E4-04C3-4BFB-8EFA-BC3ABFDCF0B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C9DDA7E4-04C3-4BFB-8EFA-BC3ABFDCF0B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C9DDA7E4-04C3-4BFB-8EFA-BC3ABFDCF0B2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -359,6 +365,7 @@ Global
 		{D862A84F-CEFC-422E-A1B2-7491E1D03D17} = {C552BB03-C50A-4F7F-9B67-A080E13AF7C4}
 		{A7E98C31-80CA-47C3-B854-AA910C17F59A} = {D20F3DDF-CC13-45C3-95F5-F48B1EFFBB82}
 		{3878C493-269F-4C6F-8E2C-CFBDE63B71E7} = {C552BB03-C50A-4F7F-9B67-A080E13AF7C4}
+		{C9DDA7E4-04C3-4BFB-8EFA-BC3ABFDCF0B2} = {D20F3DDF-CC13-45C3-95F5-F48B1EFFBB82}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F2AE9C9D-34E5-4A2A-8AAA-5EEA105AF08F}
