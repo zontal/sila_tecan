@@ -148,9 +148,9 @@ namespace Tecan.Sila2.Server.ServiceDefinition
             where TRequest : class, ISilaRequestObject
             where TResponseDto : class
         {
-            var method = new Method<TRequest, CommandConfirmation>( MethodType.Unary, ServiceName, methodName, ProtobufMarshaller<TRequest>.Default, ProtobufMarshaller<CommandConfirmation>.Default );
+            var method = new Method<TRequest, CommandConfirmation>( MethodType.Unary, ServiceName, methodName, requestSerializer, ProtobufMarshaller<CommandConfirmation>.Default );
             var stateMethod = new Method<CommandExecutionUuid, ExecutionState>( MethodType.ServerStreaming, ServiceName, methodName + "_Info", ProtobufMarshaller<CommandExecutionUuid>.Default, ProtobufMarshaller<ExecutionState>.Default );
-            var resultMethod = new Method<CommandExecutionUuid, TResponseDto>( MethodType.Unary, ServiceName, methodName + "_Result", ProtobufMarshaller<CommandExecutionUuid>.Default, ProtobufMarshaller<TResponseDto>.Default );
+            var resultMethod = new Method<CommandExecutionUuid, TResponseDto>( MethodType.Unary, ServiceName, methodName + "_Result", ProtobufMarshaller<CommandExecutionUuid>.Default, responseSerializer );
             var builder = new ObservableCommandHandler<TRequest, TResponse, TResponseDto>( _server, implementation, responseConverter, exceptionConverter, intermediateHandler, requestSerializer, responseSerializer );
             _serviceDefinitionBuilder.AddMethod( method, builder.Execute );
             _serviceDefinitionBuilder.AddMethod( stateMethod, builder.QueryState );
