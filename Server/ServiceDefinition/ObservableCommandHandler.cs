@@ -136,7 +136,7 @@ namespace Tecan.Sila2.Server.ServiceDefinition
         {
             try
             {
-                var executionId = _server.AddObservableCommandExecution( request.CommandIdentifier, _implementation?.Invoke( request ), new MetadataRepository( context ) );
+                var executionId = _server.AddObservableCommandExecution( request.CommandIdentifier, () => _implementation?.Invoke( request ), new MetadataRepository( context ) );
                 return Task.FromResult( new CommandConfirmation( executionId ) );
             }
             catch(CommandExecutionRejectedException)
@@ -168,7 +168,7 @@ namespace Tecan.Sila2.Server.ServiceDefinition
             var request = _requestMarshaller.Deserializer( parameters.Parameters );
             try
             {
-                var executionId = _server.AddObservableCommandExecution( request.CommandIdentifier, _implementation?.Invoke( request ), parameters );
+                var executionId = _server.AddObservableCommandExecution( request.CommandIdentifier, () => _implementation?.Invoke( request ), parameters );
                 await responseWriter.WriteAsync( new SilaServerMessage
                 {
                     RequestUuid = message.RequestUuid,

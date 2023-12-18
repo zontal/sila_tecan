@@ -363,15 +363,15 @@ namespace Tecan.Sila2.Server
         /// Registers an observable command execution
         /// </summary>
         /// <param name="commandIdentifier">The unique identifier of the command that shall be executed</param>
-        /// <param name="command">The observable command</param>
+        /// <param name="commandFactory">The observable command</param>
         /// <param name="metadataRepository">The metadata entries to consider for the command</param>
         /// <returns></returns>
-        public string AddObservableCommandExecution( string commandIdentifier, IObservableCommand command, IMetadataRepository metadataRepository )
+        public string AddObservableCommandExecution( string commandIdentifier, Func<IObservableCommand> commandFactory, IMetadataRepository metadataRepository )
         {
             var interceptions = _requestPipeline.RequestInterceptions( commandIdentifier, metadataRepository );
             // create command ID
             var commandExecutionId = Guid.NewGuid().ToString();
-
+            var command = commandFactory();
             var execution = new ObservableCommandExecution( commandExecutionId, commandIdentifier, command, interceptions );
 
             lock(_commandExecutions)
