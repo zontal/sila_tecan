@@ -51,7 +51,11 @@ namespace Tecan.Sila2.Server.ServiceDefinition
             }
             catch(OperationCanceledException exception)
             {
-                throw _server.ErrorHandling.CreateCancellationError( exception.Message );
+                // if the cancellation was requested by the client, do not send a cancellation error
+                if (!cancellationToken.IsCancellationRequested)
+                {
+                    throw _server.ErrorHandling.CreateCancellationError(exception.Message);
+                }
             }
             catch(Exception exception)
             {
