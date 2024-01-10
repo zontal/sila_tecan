@@ -145,6 +145,9 @@
         <Compile Update="SilaService\ServiceReference.cs">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Compile>
+        <Compile Update="SilaService\SilaService.cs">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Compile>
         <Compile Update="TemperatureController\ClientReference.cs">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Compile>

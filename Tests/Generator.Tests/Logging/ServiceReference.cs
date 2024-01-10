@@ -29,7 +29,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         Tecan.Sila2.IIntermediateObservableCommand<LogEntry> ListenForLogEntries();
     }
     
-    public struct LogEntryData
+    public class LogEntryData
     {
         
         private string _key;
@@ -95,7 +95,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
     /// <summary>
     /// Describes a log entry
     /// </summary>
-    public struct LogEntry
+    public class LogEntry
     {
         
         private string _message;

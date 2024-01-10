@@ -6,7 +6,7 @@ namespace Tecan.Sila2
     /// <summary>
     /// Annotates a property or type with the maximal (inclusive) allowed value
     /// </summary>
-    [AttributeUsage( AttributeTargets.Property | AttributeTargets.Struct | AttributeTargets.Parameter | AttributeTargets.ReturnValue )]
+    [AttributeUsage( AttributeTargets.Property | AttributeTargets.Struct | AttributeTargets.Parameter | AttributeTargets.ReturnValue | AttributeTargets.Class)]
     public class MaximalInclusiveDateAttribute : Attribute
     {
         /// <summary>

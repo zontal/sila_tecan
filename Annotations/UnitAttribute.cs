@@ -5,7 +5,7 @@ namespace Tecan.Sila2
     /// <summary>
     /// Specifies the unit of the annotated property or type
     /// </summary>
-    [AttributeUsage(AttributeTargets.Property | AttributeTargets.Struct | AttributeTargets.Parameter | AttributeTargets.ReturnValue)]
+    [AttributeUsage(AttributeTargets.Property | AttributeTargets.Struct | AttributeTargets.Parameter | AttributeTargets.ReturnValue | AttributeTargets.Class)]
     public class UnitAttribute : Attribute
     {
         /// <summary>

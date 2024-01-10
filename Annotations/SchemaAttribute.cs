@@ -5,7 +5,7 @@ namespace Tecan.Sila2
     /// <summary>
     /// Defines that the value of the given property or class has to conform to a given schema
     /// </summary>
-    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Parameter | AttributeTargets.ReturnValue | AttributeTargets.Struct | AttributeTargets.Property)]
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Parameter | AttributeTargets.ReturnValue | AttributeTargets.Struct | AttributeTargets.Property | AttributeTargets.Class)]
     public class SchemaAttribute : Attribute
     {
         /// <summary>

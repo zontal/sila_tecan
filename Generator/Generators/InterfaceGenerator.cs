@@ -162,7 +162,7 @@ namespace Tecan.Sila2.Generator.Generators
             {
                 Attributes = MemberAttributes.Public,
                 TypeAttributes = TypeAttributes.Public,
-                IsStruct = true
+                IsClass = true
             };
             structure.WriteDocumentation( summary );
             ApplyDataType( dataType, structure );

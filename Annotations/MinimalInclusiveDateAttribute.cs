@@ -6,7 +6,7 @@ namespace Tecan.Sila2
     /// <summary>
     /// Annotates a property or type with the minimum (inclusive) allowed value
     /// </summary>
-    [AttributeUsage( AttributeTargets.Property | AttributeTargets.Struct | AttributeTargets.Parameter | AttributeTargets.ReturnValue )]
+    [AttributeUsage( AttributeTargets.Property | AttributeTargets.Struct | AttributeTargets.Parameter | AttributeTargets.ReturnValue | AttributeTargets.Class)]
     public class MinimalInclusiveDateAttribute : Attribute
     {
         /// <summary>

@@ -5,7 +5,7 @@ namespace Tecan.Sila2
     /// <summary>
     /// Annotates a property or type with the constraint that the value must follow a specific pattern
     /// </summary>
-    [AttributeUsage(AttributeTargets.Property | AttributeTargets.Struct | AttributeTargets.Parameter | AttributeTargets.ReturnValue)]
+    [AttributeUsage(AttributeTargets.Property | AttributeTargets.Struct | AttributeTargets.Parameter | AttributeTargets.ReturnValue | AttributeTargets.Class)]
     public class PatternConstraintAttribute : Attribute
     {
         /// <summary>

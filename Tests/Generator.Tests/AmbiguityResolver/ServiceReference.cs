@@ -28,7 +28,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
     /// <summary>
     /// Describes a class which has ambiguous parameter
     /// </summary>
-    public struct AmbiguousClass
+    public class AmbiguousClass
     {
         
         private string _message;

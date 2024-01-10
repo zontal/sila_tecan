@@ -100,7 +100,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
     /// Uniform Resource Locator as defined in RFC 1738.
     /// </summary>
     [Tecan.Sila2.PatternConstraintAttribute("https?://.+")]
-    public struct Url
+    public class Url
     {
         
         private string _value;
@@ -129,7 +129,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
     /// The content of a Feature Definition conforming with the XML Schema.
     /// </summary>
     [Tecan.Sila2.SchemaAttribute("https://gitlab.com/SiLA2/sila_base/raw/master/schema/FeatureDefinition.xsd", Tecan.Sila2.SchemaType.Xml)]
-    public struct FeatureDefinition
+    public class FeatureDefinition
     {
         
         private string _value;
@@ -159,7 +159,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
     /// </summary>
     [Tecan.Sila2.MaximalLengthAttribute(255)]
     [Tecan.Sila2.SilaIdentifierTypeAttribute(Tecan.Sila2.IdentifierType.FeatureIdentifier)]
-    public struct FeatureIdentifier
+    public class FeatureIdentifier
     {
         
         private string _value;

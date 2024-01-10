@@ -5,7 +5,7 @@ namespace Tecan.Sila2
     /// <summary>
     /// Annotates a property or type with the maximal allowed string length
     /// </summary>
-    [AttributeUsage(AttributeTargets.Property | AttributeTargets.Struct | AttributeTargets.Parameter | AttributeTargets.ReturnValue)]
+    [AttributeUsage(AttributeTargets.Property | AttributeTargets.Struct | AttributeTargets.Parameter | AttributeTargets.ReturnValue | AttributeTargets.Class)]
     public class MaximalLengthAttribute : Attribute
     {
         /// <summary>

@@ -7,7 +7,7 @@ namespace Tecan.Sila2
     /// <summary>
     /// Restricts the content type of the given property
     /// </summary>
-    [AttributeUsage( AttributeTargets.Property | AttributeTargets.Parameter | AttributeTargets.ReturnValue )]
+    [AttributeUsage( AttributeTargets.Property | AttributeTargets.Parameter | AttributeTargets.ReturnValue | AttributeTargets.Class)]
     public class ContentTypeAttribute : Attribute
     {
         /// <summary>
