@@ -743,7 +743,8 @@ namespace Tecan.Sila2.Generator.Generators
             var propertyType = _nameProvider.GetMemberType( featureProperty.Identifier )
                                ?? _translationProvider.ExtractType( featureProperty.DataType, featureProperty.Identifier );
             var method = _nameProvider.GetNonstandardMethod( featureProperty );
-            if(method == null && (spec == null || !spec.AsMethodSpecified || !spec.AsMethod))
+            var lazy = spec == null || !spec.LazySpecified ? ClientGeneratorConfig.LazyUnobservableProperties : spec.Lazy;
+            if (method == null && (spec == null || !spec.AsMethodSpecified || !spec.AsMethod))
             {
                 var property = new CodeMemberProperty()
                 {
@@ -778,7 +779,7 @@ namespace Tecan.Sila2.Generator.Generators
                 {
                     if(featureProperty.Observable == FeaturePropertyObservable.No)
                     {
-                        GenerateClientStaticProperty( feature, featureProperty, spec == null || !spec.LazySpecified || spec.Lazy, spec?.Mapping?.ValueExpression, client, initLazyRequests, propertyType, property.GetStatements );
+                        GenerateClientStaticProperty( feature, featureProperty, lazy, spec?.Mapping?.ValueExpression, client, initLazyRequests, propertyType, property.GetStatements );
                     }
                     else
                     {

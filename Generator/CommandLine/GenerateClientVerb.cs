@@ -6,6 +6,7 @@ using System.Reflection;
 using CommandLine;
 using Microsoft.Build.Evaluation;
 using Tecan.Sila2.Generator.Contracts;
+using Tecan.Sila2.Generator.Generators;
 using Tecan.Sila2.Generator.Helper;
 
 namespace Tecan.Sila2.Generator.CommandLine
@@ -42,9 +43,17 @@ namespace Tecan.Sila2.Generator.CommandLine
         [Option( 'i', "adjust-to-interface", HelpText = "An interface that the code generator should adjust to. If not set, the generator will create a new interface based on the feature." )]
         public string AdjustToInterface { get; set; }
 
+
+        /// <summary>
+        /// If set, the generated code will query unobservable properties every time
+        /// </summary>
+        [Option('l', "no-lazy-properties", HelpText = "If set, the generated code will query unobservable properties every time", Required = false )]
+        public bool EagerProperties { get; set; }
+
         /// <inheritdoc />
         public override void Execute( CompositionContainer container )
         {
+            ClientGeneratorConfig.LazyUnobservableProperties = !EagerProperties;
             var channel = SetupLogging( container );
             var feature = FeatureSerializer.Load( Path.GetFullPath( FeaturePath ) );
             var directory = Path.GetDirectoryName( ProviderProject );
@@ -52,7 +61,7 @@ namespace Tecan.Sila2.Generator.CommandLine
             {
                 var unit = container.GetExportedValue<IInterfaceGenerator>().GenerateInterfaceUnit( feature, Namespace ?? feature.Namespace );
                 CodeGenerationHelper.GenerateCSharp( unit, Path.Combine( directory, feature.Identifier, $"I{feature.Identifier}.cs" ) );
-#if !NETCOREAPP3_1
+#if !NETCOREAPP
                 if(Namespace == null)
                 {
                     channel.Debug( "Finding root namespace in project file" );
@@ -64,7 +73,7 @@ namespace Tecan.Sila2.Generator.CommandLine
             else
             {
                 var type = Type.GetType( AdjustToInterface, throwOnError: false );
-#if !NETCOREAPP3_1
+#if !NETCOREAPP
                 if(type == null)
                 {
                     channel.Debug( "Finding output path and assembly name in project file" );
