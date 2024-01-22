@@ -75,6 +75,14 @@ namespace Tecan.Sila2.DynamicClient.Test
         }
 
         [Test]
+        public void DynamicSerializer_EmptyStringList_RoundtripWorks()
+        {
+            var list = new List<string>();
+            var expectedBytes = ByteSerializer.ToByteArray(list.Select(it => new StringDto(it)).ToList());
+            Assert.That(Roundtrip(new DataTypeType { Item = new ListType { DataType = new DataTypeType { Item = BasicType.String } } }, list, expectedBytes), Is.Null.Or.EquivalentTo(list));
+        }
+
+        [Test]
         public void DynamicSerializer_StringList_RoundtripWorks()
         {
             var list = new List<string>()

@@ -199,7 +199,7 @@ namespace Tecan.Sila2.DynamicClient
             if(reader.Position == 0)
             {
                 readSubItems = true;
-                reader.ReadFieldHeader();
+                if (reader.ReadFieldHeader() == 0) return;
                 token = ProtoReader.StartSubItem( reader );
             }
             var field = reader.FieldNumber;

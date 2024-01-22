@@ -29,19 +29,19 @@ namespace Tecan.Sila2.Interop.Server.ListDataTypeTest
         [return: SilaIdentifier( "ReceivedValues" )]
         public ICollection<long> EchoIntegerList( ICollection<long> integerList )
         {
-            throw new NotImplementedException();
+            return integerList;
         }
 
         [return: SilaIdentifier( "ReceivedValues" )]
         public ICollection<string> EchoStringList( ICollection<string> stringList )
         {
-            throw new NotImplementedException();
+            return stringList;
         }
 
         [return: SilaIdentifier( "ReceivedValues" )]
         public ICollection<TestStructure> EchoStructureList( ICollection<TestStructure> structureList )
         {
-            throw new NotImplementedException();
+            return structureList;
         }
     }
 }
