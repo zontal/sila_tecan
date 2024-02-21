@@ -1,9 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
+using System.Linq;
+using System.Net;
 using System.Text;
 using CommandLine;
 using Common.Logging;
@@ -48,6 +51,9 @@ namespace Tecan.Sila2.Generator.CommandLine
         [Value( 0, HelpText = "The target server UUID for which the certificate is issued.", Required = true )]
         public string TargetName { get; set; }
 
+        [Option('n', "hosts", HelpText = "Subject alternative names to put into the certificate")]
+        public IEnumerable<string> Hosts { get; set; }
+
         public override void Execute( CompositionContainer container )
         {
             var channel = SetupLogging( container );
@@ -88,19 +94,32 @@ namespace Tecan.Sila2.Generator.CommandLine
                 }
                 writer.WriteLine( "distinguished_name = req_distinguished_name" );
                 writer.WriteLine( "[req_distinguished_name]" );
-                if(!isCa)
+                if (!isCa)
                 {
-                    writer.WriteLine( "[v3_req]" );
-                    writer.WriteLine( "basicConstraints = CA:FALSE" );
-                    writer.WriteLine( "keyUsage = digitalSignature, keyEncipherment" );
-                    if(!string.IsNullOrEmpty( serverUUID ))
+                    writer.WriteLine("[v3_req]");
+                    writer.WriteLine("basicConstraints = CA:FALSE");
+                    writer.WriteLine("keyUsage = digitalSignature, keyEncipherment");
+                    if (!string.IsNullOrEmpty(serverUUID))
                     {
-                        writer.WriteLine( $"1.3.6.1.4.1.58583=critical,ASN1:UTF8String:{serverUUID}" );
-                        writer.WriteLine( $"1.3.6.1.4.1.58583=ASN1:UTF8String:{serverUUID}" );
+                        writer.WriteLine($"1.3.6.1.4.1.58583=critical,ASN1:UTF8String:{serverUUID}");
+                        writer.WriteLine($"1.3.6.1.4.1.58583=ASN1:UTF8String:{serverUUID}");
+                    }
+                    if (Hosts != null)
+                    {
+                        writer.WriteLine("subjectAltName = " + string.Join(",", Hosts.Select(PrintSANHost)));
                     }
                 }
             }
             return fileName;
+        }
+
+        private string PrintSANHost(string host)
+        {
+            if (IPAddress.TryParse(host, out _))
+            {
+                return "IP:" + host;
+            }
+            return "DNS:" + host;
         }
 
         private void EnsureCaExists()
