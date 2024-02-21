@@ -15,7 +15,7 @@ namespace Tecan.Sila2.Server.Binary
     /// </summary>
     public class BinaryDownload : IBinaryDownloadHandler
 #if ManagedGrpc
-        , IServiceHandler<ISiLAServer>
+        , IServiceHandler<ISiLAServer, Grpc.AspNetCore.Server.Model.ServiceMethodProviderContext<ISiLAServer>>
 #endif
     {
         internal const uint MaxChunkSize = 2 * 1024 * 1024;

@@ -38,7 +38,8 @@ namespace Tecan.Sila2.Server
         /// <inheritdoc />
         public void Delete( string binaryTransferUUID, bool isUploaded )
         {
-            LocateFileAndCheck( binaryTransferUUID ).Delete();
+            var file = LocateFile(binaryTransferUUID);
+            if (file.Exists) file.Delete();
         }
 
         /// <inheritdoc />

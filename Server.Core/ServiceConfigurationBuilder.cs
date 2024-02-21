@@ -1,4 +1,5 @@
 ﻿using Common.Logging;
+using Grpc.AspNetCore.Server.Model;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using System;
@@ -17,16 +18,16 @@ namespace Tecan.Sila2.Server
     /// <summary>
     /// Denotes a service configuration builder for Kestrel
     /// </summary>
-    public class ServiceConfigurationBuilder : IServiceConfigurationBuilder<ISiLAServer>
+    public class ServiceConfigurationBuilder : IServiceConfigurationBuilder<ISiLAServer, ServiceMethodProviderContext<ISiLAServer>>
     {
-        private readonly List<IServiceHandler<ISiLAServer>> _handlers = new List<IServiceHandler<ISiLAServer>>();
+        private readonly List<IServiceHandler<ISiLAServer, ServiceMethodProviderContext<ISiLAServer>>> _handlers = new List<IServiceHandler<ISiLAServer, ServiceMethodProviderContext<ISiLAServer>>>();
         private readonly Dictionary<IPAddress, int> _networkAddresses = new Dictionary<IPAddress, int>();
         private readonly IServerCertificateProvider _certificateProvider;
         private readonly ILog _loggingChannel = LogManager.GetLogger<ServiceConfigurationBuilder>();
         private readonly Dictionary<string, string> _announcementDetails = new Dictionary<string, string>();
 
         /// <inheritdoc />
-        public IEnumerable<IServiceHandler<ISiLAServer>> ServiceHandlers => _handlers;
+        public IEnumerable<IServiceHandler<ISiLAServer, ServiceMethodProviderContext<ISiLAServer>>> ServiceHandlers => _handlers;
         private X509Certificate2 _certificate;
 
         /// <summary>
@@ -44,7 +45,7 @@ namespace Tecan.Sila2.Server
         public IReadOnlyDictionary<IPAddress, int> NetworkAddresses => _networkAddresses;
 
         /// <inheritdoc />
-        public void AddServiceHandler( IServiceHandler<ISiLAServer> serviceHandler )
+        public void AddServiceHandler( IServiceHandler<ISiLAServer, ServiceMethodProviderContext<ISiLAServer>> serviceHandler )
         {
             _handlers.Add( serviceHandler );
         }

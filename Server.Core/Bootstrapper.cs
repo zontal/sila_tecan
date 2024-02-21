@@ -8,6 +8,7 @@ using System.Reflection;
 using System.Text;
 using CommandLine;
 using Common.Logging;
+using Grpc.AspNetCore.Server.Model;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -106,14 +107,14 @@ namespace Tecan.Sila2.Server
                         _container.ComposeExportedValue( startup );
                         var certificateProvider = _container.GetExportedValue<IServerCertificateProvider>();
                         configurationBuilder = new ServiceConfigurationBuilder( certificateProvider );
-                        _container.ComposeExportedValue<IServiceConfigurationBuilder<ISiLAServer>>( configurationBuilder );
+                        _container.ComposeExportedValue<IServiceConfigurationBuilder<ISiLAServer, ServiceMethodProviderContext<ISiLAServer>>>( configurationBuilder );
                         _server = _container.GetExportedValue<ISiLAServer>();
 
                         _server.StartServer();
 
                         services.AddSingleton( certificateProvider );
                         services.AddSingleton( _server );
-                        services.AddSingleton<IServiceConfigurationBuilder<ISiLAServer>>( configurationBuilder );
+                        services.AddSingleton<IServiceConfigurationBuilder<ISiLAServer, ServiceMethodProviderContext<ISiLAServer>>>( configurationBuilder );
                         var features = _container.GetExportedValues<IFeatureProvider>();
                         foreach(var featureProvider in features)
                         {

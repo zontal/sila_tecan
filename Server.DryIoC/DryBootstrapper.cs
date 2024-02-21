@@ -1,6 +1,7 @@
 ﻿using CommandLine;
 using Common.Logging;
 using DryIoc;
+using Grpc.AspNetCore.Server.Model;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Routing;
@@ -125,7 +126,7 @@ namespace Tecan.Sila2.Server
                     _channel = LogManager.GetLogger<Bootstrapper>();
                 }
 
-                configurationBuilder = _host.Services.GetRequiredService<IServiceConfigurationBuilder<ISiLAServer>>() as ServiceConfigurationBuilder;
+                configurationBuilder = _host.Services.GetRequiredService<IServiceConfigurationBuilder<ISiLAServer, ServiceMethodProviderContext<ISiLAServer>>>() as ServiceConfigurationBuilder;
                 _server = _host.Services.GetRequiredService<ISiLAServer>();
 
                 _host.Start();

@@ -18,7 +18,7 @@ namespace Tecan.Sila2.ServerPooling
     /// </summary>
     [Export( typeof( IServerPool ) )]
     [PartCreationPolicy( CreationPolicy.Shared )]
-    public class PoolServer : IServerPool, IServiceHandler<IServerPool>
+    public class PoolServer : IServerPool, IServiceHandler<IServerPool, ServiceMethodProviderContext<IServerPool>>
     {
         private readonly ConcurrentBag<ServerData> _pooledServers = new ConcurrentBag<ServerData>();
 
@@ -29,7 +29,7 @@ namespace Tecan.Sila2.ServerPooling
         /// </summary>
         /// <param name="serverProvider">The actual gRPC server</param>
         [ImportingConstructor]
-        public PoolServer( IServiceConfigurationBuilder<IServerPool> serverProvider )
+        public PoolServer( IServiceConfigurationBuilder<IServerPool, ServiceMethodProviderContext<IServerPool>> serverProvider )
         {
             serverProvider.AddServiceHandler( this );
         }

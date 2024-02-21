@@ -26,6 +26,7 @@ namespace Tecan.Sila2.Security
         /// <returns>A X509 certificate that can be used for the server</returns>
         public static X509Certificate2 CreateServerCertificate( X509Certificate2 baseCertificate, RSA key, Guid? serverGuid )
         {
+#if NET6_0_OR_GREATER
             var request = new CertificateRequest( "CN=SiLA2", key, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1 );
 
             request.CertificateExtensions.Add(
@@ -68,6 +69,9 @@ namespace Tecan.Sila2.Security
             {
                 return request.CreateSelfSigned( DateTimeOffset.UtcNow.Subtract( TimeSpan.FromMinutes( 1 ) ), DateTimeOffset.UtcNow.AddYears( 100 ) );
             }
+#else
+            return null;
+#endif
         }
 
         /// <summary>
@@ -77,6 +81,7 @@ namespace Tecan.Sila2.Security
         /// <returns>A certificate that can be used as CA</returns>
         public static X509Certificate2 CreateRootCertificate( RSA key )
         {
+#if NET6_0_OR_GREATER
             var request = new CertificateRequest( "CN=Root", key, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1 );
             request.CertificateExtensions.Add(
                 new X509BasicConstraintsExtension( true, false, 0, true ) );
@@ -85,6 +90,9 @@ namespace Tecan.Sila2.Security
                     X509KeyUsageFlags.KeyCertSign,
                     true ) );
             return request.CreateSelfSigned( DateTime.Now.Subtract( TimeSpan.FromMinutes( 1 ) ), DateTime.Now.AddYears( 100 ) );
+#else
+            return null;
+#endif
         }
 
 
@@ -99,6 +107,7 @@ namespace Tecan.Sila2.Security
         public static X509Certificate2 GetServerCertificate( CertificateContext context, Guid? serverUuid, out X509Certificate2 certificateAuthority )
         {
             certificateAuthority = null;
+#if NET6_0_OR_GREATER
             if(context != null)
             {
                 var key = RSA.Create();
@@ -147,15 +156,13 @@ namespace Tecan.Sila2.Security
                 }
                 return CompensateWindowsEpheralKeysProblem( CreateServerCertificate( null, key, serverUuid ) );
             }
-            else
-            {
-                return null;
-            }
+#endif
+            return null;
         }
 
         private static X509Certificate2 CompensateWindowsEpheralKeysProblem( X509Certificate2 cert )
         {
-            if(RuntimeInformation.IsOSPlatform( OSPlatform.Windows ))
+            if(cert == null || RuntimeInformation.IsOSPlatform( OSPlatform.Windows ))
             {
                 // SSLStream on Windows throws with ephemeral key sets
                 // workaround from https://github.com/dotnet/runtime/issues/23749#issuecomment-388231655
@@ -183,8 +190,8 @@ namespace Tecan.Sila2.Security
             return Convert.FromBase64String( pem[data.Base64Data] );
 #else
             var lines = pem.Split( '\n' );
-            var startIndex = lines[0].StartsWith( '-' ) ? 1 : 0;
-            var endIndex = lines[lines.Length - 1].StartsWith( '-' ) ? 1 : 0;
+            var startIndex = lines[0].StartsWith( "-" ) ? 1 : 0;
+            var endIndex = lines[lines.Length - 1].StartsWith( "-" ) ? 1 : 0;
             var actualContent = string.Join( string.Empty, lines.Skip( startIndex ).Take( lines.Length - startIndex - endIndex ) );
             return Convert.FromBase64String( actualContent );
 #endif

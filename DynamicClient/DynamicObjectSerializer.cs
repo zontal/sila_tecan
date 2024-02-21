@@ -329,7 +329,7 @@ namespace Tecan.Sila2.DynamicClient
                     ProtoWriter.WriteString( (string)value, writer );
                     break;
                 case BasicType.Integer:
-                    ProtoWriter.WriteFieldHeader( 1, WireType.Variant, writer );
+                    ProtoWriter.WriteFieldHeader( 1, WireType.Varint, writer );
                     ProtoWriter.WriteInt64( (long)value, writer );
                     break;
                 case BasicType.Real:
@@ -337,7 +337,7 @@ namespace Tecan.Sila2.DynamicClient
                     ProtoWriter.WriteDouble( (double)value, writer );
                     break;
                 case BasicType.Boolean:
-                    ProtoWriter.WriteFieldHeader( 1, WireType.Variant, writer );
+                    ProtoWriter.WriteFieldHeader( 1, WireType.Varint, writer );
                     ProtoWriter.WriteBoolean( (bool)value, writer );
                     break;
                 case BasicType.Time:

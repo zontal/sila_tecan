@@ -2,7 +2,7 @@
 
     <PropertyGroup>
         <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <TargetFrameworks>net6.0;net8.0</TargetFrameworks>
+    <TargetFrameworks>net6.0;net8.0;netstandard2.0</TargetFrameworks>
         <AssemblyName>Tecan.Sila2.NetCore</AssemblyName>
         <RootNamespace>Tecan.Sila2</RootNamespace>
     </PropertyGroup>
@@ -13,8 +13,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Grpc.Core.Api" Version="2.51.0" />
-        <PackageReference Include="Grpc.AspNetCore.Server.ClientFactory" Version="2.51.0" />
+        <PackageReference Include="Grpc.Core.Api" Version="2.60.0" />
+        <PackageReference Include="Grpc.Net.ClientFactory" Version="2.60.0" />
     </ItemGroup>
 
     <ItemGroup>

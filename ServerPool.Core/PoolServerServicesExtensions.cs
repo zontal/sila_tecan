@@ -50,9 +50,9 @@ namespace Microsoft.Extensions.DependencyInjection
 
         private sealed class ServiceMethodProvider<TService> : IServiceMethodProvider<TService> where TService : class
         {
-            private readonly IServiceConfigurationBuilder<IServerPool> _serviceHandlerRepository;
+            private readonly IServiceConfigurationBuilder<IServerPool, ServiceMethodProviderContext<IServerPool>> _serviceHandlerRepository;
 
-            public ServiceMethodProvider( IServiceConfigurationBuilder<IServerPool> serviceHandlerRepository )
+            public ServiceMethodProvider( IServiceConfigurationBuilder<IServerPool, ServiceMethodProviderContext<IServerPool>> serviceHandlerRepository )
             {
                 _serviceHandlerRepository = serviceHandlerRepository;
             }

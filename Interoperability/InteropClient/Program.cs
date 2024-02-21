@@ -32,7 +32,7 @@ namespace Tecan.Sila2.Interop.Client
 {
     class Program
     {
-        private static IExecutionManagerFactory _executionManagerFactory;
+        private static IExecutionManagerFactory? _executionManagerFactory;
         private readonly IClientExecutionManager _executionManager;
         private readonly IClientChannel _channel;
 
@@ -52,7 +52,7 @@ namespace Tecan.Sila2.Interop.Client
                 new StringMetadataInterceptor(),
                 new TwoIntegersMetadataInterceptor(),
                 new BinaryTestStringInterceptor(),
-                new AuthenticationInterceptor(new AuthenticationHandler(), null, new Lazy<IExecutionManagerFactory>(() => _executionManagerFactory))
+                new AuthenticationInterceptor(new AuthenticationHandler(), null, new Lazy<IExecutionManagerFactory>(() => _executionManagerFactory!))
             });
 
             var connector = new ServerConnector( new DiscoveryExecutionManager() );
@@ -106,14 +106,14 @@ namespace Tecan.Sila2.Interop.Client
             }
         }
 
-        private T AssertException<T>( Action action, bool allowAggregate = false ) where T : Exception
+        private T? AssertException<T>( Action action, bool allowAggregate = false ) where T : Exception
         {
             try
             {
                 action();
                 Console.Error.WriteLine( "No exception raised" );
                 Environment.ExitCode = 1;
-                return default( T );
+                return default;
             }
             catch(T expectedException)
             {
@@ -125,17 +125,17 @@ namespace Tecan.Sila2.Interop.Client
                 {
                     return exc;
                 }
-                Console.Error.WriteLine($"Expected {typeof(T).Name}, but received {aggregateException.InnerException.GetType().Name}");
-                Console.Error.WriteLine(aggregateException.InnerException.Message);
+                Console.Error.WriteLine($"Expected {typeof(T).Name}, but received {aggregateException?.InnerException?.GetType().Name}");
+                Console.Error.WriteLine(aggregateException?.InnerException?.Message);
                 Environment.ExitCode = 1;
-                return default(T);
+                return default;
             }
             catch(Exception otherException)
             {
                 Console.Error.WriteLine( $"Expected {typeof( T ).Name}, but received {otherException.GetType().Name}" );
                 Console.Error.WriteLine( otherException.Message );
                 Environment.ExitCode = 1;
-                return default( T );
+                return default;
             }
         }
 

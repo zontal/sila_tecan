@@ -17,7 +17,7 @@ namespace Tecan.Sila2.Server.Binary
     /// </summary>
     public class BinaryUpload : IDisposable, IBinaryUploadHandler
 #if ManagedGrpc
-        , IServiceHandler<ISiLAServer>
+        , IServiceHandler<ISiLAServer, Grpc.AspNetCore.Server.Model.ServiceMethodProviderContext<ISiLAServer>>
 #endif
     {
         private readonly IFileManagement _fileManagement;
@@ -61,7 +61,9 @@ namespace Tecan.Sila2.Server.Binary
                         if(!fileUploadData.Value.Completion.Task.IsCompleted)
                         {
                             fileUploadData.Value.Completion.SetCanceled();
-                            _openStreams.TryRemove( fileUploadData.Key, out var stream );
+                        }
+                        if (_openStreams.TryRemove(fileUploadData.Key, out var stream))
+                        {
                             stream.FileStream.Dispose();
                         }
                         _fileManagement.Delete( fileUploadData.Key, true );

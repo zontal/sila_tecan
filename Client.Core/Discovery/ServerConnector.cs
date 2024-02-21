@@ -243,7 +243,7 @@ namespace Tecan.Sila2.Discovery
             while(details.TryGetValue( "ca" + line, out var caLine ))
             {
                 sb.Append( caLine );
-                if(!caLine.EndsWith( '\n' ) && !caLine.EndsWith( '\r' ))
+                if(!caLine.EndsWith( "\n" ) && !caLine.EndsWith( "\r" ))
                 {
                     sb.AppendLine();
                 }

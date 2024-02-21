@@ -8,6 +8,7 @@ using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
 using Common.Logging;
+using Grpc.AspNetCore.Server.Model;
 using Grpc.Core;
 using Grpc.Core.Interceptors;
 using Grpc.Net.Client;
@@ -41,7 +42,7 @@ namespace Tecan.Sila2.Server
         /// <param name="serviceHandlerRepository">A repository of service handlers</param>
         /// <param name="serverPoolConnectionFactory">A component that creates a callinvoker for a request to connect to a pool server</param>
         [ImportingConstructor]
-        public SiLAServer( ServerStartInformation startupInfo, IConfigurationStore configurationStore, [ImportMany] IEnumerable<IRequestInterceptor> interceptors, IFileManagement fileManagement, IServiceConfigurationBuilder<ISiLAServer> serviceHandlerRepository, IServerPoolConnectionFactory serverPoolConnectionFactory )
+        public SiLAServer( ServerStartInformation startupInfo, IConfigurationStore configurationStore, [ImportMany] IEnumerable<IRequestInterceptor> interceptors, IFileManagement fileManagement, IServiceConfigurationBuilder<ISiLAServer, ServiceMethodProviderContext<ISiLAServer>> serviceHandlerRepository, IServerPoolConnectionFactory serverPoolConnectionFactory )
         {
             _configurationStore = configurationStore;
             _upload = new BinaryUpload( fileManagement, this );

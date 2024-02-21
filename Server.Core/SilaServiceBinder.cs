@@ -12,9 +12,9 @@ namespace Tecan.Sila2.Server
     {
         private static readonly ILog _loggingChannel = LogManager.GetLogger<SilaServiceBinder>();
         private static readonly IList<object> _emptyMetadata = new List<object>().AsReadOnly();
-        private readonly IServiceConfigurationBuilder<ISiLAServer> _serviceHandlerRepository;
+        private readonly IServiceConfigurationBuilder<ISiLAServer, ServiceMethodProviderContext<ISiLAServer>> _serviceHandlerRepository;
 
-        public SilaServiceBinder( IServiceConfigurationBuilder<ISiLAServer> serviceHandlerRepository )
+        public SilaServiceBinder( IServiceConfigurationBuilder<ISiLAServer, ServiceMethodProviderContext<ISiLAServer>> serviceHandlerRepository )
         {
             _serviceHandlerRepository = serviceHandlerRepository;
         }
@@ -43,7 +43,7 @@ namespace Tecan.Sila2.Server
             _serviceHandlerRepository.AddServiceHandler( invoker );
         }
 
-        private class ClientStreamingHandler<TRequest, TResponse> : IServiceHandler<ISiLAServer>
+        private class ClientStreamingHandler<TRequest, TResponse> : IServiceHandler<ISiLAServer, ServiceMethodProviderContext<ISiLAServer>>
             where TRequest : class
             where TResponse : class
         {
@@ -76,7 +76,7 @@ namespace Tecan.Sila2.Server
             }
         }
 
-        private class DuplexStreamingHandler<TRequest, TResponse> : IServiceHandler<ISiLAServer>
+        private class DuplexStreamingHandler<TRequest, TResponse> : IServiceHandler<ISiLAServer, ServiceMethodProviderContext<ISiLAServer>>
             where TRequest : class
             where TResponse : class
         {
@@ -109,7 +109,7 @@ namespace Tecan.Sila2.Server
             }
         }
 
-        private class ServerStreamingHandler<TRequest, TResponse> : IServiceHandler<ISiLAServer>
+        private class ServerStreamingHandler<TRequest, TResponse> : IServiceHandler<ISiLAServer, ServiceMethodProviderContext<ISiLAServer>>
             where TRequest : class
             where TResponse : class
         {
@@ -142,7 +142,7 @@ namespace Tecan.Sila2.Server
             }
         }
 
-        private class UnaryHandler<TRequest, TResponse> : IServiceHandler<ISiLAServer>
+        private class UnaryHandler<TRequest, TResponse> : IServiceHandler<ISiLAServer, ServiceMethodProviderContext<ISiLAServer>>
             where TRequest : class
             where TResponse : class
         {

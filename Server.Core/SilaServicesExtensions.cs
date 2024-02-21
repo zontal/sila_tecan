@@ -80,7 +80,7 @@ namespace Microsoft.Extensions.DependencyInjection
             Remove(typeof(IConfigureOptions<SimpleConsoleFormatterOptions>));
 #endif
 
-            services.AddSingleton<IServiceConfigurationBuilder<ISiLAServer>, ServiceConfigurationBuilder>();
+            services.AddSingleton<IServiceConfigurationBuilder<ISiLAServer, ServiceMethodProviderContext<ISiLAServer>>, ServiceConfigurationBuilder>();
             var builder = configureOptions != null ? services.AddGrpc( configureOptions ) : services.AddGrpc();
             services.TryAddEnumerable( ServiceDescriptor.Singleton( typeof( IServiceMethodProvider<> ), typeof( ServiceMethodProvider<> ) ) );
 
@@ -140,9 +140,9 @@ namespace Microsoft.Extensions.DependencyInjection
 
         private sealed class ServiceMethodProvider<TService> : IServiceMethodProvider<TService> where TService : class
         {
-            private readonly IServiceConfigurationBuilder<ISiLAServer> _serviceHandlerRepository;
+            private readonly IServiceConfigurationBuilder<ISiLAServer, ServiceMethodProviderContext<ISiLAServer>> _serviceHandlerRepository;
 
-            public ServiceMethodProvider( IServiceConfigurationBuilder<ISiLAServer> serviceHandlerRepository )
+            public ServiceMethodProvider( IServiceConfigurationBuilder<ISiLAServer, ServiceMethodProviderContext<ISiLAServer>> serviceHandlerRepository )
             {
                 _serviceHandlerRepository = serviceHandlerRepository;
             }

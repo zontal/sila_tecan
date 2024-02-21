@@ -9,18 +9,19 @@ namespace Tecan.Sila2.Server
     /// Denotes an interface to build a server configuration for a given type
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public interface IServiceConfigurationBuilder<T> where T : class
+    /// <typeparam name="TContext"></typeparam>
+    public interface IServiceConfigurationBuilder<T, TContext> where T : class
     {
         /// <summary>
         /// Adds a service handler for the given type
         /// </summary>
         /// <param name="serviceHandler">The service handler</param>
-        void AddServiceHandler( IServiceHandler<T> serviceHandler );
+        void AddServiceHandler( IServiceHandler<T, TContext> serviceHandler );
 
         /// <summary>
         /// Gets the registered service handlers
         /// </summary>
-        IEnumerable<IServiceHandler<T>> ServiceHandlers { get; }
+        IEnumerable<IServiceHandler<T, TContext>> ServiceHandlers { get; }
 
         /// <summary>
         /// Configures the server for the given server unique identifier

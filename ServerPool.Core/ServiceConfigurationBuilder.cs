@@ -1,4 +1,5 @@
 ﻿using Common.Logging;
+using Grpc.AspNetCore.Server.Model;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using System;
@@ -17,15 +18,15 @@ namespace Tecan.Sila2.ServerPooling
     /// <summary>
     /// Denotes a service configuration builder for Kestrel
     /// </summary>
-    public class ServiceConfigurationBuilder : IServiceConfigurationBuilder<IServerPool>
+    public class ServiceConfigurationBuilder : IServiceConfigurationBuilder<IServerPool, ServiceMethodProviderContext<IServerPool>>
     {
-        private readonly List<IServiceHandler<IServerPool>> _handlers = new List<IServiceHandler<IServerPool>>();
+        private readonly List<IServiceHandler<IServerPool, ServiceMethodProviderContext<IServerPool>>> _handlers = new List<IServiceHandler<IServerPool, ServiceMethodProviderContext<IServerPool>>>();
         private readonly Dictionary<IPAddress, int> _networkAddresses = new Dictionary<IPAddress, int>();
         private readonly IServerCertificateProvider _certificateProvider;
         private readonly ILog _loggingChannel = LogManager.GetLogger<ServiceConfigurationBuilder>();
 
         /// <inheritdoc />
-        public IEnumerable<IServiceHandler<IServerPool>> ServiceHandlers => _handlers;
+        public IEnumerable<IServiceHandler<IServerPool, ServiceMethodProviderContext<IServerPool>>> ServiceHandlers => _handlers;
         private X509Certificate2 _certificate;
 
         /// <summary>
@@ -43,7 +44,7 @@ namespace Tecan.Sila2.ServerPooling
         public IReadOnlyDictionary<IPAddress, int> NetworkAddresses => _networkAddresses;
 
         /// <inheritdoc />
-        public void AddServiceHandler( IServiceHandler<IServerPool> serviceHandler )
+        public void AddServiceHandler( IServiceHandler<IServerPool, ServiceMethodProviderContext<IServerPool>> serviceHandler )
         {
             _handlers.Add( serviceHandler );
         }

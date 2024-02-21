@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using Grpc.AspNetCore.Server.Model;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -33,7 +34,7 @@ namespace Tecan.Sila2.IntegrationTests
                     .ConfigureServices( ( _, services ) =>
                     {
                         services.AddSingleton<IServerPool>( _poolServer );
-                        services.AddSingleton<IServiceConfigurationBuilder<IServerPool>>( configurationBuilder );
+                        services.AddSingleton<IServiceConfigurationBuilder<IServerPool, ServiceMethodProviderContext<IServerPool>>>( configurationBuilder );
                         services.AddSila2ServerPool();
                     } )
                     .ConfigureWebHostDefaults( webHostBuilder =>
