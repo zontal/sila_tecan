@@ -13,7 +13,8 @@
         <repository type="git" url="https://gitlab.com/SiLA2/vendors/sila_tecan.git" />
         <dependencies>
             <dependency id="Tecan.Sila2.Contracts" version="[$version$,5.0)" />
-            <dependency id="Grpc.AspNetCore.Server" version="2.40" />
+            <dependency id="Grpc.Core.Api" version="2.60.0" />
+			<dependency id="Grpc.Net.ClientFactory" version="2.60.0" />
             <dependency id="Makaretu.Dns.Multicast" version="0.25.0" />
         </dependencies>
     </metadata>
