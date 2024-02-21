@@ -88,7 +88,7 @@ namespace Tecan.Sila2.DynamicClient
                 case BasicType.Binary:
                     if(IsInField( reader, 1 ))
                     {
-                        setProperty( new MemoryStream( Encoding.UTF8.GetBytes( reader.ReadString() ) ) );
+                        setProperty( new MemoryStream( ProtoReader.AppendBytes(null, reader) ) );
                     }
                     else if(IsInField( reader, 2 ))
                     {
