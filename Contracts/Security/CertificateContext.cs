@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Security;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 
 namespace Tecan.Sila2.Security
 {
     /// <summary>
-    /// Denotes an abstract base class for a certificate context
+    /// Denotes a certificate context
     /// </summary>
     public class CertificateContext
     {
@@ -35,6 +36,11 @@ namespace Tecan.Sila2.Security
         /// Gets the PEM-encoded private key of the certificate authority used in this context
         /// </summary>
         public string CertificateAuthorityKey { get; }
+
+        /// <summary>
+        /// Gets or sets the certificate associated with this certificate context
+        /// </summary>
+        public X509Certificate2 X509Certificate { get; set; }
 
         /// <summary>
         /// Creates a new certificate context

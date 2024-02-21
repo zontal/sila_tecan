@@ -196,5 +196,18 @@ namespace Tecan.Sila2.Security
             return Convert.FromBase64String( actualContent );
 #endif
         }
+
+        /// <summary>
+        /// Gets the default server certificate for the given server uuid
+        /// </summary>
+        /// <param name="serverUuid">The server uuid</param>
+        /// <returns>A X509Certificate2 representation of the certificate</returns>
+        public static X509Certificate2 GetDefaultCertificate(Guid serverUuid)
+        {
+            var context = FileCertificateProvider.DefaultContext;
+            var cert = GetServerCertificate(context, serverUuid, out _);
+            context.X509Certificate = cert;
+            return cert;
+        }
     }
 }

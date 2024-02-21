@@ -1,11 +1,19 @@
 using Microsoft.AspNetCore.Server.Kestrel.Core;
+using Tecan.Sila2;
 using Tecan.Sila2.Interop.Server.BasicDataTypesTest;
+using Tecan.Sila2.Security;
 using Tecan.Sila2.Server;
 
 var startInfo = ServerConfigReader.ReadServerStartInformation(args);
 var builder = WebApplication.CreateBuilder(args);
 
-builder.WebHost.ConfigureKestrelForSila2(startInfo, options => options.Protocols = HttpProtocols.Http2);
+var certificate = CertificateGenerator.GetDefaultCertificate(startInfo.ServerUuid);
+
+builder.WebHost.ConfigureKestrelForSila2(startInfo, options =>
+{
+    options.Protocols = HttpProtocols.Http2;
+    options.UseHttps(certificate);
+});
 
 // it is important to call AddSila2Components in order to add these components that also have a MEF registration
 builder.Services.AddSila2Components();

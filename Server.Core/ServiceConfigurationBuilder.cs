@@ -98,27 +98,28 @@ namespace Tecan.Sila2.Server
             }
         }
 
-        private void UseContext( CertificateContext context, Guid? serverUuid )
+        private void UseContext(CertificateContext context, Guid? serverUuid)
         {
-            if(context != null)
+            if (context != null)
             {
-                _loggingChannel.Info( "Found certificates, starting server with TLS." );
-                _certificate = CertificateGenerator.GetServerCertificate( context, serverUuid, out var ca );
+                _loggingChannel.Info("Found certificates, starting server with TLS.");
+                _certificate = CertificateGenerator.GetServerCertificate(context, serverUuid, out var ca);
 
-                var certLines = Convert.ToBase64String( (ca ?? _certificate).Export( X509ContentType.Cert ), Base64FormattingOptions.InsertLineBreaks ).Split( '\n' );
-                _announcementDetails.Add( "ca0", "-----BEGIN CERTIFICATE-----" );
-                for(int i = 0; i < certLines.Length; i++)
+                if (_certificate != null)
                 {
-                    _announcementDetails.Add( "ca" + (i + 1), certLines[i].TrimEnd( '\r' ) );
+                    var certLines = Convert.ToBase64String((ca ?? _certificate).Export(X509ContentType.Cert), Base64FormattingOptions.InsertLineBreaks).Split('\n');
+                    _announcementDetails.Add("ca0", "-----BEGIN CERTIFICATE-----");
+                    for (int i = 0; i < certLines.Length; i++)
+                    {
+                        _announcementDetails.Add("ca" + (i + 1), certLines[i].TrimEnd('\r'));
+                    }
+                    _announcementDetails.Add("ca" + (certLines.Length + 1), "-----END CERTIFICATE-----");
+                    return;
                 }
-                _announcementDetails.Add( "ca" + (certLines.Length + 1), "-----END CERTIFICATE-----" );
             }
-            else
-            {
-                _loggingChannel.Warn( $"No certificates found. Server will start with plain-text communication" );
-                _certificate = null;
-                _announcementDetails.Add( "encrypted", "false" );
-            }
+            _loggingChannel.Warn($"No certificates found. Server will start with plain-text communication");
+            _certificate = null;
+            _announcementDetails.Add("encrypted", "false");
         }
 
         /// <summary>
