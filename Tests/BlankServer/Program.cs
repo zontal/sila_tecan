@@ -1,8 +1,11 @@
 using Microsoft.AspNetCore.Server.Kestrel.Core;
+using System.Reflection;
 using Tecan.Sila2;
 using Tecan.Sila2.Interop.Server.BasicDataTypesTest;
 using Tecan.Sila2.Security;
 using Tecan.Sila2.Server;
+
+[assembly: VendorUri("https://example.com")]
 
 var startInfo = ServerConfigReader.ReadServerStartInformation(args);
 var builder = WebApplication.CreateBuilder(args);

@@ -1,4 +1,7 @@
-﻿using Tecan.Sila2.Discovery;
+﻿using Common.Logging;
+using Tecan.Sila2.Discovery;
+
+LogManager.Adapter = new Common.Logging.Simple.DebugLoggerFactoryAdapter();
 
 var connector = new ServerConnector(new DiscoveryExecutionManager());
 var discovery = new ServerDiscovery(connector);

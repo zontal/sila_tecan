@@ -19,7 +19,6 @@ namespace Tecan.Sila2.Generator.Test
     public abstract class CodeGeneratorFixtureBase
     {
         private static readonly CSharpCodeProvider cSharp = new CSharpCodeProvider();
-        private static readonly SHA1Managed Sha = new SHA1Managed();
 
         private ITypeTranslationProvider _typeTranslationProvider;
         private IAmbiguityResolver _ambiguityResolver;

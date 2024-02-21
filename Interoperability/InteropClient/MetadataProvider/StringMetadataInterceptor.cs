@@ -7,11 +7,11 @@ namespace Tecan.Sila2.Interop.Client.MetadataProvider
 {
     internal class StringMetadataInterceptor : IClientRequestInterceptor
     {
-        public static string Metadata { get; set; }
+        public static string? Metadata { get; set; }
 
         public string MetadataIdentifier => "org.silastandard/test/MetadataProvider/v1/Metadata/StringMetadata";
 
-        public IClientRequestInterception Intercept( ServerData server, string interceptedCommand, IClientExecutionManager executionManager, IDictionary<string, byte[]> metadata )
+        public IClientRequestInterception? Intercept( ServerData server, string interceptedCommand, IClientExecutionManager executionManager, IDictionary<string, byte[]> metadata )
         {
             metadata.Add( MetadataIdentifier, ByteSerializer.ToByteArray( new PropertyResponse<StringDto>( Metadata ) ) );
             return null;

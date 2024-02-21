@@ -12,7 +12,7 @@ namespace Tecan.Sila2.Interop.Client.BinaryTransferTest
         public IClientRequestInterception Intercept(ServerData server, string interceptedCommand, IClientExecutionManager executionManager, IDictionary<string, byte[]> metadata)
         {
             metadata.Add(MetadataIdentifier, ByteSerializer.ToByteArray(new PropertyResponse<StringDto>("abc")));
-            return null;
+            return null!;
         }
     }
 }

@@ -1,4 +1,3 @@
-using Common.Logging;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Diagnostics;
@@ -12,8 +11,6 @@ namespace Tecan.Sila2.Interop.Server.Pages
         public string RequestId { get; set; }
 
         public bool ShowRequestId => !string.IsNullOrEmpty( RequestId );
-
-        private readonly ILog _logger;
 
         public ErrorModel()
         {

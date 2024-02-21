@@ -2,6 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Security;
 using System.Security.Cryptography;
@@ -27,7 +29,8 @@ namespace Tecan.Sila2.Security
         public static X509Certificate2 CreateServerCertificate( X509Certificate2 baseCertificate, RSA key, Guid? serverGuid )
         {
 #if NET6_0_OR_GREATER
-            var request = new CertificateRequest( "CN=SiLA2", key, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1 );
+            var company = Assembly.GetEntryAssembly().GetCustomAttribute<AssemblyCompanyAttribute>()?.Company;
+            var request = new CertificateRequest( "CN=SiLA2" + (company != null ? ",O=" + company : string.Empty), key, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1 );
 
             request.CertificateExtensions.Add(
                 new X509BasicConstraintsExtension( false, false, 0, true ) );
@@ -35,7 +38,10 @@ namespace Tecan.Sila2.Security
                 new X509KeyUsageExtension(
                     X509KeyUsageFlags.DigitalSignature | X509KeyUsageFlags.KeyEncipherment,
                     true ) );
-
+            var sanBuilder = new SubjectAlternativeNameBuilder();
+            sanBuilder.AddDnsName("localhost");
+            sanBuilder.AddIpAddress(IPAddress.Loopback);
+            request.CertificateExtensions.Add(sanBuilder.Build());
             if(serverGuid.HasValue)
             {
                 // add server uuid
