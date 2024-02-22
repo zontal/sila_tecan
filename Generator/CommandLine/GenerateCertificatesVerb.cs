@@ -104,7 +104,7 @@ namespace Tecan.Sila2.Generator.CommandLine
                         writer.WriteLine($"1.3.6.1.4.1.58583=critical,ASN1:UTF8String:{serverUUID}");
                         writer.WriteLine($"1.3.6.1.4.1.58583=ASN1:UTF8String:{serverUUID}");
                     }
-                    if (Hosts != null)
+                    if (Hosts != null && Hosts.Any())
                     {
                         writer.WriteLine("subjectAltName = " + string.Join(",", Hosts.Select(PrintSANHost)));
                     }
