@@ -180,6 +180,67 @@ namespace Tecan.Sila2.DynamicClient.Test
             Assert.That( result.Value, Is.EqualTo( inputProperty.Value ) );
         }
 
+        [Test]
+        public void DynamicSerializer_AnyTypeListWorks()
+        {
+            var inputProperty = new DynamicObjectProperty(null, null, null, new DataTypeType { Item = new ListType { DataType = new DataTypeType { Item = BasicType.String } } });
+            inputProperty.Value = new List<string> { "SiLA2", "is", "great" };
+            var expectedBytes = ByteSerializer.ToByteArray(new AnyTypeDto(inputProperty, null));
+            var result = (DynamicObjectProperty)Roundtrip(BasicType.Any, inputProperty, expectedBytes);
+            Assert.That(result.Value, Is.EqualTo(inputProperty.Value));
+        }
+
+        private DataTypeType ResolveType(DataTypeType inputType)
+        {
+            switch(inputType.Item)
+            {
+                case string identifier:
+                    return ResolveType(identifier);
+                case BasicType:
+                    return inputType;
+                case ListType listType:
+                    return new DataTypeType { Item = new ListType { DataType = ResolveType(listType.DataType) } };
+                case StructureType structureType:
+                    return new DataTypeType
+                    {
+                        Item = new StructureType
+                        {
+                            Element = structureType.Element?
+                                .Where(e => e.Identifier != "Children")
+                                .Select(e =>
+                                new SiLAElement
+                                {
+                                    Identifier = e.Identifier,
+                                    Description = e.Description,
+                                    DisplayName = e.DisplayName,
+                                    DataType = ResolveType(e.DataType)
+                                }).ToArray()
+                        }
+                    };
+                case ConstrainedType constrainedType:
+                    return new DataTypeType
+                    {
+                        Item = new ConstrainedType
+                        {
+                            DataType = ResolveType(constrainedType.DataType),
+                            Constraints = constrainedType.Constraints
+                        }
+                    };
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(inputType));
+            }
+        }
+
+        [Test]
+        public void DynamicSerializer_AnyTypeLogEntryWorks()
+        {
+            var inputProperty = new DynamicObjectProperty(null, null, null, ResolveType( LogEntryType.DataType ));
+            inputProperty.Value = CreateLogEntry();
+            var expectedBytes = ByteSerializer.ToByteArray(new AnyTypeDto(inputProperty, null));
+            var result = (DynamicObjectProperty)Roundtrip(BasicType.Any, inputProperty, expectedBytes);
+            Assert.That(result.Value.ToString(), Is.EqualTo(inputProperty.Value.ToString()));
+        }
+
         [TestCase( "Test" )]
         public void DynamicSerializer_PropertyResponse_RoundtripWorks( string input )
         {
@@ -321,17 +382,19 @@ namespace Tecan.Sila2.DynamicClient.Test
 
         private static SiLAElement LogEntryDataType => TestFeature.Items.OfType<SiLAElement>().FirstOrDefault( e => e.Identifier == "LogEntryData" );
 
-        private static object Roundtrip( BasicType dataType, object input, byte[] expectedBytes, IBinaryStore store = null )
+        private object Roundtrip( BasicType dataType, object input, byte[] expectedBytes, IBinaryStore store = null )
         {
             return Roundtrip( new DataTypeType { Item = dataType }, input, expectedBytes, store );
         }
 
-        private static object Roundtrip( DataTypeType dataType, object input, byte[] expectedBytes, IBinaryStore store = null )
+        private DataTypeType ResolveType(string type) => TestFeature.Items.OfType<SiLAElement>().Single(t => t.Identifier == type).DataType;
+
+        private object Roundtrip( DataTypeType dataType, object input, byte[] expectedBytes, IBinaryStore store = null )
         {
             var inputProperty = new DynamicObjectProperty( "source", null, null, dataType );
             inputProperty.Value = input;
 
-            var serializer = new DynamicObjectSerializer( type => TestFeature.Items.OfType<SiLAElement>().Single( t => t.Identifier == type ).DataType );
+            var serializer = new DynamicObjectSerializer(ResolveType);
 
             var bytes = serializer.Serialize( inputProperty, store );
             if(expectedBytes.Length > 0)
