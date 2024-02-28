@@ -51,7 +51,8 @@
 		<file src="..\Build\net8.0\Tecan.Sila2.pdb" target="lib\net8.0\" />
 		<file src="..\Build\net8.0\Tecan.Sila2.xml" target="lib\net8.0\" />
         
-        <file src="..\Build\Generator\net472\*.dll" target="tools" />
-        <file src="..\Build\Generator\net472\*.exe" target="tools" />
+        <file src="..\Build\Generator\net8.0\*.dll" target="tools" />
+        <file src="..\Build\Generator\net8.0\*.exe" target="tools" />
+		<file src="..\Build\Generator\net8.0\*.runtimeconfig.json" target="tools" />
     </files>
 </package>

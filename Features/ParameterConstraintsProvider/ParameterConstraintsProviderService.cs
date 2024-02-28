@@ -9,9 +9,12 @@ using Tecan.Sila2.Server;
 
 namespace Tecan.Sila2.ParameterConstraintsProvider
 {
+    /// <summary>
+    /// Denotes the default implementation for a parameter constraints provider
+    /// </summary>
     [Export(typeof( IParameterConstraintsProvider ) )]
     [PartCreationPolicy(CreationPolicy.Shared)]
-    internal class ParameterConstraintsProviderService : IParameterConstraintsProvider, INotifyPropertyChanged
+    public class ParameterConstraintsProviderService : IParameterConstraintsProvider, INotifyPropertyChanged
     {
 
         private readonly Lazy<ISiLAServer> _server;
@@ -19,8 +22,12 @@ namespace Tecan.Sila2.ParameterConstraintsProvider
         private readonly Dictionary<Type, IParameterConstraintResolver> _resolvers;
         private readonly ILog _loggingChannel = LogManager.GetLogger<ParameterConstraintsProviderService>();
 
+        /// <inheritdoc />
         public event PropertyChangedEventHandler PropertyChanged;
 
+        /// <summary>
+        /// Creates a new instance
+        /// </summary>
         [ImportingConstructor]
         public ParameterConstraintsProviderService( Lazy<ISiLAServer> server, [ImportMany] IEnumerable<IParameterConstraintResolver> resolvers )
         {
@@ -100,6 +107,7 @@ namespace Tecan.Sila2.ParameterConstraintsProvider
             return ConstraintSerializer.SaveToString( constraints );
         }
 
+        /// <inheritdoc />
         public ICollection<ParametersConstraint> ParametersConstraints
         {
             get

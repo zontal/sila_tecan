@@ -12,16 +12,22 @@ using InvalidProviderAccessTokenException = Tecan.Sila2.AuthorizationProvider.In
 
 namespace Tecan.Sila2
 {
+    /// <summary>
+    /// Denotes the default implementation of an authentication and authorization service
+    /// </summary>
     [Export( typeof( IAuthorizationService ) )]
     [Export( typeof( IAuthenticationService ) )]
     [Export( typeof( IAuthorizationConfigurationService ) )]
     [Export( typeof( IRequestInterceptor ) )]
     [PartCreationPolicy( CreationPolicy.Shared )]
-    internal class AuthenticationAuthorizationService : AccessTokenInterceptorBase, IAuthorizationService, IAuthenticationService, IAuthorizationConfigurationService, IRequestInterceptor
+    public class AuthenticationAuthorizationService : AccessTokenInterceptorBase, IAuthorizationService, IAuthenticationService, IAuthorizationConfigurationService, IRequestInterceptor
     {
         private readonly IAuthConfigurationProvider _configurationProvider;
         private readonly Lazy<ISiLAService> _silaService;
 
+        /// <summary>
+        /// Creates a new instance
+        /// </summary>
         [ImportingConstructor]
         public AuthenticationAuthorizationService( Lazy<ISiLAService> silaService, IAuthConfigurationProvider configurationProvider )
         {
@@ -31,19 +37,25 @@ namespace Tecan.Sila2
 
         private readonly ConcurrentDictionary<string, AuthToken> _currentAuthorizations = new ConcurrentDictionary<string, AuthToken>();
 
+        /// <inheritdoc />
         public IRequestInterceptor AccessToken => this;
 
+        /// <inheritdoc />
         public override int Priority => 3;
 
+        /// <inheritdoc />
         public override bool AppliesToCommands => true;
 
+        /// <inheritdoc />
         public override bool AppliesToProperties => true;
 
+        /// <inheritdoc />
         public override bool IsInterceptRequired( Feature feature, string commandIdentifier )
         {
             return !commandIdentifier.StartsWith( "org.silastandard/core/SiLAService/" ) && !commandIdentifier.StartsWith( "org.silastandard/core/AuthenticationService/v1/Command" );
         }
 
+        /// <inheritdoc />
         public override IRequestInterception Intercept( string commandIdentifier, string accessToken )
         {
             if(accessToken == null)
@@ -96,6 +108,7 @@ namespace Tecan.Sila2
             return null;
         }
 
+        /// <inheritdoc />
         public LoginResponse Login( string userIdentification, string password, string server, ICollection<string> requestedFeatures )
         {
             LoginResponse loginResponse;
@@ -144,6 +157,7 @@ namespace Tecan.Sila2
             return loginResponse;
         }
 
+        /// <inheritdoc />
         public void Logout( string accessToken )
         {
             if(accessToken == null || !_currentAuthorizations.TryGetValue( accessToken, out var token ) || token.Expiry < DateTime.Now)
@@ -154,11 +168,13 @@ namespace Tecan.Sila2
         }
 
 
+        /// <inheritdoc />
         public string AuthorizationProvider
         {
             get => _configurationProvider.AuthorizationProviderUuid;
         }
 
+        /// <inheritdoc />
         public void SetAuthorizationProvider( string authorizationProvider )
         {
             _configurationProvider.SetAuthorizationProvider( authorizationProvider );

@@ -5,15 +5,21 @@ using Tecan.Sila2.Server;
 
 namespace Tecan.Sila2.Locking
 {
+    /// <summary>
+    /// Denotes the default locking implementation
+    /// </summary>
     [Export(typeof(ILockController))]
     [Export(typeof(IRequestInterceptor))]
     [PartCreationPolicy(CreationPolicy.Shared)]
-    internal class LockControllerService : LockIdentifierInterceptorBase, ILockController, IRequestInterceptor
+    public class LockControllerService : LockIdentifierInterceptorBase, ILockController, IRequestInterceptor
     {
         private DateTime _expiry;
         private string _lock;
         private readonly HashSet<string> _commandsToLock;
 
+        /// <summary>
+        /// Creates a new instance
+        /// </summary>
         [ImportingConstructor]
         public LockControllerService(IConfigurationStore configurationStore)
         {
@@ -24,20 +30,29 @@ namespace Tecan.Sila2.Locking
             }
         }
 
+        /// <summary>
+        /// Creates a new instance
+        /// </summary>
         public LockControllerService()
         {
         }
 
+        /// <inheritdoc />
         public bool IsLocked => DateTime.Now < _expiry;
 
+        /// <inheritdoc />
         public IRequestInterceptor LockIdentifier => this;
 
+        /// <inheritdoc />
         public override int Priority => 2;
 
+        /// <inheritdoc />
         public override bool AppliesToCommands => true;
 
+        /// <inheritdoc />
         public override bool AppliesToProperties => false;
 
+        /// <inheritdoc />
         public override bool IsInterceptRequired(Feature feature, string commandIdentifier)
         {
             if (_commandsToLock != null)
@@ -47,6 +62,7 @@ namespace Tecan.Sila2.Locking
             return !commandIdentifier.StartsWith("org.silastandard/core");
         }
 
+        /// <inheritdoc />
         public void LockServer(string lockIdentifier, long timeout)
         {
             lock (this)
@@ -69,6 +85,7 @@ namespace Tecan.Sila2.Locking
             return new ServerAlreadyLockedException($"The server is already locked with lock identifier {_lock} until {_expiry}.");
         }
 
+        /// <inheritdoc />
         public void UnlockServer(string lockIdentifier)
         {
             lock (this)
@@ -97,6 +114,7 @@ namespace Tecan.Sila2.Locking
             return string.Equals(_lock, lockIdentifier, StringComparison.Ordinal);
         }
 
+        /// <inheritdoc />
         public override IRequestInterception Intercept(string commandIdentifier, string lockIdentifier)
         {
             lock (this)

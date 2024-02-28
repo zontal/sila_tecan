@@ -4,18 +4,25 @@ using Tecan.Sila2.Server;
 
 namespace Tecan.Sila2.Cancellation
 {
+    /// <summary>
+    /// Denotes the default implementation for a cancellation service
+    /// </summary>
     [Export(typeof(ICancelController))]
     [PartCreationPolicy(CreationPolicy.Shared)]
-    internal class CancelControllerService : ICancelController
+    public class CancelControllerService : ICancelController
     {
         private readonly ISiLAServer _server;
 
+        /// <summary>
+        /// Creates a new instance
+        /// </summary>
         [ImportingConstructor]
         public CancelControllerService( ISiLAServer server )
         {
             _server = server;
         }
 
+        /// <inheritdoc />
         public void CancelCommand( Uuid commandExecutionUuid )
         {
             IObservableCommand command;
@@ -38,6 +45,7 @@ namespace Tecan.Sila2.Cancellation
             }
         }
 
+        /// <inheritdoc />
         public void CancelAll()
         {
             foreach( var commandExecution in _server.FindCommandExecutions(state => state == CommandState.Running || state == CommandState.NotStarted) )
