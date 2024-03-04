@@ -36,6 +36,12 @@ namespace Tecan.Sila2
         }
 
         /// <summary>
+        /// Creates an observable command
+        /// </summary>
+        /// <param name="isCancellationSupported">True, if the command supports cancellation, otherwise False</param>
+        protected ObservableIntermediatesCommand(bool isCancellationSupported) : this(isCancellationSupported ? new CancellationTokenSource() : null) { }
+
+        /// <summary>
         /// Pushes the provided intermediate value
         /// </summary>
         /// <param name="intermediate">The intermediate value</param>
@@ -71,6 +77,12 @@ namespace Tecan.Sila2
         {
             _intermediatesChannel = CreateIntermediatesChannel();
         }
+
+        /// <summary>
+        /// Creates an observable command
+        /// </summary>
+        /// <param name="isCancellationSupported">True, if the command supports cancellation, otherwise False</param>
+        protected ObservableIntermediatesCommand(bool isCancellationSupported) : this(isCancellationSupported ? new CancellationTokenSource() : null) { }
 
         /// <summary>
         /// Creates an observable command

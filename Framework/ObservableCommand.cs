@@ -22,6 +22,12 @@ namespace Tecan.Sila2
         /// <summary>
         /// Creates an observable command
         /// </summary>
+        /// <param name="isCancellationSupported">True, if the command supports cancellation, otherwise False</param>
+        protected ObservableCommand(bool isCancellationSupported) : this(isCancellationSupported ? new CancellationTokenSource() : null) { }
+
+        /// <summary>
+        /// Creates an observable command
+        /// </summary>
         protected ObservableCommand( CancellationTokenSource cancellationTokenSource )
         {
             _stateUpdateChannel = Channels.CreateStateUpdateChannel();
@@ -167,6 +173,12 @@ namespace Tecan.Sila2
         /// Creates an observable command
         /// </summary>
         protected ObservableCommand() : this( null ) { }
+
+        /// <summary>
+        /// Creates an observable command
+        /// </summary>
+        /// <param name="isCancellationSupported">True, if the command supports cancellation, otherwise False</param>
+        protected ObservableCommand(bool isCancellationSupported) : this(isCancellationSupported ? new CancellationTokenSource() : null) { }
 
         /// <summary>
         /// Creates an observable command
