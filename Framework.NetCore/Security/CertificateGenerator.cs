@@ -168,7 +168,7 @@ namespace Tecan.Sila2.Security
 
         private static X509Certificate2 CompensateWindowsEpheralKeysProblem( X509Certificate2 cert )
         {
-            if(cert == null || RuntimeInformation.IsOSPlatform( OSPlatform.Windows ))
+            if(cert != null && RuntimeInformation.IsOSPlatform( OSPlatform.Windows ))
             {
                 // SSLStream on Windows throws with ephemeral key sets
                 // workaround from https://github.com/dotnet/runtime/issues/23749#issuecomment-388231655

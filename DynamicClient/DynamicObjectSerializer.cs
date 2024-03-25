@@ -269,7 +269,9 @@ namespace Tecan.Sila2.DynamicClient
                     Action<object> readAction;
                     if(field == lastField)
                     {
+#pragma warning disable S2259 // Null pointers should not be dereferenced
                         readAction = lastProperty.MergeValue;
+#pragma warning restore S2259 // Null pointers should not be dereferenced
                     }
                     else
                     {

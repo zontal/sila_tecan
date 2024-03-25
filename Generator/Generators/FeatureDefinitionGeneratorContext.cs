@@ -177,84 +177,94 @@ namespace Tecan.Sila2.Generator.Generators
         {
             foreach(var methodGroup in interfaceType.GetMethods().GroupBy( m => m.Name ))
             {
-                var methodInfo = methodGroup.FirstOrDefault();
-                if(methodGroup.Count() > 1)
+                var methodInfo = methodGroup.First();
+                if (methodGroup.Count() > 1)
                 {
-                    methodInfo = ChoseOverload( methodGroup );
+                    methodInfo = ChoseOverload(methodGroup);
 
-                    if(methodInfo == null)
+                    if (methodInfo == null)
                     {
                         continue;
                     }
                 }
-                if(!methodInfo.IsSpecialName)
-                {
-                    try
-                    {
-                        if(_featureSpec != null && _featureSpec.TryGetPropertyFor( methodInfo.Name, out var propertySpec ))
-                        {
-                            var property = GenerateProperty(methodInfo, propertySpec, definedExceptions, dataTypes);
-                            AddFeatureItem(property.Identifier, property);
-                        }
-                        else
-                        {
-                            var featureCommand = GenerateCommand( methodInfo, definedExceptions, dataTypes );
-                            if(_featureSpec != null && forceSpec)
-                            {
-                                _featureSpec.Command = _featureSpec.Command.Add( new CommandSpec
-                                {
-                                    Code = methodInfo.Name,
-                                    Identifier = featureCommand.Identifier
-                                } );
-                            }
-                            AddFeatureItem(featureCommand.Identifier, featureCommand);
-                        }
-                    }
-                    catch(NotSupportedException notSupported)
-                    {
-                        _loggingChannel.Error( $"Failed to expose method {methodInfo.Name}({string.Join( ", ", methodInfo.GetParameters().Select( p => p.ParameterType.Name ) )})", notSupported );
-                    }
-                }
+                AddInterfaceMethod(definedExceptions, dataTypes, forceSpec, methodInfo);
             }
 
-            foreach(var propertyInfo in interfaceType.GetProperties())
+            foreach (var propertyInfo in interfaceType.GetProperties())
             {
                 try
                 {
-                    if(_featureSpec != null && _featureSpec.TryGetInlineFor( propertyInfo.Name, out var inline ))
+                    if (_featureSpec != null && _featureSpec.TryGetInlineFor(propertyInfo.Name, out var inline))
                     {
                         var currentSpec = _featureSpec;
                         _featureSpec = inline;
-                        AddInterfaceMembers( propertyInfo.PropertyType, definedExceptions, dataTypes, true );
+                        AddInterfaceMembers(propertyInfo.PropertyType, definedExceptions, dataTypes, true);
                         _featureSpec = currentSpec;
                         continue;
                     }
-                    if(!typeof( IRequestInterceptor ).IsAssignableFrom( propertyInfo.PropertyType ))
+                    AddInterfaceProperty(definedExceptions, dataTypes, forceSpec, propertyInfo);
+                }
+                catch (NotSupportedException notSupported)
+                {
+                    _loggingChannel.Error( $"Failed to expose property {propertyInfo.Name}", notSupported );
+                }
+            }
+        }
+
+        private void AddInterfaceProperty(ICollection<Type> definedExceptions, ICollection<Type> dataTypes, bool forceSpec, PropertyInfo propertyInfo)
+        {
+            if (!typeof(IRequestInterceptor).IsAssignableFrom(propertyInfo.PropertyType))
+            {
+                var featureProperty = GenerateProperty(propertyInfo, definedExceptions, dataTypes, out var setterCommand);
+                if (_featureSpec != null && forceSpec)
+                {
+                    _featureSpec.Property = _featureSpec.Property.Add(new PropertySpec
                     {
-                        var featureProperty = GenerateProperty( propertyInfo, definedExceptions, dataTypes, out var setterCommand );
-                        if(_featureSpec != null && forceSpec)
-                        {
-                            _featureSpec.Property = _featureSpec.Property.Add( new PropertySpec
-                            {
-                                Code = propertyInfo.Name,
-                                Identifier = featureProperty.Identifier
-                            } );
-                        }
-                        AddFeatureItem(featureProperty.Identifier, featureProperty);
-                        if(setterCommand != null)
-                        {
-                            AddFeatureItem(setterCommand.Identifier, setterCommand);
-                        }
+                        Code = propertyInfo.Name,
+                        Identifier = featureProperty.Identifier
+                    });
+                }
+                AddFeatureItem(featureProperty.Identifier, featureProperty);
+                if (setterCommand != null)
+                {
+                    AddFeatureItem(setterCommand.Identifier, setterCommand);
+                }
+            }
+            else
+            {
+                var metadata = GenerateMetadata(propertyInfo, definedExceptions, dataTypes);
+                AddFeatureItem(metadata.Identifier, metadata);
+            }
+        }
+
+        private void AddInterfaceMethod(ICollection<Type> definedExceptions, ICollection<Type> dataTypes, bool forceSpec, MethodInfo methodInfo)
+        {
+            if (!methodInfo.IsSpecialName)
+            {
+                try
+                {
+                    if (_featureSpec != null && _featureSpec.TryGetPropertyFor(methodInfo.Name, out var propertySpec))
+                    {
+                        var property = GenerateProperty(methodInfo, propertySpec, definedExceptions, dataTypes);
+                        AddFeatureItem(property.Identifier, property);
                     }
                     else
                     {
-                        var metadata = GenerateMetadata(propertyInfo, definedExceptions, dataTypes);
-                        AddFeatureItem(metadata.Identifier, metadata);
+                        var featureCommand = GenerateCommand(methodInfo, definedExceptions, dataTypes);
+                        if (_featureSpec != null && forceSpec)
+                        {
+                            _featureSpec.Command = _featureSpec.Command.Add(new CommandSpec
+                            {
+                                Code = methodInfo.Name,
+                                Identifier = featureCommand.Identifier
+                            });
+                        }
+                        AddFeatureItem(featureCommand.Identifier, featureCommand);
                     }
                 }
-                catch(NotSupportedException notSupported)
+                catch (NotSupportedException notSupported)
                 {
-                    _loggingChannel.Error( $"Failed to expose property {propertyInfo.Name}", notSupported );
+                    _loggingChannel.Error($"Failed to expose method {methodInfo.Name}({string.Join(", ", methodInfo.GetParameters().Select(p => p.ParameterType.Name))})", notSupported);
                 }
             }
         }
@@ -462,40 +472,52 @@ namespace Tecan.Sila2.Generator.Generators
 
                 foreach(var exceptionElement in docEntry.Elements( XName.Get( "exception" ) ))
                 {
-                    var typeName = exceptionElement.Attribute( XName.Get( "cref" ) )?.Value?.Substring( 2 );
-                    if(typeName != null)
-                    {
-                        if(ArgumentExceptionTypeNames.Contains( typeName ) || typeof( Exception ).FullName.Equals( typeName ))
-                        {
-                            _loggingChannel.Debug( $"Ignoring exception {typeName} because it is covered by SiLA2 validation errors." );
-                            continue;
-                        }
-                        var exceptionType = assembly.GetType( typeName, false );
-                        if(exceptionType == null)
-                        {
-                            var assemblyNames = assembly.GetReferencedAssemblies();
-                            foreach(var assemblyName in assemblyNames)
-                            {
-                                Assembly referenceAssembly = Assembly.Load( assemblyName.FullName );
-                                exceptionType = referenceAssembly.GetType( typeName, false );
-                                if(exceptionType != null)
-                                {
-                                    break;
-                                }
-                            }
-                        }
-                        if(exceptionType != null)
-                        {
-                            _loggingChannel.Debug( $"Found exception type {exceptionType.Name}" );
-                            AddError( exceptions, exceptionType, errors );
-                            continue;
-                        }
-                    }
-                    _loggingChannel.Warn( $"Exception {typeName} could not be found." );
+                    ProcessExceptionDoc(exceptions, errors, assembly, exceptionElement);
                 }
             }
 
             return errors;
+        }
+
+        private void ProcessExceptionDoc(ICollection<Type> exceptions, HashSet<string> errors, Assembly assembly, XElement exceptionElement)
+        {
+            var typeName = exceptionElement.Attribute(XName.Get("cref"))?.Value?.Substring(2);
+            if (typeName != null)
+            {
+                if (ArgumentExceptionTypeNames.Contains(typeName) || typeof(Exception).FullName.Equals(typeName))
+                {
+                    _loggingChannel.Debug($"Ignoring exception {typeName} because it is covered by SiLA2 validation errors.");
+                    return;
+                }
+                Type exceptionType = FindExceptionType(assembly, typeName);
+                if (exceptionType != null)
+                {
+                    _loggingChannel.Debug($"Found exception type {exceptionType.Name}");
+                    AddError(exceptions, exceptionType, errors);
+                    return;
+                }
+            }
+            _loggingChannel.Warn($"Exception {typeName} could not be found.");
+        }
+
+        private static Type FindExceptionType(Assembly assembly, string typeName)
+        {
+            var exceptionType = assembly.GetType(typeName, false);
+            if (exceptionType == null)
+            {
+                var assemblyNames = assembly.GetReferencedAssemblies();
+                foreach (var assemblyName in assemblyNames)
+                {
+                    Assembly referenceAssembly = Assembly.Load(assemblyName.FullName);
+                    exceptionType = referenceAssembly.GetType(typeName, false);
+                    if (exceptionType != null)
+                    {
+                        break;
+                    }
+                }
+            }
+
+            return exceptionType;
         }
 
         private void AddError( ICollection<Type> exceptions, Type exceptionType, ICollection<string> errors )

@@ -392,11 +392,11 @@ namespace Tecan.Sila2.Interop.Server.ParameterConstraintsTest
             }
         }
 
-        public void CheckAllowedStructureTypeConstraints( DynamicObjectProperty parameter )
+        public void CheckAllowedStructureTypeConstraints( DynamicObjectProperty constrainedParameter )
         {
-            if(!(parameter.Value is DynamicObject obj && obj.Elements.Count == 1 && obj.Elements[0].Identifier == "Item" && obj.Elements[0].Value is long))
+            if(!(constrainedParameter.Value is DynamicObject obj && obj.Elements.Count == 1 && obj.Elements[0].Identifier == "Item" && obj.Elements[0].Value is long))
             {
-                throw new ArgumentException( "Parameter has the wrong type", nameof( parameter ) );
+                throw new ArgumentException( "Parameter has the wrong type", nameof( constrainedParameter ) );
             }
         }
         #endregion

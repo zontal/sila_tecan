@@ -58,22 +58,12 @@ namespace Tecan.Sila2.Discovery
                 {
                     try
                     {
-                        var ca = CertificateGenerator.LoadCertificateFromPem( RestoreCa( details ) );
+                        var discoveryCertificate = CertificateGenerator.LoadCertificateFromPem( RestoreCa( details ) );
                         try
                         {
-                            var certificateValidator = new ServerCertificateValidator( ca );
-                            var clientHandler = new HttpClientHandler
-                            {
-                                ServerCertificateCustomValidationCallback = certificateValidator.ValidateActualCertificate
-                            };
-                            var channel = GrpcChannel.ForAddress( prependScheme ? "https://" + target : target, new GrpcChannelOptions
-                            {
-                                HttpHandler = clientHandler,
-                            } );
-                            var server = CheckCertificateAuthority( GetServerData( channel, () => certificateValidator.ServerCertificate ), certificateValidator.ServerCertificate, ca );
-                            return CheckExpectedGuid( CheckCertificate( server, certificateValidator.ServerCertificate ), expectedGuid );
+                            return ConnectEncrypted(target, expectedGuid, prependScheme, discoveryCertificate);
                         }
-                        catch(Exception e)
+                        catch (Exception e)
                         {
                             _loggingChannel.Error(
                                 $"Secure connection to {target} failed, falling back to unsecure connection", e );
@@ -87,8 +77,8 @@ namespace Tecan.Sila2.Discovery
                 }
                 try
                 {
-                    var ca = CertificateGenerator.LoadCertificateFromPem( RestoreCa( details ) );
-                    var certificateValidator = new ServerCertificateValidator( ca );
+                    var discoveryCertificate = CertificateGenerator.LoadCertificateFromPem( RestoreCa( details ) );
+                    var certificateValidator = new ServerCertificateValidator( discoveryCertificate );
                     var clientHandler = new HttpClientHandler
                     {
                         ServerCertificateCustomValidationCallback = certificateValidator.ValidateActualCertificate
@@ -106,6 +96,25 @@ namespace Tecan.Sila2.Discovery
                 }
             }
             return ConnectInsecure( target, prependScheme );
+        }
+
+        private ServerData ConnectEncrypted(string target, Guid? expectedGuid, bool prependScheme, X509Certificate2 ca)
+        {
+            var certificateValidator = new ServerCertificateValidator(ca);
+            var clientHandler = new HttpClientHandler
+            {
+                ServerCertificateCustomValidationCallback = certificateValidator.ValidateActualCertificate
+            };
+            var channel = GrpcChannel.ForAddress(prependScheme ? "https://" + target : target, new GrpcChannelOptions
+            {
+                HttpHandler = clientHandler,
+            });
+            var server = CheckCertificateAuthority(GetServerData(channel, () => certificateValidator.ServerCertificate), certificateValidator.ServerCertificate, ca);
+            if (!certificateValidator.CheckDiscoveryCertificateMatchesActualCertificate())
+            {
+                server = ServerDiscoveryCertificateDoesNotMatchActualCertificate(server, certificateValidator.DiscoveryCertificate, certificateValidator.ServerCertificate);
+            }
+            return CheckExpectedGuid(CheckCertificate(server, certificateValidator.ServerCertificate), expectedGuid);
         }
 
         private ServerData ConnectInsecure( string target, bool prependScheme )
@@ -167,12 +176,25 @@ namespace Tecan.Sila2.Discovery
         }
 
         /// <summary>
+        /// Gets called in the case that the server discovery certificate does not match the actual certificate used for the HTTP/2 connection
+        /// </summary>
+        /// <param name="server">The server</param>
+        /// <param name="discoveryCertificate">The certificate announced during discovery</param>
+        /// <param name="actualCertificate">The actual certificate used to authenticate the HTTP request</param>
+        /// <returns>The connected server or null, if the connection should be refused</returns>
+        protected virtual ServerData ServerDiscoveryCertificateDoesNotMatchActualCertificate(ServerData server, X509Certificate2 discoveryCertificate, X509Certificate2 actualCertificate)
+        {
+            _loggingChannel.Warn($"Server {server.Config.Name} uses a different certificate for discovery than for the actual connection");
+            return server;
+        }
+
+        /// <summary>
         /// Checks whether the server certificate matches the certificate authority as announced through discovery
         /// </summary>
         /// <param name="server">The server </param>
         /// <param name="serverCertificate">The actual server certificate</param>
         /// <param name="certificateAuthority">The certificate authority as announced through discovery</param>
-        /// <returns></returns>
+        /// <returns>The connected server or null, if the connection should be refused</returns>
         protected virtual ServerData CheckCertificateAuthority( ServerData server, X509Certificate2 serverCertificate, X509Certificate2 certificateAuthority )
         {
             return server;

@@ -123,22 +123,22 @@ namespace Tecan.Sila2.ServerPooling
             {
                 BinaryTransferUUID = binaryIdentifier
             } );
-            var chunkCancellation = new CancellationTokenSource(data.LifetimeOfBinary.Extract(null));
+            using var chunkCancellation = new CancellationTokenSource(data.LifetimeOfBinary.Extract(null));
             var chunkCount = (uint)(data.BinarySize + ChunkSize - 1) / ChunkSize;
-            for(ulong i = 0; i < chunkCount; i++)
+            for (ulong i = 0; i < chunkCount; i++)
             {
                 if (chunkCancellation.IsCancellationRequested)
                 {
                     throw new BinaryDownloadFailedException("The server failed to respond within the specified lifetime of the binary", binaryIdentifier);
                 }
-                var chunk = await _channel.GetChunk( new GetChunkRequestDto()
+                var chunk = await _channel.GetChunk(new GetChunkRequestDto()
                 {
                     BinaryTransferUUID = binaryIdentifier,
                     Length = i < chunkCount - 1 ? ChunkSize : (uint)(data.BinarySize - i * ChunkSize),
                     Offset = i * ChunkSize
-                } );
+                });
                 chunkCancellation.CancelAfter(chunk.LifetimeOfBinary.Extract(null));
-                await file.WriteAsync( chunk.Payload, 0, chunk.Payload.Length );
+                await file.WriteAsync(chunk.Payload, 0, chunk.Payload.Length);
             }
         }
 

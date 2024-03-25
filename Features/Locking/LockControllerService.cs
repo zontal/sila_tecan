@@ -16,6 +16,7 @@ namespace Tecan.Sila2.Locking
         private DateTime _expiry;
         private string _lock;
         private readonly HashSet<string> _commandsToLock;
+        private readonly object _lockObject = new object();
 
         /// <summary>
         /// Creates a new instance
@@ -65,7 +66,7 @@ namespace Tecan.Sila2.Locking
         /// <inheritdoc />
         public void LockServer(string lockIdentifier, long timeout)
         {
-            lock (this)
+            lock (_lockObject)
             {
                 var newExpiry = DateTime.Now + TimeSpan.FromSeconds(timeout);
                 if (IsLockObtainedBy(lockIdentifier) || !IsLocked)
@@ -88,7 +89,7 @@ namespace Tecan.Sila2.Locking
         /// <inheritdoc />
         public void UnlockServer(string lockIdentifier)
         {
-            lock (this)
+            lock (_lockObject)
             {
                 if (IsLocked)
                 {
@@ -117,7 +118,7 @@ namespace Tecan.Sila2.Locking
         /// <inheritdoc />
         public override IRequestInterception Intercept(string commandIdentifier, string lockIdentifier)
         {
-            lock (this)
+            lock (_lockObject)
             {
                 if (!IsLocked || !IsLockObtainedBy(lockIdentifier))
                 {

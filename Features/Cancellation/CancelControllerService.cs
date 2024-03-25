@@ -23,12 +23,12 @@ namespace Tecan.Sila2.Cancellation
         }
 
         /// <inheritdoc />
-        public void CancelCommand( Uuid commandExecutionUuid )
+        public void CancelCommand( Uuid commandExecutionUUID )
         {
             IObservableCommand command;
             try
             {
-                command = _server.GetCommandExecution( commandExecutionUuid.Value ).Command;
+                command = _server.GetCommandExecution( commandExecutionUUID.Value ).Command;
             }
             catch( Exception ex )
             {

@@ -44,44 +44,54 @@ namespace Tecan.Sila2.ParameterConstraintsProvider
                 var feature = featureProvider.FeatureDefinition;
                 foreach(var command in featureProvider.FeatureDefinition.Items.OfType<FeatureCommand>())
                 {
-                    var method = featureProvider.GetCommand( feature.GetFullyQualifiedIdentifier( command ) );
+                    var method = featureProvider.GetCommand(feature.GetFullyQualifiedIdentifier(command));
                     if (method == null)
                     {
-                        _loggingChannel.Error( $"Could not identify method for command {command.Identifier}, please make sure your interface and feature are in sync" );
+                        _loggingChannel.Error($"Could not identify method for command {command.Identifier}, please make sure your interface and feature are in sync");
                         continue;
                     }
-                    foreach(var parameterInfo in method.GetParameters())
-                    {
-                        foreach(var attribute in parameterInfo.GetCustomAttributes( false ))
-                        {
-                            if(_resolvers.TryGetValue( attribute.GetType(), out var resolver ))
-                            {
-                                var parameterIdentifier = parameterInfo.GetCustomAttribute<SilaIdentifierAttribute>()?.Identifier ?? parameterInfo.Name;
-                                var fullyQualifiedIdentifier = feature.GetFullyQualifiedParameterIdentifier( command, parameterIdentifier );
-
-                                try
-                                {
-                                    var constrained = resolver.ResolveConstraint( attribute as Attribute );
-                                    if(constrained != null)
-                                    {
-                                        source.Add( fullyQualifiedIdentifier, constrained );
-                                    }
-                                }
-                                catch(Exception e)
-                                {
-                                    _loggingChannel.Error( "Failed to obtain runtime constraint.", e );
-                                }
-                                if(resolver is INotifyParameterConstraintResolver notifyResolver)
-                                {
-                                    notifyResolver.SubscribeTo( attribute as Attribute, constraint => UpdateConstraint( fullyQualifiedIdentifier, constraint ) );
-                                }
-                            }
-                        }
-                    }
+                    InitializeConstraintsForMethod(source, feature, command, method);
                 }
             }
 
             return source;
+        }
+
+        private void InitializeConstraintsForMethod(Dictionary<string, ConstrainedType> source, Feature feature, FeatureCommand command, MethodInfo method)
+        {
+            foreach (var parameterInfo in method.GetParameters())
+            {
+                InitializeConstraintsForParameter(source, feature, command, parameterInfo);
+            }
+        }
+
+        private void InitializeConstraintsForParameter(Dictionary<string, ConstrainedType> source, Feature feature, FeatureCommand command, ParameterInfo parameterInfo)
+        {
+            foreach (var attribute in parameterInfo.GetCustomAttributes(false))
+            {
+                if (_resolvers.TryGetValue(attribute.GetType(), out var resolver))
+                {
+                    var parameterIdentifier = parameterInfo.GetCustomAttribute<SilaIdentifierAttribute>()?.Identifier ?? parameterInfo.Name;
+                    var fullyQualifiedIdentifier = feature.GetFullyQualifiedParameterIdentifier(command, parameterIdentifier);
+
+                    try
+                    {
+                        var constrained = resolver.ResolveConstraint(attribute as Attribute);
+                        if (constrained != null)
+                        {
+                            source.Add(fullyQualifiedIdentifier, constrained);
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        _loggingChannel.Error("Failed to obtain runtime constraint.", e);
+                    }
+                    if (resolver is INotifyParameterConstraintResolver notifyResolver)
+                    {
+                        notifyResolver.SubscribeTo(attribute as Attribute, constraint => UpdateConstraint(fullyQualifiedIdentifier, constraint));
+                    }
+                }
+            }
         }
 
         private void UpdateConstraint( string fullyQualifiedIdentifier, ConstrainedType constraint )

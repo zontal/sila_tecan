@@ -12,7 +12,7 @@ namespace Tecan.Sila2
     /// <summary>
     /// Helper type for announcing the SiLA service via mDNS.
     /// </summary>
-    public class ServiceAnnouncer : IDisposable
+    public sealed class ServiceAnnouncer : IDisposable
     {
         private readonly ILog _logger = LogManager.GetLogger<ServiceAnnouncer>();
         private MulticastService _multicastService;
@@ -33,12 +33,12 @@ namespace Tecan.Sila2
                 var addresses = new List<IPAddress>();
                 if(Profile != null)
                 {
-                    int port = Profile.Resources.OfType<SRVRecord>().FirstOrDefault().Port;
+                    int port = Profile.Resources.OfType<SRVRecord>().First().Port;
                     addresses.AddRange( Profile.Resources.OfType<ARecord>().Select( r => r.Address ) );
                     addresses.AddRange( Profile.Resources.OfType<AAAARecord>().Select( r => r.Address ) );
                     return addresses.Select( a => new Tuple<IPAddress, int>( a, port ) );
                 }
-                return null;
+                return Enumerable.Empty<Tuple<IPAddress, int>>();
             }
         }
 

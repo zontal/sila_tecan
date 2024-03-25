@@ -62,6 +62,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WorktableIntegration", "Fea
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{4FAAA323-D87E-4B6F-953D-A6C0D8E39CE6}"
 	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
 		.gitlab-ci.yml = .gitlab-ci.yml
 		CommonAssemblyInfo.cs = CommonAssemblyInfo.cs
 		GenerateAll.bat = GenerateAll.bat
@@ -142,7 +143,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InteropClient.NetCore", "In
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlankServer", "Tests\BlankServer\BlankServer.csproj", "{C9DDA7E4-04C3-4BFB-8EFA-BC3ABFDCF0B2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntegrationTests.NetFrameworkNetClient", "Tests\IntegrationTests.NetFrameworkNetClient\IntegrationTests.NetFrameworkNetClient.csproj", "{224515EC-8411-4789-851F-981D1BD8ED25}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IntegrationTests.NetFrameworkNetClient", "Tests\IntegrationTests.NetFrameworkNetClient\IntegrationTests.NetFrameworkNetClient.csproj", "{224515EC-8411-4789-851F-981D1BD8ED25}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

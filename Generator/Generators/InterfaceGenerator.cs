@@ -9,6 +9,8 @@ using System.Reflection;
 using Tecan.Sila2.Generator.Contracts;
 using Tecan.Sila2.Generator.Helper;
 
+#pragma warning disable S3265 // Non-flags enums should not be used in bitwise operations
+
 namespace Tecan.Sila2.Generator.Generators
 {
     /// <summary>
@@ -241,34 +243,42 @@ namespace Tecan.Sila2.Generator.Generators
         {
             if(constraints.Unit != null)
             {
-                var argList = new List<object>();
-                argList.Add( constraints.Unit.Label );
+                var argList = new List<object>
+                {
+                    constraints.Unit.Label
+                };
                 if(constraints.Unit.UnitComponent != null)
                 {
-                    var factor = constraints.Unit.Factor;
-                    var offset = constraints.Unit.Offset;
-                    foreach(var unitComponent in constraints.Unit.UnitComponent)
+                    decimal factor, offset;
+                    HandleUnitComponents(constraints, argList, out factor, out offset);
+
+                    if (factor != 1.0m)
                     {
-                        if(unitComponent.SIUnit != ConstraintsUnitUnitComponentSIUnit.Dimensionless)
-                        {
-                            argList.Add( new CodeAttributeArgument(
-                                unitComponent.SIUnit.ToString(),
-                                new CodePrimitiveExpression( int.Parse( unitComponent.Exponent ) ) ) );
-                        }
+                        argList.Add(new CodeAttributeArgument("Factor", new CodePrimitiveExpression((double)factor)));
                     }
 
-                    if(factor != 1.0m)
+                    if (offset != 0.0m)
                     {
-                        argList.Add( new CodeAttributeArgument( "Factor", new CodePrimitiveExpression( (double)factor ) ) );
-                    }
-
-                    if(offset != 0.0m)
-                    {
-                        argList.Add( new CodeAttributeArgument( "Offset", new CodePrimitiveExpression( (double)offset ) ) );
+                        argList.Add(new CodeAttributeArgument("Offset", new CodePrimitiveExpression((double)offset)));
                     }
                 }
 
                 attributes.AddAttribute( typeof( UnitAttribute ), argList.ToArray() );
+            }
+        }
+
+        private static void HandleUnitComponents(Constraints constraints, List<object> argList, out decimal factor, out decimal offset)
+        {
+            factor = constraints.Unit.Factor;
+            offset = constraints.Unit.Offset;
+            foreach (var unitComponent in constraints.Unit.UnitComponent)
+            {
+                if (unitComponent.SIUnit != ConstraintsUnitUnitComponentSIUnit.Dimensionless)
+                {
+                    argList.Add(new CodeAttributeArgument(
+                        unitComponent.SIUnit.ToString(),
+                        new CodePrimitiveExpression(int.Parse(unitComponent.Exponent))));
+                }
             }
         }
 
@@ -303,22 +313,27 @@ namespace Tecan.Sila2.Generator.Generators
             }
             else
             {
-                if(constraints.MaximalExclusive != null)
-                {
-                    attributes.AddAttribute( typeof( MaximalExclusiveDateAttribute ), constraints.MaximalExclusive );
-                }
-                if(constraints.MaximalInclusive != null)
-                {
-                    attributes.AddAttribute( typeof( MaximalInclusiveDateAttribute ), constraints.MaximalInclusive );
-                }
-                if(constraints.MinimalExclusive != null)
-                {
-                    attributes.AddAttribute( typeof( MinimalExclusiveDateAttribute ), constraints.MinimalExclusive );
-                }
-                if(constraints.MinimalInclusive != null)
-                {
-                    attributes.AddAttribute( typeof( MinimalInclusiveDateAttribute ), constraints.MinimalInclusive );
-                }
+                HandleDateTimeThresholds(constraints, attributes);
+            }
+        }
+
+        private static void HandleDateTimeThresholds(Constraints constraints, CodeAttributeDeclarationCollection attributes)
+        {
+            if (constraints.MaximalExclusive != null)
+            {
+                attributes.AddAttribute(typeof(MaximalExclusiveDateAttribute), constraints.MaximalExclusive);
+            }
+            if (constraints.MaximalInclusive != null)
+            {
+                attributes.AddAttribute(typeof(MaximalInclusiveDateAttribute), constraints.MaximalInclusive);
+            }
+            if (constraints.MinimalExclusive != null)
+            {
+                attributes.AddAttribute(typeof(MinimalExclusiveDateAttribute), constraints.MinimalExclusive);
+            }
+            if (constraints.MinimalInclusive != null)
+            {
+                attributes.AddAttribute(typeof(MinimalInclusiveDateAttribute), constraints.MinimalInclusive);
             }
         }
 
@@ -755,3 +770,5 @@ namespace Tecan.Sila2.Generator.Generators
         }
     }
 }
+
+#pragma warning restore S3265 // Non-flags enums should not be used in bitwise operations

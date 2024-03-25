@@ -25,7 +25,9 @@ namespace Tecan.Sila2.Interop.Server.MetadataProvider
 
         public override IRequestInterception Intercept( string commandIdentifier, TwoIntegersMetadata twoIntegersMetadata )
         {
+#pragma warning disable S2696 // Instance members should not write to "static" fields
             _value = twoIntegersMetadata;
+#pragma warning restore S2696 // Instance members should not write to "static" fields
             return null;
         }
 

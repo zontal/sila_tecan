@@ -12,6 +12,8 @@ using Tecan.Sila2.Generator.Helper;
 using Tecan.Sila2.Server;
 using Metadata = Tecan.Sila2.Server.Metadata;
 
+#pragma warning disable S3265 // Non-flags enums should not be used in bitwise operations
+
 namespace Tecan.Sila2.Generator.Generators
 {
     /// <summary>
@@ -623,43 +625,48 @@ namespace Tecan.Sila2.Generator.Generators
             else
             {
                 var tryStmt = new CodeTryCatchFinallyStatement();
-                statements.Add( tryStmt );
-                var errorHandlingRef = new CodePropertyReferenceExpression( serverRef, nameof( ISiLAServer.ErrorHandling ) );
-                if(parameters != null && parameters.Count > 0)
+                statements.Add(tryStmt);
+                var errorHandlingRef = new CodePropertyReferenceExpression(serverRef, nameof(ISiLAServer.ErrorHandling));
+                GenerateArgumentExceptionHandlers(parameters, tryStmt, errorHandlingRef);
+                if (executionErrors != null)
                 {
-                    var argException = new CodeCatchClause( "ex", new CodeTypeReference( typeof( ArgumentException ) ) );
-                    tryStmt.CatchClauses.Add( argException );
-                    var message = new CodePropertyReferenceExpression( new CodeArgumentReferenceExpression( argException.LocalName ), nameof( Exception.Message ) );
-                    var parameterName = new CodePropertyReferenceExpression( message.TargetObject, nameof( ArgumentException.ParamName ) );
-                    foreach(var parameter in parameters)
+                    foreach (var executionError in executionErrors)
                     {
-                        var exception = new CodeMethodInvokeExpression( errorHandlingRef, nameof( IServerErrorHandling.CreateValidationError ),
-                            new CodePrimitiveExpression( parameter.Value ),
-                            message );
-                        argException.Statements.Add( new CodeConditionStatement(
-                            new CodeBinaryOperatorExpression( parameterName, CodeBinaryOperatorType.ValueEquality, new CodePrimitiveExpression( parameter.Key ) ),
-                            new CodeThrowExceptionStatement( exception ) ) );
-                    }
-
-                    argException.Statements.Add( new CodeThrowExceptionStatement( new CodeMethodInvokeExpression( errorHandlingRef, nameof( IServerErrorHandling.CreateUnknownValidationError ), message.TargetObject ) ) );
-                }
-                if(executionErrors != null)
-                {
-                    foreach(var executionError in executionErrors)
-                    {
-                        var error = errorFinder( executionError );
-                        var clause = new CodeCatchClause( "ex", _nameProvider.CreateExceptionReference( executionError ) );
+                        var error = errorFinder(executionError);
+                        var clause = new CodeCatchClause("ex", _nameProvider.CreateExceptionReference(executionError));
                         var exception = new CodeMethodInvokeExpression(
-                            errorHandlingRef, nameof( IServerErrorHandling.CreateExecutionError ),
-                            new CodePrimitiveExpression( feature.GetFullyQualifiedIdentifier( error ) ),
-                            new CodePrimitiveExpression( error.Description ),
-                            new CodePropertyReferenceExpression( new CodeArgumentReferenceExpression( clause.LocalName ), nameof( Exception.Message ) ) );
-                        clause.Statements.Add( new CodeThrowExceptionStatement( exception ) );
-                        tryStmt.CatchClauses.Add( clause );
+                            errorHandlingRef, nameof(IServerErrorHandling.CreateExecutionError),
+                            new CodePrimitiveExpression(feature.GetFullyQualifiedIdentifier(error)),
+                            new CodePrimitiveExpression(error.Description),
+                            new CodePropertyReferenceExpression(new CodeArgumentReferenceExpression(clause.LocalName), nameof(Exception.Message)));
+                        clause.Statements.Add(new CodeThrowExceptionStatement(exception));
+                        tryStmt.CatchClauses.Add(clause);
                     }
                 }
 
                 return tryStmt.TryStatements;
+            }
+        }
+
+        private static void GenerateArgumentExceptionHandlers(IReadOnlyDictionary<string, string> parameters, CodeTryCatchFinallyStatement tryStmt, CodePropertyReferenceExpression errorHandlingRef)
+        {
+            if (parameters != null && parameters.Count > 0)
+            {
+                var argException = new CodeCatchClause("ex", new CodeTypeReference(typeof(ArgumentException)));
+                tryStmt.CatchClauses.Add(argException);
+                var message = new CodePropertyReferenceExpression(new CodeArgumentReferenceExpression(argException.LocalName), nameof(Exception.Message));
+                var parameterName = new CodePropertyReferenceExpression(message.TargetObject, nameof(ArgumentException.ParamName));
+                foreach (var parameter in parameters)
+                {
+                    var exception = new CodeMethodInvokeExpression(errorHandlingRef, nameof(IServerErrorHandling.CreateValidationError),
+                        new CodePrimitiveExpression(parameter.Value),
+                        message);
+                    argException.Statements.Add(new CodeConditionStatement(
+                        new CodeBinaryOperatorExpression(parameterName, CodeBinaryOperatorType.ValueEquality, new CodePrimitiveExpression(parameter.Key)),
+                        new CodeThrowExceptionStatement(exception)));
+                }
+
+                argException.Statements.Add(new CodeThrowExceptionStatement(new CodeMethodInvokeExpression(errorHandlingRef, nameof(IServerErrorHandling.CreateUnknownValidationError), message.TargetObject)));
             }
         }
 
@@ -728,96 +735,15 @@ namespace Tecan.Sila2.Generator.Generators
 
                 foreach(var featureCommand in feature.Items.OfType<FeatureCommand>())
                 {
-                    if(featureCommand.Observable == FeatureCommandObservable.No)
-                    {
-                        registerMethod.Statements.Add( new CodeMethodInvokeExpression(
-                            new CodeMethodReferenceExpression(
-                                registration, nameof( IServerBuilder.RegisterUnobservableCommand ),
-                                _nameProvider.GenerateCommandRequestType( featureCommand ),
-                                _nameProvider.GenerateCommandResponseType( featureCommand ) ),
-                            new CodePrimitiveExpression( featureCommand.Identifier ),
-                            new CodeMethodReferenceExpression( null, featureCommand.Identifier ) ) );
-                    }
-                    else
-                    {
-                        var typeArguments = new List<CodeTypeReference>
-                        {
-                            _nameProvider.GenerateCommandRequestType( featureCommand )
-                        };
-                        var hasIntermediates = false;
-                        var arguments = new List<CodeExpression>
-                        {
-                            new CodePrimitiveExpression(featureCommand.Identifier),
-                            new CodeMethodReferenceExpression( null, featureCommand.Identifier )
-                        };
-                        if(featureCommand.IntermediateResponse != null && featureCommand.IntermediateResponse.Length > 0)
-                        {
-                            hasIntermediates = true;
-                            typeArguments.Add( _nameProvider.GetIntermediateType( featureCommand, _translationProvider ) );
-                            typeArguments.Add( _nameProvider.GenerateCommandIntermediateType( featureCommand ) );
-                            arguments.Add( new CodeMethodReferenceExpression( null, "Convert" + featureCommand.Identifier + "Intermediate" ) );
-                        }
-                        if(featureCommand.Response != null && featureCommand.Response.Length > 0)
-                        {
-                            typeArguments.Add( _nameProvider.GetMemberType( featureCommand.Identifier + "." + featureCommand.Response[0].Identifier )
-                                   ?? _translationProvider.ExtractType( featureCommand.Response[0].DataType, featureCommand.Identifier ) );
-                            typeArguments.Add( _nameProvider.GenerateCommandResponseType( featureCommand ) );
-                            arguments.Add( new CodeMethodReferenceExpression( null, "Convert" + featureCommand.Identifier + "Response" ) );
-                        }
-                        if((featureCommand.DefinedExecutionErrors != null && featureCommand.DefinedExecutionErrors.Length > 0)
-                            || (featureCommand.Parameter != null && featureCommand.Parameter.Length > 0))
-                        {
-                            arguments.Add( GenerateErrorConversionMethod( feature, featureCommand, server ) );
-                        }
-                        else
-                        {
-                            arguments.Add( new CodePrimitiveExpression( null ) );
-                        }
-
-                        registerMethod.Statements.Add( new CodeMethodInvokeExpression(
-                            new CodeMethodReferenceExpression(
-                                registration, hasIntermediates ? nameof( IServerBuilder.RegisterCommandWithIntermediates ) : nameof( IServerBuilder.RegisterObservableCommand ),
-                                typeArguments.ToArray() ),
-                            arguments.ToArray() ) );
-                    }
-
-                    if(featureCommand.Parameter != null)
-                    {
-                        foreach(var parameter in featureCommand.Parameter)
-                        {
-                            if(ContainsBinaries( parameter.DataType ))
-                            {
-                                registerMethod.Statements.Add( new CodeMethodInvokeExpression(
-                                    registration,
-                                    nameof( IServerBuilder.RegisterBinaryCommandParameter ),
-                                    new CodePrimitiveExpression( feature.GetFullyQualifiedParameterIdentifier( featureCommand, parameter.Identifier ) ) ) );
-                            }
-                        }
-                    }
+                    GenerateServerRegisterCommand(feature, server, registerMethod, registration, featureCommand);
                 }
 
-                foreach(var featureProperty in feature.Items.OfType<FeatureProperty>())
+                foreach (var featureProperty in feature.Items.OfType<FeatureProperty>())
                 {
-                    if(featureProperty.Observable == FeaturePropertyObservable.No)
-                    {
-                        registerMethod.Statements.Add( new CodeMethodInvokeExpression(
-                            registration,
-                            nameof( IServerBuilder.RegisterUnobservableProperty ),
-                            new CodePrimitiveExpression( featureProperty.Identifier ),
-                            new CodeMethodReferenceExpression( null, "Get" + featureProperty.Identifier ) ) );
-                    }
-                    else
-                    {
-                        registerMethod.Statements.Add( new CodeMethodInvokeExpression(
-                            registration,
-                            nameof( IServerBuilder.RegisterObservableProperty ),
-                            new CodePrimitiveExpression( featureProperty.Identifier ),
-                            new CodeMethodReferenceExpression( null, "Get" + featureProperty.Identifier ),
-                            implementation ) );
-                    }
+                    GenerateServerRegisterProperty(implementation, registerMethod, registration, featureProperty);
                 }
 
-                foreach(var featureMetadata in feature.Items.OfType<FeatureMetadata>())
+                foreach (var featureMetadata in feature.Items.OfType<FeatureMetadata>())
                 {
                     registerMethod.Statements.Add( new CodeMethodInvokeExpression(
                         registration,
@@ -827,6 +753,102 @@ namespace Tecan.Sila2.Generator.Generators
                 }
             }
             server.Members.Add( registerMethod );
+        }
+
+        private static void GenerateServerRegisterProperty(CodeExpression implementation, CodeMemberMethod registerMethod, CodeArgumentReferenceExpression registration, FeatureProperty featureProperty)
+        {
+            if (featureProperty.Observable == FeaturePropertyObservable.No)
+            {
+                registerMethod.Statements.Add(new CodeMethodInvokeExpression(
+                    registration,
+                    nameof(IServerBuilder.RegisterUnobservableProperty),
+                    new CodePrimitiveExpression(featureProperty.Identifier),
+                    new CodeMethodReferenceExpression(null, "Get" + featureProperty.Identifier)));
+            }
+            else
+            {
+                registerMethod.Statements.Add(new CodeMethodInvokeExpression(
+                    registration,
+                    nameof(IServerBuilder.RegisterObservableProperty),
+                    new CodePrimitiveExpression(featureProperty.Identifier),
+                    new CodeMethodReferenceExpression(null, "Get" + featureProperty.Identifier),
+                    implementation));
+            }
+        }
+
+        private void GenerateServerRegisterCommand(Feature feature, CodeTypeDeclaration server, CodeMemberMethod registerMethod, CodeArgumentReferenceExpression registration, FeatureCommand featureCommand)
+        {
+            if (featureCommand.Observable == FeatureCommandObservable.No)
+            {
+                registerMethod.Statements.Add(new CodeMethodInvokeExpression(
+                    new CodeMethodReferenceExpression(
+                        registration, nameof(IServerBuilder.RegisterUnobservableCommand),
+                        _nameProvider.GenerateCommandRequestType(featureCommand),
+                        _nameProvider.GenerateCommandResponseType(featureCommand)),
+                    new CodePrimitiveExpression(featureCommand.Identifier),
+                    new CodeMethodReferenceExpression(null, featureCommand.Identifier)));
+            }
+            else
+            {
+                var typeArguments = new List<CodeTypeReference>
+                        {
+                            _nameProvider.GenerateCommandRequestType( featureCommand )
+                        };
+                var hasIntermediates = false;
+                var arguments = new List<CodeExpression>
+                        {
+                            new CodePrimitiveExpression(featureCommand.Identifier),
+                            new CodeMethodReferenceExpression( null, featureCommand.Identifier )
+                        };
+                if (featureCommand.IntermediateResponse != null && featureCommand.IntermediateResponse.Length > 0)
+                {
+                    hasIntermediates = true;
+                    typeArguments.Add(_nameProvider.GetIntermediateType(featureCommand, _translationProvider));
+                    typeArguments.Add(_nameProvider.GenerateCommandIntermediateType(featureCommand));
+                    arguments.Add(new CodeMethodReferenceExpression(null, "Convert" + featureCommand.Identifier + "Intermediate"));
+                }
+                if (featureCommand.Response != null && featureCommand.Response.Length > 0)
+                {
+                    typeArguments.Add(_nameProvider.GetMemberType(featureCommand.Identifier + "." + featureCommand.Response[0].Identifier)
+                           ?? _translationProvider.ExtractType(featureCommand.Response[0].DataType, featureCommand.Identifier));
+                    typeArguments.Add(_nameProvider.GenerateCommandResponseType(featureCommand));
+                    arguments.Add(new CodeMethodReferenceExpression(null, "Convert" + featureCommand.Identifier + "Response"));
+                }
+                if ((featureCommand.DefinedExecutionErrors != null && featureCommand.DefinedExecutionErrors.Length > 0)
+                    || (featureCommand.Parameter != null && featureCommand.Parameter.Length > 0))
+                {
+                    arguments.Add(GenerateErrorConversionMethod(feature, featureCommand, server));
+                }
+                else
+                {
+                    arguments.Add(new CodePrimitiveExpression(null));
+                }
+
+                registerMethod.Statements.Add(new CodeMethodInvokeExpression(
+                    new CodeMethodReferenceExpression(
+                        registration, hasIntermediates ? nameof(IServerBuilder.RegisterCommandWithIntermediates) : nameof(IServerBuilder.RegisterObservableCommand),
+                        typeArguments.ToArray()),
+                    arguments.ToArray()));
+            }
+
+            GenerateServerRegisterBinaryParameters(feature, registerMethod, registration, featureCommand);
+        }
+
+        private void GenerateServerRegisterBinaryParameters(Feature feature, CodeMemberMethod registerMethod, CodeArgumentReferenceExpression registration, FeatureCommand featureCommand)
+        {
+            if (featureCommand.Parameter != null)
+            {
+                foreach (var parameter in featureCommand.Parameter)
+                {
+                    if (ContainsBinaries(parameter.DataType))
+                    {
+                        registerMethod.Statements.Add(new CodeMethodInvokeExpression(
+                            registration,
+                            nameof(IServerBuilder.RegisterBinaryCommandParameter),
+                            new CodePrimitiveExpression(feature.GetFullyQualifiedParameterIdentifier(featureCommand, parameter.Identifier))));
+                    }
+                }
+            }
         }
 
         private bool ContainsBinaries( DataTypeType dataType )
@@ -1002,3 +1024,5 @@ namespace Tecan.Sila2.Generator.Generators
         }
     }
 }
+
+#pragma warning restore S3265 // Non-flags enums should not be used in bitwise operations

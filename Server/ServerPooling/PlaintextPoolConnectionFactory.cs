@@ -15,10 +15,10 @@ namespace Tecan.Sila2.Server.ServerPooling
         private static ILog _logger = LogManager.GetLogger( typeof( PlaintextPoolConnectionFactory ) );
 
         /// <inheritdoc />
-        public CallInvoker CreatePoolConnection( string poolAddress )
+        public CallInvoker CreatePoolConnection( string target )
         {
-            _logger.Info( $"Connecting to server pool {poolAddress}" );
-            var channel = new Channel( poolAddress, ChannelCredentials.Insecure );
+            _logger.Info( $"Connecting to server pool {target}" );
+            var channel = new Channel( target, ChannelCredentials.Insecure );
             return channel.CreateCallInvoker();
         }
     }

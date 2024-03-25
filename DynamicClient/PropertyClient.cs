@@ -61,7 +61,9 @@ namespace Tecan.Sila2.DynamicClient
             {
                 if( Property.Observable == FeaturePropertyObservable.Yes )
                 {
+#pragma warning disable S2930 // "IDisposables" should be disposed
                     var cts = new CancellationTokenSource();
+#pragma warning restore S2930 // "IDisposables" should be disposed
 
                     void SetResult( DynamicObjectProperty res )
                     {
@@ -69,7 +71,7 @@ namespace Tecan.Sila2.DynamicClient
                         cts.Cancel();
                     }
 
-                    Context.Channel.SubscribeProperty( Context.ServiceName, Property.Identifier, Context.Feature.GetFullyQualifiedIdentifier(Property), SetResult, callInfo, _responseSerializer, cts.Token ).Wait();
+                    Context.Channel.SubscribeProperty( Context.ServiceName, Property.Identifier, Context.Feature.GetFullyQualifiedIdentifier(Property), SetResult, callInfo, _responseSerializer, cts.Dispose, cts.Token ).Wait();
                 }
                 else
                 {

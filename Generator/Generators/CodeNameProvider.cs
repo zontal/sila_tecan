@@ -126,7 +126,7 @@ namespace Tecan.Sila2.Generator.Generators
             }
         }
 
-        public CodeTypeReference GetPropertyResponseType( FeatureProperty featureProperty, ITypeTranslationProvider translationProvider )
+        public CodeTypeReference GetPropertyResponseType( FeatureProperty featureProperty, ITypeTranslationProvider typeTranslationProvider )
         {
             CodeTypeReference propertyResponse;
             if(featureProperty.DataType.Item is ConstrainedType)
@@ -136,29 +136,19 @@ namespace Tecan.Sila2.Generator.Generators
             else
             {
                 propertyResponse = new CodeTypeReference( typeof( PropertyResponse<> ).Name,
-                    translationProvider.GetDtoTypeReference( featureProperty.DataType, featureProperty.Identifier, null ) );
+                    typeTranslationProvider.GetDtoTypeReference( featureProperty.DataType, featureProperty.Identifier, null ) );
             }
 
             return propertyResponse;
         }
 
-        public MethodInfo GetNonstandardMethod( FeatureCommand command )
+        public CodeTypeReference GetObservableCommandReturnType( FeatureCommand featureCommand, ITypeTranslationProvider typeTranslationProvider )
         {
-            if(_nonstandardMethods.TryGetValue( command.Identifier, out var method ))
-            {
-                return method;
-            }
-
-            return null;
-        }
-
-        public CodeTypeReference GetObservableCommandReturnType( FeatureCommand featureCommand, ITypeTranslationProvider translationProvider )
-        {
-            CodeTypeReference intermediateType = GetIntermediateType( featureCommand, translationProvider );
+            CodeTypeReference intermediateType = GetIntermediateType( featureCommand, typeTranslationProvider );
             if(featureCommand.Response != null && featureCommand.Response.Length > 0)
             {
                 var responseType = GetMemberType( featureCommand.Identifier + "." + featureCommand.Response[0].Identifier )
-                                   ?? translationProvider.ExtractType( featureCommand.Response[0].DataType, featureCommand.Identifier );
+                                   ?? typeTranslationProvider.ExtractType( featureCommand.Response[0].DataType, featureCommand.Identifier );
                 if(intermediateType != null)
                 {
                     return new CodeTypeReference( typeof( IIntermediateObservableCommand<,> ).FullName, intermediateType, responseType );
@@ -176,13 +166,23 @@ namespace Tecan.Sila2.Generator.Generators
         }
 
 
-        public CodeTypeReference GetIntermediateType( FeatureCommand featureCommand, ITypeTranslationProvider translationProvider )
+        public CodeTypeReference GetIntermediateType( FeatureCommand featureCommand, ITypeTranslationProvider typeTranslationProvider )
         {
             if(featureCommand.IntermediateResponse != null && featureCommand.IntermediateResponse.Length > 0)
             {
                 return GetMemberType( featureCommand.Identifier + "." + featureCommand.IntermediateResponse[0].Identifier )
-                                ?? translationProvider.ExtractType( featureCommand.IntermediateResponse[0].DataType, featureCommand.Identifier + "Intermediate" );
+                                ?? typeTranslationProvider.ExtractType( featureCommand.IntermediateResponse[0].DataType, featureCommand.Identifier + "Intermediate" );
             }
+            return null;
+        }
+
+        public MethodInfo GetNonstandardMethod( FeatureCommand command )
+        {
+            if(_nonstandardMethods.TryGetValue( command.Identifier, out var method ))
+            {
+                return method;
+            }
+
             return null;
         }
 

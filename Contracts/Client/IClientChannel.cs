@@ -83,6 +83,34 @@ namespace Tecan.Sila2.Client
         Task SubscribeProperty<T>( string serviceName, string propertyName, string propertyIdentifier, Action<T> newValueReceived, IClientCallInfo callInfo, ByteSerializer<T> serializer, CancellationToken cancellationToken = default ) where T : class, ISilaTransferObject;
 
         /// <summary>
+        /// Subscribes to the given property
+        /// </summary>
+        /// <typeparam name="T">The data transfer object type of the property response</typeparam>
+        /// <param name="serviceName">The service name for the property</param>
+        /// <param name="propertyName">The name of the property</param>
+        /// <param name="propertyIdentifier">The fully qualified identifier of the property</param>
+        /// <param name="newValueReceived">A callback that should be called when a new value is received</param>
+        /// <param name="callInfo">An object that encapsulates the call information</param>
+        /// <param name="cleanup">A cleanup action that should be performed as the subscription completes</param>
+        /// <param name="cancellationToken">A cancellation token that can be used to cancel the subscription</param>
+        /// <returns>A task that ends when the subscription is terminated</returns>
+        Task SubscribeProperty<T>(string serviceName, string propertyName, string propertyIdentifier, Action<T> newValueReceived, IClientCallInfo callInfo, Action cleanup, CancellationToken cancellationToken = default) where T : class, ISilaTransferObject;
+
+        /// <summary>
+        /// Subscribes to the given property
+        /// </summary>
+        /// <typeparam name="T">The data transfer object type of the property response</typeparam>
+        /// <param name="serviceName">The service name for the property</param>
+        /// <param name="propertyName">The name of the property</param>
+        /// <param name="propertyIdentifier">The fully qualified identifier of the property</param>
+        /// <param name="newValueReceived">A callback that should be called when a new value is received</param>
+        /// <param name="callInfo">An object that encapsulates the call information</param>
+        /// <param name="serializer">A custom serializer for the property response</param>
+        /// <param name="cleanup">A cleanup action that should be performed as the subscription completes</param>
+        /// <param name="cancellationToken">A cancellation token that can be used to cancel the subscription</param>
+        /// <returns>A task that ends when the subscription is terminated</returns>
+        Task SubscribeProperty<T>(string serviceName, string propertyName, string propertyIdentifier, Action<T> newValueReceived, IClientCallInfo callInfo, ByteSerializer<T> serializer, Action cleanup, CancellationToken cancellationToken = default) where T : class, ISilaTransferObject;
+        /// <summary>
         /// Executes an unobservable command
         /// </summary>
         /// <typeparam name="TRequest">The data transfer type of the request</typeparam>
@@ -107,23 +135,6 @@ namespace Tecan.Sila2.Client
         /// <param name="callInfo">An object that encapsulates the call information</param>
         /// <param name="requestSerializer">A custom serializer for the request</param>
         void ExecuteUnobservableCommand<TRequest>(
-            string serviceName,
-            string commandName,
-            TRequest request,
-            IClientCallInfo callInfo,
-            ByteSerializer<TRequest> requestSerializer )
-            where TRequest : class, ISilaRequestObject;
-
-        /// <summary>
-        /// Executes an unobservable command asynchronously
-        /// </summary>
-        /// <typeparam name="TRequest">The data transfer type of the request</typeparam>
-        /// <param name="serviceName">The service name of the command</param>
-        /// <param name="commandName">The name of the command</param>
-        /// <param name="request">The request object</param>
-        /// <param name="callInfo">An object that encapsulates the call information</param>
-        /// <param name="requestSerializer">A custom serializer for the request</param>
-        Task ExecuteUnobservableCommandAsync<TRequest>(
             string serviceName,
             string commandName,
             TRequest request,
@@ -170,6 +181,23 @@ namespace Tecan.Sila2.Client
             ByteSerializer<TResponse> responseSerializer )
             where TRequest : class, ISilaRequestObject
             where TResponse : class;
+
+        /// <summary>
+        /// Executes an unobservable command asynchronously
+        /// </summary>
+        /// <typeparam name="TRequest">The data transfer type of the request</typeparam>
+        /// <param name="serviceName">The service name of the command</param>
+        /// <param name="commandName">The name of the command</param>
+        /// <param name="request">The request object</param>
+        /// <param name="callInfo">An object that encapsulates the call information</param>
+        /// <param name="requestSerializer">A custom serializer for the request</param>
+        Task ExecuteUnobservableCommandAsync<TRequest>(
+            string serviceName,
+            string commandName,
+            TRequest request,
+            IClientCallInfo callInfo,
+            ByteSerializer<TRequest> requestSerializer )
+            where TRequest : class, ISilaRequestObject;
 
         /// <summary>
         /// Executes an unobservable command asynchronously

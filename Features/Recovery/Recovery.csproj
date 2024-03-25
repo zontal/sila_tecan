@@ -18,6 +18,10 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Compile Include="..\..\CommonAssemblyInfo.cs" Link="Properties\CommonAssemblyInfo.cs" />
+    </ItemGroup>
+
+    <ItemGroup>
       <EmbeddedResource Include="ErrorRecoveryService.sila.xml" />
     </ItemGroup>
 

@@ -33,7 +33,7 @@ namespace Tecan.Sila2.Server.ServiceDefinition
                     if (channel.TryRead(out var value))
                     {
 #if NETSTANDARD2_0
-                    await responseStream.WriteAsync(value);
+                        await responseStream.WriteAsync(value);
 #else
                         await responseStream.WriteAsync(value, cancellationToken);
 #endif
@@ -44,6 +44,7 @@ namespace Tecan.Sila2.Server.ServiceDefinition
             finally
             {
                 source.Cancel();
+                source.Dispose();
             }
         }
     }

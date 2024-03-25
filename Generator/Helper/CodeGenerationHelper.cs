@@ -7,6 +7,8 @@ using System.Linq;
 using System.Text;
 using Microsoft.CSharp;
 
+#pragma warning disable S3265 // Non-flags enums should not be used in bitwise operations
+
 namespace Tecan.Sila2.Generator.Helper
 {
     /// <summary>
@@ -312,3 +314,5 @@ namespace Tecan.Sila2.Generator.Helper
         }
     }
 }
+
+#pragma warning restore S3265 // Non-flags enums should not be used in bitwise operations

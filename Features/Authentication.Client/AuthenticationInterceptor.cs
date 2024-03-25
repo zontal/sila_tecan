@@ -88,24 +88,20 @@ namespace Tecan.Sila2.Authentication
                 {
                     var client = new AuthorizationConfigurationServiceClient( server.Channel, executionManager );
                     var currentProvider = client.AuthorizationProvider;
-                    if( !string.IsNullOrEmpty( currentProvider ) && Guid.TryParse( currentProvider, out var providerUuid ) )
+                    if (!string.IsNullOrEmpty(currentProvider)
+                        && Guid.TryParse(currentProvider, out var providerUuid)
+                        && (_authenticationHandler.AuthorizationProvider == null || providerUuid != _authenticationHandler.AuthorizationProvider.Config.Uuid))
                     {
-                        if( _authenticationHandler.AuthorizationProvider == null || providerUuid != _authenticationHandler.AuthorizationProvider.Config.Uuid )
+                        var requestedFeatures = _authenticationHandler.GetFeaturesToRequest(server, interceptedCommand);
+                        if (TryAuthenticateWithProvider(server, providerUuid, requestedFeatures, out var providerToken))
                         {
-                            var requestedFeatures = _authenticationHandler.GetFeaturesToRequest(server, interceptedCommand);
-                            if ( TryAuthenticateWithProvider( server, providerUuid, requestedFeatures, out var providerToken ) )
-                            {
-                                return providerToken;
-                            }
+                            return providerToken;
                         }
                     }
 
-                    if( _authenticationHandler.AuthorizationProvider != null )
+                    if (_authenticationHandler.AuthorizationProvider != null && TryAuthenticateIntegrated(server, client, interceptedCommand, out var integratedToken))
                     {
-                        if( TryAuthenticateIntegrated( server, client, interceptedCommand, out var integratedToken ) )
-                        {
-                            return integratedToken;
-                        }
+                        return integratedToken;
                     }
                 }
                 catch( Exception exception )

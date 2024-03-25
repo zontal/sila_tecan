@@ -11,6 +11,8 @@ using ProtoBuf;
 using Tecan.Sila2.Generator.Contracts;
 using Tecan.Sila2.Generator.Helper;
 
+#pragma warning disable S3265 // Non-flags enums should not be used in bitwise operations
+
 namespace Tecan.Sila2.Generator.Generators
 {
     /// <summary>
@@ -51,78 +53,60 @@ namespace Tecan.Sila2.Generator.Generators
         /// <inheritdoc />
         public CodeCompileUnit GenerateInterfaceUnit( Feature feature, string ns )
         {
-            _loggingChannel.Info( $"Generating data transfer objects for feature {feature.FullyQualifiedIdentifier}" );
+            _loggingChannel.Info($"Generating data transfer objects for feature {feature.FullyQualifiedIdentifier}");
             var unit = new CodeCompileUnit();
-            unit.Namespaces.Add( new CodeNamespace
+            unit.Namespaces.Add(new CodeNamespace
             {
                 Imports =
                 {
                     new CodeNamespaceImport("System"),
                     new CodeNamespaceImport("Tecan.Sila2")
                 }
-            } );
-            var nSpace = new CodeNamespace( ns );
-            unit.Namespaces.Add( nSpace );
+            });
+            var nSpace = new CodeNamespace(ns);
+            unit.Namespaces.Add(nSpace);
 
             var structureHelper = new AnonymousTypeHelper();
-            var structHandler = new Action<string, StructureType>( structureHelper.RegisterAnonymousType );
+            var structHandler = new Action<string, StructureType>(structureHelper.RegisterAnonymousType);
 
-            if(feature.Items != null)
+            if (feature.Items != null)
             {
-                var spec = _configSource.GetFeatureSpec( feature.Identifier );
-                foreach(var featureCommand in feature.Items.OfType<FeatureCommand>())
+                var spec = _configSource.GetFeatureSpec(feature.Identifier);
+                foreach (var featureCommand in feature.Items.OfType<FeatureCommand>())
                 {
-                    _loggingChannel.Debug( $"Generating request/response classes for {featureCommand.Identifier}" );
-                    var commandSpec = spec?.Command?.FirstOrDefault( c => featureCommand.Identifier == (c.Identifier ?? c.Code) );
-                    nSpace.Types.Add( GenerateCommandRequestType( feature, featureCommand, commandSpec, structHandler ) );
-
-                    if(featureCommand.IntermediateResponse != null && featureCommand.IntermediateResponse.Length > 0)
-                    {
-                        nSpace.Types.Add( GenerateCommandIntermediateType( featureCommand, commandSpec, structHandler ) );
-                    }
-
-                    if(featureCommand.Response != null && featureCommand.Response.Length > 0)
-                    {
-                        nSpace.Types.Add( GenerateCommandResponseType( featureCommand, commandSpec, structHandler ) );
-                    }
+                    GenerateCommand(feature, nSpace, structHandler, spec, featureCommand);
                 }
 
-                foreach(var featureProperty in feature.Items.OfType<FeatureProperty>())
+                foreach (var featureProperty in feature.Items.OfType<FeatureProperty>())
                 {
-                    var propertySpec = spec?.Property?.FirstOrDefault( c => featureProperty.Identifier == (c.Identifier ?? c.Code) );
-                    // ensure dto type can be resolved
-                    _translationProvider.GetDtoTypeReference( featureProperty.DataType, featureProperty.Identifier, structHandler );
-                    if(featureProperty.DataType.Item is ConstrainedType)
-                    {
-                        _loggingChannel.Debug( $"Generating constrained DTO type for property {featureProperty.Identifier}" );
-                        nSpace.Types.Add( GeneratePropertyResponse( featureProperty, propertySpec, structHandler ) );
-                    }
+                    GenerateProperty(nSpace, structHandler, spec, featureProperty);
                 }
 
-                foreach(var dataTypeDefinition in feature.Items.OfType<SiLAElement>())
+                foreach (var dataTypeDefinition in feature.Items.OfType<SiLAElement>())
                 {
-                    _loggingChannel.Debug( $"Generating data transfer type for {dataTypeDefinition.Identifier}" );
-                    var typeSpec = spec?.Type?.FirstOrDefault( t => dataTypeDefinition.Identifier == (t.Identifier ?? t.Code) );
-                    var type = GenerateDataTypeDefinition( dataTypeDefinition, typeSpec, structHandler, true );
-                    if(type != null)
-                    {
-                        nSpace.Types.Add( type );
-                    }
+                    GenerateDataType(nSpace, structHandler, spec, dataTypeDefinition);
                 }
 
-                foreach(var metadata in feature.Items.OfType<FeatureMetadata>())
+                foreach (var metadata in feature.Items.OfType<FeatureMetadata>())
                 {
-                    _translationProvider.GetDtoTypeReference( metadata.DataType, metadata.Identifier, structHandler );
+                    _translationProvider.GetDtoTypeReference(metadata.DataType, metadata.Identifier, structHandler);
                 }
             }
             else
             {
-                _loggingChannel.Warn( $"The feature {feature.Identifier} has no items." );
+                _loggingChannel.Warn($"The feature {feature.Identifier} has no items.");
             }
 
-            structureHelper.ProcessAll( ( name, anonymousType ) =>
+            AddRemainingDataTypes(nSpace, structureHelper, structHandler);
+
+            return unit;
+        }
+
+        private void AddRemainingDataTypes(CodeNamespace nSpace, AnonymousTypeHelper structureHelper, Action<string, StructureType> structHandler)
+        {
+            structureHelper.ProcessAll((name, anonymousType) =>
             {
-                _loggingChannel.Debug( $"Generating data transfer type for anonymous type {name}" );
+                _loggingChannel.Debug($"Generating data transfer type for anonymous type {name}");
                 var element = new SiLAElement()
                 {
                     Identifier = name,
@@ -132,14 +116,52 @@ namespace Tecan.Sila2.Generator.Generators
                     },
                     DisplayName = name.ToDisplayName()
                 };
-                var type = GenerateDataTypeDefinition( element, null, structHandler, false );
-                if(type != null)
+                var type = GenerateDataTypeDefinition(element, null, structHandler, false);
+                if (type != null)
                 {
-                    nSpace.Types.Add( type );
+                    nSpace.Types.Add(type);
                 }
-            } );
+            });
+        }
 
-            return unit;
+        private void GenerateDataType(CodeNamespace nSpace, Action<string, StructureType> structHandler, FeatureSpec spec, SiLAElement dataTypeDefinition)
+        {
+            _loggingChannel.Debug($"Generating data transfer type for {dataTypeDefinition.Identifier}");
+            var typeSpec = spec?.Type?.FirstOrDefault(t => dataTypeDefinition.Identifier == (t.Identifier ?? t.Code));
+            var type = GenerateDataTypeDefinition(dataTypeDefinition, typeSpec, structHandler, true);
+            if (type != null)
+            {
+                nSpace.Types.Add(type);
+            }
+        }
+
+        private void GenerateProperty(CodeNamespace nSpace, Action<string, StructureType> structHandler, FeatureSpec spec, FeatureProperty featureProperty)
+        {
+            var propertySpec = spec?.Property?.FirstOrDefault(c => featureProperty.Identifier == (c.Identifier ?? c.Code));
+            // ensure dto type can be resolved
+            _translationProvider.GetDtoTypeReference(featureProperty.DataType, featureProperty.Identifier, structHandler);
+            if (featureProperty.DataType.Item is ConstrainedType)
+            {
+                _loggingChannel.Debug($"Generating constrained DTO type for property {featureProperty.Identifier}");
+                nSpace.Types.Add(GeneratePropertyResponse(featureProperty, propertySpec, structHandler));
+            }
+        }
+
+        private void GenerateCommand(Feature feature, CodeNamespace nSpace, Action<string, StructureType> structHandler, FeatureSpec spec, FeatureCommand featureCommand)
+        {
+            _loggingChannel.Debug($"Generating request/response classes for {featureCommand.Identifier}");
+            var commandSpec = spec?.Command?.FirstOrDefault(c => featureCommand.Identifier == (c.Identifier ?? c.Code));
+            nSpace.Types.Add(GenerateCommandRequestType(feature, featureCommand, commandSpec, structHandler));
+
+            if (featureCommand.IntermediateResponse != null && featureCommand.IntermediateResponse.Length > 0)
+            {
+                nSpace.Types.Add(GenerateCommandIntermediateType(featureCommand, commandSpec, structHandler));
+            }
+
+            if (featureCommand.Response != null && featureCommand.Response.Length > 0)
+            {
+                nSpace.Types.Add(GenerateCommandResponseType(featureCommand, commandSpec, structHandler));
+            }
         }
 
         private CodeTypeDeclaration GeneratePropertyResponse( FeatureProperty featureProperty, PropertySpec spec, Action<string, StructureType> structHandler )
@@ -763,7 +785,7 @@ namespace Tecan.Sila2.Generator.Generators
                 {
                     foreach(var validation in validator.CreateValidation( propertyReference, dataType, constraints, wrapper ))
                     {
-                        statements.Add( CreateValidityStatement( validation.CheckExpression, validation.ErrorMessage, propertyReference, resultRef ) );
+                        statements.Add( CreateValidityStatement(validation.CheckExpression, validation.ErrorMessage, resultRef));
                     }
                 }
             }
@@ -773,8 +795,8 @@ namespace Tecan.Sila2.Generator.Generators
             }
         }
 
-        private CodeStatement CreateValidityStatement( CodeExpression condition, CodeExpression errorMessage,
-            CodePropertyReferenceExpression reference, CodeVariableReferenceExpression resultRef )
+        private CodeStatement CreateValidityStatement(CodeExpression condition, CodeExpression errorMessage,
+            CodeVariableReferenceExpression resultRef)
         {
             return new CodeConditionStatement( condition,
                 new CodeAssignStatement( resultRef,
@@ -792,3 +814,5 @@ namespace Tecan.Sila2.Generator.Generators
         }
     }
 }
+
+#pragma warning restore S3265 // Non-flags enums should not be used in bitwise operations

@@ -24,8 +24,6 @@ builder.Host.UseDryIoc( container =>
      container.LoadComponentsFromApplicationDirectory();
      container.AddSila2Defaults();
  } );
-builder.Services.AddRazorPages();
-
 builder.Services.AddSila2( serverInfo, opt => opt.IgnoreUnknownServices = true );
 
 builder.WebHost.ConfigureKestrelForSila2( serverInfo, options =>
@@ -42,14 +40,9 @@ if(!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler( "/Error" );
 }
-
 app.UseStaticFiles();
-
 app.UseRouting();
-
 app.UseAuthorization();
-
-app.MapRazorPages();
 app.MapSila2();
 
 app.Run();

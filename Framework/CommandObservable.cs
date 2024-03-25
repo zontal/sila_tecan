@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Tecan.Sila2
 {
@@ -12,6 +13,7 @@ namespace Tecan.Sila2
     {
         private readonly IIntermediateObservableCommand<T> _innerCommand;
         private readonly List<IObserver<T>> _subscribers = new List<IObserver<T>>();
+        private readonly Task _readIntermediatesTask;
 
         /// <summary>
         /// Creates a new observable tracking the provided command
@@ -21,10 +23,15 @@ namespace Tecan.Sila2
         {
             _innerCommand = innerCommand;
 
-            ReadIntermediateResults();
+            _readIntermediatesTask = ReadIntermediateResults();
         }
 
-        private async void ReadIntermediateResults()
+        /// <summary>
+        /// Gets the task used to read the intermediate values
+        /// </summary>
+        public Task ReadIntermediatesTask => _readIntermediatesTask;
+
+        private async Task ReadIntermediateResults()
         {
             while(await _innerCommand.IntermediateValues.WaitToReadAsync())
             {
@@ -55,7 +62,7 @@ namespace Tecan.Sila2
             return new Subscription( this, observer );
         }
 
-        private class Subscription : IDisposable
+        private sealed class Subscription : IDisposable
         {
             private readonly CommandObservable<T> _parent;
             private readonly IObserver<T> _observer;

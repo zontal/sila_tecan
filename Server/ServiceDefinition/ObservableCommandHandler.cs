@@ -193,20 +193,20 @@ namespace Tecan.Sila2.Server.ServiceDefinition
             }
         }
 
-        public async void HandleExecutionStateSubscription( string uuid, ObservableCommandExecution command, IClientStreamWriter<SilaServerMessage> responseWriter, ServerPoolDispatcher dispatcher )
+        public async void HandleExecutionStateSubscription( string requestUuid, ObservableCommandExecution command, IClientStreamWriter<SilaServerMessage> responseWriter, ServerPoolDispatcher dispatcher )
         {
             try
             {
-                var cancellationToken = dispatcher.CreateCancellationToken( uuid );
+                var cancellationToken = dispatcher.CreateCancellationToken( requestUuid );
                 var executionId = new CommandExecutionUuid( command.CommandExecutionID );
-                await QueryState( command, new ExecutionStateResponseStream( responseWriter, uuid, executionId ), cancellationToken );
+                await QueryState( command, new ExecutionStateResponseStream( responseWriter, requestUuid, executionId ), cancellationToken );
             }
             catch(RpcException rpc)
             {
                 var error = ProtobufMarshaller<SiLAErrorDto>.FromByteArray( Convert.FromBase64String( rpc.Status.Detail ) );
                 await responseWriter.WriteAsync( new SilaServerMessage
                 {
-                    RequestUuid = uuid,
+                    RequestUuid = requestUuid,
                     CommandError = error
                 } );
             }
@@ -223,21 +223,21 @@ namespace Tecan.Sila2.Server.ServiceDefinition
             }
             finally
             {
-                dispatcher.VoidCancellationToken( uuid );
+                dispatcher.VoidCancellationToken( requestUuid );
             }
         }
 
-        public void HandleIntermediatesSubscription( string uuid, ObservableCommandExecution command, IClientStreamWriter<SilaServerMessage> responseWriter, ServerPoolDispatcher dispatcher )
+        public void HandleIntermediatesSubscription( string requestUuid, ObservableCommandExecution command, IClientStreamWriter<SilaServerMessage> responseWriter, ServerPoolDispatcher dispatcher )
         {
             if(_intermediateHandler != null)
             {
-                _intermediateHandler.HandleIntermediatesSubscription( uuid, command, responseWriter, dispatcher );
+                _intermediateHandler.HandleIntermediatesSubscription( requestUuid, command, responseWriter, dispatcher );
             }
             else
             {
                 _ = responseWriter.WriteAsync( new SilaServerMessage
                 {
-                    RequestUuid = uuid,
+                    RequestUuid = requestUuid,
                     CommandError = new SiLAErrorDto
                     {
                         FrameworkError = new FrameworkErrorDto
@@ -250,14 +250,14 @@ namespace Tecan.Sila2.Server.ServiceDefinition
             }
         }
 
-        public virtual async void HandleResultRequest( string uuid, ObservableCommandExecution command, IClientStreamWriter<SilaServerMessage> responseWriter, ServerPoolDispatcher dispatcher )
+        public virtual async void HandleResultRequest( string requestUuid, ObservableCommandExecution command, IClientStreamWriter<SilaServerMessage> responseWriter, ServerPoolDispatcher dispatcher )
         {
             try
             {
                 await GetResponse( command );
                 await responseWriter.WriteAsync( new SilaServerMessage
                 {
-                    RequestUuid = uuid,
+                    RequestUuid = requestUuid,
                     ObservableCommandResponse = new ObservableCommandResponse
                     {
                         ExecutionUUID = new CommandExecutionUuid( command.CommandExecutionID ),
@@ -270,7 +270,7 @@ namespace Tecan.Sila2.Server.ServiceDefinition
                 var error = ProtobufMarshaller<SiLAErrorDto>.FromByteArray( Convert.FromBase64String( rpcExc.Status.Detail ) );
                 await responseWriter.WriteAsync( new SilaServerMessage
                 {
-                    RequestUuid = uuid,
+                    RequestUuid = requestUuid,
                     CommandError = error
                 } );
             }

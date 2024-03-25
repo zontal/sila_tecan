@@ -13,6 +13,8 @@ using Tecan.Sila2.Client;
 using Tecan.Sila2.Generator.Contracts;
 using Tecan.Sila2.Generator.Helper;
 
+#pragma warning disable S3265 // Non-flags enums should not be used in bitwise operations
+
 namespace Tecan.Sila2.Generator.Generators
 {
     /// <summary>
@@ -287,113 +289,109 @@ namespace Tecan.Sila2.Generator.Generators
         {
             var requestMethod = new CodeMemberMethod()
             {
-                Name = spec?.Code ?? _nameProvider.GetCommandName( featureCommand ),
+                Name = spec?.Code ?? _nameProvider.GetCommandName(featureCommand),
                 Attributes = MemberAttributes.Public
             };
             var parameterDictionary = new Dictionary<string, string>();
-            client.Members.Add( requestMethod );
-            var requestType = _nameProvider.GenerateCommandRequestType( featureCommand );
-            var request = new CodeObjectCreateExpression( requestType );
-            var requestRef = new CodeVariableReferenceExpression( nameof( request ) );
+            client.Members.Add(requestMethod);
+            var requestType = _nameProvider.GenerateCommandRequestType(featureCommand);
+            var request = new CodeObjectCreateExpression(requestType);
+            var requestRef = new CodeVariableReferenceExpression(nameof(request));
             string binaryParameterIdentifier = null;
-            var method = _nameProvider.GetNonstandardMethod( featureCommand );
-            if(method == null)
+            var method = _nameProvider.GetNonstandardMethod(featureCommand);
+            if (method == null)
             {
-                if(featureCommand.Parameter != null)
+                GenerateClientCommandSignature(featureCommand, spec, requestMethod, parameterDictionary, request);
+
+                var binaryParameter = featureCommand.Parameter?.SingleOrDefault(p =>
+                    ContainsBinaries(p.DataType, id => feature.Items.OfType<SiLAElement>().Single(e => e.Identifier == id).DataType));
+                if (binaryParameter != null)
                 {
-                    foreach(var parameterType in featureCommand.Parameter)
-                    {
-                        var parameterSpec = spec?.Parameter?.FirstOrDefault( p => string.Equals( p.Identifier ?? p.Key, parameterType.Identifier, StringComparison.OrdinalIgnoreCase ) );
-                        var parameterName = parameterSpec?.Key ?? parameterType.Identifier.ToCamelCase();
-                        var origin = featureCommand.Identifier + "." + parameterType.Identifier;
-                        if(parameterSpec?.Mapping?.ValueExpression is PropertyExpression propertyExpression)
-                        {
-                            request.Parameters.Add( new CodePropertyReferenceExpression( new CodeArgumentReferenceExpression( parameterName ), propertyExpression.Property ) );
-                        }
-                        else
-                        {
-                            request.Parameters.Add( new CodeArgumentReferenceExpression( parameterName ) );
-                        }
-                        requestMethod.Parameters.Add( new CodeParameterDeclarationExpression(
-                            _nameProvider?.GetMemberType( origin )
-                            ?? _translationProvider.ExtractType( parameterType.DataType, featureCommand.Identifier + parameterType.Identifier ), parameterName ) );
-
-                        parameterDictionary.Add( parameterName, parameterSpec?.Description ?? parameterType.Description );
-                    }
-
-                    var binaryParameter = featureCommand.Parameter.SingleOrDefault( p =>
-                        ContainsBinaries( p.DataType, id => feature.Items.OfType<SiLAElement>().Single( e => e.Identifier == id ).DataType ) );
-                    if(binaryParameter != null)
-                    {
-                        binaryParameterIdentifier = feature.GetFullyQualifiedParameterIdentifier( featureCommand, binaryParameter.Identifier );
-                    }
+                    binaryParameterIdentifier = feature.GetFullyQualifiedParameterIdentifier(featureCommand, binaryParameter.Identifier);
                 }
-
-                requestMethod.WriteDocumentation( spec?.Description ?? featureCommand.Description, parameters: parameterDictionary );
             }
             else
             {
                 var parameters = method.GetParameters();
-                foreach(var parameterInfo in parameters)
+                foreach (var parameterInfo in parameters)
                 {
-                    requestMethod.Parameters.Add( new CodeParameterDeclarationExpression( parameterInfo.ParameterType, parameterInfo.Name ) );
-                    if(parameterInfo.ParameterType != typeof( CancellationToken ))
+                    requestMethod.Parameters.Add(new CodeParameterDeclarationExpression(parameterInfo.ParameterType, parameterInfo.Name));
+                    if (parameterInfo.ParameterType != typeof(CancellationToken))
                     {
-                        request.Parameters.Add( new CodeArgumentReferenceExpression( parameterInfo.Name ) );
+                        request.Parameters.Add(new CodeArgumentReferenceExpression(parameterInfo.Name));
                     }
                 }
                 requestMethod.WriteInheritDoc();
             }
 
-            request.Parameters.Add( GenerateCreateBinaryStore( binaryParameterIdentifier ) );
-            requestMethod.Statements.Add( new CodeVariableDeclarationStatement( requestType, nameof( request ), request ) );
-            requestMethod.Statements.Add( new CodeMethodInvokeExpression( requestRef, nameof( Argument.Validate ) ) );
+            request.Parameters.Add(GenerateCreateBinaryStore(binaryParameterIdentifier));
+            requestMethod.Statements.Add(new CodeVariableDeclarationStatement(requestType, nameof(request), request));
+            requestMethod.Statements.Add(new CodeMethodInvokeExpression(requestRef, nameof(Argument.Validate)));
 
-            if(featureCommand.Observable == FeatureCommandObservable.No)
+            GenerateCommandImplementation(feature, featureCommand, client, requestMethod, requestRef, method);
+        }
+
+        private void GenerateCommandImplementation(Feature feature, FeatureCommand featureCommand, CodeTypeDeclaration client, CodeMemberMethod requestMethod, CodeVariableReferenceExpression requestRef, MethodInfo method)
+        {
+            if (featureCommand.Observable == FeatureCommandObservable.No)
             {
-                requestMethod.ReturnType = GetClientRequestMethodResponseType( featureCommand );
-                GenerateClientNonObservableCommandImplementation( feature, featureCommand, client, requestMethod.Statements, requestRef, requestMethod.ReturnType );
+                requestMethod.ReturnType = GetClientRequestMethodResponseType(featureCommand);
+                GenerateClientNonObservableCommandImplementation(feature, featureCommand, client, requestMethod.Statements, requestRef, requestMethod.ReturnType);
             }
             else
             {
-                var commandCall = GenerateClientObservableCommandImplementation( feature, featureCommand, client, requestRef );
-                if(method == null)
+                var commandCall = GenerateClientObservableCommandImplementation(feature, featureCommand, client, requestRef);
+                if (method == null)
                 {
-                    requestMethod.ReturnType = _nameProvider?.GetObservableCommandReturnType( featureCommand, _translationProvider );
-                    requestMethod.Statements.Add( new CodeMethodReturnStatement( commandCall ) );
+                    requestMethod.ReturnType = _nameProvider?.GetObservableCommandReturnType(featureCommand, _translationProvider);
+                    requestMethod.Statements.Add(new CodeMethodReturnStatement(commandCall));
                 }
                 else
                 {
-                    requestMethod.ReturnType = new CodeTypeReference( method.ReturnType );
+                    requestMethod.ReturnType = new CodeTypeReference(method.ReturnType);
 
-                    if(method.ReturnType.IsGenericType && method.ReturnType.GetGenericTypeDefinition() == typeof( IObservable<> ))
+                    if (method.ReturnType.IsGenericType && method.ReturnType.GetGenericTypeDefinition() == typeof(IObservable<>))
                     {
                         var createCommand = new CodeObjectCreateExpression(
-                            new CodeTypeReference( typeof( CommandObservable<> ).Name, new CodeTypeReference( method.ReturnType.GetGenericArguments()[0] ) ),
-                            commandCall );
-                        requestMethod.Statements.Add( new CodeMethodReturnStatement( createCommand ) );
+                            new CodeTypeReference(typeof(CommandObservable<>).Name, new CodeTypeReference(method.ReturnType.GetGenericArguments()[0])),
+                            commandCall);
+                        requestMethod.Statements.Add(new CodeMethodReturnStatement(createCommand));
                     }
                     else
                     {
-                        GenerateNonstandardObservableCommandBody( featureCommand, requestMethod, commandCall, method );
+                        GenerateNonstandardObservableCommandBody(featureCommand, requestMethod, commandCall, method);
                     }
                 }
             }
         }
 
-        private CodeExpression FollowExpressionReverse( CodeExpression expression, Expression toFollow, string origin )
+        private void GenerateClientCommandSignature(FeatureCommand featureCommand, CommandSpec spec, CodeMemberMethod requestMethod, Dictionary<string, string> parameterDictionary, CodeObjectCreateExpression request)
         {
-            switch(toFollow)
+            if (featureCommand.Parameter != null)
             {
-                case PropertyExpression:
-                    var type = _nameProvider.GetMemberType( origin );
-                    return new CodeObjectCreateExpression( type, expression );
-                case FormatExpression:
-                    _loggingChannel.Error( "Format Expressions on inputs are currently not supported." );
-                    return expression;
-                default:
-                    return expression;
+                foreach (var parameterType in featureCommand.Parameter)
+                {
+                    var parameterSpec = spec?.Parameter?.FirstOrDefault(p => string.Equals(p.Identifier ?? p.Key, parameterType.Identifier, StringComparison.OrdinalIgnoreCase));
+                    var parameterName = parameterSpec?.Key ?? parameterType.Identifier.ToCamelCase();
+                    var origin = featureCommand.Identifier + "." + parameterType.Identifier;
+                    if (parameterSpec?.Mapping?.ValueExpression is PropertyExpression propertyExpression)
+                    {
+                        request.Parameters.Add(new CodePropertyReferenceExpression(new CodeArgumentReferenceExpression(parameterName), propertyExpression.Property));
+                    }
+                    else
+                    {
+                        request.Parameters.Add(new CodeArgumentReferenceExpression(parameterName));
+                    }
+                    requestMethod.Parameters.Add(new CodeParameterDeclarationExpression(
+                        _nameProvider?.GetMemberType(origin)
+                        ?? _translationProvider.ExtractType(parameterType.DataType, featureCommand.Identifier + parameterType.Identifier), parameterName));
+
+                    parameterDictionary.Add(parameterName, parameterSpec?.Description ?? parameterType.Description);
+                }
+
             }
+
+            requestMethod.WriteDocumentation(spec?.Description ?? featureCommand.Description, parameters: parameterDictionary);
         }
 
         private CodeExpression FollowExpression( CodeExpression expression, Expression toFollow )
@@ -497,7 +495,7 @@ namespace Tecan.Sila2.Generator.Generators
             var executeMethod = new CodeMethodReferenceExpression(
                 new CodeFieldReferenceExpression( null, ChannelFieldName ),
                 intermediateType != null ? nameof( IClientChannel.ExecuteIntermediatesCommand ) : nameof( IClientChannel.ExecuteObservableCommand ),
-                _nameProvider.GenerateCommandRequestType( featureCommand ) );
+                _nameProvider?.GenerateCommandRequestType( featureCommand ) );
 
             var actualCall = new CodeMethodInvokeExpression(
                 executeMethod,
@@ -508,7 +506,7 @@ namespace Tecan.Sila2.Generator.Generators
             if(intermediateType != null)
             {
                 executeMethod.TypeArguments.Add( intermediateType );
-                executeMethod.TypeArguments.Add( _nameProvider.GenerateCommandIntermediateType( featureCommand ) );
+                executeMethod.TypeArguments.Add( _nameProvider?.GenerateCommandIntermediateType( featureCommand ) );
 
                 var convertIntermediateResponseMethod = GenerateClientCommandResponseMethod(
                     featureCommand.Identifier + "Intermediate",
@@ -527,7 +525,7 @@ namespace Tecan.Sila2.Generator.Generators
                     featureCommand.Response, responseType,
                     client );
                 executeMethod.TypeArguments.Add( responseType );
-                executeMethod.TypeArguments.Add( _nameProvider.GenerateCommandResponseType( featureCommand ) );
+                executeMethod.TypeArguments.Add( _nameProvider?.GenerateCommandResponseType( featureCommand ) );
                 actualCall.Parameters.Add( new CodeMethodReferenceExpression( null, convertResponseMethod.Name ) );
             }
             actualCall.Parameters.Add( new CodeMethodReferenceExpression( null, exceptionConverter.Name ) );
@@ -746,46 +744,7 @@ namespace Tecan.Sila2.Generator.Generators
             var lazy = spec == null || !spec.LazySpecified ? ClientGeneratorConfig.LazyUnobservableProperties : spec.Lazy;
             if (method == null && (spec == null || !spec.AsMethodSpecified || !spec.AsMethod))
             {
-                var property = new CodeMemberProperty()
-                {
-                    Name = spec?.Code ?? _nameProvider.GetPropertyName( featureProperty ),
-                    Attributes = MemberAttributes.Public,
-                    Type = propertyType,
-                    HasSet = false,
-                    HasGet = true
-                };
-                property.WriteDocumentation( spec?.Description ?? featureProperty.Description ?? $"The {featureProperty.DisplayName} property" );
-                client.Members.Add( property );
-                if(setterCommand != null)
-                {
-                    GenerateClientPropertyCall( feature, featureProperty, spec?.Mapping?.ValueExpression, client, propertyType, property.GetStatements );
-                    var requestType = _nameProvider.GenerateCommandRequestType( setterCommand );
-                    var request = new CodeObjectCreateExpression( requestType );
-                    request.Parameters.Add( new CodePropertySetValueReferenceExpression() );
-                    var requestRef = new CodeVariableReferenceExpression( nameof( request ) );
-                    string binaryParameterIdentifier = null;
-                    property.SetStatements.Add( new CodeVariableDeclarationStatement( requestType, requestRef.VariableName, request ) );
-                    var binaryParameter = setterCommand.Parameter.SingleOrDefault( p =>
-                        ContainsBinaries( p.DataType, id => feature.Items.OfType<SiLAElement>().Single( e => e.Identifier == id ).DataType ) );
-                    if(binaryParameter != null)
-                    {
-                        binaryParameterIdentifier = feature.GetFullyQualifiedParameterIdentifier( setterCommand, binaryParameter.Identifier );
-                    }
-
-                    request.Parameters.Add( GenerateCreateBinaryStore( binaryParameterIdentifier ) );
-                    GenerateClientNonObservableCommandImplementation( feature, setterCommand, client, property.SetStatements, requestRef, null );
-                }
-                else
-                {
-                    if(featureProperty.Observable == FeaturePropertyObservable.No)
-                    {
-                        GenerateClientStaticProperty( feature, featureProperty, lazy, spec?.Mapping?.ValueExpression, client, initLazyRequests, propertyType, property.GetStatements );
-                    }
-                    else
-                    {
-                        GenerateClientDynamicProperty( feature, featureProperty, client, propertyType, property );
-                    }
-                }
+                GenerateClientPropertyCore(feature, featureProperty, spec, client, initLazyRequests, setterCommand, propertyType, lazy);
             }
             else
             {
@@ -798,6 +757,50 @@ namespace Tecan.Sila2.Generator.Generators
                 property.WriteDocumentation( spec?.Description ?? featureProperty.Description ?? $"The {featureProperty.DisplayName} property" );
                 client.Members.Add( property );
                 GenerateClientStaticProperty( feature, featureProperty, spec != null && spec.LazySpecified && spec.Lazy, spec?.Mapping?.ValueExpression, client, initLazyRequests, propertyType, property.Statements );
+            }
+        }
+
+        private void GenerateClientPropertyCore(Feature feature, FeatureProperty featureProperty, PropertySpec spec, CodeTypeDeclaration client, CodeMemberMethod initLazyRequests, FeatureCommand setterCommand, CodeTypeReference propertyType, bool lazy)
+        {
+            var property = new CodeMemberProperty()
+            {
+                Name = spec?.Code ?? _nameProvider.GetPropertyName(featureProperty),
+                Attributes = MemberAttributes.Public,
+                Type = propertyType,
+                HasSet = false,
+                HasGet = true
+            };
+            property.WriteDocumentation(spec?.Description ?? featureProperty.Description ?? $"The {featureProperty.DisplayName} property");
+            client.Members.Add(property);
+            if (setterCommand != null)
+            {
+                GenerateClientPropertyCall(feature, featureProperty, spec?.Mapping?.ValueExpression, client, propertyType, property.GetStatements);
+                var requestType = _nameProvider.GenerateCommandRequestType(setterCommand);
+                var request = new CodeObjectCreateExpression(requestType);
+                request.Parameters.Add(new CodePropertySetValueReferenceExpression());
+                var requestRef = new CodeVariableReferenceExpression(nameof(request));
+                string binaryParameterIdentifier = null;
+                property.SetStatements.Add(new CodeVariableDeclarationStatement(requestType, requestRef.VariableName, request));
+                var binaryParameter = setterCommand.Parameter.SingleOrDefault(p =>
+                    ContainsBinaries(p.DataType, id => feature.Items.OfType<SiLAElement>().Single(e => e.Identifier == id).DataType));
+                if (binaryParameter != null)
+                {
+                    binaryParameterIdentifier = feature.GetFullyQualifiedParameterIdentifier(setterCommand, binaryParameter.Identifier);
+                }
+
+                request.Parameters.Add(GenerateCreateBinaryStore(binaryParameterIdentifier));
+                GenerateClientNonObservableCommandImplementation(feature, setterCommand, client, property.SetStatements, requestRef, null);
+            }
+            else
+            {
+                if (featureProperty.Observable == FeaturePropertyObservable.No)
+                {
+                    GenerateClientStaticProperty(feature, featureProperty, lazy, spec?.Mapping?.ValueExpression, client, initLazyRequests, propertyType, property.GetStatements);
+                }
+                else
+                {
+                    GenerateClientDynamicProperty(feature, featureProperty, client, propertyType, property);
+                }
             }
         }
 
@@ -998,3 +1001,5 @@ namespace Tecan.Sila2.Generator.Generators
         }
     }
 }
+
+#pragma warning restore S3265 // Non-flags enums should not be used in bitwise operations

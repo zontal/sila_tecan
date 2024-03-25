@@ -101,57 +101,64 @@ namespace Tecan.Sila2.Generator.Generators
         {
             if(originator == null || category == null)
             {
-                var ns = interfaceType.FullName.Substring( 0,
-                    interfaceType.FullName.Length - interfaceType.Name.Length - 1 );
-                int useCaseStartIndex;
+                var ns = interfaceType.FullName.Substring(0,
+                    interfaceType.FullName.Length - interfaceType.Name.Length - 1);
                 var endIndex = ns.Length;
                 var versionSuffix = "v" + version.Major.ToString();
-                if(ns.EndsWith( versionSuffix ))
+                if (ns.EndsWith(versionSuffix))
                 {
                     endIndex -= versionSuffix.Length + 1;
                 }
 
-                if(category != null)
+                int categoryStartIndex = CalculateCategoryStartIndex(ref originator, category, ns);
+
+                if (originator == null)
                 {
-                    useCaseStartIndex = ns.IndexOf( category, StringComparison.OrdinalIgnoreCase );
-                    if(useCaseStartIndex == -1) originator = ns;
-                }
-                else if(originator != null)
-                {
-                    var originatorStartIndex = ns.IndexOf( originator, StringComparison.OrdinalIgnoreCase );
-                    if(originatorStartIndex == -1)
+                    _loggingChannel.Debug("Assign originator based on the namespace because no originator has been provided.");
+                    if (categoryStartIndex < 2)
                     {
-                        useCaseStartIndex = 0;
+                        throw new InvalidOperationException("The namespace is too short to derive originator and use case from it. Please provide them explicitly or chose a different namespace.");
                     }
-                    else
-                    {
-                        useCaseStartIndex = originatorStartIndex + originator.Length + 1;
-                    }
-                }
-                else
-                {
-                    useCaseStartIndex = ns.LastIndexOf( ".", StringComparison.Ordinal ) + 1;
+                    originator = ns.Substring(0, categoryStartIndex - 1);
                 }
 
-                if(originator == null)
+                if (category == null)
                 {
-                    _loggingChannel.Debug( "Assign originator based on the namespace because no originator has been provided." );
-                    if(useCaseStartIndex < 2)
-                    {
-                        throw new InvalidOperationException( "The namespace is too short to derive originator and use case from it. Please provide them explicitly or chose a different namespace." );
-                    }
-                    originator = ns.Substring( 0, useCaseStartIndex - 1 );
-                }
-
-                if(category == null)
-                {
-                    _loggingChannel.Debug( "Assign category based on namespace because no category has been provided." );
-                    category = ns.Substring( useCaseStartIndex, endIndex - useCaseStartIndex );
+                    _loggingChannel.Debug("Assign category based on namespace because no category has been provided.");
+                    category = ns.Substring(categoryStartIndex, endIndex - categoryStartIndex);
                 }
             }
 
             originator = AsStandardLower( originator );
             category = AsStandardLower( category );
+        }
+
+        private static int CalculateCategoryStartIndex(ref string originator, string category, string ns)
+        {
+            int categoryStartIndex;
+            if (category != null)
+            {
+                categoryStartIndex = ns.IndexOf(category, StringComparison.OrdinalIgnoreCase);
+                if (categoryStartIndex == -1) originator = ns;
+            }
+            else if (originator != null)
+            {
+                var originatorStartIndex = ns.IndexOf(originator, StringComparison.OrdinalIgnoreCase);
+                if (originatorStartIndex == -1)
+                {
+                    categoryStartIndex = 0;
+                }
+                else
+                {
+                    categoryStartIndex = originatorStartIndex + originator.Length + 1;
+                }
+            }
+            else
+            {
+                categoryStartIndex = ns.LastIndexOf(".", StringComparison.Ordinal) + 1;
+            }
+
+            return categoryStartIndex;
         }
 
         private static string AsStandardLower( string parameter )

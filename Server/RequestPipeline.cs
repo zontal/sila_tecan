@@ -144,31 +144,36 @@ namespace Tecan.Sila2.Server
             foreach(var provider in _server.Features)
             {
                 var feature = provider.FeatureDefinition;
-                if(requestInterceptor.AppliesToCommands)
-                {
-                    foreach(var command in feature.Items.OfType<FeatureCommand>())
-                    {
-                        var identifier = feature.GetFullyQualifiedIdentifier( command );
-                        if(requestInterceptor.IsInterceptRequired( feature, identifier ))
-                        {
-                            affected.Add( identifier );
-                        }
-                    }
-                }
-                if(requestInterceptor.AppliesToProperties)
-                {
-                    foreach(var property in feature.Items.OfType<FeatureProperty>())
-                    {
-                        var identifier = feature.GetFullyQualifiedIdentifier( property );
-                        if(requestInterceptor.IsInterceptRequired( feature, identifier ))
-                        {
-                            affected.Add( identifier );
-                        }
-                    }
-                }
+                AddAffectedByProvider(requestInterceptor, affected, feature);
             }
 
             return affected.ToArray();
+        }
+
+        private static void AddAffectedByProvider(IRequestInterceptor requestInterceptor, List<string> affected, Feature feature)
+        {
+            if (requestInterceptor.AppliesToCommands)
+            {
+                foreach (var command in feature.Items.OfType<FeatureCommand>())
+                {
+                    var identifier = feature.GetFullyQualifiedIdentifier(command);
+                    if (requestInterceptor.IsInterceptRequired(feature, identifier))
+                    {
+                        affected.Add(identifier);
+                    }
+                }
+            }
+            if (requestInterceptor.AppliesToProperties)
+            {
+                foreach (var property in feature.Items.OfType<FeatureProperty>())
+                {
+                    var identifier = feature.GetFullyQualifiedIdentifier(property);
+                    if (requestInterceptor.IsInterceptRequired(feature, identifier))
+                    {
+                        affected.Add(identifier);
+                    }
+                }
+            }
         }
 
         /// <summary>

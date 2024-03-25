@@ -64,17 +64,29 @@ namespace Tecan.Sila2.Discovery
         /// <inheritdoc />
         public Task SubscribeProperty<T>( string serviceName, string propertyName, string propertyIdentifier, Action<T> newValueReceived, IClientCallInfo callInfo, CancellationToken cancellationToken = default ) where T : class, ISilaTransferObject
         {
-            return SubscribeProperty( serviceName, propertyName, newValueReceived, callInfo, ProtobufMarshaller<T>.Default, cancellationToken );
+            return SubscribeProperty( serviceName, propertyName, newValueReceived, callInfo, ProtobufMarshaller<T>.Default, null, cancellationToken );
         }
 
         /// <inheritdoc />
         public Task SubscribeProperty<T>( string serviceName, string propertyName, string propertyIdentifier, Action<T> newValueReceived, IClientCallInfo callInfo, ByteSerializer<T> serializer, CancellationToken cancellationToken = default ) where T : class, ISilaTransferObject
         {
-            return SubscribeProperty( serviceName, propertyName, newValueReceived, callInfo, ToMarshaller( serializer ), cancellationToken );
+            return SubscribeProperty( serviceName, propertyName, newValueReceived, callInfo, ToMarshaller( serializer ), null, cancellationToken );
+        }
+
+        /// <inheritdoc />
+        public Task SubscribeProperty<T>(string serviceName, string propertyName, string propertyIdentifier, Action<T> newValueReceived, IClientCallInfo callInfo, Action cleanup, CancellationToken cancellationToken) where T : class, ISilaTransferObject
+        {
+            return SubscribeProperty(serviceName, propertyName, newValueReceived, callInfo, ProtobufMarshaller<T>.Default, cleanup, cancellationToken);
+        }
+
+        /// <inheritdoc />
+        public Task SubscribeProperty<T>(string serviceName, string propertyName, string propertyIdentifier, Action<T> newValueReceived, IClientCallInfo callInfo, ByteSerializer<T> serializer, Action cleanup, CancellationToken cancellationToken) where T : class, ISilaTransferObject
+        {
+            return SubscribeProperty(serviceName, propertyName, newValueReceived, callInfo, ToMarshaller(serializer), cleanup, cancellationToken);
         }
 
         private Task SubscribeProperty<T>( string serviceName, string propertyName, Action<T> newValueReceived, IClientCallInfo callInfo, Marshaller<T> serializer,
-            CancellationToken cancellationToken ) where T : class, ISilaTransferObject
+            Action cleanup, CancellationToken cancellationToken ) where T : class, ISilaTransferObject
         {
             var subscribeMethod = new Method<EmptyRequest, T>( MethodType.ServerStreaming, serviceName, "Subscribe_" + propertyName, EmptyRequestMarshaller.Instance, serializer );
 
@@ -103,6 +115,7 @@ namespace Tecan.Sila2.Discovery
                     {
                         _log.Error($"Subscription of property {propertyName} resulted in an exception", ClientErrorHandling.ConvertException( t.Exception ));
                     }
+                    cleanup?.Invoke();
                 }, CancellationToken.None);
             }
             else
@@ -166,19 +179,6 @@ namespace Tecan.Sila2.Discovery
         }
 
         /// <inheritdoc />
-        public Task ExecuteUnobservableCommandAsync<TRequest>(
-            string serviceName,
-            string commandName,
-            TRequest request,
-            IClientCallInfo callInfo,
-            ByteSerializer<TRequest> requestSerializer )
-            where TRequest : class, ISilaRequestObject
-        {
-            var commandMethod = new Method<TRequest, EmptyRequest>( MethodType.Unary, serviceName, commandName, ToMarshaller(requestSerializer), EmptyRequestMarshaller.Instance );
-            return CallInvoker.AsyncUnaryCall( commandMethod, null, callInfo.ToCallOptions(), request ).ResponseAsync;
-        }
-
-        /// <inheritdoc />
         public TResponse ExecuteUnobservableCommand<TRequest, TResponse>(
             string serviceName,
             string commandName,
@@ -216,6 +216,19 @@ namespace Tecan.Sila2.Discovery
         {
             var commandMethod = new Method<TRequest, TResponse>( MethodType.Unary, serviceName, commandName, requestSerializer, responseSerializer );
             return CallInvoker.BlockingUnaryCall( commandMethod, null, callInfo.ToCallOptions(), request );
+        }
+
+        /// <inheritdoc />
+        public Task ExecuteUnobservableCommandAsync<TRequest>(
+            string serviceName,
+            string commandName,
+            TRequest request,
+            IClientCallInfo callInfo,
+            ByteSerializer<TRequest> requestSerializer )
+            where TRequest : class, ISilaRequestObject
+        {
+            var commandMethod = new Method<TRequest, EmptyRequest>( MethodType.Unary, serviceName, commandName, ToMarshaller(requestSerializer), EmptyRequestMarshaller.Instance );
+            return CallInvoker.AsyncUnaryCall( commandMethod, null, callInfo.ToCallOptions(), request ).ResponseAsync;
         }
 
         /// <inheritdoc />

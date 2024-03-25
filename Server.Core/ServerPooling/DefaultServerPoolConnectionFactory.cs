@@ -12,9 +12,9 @@ namespace Tecan.Sila2.Server.ServerPooling
     public class DefaultServerPoolConnectionFactory : IServerPoolConnectionFactory
     {
         /// <inheritdoc />
-        public CallInvoker CreatePoolConnection( string poolAddress )
+        public CallInvoker CreatePoolConnection( string target )
         {
-            var client = GrpcChannel.ForAddress( poolAddress.StartsWith( "http" ) ? poolAddress : "https://" + poolAddress );
+            var client = GrpcChannel.ForAddress( target.StartsWith( "http" ) ? target : "https://" + target );
             return client.CreateCallInvoker();
         }
     }

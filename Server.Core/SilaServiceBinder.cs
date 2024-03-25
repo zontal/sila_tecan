@@ -43,7 +43,7 @@ namespace Tecan.Sila2.Server
             _serviceHandlerRepository.AddServiceHandler( invoker );
         }
 
-        private class ClientStreamingHandler<TRequest, TResponse> : IServiceHandler<ISiLAServer, ServiceMethodProviderContext<ISiLAServer>>
+        private sealed class ClientStreamingHandler<TRequest, TResponse> : IServiceHandler<ISiLAServer, ServiceMethodProviderContext<ISiLAServer>>
             where TRequest : class
             where TResponse : class
         {
@@ -61,7 +61,7 @@ namespace Tecan.Sila2.Server
                 try
                 {
                     _loggingChannel.Debug( $"{context.Method} called by {context.Peer}" );
-                    return await _handler?.Invoke( requestStream, context );
+                    return await _handler.Invoke( requestStream, context );
                 }
                 catch(Exception exception)
                 {
@@ -76,7 +76,7 @@ namespace Tecan.Sila2.Server
             }
         }
 
-        private class DuplexStreamingHandler<TRequest, TResponse> : IServiceHandler<ISiLAServer, ServiceMethodProviderContext<ISiLAServer>>
+        private sealed class DuplexStreamingHandler<TRequest, TResponse> : IServiceHandler<ISiLAServer, ServiceMethodProviderContext<ISiLAServer>>
             where TRequest : class
             where TResponse : class
         {
@@ -94,7 +94,7 @@ namespace Tecan.Sila2.Server
                 try
                 {
                     _loggingChannel.Debug( $"{context.Method} called by {context.Peer}" );
-                    await _handler?.Invoke( requestStream, responseWriter, context );
+                    await _handler.Invoke( requestStream, responseWriter, context );
                 }
                 catch(Exception exception)
                 {
@@ -109,7 +109,7 @@ namespace Tecan.Sila2.Server
             }
         }
 
-        private class ServerStreamingHandler<TRequest, TResponse> : IServiceHandler<ISiLAServer, ServiceMethodProviderContext<ISiLAServer>>
+        private sealed class ServerStreamingHandler<TRequest, TResponse> : IServiceHandler<ISiLAServer, ServiceMethodProviderContext<ISiLAServer>>
             where TRequest : class
             where TResponse : class
         {
@@ -127,7 +127,7 @@ namespace Tecan.Sila2.Server
                 try
                 {
                     _loggingChannel.Debug( $"{context.Method} called by {context.Peer}" );
-                    await _handler?.Invoke( request, responseWriter, context );
+                    await _handler.Invoke( request, responseWriter, context );
                 }
                 catch(Exception exception)
                 {
@@ -142,7 +142,7 @@ namespace Tecan.Sila2.Server
             }
         }
 
-        private class UnaryHandler<TRequest, TResponse> : IServiceHandler<ISiLAServer, ServiceMethodProviderContext<ISiLAServer>>
+        private sealed class UnaryHandler<TRequest, TResponse> : IServiceHandler<ISiLAServer, ServiceMethodProviderContext<ISiLAServer>>
             where TRequest : class
             where TResponse : class
         {
@@ -160,7 +160,7 @@ namespace Tecan.Sila2.Server
                 try
                 {
                     _loggingChannel.Debug( $"{context.Method} called by {context.Peer}" );
-                    return await _handler?.Invoke( request, context );
+                    return await _handler.Invoke( request, context );
                 }
                 catch(Exception exception)
                 {

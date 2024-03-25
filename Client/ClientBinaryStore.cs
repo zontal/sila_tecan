@@ -280,23 +280,7 @@ namespace Tecan.Sila2.Binary
                 }
                 if (chunk.Offset == expectedOffset)
                 {
-                    await file.WriteAsync(chunk.Payload, 0, chunk.Payload.Length, chunkCancellation.Token);
-                    expectedOffset = chunk.Offset + (ulong)chunk.Payload.Length;
-                    if (wrongChunks != null)
-                    {
-                        foreach (var ch in wrongChunks)
-                        {
-                            if (expectedOffset == ch.Offset)
-                            {
-                                await file.WriteAsync(ch.Payload, 0, ch.Payload.Length, chunkCancellation.Token);
-                                expectedOffset = ch.Offset + (ulong)ch.Payload.Length;
-                            }
-                            else
-                            {
-                                break;
-                            }
-                        }
-                    }
+                    expectedOffset = await ProcessChunk(file, chunkCancellation, wrongChunks, chunk);
                 }
                 else
                 {
@@ -305,6 +289,28 @@ namespace Tecan.Sila2.Binary
                     wrongChunks.Sort((c1, c2) => c1.Offset.CompareTo(c2.Offset));
                 }
             }
+        }
+
+        private static async Task<ulong> ProcessChunk(Stream file, CancellationTokenSource chunkCancellation, List<GetChunkResponseDto> wrongChunks, GetChunkResponseDto chunk)
+        {
+            await file.WriteAsync(chunk.Payload, 0, chunk.Payload.Length, chunkCancellation.Token);
+            var expectedOffset = chunk.Offset + (ulong)chunk.Payload.Length;
+            if (wrongChunks != null)
+            {
+                foreach (var ch in wrongChunks)
+                {
+                    if (expectedOffset == ch.Offset)
+                    {
+                        await file.WriteAsync(ch.Payload, 0, ch.Payload.Length, chunkCancellation.Token);
+                        expectedOffset = ch.Offset + (ulong)ch.Payload.Length;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+            }
+            return expectedOffset;
         }
 
         /// <summary>

@@ -109,12 +109,11 @@ namespace Tecan.Sila2
         }
 
         /// <inheritdoc />
-        public LoginResponse Login( string userIdentification, string password, string server, ICollection<string> requestedFeatures )
+        public LoginResponse Login( string userIdentification, string password, string requestedServer, ICollection<string> requestedFeatures )
         {
-            LoginResponse loginResponse;
-            if(server != _silaService.Value.ServerUUID)
+            if(requestedServer != _silaService.Value.ServerUUID)
             {
-                throw new AuthenticationFailedException( $"Cannot provide access token for server {server}. This server can only serve authentication requests for server {_silaService.Value.ServerName} ({_silaService.Value.ServerUUID})." );
+                throw new AuthenticationFailedException( $"Cannot provide access token for server {requestedServer}. This server can only serve authentication requests for server {_silaService.Value.ServerName} ({_silaService.Value.ServerUUID})." );
             }
 
             IdentifierConstraint.CheckParameters(requestedFeatures, IdentifierType.FeatureIdentifier, nameof(requestedFeatures));
@@ -126,35 +125,39 @@ namespace Tecan.Sila2
             }
             else
             {
-                string[] featureArray;
-                if(requestedFeatures == null || requestedFeatures.Count == 0)
-                {
-                    if(!user.AllowWildcard)
-                    {
-                        throw new AuthenticationFailedException( "User does not have wildcard permission." );
-                    }
-
-                    featureArray = new string[] { "" };
-                }
-                else
-                {
-                    if(!user.AllowWildcard)
-                    {
-                        var failedPermissions = requestedFeatures.Except( user.Permission ).ToList();
-                        if(failedPermissions.Count > 0)
-                        {
-                            throw new AuthenticationFailedException( $"User {userIdentification} does not have permissions for feature(s) {string.Join( ", ", failedPermissions )}." );
-                        }
-                    }
-
-                    featureArray = requestedFeatures.ToArray();
-                }
-                var expiry = (DateTime.Now.AddHours( 24 ));
-                var tempGuid = Guid.NewGuid().ToString();
-                _currentAuthorizations[tempGuid] = new AuthToken( expiry, featureArray );
-                loginResponse = new LoginResponse( tempGuid, 24 * 3600 );
+                return LoginCore(userIdentification, requestedFeatures, user);
             }
-            return loginResponse;
+        }
+
+        private LoginResponse LoginCore(string userIdentification, ICollection<string> requestedFeatures, User user)
+        {
+            string[] featureArray;
+            if (requestedFeatures == null || requestedFeatures.Count == 0)
+            {
+                if (!user.AllowWildcard)
+                {
+                    throw new AuthenticationFailedException("User does not have wildcard permission.");
+                }
+
+                featureArray = new string[] { "" };
+            }
+            else
+            {
+                if (!user.AllowWildcard)
+                {
+                    var failedPermissions = requestedFeatures.Except(user.Permission).ToList();
+                    if (failedPermissions.Count > 0)
+                    {
+                        throw new AuthenticationFailedException($"User {userIdentification} does not have permissions for feature(s) {string.Join(", ", failedPermissions)}.");
+                    }
+                }
+
+                featureArray = requestedFeatures.ToArray();
+            }
+            var expiry = (DateTime.Now.AddHours(24));
+            var tempGuid = Guid.NewGuid().ToString();
+            _currentAuthorizations[tempGuid] = new AuthToken(expiry, featureArray);
+            return new LoginResponse(tempGuid, 24 * 3600);
         }
 
         /// <inheritdoc />

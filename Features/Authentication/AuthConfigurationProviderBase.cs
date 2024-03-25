@@ -27,7 +27,9 @@ namespace Tecan.Sila2
         {
             _discovery = discovery;
             _serverConnector = serverConnector;
+#pragma warning disable S1699 // Constructors should only call non-overridable methods
             _configuration = LoadConfiguration();
+#pragma warning restore S1699 // Constructors should only call non-overridable methods
 
             try
             {

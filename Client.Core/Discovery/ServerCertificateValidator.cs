@@ -25,6 +25,15 @@ namespace Tecan.Sila2.Discovery
             return true;
         }
 
+        internal bool CheckDiscoveryCertificateMatchesActualCertificate()
+        {
+            throw new NotImplementedException();
+        }
+
+        public X509Chain Chain => _chain;
+
+        public X509Certificate2 DiscoveryCertificate => _discoveryCertificate;
+
         public X509Certificate2 ServerCertificate => _actualCertificate;
     }
 }

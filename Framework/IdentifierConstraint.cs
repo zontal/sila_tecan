@@ -8,15 +8,26 @@ namespace Tecan.Sila2
     /// <summary>
     /// Helper class to check validity of constraints
     /// </summary>
-    public static class IdentifierConstraint
+    public static partial class IdentifierConstraint
     {
         /// <summary>
         /// Determines whether checks of identifier constraints are enabled
         /// </summary>
         public static bool IsEnabled { get; set; } = true;
 
-        private static readonly Regex FeatureIdentifierRegex = new Regex( @"\w+(\.\w+)*\/(\w+(\.\w+)*\/)?\w+(\.\w+)*\/v\d+" );
-        private static readonly Regex IdentifierRegex = new Regex( @"[A-Z][a-zA-Z0-9]*" );
+#if NET8_0_OR_GREATER
+
+        [GeneratedRegex(@"\w+(\.\w+)*\/(\w+(\.\w+)*\/)?\w+(\.\w+)*\/v\d+", RegexOptions.Compiled)]
+        private static partial Regex FeatureIdentifierRegex();
+
+        [GeneratedRegex(@"[A-Z][a-zA-Z0-9]*", RegexOptions.Compiled)]
+        private static partial Regex IdentifierRegex();
+#else
+        private static Regex FeatureIdentifierRegex() => _FeatureIdentifierRegex;
+        private static Regex IdentifierRegex() => _IdentifierRegex;
+        private static readonly Regex _FeatureIdentifierRegex = new Regex( @"\w+(\.\w+)*\/(\w+(\.\w+)*\/)?\w+(\.\w+)*\/v\d+", RegexOptions.Compiled );
+        private static readonly Regex _IdentifierRegex = new Regex( @"[A-Z][a-zA-Z0-9]*", RegexOptions.Compiled );
+#endif
         private const string CommandInfix = "/Command/";
         private const string PropertyInfix = "/Property/";
         private const string MetadataInfix = "/Metadata/";
@@ -108,7 +119,7 @@ namespace Tecan.Sila2
             }
 
             var index = 0;
-            var featureMatch = FeatureIdentifierRegex.Match( input );
+            var featureMatch = FeatureIdentifierRegex().Match( input );
             if(!featureMatch.Success || featureMatch.Index != 0)
             {
                 return false;
@@ -123,7 +134,7 @@ namespace Tecan.Sila2
                         return false;
                     }
                     index += term.Length;
-                    var identifierMatch = IdentifierRegex.Match( input, index );
+                    var identifierMatch = IdentifierRegex().Match( input, index );
                     if(!identifierMatch.Success || identifierMatch.Index != index)
                     {
                         return false;

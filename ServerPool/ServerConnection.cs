@@ -18,7 +18,6 @@ namespace Tecan.Sila2.ServerPooling
         private readonly IAsyncStreamReader<SilaServerMessage> _responseStream;
         private readonly IServerStreamWriter<SilaClientMessage> _requestStream;
         private readonly CancellationTokenSource _cancellationToken = new CancellationTokenSource();
-        private readonly CancellationToken _originalCancellationToken;
         private readonly ILog _loggingChannel = LogManager.GetLogger<ServerConnection>();
         private readonly ConcurrentDictionary<string, IResponseHandler> _responseHandlers = new ConcurrentDictionary<string, IResponseHandler>();
 
@@ -28,7 +27,6 @@ namespace Tecan.Sila2.ServerPooling
             _responseStream = responseStream;
             cancellationToken.Register( _cancellationToken.Cancel );
             cancellationToken.Register( CancelAll );
-            _originalCancellationToken = cancellationToken;
         }
 
         public void CancelAll()
@@ -97,35 +95,51 @@ namespace Tecan.Sila2.ServerPooling
         /// <inheritdoc />
         public Task SubscribeProperty<T>( string serviceName, string propertyName, string propertyIdentifier, Action<T> newValueReceived, IClientCallInfo callInfo, CancellationToken cancellationToken = default ) where T : class, ISilaTransferObject
         {
-            return SubscribeProperty( serviceName, propertyName, propertyIdentifier, newValueReceived, callInfo, ByteSerializer.GetDefault<T>(), cancellationToken );
+            return SubscribeProperty( serviceName, propertyName, propertyIdentifier, newValueReceived, callInfo, ByteSerializer.GetDefault<T>(), null, cancellationToken );
         }
 
         /// <inheritdoc />
         public Task SubscribeProperty<T>( string serviceName, string propertyName, string propertyIdentifier, Action<T> newValueReceived, IClientCallInfo callInfo, ByteSerializer<T> serializer, CancellationToken cancellationToken = default ) where T : class, ISilaTransferObject
         {
+            return SubscribeProperty(serviceName, propertyName, propertyIdentifier, newValueReceived, callInfo, serializer, null, cancellationToken);
+        }
+
+        /// <inheritdoc />
+        public Task SubscribeProperty<T>(string serviceName, string propertyName, string propertyIdentifier, Action<T> newValueReceived, IClientCallInfo callInfo, Action cleanup, CancellationToken cancellationToken = default) where T : class, ISilaTransferObject
+        {
+            return SubscribeProperty(serviceName, propertyName, propertyIdentifier, newValueReceived, callInfo, ByteSerializer.GetDefault<T>(), cleanup, cancellationToken);
+        }
+
+        /// <inheritdoc />
+        public Task SubscribeProperty<T>(string serviceName, string propertyName, string propertyIdentifier, Action<T> newValueReceived, IClientCallInfo callInfo, ByteSerializer<T> serializer, Action cleanup, CancellationToken cancellationToken = default) where T : class, ISilaTransferObject
+        {
             var requestId = Guid.NewGuid().ToString();
-            var handler = new PropertySubscriptionHandler<T>( serializer.Deserializer, newValueReceived );
+            var handler = new PropertySubscriptionHandler<T>(serializer.Deserializer, newValueReceived);
             if (cancellationToken.CanBeCanceled)
             {
-                cancellationToken.Register( () =>
-                 {
-                     _requestStream.WriteAsync( new SilaClientMessage
-                     {
-                         RequestUuid = requestId,
-                         CancelPropertySubscription = new EmptyMessage()
-                     } );
-                     handler.Complete();
-                 } );
+                cancellationToken.Register(() =>
+                {
+                    _requestStream.WriteAsync(new SilaClientMessage
+                    {
+                        RequestUuid = requestId,
+                        CancelPropertySubscription = new EmptyMessage()
+                    });
+                    handler.Complete();
+                });
             }
-            var subscriptionTask = SendAndGetResponse( new SilaClientMessage
+            var subscriptionTask = SendAndGetResponse(new SilaClientMessage
             {
                 RequestUuid = requestId,
-                PropertySubscription = SetMetadata( new PropertyRead
+                PropertySubscription = SetMetadata(new PropertyRead
                 {
                     FullyQualifiedPropertyId = propertyIdentifier,
-                }, callInfo )
-            }, handler );
-            handler.WaitForFirstResponse( cancellationToken );
+                }, callInfo)
+            }, handler);
+            handler.WaitForFirstResponse(cancellationToken);
+            if (cleanup != null)
+            {
+                handler.ResponseTask.ContinueWith(t => cleanup());
+            }
             return subscriptionTask;
         }
 
@@ -153,31 +167,6 @@ namespace Tecan.Sila2.ServerPooling
         }
 
         /// <inheritdoc />
-        public Task ExecuteUnobservableCommandAsync<TRequest>(
-            string serviceName,
-            string commandName,
-            TRequest request,
-            IClientCallInfo callInfo,
-            ByteSerializer<TRequest> requestSerializer )
-            where TRequest : class, ISilaRequestObject
-        {
-            var requestId = Guid.NewGuid().ToString();
-            var handler = new UnobservableCommandHandler();
-            return SendAndGetResponse( new SilaClientMessage
-            {
-                RequestUuid = requestId,
-                CommandExecution = new CommandExecution
-                {
-                    FullyQualifiedCommandId = request.CommandIdentifier,
-                    CommandParameter = SetMetadata( new CommandParameter
-                    {
-                        Parameters = requestSerializer.Serializer( request ),
-                    }, callInfo )
-                }
-            }, handler );
-        }
-
-        /// <inheritdoc />
         public TResponse ExecuteUnobservableCommand<TRequest, TResponse>(
             string serviceName,
             string commandName,
@@ -202,6 +191,31 @@ namespace Tecan.Sila2.ServerPooling
         {
             var responseTask = ExecuteUnobservableCommandAsync( serviceName, commandName, request, callInfo, requestSerializer, responseSerializer );
             return responseTask.Result;
+        }
+
+        /// <inheritdoc />
+        public Task ExecuteUnobservableCommandAsync<TRequest>(
+            string serviceName,
+            string commandName,
+            TRequest request,
+            IClientCallInfo callInfo,
+            ByteSerializer<TRequest> requestSerializer )
+            where TRequest : class, ISilaRequestObject
+        {
+            var requestId = Guid.NewGuid().ToString();
+            var handler = new UnobservableCommandHandler();
+            return SendAndGetResponse( new SilaClientMessage
+            {
+                RequestUuid = requestId,
+                CommandExecution = new CommandExecution
+                {
+                    FullyQualifiedCommandId = request.CommandIdentifier,
+                    CommandParameter = SetMetadata( new CommandParameter
+                    {
+                        Parameters = requestSerializer.Serializer( request ),
+                    }, callInfo )
+                }
+            }, handler );
         }
 
         /// <inheritdoc />

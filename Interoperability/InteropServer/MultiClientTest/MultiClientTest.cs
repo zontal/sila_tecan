@@ -37,7 +37,9 @@ namespace Tecan.Sila2.Interop.Server.MultiClientTest
                 // in a production scenario, it would probably be better to use Interlocked.CompareExchange for this
                 if (!_isAlreadyRunning)
                 {
+#pragma warning disable S2696 // Instance members should not write to "static" fields
                     _isAlreadyRunning = true;
+#pragma warning restore S2696 // Instance members should not write to "static" fields
                     base.Start();
                 }
                 else
@@ -52,7 +54,9 @@ namespace Tecan.Sila2.Interop.Server.MultiClientTest
             {
                 PushStateUpdate(0, _duration, CommandState.Running);
                 await Task.Delay(_duration);
+#pragma warning disable S2696 // Instance members should not write to "static" fields
                 _isAlreadyRunning = false;
+#pragma warning restore S2696 // Instance members should not write to "static" fields
                 Debug.WriteLine("Released: " + DateTime.Now);
             }
         }
@@ -69,14 +73,14 @@ namespace Tecan.Sila2.Interop.Server.MultiClientTest
             return new QueueingCommand(TimeSpan.FromSeconds(duration));
         }
 
-        private class QueueingCommand : ObservableCommand
+        private sealed class QueueingCommand : ObservableCommand
         {
 
             private static ConcurrentQueue<QueueingCommand> _queue = new ConcurrentQueue<QueueingCommand>();
             private static ManualResetEventSlim _waitEvent = new ManualResetEventSlim( false );
             private static Thread _queueThread;
 
-            private TaskCompletionSource<bool> _taskCompletionSource = new TaskCompletionSource<bool>();
+            private readonly TaskCompletionSource<bool> _taskCompletionSource = new TaskCompletionSource<bool>();
             private TimeSpan _duration;
 
             public QueueingCommand(TimeSpan duration)

@@ -68,7 +68,7 @@ namespace Tecan.Sila2.DynamicClient
             }
             return new DynamicObjectProperty( identifier, identifier, description, translationInfo.DataType )
             {
-                Value = translationInfo.Convert( obj )
+                Value = translationInfo.ConvertObject( obj )
             };
         }
 
@@ -81,8 +81,7 @@ namespace Tecan.Sila2.DynamicClient
 
             if(typeof( IEnumerable ).IsAssignableFrom( type ))
             {
-                var genericEnumerable = type.GetInterfaces()
-                    .FirstOrDefault( t => t.IsGenericType && t.GetGenericTypeDefinition() == typeof( IEnumerable<> ) );
+                var genericEnumerable = Array.Find( type.GetInterfaces(), t => t.IsGenericType && t.GetGenericTypeDefinition() == typeof( IEnumerable<> ) );
                 if (genericEnumerable == null && type.IsGenericType && type.GetGenericTypeDefinition() == typeof(IEnumerable<>))
                 {
                     genericEnumerable = type;
@@ -116,7 +115,9 @@ namespace Tecan.Sila2.DynamicClient
                              select new PropertyTranslationInfo( property, propertyType );
 
             var structureTranslation = new StructureTypeTranslationInfo( properties );
+#pragma warning disable S4143 // Collection elements should not be replaced unconditionally
             _knownTranslations[type] = structureTranslation;
+#pragma warning restore S4143 // Collection elements should not be replaced unconditionally
             return structureTranslation;
         }
 
@@ -124,10 +125,10 @@ namespace Tecan.Sila2.DynamicClient
         {
             DataTypeType DataType { get; }
 
-            object Convert( object obj );
+            object ConvertObject( object obj );
         }
 
-        private class BasicTypeTranslationInformation : ITranslationInformation
+        private sealed class BasicTypeTranslationInformation : ITranslationInformation
         {
             public BasicTypeTranslationInformation(BasicType basicType)
             {
@@ -139,15 +140,15 @@ namespace Tecan.Sila2.DynamicClient
 
             public DataTypeType DataType { get; }
 
-            public object Convert( object obj )
+            public object ConvertObject( object obj )
             {
                 return obj;
             }
         }
 
-        private class CollectionTypeTranslationInformation : ITranslationInformation
+        private sealed class CollectionTypeTranslationInformation : ITranslationInformation
         {
-            private ITranslationInformation _itemTranslation;
+            private readonly ITranslationInformation _itemTranslation;
 
             public CollectionTypeTranslationInformation(ITranslationInformation itemTranslation)
             {
@@ -163,21 +164,21 @@ namespace Tecan.Sila2.DynamicClient
 
             public DataTypeType DataType { get; }
 
-            public object Convert( object obj )
+            public object ConvertObject( object obj )
             {
                 var list = new List<object>();
-                if (obj is IEnumerable enumerable && enumerable != null)
+                if (obj is IEnumerable enumerable)
                 {
                     foreach(var item in enumerable)
                     {
-                        list.Add( _itemTranslation.Convert( item ) );
+                        list.Add( _itemTranslation.ConvertObject( item ) );
                     }
                 }
                 return list;
             }
         }
 
-        private class EnumTranslationInfo : ITranslationInformation
+        private sealed class EnumTranslationInfo : ITranslationInformation
         {
             public EnumTranslationInfo(Type enumType)
             {
@@ -199,13 +200,13 @@ namespace Tecan.Sila2.DynamicClient
 
             public DataTypeType DataType { get; }
 
-            public object Convert( object obj )
+            public object ConvertObject( object obj )
             {
                 return obj.ToString();
             }
         }
 
-        private class StructureTypeTranslationInfo : ITranslationInformation
+        private sealed class StructureTypeTranslationInfo : ITranslationInformation
         {
             private readonly List<PropertyTranslationInfo> _properties;
 
@@ -223,7 +224,7 @@ namespace Tecan.Sila2.DynamicClient
 
             public DataTypeType DataType { get; }
 
-            public object Convert( object obj )
+            public object ConvertObject( object obj )
             {
                 if (obj == null)
                 {
@@ -232,7 +233,7 @@ namespace Tecan.Sila2.DynamicClient
                 var result = new DynamicObject();
                 foreach(var property in _properties)
                 {
-                    var converted = property.Convert( obj );
+                    var converted = property.ConvertProperty( obj );
                     if(converted.Value != null)
                     {
                         result.Elements.Add( converted );
@@ -242,7 +243,7 @@ namespace Tecan.Sila2.DynamicClient
             }
         }
 
-        private class PropertyTranslationInfo
+        private sealed class PropertyTranslationInfo
         {
             private readonly PropertyInfo _property;
             private readonly SiLAElement _silaProperty;
@@ -267,10 +268,10 @@ namespace Tecan.Sila2.DynamicClient
 
             public SiLAElement SilaProperty => _silaProperty;
 
-            public DynamicObjectProperty Convert(object obj)
+            public DynamicObjectProperty ConvertProperty(object obj)
             {
                 var value = _property.GetValue( obj );
-                var converted = _translationInfo.Convert( value );
+                var converted = _translationInfo.ConvertObject( value );
                 return new DynamicObjectProperty( _silaProperty ) { Value = converted };
             }
         }

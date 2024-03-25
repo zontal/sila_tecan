@@ -214,91 +214,104 @@ namespace Tecan.Sila2.Server.Binary
             }
         }
 
-        private async Task<UploadChunkResponseDto> UploadChunkCore( UploadChunkRequestDto request, ServerCallContext context )
+        private async Task<UploadChunkResponseDto> UploadChunkCore(UploadChunkRequestDto request, ServerCallContext context)
         {
-            if(_openStreams.TryGetValue( request.BinaryTransferUUID, out var uploadData ))
+            if (!_openStreams.TryGetValue(request.BinaryTransferUUID, out var uploadData))
             {
-                if(request.ChunkIndex >= uploadData.ChunkCount)
+                throw new InvalidBinaryTransferIdException("Unknown file.", request.BinaryTransferUUID);
+            }
+
+            ValidateRequest(request, uploadData);
+            if (request.ChunkIndex == uploadData.ChunkIndex)
+            {
+                if (request.Payload != null && request.Payload.Length > 0)
                 {
-                    throw new InvalidOperationException( "Chunk index is invalid" );
+                    await uploadData.FileStream.WriteAsync(request.Payload, 0, request.Payload.Length);
                 }
-                if(uploadData.Completion.Task.IsCompleted)
+                uploadData.ChunkIndex++;
+                while (true)
                 {
-                    throw new InvalidOperationException( $"The binary {request.BinaryTransferUUID} has already been uploaded" );
-                }
-                if(request.ChunkIndex < uploadData.ChunkIndex)
-                {
-                    throw new InvalidOperationException( $"The chunk {request.ChunkIndex} was already uploaded" );
-                }
-                if(request.Payload != null && request.Payload.Length > BinaryDownload.MaxChunkSize)
-                {
-                    throw new InvalidOperationException( "The request is larger than the allowed maximum chunk size." );
-                }
-                if(request.ChunkIndex == uploadData.ChunkIndex)
-                {
-                    if(request.Payload != null && request.Payload.Length > 0)
+                    byte[] cached;
+                    lock (uploadData)
                     {
-                        await uploadData.FileStream.WriteAsync( request.Payload, 0, request.Payload.Length );
+                        if (!uploadData.Cached.TryGetValue(uploadData.ChunkIndex, out cached))
+                        {
+                            break;
+                        }
+                    }
+                    if (cached != null && cached.Length > 0)
+                    {
+                        await uploadData.FileStream.WriteAsync(cached, 0, cached.Length);
                     }
                     uploadData.ChunkIndex++;
-                    while(true)
-                    {
-                        byte[] cached;
-                        lock(uploadData)
-                        {
-                            if(!uploadData.Cached.TryGetValue( uploadData.ChunkIndex, out cached ))
-                            {
-                                break;
-                            }
-                        }
-                        if(cached != null && cached.Length > 0)
-                        {
-                            await uploadData.FileStream.WriteAsync( cached, 0, cached.Length );
-                        }
-                        uploadData.ChunkIndex++;
-                    }
-
-                    if(uploadData.FileStream.Length > uploadData.Size)
-                    {
-                        uploadData.FileStream.Close();
-                        uploadData.FileStream.Dispose();
-
-                        var exception = new InvalidOperationException( $"Expected {uploadData.Size} bytes but received {uploadData.FileStream.Length} bytes" );
-                        uploadData.Completion.SetException( exception );
-                        throw exception;
-                    }
-                    if(uploadData.ChunkIndex == uploadData.ChunkCount)
-                    {
-                        uploadData.FileStream.Close();
-                        uploadData.FileStream.Dispose();
-                        uploadData.Completion.SetResult( null );
-                    }
                 }
-                else if(request.ChunkIndex > uploadData.ChunkIndex)
-                {
-                    lock(uploadData)
-                    {
-                        if(uploadData.Cached.ContainsKey( request.ChunkIndex ))
-                        {
-                            uploadData.Cached[request.ChunkIndex] = request.Payload;
-                        }
-                        else
-                        {
-                            uploadData.Cached.Add( request.ChunkIndex, request.Payload );
-                        }
-                    }
-                }
-                uploadData.ExpirationTime = DateTimeOffset.Now.AddMinutes( WaitTimeInMinutes );
-                return new UploadChunkResponseDto()
-                {
-                    LifetimeOfBinary = new DurationDto(TimeSpan.FromMinutes(WaitTimeInMinutes)),
-                    BinaryTransferUUID = request.BinaryTransferUUID,
-                    ChunkIndex = request.ChunkIndex
-                };
+
+                CheckForTooManyBytes(uploadData);
+                CleanupIfComplete(uploadData);
             }
-            else
+            else if (request.ChunkIndex > uploadData.ChunkIndex)
             {
-                throw new InvalidBinaryTransferIdException( "Unknown file.", request.BinaryTransferUUID );
+                lock (uploadData)
+                {
+                    if (uploadData.Cached.ContainsKey(request.ChunkIndex))
+                    {
+                        uploadData.Cached[request.ChunkIndex] = request.Payload;
+                    }
+                    else
+                    {
+                        uploadData.Cached.Add(request.ChunkIndex, request.Payload);
+                    }
+                }
+            }
+            uploadData.ExpirationTime = DateTimeOffset.Now.AddMinutes(WaitTimeInMinutes);
+            return new UploadChunkResponseDto()
+            {
+                LifetimeOfBinary = new DurationDto(TimeSpan.FromMinutes(WaitTimeInMinutes)),
+                BinaryTransferUUID = request.BinaryTransferUUID,
+                ChunkIndex = request.ChunkIndex
+            };
+        }
+
+        private static void CleanupIfComplete(FileUploadData uploadData)
+        {
+            if (uploadData.ChunkIndex == uploadData.ChunkCount)
+            {
+                uploadData.FileStream.Close();
+                uploadData.FileStream.Dispose();
+                uploadData.Completion.SetResult(null);
+            }
+        }
+
+        private static void CheckForTooManyBytes(FileUploadData uploadData)
+        {
+            if (uploadData.FileStream.Length > uploadData.Size)
+            {
+                uploadData.FileStream.Close();
+                uploadData.FileStream.Dispose();
+
+                var exception = new InvalidOperationException($"Expected {uploadData.Size} bytes but received {uploadData.FileStream.Length} bytes");
+                uploadData.Completion.SetException(exception);
+                throw exception;
+            }
+        }
+
+        private static void ValidateRequest(UploadChunkRequestDto request, FileUploadData uploadData)
+        {
+            if (request.ChunkIndex >= uploadData.ChunkCount)
+            {
+                throw new InvalidOperationException("Chunk index is invalid");
+            }
+            if (uploadData.Completion.Task.IsCompleted)
+            {
+                throw new InvalidOperationException($"The binary {request.BinaryTransferUUID} has already been uploaded");
+            }
+            if (request.ChunkIndex < uploadData.ChunkIndex)
+            {
+                throw new InvalidOperationException($"The chunk {request.ChunkIndex} was already uploaded");
+            }
+            if (request.Payload != null && request.Payload.Length > BinaryDownload.MaxChunkSize)
+            {
+                throw new InvalidOperationException("The request is larger than the allowed maximum chunk size.");
             }
         }
 
@@ -365,7 +378,7 @@ namespace Tecan.Sila2.Server.Binary
         }
 #endif
 
-        private class InternalCreateBinaryRequest : ISilaRequestObject
+        private sealed class InternalCreateBinaryRequest : ISilaRequestObject
         {
             public InternalCreateBinaryRequest( string commandIdentifier, CreateBinaryRequestDto actualRequest )
             {
@@ -380,6 +393,7 @@ namespace Tecan.Sila2.Server.Binary
 
             public void Validate()
             {
+                // we do not vaöidate create binary requests
             }
 
             public string CommandIdentifier

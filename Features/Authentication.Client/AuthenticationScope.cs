@@ -6,7 +6,10 @@ using System.Text;
 
 namespace Tecan.Sila2.Authentication
 {
-    public class AuthenticationScope : IDisposable
+    /// <summary>
+    /// A class to organize authentication scopes
+    /// </summary>
+    public sealed class AuthenticationScope : IDisposable
     {
 #if NET6_0_OR_GREATER
         private readonly ConditionalWeakTable<ServerData, AuthTokenHandle> _cachedTokens = new ConditionalWeakTable<ServerData, AuthTokenHandle>();
@@ -29,6 +32,9 @@ namespace Tecan.Sila2.Authentication
         [ThreadStatic]
         private static AuthenticationScope _threadScope;
 
+        /// <summary>
+        /// Gets the authentication scope of the current thread
+        /// </summary>
         public static AuthenticationScope Current
         {
             get
@@ -37,22 +43,32 @@ namespace Tecan.Sila2.Authentication
             }
         }
 
+        /// <summary>
+        /// Creates a new authentication scope
+        /// </summary>
         public AuthenticationScope()
         {
             _parentScope = Current;
             if (_parentScope != null)
             {
+#pragma warning disable S3010 // Static fields should not be updated in constructors
                 _threadScope = this;
+#pragma warning restore S3010 // Static fields should not be updated in constructors
             }
         }
 
+        /// <summary>
+        /// Log out and leave the authentication scope
+        /// </summary>
         public void Dispose()
         {
             foreach (var token in _cachedTokens)
             {
                 token.Value.Logout();
             }
+#pragma warning disable S2696 // Instance members should not write to "static" fields
             _threadScope = _parentScope;
+#pragma warning restore S2696 // Instance members should not write to "static" fields
         }
     }
 }

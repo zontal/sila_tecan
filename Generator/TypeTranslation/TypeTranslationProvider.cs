@@ -40,15 +40,6 @@ namespace Tecan.Sila2.Generator.TypeTranslation
             throw new NotSupportedException( $"The data type {dataType.Item} is not supported" );
         }
 
-        public CodeExpression Extract( CodeExpression expression, DataTypeType dataType, CodeExpression binaryStorageArgument, CodeTypeReference targetType )
-        {
-            if(TryTranslate( dataType, null, out var translationInfo ))
-            {
-                return translationInfo.Extract( expression, targetType, binaryStorageArgument );
-            }
-            throw new NotSupportedException();
-        }
-
         public CodeTypeReference GetDtoTypeReference( DataTypeType type, string suggestedName, Action<string, StructureType> structHandler )
         {
             if(TryTranslate( type, suggestedName, out var typeInfo, structHandler: structHandler ))
@@ -73,13 +64,13 @@ namespace Tecan.Sila2.Generator.TypeTranslation
             return false;
         }
 
-        public bool TryTranslate( DataTypeType dataType, string suggestedName, out ITypeTranslationInfo translationInfo, Action<Constraints> constraintHandler = null, Action<string, StructureType> structHandler = null )
+        public bool TryTranslate( DataTypeType silaType, string suggestedName, out ITypeTranslationInfo translationInfo, Action<Constraints> constraintHandler = null, Action<string, StructureType> structHandler = null )
         {
             foreach(var typeTranslator in _translators)
             {
-                if(typeTranslator.TryTranslate( this, dataType, suggestedName, out translationInfo, constraintHandler, structHandler ) && translationInfo != null)
+                if(typeTranslator.TryTranslate( this, silaType, suggestedName, out translationInfo, constraintHandler, structHandler ) && translationInfo != null)
                 {
-                    _loggingChannel.Debug( $"SiLA2 Type {dataType.Item} translated using {typeTranslator}" );
+                    _loggingChannel.Debug( $"SiLA2 Type {silaType.Item} translated using {typeTranslator}" );
                     return true;
                 }
             }
@@ -97,6 +88,15 @@ namespace Tecan.Sila2.Generator.TypeTranslation
                     return;
                 }
             }
+        }
+
+        public CodeExpression Extract(CodeExpression expression, DataTypeType dataType, CodeExpression binaryStorageArgument, CodeTypeReference targetType)
+        {
+            if (TryTranslate(dataType, null, out var translationInfo))
+            {
+                return translationInfo.Extract(expression, targetType, binaryStorageArgument);
+            }
+            throw new NotSupportedException();
         }
 
         public CodeExpression Extract( CodeExpression expression, DataTypeType dataType, CodeExpression binaryStorageArgument, string parameterName, CodeTypeReference targetType )
