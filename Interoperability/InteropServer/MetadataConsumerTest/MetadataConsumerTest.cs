@@ -17,6 +17,7 @@ namespace Tecan.Sila2.Interop.Server.MetadataConsumerTest
         public event PropertyChangedEventHandler PropertyChanged;
 
         private readonly Queue<char> _receivedStringMetadataChannel = new Queue<char>();
+        private int _plannedToSend;
 
         public string ReceivedStringMetadata => StringMetadataProvider.Value;
 
@@ -26,25 +27,37 @@ namespace Tecan.Sila2.Interop.Server.MetadataConsumerTest
             {
                 if (StringMetadataProvider.Value != null)
                 {
-                    foreach ( char c in StringMetadataProvider.Value )
+                    lock (_receivedStringMetadataChannel)
                     {
-                        _receivedStringMetadataChannel.Enqueue( c );
+                        foreach (char c in StringMetadataProvider.Value)
+                        {
+                            _receivedStringMetadataChannel.Enqueue(c);
+                        }
+                        _plannedToSend += StringMetadataProvider.Value.Length;
                     }
                     StringMetadataProvider.Value = null;
                 }
-                var returnVal = _receivedStringMetadataChannel.Dequeue();
-                if (_receivedStringMetadataChannel.Count > 0 )
+                if (_receivedStringMetadataChannel.Count == 0)
                 {
-                    DelayedNotify();
+                    return null;
+                }
+                char returnVal;
+                lock (_receivedStringMetadataChannel)
+                {
+                    returnVal = _receivedStringMetadataChannel.Dequeue();
+                    _plannedToSend--;
+                    if (_receivedStringMetadataChannel.Count > 0 && _plannedToSend > 0)
+                    {
+                        DelayedNotify();
+                    }
                 }
                 return returnVal.ToString();
             }
         }
 
-        private async void DelayedNotify()
+        private void DelayedNotify()
         {
-            await Task.Delay(10);
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ReceivedStringMetadataAsCharacters)));
+            Task.Delay(10).ContinueWith(t => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ReceivedStringMetadataAsCharacters))));
         }
 
         [return: SilaIdentifier( "ReceivedStringMetadata" )]

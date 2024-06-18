@@ -35,7 +35,14 @@ namespace Tecan.Sila2.Server.ServiceDefinition
             {
                 if (e.PropertyName == _clientPropertyName)
                 {
-                    channel.Writer.TryWrite(_implementation());
+                    try
+                    {
+                        channel.Writer.TryWrite(_implementation());
+                    }
+                    catch (Exception propertyReadException)
+                    {
+                        channel.Writer.TryComplete(propertyReadException);
+                    }
                 }
             }
 
@@ -52,6 +59,10 @@ namespace Tecan.Sila2.Server.ServiceDefinition
                         if (channel.Reader.TryRead(out var update))
                         {
                             await responseStream.WriteAsync(update);
+                        }
+                        else if (channel.Reader.Completion.IsCompleted)
+                        {
+                            return 0;
                         }
                     }
                 } while (!cancellationToken.IsCancellationRequested);

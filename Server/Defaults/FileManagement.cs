@@ -39,7 +39,14 @@ namespace Tecan.Sila2.Server
         public void Delete( string binaryTransferUUID, bool isUploaded )
         {
             var file = LocateFile(binaryTransferUUID);
-            if (file.Exists) file.Delete();
+            if (file.Exists)
+            {
+                file.Delete();
+            }
+            else
+            {
+                throw new InvalidBinaryTransferIdException("The binary transfer UUID was invalid", binaryTransferUUID);
+            }
         }
 
         /// <inheritdoc />

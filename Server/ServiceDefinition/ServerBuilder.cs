@@ -118,6 +118,18 @@ namespace Tecan.Sila2.Server.ServiceDefinition
             RegisterObservableCommandCore( methodName, implementation, exceptionConverter, ProtobufMarshaller<TRequest>.FromByteSerializer( requestSerializer ), null );
         }
 
+        public void RegisterObservableCommand<TRequest, TResponse, TResponseDto>( string methodName, Func<TRequest, IObservableCommand<TResponse>> implementation, Func<TResponse, TResponseDto> responseConverter, Func<Exception, Exception> exceptionConverter )
+            where TRequest : class, ISilaRequestObject
+            where TResponseDto : class
+        {
+            RegisterObservableCommandCore( methodName, implementation, responseConverter, exceptionConverter, ProtobufMarshaller<TRequest>.Default, ProtobufMarshaller<TResponseDto>.Default, null );
+        }
+
+        void IServerBuilder.RegisterObservableCommand<TRequest, TResponse, TResponseDto>( string methodName, Func<TRequest, IObservableCommand<TResponse>> implementation, Func<TResponse, TResponseDto> responseConverter, Func<Exception, Exception> exceptionConverter, ByteSerializer<TRequest> requestSerializer, ByteSerializer<TResponseDto> responseSerializer )
+        {
+            RegisterObservableCommandCore( methodName, implementation, responseConverter, exceptionConverter, ProtobufMarshaller<TRequest>.FromByteSerializer( requestSerializer ), ProtobufMarshaller<TResponseDto>.FromByteSerializer( responseSerializer ), null );
+        }
+
         private void RegisterObservableCommandCore<TRequest>( string methodName, Func<TRequest, IObservableCommand> implementation, Func<Exception, Exception> exceptionConverter, Marshaller<TRequest> requestSerializer, IIntermediateRequestHandler intermediateHandler )
             where TRequest : class, ISilaRequestObject
         {
@@ -129,18 +141,6 @@ namespace Tecan.Sila2.Server.ServiceDefinition
             _serviceDefinitionBuilder.AddMethod( stateMethod, builder.QueryState );
             _serviceDefinitionBuilder.AddMethod( resultMethod, builder.GetResponse );
             _dispatcher.RegisterHandler( _feature.FullyQualifiedIdentifier + "/Command/" + methodName, builder );
-        }
-
-        public void RegisterObservableCommand<TRequest, TResponse, TResponseDto>( string methodName, Func<TRequest, IObservableCommand<TResponse>> implementation, Func<TResponse, TResponseDto> responseConverter, Func<Exception, Exception> exceptionConverter )
-            where TRequest : class, ISilaRequestObject
-            where TResponseDto : class
-        {
-            RegisterObservableCommandCore( methodName, implementation, responseConverter, exceptionConverter, ProtobufMarshaller<TRequest>.Default, ProtobufMarshaller<TResponseDto>.Default, null );
-        }
-
-        void IServerBuilder.RegisterObservableCommand<TRequest, TResponse, TResponseDto>( string methodName, Func<TRequest, IObservableCommand<TResponse>> implementation, Func<TResponse, TResponseDto> responseConverter, Func<Exception, Exception> exceptionConverter, ByteSerializer<TRequest> requestSerializer, ByteSerializer<TResponseDto> responseSerializer )
-        {
-            RegisterObservableCommandCore( methodName, implementation, responseConverter, exceptionConverter, ProtobufMarshaller<TRequest>.FromByteSerializer( requestSerializer ), ProtobufMarshaller<TResponseDto>.FromByteSerializer( responseSerializer ), null );
         }
 
 
