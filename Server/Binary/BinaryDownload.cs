@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
+using Common.Logging;
 using Grpc.Core;
 using Tecan.Sila2.Binary;
 using Tecan.Sila2.ServerPooling;
@@ -23,6 +24,7 @@ namespace Tecan.Sila2.Server.Binary
         private readonly Timer _disposeTimer;
         private readonly IFileManagement _server;
         private readonly ConcurrentDictionary<string, (Stream stream, DateTimeOffset expiration)> _openStreams = new ConcurrentDictionary<string, (Stream, DateTimeOffset)>();
+        private readonly ILog _log = LogManager.GetLogger(typeof(BinaryDownload));
 
         /// <summary>
         /// Create a new binary download utility for the given local file management
@@ -41,6 +43,7 @@ namespace Tecan.Sila2.Server.Binary
             {
                 if(item.Value.expiration < DateTimeOffset.Now)
                 {
+                    _log.Info($"Cleaning up binary {item.Key}");
                     if(item.Value.stream != null)
                     {
                         item.Value.stream.Close();
@@ -54,6 +57,10 @@ namespace Tecan.Sila2.Server.Binary
                     catch (InvalidBinaryTransferIdException)
                     {
                         // already deleted
+                    }
+                    catch (Exception ex)
+                    {
+                        _log.Warn($"Error deleting binary {item.Key}", ex);
                     }
                 }
             }
