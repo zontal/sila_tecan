@@ -967,6 +967,7 @@ namespace Tecan.Sila2
             Minute = (uint)value.Minutes;
             Hour = (uint)value.Hours;
             Timezone = new TimezoneDto( TimeSpan.Zero );
+            Millisecond = (uint)value.Milliseconds;
         }
 
         /// <summary>
@@ -994,6 +995,12 @@ namespace Tecan.Sila2
         public TimezoneDto Timezone { get; set; }
 
         /// <summary>
+        /// Gets or sets the milliseconds
+        /// </summary>
+        [ProtoMember( 5, Name = @"millisecond")]
+        public uint Millisecond { get; set; }
+
+        /// <summary>
         /// Encapsulates the given time into a dto
         /// </summary>
         /// <param name="value">The actual time</param>
@@ -1009,7 +1016,7 @@ namespace Tecan.Sila2
         /// <returns>The actual value</returns>
         public TimeSpan Extract( IBinaryStore resolver )
         {
-            return new TimeSpan( (int)Hour, (int)Minute, (int)Second ) + Timezone.Extract( resolver );
+            return new TimeSpan( 0, (int)Hour, (int)Minute, (int)Second, (int)Millisecond ) + Timezone.Extract( resolver );
         }
 
         /// <summary>
@@ -1063,6 +1070,7 @@ namespace Tecan.Sila2
             Month = value.Month;
             Year = value.Year;
             Timezone = value.Offset;
+            Millisecond = (uint)value.Millisecond;
         }
 
         /// <summary>
@@ -1108,6 +1116,12 @@ namespace Tecan.Sila2
         public TimezoneDto Timezone { get; set; }
 
         /// <summary>
+        /// Gets or sets the milliseconds
+        /// </summary>
+        [ProtoMember(8, Name = @"millisecond")]
+        public uint Millisecond { get; set; }
+
+        /// <summary>
         /// Encapsulates the given timestamp into a dto
         /// </summary>
         /// <param name="value">The actual timestamp</param>
@@ -1123,7 +1137,7 @@ namespace Tecan.Sila2
         /// <returns>The actual value</returns>
         public DateTimeOffset Extract( IBinaryStore resolver )
         {
-            return new DateTimeOffset( (int)Year, (int)Month, (int)Day, (int)Hour, (int)Minute, (int)Second, Timezone?.Extract( resolver ) ?? default );
+            return new DateTimeOffset( (int)Year, (int)Month, (int)Day, (int)Hour, (int)Minute, (int)Second, (int)Millisecond, Timezone?.Extract( resolver ) ?? default );
         }
 
         /// <summary>

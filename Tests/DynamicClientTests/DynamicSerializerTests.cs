@@ -62,7 +62,7 @@ namespace Tecan.Sila2.DynamicClient.Test
         [Test]
         public void DynamicSerializer_Timestamp_RoundtripWorks()
         {
-            var input = new DateTimeOffset( 2021, 4, 14, 8, 42, 23, TimeSpan.FromHours( 2 ) );
+            var input = new DateTimeOffset( 2021, 4, 14, 8, 42, 23, 11, TimeSpan.FromHours( 2 ) );
             var expectedBytes = ByteSerializer.ToByteArray( new TimestampDto( input ) );
             Assert.That( Roundtrip( BasicType.Timestamp, input, expectedBytes ), Is.EqualTo( input ) );
         }
@@ -70,7 +70,7 @@ namespace Tecan.Sila2.DynamicClient.Test
         [Test]
         public void DynamicSerializer_Time_RoundtripWorks()
         {
-            var input = new TimeSpan( 8, 42, 23 );
+            var input = new TimeSpan( 0, 8, 42, 23, 11 );
             var expectedBytes = ByteSerializer.ToByteArray( new TimeDto( input ) );
             Assert.That( Roundtrip( BasicType.Time, input, expectedBytes ), Is.EqualTo( input ) );
         }

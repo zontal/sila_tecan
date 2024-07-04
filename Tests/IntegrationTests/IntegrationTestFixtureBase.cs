@@ -289,7 +289,7 @@ namespace Tecan.Sila2.IntegrationTests
             var featureContext = new FeatureContext( feature, _server, executionManager );
             var commandClient = new NonObservableCommandClient( feature.Items.OfType<FeatureCommand>().Single( c => c.Identifier == "PassTimestamp" ), featureContext );
 
-            // everything below seconds is not transmitted, so we cannot simply use now
+            // everything below milliseconds is not transmitted, so we cannot simply use now
             var timestamp = new DateTimeOffset( DateTime.Today, DateTimeOffset.Now.Offset );
             var maxTimestamp = new DateTimeOffset( 9999, 12, 31, 23, 59, 59, TimeSpan.Zero );
             PassAndAssertEquals( commandClient, timestamp );
@@ -308,7 +308,7 @@ namespace Tecan.Sila2.IntegrationTests
             var testClient = new TestServerClient( _server.Channel, executionManager );
 
             Assert.That( testClient.PassTime( TimeSpan.Zero ), Is.EqualTo( TimeSpan.Zero ) );
-            var timespan = new TimeSpan( 0, 8, 15, 42 );
+            var timespan = new TimeSpan( 0, 8, 15, 42, 11 );
             Assert.That( testClient.PassTime( timespan ), Is.EqualTo( timespan ) );
 
             Unlock( lockId, token );
@@ -326,8 +326,8 @@ namespace Tecan.Sila2.IntegrationTests
             var featureContext = new FeatureContext( feature, _server, executionManager );
             var commandClient = new NonObservableCommandClient( feature.Items.OfType<FeatureCommand>().Single( c => c.Identifier == "PassTime" ), featureContext );
 
-            // everything below seconds is not transmitted, so we cannot simply use now
-            var timespan = new TimeSpan( 0, 8, 15, 42 );
+            // everything below milliseconds is not transmitted, so we cannot simply use now
+            var timespan = new TimeSpan( 0, 8, 15, 42, 11 );
             PassAndAssertEquals( commandClient, TimeSpan.Zero );
             PassAndAssertEquals( commandClient, timespan );
 

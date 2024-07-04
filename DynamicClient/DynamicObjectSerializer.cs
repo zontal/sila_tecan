@@ -160,7 +160,8 @@ namespace Tecan.Sila2.DynamicClient
             var month = ReadIntOfField( reader, 5 );
             var year = ReadIntOfField( reader, 6 );
             var timeZone = ReadTimezone( reader, 7 );
-            setProperty( new DateTimeOffset( year, month, day, hour, minute, seconds, timeZone ) );
+            var millisecond = ReadIntOfField( reader, 8 );
+            setProperty( new DateTimeOffset( year, month, day, hour, minute, seconds, millisecond, timeZone ) );
         }
 
         private static void ReadDate( ProtoReader reader, Action<object> setProperty )
@@ -178,8 +179,9 @@ namespace Tecan.Sila2.DynamicClient
             var minute = ReadIntOfField( reader, 2 );
             var hour = ReadIntOfField( reader, 3 );
 
-            var time = new TimeSpan( hour, minute, seconds );
             var timeZone = ReadTimezone( reader, 4 );
+            var millisecond = ReadIntOfField( reader, 5 );
+            var time = new TimeSpan( 0, hour, minute, seconds, millisecond );
 
             setProperty( time + timeZone );
         }
@@ -498,6 +500,8 @@ namespace Tecan.Sila2.DynamicClient
                 ProtoWriter.WriteInt32( dateTimeOffset.Offset.Minutes, writer );
             }
             ProtoWriter.EndSubItem( subToken, writer );
+            ProtoWriter.WriteFieldHeader(8, WireType.Varint, writer);
+            ProtoWriter.WriteUInt32((uint)dateTimeOffset.Millisecond, writer);
         }
 
         private static void WriteDate( ProtoWriter writer, object value )
@@ -550,6 +554,8 @@ namespace Tecan.Sila2.DynamicClient
                 ProtoWriter.WriteFieldHeader(4, WireType.String, writer);
                 var subToken = ProtoWriter.StartSubItem(timeSpan, writer);
                 ProtoWriter.EndSubItem(subToken, writer);
+                ProtoWriter.WriteFieldHeader(5, WireType.Varint, writer);
+                ProtoWriter.WriteUInt32((uint)timeSpan.Milliseconds, writer);
             }
             else if (value is DateTimeOffset dateTimeOffset)
             {
@@ -573,6 +579,8 @@ namespace Tecan.Sila2.DynamicClient
                     ProtoWriter.WriteInt32(dateTimeOffset.Offset.Minutes, writer);
                 }
                 ProtoWriter.EndSubItem(subToken, writer);
+                ProtoWriter.WriteFieldHeader(5, WireType.Varint, writer);
+                ProtoWriter.WriteUInt32((uint)dateTimeOffset.Millisecond, writer);
             }
             else
             {
