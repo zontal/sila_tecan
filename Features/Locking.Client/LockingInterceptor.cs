@@ -18,7 +18,7 @@ namespace Tecan.Sila2.Locking
     [PartCreationPolicy( CreationPolicy.Shared )]
     public class LockingInterceptor : IClientRequestInterceptor, IDisposable
     {
-        private readonly ConcurrentDictionary<ServerData, ServerLockInformation> _serverLockData = new ();
+        private readonly ConcurrentDictionary<ServerData, ServerLockInformation> _serverLockData = new ConcurrentDictionary<ServerData, ServerLockInformation>();
 
         /// <inheritdoc />
         public string MetadataIdentifier => "org.silastandard/core/LockController/v1/Metadata/LockIdentifier";
