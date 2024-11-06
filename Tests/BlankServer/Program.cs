@@ -1,6 +1,9 @@
+using BlankServer;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using System.Reflection;
 using Tecan.Sila2;
+using Tecan.Sila2.Auth.AuthorizationProviderService;
+using Tecan.Sila2.AuthorizationProvider;
 using Tecan.Sila2.Interop.Server.BasicDataTypesTest;
 using Tecan.Sila2.Security;
 using Tecan.Sila2.Server;
@@ -26,6 +29,9 @@ builder.Services.AddSila2(startInfo);
 // you will need to add the feature provider explicitly. Same applies for the interface implementation
 builder.Services.AddSingleton<IBasicDataTypesTest, BasicDataTypesTest>();
 builder.Services.AddSingleton<IFeatureProvider, BasicDataTypesTestProvider>();
+
+builder.Services.AddSingleton<IAuthorizationProviderService, AuthorizationProviderService>();
+builder.Services.AddSingleton<IFeatureProvider, AuthorizationProviderServiceProvider>();
 
 var app = builder.Build();
 

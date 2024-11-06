@@ -113,6 +113,7 @@
     </ItemGroup>
 
     <ItemGroup>
+        <ProjectReference Include="..\..\Client.Core\Client.NetCore.csproj" />
         <ProjectReference Include="..\..\DynamicClient\DynamicClient.csproj" />
         <ProjectReference Include="..\..\Features\Authentication\Authentication.csproj" />
         <ProjectReference Include="..\..\Features\Cancellation\Cancellation.csproj" />

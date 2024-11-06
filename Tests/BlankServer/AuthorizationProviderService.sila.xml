@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Feature xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" SiLA2Version="1.0" FeatureVersion="1.0" Originator="org.silastandard" Category="core" xmlns="http://www.sila-standard.org">
+  <Identifier>AuthorizationProviderService</Identifier>
+  <DisplayName>Authorization Provider Service</DisplayName>
+  <Description />
+  <Command>
+    <Identifier>Verify</Identifier>
+    <DisplayName>Verify</DisplayName>
+    <Description />
+    <Observable>No</Observable>
+    <Parameter>
+      <Identifier>AccessToken</Identifier>
+      <DisplayName>Access Token</DisplayName>
+      <Description />
+      <DataType>
+        <Basic>String</Basic>
+      </DataType>
+    </Parameter>
+    <Parameter>
+      <Identifier>RequestedServer</Identifier>
+      <DisplayName>Requested Server</DisplayName>
+      <Description />
+      <DataType>
+        <Constrained>
+          <DataType>
+            <Basic>String</Basic>
+          </DataType>
+          <Constraints>
+            <Pattern>[0-9a-f]{8}\-[0-9a-f]{4}\-[0-9a-f]{4}\-[0-9a-f]{4}\-[0-9a-f]{12}</Pattern>
+          </Constraints>
+        </Constrained>
+      </DataType>
+    </Parameter>
+    <Parameter>
+      <Identifier>RequestedFeature</Identifier>
+      <DisplayName>Requested Feature</DisplayName>
+      <Description />
+      <DataType>
+        <Constrained>
+          <DataType>
+            <Basic>String</Basic>
+          </DataType>
+          <Constraints>
+            <FullyQualifiedIdentifier>FeatureIdentifier</FullyQualifiedIdentifier>
+          </Constraints>
+        </Constrained>
+      </DataType>
+    </Parameter>
+    <Response>
+      <Identifier>TokenLifetime</Identifier>
+      <DisplayName>Token Lifetime</DisplayName>
+      <Description />
+      <DataType>
+        <Constrained>
+          <DataType>
+            <Basic>Integer</Basic>
+          </DataType>
+          <Constraints>
+            <Unit>
+              <Label>s</Label>
+              <Factor>1</Factor>
+              <Offset>0</Offset>
+              <UnitComponent>
+                <SIUnit>Second</SIUnit>
+                <Exponent>1</Exponent>
+              </UnitComponent>
+            </Unit>
+          </Constraints>
+        </Constrained>
+      </DataType>
+    </Response>
+    <DefinedExecutionErrors>
+      <Identifier>AuthorizationFailed</Identifier>
+      <Identifier>InvalidAccessToken</Identifier>
+    </DefinedExecutionErrors>
+  </Command>
+  <DefinedExecutionError>
+    <Identifier>AuthorizationFailed</Identifier>
+    <DisplayName>Authorization Failed</DisplayName>
+    <Description />
+  </DefinedExecutionError>
+  <DefinedExecutionError>
+    <Identifier>InvalidAccessToken</Identifier>
+    <DisplayName>Invalid Access Token</DisplayName>
+    <Description />
+  </DefinedExecutionError>
+</Feature>

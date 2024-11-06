@@ -67,6 +67,7 @@
 
     <ItemGroup>
         <ProjectReference Include="..\..\Annotations\Annotations.csproj" />
+        <ProjectReference Include="..\..\Client\Client.csproj" />
         <ProjectReference Include="..\..\Contracts\Contracts.csproj" />
         <ProjectReference Include="..\..\DynamicClient\DynamicClient.csproj" />
         <ProjectReference Include="..\..\Features\Authentication\Authentication.csproj" />

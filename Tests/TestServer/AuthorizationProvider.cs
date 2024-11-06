@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Text;
+using Tecan.Sila2.Discovery;
 
 namespace Tecan.Sila2.IntegrationTests
 {

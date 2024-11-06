@@ -8,6 +8,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="AuthorizationProviderService.sila.xml" />
+    <None Remove="BasicDataTypesTest.sila.xml" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Include="..\..\Interoperability\InteropServer\BasicDataTypesTest\BasicDataTypesTest.cs" Link="BasicDataTypesTest.cs" />
     <Compile Include="..\..\Interoperability\InteropServer\BasicDataTypesTest\Dtos.cs" Link="Dtos.cs" />
     <Compile Include="..\..\Interoperability\InteropServer\BasicDataTypesTest\Interface.cs" Link="Interface.cs" />
@@ -16,6 +21,7 @@
 
   <ItemGroup>
     <EmbeddedResource Include="..\..\Interoperability\InteropServer\BasicDataTypesTest.sila.xml" Link="BasicDataTypesTest.sila.xml" />
+    <EmbeddedResource Include="AuthorizationProviderService.sila.xml" />
   </ItemGroup>
 
   <ItemGroup>

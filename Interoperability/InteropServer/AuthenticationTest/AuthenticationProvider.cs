@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Text;
 using Tecan.Sila2.AuthorizationProvider;
+using Tecan.Sila2.Discovery;
 
 namespace Tecan.Sila2.Interop.Server.AuthenticationTest
 {
@@ -11,9 +12,12 @@ namespace Tecan.Sila2.Interop.Server.AuthenticationTest
     internal class AuthenticationProvider : StaticAuthConfigurationProvider
     {
         [ImportingConstructor]
-        public AuthenticationProvider( IConfigurationStore configurationStore ) : base( null, null, configurationStore )
+        public AuthenticationProvider( IConfigurationStore configurationStore ) : this(configurationStore, new ServerConnector(new DiscoveryExecutionManager()))
         {
         }
+
+        private AuthenticationProvider(IConfigurationStore configurationStore, IServerConnector connector )
+            : base(connector, new ServerDiscovery(connector), configurationStore) { }
 
         protected override AuthConfiguration CreateDefaultConfig()
         {

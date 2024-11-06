@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Feature xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" SiLA2Version="1.0" FeatureVersion="1.0" Originator="org.silastandard" Category="test" xmlns="http://www.sila-standard.org">
+  <Identifier>BasicDataTypesTest</Identifier>
+  <DisplayName>Basic Data Types Test</DisplayName>
+  <Description />
+  <Command>
+    <Identifier>EchoStringValue</Identifier>
+    <DisplayName>Echo String Value</DisplayName>
+    <Description />
+    <Observable>No</Observable>
+    <Parameter>
+      <Identifier>StringValue</Identifier>
+      <DisplayName>String Value</DisplayName>
+      <Description />
+      <DataType>
+        <Basic>String</Basic>
+      </DataType>
+    </Parameter>
+    <Response>
+      <Identifier>ReceivedValue</Identifier>
+      <DisplayName>Received Value</DisplayName>
+      <Description />
+      <DataType>
+        <Basic>String</Basic>
+      </DataType>
+    </Response>
+  </Command>
+  <Command>
+    <Identifier>EchoIntegerValue</Identifier>
+    <DisplayName>Echo Integer Value</DisplayName>
+    <Description />
+    <Observable>No</Observable>
+    <Parameter>
+      <Identifier>IntegerValue</Identifier>
+      <DisplayName>Integer Value</DisplayName>
+      <Description />
+      <DataType>
+        <Basic>Integer</Basic>
+      </DataType>
+    </Parameter>
+    <Response>
+      <Identifier>ReceivedValue</Identifier>
+      <DisplayName>Received Value</DisplayName>
+      <Description />
+      <DataType>
+        <Basic>Integer</Basic>
+      </DataType>
+    </Response>
+  </Command>
+  <Command>
+    <Identifier>EchoRealValue</Identifier>
+    <DisplayName>Echo Real Value</DisplayName>
+    <Description />
+    <Observable>No</Observable>
+    <Parameter>
+      <Identifier>RealValue</Identifier>
+      <DisplayName>Real Value</DisplayName>
+      <Description />
+      <DataType>
+        <Basic>Real</Basic>
+      </DataType>
+    </Parameter>
+    <Response>
+      <Identifier>ReceivedValue</Identifier>
+      <DisplayName>Received Value</DisplayName>
+      <Description />
+      <DataType>
+        <Basic>Real</Basic>
+      </DataType>
+    </Response>
+  </Command>
+  <Command>
+    <Identifier>EchoBooleanValue</Identifier>
+    <DisplayName>Echo Boolean Value</DisplayName>
+    <Description />
+    <Observable>No</Observable>
+    <Parameter>
+      <Identifier>BooleanValue</Identifier>
+      <DisplayName>Boolean Value</DisplayName>
+      <Description />
+      <DataType>
+        <Basic>Boolean</Basic>
+      </DataType>
+    </Parameter>
+    <Response>
+      <Identifier>ReceivedValue</Identifier>
+      <DisplayName>Received Value</DisplayName>
+      <Description />
+      <DataType>
+        <Basic>Boolean</Basic>
+      </DataType>
+    </Response>
+  </Command>
+  <Command>
+    <Identifier>EchoDateValue</Identifier>
+    <DisplayName>Echo Date Value</DisplayName>
+    <Description />
+    <Observable>No</Observable>
+    <Parameter>
+      <Identifier>DateValue</Identifier>
+      <DisplayName>Date Value</DisplayName>
+      <Description />
+      <DataType>
+        <Basic>Timestamp</Basic>
+      </DataType>
+    </Parameter>
+    <Response>
+      <Identifier>ReceivedValue</Identifier>
+      <DisplayName>Received Value</DisplayName>
+      <Description />
+      <DataType>
+        <Basic>Timestamp</Basic>
+      </DataType>
+    </Response>
+  </Command>
+  <Command>
+    <Identifier>EchoTimeValue</Identifier>
+    <DisplayName>Echo Time Value</DisplayName>
+    <Description />
+    <Observable>No</Observable>
+    <Parameter>
+      <Identifier>TimeValue</Identifier>
+      <DisplayName>Time Value</DisplayName>
+      <Description />
+      <DataType>
+        <Basic>Time</Basic>
+      </DataType>
+    </Parameter>
+    <Response>
+      <Identifier>ReceivedValue</Identifier>
+      <DisplayName>Received Value</DisplayName>
+      <Description />
+      <DataType>
+        <Basic>Time</Basic>
+      </DataType>
+    </Response>
+  </Command>
+  <Command>
+    <Identifier>EchoTimestampValue</Identifier>
+    <DisplayName>Echo Timestamp Value</DisplayName>
+    <Description />
+    <Observable>No</Observable>
+    <Parameter>
+      <Identifier>TimestampValue</Identifier>
+      <DisplayName>Timestamp Value</DisplayName>
+      <Description />
+      <DataType>
+        <Basic>Timestamp</Basic>
+      </DataType>
+    </Parameter>
+    <Response>
+      <Identifier>ReceivedValue</Identifier>
+      <DisplayName>Received Value</DisplayName>
+      <Description />
+      <DataType>
+        <Basic>Timestamp</Basic>
+      </DataType>
+    </Response>
+  </Command>
+  <Property>
+    <Identifier>StringValue</Identifier>
+    <DisplayName>String Value</DisplayName>
+    <Description />
+    <Observable>No</Observable>
+    <DataType>
+      <Basic>String</Basic>
+    </DataType>
+  </Property>
+  <Property>
+    <Identifier>IntegerValue</Identifier>
+    <DisplayName>Integer Value</DisplayName>
+    <Description />
+    <Observable>No</Observable>
+    <DataType>
+      <Basic>Integer</Basic>
+    </DataType>
+  </Property>
+  <Property>
+    <Identifier>RealValue</Identifier>
+    <DisplayName>Real Value</DisplayName>
+    <Description />
+    <Observable>No</Observable>
+    <DataType>
+      <Basic>Real</Basic>
+    </DataType>
+  </Property>
+  <Property>
+    <Identifier>BooleanValue</Identifier>
+    <DisplayName>Boolean Value</DisplayName>
+    <Description />
+    <Observable>No</Observable>
+    <DataType>
+      <Basic>Boolean</Basic>
+    </DataType>
+  </Property>
+  <Property>
+    <Identifier>DateValue</Identifier>
+    <DisplayName>Date Value</DisplayName>
+    <Description />
+    <Observable>No</Observable>
+    <DataType>
+      <Basic>Timestamp</Basic>
+    </DataType>
+  </Property>
+  <Property>
+    <Identifier>TimeValue</Identifier>
+    <DisplayName>Time Value</DisplayName>
+    <Description />
+    <Observable>No</Observable>
+    <DataType>
+      <Basic>Time</Basic>
+    </DataType>
+  </Property>
+  <Property>
+    <Identifier>TimestampValue</Identifier>
+    <DisplayName>Timestamp Value</DisplayName>
+    <Description />
+    <Observable>No</Observable>
+    <DataType>
+      <Basic>Timestamp</Basic>
+    </DataType>
+  </Property>
+</Feature>

@@ -83,17 +83,6 @@ namespace Tecan.Sila2
             private set;
         }
 
-        /// <inheritdoc />
-        public void SetAuthorizationProvider( string serverUuid )
-        {
-            SetAuthorizationProviderCore( serverUuid );
-            _configuration.AuthProvider = new DiscoveredServer()
-            {
-                ServerUUID = serverUuid
-            };
-            SaveConfiguration( _configuration );
-        }
-
         private void SetAuthorizationProviderCore( string serverUuid )
         {
             if(!Guid.TryParse( serverUuid, out var serverId ))
@@ -122,24 +111,6 @@ namespace Tecan.Sila2
                 new AuthorizationProviderServiceClient( server.Channel, new DiscoveryExecutionManager() );
         }
 
-        /// <summary>
-        /// Saves the configuration to an appropriate location
-        /// </summary>
-        /// <param name="configuration">The auth configuration to save</param>
-        protected abstract void SaveConfiguration( AuthConfiguration configuration );
-
-        /// <inheritdoc />
-        public void SetAuthorizationProvider( string host, int port )
-        {
-            SetAuthorizationProviderCore( host, port );
-            _configuration.AuthProvider = new ExplicitServer()
-            {
-                Host = host,
-                Port = port.ToString()
-            };
-            SaveConfiguration( _configuration );
-        }
-
         private void SetAuthorizationProviderCore( string host, int port )
         {
             if(_serverConnector == null)
@@ -156,5 +127,34 @@ namespace Tecan.Sila2
             AuthorizationProvider =
                 new AuthorizationProviderServiceClient( server.Channel, new DiscoveryExecutionManager() );
         }
+
+        /// <inheritdoc />
+        public void SetAuthorizationProvider(string serverUuid)
+        {
+            SetAuthorizationProviderCore(serverUuid);
+            _configuration.AuthProvider = new DiscoveredServer()
+            {
+                ServerUUID = serverUuid
+            };
+            SaveConfiguration(_configuration);
+        }
+
+        /// <inheritdoc />
+        public void SetAuthorizationProvider( string host, int port )
+        {
+            SetAuthorizationProviderCore( host, port );
+            _configuration.AuthProvider = new ExplicitServer()
+            {
+                Host = host,
+                Port = port.ToString()
+            };
+            SaveConfiguration( _configuration );
+        }
+
+        /// <summary>
+        /// Saves the configuration to an appropriate location
+        /// </summary>
+        /// <param name="configuration">The auth configuration to save</param>
+        protected abstract void SaveConfiguration( AuthConfiguration configuration );
     }
 }
