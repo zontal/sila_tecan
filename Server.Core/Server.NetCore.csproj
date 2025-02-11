@@ -19,7 +19,7 @@
         <PackageReference Include="Grpc.AspNetCore.Server" Version="2.60.0" />
 		<PackageReference Include="Grpc.AspNetCore.Server.ClientFactory" Version="2.60.0" />
         <PackageReference Include="IPNetwork2" Version="2.1.2" />
-        <PackageReference Include="Makaretu.Dns.Multicast" Version="0.25.0" />
+		<PackageReference Include="Makaretu.Dns.Multicast.New" Version="0.38.0" />
         <PackageReference Include="System.Threading.Channels" Version="4.7.0" />
     </ItemGroup>
 
