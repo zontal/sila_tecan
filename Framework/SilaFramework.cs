@@ -33,7 +33,7 @@ namespace Tecan.Sila2
         /// <summary>
         /// The actual value
         /// </summary>
-        [ProtoMember( 1, Name = @"value" )]
+        [ProtoMember( 1, Name = @"value", IsRequired = true)]
         [System.ComponentModel.DefaultValue( "" )]
         public string Value { get; set; } = "";
 
@@ -112,7 +112,7 @@ namespace Tecan.Sila2
         /// <summary>
         /// The actual value
         /// </summary>
-        [ProtoMember(1, Name = @"value")]
+        [ProtoMember(1, Name = @"value", IsRequired = true)]
         [System.ComponentModel.DefaultValue("")]
         public string Value { get; set; } = "";
 
@@ -191,7 +191,7 @@ namespace Tecan.Sila2
         /// <summary>
         /// The actual value for this dto
         /// </summary>
-        [ProtoMember( 1, Name = @"value" )]
+        [ProtoMember( 1, Name = @"value", IsRequired = true )]
         public long Value { get; set; }
 
         /// <summary>
@@ -428,7 +428,7 @@ namespace Tecan.Sila2
         /// <summary>
         /// The actual value for this dto
         /// </summary>
-        [ProtoMember( 1, Name = @"value" )]
+        [ProtoMember( 1, Name = @"value", IsRequired = true)]
         public double Value { get; set; }
 
         /// <summary>
@@ -544,7 +544,7 @@ namespace Tecan.Sila2
         /// <summary>
         /// The actual value for this dto
         /// </summary>
-        [ProtoMember( 1, Name = @"value" )]
+        [ProtoMember( 1, Name = @"value", IsRequired = true)]
         public bool Value { get; set; }
 
         /// <summary>
@@ -891,13 +891,13 @@ namespace Tecan.Sila2
         /// <summary>
         /// Gets or sets the year
         /// </summary>
-        [ProtoMember( 3, Name = @"year" )]
+        [ProtoMember( 3, Name = @"year")]
         public ulong Year { get; set; }
 
         /// <summary>
         /// Gets or sets the timezone
         /// </summary>
-        [ProtoMember( 4, Name = @"timezone" )]
+        [ProtoMember(4, Name = @"timezone", IsRequired = true)]
         public TimezoneDto Timezone { get; set; }
 
         /// <summary>
@@ -973,7 +973,7 @@ namespace Tecan.Sila2
         /// <summary>
         /// Gets or sets the second
         /// </summary>
-        [ProtoMember( 1, Name = @"second" )]
+        [ProtoMember( 1, Name = @"second")]
         public uint Second { get; set; }
 
         /// <summary>
@@ -991,7 +991,7 @@ namespace Tecan.Sila2
         /// <summary>
         /// Gets or sets the timezone
         /// </summary>
-        [ProtoMember( 4, Name = @"timezone" )]
+        [ProtoMember( 4, Name = @"timezone", IsRequired = true)]
         public TimezoneDto Timezone { get; set; }
 
         /// <summary>
@@ -1112,7 +1112,7 @@ namespace Tecan.Sila2
         /// <summary>
         /// Gets or sets the timezone
         /// </summary>
-        [ProtoMember( 7, Name = @"timezone" )]
+        [ProtoMember(7, Name = @"timezone", IsRequired = true)]
         public TimezoneDto Timezone { get; set; }
 
         /// <summary>

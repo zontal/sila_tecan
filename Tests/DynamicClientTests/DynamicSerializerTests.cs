@@ -21,6 +21,7 @@ namespace Tecan.Sila2.DynamicClient.Test
             Assert.That( Roundtrip( BasicType.String, input, expectedBytes ), Is.EqualTo( input ) );
         }
 
+        [TestCase( 0 )]
         [TestCase( 8 )]
         [TestCase( 15 )]
         [TestCase( long.MaxValue )]
@@ -84,6 +85,13 @@ namespace Tecan.Sila2.DynamicClient.Test
             var result = Roundtrip(BasicType.Binary, input, expectedBytes, new EverythingIsSmallStore()) as MemoryStream;
             var resultBase64 = Convert.ToBase64String(result.ToArray());
             Assert.That(base64, Is.EqualTo( resultBase64 ) );
+        }
+
+        [Test]
+        public void DynamicSerializer_Binary_EmptyBinaryRoundtrip()
+        {
+            var expectedBytes = ByteSerializer.ToByteArray(new BinaryDto { Value = new byte[0] });
+            Assert.That(expectedBytes.Length, Is.EqualTo(2));
         }
 
         private class EverythingIsSmallStore : IBinaryStore
@@ -389,21 +397,18 @@ namespace Tecan.Sila2.DynamicClient.Test
 
         private DataTypeType ResolveType(string type) => TestFeature.Items.OfType<SiLAElement>().Single(t => t.Identifier == type).DataType;
 
-        private object Roundtrip( DataTypeType dataType, object input, byte[] expectedBytes, IBinaryStore store = null )
+        private object Roundtrip(DataTypeType dataType, object input, byte[] expectedBytes, IBinaryStore store = null)
         {
-            var inputProperty = new DynamicObjectProperty( "source", null, null, dataType );
+            var inputProperty = new DynamicObjectProperty("source", null, null, dataType);
             inputProperty.Value = input;
 
             var serializer = new DynamicObjectSerializer(ResolveType);
 
-            var bytes = serializer.Serialize( inputProperty, store );
-            if(expectedBytes.Length > 0)
-            {
-                Assert.That( bytes, Is.EquivalentTo( expectedBytes ) );
-            }
+            var bytes = serializer.Serialize(inputProperty, store);
+            Assert.That(bytes, Is.EquivalentTo(expectedBytes));
 
-            var resultProperty = new DynamicObjectProperty( "result", null, null, inputProperty.Type );
-            serializer.Deserialize( resultProperty, bytes, false, store );
+            var resultProperty = new DynamicObjectProperty("result", null, null, inputProperty.Type);
+            serializer.Deserialize(resultProperty, bytes, false, store);
             return resultProperty.Value;
         }
     }
