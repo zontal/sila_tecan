@@ -15,8 +15,11 @@ It is intended to provide the content for all operating systems that support the
 The wiki includes quick start guides and tutorials as an easy entry point: [wiki](https://gitlab.com/SiLA2/vendors/sila_tecan/wikis/home)
 
 ## Status
-The Tecan SiLA2 SDK covers all features of SiLA2 1.0 such as binary transfer, any types, nested data types, metadata and many more. The repository also offers a dynamic client where developers can access functionality of a server without knowing this functionality at compile-time.
+The Tecan SiLA2 SDK covers all features of SiLA2 1.1, including binary transfer, any types, nested data types, metadata, server-initiated connections and many more. The repository also offers a dynamic client where developers can access functionality of a server without knowing this functionality at compile-time.
 The functionality of the Tecan SiLA2 SDK is covered by a range of automated unit tests and integration tests that are partially integrated into the CI build.
+
+The SDK can work with either the managed gRPC implementation available with recent versions of .NET and integrated into ASP.NET Core, but also with the
+older (and no longer maintained) unmanaged gRPC, making it possible to use with .NET Framework. We usually ship libraries using multi-targeting for the latest LTS version of .NET and .NET STandard 2.0.
 
 New commits to the Tecan SiLA2 SDK are automatically checked by means of automated unit tests. If they succeed, NuGet packages are automatically pushed to the official NuGet feed.
 
