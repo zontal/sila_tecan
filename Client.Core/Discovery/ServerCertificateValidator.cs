@@ -27,7 +27,7 @@ namespace Tecan.Sila2.Discovery
 
         internal bool CheckDiscoveryCertificateMatchesActualCertificate()
         {
-            throw new NotImplementedException();
+            return _actualCertificate.GetCertHashString() == _discoveryCertificate.GetCertHashString();
         }
 
         public X509Chain Chain => _chain;
