@@ -59,6 +59,8 @@ namespace Tecan.Sila2.Authentication.Tests
             Assert.That( token.AccessToken, Is.Not.Null );
             Assert.That( token.TokenLifetime, Is.GreaterThan( 3600L ) );
 
+            _configProviderMock.Setup(p => p.IsValidApiKey(It.IsAny<string>(), It.IsAny<string>())).Returns(false);
+
             var interception = _authService.Intercept( "org.silastandard/core/SiLAService/v1/Command/GetFeatureDefinition", token.AccessToken );
             Assert.That( interception, Is.Null );
             Assert.DoesNotThrow( () => _authService.Logout( token.AccessToken ) );
@@ -75,6 +77,7 @@ namespace Tecan.Sila2.Authentication.Tests
             }
 
             var token = _authService.Login( userName, password, _serverId, tokenFeatures );
+            _configProviderMock.Setup(p => p.IsValidApiKey(It.IsAny<string>(), It.IsAny<string>())).Returns(false);
             Assert.Throws<AuthorizationInvalidAccessTokenException>( () => _authService.Intercept( requestedCommand, token.AccessToken ) );
             Assert.DoesNotThrow( () => _authService.Logout( token.AccessToken ) );
         }
@@ -83,6 +86,7 @@ namespace Tecan.Sila2.Authentication.Tests
         public void AuthenticateRequest_BullshitToken_ThrowsException()
         {
             _configProviderMock.Setup( p => p.AuthorizationProvider ).Returns( null as IAuthorizationProviderService );
+            _configProviderMock.Setup( p => p.IsValidApiKey(It.IsAny<string>(), It.IsAny<string>())).Returns( false );
             Assert.Throws<AuthorizationInvalidAccessTokenException>( () =>
                 _authService.Intercept( "org.silastandard/core/SiLAService/v1/Command/GetFeatureDefinition", Guid.NewGuid().ToString() ) );
         }
@@ -101,6 +105,8 @@ namespace Tecan.Sila2.Authentication.Tests
             Assert.That( token.AccessToken, Is.Not.Null );
             Assert.That( token.TokenLifetime, Is.GreaterThan( 3600L ) );
 
+            _configProviderMock.Setup(p => p.IsValidApiKey(It.IsAny<string>(), It.IsAny<string>())).Returns(false);
+
             var interception = _authService.Intercept( "org.silastandard/core/SiLAService/v1/Command/GetFeatureDefinition", token.AccessToken );
             Assert.That( interception, Is.Null );
             Assert.DoesNotThrow( () => _authService.Logout( token.AccessToken ) );
@@ -114,6 +120,7 @@ namespace Tecan.Sila2.Authentication.Tests
             var providerMock = new Mock<IAuthorizationProviderService>( MockBehavior.Strict );
             providerMock.Setup( p => p.Verify( accessToken, _serverId, "org.silastandard/core/SiLAService/v1" ) ).Returns( 3600 );
             _configProviderMock.Setup( p => p.AuthorizationProvider ).Returns( providerMock.Object );
+            _configProviderMock.Setup(p => p.IsValidApiKey(It.IsAny<string>(), It.IsAny<string>())).Returns(false);
 
             var interception = _authService.Intercept( "org.silastandard/core/SiLAService/v1/Command/GetFeatureDefinition", accessToken );
             Assert.That( interception, Is.Null );
@@ -127,9 +134,22 @@ namespace Tecan.Sila2.Authentication.Tests
             var providerMock = new Mock<IAuthorizationProviderService>( MockBehavior.Strict );
             providerMock.Setup( p => p.Verify( accessToken, _serverId, "org.silastandard/core/SiLAService/v1" ) ).Returns( -1 );
             _configProviderMock.Setup( p => p.AuthorizationProvider ).Returns( providerMock.Object );
+            _configProviderMock.Setup(p => p.IsValidApiKey(It.IsAny<string>(), It.IsAny<string>())).Returns(false);
 
             Assert.Throws<AuthorizationInvalidAccessTokenException>( () =>
                 _authService.Intercept( "org.silastandard/core/SiLAService/v1/Command/GetFeatureDefinition", accessToken ) );
+        }
+
+        [Test]
+        public void AuthenticateRequest_ApiKeyWorks()
+        {
+            var accessToken = Guid.NewGuid().ToString();
+            var command = "org.silastandard/core/SiLAService/v1/Command/GetFeatureDefinition";
+
+            _configProviderMock.Setup(p => p.IsValidApiKey(accessToken, command)).Returns(true);
+
+            var interception = _authService.Intercept(command, accessToken);
+            Assert.That(interception, Is.Null);
         }
 
         [TestCase( "test", "wrong password" )]
