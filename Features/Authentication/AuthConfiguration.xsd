@@ -8,11 +8,12 @@
         <xs:complexType>
             <xs:sequence>
                 <xs:element name="LocalUser" type="User" minOccurs="1" maxOccurs="unbounded" />
+				<xs:element name="Keys" type="ApiKey" minOccurs="0" maxOccurs="unbounded" />
                 <xs:element name="AuthProvider" type="ServerIdentifier" />
             </xs:sequence>
         </xs:complexType>
     </xs:element>
-
+    
     <xs:complexType name="User">
         <xs:sequence>
             <xs:element name="Permission" type="xs:string" minOccurs="0" maxOccurs="unbounded" />
@@ -21,6 +22,14 @@
         <xs:attribute name="Password" type="xs:string" use="required" />
         <xs:attribute name="AllowWildcard" type="xs:boolean" use="required" />
     </xs:complexType>
+
+	<xs:complexType name="ApiKey">
+		<xs:sequence>
+			<xs:element name="Permission" type="xs:string" minOccurs="0" maxOccurs="unbounded" />
+		</xs:sequence>
+		<xs:attribute name="Value" type="xs:string" use="required" />
+		<xs:attribute name="IsWildcard" type="xs:boolean" use="required" />
+	</xs:complexType>
 
     <xs:complexType name="ServerIdentifier" abstract="true" />
     <xs:complexType name="DiscoveredServer">

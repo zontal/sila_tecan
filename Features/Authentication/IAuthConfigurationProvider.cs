@@ -33,6 +33,14 @@ namespace Tecan.Sila2
         }
 
         /// <summary>
+        /// Determines whether the given access token is a valid API key
+        /// </summary>
+        /// <param name="apiKey">the API key</param>
+        /// <param name="commandIdentifier">the command that was attempted to run</param>
+        /// <returns>true, if the api key is valid for the fiven command identifier, otherwise false</returns>
+        bool IsValidApiKey( string apiKey, string commandIdentifier );
+
+        /// <summary>
         /// Sets the authorization provider to the provided server
         /// </summary>
         /// <param name="serverUuid">The universally unique identifier of the server</param>

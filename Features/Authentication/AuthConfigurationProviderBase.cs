@@ -156,5 +156,12 @@ namespace Tecan.Sila2
         /// </summary>
         /// <param name="configuration">The auth configuration to save</param>
         protected abstract void SaveConfiguration( AuthConfiguration configuration );
+
+        /// <inheritdoc />
+        public bool IsValidApiKey(string apiKey, string commandIdentifier)
+        {
+            return _configuration.Keys != null && _configuration.Keys.Any(k =>
+                apiKey == k.Value && (k.IsWildcard || (k.Permission != null && k.Permission.Any(p => commandIdentifier.StartsWith(p)))));
+        }
     }
 }

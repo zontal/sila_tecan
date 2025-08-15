@@ -62,6 +62,10 @@ namespace Tecan.Sila2
             {
                 throw new InvalidAccessTokenException( "The access token is missing" );
             }
+            if (_configurationProvider.IsValidApiKey(accessToken, commandIdentifier))
+            {
+                return null;
+            }
             if(!_currentAuthorizations.TryGetValue( accessToken, out var token ))
             {
                 if(_configurationProvider.AuthorizationProvider != null)

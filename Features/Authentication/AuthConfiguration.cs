@@ -28,6 +28,8 @@ namespace Tecan.Sila2 {
         
         private User[] localUserField;
         
+        private ApiKey[] keysField;
+        
         private ServerIdentifier authProviderField;
         
         /// <remarks/>
@@ -38,6 +40,17 @@ namespace Tecan.Sila2 {
             }
             set {
                 this.localUserField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute("Keys")]
+        public ApiKey[] Keys {
+            get {
+                return this.keysField;
+            }
+            set {
+                this.keysField = value;
             }
         }
         
@@ -181,6 +194,55 @@ namespace Tecan.Sila2 {
             }
             set {
                 this.serverUUIDField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.9037.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://gitlab.com/SiLA2/vendors/sila_tecan/tree/master/Features/Authentication/A" +
+        "uthConfiguration.xsd")]
+    public partial class ApiKey {
+        
+        private string[] permissionField;
+        
+        private string valueField;
+        
+        private bool isWildcardField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute("Permission")]
+        public string[] Permission {
+            get {
+                return this.permissionField;
+            }
+            set {
+                this.permissionField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string Value {
+            get {
+                return this.valueField;
+            }
+            set {
+                this.valueField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public bool IsWildcard {
+            get {
+                return this.isWildcardField;
+            }
+            set {
+                this.isWildcardField = value;
             }
         }
     }
