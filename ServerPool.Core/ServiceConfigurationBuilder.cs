@@ -50,16 +50,23 @@ namespace Tecan.Sila2.ServerPooling
         }
 
         /// <inheritdoc />
-        public void Configure( string host, int port )
+        public void Configure( string host, int port ) => Configure(host, port, null);
+
+        /// <inheritdoc />
+        public void Configure(string host, int port, X509Certificate2 certificate)
         {
-            if(_certificate == null)
+            if (certificate == null)
             {
-                _certificate = CertificateGenerator.GetServerCertificate( _certificateProvider.CreateContext(), null, out _ );
+                _certificate = CertificateGenerator.GetServerCertificate(_certificateProvider.CreateContext(), null, out _);
+            }
+            else
+            {
+                _certificate = certificate;
             }
 
-            if(IPAddress.TryParse( host, out var addr ))
+            if (IPAddress.TryParse(host, out var addr))
             {
-                _networkAddresses.Add( addr, port );
+                _networkAddresses.Add(addr, port);
             }
         }
 
@@ -73,26 +80,36 @@ namespace Tecan.Sila2.ServerPooling
         /// <inheritdoc />
         public void ConfigureForServer( Guid guid, int port, Predicate<NetworkInterface> networkInterfaceFilter )
         {
-            if(_certificate == null)
+            ConfigureForServer(guid, port, networkInterfaceFilter, null);
+        }
+
+        /// <inheritdoc />
+        public void ConfigureForServer(Guid guid, int port, Predicate<NetworkInterface> networkInterfaceFilter, X509Certificate2 certificate)
+        {
+            if (certificate == null)
             {
-                _certificate = CertificateGenerator.GetServerCertificate( _certificateProvider.CreateContext( guid ), guid, out _ );
+                _certificate = CertificateGenerator.GetServerCertificate(_certificateProvider.CreateContext(guid), guid, out _);
+            } 
+            else
+            {
+                _certificate = certificate;
             }
 
-            if(networkInterfaceFilter != null)
+            if (networkInterfaceFilter != null)
             {
-                _loggingChannel.Info( "Running on the following addresses:" );
-                foreach(var v4addr in NetworkInterface.GetAllNetworkInterfaces()
-                    .Where( nic => networkInterfaceFilter( nic ) )
-                    .SelectMany( nic => nic.GetIPProperties().UnicastAddresses.Select( ua => ua.Address ) )
-                    .Where( a => a.AddressFamily == AddressFamily.InterNetwork ))
+                _loggingChannel.Info("Running on the following addresses:");
+                foreach (var v4addr in NetworkInterface.GetAllNetworkInterfaces()
+                    .Where(nic => networkInterfaceFilter(nic))
+                    .SelectMany(nic => nic.GetIPProperties().UnicastAddresses.Select(ua => ua.Address))
+                    .Where(a => a.AddressFamily == AddressFamily.InterNetwork))
                 {
-                    _loggingChannel.Info( v4addr.ToString() );
-                    _networkAddresses.Add( v4addr, port );
+                    _loggingChannel.Info(v4addr.ToString());
+                    _networkAddresses.Add(v4addr, port);
                 }
             }
             else
             {
-                _networkAddresses.Add( IPAddress.Any, port );
+                _networkAddresses.Add(IPAddress.Any, port);
             }
         }
 

@@ -10,6 +10,12 @@ namespace Tecan.Sila2.Security
     public interface IServerCertificateProvider
     {
         /// <summary>
+        /// Initializes the certificate provider with a custom certificate path
+        /// </summary>
+        /// <param name="customCertificatePath"></param>
+        void Initialize(string customCertificatePath);
+
+        /// <summary>
         /// Gets or creates the security context for the server with the provided guid
         /// </summary>
         /// <param name="serverGuid">The unique id of the server</param>

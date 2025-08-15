@@ -13,12 +13,10 @@ using Tecan.Sila2.Server;
 var startInfo = ServerConfigReader.ReadServerStartInformation(args);
 var builder = WebApplication.CreateBuilder(args);
 
-var certificate = CertificateGenerator.GetDefaultCertificate(startInfo.ServerUuid);
-
 builder.WebHost.ConfigureKestrelForSila2(startInfo, options =>
 {
     options.Protocols = HttpProtocols.Http2;
-    options.UseHttps(certificate);
+    options.UseHttps(startInfo.ServerCertificate);
 });
 
 // it is important to call AddSila2Components in order to add these components that also have a MEF registration

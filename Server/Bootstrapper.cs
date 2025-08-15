@@ -108,6 +108,8 @@ namespace Tecan.Sila2.Server
                 {
                     interfaceFilter = null;
                 }
+                var certificateProvider = _container.GetExportedValue<IServerCertificateProvider>();
+                certificateProvider.Initialize(args.CertificatePath);
                 var startup = new ServerStartInformation( selfInfo, args.Port, args.InterfaceFilter, args.ServerUuid, args.Name );
                 _container.ComposeExportedValue( startup );
                 _server = _container.GetExportedValue<ISiLAServer>();

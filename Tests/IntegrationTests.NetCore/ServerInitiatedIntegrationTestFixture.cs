@@ -101,6 +101,10 @@ namespace Tecan.Sila2.IntegrationTests
             {
                 return null;
             }
+
+            public void Initialize(string customCertificatePath)
+            {
+            }
         }
     }
 }

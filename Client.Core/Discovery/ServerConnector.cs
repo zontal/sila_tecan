@@ -131,39 +131,21 @@ namespace Tecan.Sila2.Discovery
             {
                 return ServerCertificateCouldNotBeRead( serverData );
             }
-            Guid? expectedGuid = FindServerUuidInCertificate( certificate );
-            if(expectedGuid.HasValue)
+            if(CertificateUtilities.TryFindServerUuid(certificate, out var expectedGuid))
             {
-                if(expectedGuid.Value == serverData.Config.Uuid)
+                if(expectedGuid == serverData.Config.Uuid)
                 {
                     return serverData;
                 }
                 else
                 {
-                    return ServerUuidDoesNotMatchCertificate( serverData, expectedGuid.Value, certificate );
+                    return ServerUuidDoesNotMatchCertificate( serverData, expectedGuid, certificate );
                 }
             }
             else
             {
                 return ServerUuidNotContainedInCertificate( serverData, certificate );
             }
-        }
-
-        private static Guid? FindServerUuidInCertificate( X509Certificate2 certificate )
-        {
-            foreach(var extension in certificate.Extensions)
-            {
-                if(extension.Oid.Value.ToString() == "1.3.6.1.4.1.58583")
-                {
-                    var value = Encoding.ASCII.GetString( extension.RawData );
-                    if(value.Length >= 36 && Guid.TryParse( value.Substring( value.Length - 36 ), out var serverUuid ))
-                    {
-                        return serverUuid;
-                    }
-                }
-            }
-
-            return null;
         }
 
         private ServerData CheckExpectedGuid( ServerData serverData, Guid? expectedGuid )

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net.NetworkInformation;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 
 namespace Tecan.Sila2.Server
@@ -29,8 +30,17 @@ namespace Tecan.Sila2.Server
         /// <param name="guid">The unique identifier of the server</param>
         /// <param name="port">The port on which the server should be running</param>
         /// <param name="networkInterfaceFilter"></param>
+        /// <param name="certificate">the server certificate</param>
+        void ConfigureForServer( Guid guid, int port, Predicate<NetworkInterface> networkInterfaceFilter, X509Certificate2 certificate );
+
+        /// <summary>
+        /// Configures the server for the given server unique identifier
+        /// </summary>
+        /// <param name="guid">The unique identifier of the server</param>
+        /// <param name="port">The port on which the server should be running</param>
+        /// <param name="networkInterfaceFilter"></param>
         [Obsolete]
-        void ConfigureForServer( Guid guid, int port, Predicate<NetworkInterface> networkInterfaceFilter );
+        void ConfigureForServer(Guid guid, int port, Predicate<NetworkInterface> networkInterfaceFilter);
 
         /// <summary>
         /// Configures the server to accept connections from the given host and port
@@ -39,6 +49,14 @@ namespace Tecan.Sila2.Server
         /// <param name="port">The port</param>
         [Obsolete]
         void Configure( string host, int port );
+
+        /// <summary>
+        /// Configures the server to accept connections from the given host and port
+        /// </summary>
+        /// <param name="host">The host</param>
+        /// <param name="port">The port</param>
+        /// <param name="certificate">the server certificate</param>
+        void Configure(string host, int port, X509Certificate2 certificate);
 
         /// <summary>
         /// Gets the announcement details

@@ -29,6 +29,12 @@ namespace Tecan.Sila2.Server
         public Guid ServerUuid { get; set; } = Guid.Empty;
 
         /// <summary>
+        /// Gets or sets the path to the server certificate
+        /// </summary>
+        [Option('c', "certificate", HelpText = "The path to the server certíficate", Required = false)]
+        public string CertificatePath { get; set; }
+
+        /// <summary>
         /// The initial name of the server. If omitted, this defaults to the server type.
         /// </summary>
         [Option('n', "name", Required = false, HelpText = "The initial name of the server. If omitted, this defaults to the server type.")]

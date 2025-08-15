@@ -11,35 +11,37 @@ namespace Tecan.Sila2
     /// </summary>
     public class FileCertificateProvider : IServerCertificateProvider
     {
-        /// <inheritdoc />
-        public CertificateContext CreateContext(Guid serverGuid) => GetOrCreateDefaultContext();
+        private string _customCertificatePath;
 
         /// <inheritdoc />
-        public CertificateContext CreateContext() => GetOrCreateDefaultContext();
+        public CertificateContext CreateContext(Guid serverGuid) => CreateContext();
+
+        /// <inheritdoc />
+        public CertificateContext CreateContext() => CreateContext(_customCertificatePath);
+
+        /// <summary>
+        /// Creates a certificate context for the given custom server certificate location
+        /// </summary>
+        /// <param name="serverCertificatePath">The path to the server certificate</param>
+        /// <returns>The certificate context</returns>
+        public static CertificateContext CreateContext(string serverCertificatePath)
+        {
+            var cacert = ReadIfExists("ca.crt");
+            var servercert = ReadIfExists(@"server.crt");
+            var serverkey = ReadIfExists(serverCertificatePath ?? @"server.key");
+            var caKey = ReadIfExists("ca.key");
+            return new CertificateContext(servercert, serverkey, cacert, caKey);
+        }
 
         private static string ReadIfExists( string path )
         {
             return File.Exists( path ) ? File.ReadAllText( path ) : null;
         }
 
-        private static CertificateContext _defaultContext;
-
-        private static CertificateContext GetOrCreateDefaultContext()
+        /// <inheritdoc />
+        public void Initialize(string customCertificatePath)
         {
-            if (_defaultContext == null)
-            {
-                var cacert = ReadIfExists("ca.crt");
-                var servercert = ReadIfExists(@"server.crt");
-                var serverkey = ReadIfExists(@"server.key");
-                var caKey = ReadIfExists("ca.key");
-                _defaultContext = new CertificateContext(servercert, serverkey, cacert, caKey);
-            }
-            return _defaultContext;
+            _customCertificatePath = customCertificatePath;
         }
-
-        /// <summary>
-        /// Gets the certificate context used by default
-        /// </summary>
-        public static CertificateContext DefaultContext => GetOrCreateDefaultContext();
     }
 }

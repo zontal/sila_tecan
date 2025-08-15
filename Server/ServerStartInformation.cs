@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net.NetworkInformation;
+using System.Security.Cryptography.X509Certificates;
 
 namespace Tecan.Sila2.Server
 {
@@ -97,5 +98,12 @@ namespace Tecan.Sila2.Server
         /// Gets the unique identifier of the server
         /// </summary>
         public Guid ServerUuid { get; set; }
+
+        /// <summary>
+        /// Gets or sets the server certificate to use
+        /// </summary>
+        public X509Certificate2 ServerCertificate { 
+            get;
+            set; }
     }
 }

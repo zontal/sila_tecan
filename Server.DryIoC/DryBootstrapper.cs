@@ -97,7 +97,7 @@ namespace Tecan.Sila2.Server
                      } )
                     .ConfigureServices( services =>
                     {
-                        services.AddSila2();
+                        services.AddSila2(startup);
                         OnConfigureServices( services );
                     } )
                     .ConfigureWebHostDefaults( webHostBuilder =>
@@ -127,6 +127,8 @@ namespace Tecan.Sila2.Server
                 }
 
                 configurationBuilder = _host.Services.GetRequiredService<IServiceConfigurationBuilder<ISiLAServer, ServiceMethodProviderContext<ISiLAServer>>>() as ServiceConfigurationBuilder;
+                var certificateProvider = _host.Services.GetRequiredService<IServerCertificateProvider>();
+                certificateProvider.Initialize(args.CertificatePath);
                 _server = _host.Services.GetRequiredService<ISiLAServer>();
 
                 _host.Start();

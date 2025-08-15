@@ -67,15 +67,19 @@ namespace Tecan.Sila2.Security
 
             if(baseCertificate != null)
             {
+                Log.Info($"Generating server certificate for server {serverGuid} and certificate authority {baseCertificate.FriendlyName}");
                 return request
                     .Create( baseCertificate, DateTimeOffset.UtcNow.Subtract( TimeSpan.FromMinutes( 1 ) ), baseCertificate.NotAfter, serial )
                     .CopyWithPrivateKey( key );
             }
             else
             {
+
+                Log.Info($"Generating self-signed server certificate for server {serverGuid}");
                 return request.CreateSelfSigned( DateTimeOffset.UtcNow.Subtract( TimeSpan.FromMinutes( 1 ) ), DateTimeOffset.UtcNow.AddYears( 100 ) );
             }
 #else
+            Log.Warn("Generating certificates on the fly is only possible in .NET 6 or above");
             return null;
 #endif
         }
@@ -95,8 +99,11 @@ namespace Tecan.Sila2.Security
                 new X509KeyUsageExtension(
                     X509KeyUsageFlags.KeyCertSign,
                     true ) );
+
+            Log.Info("Generating root certificate");
             return request.CreateSelfSigned( DateTime.Now.Subtract( TimeSpan.FromMinutes( 1 ) ), DateTime.Now.AddYears( 100 ) );
 #else
+            Log.Warn("Generating certificates on the fly is only possible in .NET 6 or above");
             return null;
 #endif
         }
@@ -163,6 +170,7 @@ namespace Tecan.Sila2.Security
                 return CompensateWindowsEpheralKeysProblem( CreateServerCertificate( null, key, serverUuid ) );
             }
 #endif
+            Log.Warn("Generating certificates on the fly is only possible in .NET 6 or above");
             return null;
         }
 
@@ -210,7 +218,7 @@ namespace Tecan.Sila2.Security
         /// <returns>A X509Certificate2 representation of the certificate</returns>
         public static X509Certificate2 GetDefaultCertificate(Guid serverUuid)
         {
-            var context = FileCertificateProvider.DefaultContext;
+            var context = FileCertificateProvider.CreateContext(null);
             var cert = GetServerCertificate(context, serverUuid, out _);
             context.X509Certificate = cert;
             return cert;

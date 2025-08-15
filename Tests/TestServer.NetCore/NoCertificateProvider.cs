@@ -17,5 +17,9 @@ namespace TestServer.NetCore
         {
             return null;
         }
+
+        public void Initialize(string customCertificatePath)
+        {
+        }
     }
 }

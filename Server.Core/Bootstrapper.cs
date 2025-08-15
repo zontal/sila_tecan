@@ -5,6 +5,7 @@ using System.ComponentModel.Composition.Hosting;
 using System.ComponentModel.Composition.Primitives;
 using System.IO;
 using System.Reflection;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using CommandLine;
 using Common.Logging;
@@ -33,6 +34,24 @@ namespace Tecan.Sila2.Server
         private ISiLAServer _server;
         private ILog _channel;
         private IHost _host;
+
+        /// <summary>
+        /// Creates the server certificate that should be used to start the server
+        /// </summary>
+        /// <param name="startInformation"></param>
+        /// <returns></returns>
+        public static X509Certificate2 CreateCertificate(ServerStartInformation startInformation)
+        {
+            if (startInformation.ServerCertificate == null)
+            {
+                if (startInformation.ServerUuid == Guid.Empty)
+                {
+                    startInformation.ServerUuid = Guid.NewGuid();
+                }
+                startInformation.ServerCertificate = CertificateGenerator.GetDefaultCertificate(startInformation.ServerUuid);
+            }
+            return startInformation.ServerCertificate;
+        }
 
 
         /// <summary>
@@ -106,6 +125,7 @@ namespace Tecan.Sila2.Server
                         var startup = new ServerStartInformation( selfInfo, args.Port, args.InterfaceFilter, args.ServerUuid, args.Name );
                         _container.ComposeExportedValue( startup );
                         var certificateProvider = _container.GetExportedValue<IServerCertificateProvider>();
+                        certificateProvider.Initialize(args.CertificatePath);
                         configurationBuilder = new ServiceConfigurationBuilder( certificateProvider );
                         _container.ComposeExportedValue<IServiceConfigurationBuilder<ISiLAServer, ServiceMethodProviderContext<ISiLAServer>>>( configurationBuilder );
                         _server = _container.GetExportedValue<ISiLAServer>();

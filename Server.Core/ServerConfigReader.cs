@@ -1,8 +1,11 @@
 ﻿using CommandLine;
+using Common.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
+using Tecan.Sila2.Security;
 
 namespace Tecan.Sila2.Server
 {
@@ -40,7 +43,38 @@ namespace Tecan.Sila2.Server
         {
             var selfInfo = ServerInformationFactory.GetServerInformation();
 
-            return new ServerStartInformation( selfInfo, arguments.Port, arguments.InterfaceFilter, arguments.ServerUuid, arguments.Name );
+            var info = new ServerStartInformation( selfInfo, arguments.Port, arguments.InterfaceFilter, arguments.ServerUuid, arguments.Name );
+
+            if (arguments.CertificatePath != null)
+            {
+                try
+                {
+                    info.ServerCertificate = new X509Certificate2(arguments.CertificatePath);
+                    if (CertificateUtilities.TryFindServerUuid(info.ServerCertificate, out var certUuid))
+                    {
+                        if (info.ServerUuid != Guid.Empty && info.ServerUuid != certUuid)
+                        {
+                            LogManager.GetLogger(typeof(ServerConfigReader)).Warn($"Server UUID from custom certificate {certUuid} does not match configured ID {info.ServerUuid}.");
+                        }
+                        info.ServerUuid = certUuid;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    LogManager.GetLogger(typeof(ServerConfigReader)).Warn($"Could not load certificate {arguments.CertificatePath}: {ex.Message}", ex);
+                }
+            }
+
+            if (info.ServerCertificate == null)
+            {
+                if (info.ServerUuid == Guid.Empty)
+                {
+                    info.ServerUuid = Guid.NewGuid();
+                }
+                info.ServerCertificate = CertificateGenerator.GetDefaultCertificate(info.ServerUuid);
+            }
+
+            return info;
         }
     }
 }
