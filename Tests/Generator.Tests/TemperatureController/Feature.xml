@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Feature xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" SiLA2Version="1.0" FeatureVersion="4.3" Originator="tecan.sila.generator" Category="test" xmlns="http://www.sila-standard.org">
+<Feature xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" SiLA2Version="1.0" FeatureVersion="4.4" Originator="tecan.sila.generator" Category="test" xmlns="http://www.sila-standard.org">
   <Identifier>TemperatureController</Identifier>
   <DisplayName>Temperature Controller</DisplayName>
   <Description>Controlling and retrieving the temperature.</Description>
