@@ -35,6 +35,13 @@ namespace Tecan.Sila2.Locking
         private readonly ILog _loggingChannel = LogManager.GetLogger( typeof( LockingInterceptor ) );
 
         /// <summary>
+        /// Create a new instance with parameterless constructor
+        /// </summary>
+        public LockingInterceptor() : this( null)
+        {
+        }
+
+        /// <summary>
         /// Creates a new instance
         /// </summary>
         [ImportingConstructor]
