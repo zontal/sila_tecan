@@ -22,11 +22,11 @@ namespace Tecan.Sila2.Interop.Server.AnyTypeTest
 
         public DynamicObjectProperty AnyTypeDateValue => new DynamicObjectProperty( new DateTimeOffset( 2022, 8, 5, 0, 0, 0, TimeSpan.FromHours( 2 ) ), BasicType.Date );
 
-        public DynamicObjectProperty AnyTypeTimeValue => new DynamicObjectProperty( new DateTimeOffset( 2022, 8, 5, 12, 34, 56, TimeSpan.FromHours( 2 ) ), BasicType.Time );
+        public DynamicObjectProperty AnyTypeTimeValue => new DynamicObjectProperty( new DateTimeOffset( 2022, 8, 5, 12, 34, 56, 789, TimeSpan.FromHours( 2 ) ), BasicType.Time );
 
-        public DynamicObjectProperty AnyTypeTimestampValue => new DynamicObjectProperty( new DateTimeOffset( 2022, 8, 5, 12, 34, 56, TimeSpan.FromHours( 2 ) ) );
+        public DynamicObjectProperty AnyTypeTimestampValue => new DynamicObjectProperty( new DateTimeOffset( 2022, 8, 5, 12, 34, 56, 789, TimeSpan.FromHours( 2 ) ) );
 
-        public DynamicObjectProperty AnyTypeListValue => new DynamicObjectProperty( new List<string> { "SiLA2", "Any", "Type", "String" },
+        public DynamicObjectProperty AnyTypeListValue => new DynamicObjectProperty( new List<string> { "SiLA 2", "Any", "Type", "String", "List" },
             new DataTypeType { Item = new ListType { DataType = new DataTypeType { Item = BasicType.String } } } );
 
         public DynamicObjectProperty AnyTypeStructureValue => CreateDynamicStructValue();

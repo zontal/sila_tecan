@@ -19,9 +19,9 @@ namespace Tecan.Sila2.Interop.Server.BasicDataTypesTest
 
         public DateTimeOffset DateValue => new DateTimeOffset( 2022, 8, 5, 0, 0, 0, TimeSpan.FromHours( 2 ) );
 
-        public TimeSpan TimeValue => new TimeSpan( 12, 34, 56 );
+        public TimeSpan TimeValue => new TimeSpan( 0, 12, 34, 56, 789 );
 
-        public DateTimeOffset TimestampValue => new DateTimeOffset( 2022, 8, 5, 12, 34, 56, TimeSpan.FromHours( 2 ) );
+        public DateTimeOffset TimestampValue => new DateTimeOffset( 2022, 8, 5, 12, 34, 56, 789, TimeSpan.FromHours( 2 ) );
 
         [return: SilaIdentifier( "ReceivedValue" )]
         public bool EchoBooleanValue( bool booleanValue )
