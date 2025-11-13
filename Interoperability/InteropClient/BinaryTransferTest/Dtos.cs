@@ -84,7 +84,7 @@ namespace Tecan.Sila2.Interop.Client.BinaryTransferTest.BinaryTransferTest
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return ("" + Argument.Require(BinaryValue, "binaryValue"));
+            return ("" + Argument.Require(BinaryValue, "BinaryValue"));
         }
     }
     
@@ -144,7 +144,7 @@ namespace Tecan.Sila2.Interop.Client.BinaryTransferTest.BinaryTransferTest
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return ("" + Argument.Require(ReceivedValue, "receivedValue"));
+            return ("" + Argument.Require(ReceivedValue, "ReceivedValue"));
         }
     }
     
@@ -216,7 +216,7 @@ namespace Tecan.Sila2.Interop.Client.BinaryTransferTest.BinaryTransferTest
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return ("" + Argument.Require(Binaries, "binaries"));
+            return ("" + Argument.Require(Binaries, "Binaries"));
         }
     }
     
@@ -276,7 +276,7 @@ namespace Tecan.Sila2.Interop.Client.BinaryTransferTest.BinaryTransferTest
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return ("" + Argument.Require(Binary, "binary"));
+            return ("" + Argument.Require(Binary, "Binary"));
         }
     }
     
@@ -336,7 +336,7 @@ namespace Tecan.Sila2.Interop.Client.BinaryTransferTest.BinaryTransferTest
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return ("" + Argument.Require(JointBinary, "jointBinary"));
+            return ("" + Argument.Require(JointBinary, "JointBinary"));
         }
     }
     
@@ -408,7 +408,7 @@ namespace Tecan.Sila2.Interop.Client.BinaryTransferTest.BinaryTransferTest
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return ("" + Argument.Require(Binary, "binary"));
+            return ("" + Argument.Require(Binary, "Binary"));
         }
     }
     
@@ -499,8 +499,8 @@ namespace Tecan.Sila2.Interop.Client.BinaryTransferTest.BinaryTransferTest
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return (("" + Argument.Require(Binary, "binary")) 
-                        + Argument.Require(StringMetadata, "stringMetadata"));
+            return (("" + Argument.Require(Binary, "Binary")) 
+                        + Argument.Require(StringMetadata, "StringMetadata"));
         }
     }
 }

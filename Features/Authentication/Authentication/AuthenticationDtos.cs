@@ -140,12 +140,12 @@ namespace Tecan.Sila2.Authentication
             Argument.Validate(RequestedServer, "requestedServer");
             if ((RequestedServer.Value.Length != 36))
             {
-                throw new ArgumentException(string.Format("RequestedServer has length {0} but should have been 36", RequestedServer.Value.Length), "requestedServer");
+                throw new ArgumentException(string.Format("RequestedServer has length {0} but should have been 36", RequestedServer.Value.Length), "RequestedServer");
             }
             if ((RegexConstraint.IsMatch(RequestedServer.Value, "[0-9a-f]{8}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{12}") == false))
             {
                 throw new ArgumentException(string.Format("RequestedServer \'{0}\' does not match pattern \'[0-9a-f]{8}\\-[0-9a-f]{4}\\-[0-9a-f]{" +
-                            "4}\\-[0-9a-f]{4}\\-[0-9a-f]{12}\'", RequestedServer.Value), "requestedServer");
+                            "4}\\-[0-9a-f]{4}\\-[0-9a-f]{12}\'", RequestedServer.Value), "RequestedServer");
             }
             Argument.Validate(RequestedFeatures, "requestedFeatures");
         }
@@ -156,10 +156,10 @@ namespace Tecan.Sila2.Authentication
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            string errors = (((("" + Argument.Require(UserIdentification, "userIdentification")) 
-                        + Argument.Require(Password, "password")) 
-                        + Argument.Require(RequestedServer, "requestedServer")) 
-                        + Argument.Require(RequestedFeatures, "requestedFeatures"));
+            string errors = (((("" + Argument.Require(UserIdentification, "UserIdentification")) 
+                        + Argument.Require(Password, "Password")) 
+                        + Argument.Require(RequestedServer, "RequestedServer")) 
+                        + Argument.Require(RequestedFeatures, "RequestedFeatures"));
             if ((RequestedServer.Value.Length != 36))
             {
                 errors = (errors + string.Format("RequestedServer has length {0} but should have been 36", RequestedServer.Value.Length));
@@ -261,8 +261,8 @@ namespace Tecan.Sila2.Authentication
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return (("" + Argument.Require(AccessToken, "accessToken")) 
-                        + Argument.Require(TokenLifetime, "tokenLifetime"));
+            return (("" + Argument.Require(AccessToken, "AccessToken")) 
+                        + Argument.Require(TokenLifetime, "TokenLifetime"));
         }
     }
     
@@ -334,7 +334,7 @@ namespace Tecan.Sila2.Authentication
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return ("" + Argument.Require(AccessToken, "accessToken"));
+            return ("" + Argument.Require(AccessToken, "AccessToken"));
         }
     }
 }

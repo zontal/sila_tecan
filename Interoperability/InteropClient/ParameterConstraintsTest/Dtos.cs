@@ -79,7 +79,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
             Argument.Validate(ConstrainedParameter, "constrainedParameter");
             if ((ConstrainedParameter.Value.Length != 10))
             {
-                throw new ArgumentException(string.Format("ConstrainedParameter has length {0} but should have been 10", ConstrainedParameter.Value.Length), "constrainedParameter");
+                throw new ArgumentException(string.Format("ConstrainedParameter has length {0} but should have been 10", ConstrainedParameter.Value.Length), "ConstrainedParameter");
             }
         }
         
@@ -89,7 +89,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            string errors = ("" + Argument.Require(ConstrainedParameter, "constrainedParameter"));
+            string errors = ("" + Argument.Require(ConstrainedParameter, "ConstrainedParameter"));
             if ((ConstrainedParameter.Value.Length != 10))
             {
                 errors = (errors + string.Format("ConstrainedParameter has length {0} but should have been 10", ConstrainedParameter.Value.Length));
@@ -161,7 +161,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
             Argument.Validate(ConstrainedParameter, "constrainedParameter");
             if ((ConstrainedParameter.Value.Length < 5))
             {
-                throw new ArgumentException(string.Format("ConstrainedParameter has length {0} and is shorter than required length 5", ConstrainedParameter.Value.Length), "constrainedParameter");
+                throw new ArgumentException(string.Format("ConstrainedParameter has length {0} and is shorter than required length 5", ConstrainedParameter.Value.Length), "ConstrainedParameter");
             }
         }
         
@@ -171,7 +171,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            string errors = ("" + Argument.Require(ConstrainedParameter, "constrainedParameter"));
+            string errors = ("" + Argument.Require(ConstrainedParameter, "ConstrainedParameter"));
             if ((ConstrainedParameter.Value.Length < 5))
             {
                 errors = (errors + string.Format("ConstrainedParameter has length {0} and is shorter than required length 5", ConstrainedParameter.Value.Length));
@@ -243,7 +243,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
             Argument.Validate(ConstrainedParameter, "constrainedParameter");
             if ((ConstrainedParameter.Value.Length > 20))
             {
-                throw new ArgumentException(string.Format("ConstrainedParameter  has length {0} and is longer than allowed length 20", ConstrainedParameter.Value.Length), "constrainedParameter");
+                throw new ArgumentException(string.Format("ConstrainedParameter  has length {0} and is longer than allowed length 20", ConstrainedParameter.Value.Length), "ConstrainedParameter");
             }
         }
         
@@ -253,7 +253,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            string errors = ("" + Argument.Require(ConstrainedParameter, "constrainedParameter"));
+            string errors = ("" + Argument.Require(ConstrainedParameter, "ConstrainedParameter"));
             if ((ConstrainedParameter.Value.Length > 20))
             {
                 errors = (errors + string.Format("ConstrainedParameter  has length {0} and is longer than allowed length 20", ConstrainedParameter.Value.Length));
@@ -325,11 +325,11 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
             Argument.Validate(ConstrainedParameter, "constrainedParameter");
             if ((ConstrainedParameter.Value.Length > 20))
             {
-                throw new ArgumentException(string.Format("ConstrainedParameter  has length {0} and is longer than allowed length 20", ConstrainedParameter.Value.Length), "constrainedParameter");
+                throw new ArgumentException(string.Format("ConstrainedParameter  has length {0} and is longer than allowed length 20", ConstrainedParameter.Value.Length), "ConstrainedParameter");
             }
             if ((ConstrainedParameter.Value.Length < 5))
             {
-                throw new ArgumentException(string.Format("ConstrainedParameter has length {0} and is shorter than required length 5", ConstrainedParameter.Value.Length), "constrainedParameter");
+                throw new ArgumentException(string.Format("ConstrainedParameter has length {0} and is shorter than required length 5", ConstrainedParameter.Value.Length), "ConstrainedParameter");
             }
         }
         
@@ -339,7 +339,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            string errors = ("" + Argument.Require(ConstrainedParameter, "constrainedParameter"));
+            string errors = ("" + Argument.Require(ConstrainedParameter, "ConstrainedParameter"));
             if ((ConstrainedParameter.Value.Length > 20))
             {
                 errors = (errors + string.Format("ConstrainedParameter  has length {0} and is longer than allowed length 20", ConstrainedParameter.Value.Length));
@@ -421,7 +421,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return ("" + Argument.Require(ConstrainedParameter, "constrainedParameter"));
+            return ("" + Argument.Require(ConstrainedParameter, "ConstrainedParameter"));
         }
     }
     
@@ -488,7 +488,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
             Argument.Validate(ConstrainedParameter, "constrainedParameter");
             if ((RegexConstraint.IsMatch(ConstrainedParameter.Value, "[0-9]{2}/[0-9]{2}/[0-9]{4}") == false))
             {
-                throw new ArgumentException(string.Format("ConstrainedParameter \'{0}\' does not match pattern \'[0-9]{2}/[0-9]{2}/[0-9]{4}\'", ConstrainedParameter.Value), "constrainedParameter");
+                throw new ArgumentException(string.Format("ConstrainedParameter \'{0}\' does not match pattern \'[0-9]{2}/[0-9]{2}/[0-9]{4}\'", ConstrainedParameter.Value), "ConstrainedParameter");
             }
         }
         
@@ -498,7 +498,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            string errors = ("" + Argument.Require(ConstrainedParameter, "constrainedParameter"));
+            string errors = ("" + Argument.Require(ConstrainedParameter, "ConstrainedParameter"));
             if ((RegexConstraint.IsMatch(ConstrainedParameter.Value, "[0-9]{2}/[0-9]{2}/[0-9]{4}") == false))
             {
                 errors = (errors + string.Format("ConstrainedParameter \'{0}\' does not match pattern \'[0-9]{2}/[0-9]{2}/[0-9]{4}\'", ConstrainedParameter.Value));
@@ -576,7 +576,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return ("" + Argument.Require(ConstrainedParameter, "constrainedParameter"));
+            return ("" + Argument.Require(ConstrainedParameter, "ConstrainedParameter"));
         }
     }
     
@@ -803,48 +803,48 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
             Argument.Validate(FeatureIdentifier, "featureIdentifier");
             if ((IdentifierConstraint.IsValid(FeatureIdentifier.Value, Tecan.Sila2.IdentifierType.FeatureIdentifier) == false))
             {
-                throw new ArgumentException(string.Format("FeatureIdentifier \'{0}\' is not a valid FeatureIdentifier", FeatureIdentifier.Value), "featureIdentifier");
+                throw new ArgumentException(string.Format("FeatureIdentifier \'{0}\' is not a valid FeatureIdentifier", FeatureIdentifier.Value), "FeatureIdentifier");
             }
             Argument.Validate(CommandIdentifier_, "commandIdentifier");
             if ((IdentifierConstraint.IsValid(CommandIdentifier_.Value, Tecan.Sila2.IdentifierType.CommandIdentifier) == false))
             {
-                throw new ArgumentException(string.Format("CommandIdentifier_ \'{0}\' is not a valid CommandIdentifier", CommandIdentifier_.Value), "commandIdentifier");
+                throw new ArgumentException(string.Format("CommandIdentifier_ \'{0}\' is not a valid CommandIdentifier", CommandIdentifier_.Value), "CommandIdentifier");
             }
             Argument.Validate(CommandParameterIdentifier, "commandParameterIdentifier");
             if ((IdentifierConstraint.IsValid(CommandParameterIdentifier.Value, Tecan.Sila2.IdentifierType.CommandParameterIdentifier) == false))
             {
-                throw new ArgumentException(string.Format("CommandParameterIdentifier \'{0}\' is not a valid CommandParameterIdentifier", CommandParameterIdentifier.Value), "commandParameterIdentifier");
+                throw new ArgumentException(string.Format("CommandParameterIdentifier \'{0}\' is not a valid CommandParameterIdentifier", CommandParameterIdentifier.Value), "CommandParameterIdentifier");
             }
             Argument.Validate(CommandResponseIdentifier, "commandResponseIdentifier");
             if ((IdentifierConstraint.IsValid(CommandResponseIdentifier.Value, Tecan.Sila2.IdentifierType.CommandResponseIdentifier) == false))
             {
-                throw new ArgumentException(string.Format("CommandResponseIdentifier \'{0}\' is not a valid CommandResponseIdentifier", CommandResponseIdentifier.Value), "commandResponseIdentifier");
+                throw new ArgumentException(string.Format("CommandResponseIdentifier \'{0}\' is not a valid CommandResponseIdentifier", CommandResponseIdentifier.Value), "CommandResponseIdentifier");
             }
             Argument.Validate(IntermediateCommandResponseIdentifier, "intermediateCommandResponseIdentifier");
             if ((IdentifierConstraint.IsValid(IntermediateCommandResponseIdentifier.Value, Tecan.Sila2.IdentifierType.IntermediateResponseIdentifier) == false))
             {
                 throw new ArgumentException(string.Format("IntermediateCommandResponseIdentifier \'{0}\' is not a valid IntermediateCommandRes" +
-                            "ponseIdentifier", IntermediateCommandResponseIdentifier.Value), "intermediateCommandResponseIdentifier");
+                            "ponseIdentifier", IntermediateCommandResponseIdentifier.Value), "IntermediateCommandResponseIdentifier");
             }
             Argument.Validate(ExecutionErrorIdentifier, "executionErrorIdentifier");
             if ((IdentifierConstraint.IsValid(ExecutionErrorIdentifier.Value, Tecan.Sila2.IdentifierType.DefinedExecutionErrorIdentifier) == false))
             {
-                throw new ArgumentException(string.Format("ExecutionErrorIdentifier \'{0}\' is not a valid DefinedExecutionErrorIdentifier", ExecutionErrorIdentifier.Value), "executionErrorIdentifier");
+                throw new ArgumentException(string.Format("ExecutionErrorIdentifier \'{0}\' is not a valid DefinedExecutionErrorIdentifier", ExecutionErrorIdentifier.Value), "ExecutionErrorIdentifier");
             }
             Argument.Validate(PropertyIdentifier, "propertyIdentifier");
             if ((IdentifierConstraint.IsValid(PropertyIdentifier.Value, Tecan.Sila2.IdentifierType.PropertyIdentifier) == false))
             {
-                throw new ArgumentException(string.Format("PropertyIdentifier \'{0}\' is not a valid PropertyIdentifier", PropertyIdentifier.Value), "propertyIdentifier");
+                throw new ArgumentException(string.Format("PropertyIdentifier \'{0}\' is not a valid PropertyIdentifier", PropertyIdentifier.Value), "PropertyIdentifier");
             }
             Argument.Validate(CustomDataTypeIdentifier, "customDataTypeIdentifier");
             if ((IdentifierConstraint.IsValid(CustomDataTypeIdentifier.Value, Tecan.Sila2.IdentifierType.TypeIdentifier) == false))
             {
-                throw new ArgumentException(string.Format("CustomDataTypeIdentifier \'{0}\' is not a valid TypeIdentifier", CustomDataTypeIdentifier.Value), "customDataTypeIdentifier");
+                throw new ArgumentException(string.Format("CustomDataTypeIdentifier \'{0}\' is not a valid TypeIdentifier", CustomDataTypeIdentifier.Value), "CustomDataTypeIdentifier");
             }
             Argument.Validate(MetadataIdentifier, "metadataIdentifier");
             if ((IdentifierConstraint.IsValid(MetadataIdentifier.Value, Tecan.Sila2.IdentifierType.MetadataIdentifier) == false))
             {
-                throw new ArgumentException(string.Format("MetadataIdentifier \'{0}\' is not a valid MetadataIdentifier", MetadataIdentifier.Value), "metadataIdentifier");
+                throw new ArgumentException(string.Format("MetadataIdentifier \'{0}\' is not a valid MetadataIdentifier", MetadataIdentifier.Value), "MetadataIdentifier");
             }
         }
         
@@ -854,15 +854,15 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            string errors = ((((((((("" + Argument.Require(FeatureIdentifier, "featureIdentifier")) 
-                        + Argument.Require(CommandIdentifier_, "commandIdentifier")) 
-                        + Argument.Require(CommandParameterIdentifier, "commandParameterIdentifier")) 
-                        + Argument.Require(CommandResponseIdentifier, "commandResponseIdentifier")) 
-                        + Argument.Require(IntermediateCommandResponseIdentifier, "intermediateCommandResponseIdentifier")) 
-                        + Argument.Require(ExecutionErrorIdentifier, "executionErrorIdentifier")) 
-                        + Argument.Require(PropertyIdentifier, "propertyIdentifier")) 
-                        + Argument.Require(CustomDataTypeIdentifier, "customDataTypeIdentifier")) 
-                        + Argument.Require(MetadataIdentifier, "metadataIdentifier"));
+            string errors = ((((((((("" + Argument.Require(FeatureIdentifier, "FeatureIdentifier")) 
+                        + Argument.Require(CommandIdentifier_, "CommandIdentifier")) 
+                        + Argument.Require(CommandParameterIdentifier, "CommandParameterIdentifier")) 
+                        + Argument.Require(CommandResponseIdentifier, "CommandResponseIdentifier")) 
+                        + Argument.Require(IntermediateCommandResponseIdentifier, "IntermediateCommandResponseIdentifier")) 
+                        + Argument.Require(ExecutionErrorIdentifier, "ExecutionErrorIdentifier")) 
+                        + Argument.Require(PropertyIdentifier, "PropertyIdentifier")) 
+                        + Argument.Require(CustomDataTypeIdentifier, "CustomDataTypeIdentifier")) 
+                        + Argument.Require(MetadataIdentifier, "MetadataIdentifier"));
             if ((IdentifierConstraint.IsValid(FeatureIdentifier.Value, Tecan.Sila2.IdentifierType.FeatureIdentifier) == false))
             {
                 errors = (errors + string.Format("FeatureIdentifier \'{0}\' is not a valid FeatureIdentifier", FeatureIdentifier.Value));
@@ -973,7 +973,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return ("" + Argument.Require(ConstrainedParameter, "constrainedParameter"));
+            return ("" + Argument.Require(ConstrainedParameter, "ConstrainedParameter"));
         }
     }
     
@@ -1046,7 +1046,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return ("" + Argument.Require(ConstrainedParameter, "constrainedParameter"));
+            return ("" + Argument.Require(ConstrainedParameter, "ConstrainedParameter"));
         }
     }
     
@@ -1113,11 +1113,11 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
             Argument.Validate(ConstrainedParameter, "constrainedParameter");
             if ((ConstrainedParameter.Value < -1000))
             {
-                throw new ArgumentException(string.Format("ConstrainedParameter should have been at least -1e3 but was \'{0}\'", ConstrainedParameter.Value), "constrainedParameter");
+                throw new ArgumentException(string.Format("ConstrainedParameter should have been at least -1e3 but was \'{0}\'", ConstrainedParameter.Value), "ConstrainedParameter");
             }
             if ((ConstrainedParameter.Value >= 123000))
             {
-                throw new ArgumentException(string.Format("ConstrainedParameter should have been at most less than 1.23e5 but was \'{0}\'", ConstrainedParameter.Value), "constrainedParameter");
+                throw new ArgumentException(string.Format("ConstrainedParameter should have been at most less than 1.23e5 but was \'{0}\'", ConstrainedParameter.Value), "ConstrainedParameter");
             }
         }
         
@@ -1127,7 +1127,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            string errors = ("" + Argument.Require(ConstrainedParameter, "constrainedParameter"));
+            string errors = ("" + Argument.Require(ConstrainedParameter, "ConstrainedParameter"));
             if ((ConstrainedParameter.Value < -1000))
             {
                 errors = (errors + string.Format("ConstrainedParameter should have been at least -1e3 but was \'{0}\'", ConstrainedParameter.Value));
@@ -1203,7 +1203,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
             Argument.Validate(ConstrainedParameter, "constrainedParameter");
             if ((ConstrainedParameter.Value >= 11))
             {
-                throw new ArgumentException(string.Format("ConstrainedParameter should have been at most less than 11 but was \'{0}\'", ConstrainedParameter.Value), "constrainedParameter");
+                throw new ArgumentException(string.Format("ConstrainedParameter should have been at most less than 11 but was \'{0}\'", ConstrainedParameter.Value), "ConstrainedParameter");
             }
         }
         
@@ -1213,7 +1213,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            string errors = ("" + Argument.Require(ConstrainedParameter, "constrainedParameter"));
+            string errors = ("" + Argument.Require(ConstrainedParameter, "ConstrainedParameter"));
             if ((ConstrainedParameter.Value >= 11))
             {
                 errors = (errors + string.Format("ConstrainedParameter should have been at most less than 11 but was \'{0}\'", ConstrainedParameter.Value));
@@ -1285,7 +1285,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
             Argument.Validate(ConstrainedParameter, "constrainedParameter");
             if ((ConstrainedParameter.Value > 10))
             {
-                throw new ArgumentException(string.Format("ConstrainedParameter should have been at most 10 but was \'{0}\'", ConstrainedParameter.Value), "constrainedParameter");
+                throw new ArgumentException(string.Format("ConstrainedParameter should have been at most 10 but was \'{0}\'", ConstrainedParameter.Value), "ConstrainedParameter");
             }
         }
         
@@ -1295,7 +1295,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            string errors = ("" + Argument.Require(ConstrainedParameter, "constrainedParameter"));
+            string errors = ("" + Argument.Require(ConstrainedParameter, "ConstrainedParameter"));
             if ((ConstrainedParameter.Value > 10))
             {
                 errors = (errors + string.Format("ConstrainedParameter should have been at most 10 but was \'{0}\'", ConstrainedParameter.Value));
@@ -1367,7 +1367,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
             Argument.Validate(ConstrainedParameter, "constrainedParameter");
             if ((ConstrainedParameter.Value <= -1))
             {
-                throw new ArgumentException(string.Format("ConstrainedParameter should have been at least more than -1 but was \'{0}\'", ConstrainedParameter.Value), "constrainedParameter");
+                throw new ArgumentException(string.Format("ConstrainedParameter should have been at least more than -1 but was \'{0}\'", ConstrainedParameter.Value), "ConstrainedParameter");
             }
         }
         
@@ -1377,7 +1377,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            string errors = ("" + Argument.Require(ConstrainedParameter, "constrainedParameter"));
+            string errors = ("" + Argument.Require(ConstrainedParameter, "ConstrainedParameter"));
             if ((ConstrainedParameter.Value <= -1))
             {
                 errors = (errors + string.Format("ConstrainedParameter should have been at least more than -1 but was \'{0}\'", ConstrainedParameter.Value));
@@ -1449,7 +1449,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
             Argument.Validate(ConstrainedParameter, "constrainedParameter");
             if ((ConstrainedParameter.Value < 0))
             {
-                throw new ArgumentException(string.Format("ConstrainedParameter should have been at least 0 but was \'{0}\'", ConstrainedParameter.Value), "constrainedParameter");
+                throw new ArgumentException(string.Format("ConstrainedParameter should have been at least 0 but was \'{0}\'", ConstrainedParameter.Value), "ConstrainedParameter");
             }
         }
         
@@ -1459,7 +1459,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            string errors = ("" + Argument.Require(ConstrainedParameter, "constrainedParameter"));
+            string errors = ("" + Argument.Require(ConstrainedParameter, "ConstrainedParameter"));
             if ((ConstrainedParameter.Value < 0))
             {
                 errors = (errors + string.Format("ConstrainedParameter should have been at least 0 but was \'{0}\'", ConstrainedParameter.Value));
@@ -1531,11 +1531,11 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
             Argument.Validate(ConstrainedParameter, "constrainedParameter");
             if ((ConstrainedParameter.Value <= -1))
             {
-                throw new ArgumentException(string.Format("ConstrainedParameter should have been at least more than -1 but was \'{0}\'", ConstrainedParameter.Value), "constrainedParameter");
+                throw new ArgumentException(string.Format("ConstrainedParameter should have been at least more than -1 but was \'{0}\'", ConstrainedParameter.Value), "ConstrainedParameter");
             }
             if ((ConstrainedParameter.Value > 10))
             {
-                throw new ArgumentException(string.Format("ConstrainedParameter should have been at most 10 but was \'{0}\'", ConstrainedParameter.Value), "constrainedParameter");
+                throw new ArgumentException(string.Format("ConstrainedParameter should have been at most 10 but was \'{0}\'", ConstrainedParameter.Value), "ConstrainedParameter");
             }
         }
         
@@ -1545,7 +1545,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            string errors = ("" + Argument.Require(ConstrainedParameter, "constrainedParameter"));
+            string errors = ("" + Argument.Require(ConstrainedParameter, "ConstrainedParameter"));
             if ((ConstrainedParameter.Value <= -1))
             {
                 errors = (errors + string.Format("ConstrainedParameter should have been at least more than -1 but was \'{0}\'", ConstrainedParameter.Value));
@@ -1627,7 +1627,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return ("" + Argument.Require(ConstrainedParameter, "constrainedParameter"));
+            return ("" + Argument.Require(ConstrainedParameter, "ConstrainedParameter"));
         }
     }
     
@@ -1699,7 +1699,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return ("" + Argument.Require(ConstrainedParameter, "constrainedParameter"));
+            return ("" + Argument.Require(ConstrainedParameter, "ConstrainedParameter"));
         }
     }
     
@@ -1766,11 +1766,11 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
             Argument.Validate(ConstrainedParameter, "constrainedParameter");
             if ((ConstrainedParameter.Value < 0.00123D))
             {
-                throw new ArgumentException(string.Format("ConstrainedParameter should have been at least 1.23e-3 but was \'{0}\'", ConstrainedParameter.Value), "constrainedParameter");
+                throw new ArgumentException(string.Format("ConstrainedParameter should have been at least 1.23e-3 but was \'{0}\'", ConstrainedParameter.Value), "ConstrainedParameter");
             }
             if ((ConstrainedParameter.Value >= 123.456D))
             {
-                throw new ArgumentException(string.Format("ConstrainedParameter should have been at most less than 1.23456e2 but was \'{0}\'", ConstrainedParameter.Value), "constrainedParameter");
+                throw new ArgumentException(string.Format("ConstrainedParameter should have been at most less than 1.23456e2 but was \'{0}\'", ConstrainedParameter.Value), "ConstrainedParameter");
             }
         }
         
@@ -1780,7 +1780,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            string errors = ("" + Argument.Require(ConstrainedParameter, "constrainedParameter"));
+            string errors = ("" + Argument.Require(ConstrainedParameter, "ConstrainedParameter"));
             if ((ConstrainedParameter.Value < 0.00123D))
             {
                 errors = (errors + string.Format("ConstrainedParameter should have been at least 1.23e-3 but was \'{0}\'", ConstrainedParameter.Value));
@@ -1856,7 +1856,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
             Argument.Validate(ConstrainedParameter, "constrainedParameter");
             if ((ConstrainedParameter.Value >= 10.5D))
             {
-                throw new ArgumentException(string.Format("ConstrainedParameter should have been at most less than 10.5 but was \'{0}\'", ConstrainedParameter.Value), "constrainedParameter");
+                throw new ArgumentException(string.Format("ConstrainedParameter should have been at most less than 10.5 but was \'{0}\'", ConstrainedParameter.Value), "ConstrainedParameter");
             }
         }
         
@@ -1866,7 +1866,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            string errors = ("" + Argument.Require(ConstrainedParameter, "constrainedParameter"));
+            string errors = ("" + Argument.Require(ConstrainedParameter, "ConstrainedParameter"));
             if ((ConstrainedParameter.Value >= 10.5D))
             {
                 errors = (errors + string.Format("ConstrainedParameter should have been at most less than 10.5 but was \'{0}\'", ConstrainedParameter.Value));
@@ -1938,7 +1938,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
             Argument.Validate(ConstrainedParameter, "constrainedParameter");
             if ((ConstrainedParameter.Value > 10D))
             {
-                throw new ArgumentException(string.Format("ConstrainedParameter should have been at most 10 but was \'{0}\'", ConstrainedParameter.Value), "constrainedParameter");
+                throw new ArgumentException(string.Format("ConstrainedParameter should have been at most 10 but was \'{0}\'", ConstrainedParameter.Value), "ConstrainedParameter");
             }
         }
         
@@ -1948,7 +1948,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            string errors = ("" + Argument.Require(ConstrainedParameter, "constrainedParameter"));
+            string errors = ("" + Argument.Require(ConstrainedParameter, "ConstrainedParameter"));
             if ((ConstrainedParameter.Value > 10D))
             {
                 errors = (errors + string.Format("ConstrainedParameter should have been at most 10 but was \'{0}\'", ConstrainedParameter.Value));
@@ -2020,7 +2020,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
             Argument.Validate(ConstrainedParameter, "constrainedParameter");
             if ((ConstrainedParameter.Value <= 0D))
             {
-                throw new ArgumentException(string.Format("ConstrainedParameter should have been at least more than 0 but was \'{0}\'", ConstrainedParameter.Value), "constrainedParameter");
+                throw new ArgumentException(string.Format("ConstrainedParameter should have been at least more than 0 but was \'{0}\'", ConstrainedParameter.Value), "ConstrainedParameter");
             }
         }
         
@@ -2030,7 +2030,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            string errors = ("" + Argument.Require(ConstrainedParameter, "constrainedParameter"));
+            string errors = ("" + Argument.Require(ConstrainedParameter, "ConstrainedParameter"));
             if ((ConstrainedParameter.Value <= 0D))
             {
                 errors = (errors + string.Format("ConstrainedParameter should have been at least more than 0 but was \'{0}\'", ConstrainedParameter.Value));
@@ -2102,7 +2102,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
             Argument.Validate(ConstrainedParameter, "constrainedParameter");
             if ((ConstrainedParameter.Value < -1.5D))
             {
-                throw new ArgumentException(string.Format("ConstrainedParameter should have been at least -1.5 but was \'{0}\'", ConstrainedParameter.Value), "constrainedParameter");
+                throw new ArgumentException(string.Format("ConstrainedParameter should have been at least -1.5 but was \'{0}\'", ConstrainedParameter.Value), "ConstrainedParameter");
             }
         }
         
@@ -2112,7 +2112,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            string errors = ("" + Argument.Require(ConstrainedParameter, "constrainedParameter"));
+            string errors = ("" + Argument.Require(ConstrainedParameter, "ConstrainedParameter"));
             if ((ConstrainedParameter.Value < -1.5D))
             {
                 errors = (errors + string.Format("ConstrainedParameter should have been at least -1.5 but was \'{0}\'", ConstrainedParameter.Value));
@@ -2184,11 +2184,11 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
             Argument.Validate(ConstrainedParameter, "constrainedParameter");
             if ((ConstrainedParameter.Value <= 0.333D))
             {
-                throw new ArgumentException(string.Format("ConstrainedParameter should have been at least more than 0.333 but was \'{0}\'", ConstrainedParameter.Value), "constrainedParameter");
+                throw new ArgumentException(string.Format("ConstrainedParameter should have been at least more than 0.333 but was \'{0}\'", ConstrainedParameter.Value), "ConstrainedParameter");
             }
             if ((ConstrainedParameter.Value > 11.111D))
             {
-                throw new ArgumentException(string.Format("ConstrainedParameter should have been at most 11.111 but was \'{0}\'", ConstrainedParameter.Value), "constrainedParameter");
+                throw new ArgumentException(string.Format("ConstrainedParameter should have been at most 11.111 but was \'{0}\'", ConstrainedParameter.Value), "ConstrainedParameter");
             }
         }
         
@@ -2198,7 +2198,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            string errors = ("" + Argument.Require(ConstrainedParameter, "constrainedParameter"));
+            string errors = ("" + Argument.Require(ConstrainedParameter, "ConstrainedParameter"));
             if ((ConstrainedParameter.Value <= 0.333D))
             {
                 errors = (errors + string.Format("ConstrainedParameter should have been at least more than 0.333 but was \'{0}\'", ConstrainedParameter.Value));
@@ -2280,7 +2280,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return ("" + Argument.Require(ConstrainedParameter, "constrainedParameter"));
+            return ("" + Argument.Require(ConstrainedParameter, "ConstrainedParameter"));
         }
     }
     
@@ -2352,7 +2352,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return ("" + Argument.Require(ConstrainedParameter, "constrainedParameter"));
+            return ("" + Argument.Require(ConstrainedParameter, "ConstrainedParameter"));
         }
     }
     
@@ -2420,7 +2420,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
             if ((ConstrainedParameter.Extract(null) >= new System.DateTimeOffset(2019, 12, 31, 0, 0, 0, System.TimeSpan.FromMinutes(150D))))
             {
                 throw new ArgumentException(string.Format("ConstrainedParameter should have been at most less than 2019-12-31+02:30 but was " +
-                            "\'{0}\'", ConstrainedParameter.Extract(null)), "constrainedParameter");
+                            "\'{0}\'", ConstrainedParameter.Extract(null)), "ConstrainedParameter");
             }
         }
         
@@ -2430,7 +2430,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            string errors = ("" + Argument.Require(ConstrainedParameter, "constrainedParameter"));
+            string errors = ("" + Argument.Require(ConstrainedParameter, "ConstrainedParameter"));
             if ((ConstrainedParameter.Extract(null) >= new System.DateTimeOffset(2019, 12, 31, 0, 0, 0, System.TimeSpan.FromMinutes(150D))))
             {
                 errors = (errors + string.Format("ConstrainedParameter should have been at most less than 2019-12-31+02:30 but was " +
@@ -2503,7 +2503,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
             Argument.Validate(ConstrainedParameter, "constrainedParameter");
             if ((ConstrainedParameter.Extract(null) > new System.DateTimeOffset(2025, 12, 31, 0, 0, 0, System.TimeSpan.FromMinutes(-90D))))
             {
-                throw new ArgumentException(string.Format("ConstrainedParameter should have been at most 2025-12-31-01:30 but was \'{0}\'", ConstrainedParameter.Extract(null)), "constrainedParameter");
+                throw new ArgumentException(string.Format("ConstrainedParameter should have been at most 2025-12-31-01:30 but was \'{0}\'", ConstrainedParameter.Extract(null)), "ConstrainedParameter");
             }
         }
         
@@ -2513,7 +2513,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            string errors = ("" + Argument.Require(ConstrainedParameter, "constrainedParameter"));
+            string errors = ("" + Argument.Require(ConstrainedParameter, "ConstrainedParameter"));
             if ((ConstrainedParameter.Extract(null) > new System.DateTimeOffset(2025, 12, 31, 0, 0, 0, System.TimeSpan.FromMinutes(-90D))))
             {
                 errors = (errors + string.Format("ConstrainedParameter should have been at most 2025-12-31-01:30 but was \'{0}\'", ConstrainedParameter.Extract(null)));
@@ -2586,7 +2586,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
             if ((ConstrainedParameter.Extract(null) <= new System.DateTimeOffset(2019, 1, 1, 0, 0, 0, System.TimeSpan.FromMinutes(-60D))))
             {
                 throw new ArgumentException(string.Format("ConstrainedParameter should have been at least more than 2019-01-01-01:00 but was" +
-                            " \'{0}\'", ConstrainedParameter.Extract(null)), "constrainedParameter");
+                            " \'{0}\'", ConstrainedParameter.Extract(null)), "ConstrainedParameter");
             }
         }
         
@@ -2596,7 +2596,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            string errors = ("" + Argument.Require(ConstrainedParameter, "constrainedParameter"));
+            string errors = ("" + Argument.Require(ConstrainedParameter, "ConstrainedParameter"));
             if ((ConstrainedParameter.Extract(null) <= new System.DateTimeOffset(2019, 1, 1, 0, 0, 0, System.TimeSpan.FromMinutes(-60D))))
             {
                 errors = (errors + string.Format("ConstrainedParameter should have been at least more than 2019-01-01-01:00 but was" +
@@ -2669,7 +2669,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
             Argument.Validate(ConstrainedParameter, "constrainedParameter");
             if ((ConstrainedParameter.Extract(null) < new System.DateTimeOffset(1789, 7, 14, 0, 0, 0, System.TimeSpan.FromMinutes(120D))))
             {
-                throw new ArgumentException(string.Format("ConstrainedParameter should have been at least 1789-07-14+02:00 but was \'{0}\'", ConstrainedParameter.Extract(null)), "constrainedParameter");
+                throw new ArgumentException(string.Format("ConstrainedParameter should have been at least 1789-07-14+02:00 but was \'{0}\'", ConstrainedParameter.Extract(null)), "ConstrainedParameter");
             }
         }
         
@@ -2679,7 +2679,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            string errors = ("" + Argument.Require(ConstrainedParameter, "constrainedParameter"));
+            string errors = ("" + Argument.Require(ConstrainedParameter, "ConstrainedParameter"));
             if ((ConstrainedParameter.Extract(null) < new System.DateTimeOffset(1789, 7, 14, 0, 0, 0, System.TimeSpan.FromMinutes(120D))))
             {
                 errors = (errors + string.Format("ConstrainedParameter should have been at least 1789-07-14+02:00 but was \'{0}\'", ConstrainedParameter.Extract(null)));
@@ -2751,12 +2751,12 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
             Argument.Validate(ConstrainedParameter, "constrainedParameter");
             if ((ConstrainedParameter.Extract(null) < new System.DateTimeOffset(1976, 6, 10, 0, 0, 0, System.TimeSpan.FromMinutes(120D))))
             {
-                throw new ArgumentException(string.Format("ConstrainedParameter should have been at least 1976-06-10+02:00 but was \'{0}\'", ConstrainedParameter.Extract(null)), "constrainedParameter");
+                throw new ArgumentException(string.Format("ConstrainedParameter should have been at least 1976-06-10+02:00 but was \'{0}\'", ConstrainedParameter.Extract(null)), "ConstrainedParameter");
             }
             if ((ConstrainedParameter.Extract(null) >= new System.DateTimeOffset(2076, 6, 10, 0, 0, 0, System.TimeSpan.FromMinutes(120D))))
             {
                 throw new ArgumentException(string.Format("ConstrainedParameter should have been at most less than 2076-06-10+02:00 but was " +
-                            "\'{0}\'", ConstrainedParameter.Extract(null)), "constrainedParameter");
+                            "\'{0}\'", ConstrainedParameter.Extract(null)), "ConstrainedParameter");
             }
         }
         
@@ -2766,7 +2766,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            string errors = ("" + Argument.Require(ConstrainedParameter, "constrainedParameter"));
+            string errors = ("" + Argument.Require(ConstrainedParameter, "ConstrainedParameter"));
             if ((ConstrainedParameter.Extract(null) < new System.DateTimeOffset(1976, 6, 10, 0, 0, 0, System.TimeSpan.FromMinutes(120D))))
             {
                 errors = (errors + string.Format("ConstrainedParameter should have been at least 1976-06-10+02:00 but was \'{0}\'", ConstrainedParameter.Extract(null)));
@@ -2848,7 +2848,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return ("" + Argument.Require(ConstrainedParameter, "constrainedParameter"));
+            return ("" + Argument.Require(ConstrainedParameter, "ConstrainedParameter"));
         }
     }
     
@@ -2916,7 +2916,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
             if ((ConstrainedParameter.Extract(null) >= new System.TimeSpan(11, 45, 0)))
             {
                 throw new ArgumentException(string.Format("ConstrainedParameter should have been at most less than 12:00:00+00:15 but was \'{" +
-                            "0}\'", ConstrainedParameter.Extract(null)), "constrainedParameter");
+                            "0}\'", ConstrainedParameter.Extract(null)), "ConstrainedParameter");
             }
         }
         
@@ -2926,7 +2926,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            string errors = ("" + Argument.Require(ConstrainedParameter, "constrainedParameter"));
+            string errors = ("" + Argument.Require(ConstrainedParameter, "ConstrainedParameter"));
             if ((ConstrainedParameter.Extract(null) >= new System.TimeSpan(11, 45, 0)))
             {
                 errors = (errors + string.Format("ConstrainedParameter should have been at most less than 12:00:00+00:15 but was \'{" +
@@ -2999,7 +2999,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
             Argument.Validate(ConstrainedParameter, "constrainedParameter");
             if ((ConstrainedParameter.Extract(null) > new System.TimeSpan(16, 59, 59)))
             {
-                throw new ArgumentException(string.Format("ConstrainedParameter should have been at most 18:59:59+02:00 but was \'{0}\'", ConstrainedParameter.Extract(null)), "constrainedParameter");
+                throw new ArgumentException(string.Format("ConstrainedParameter should have been at most 18:59:59+02:00 but was \'{0}\'", ConstrainedParameter.Extract(null)), "ConstrainedParameter");
             }
         }
         
@@ -3009,7 +3009,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            string errors = ("" + Argument.Require(ConstrainedParameter, "constrainedParameter"));
+            string errors = ("" + Argument.Require(ConstrainedParameter, "ConstrainedParameter"));
             if ((ConstrainedParameter.Extract(null) > new System.TimeSpan(16, 59, 59)))
             {
                 errors = (errors + string.Format("ConstrainedParameter should have been at most 18:59:59+02:00 but was \'{0}\'", ConstrainedParameter.Extract(null)));
@@ -3082,7 +3082,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
             if ((ConstrainedParameter.Extract(null) <= new System.TimeSpan(21, 2, 3)))
             {
                 throw new ArgumentException(string.Format("ConstrainedParameter should have been at least more than 01:02:03+04:00 but was \'" +
-                            "{0}\'", ConstrainedParameter.Extract(null)), "constrainedParameter");
+                            "{0}\'", ConstrainedParameter.Extract(null)), "ConstrainedParameter");
             }
         }
         
@@ -3092,7 +3092,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            string errors = ("" + Argument.Require(ConstrainedParameter, "constrainedParameter"));
+            string errors = ("" + Argument.Require(ConstrainedParameter, "ConstrainedParameter"));
             if ((ConstrainedParameter.Extract(null) <= new System.TimeSpan(21, 2, 3)))
             {
                 errors = (errors + string.Format("ConstrainedParameter should have been at least more than 01:02:03+04:00 but was \'" +
@@ -3165,7 +3165,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
             Argument.Validate(ConstrainedParameter, "constrainedParameter");
             if ((ConstrainedParameter.Extract(null) < new System.TimeSpan(8, 0, 0)))
             {
-                throw new ArgumentException(string.Format("ConstrainedParameter should have been at least 08:00:00Z but was \'{0}\'", ConstrainedParameter.Extract(null)), "constrainedParameter");
+                throw new ArgumentException(string.Format("ConstrainedParameter should have been at least 08:00:00Z but was \'{0}\'", ConstrainedParameter.Extract(null)), "ConstrainedParameter");
             }
         }
         
@@ -3175,7 +3175,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            string errors = ("" + Argument.Require(ConstrainedParameter, "constrainedParameter"));
+            string errors = ("" + Argument.Require(ConstrainedParameter, "ConstrainedParameter"));
             if ((ConstrainedParameter.Extract(null) < new System.TimeSpan(8, 0, 0)))
             {
                 errors = (errors + string.Format("ConstrainedParameter should have been at least 08:00:00Z but was \'{0}\'", ConstrainedParameter.Extract(null)));
@@ -3248,11 +3248,11 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
             if ((ConstrainedParameter.Extract(null) <= new System.TimeSpan(10, 30, 0)))
             {
                 throw new ArgumentException(string.Format("ConstrainedParameter should have been at least more than 08:00:00-02:30 but was \'" +
-                            "{0}\'", ConstrainedParameter.Extract(null)), "constrainedParameter");
+                            "{0}\'", ConstrainedParameter.Extract(null)), "ConstrainedParameter");
             }
             if ((ConstrainedParameter.Extract(null) > new System.TimeSpan(16, 29, 59)))
             {
-                throw new ArgumentException(string.Format("ConstrainedParameter should have been at most 18:59:59+02:30 but was \'{0}\'", ConstrainedParameter.Extract(null)), "constrainedParameter");
+                throw new ArgumentException(string.Format("ConstrainedParameter should have been at most 18:59:59+02:30 but was \'{0}\'", ConstrainedParameter.Extract(null)), "ConstrainedParameter");
             }
         }
         
@@ -3262,7 +3262,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            string errors = ("" + Argument.Require(ConstrainedParameter, "constrainedParameter"));
+            string errors = ("" + Argument.Require(ConstrainedParameter, "ConstrainedParameter"));
             if ((ConstrainedParameter.Extract(null) <= new System.TimeSpan(10, 30, 0)))
             {
                 errors = (errors + string.Format("ConstrainedParameter should have been at least more than 08:00:00-02:30 but was \'" +
@@ -3345,7 +3345,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return ("" + Argument.Require(ConstrainedParameter, "constrainedParameter"));
+            return ("" + Argument.Require(ConstrainedParameter, "ConstrainedParameter"));
         }
     }
     
@@ -3413,7 +3413,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
             if ((ConstrainedParameter.Extract(null) >= new System.DateTimeOffset(2022, 9, 7, 16, 0, 0, System.TimeSpan.FromMinutes(120D))))
             {
                 throw new ArgumentException(string.Format("ConstrainedParameter should have been at most less than 2022-09-07T16:00:00+02:00" +
-                            " but was \'{0}\'", ConstrainedParameter.Extract(null)), "constrainedParameter");
+                            " but was \'{0}\'", ConstrainedParameter.Extract(null)), "ConstrainedParameter");
             }
         }
         
@@ -3423,7 +3423,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            string errors = ("" + Argument.Require(ConstrainedParameter, "constrainedParameter"));
+            string errors = ("" + Argument.Require(ConstrainedParameter, "ConstrainedParameter"));
             if ((ConstrainedParameter.Extract(null) >= new System.DateTimeOffset(2022, 9, 7, 16, 0, 0, System.TimeSpan.FromMinutes(120D))))
             {
                 errors = (errors + string.Format("ConstrainedParameter should have been at most less than 2022-09-07T16:00:00+02:00" +
@@ -3497,7 +3497,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
             if ((ConstrainedParameter.Extract(null) > new System.DateTimeOffset(2025, 12, 31, 13, 59, 59, System.TimeSpan.FromMinutes(-90D))))
             {
                 throw new ArgumentException(string.Format("ConstrainedParameter should have been at most 2025-12-31T13:59:59-01:30 but was \'" +
-                            "{0}\'", ConstrainedParameter.Extract(null)), "constrainedParameter");
+                            "{0}\'", ConstrainedParameter.Extract(null)), "ConstrainedParameter");
             }
         }
         
@@ -3507,7 +3507,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            string errors = ("" + Argument.Require(ConstrainedParameter, "constrainedParameter"));
+            string errors = ("" + Argument.Require(ConstrainedParameter, "ConstrainedParameter"));
             if ((ConstrainedParameter.Extract(null) > new System.DateTimeOffset(2025, 12, 31, 13, 59, 59, System.TimeSpan.FromMinutes(-90D))))
             {
                 errors = (errors + string.Format("ConstrainedParameter should have been at most 2025-12-31T13:59:59-01:30 but was \'" +
@@ -3581,7 +3581,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
             if ((ConstrainedParameter.Extract(null) <= new System.DateTimeOffset(2019, 1, 1, 0, 0, 0, System.TimeSpan.FromMinutes(-60D))))
             {
                 throw new ArgumentException(string.Format("ConstrainedParameter should have been at least more than 2019-01-01T00:00:00-01:0" +
-                            "0 but was \'{0}\'", ConstrainedParameter.Extract(null)), "constrainedParameter");
+                            "0 but was \'{0}\'", ConstrainedParameter.Extract(null)), "ConstrainedParameter");
             }
         }
         
@@ -3591,7 +3591,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            string errors = ("" + Argument.Require(ConstrainedParameter, "constrainedParameter"));
+            string errors = ("" + Argument.Require(ConstrainedParameter, "ConstrainedParameter"));
             if ((ConstrainedParameter.Extract(null) <= new System.DateTimeOffset(2019, 1, 1, 0, 0, 0, System.TimeSpan.FromMinutes(-60D))))
             {
                 errors = (errors + string.Format("ConstrainedParameter should have been at least more than 2019-01-01T00:00:00-01:0" +
@@ -3665,7 +3665,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
             if ((ConstrainedParameter.Extract(null) < new System.DateTimeOffset(2022, 9, 7, 13, 48, 59, System.TimeSpan.FromMinutes(120D))))
             {
                 throw new ArgumentException(string.Format("ConstrainedParameter should have been at least 2022-09-07T13:48:59+02:00 but was " +
-                            "\'{0}\'", ConstrainedParameter.Extract(null)), "constrainedParameter");
+                            "\'{0}\'", ConstrainedParameter.Extract(null)), "ConstrainedParameter");
             }
         }
         
@@ -3675,7 +3675,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            string errors = ("" + Argument.Require(ConstrainedParameter, "constrainedParameter"));
+            string errors = ("" + Argument.Require(ConstrainedParameter, "ConstrainedParameter"));
             if ((ConstrainedParameter.Extract(null) < new System.DateTimeOffset(2022, 9, 7, 13, 48, 59, System.TimeSpan.FromMinutes(120D))))
             {
                 errors = (errors + string.Format("ConstrainedParameter should have been at least 2022-09-07T13:48:59+02:00 but was " +
@@ -3749,12 +3749,12 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
             if ((ConstrainedParameter.Extract(null) < new System.DateTimeOffset(1969, 7, 20, 20, 17, 40, System.TimeSpan.FromMinutes(0D))))
             {
                 throw new ArgumentException(string.Format("ConstrainedParameter should have been at least 1969-07-20T20:17:40Z but was \'{0}\'" +
-                            "", ConstrainedParameter.Extract(null)), "constrainedParameter");
+                            "", ConstrainedParameter.Extract(null)), "ConstrainedParameter");
             }
             if ((ConstrainedParameter.Extract(null) >= new System.DateTimeOffset(1972, 12, 11, 19, 54, 57, System.TimeSpan.FromMinutes(0D))))
             {
                 throw new ArgumentException(string.Format("ConstrainedParameter should have been at most less than 1972-12-11T19:54:57Z but " +
-                            "was \'{0}\'", ConstrainedParameter.Extract(null)), "constrainedParameter");
+                            "was \'{0}\'", ConstrainedParameter.Extract(null)), "ConstrainedParameter");
             }
         }
         
@@ -3764,7 +3764,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            string errors = ("" + Argument.Require(ConstrainedParameter, "constrainedParameter"));
+            string errors = ("" + Argument.Require(ConstrainedParameter, "ConstrainedParameter"));
             if ((ConstrainedParameter.Extract(null) < new System.DateTimeOffset(1969, 7, 20, 20, 17, 40, System.TimeSpan.FromMinutes(0D))))
             {
                 errors = (errors + string.Format("ConstrainedParameter should have been at least 1969-07-20T20:17:40Z but was \'{0}\'" +
@@ -3848,7 +3848,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return ("" + Argument.Require(ConstrainedParameter, "constrainedParameter"));
+            return ("" + Argument.Require(ConstrainedParameter, "ConstrainedParameter"));
         }
     }
     
@@ -3921,7 +3921,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return ("" + Argument.Require(ConstrainedParameter, "constrainedParameter"));
+            return ("" + Argument.Require(ConstrainedParameter, "ConstrainedParameter"));
         }
     }
     
@@ -3994,7 +3994,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return ("" + Argument.Require(ConstrainedParameter, "constrainedParameter"));
+            return ("" + Argument.Require(ConstrainedParameter, "ConstrainedParameter"));
         }
     }
     
@@ -4067,7 +4067,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return ("" + Argument.Require(ConstrainedParameter, "constrainedParameter"));
+            return ("" + Argument.Require(ConstrainedParameter, "ConstrainedParameter"));
         }
     }
     
@@ -4140,7 +4140,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return ("" + Argument.Require(ConstrainedParameter, "constrainedParameter"));
+            return ("" + Argument.Require(ConstrainedParameter, "ConstrainedParameter"));
         }
     }
     
@@ -4213,7 +4213,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return ("" + Argument.Require(ConstrainedParameter, "constrainedParameter"));
+            return ("" + Argument.Require(ConstrainedParameter, "ConstrainedParameter"));
         }
     }
     
@@ -4286,7 +4286,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return ("" + Argument.Require(ConstrainedParameter, "constrainedParameter"));
+            return ("" + Argument.Require(ConstrainedParameter, "ConstrainedParameter"));
         }
     }
     
@@ -4359,7 +4359,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return ("" + Argument.Require(ConstrainedParameter, "constrainedParameter"));
+            return ("" + Argument.Require(ConstrainedParameter, "ConstrainedParameter"));
         }
     }
     
@@ -4432,7 +4432,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return ("" + Argument.Require(ConstrainedParameter, "constrainedParameter"));
+            return ("" + Argument.Require(ConstrainedParameter, "ConstrainedParameter"));
         }
     }
     
@@ -4505,7 +4505,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return ("" + Argument.Require(ConstrainedParameter, "constrainedParameter"));
+            return ("" + Argument.Require(ConstrainedParameter, "ConstrainedParameter"));
         }
     }
     
@@ -4578,7 +4578,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return ("" + Argument.Require(ConstrainedParameter, "constrainedParameter"));
+            return ("" + Argument.Require(ConstrainedParameter, "ConstrainedParameter"));
         }
     }
     
@@ -4651,7 +4651,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return ("" + Argument.Require(ConstrainedParameter, "constrainedParameter"));
+            return ("" + Argument.Require(ConstrainedParameter, "ConstrainedParameter"));
         }
     }
 }

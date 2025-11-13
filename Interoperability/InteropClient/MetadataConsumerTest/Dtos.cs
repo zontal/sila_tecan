@@ -123,7 +123,7 @@ namespace Tecan.Sila2.Interop.Client.MetadataConsumerTest.MetadataConsumerTest
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return ("" + Argument.Require(ReceivedStringMetadata, "receivedStringMetadata"));
+            return ("" + Argument.Require(ReceivedStringMetadata, "ReceivedStringMetadata"));
         }
     }
     
@@ -284,9 +284,9 @@ namespace Tecan.Sila2.Interop.Client.MetadataConsumerTest.MetadataConsumerTest
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return ((("" + Argument.Require(ReceivedString, "receivedString")) 
-                        + Argument.Require(FirstReceivedInteger, "firstReceivedInteger")) 
-                        + Argument.Require(SecondReceivedInteger, "secondReceivedInteger"));
+            return ((("" + Argument.Require(ReceivedString, "ReceivedString")) 
+                        + Argument.Require(FirstReceivedInteger, "FirstReceivedInteger")) 
+                        + Argument.Require(SecondReceivedInteger, "SecondReceivedInteger"));
         }
     }
     
@@ -339,7 +339,7 @@ namespace Tecan.Sila2.Interop.Client.MetadataConsumerTest.MetadataConsumerTest
             Argument.Validate(Value, "value");
             if ((Value.Value.Length != 1))
             {
-                throw new ArgumentException(string.Format("Value has length {0} but should have been 1", Value.Value.Length), "value");
+                throw new ArgumentException(string.Format("Value has length {0} but should have been 1", Value.Value.Length), "Value");
             }
         }
         
@@ -349,7 +349,7 @@ namespace Tecan.Sila2.Interop.Client.MetadataConsumerTest.MetadataConsumerTest
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            string errors = ("" + Argument.Require(Value, "value"));
+            string errors = ("" + Argument.Require(Value, "Value"));
             if ((Value.Value.Length != 1))
             {
                 errors = (errors + string.Format("Value has length {0} but should have been 1", Value.Value.Length));

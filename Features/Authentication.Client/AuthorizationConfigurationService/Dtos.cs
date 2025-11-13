@@ -79,12 +79,12 @@ namespace Tecan.Sila2.Authorization.AuthorizationConfigurationService
             Argument.Validate(AuthorizationProvider, "authorizationProvider");
             if ((AuthorizationProvider.Value.Length != 36))
             {
-                throw new ArgumentException(string.Format("AuthorizationProvider has length {0} but should have been 36", AuthorizationProvider.Value.Length), "authorizationProvider");
+                throw new ArgumentException(string.Format("AuthorizationProvider has length {0} but should have been 36", AuthorizationProvider.Value.Length), "AuthorizationProvider");
             }
             if ((RegexConstraint.IsMatch(AuthorizationProvider.Value, "[0-9a-f]{8}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{12}") == false))
             {
                 throw new ArgumentException(string.Format("AuthorizationProvider \'{0}\' does not match pattern \'[0-9a-f]{8}\\-[0-9a-f]{4}\\-[0-" +
-                            "9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{12}\'", AuthorizationProvider.Value), "authorizationProvider");
+                            "9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{12}\'", AuthorizationProvider.Value), "AuthorizationProvider");
             }
         }
         
@@ -94,7 +94,7 @@ namespace Tecan.Sila2.Authorization.AuthorizationConfigurationService
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            string errors = ("" + Argument.Require(AuthorizationProvider, "authorizationProvider"));
+            string errors = ("" + Argument.Require(AuthorizationProvider, "AuthorizationProvider"));
             if ((AuthorizationProvider.Value.Length != 36))
             {
                 errors = (errors + string.Format("AuthorizationProvider has length {0} but should have been 36", AuthorizationProvider.Value.Length));
@@ -157,12 +157,12 @@ namespace Tecan.Sila2.Authorization.AuthorizationConfigurationService
             Argument.Validate(Value, "value");
             if ((Value.Value.Length != 36))
             {
-                throw new ArgumentException(string.Format("Value has length {0} but should have been 36", Value.Value.Length), "value");
+                throw new ArgumentException(string.Format("Value has length {0} but should have been 36", Value.Value.Length), "Value");
             }
             if ((RegexConstraint.IsMatch(Value.Value, "[0-9a-f]{8}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{12}") == false))
             {
                 throw new ArgumentException(string.Format("Value \'{0}\' does not match pattern \'[0-9a-f]{8}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-" +
-                            "f]{4}\\-[0-9a-f]{12}\'", Value.Value), "value");
+                            "f]{4}\\-[0-9a-f]{12}\'", Value.Value), "Value");
             }
         }
         
@@ -172,7 +172,7 @@ namespace Tecan.Sila2.Authorization.AuthorizationConfigurationService
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            string errors = ("" + Argument.Require(Value, "value"));
+            string errors = ("" + Argument.Require(Value, "Value"));
             if ((Value.Value.Length != 36))
             {
                 errors = (errors + string.Format("Value has length {0} but should have been 36", Value.Value.Length));

@@ -103,8 +103,8 @@ namespace Tecan.Sila2.ParameterConstraintsProvider.ParameterConstraintsProvider
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            string errors = (("" + Argument.Require(CommandParameterIdentifier, "commandParameterIdentifier")) 
-                        + Argument.Require(Constraints, "constraints"));
+            string errors = (("" + Argument.Require(CommandParameterIdentifier, "CommandParameterIdentifier")) 
+                        + Argument.Require(Constraints, "Constraints"));
             if ((IdentifierConstraint.IsValid(CommandParameterIdentifier.Value, Tecan.Sila2.IdentifierType.CommandParameterIdentifier) == false))
             {
                 errors = (errors + string.Format("CommandParameterIdentifier \'{0}\' is not a valid CommandParameterIdentifier", CommandParameterIdentifier.Value));

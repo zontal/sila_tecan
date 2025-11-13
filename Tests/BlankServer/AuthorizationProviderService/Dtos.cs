@@ -123,9 +123,9 @@ namespace Tecan.Sila2.Auth.AuthorizationProviderService
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            string errors = ((("" + Argument.Require(AccessToken, "accessToken")) 
-                        + Argument.Require(RequestedServer, "requestedServer")) 
-                        + Argument.Require(RequestedFeature, "requestedFeature"));
+            string errors = ((("" + Argument.Require(AccessToken, "AccessToken")) 
+                        + Argument.Require(RequestedServer, "RequestedServer")) 
+                        + Argument.Require(RequestedFeature, "RequestedFeature"));
             if ((RegexConstraint.IsMatch(RequestedServer.Value, "[0-9a-f]{8}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{12}") == false))
             {
                 errors = (errors + string.Format("RequestedServer \'{0}\' does not match pattern \'[0-9a-f]{8}\\-[0-9a-f]{4}\\-[0-9a-f]{" +
@@ -191,7 +191,7 @@ namespace Tecan.Sila2.Auth.AuthorizationProviderService
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return ("" + Argument.Require(TokenLifetime, "tokenLifetime"));
+            return ("" + Argument.Require(TokenLifetime, "TokenLifetime"));
         }
     }
 }

@@ -76,7 +76,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// </summary>
         public void Validate()
         {
-            Argument.Validate(QualifiedFeatureIdentifier, "qualifiedFeatureIdentifier");
+            Argument.Validate(QualifiedFeatureIdentifier, "QualifiedFeatureIdentifier");
         }
         
         /// <summary>
@@ -85,7 +85,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return ("" + Argument.Require(QualifiedFeatureIdentifier, "qualifiedFeatureIdentifier"));
+            return ("" + Argument.Require(QualifiedFeatureIdentifier, "QualifiedFeatureIdentifier"));
         }
     }
     
@@ -136,7 +136,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// </summary>
         public void Validate()
         {
-            Argument.Validate(FeatureDefinition, "featureDefinition");
+            Argument.Validate(FeatureDefinition, "FeatureDefinition");
         }
         
         /// <summary>
@@ -145,7 +145,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return ("" + Argument.Require(FeatureDefinition, "featureDefinition"));
+            return ("" + Argument.Require(FeatureDefinition, "FeatureDefinition"));
         }
     }
     
@@ -208,7 +208,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// </summary>
         public void Validate()
         {
-            Argument.Validate(ServerName, "serverName");
+            Argument.Validate(ServerName, "ServerName");
         }
         
         /// <summary>
@@ -217,7 +217,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return ("" + Argument.Require(ServerName, "serverName"));
+            return ("" + Argument.Require(ServerName, "ServerName"));
         }
     }
     
@@ -267,7 +267,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// </summary>
         public void Validate()
         {
-            Argument.Validate(Value, "value");
+            Argument.Validate(Value, "Value");
             if ((RegexConstraint.IsMatch(Value.Value, "[0-9a-f]{8}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{12}") == false))
             {
                 throw new ArgumentException(string.Format("Value \'{0}\' does not match pattern \'[0-9a-f]{8}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-" +
@@ -281,7 +281,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            string errors = ("" + Argument.Require(Value, "value"));
+            string errors = ("" + Argument.Require(Value, "Value"));
             if ((RegexConstraint.IsMatch(Value.Value, "[0-9a-f]{8}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{12}") == false))
             {
                 errors = (errors + string.Format("Value \'{0}\' does not match pattern \'[0-9a-f]{8}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-" +
@@ -337,7 +337,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// </summary>
         public void Validate()
         {
-            Argument.Validate(Value, "value");
+            Argument.Validate(Value, "Value");
             if ((RegexConstraint.IsMatch(Value.Value, "(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(\\.(0|[1-9][0-9]*))?(_[_a-zA-Z0-9]+)?") == false))
             {
                 throw new ArgumentException(string.Format("Value \'{0}\' does not match pattern \'(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(\\.(0|[1-9][0" +
@@ -351,7 +351,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            string errors = ("" + Argument.Require(Value, "value"));
+            string errors = ("" + Argument.Require(Value, "Value"));
             if ((RegexConstraint.IsMatch(Value.Value, "(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(\\.(0|[1-9][0-9]*))?(_[_a-zA-Z0-9]+)?") == false))
             {
                 errors = (errors + string.Format("Value \'{0}\' does not match pattern \'(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(\\.(0|[1-9][0" +
@@ -429,7 +429,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            string errors = ("" + Argument.Require(URL, "uRL"));
+            string errors = ("" + Argument.Require(URL, "URL"));
             if ((RegexConstraint.IsMatch(URL.Value, "https?://.+") == false))
             {
                 errors = (errors + string.Format("URL \'{0}\' does not match pattern \'https?://.+\'", URL.Value));
@@ -506,7 +506,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return ("" + Argument.Require(FeatureDefinition, "featureDefinition"));
+            return ("" + Argument.Require(FeatureDefinition, "FeatureDefinition"));
         }
     }
     
@@ -578,7 +578,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            string errors = ("" + Argument.Require(FeatureIdentifier, "featureIdentifier"));
+            string errors = ("" + Argument.Require(FeatureIdentifier, "FeatureIdentifier"));
             if ((IdentifierConstraint.IsValid(FeatureIdentifier.Value, Tecan.Sila2.IdentifierType.FeatureIdentifier) == false))
             {
                 errors = (errors + string.Format("FeatureIdentifier \'{0}\' is not a valid FeatureIdentifier", FeatureIdentifier.Value));

@@ -80,7 +80,7 @@ namespace Tecan.Sila2.Auth.BasicDataTypesTest
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return ("" + Argument.Require(StringValue, "stringValue"));
+            return ("" + Argument.Require(StringValue, "StringValue"));
         }
     }
     
@@ -136,7 +136,7 @@ namespace Tecan.Sila2.Auth.BasicDataTypesTest
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return ("" + Argument.Require(ReceivedValue, "receivedValue"));
+            return ("" + Argument.Require(ReceivedValue, "ReceivedValue"));
         }
     }
     
@@ -204,7 +204,7 @@ namespace Tecan.Sila2.Auth.BasicDataTypesTest
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return ("" + Argument.Require(IntegerValue, "integerValue"));
+            return ("" + Argument.Require(IntegerValue, "IntegerValue"));
         }
     }
     
@@ -260,7 +260,7 @@ namespace Tecan.Sila2.Auth.BasicDataTypesTest
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return ("" + Argument.Require(ReceivedValue, "receivedValue"));
+            return ("" + Argument.Require(ReceivedValue, "ReceivedValue"));
         }
     }
     
@@ -328,7 +328,7 @@ namespace Tecan.Sila2.Auth.BasicDataTypesTest
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return ("" + Argument.Require(RealValue, "realValue"));
+            return ("" + Argument.Require(RealValue, "RealValue"));
         }
     }
     
@@ -384,7 +384,7 @@ namespace Tecan.Sila2.Auth.BasicDataTypesTest
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return ("" + Argument.Require(ReceivedValue, "receivedValue"));
+            return ("" + Argument.Require(ReceivedValue, "ReceivedValue"));
         }
     }
     
@@ -452,7 +452,7 @@ namespace Tecan.Sila2.Auth.BasicDataTypesTest
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return ("" + Argument.Require(BooleanValue, "booleanValue"));
+            return ("" + Argument.Require(BooleanValue, "BooleanValue"));
         }
     }
     
@@ -508,7 +508,7 @@ namespace Tecan.Sila2.Auth.BasicDataTypesTest
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return ("" + Argument.Require(ReceivedValue, "receivedValue"));
+            return ("" + Argument.Require(ReceivedValue, "ReceivedValue"));
         }
     }
     
@@ -576,7 +576,7 @@ namespace Tecan.Sila2.Auth.BasicDataTypesTest
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return ("" + Argument.Require(DateValue, "dateValue"));
+            return ("" + Argument.Require(DateValue, "DateValue"));
         }
     }
     
@@ -632,7 +632,7 @@ namespace Tecan.Sila2.Auth.BasicDataTypesTest
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return ("" + Argument.Require(ReceivedValue, "receivedValue"));
+            return ("" + Argument.Require(ReceivedValue, "ReceivedValue"));
         }
     }
     
@@ -700,7 +700,7 @@ namespace Tecan.Sila2.Auth.BasicDataTypesTest
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return ("" + Argument.Require(TimeValue, "timeValue"));
+            return ("" + Argument.Require(TimeValue, "TimeValue"));
         }
     }
     
@@ -756,7 +756,7 @@ namespace Tecan.Sila2.Auth.BasicDataTypesTest
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return ("" + Argument.Require(ReceivedValue, "receivedValue"));
+            return ("" + Argument.Require(ReceivedValue, "ReceivedValue"));
         }
     }
     
@@ -824,7 +824,7 @@ namespace Tecan.Sila2.Auth.BasicDataTypesTest
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return ("" + Argument.Require(TimestampValue, "timestampValue"));
+            return ("" + Argument.Require(TimestampValue, "TimestampValue"));
         }
     }
     
@@ -880,7 +880,7 @@ namespace Tecan.Sila2.Auth.BasicDataTypesTest
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return ("" + Argument.Require(ReceivedValue, "receivedValue"));
+            return ("" + Argument.Require(ReceivedValue, "ReceivedValue"));
         }
     }
 }

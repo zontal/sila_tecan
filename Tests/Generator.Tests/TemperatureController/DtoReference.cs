@@ -77,7 +77,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// </summary>
         public void Validate()
         {
-            Argument.Validate(TargetTemperature, "targetTemperature");
+            Argument.Validate(TargetTemperature, "TargetTemperature");
             if ((TargetTemperature.Value <= 273D))
             {
                 throw new ArgumentException(string.Format("TargetTemperature should have been at least more than 273 but was \'{0}\'", TargetTemperature.Value), "targetTemperature");
@@ -94,7 +94,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            string errors = ("" + Argument.Require(TargetTemperature, "targetTemperature"));
+            string errors = ("" + Argument.Require(TargetTemperature, "TargetTemperature"));
             if ((TargetTemperature.Value <= 273D))
             {
                 errors = (errors + string.Format("TargetTemperature should have been at least more than 273 but was \'{0}\'", TargetTemperature.Value));
@@ -153,7 +153,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// </summary>
         public void Validate()
         {
-            Argument.Validate(Value, "value");
+            Argument.Validate(Value, "Value");
             if ((Value.Value <= 273D))
             {
                 throw new ArgumentException(string.Format("Value should have been at least more than 273 but was \'{0}\'", Value.Value), "value");
@@ -170,7 +170,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            string errors = ("" + Argument.Require(Value, "value"));
+            string errors = ("" + Argument.Require(Value, "Value"));
             if ((Value.Value <= 273D))
             {
                 errors = (errors + string.Format("Value should have been at least more than 273 but was \'{0}\'", Value.Value));

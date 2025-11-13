@@ -111,7 +111,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// </summary>
         public void Validate()
         {
-            Argument.Validate(Intermediate, "intermediate");
+            Argument.Validate(Intermediate, "Intermediate");
         }
         
         /// <summary>
@@ -120,7 +120,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return ("" + Argument.Require(Intermediate, "intermediate"));
+            return ("" + Argument.Require(Intermediate, "Intermediate"));
         }
     }
     
@@ -253,9 +253,9 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return ((("" + Argument.Require(Key, "key")) 
-                        + Argument.Require(Value, "value")) 
-                        + Argument.Require(Children, "children"));
+            return ((("" + Argument.Require(Key, "Key")) 
+                        + Argument.Require(Value, "Value")) 
+                        + Argument.Require(Children, "Children"));
         }
         
         /// <summary>
@@ -552,10 +552,10 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return (((("" + Argument.Require(Message, "message")) 
-                        + Argument.Require(Channel, "channel")) 
-                        + Argument.Require(Severity, "severity")) 
-                        + Argument.Require(Data, "data"));
+            return (((("" + Argument.Require(Message, "Message")) 
+                        + Argument.Require(Channel, "Channel")) 
+                        + Argument.Require(Severity, "Severity")) 
+                        + Argument.Require(Data, "Data"));
         }
         
         /// <summary>

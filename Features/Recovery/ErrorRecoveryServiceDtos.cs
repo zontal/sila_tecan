@@ -128,12 +128,12 @@ namespace Tecan.Sila2.Recovery
             Argument.Validate(CommandExecutionUUID, "commandExecutionUUID");
             if ((CommandExecutionUUID.Value.Length != 36))
             {
-                throw new ArgumentException(string.Format("CommandExecutionUUID has length {0} but should have been 36", CommandExecutionUUID.Value.Length), "commandExecutionUUID");
+                throw new ArgumentException(string.Format("CommandExecutionUUID has length {0} but should have been 36", CommandExecutionUUID.Value.Length), "CommandExecutionUUID");
             }
             if ((RegexConstraint.IsMatch(CommandExecutionUUID.Value, "[0-9a-f]{8}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{12}") == false))
             {
                 throw new ArgumentException(string.Format("CommandExecutionUUID \'{0}\' does not match pattern \'[0-9a-f]{8}\\-[0-9a-f]{4}\\-[0-9" +
-                            "a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{12}\'", CommandExecutionUUID.Value), "commandExecutionUUID");
+                            "a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{12}\'", CommandExecutionUUID.Value), "CommandExecutionUUID");
             }
             Argument.Validate(ContinuationOption, "continuationOption");
             Argument.Validate(InputData, "inputData");
@@ -145,9 +145,9 @@ namespace Tecan.Sila2.Recovery
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            string errors = ((("" + Argument.Require(CommandExecutionUUID, "commandExecutionUUID")) 
-                        + Argument.Require(ContinuationOption, "continuationOption")) 
-                        + Argument.Require(InputData, "inputData"));
+            string errors = ((("" + Argument.Require(CommandExecutionUUID, "CommandExecutionUUID")) 
+                        + Argument.Require(ContinuationOption, "ContinuationOption")) 
+                        + Argument.Require(InputData, "InputData"));
             if ((CommandExecutionUUID.Value.Length != 36))
             {
                 errors = (errors + string.Format("CommandExecutionUUID has length {0} but should have been 36", CommandExecutionUUID.Value.Length));
@@ -223,12 +223,12 @@ namespace Tecan.Sila2.Recovery
             Argument.Validate(CommandExecutionUUID, "commandExecutionUUID");
             if ((CommandExecutionUUID.Value.Length != 36))
             {
-                throw new ArgumentException(string.Format("CommandExecutionUUID has length {0} but should have been 36", CommandExecutionUUID.Value.Length), "commandExecutionUUID");
+                throw new ArgumentException(string.Format("CommandExecutionUUID has length {0} but should have been 36", CommandExecutionUUID.Value.Length), "CommandExecutionUUID");
             }
             if ((RegexConstraint.IsMatch(CommandExecutionUUID.Value, "[0-9a-f]{8}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{12}") == false))
             {
                 throw new ArgumentException(string.Format("CommandExecutionUUID \'{0}\' does not match pattern \'[0-9a-f]{8}\\-[0-9a-f]{4}\\-[0-9" +
-                            "a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{12}\'", CommandExecutionUUID.Value), "commandExecutionUUID");
+                            "a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{12}\'", CommandExecutionUUID.Value), "CommandExecutionUUID");
             }
         }
         
@@ -238,7 +238,7 @@ namespace Tecan.Sila2.Recovery
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            string errors = ("" + Argument.Require(CommandExecutionUUID, "commandExecutionUUID"));
+            string errors = ("" + Argument.Require(CommandExecutionUUID, "CommandExecutionUUID"));
             if ((CommandExecutionUUID.Value.Length != 36))
             {
                 errors = (errors + string.Format("CommandExecutionUUID has length {0} but should have been 36", CommandExecutionUUID.Value.Length));
@@ -320,7 +320,7 @@ namespace Tecan.Sila2.Recovery
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return ("" + Argument.Require(ErrorHandlingTimeout, "errorHandlingTimeout"));
+            return ("" + Argument.Require(ErrorHandlingTimeout, "ErrorHandlingTimeout"));
         }
     }
     
@@ -537,12 +537,12 @@ namespace Tecan.Sila2.Recovery
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            string errors = (((((("" + Argument.Require(CommandIdentifier_, "commandIdentifier")) 
-                        + Argument.Require(CommandExecutionUUID, "commandExecutionUUID")) 
-                        + Argument.Require(ErrorMessage, "errorMessage")) 
-                        + Argument.Require(ContinuationOptions, "continuationOptions")) 
-                        + Argument.Require(DefaultOption, "defaultOption")) 
-                        + Argument.Require(AutomaticExecutionTimeout, "automaticExecutionTimeout"));
+            string errors = (((((("" + Argument.Require(CommandIdentifier_, "CommandIdentifier")) 
+                        + Argument.Require(CommandExecutionUUID, "CommandExecutionUUID")) 
+                        + Argument.Require(ErrorMessage, "ErrorMessage")) 
+                        + Argument.Require(ContinuationOptions, "ContinuationOptions")) 
+                        + Argument.Require(DefaultOption, "DefaultOption")) 
+                        + Argument.Require(AutomaticExecutionTimeout, "AutomaticExecutionTimeout"));
             if ((IdentifierConstraint.IsValid(CommandIdentifier_.Value, Tecan.Sila2.IdentifierType.CommandIdentifier) == false))
             {
                 errors = (errors + string.Format("CommandIdentifier_ \'{0}\' is not a valid CommandIdentifier", CommandIdentifier_.Value));
@@ -847,9 +847,9 @@ namespace Tecan.Sila2.Recovery
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return ((("" + Argument.Require(Identifier, "identifier")) 
-                        + Argument.Require(Description, "description")) 
-                        + Argument.Require(RequiredInputData, "requiredInputData"));
+            return ((("" + Argument.Require(Identifier, "Identifier")) 
+                        + Argument.Require(Description, "Description")) 
+                        + Argument.Require(RequiredInputData, "RequiredInputData"));
         }
         
         /// <summary>
@@ -1007,7 +1007,7 @@ namespace Tecan.Sila2.Recovery
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            string errors = ("" + Argument.Require(Timeout, "timeout"));
+            string errors = ("" + Argument.Require(Timeout, "Timeout"));
             if ((Timeout.Value < 0))
             {
                 errors = (errors + string.Format("Timeout should have been at least 0 but was \'{0}\'", Timeout.Value));

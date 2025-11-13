@@ -80,7 +80,7 @@ namespace Tecan.Sila2.Discovery
             Argument.Validate(FeatureIdentifier, "featureIdentifier");
             if ((IdentifierConstraint.IsValid(FeatureIdentifier.Value, Tecan.Sila2.IdentifierType.FeatureIdentifier) == false))
             {
-                throw new ArgumentException(string.Format("FeatureIdentifier \'{0}\' is not a valid FeatureIdentifier", FeatureIdentifier.Value), "featureIdentifier");
+                throw new ArgumentException(string.Format("FeatureIdentifier \'{0}\' is not a valid FeatureIdentifier", FeatureIdentifier.Value), "FeatureIdentifier");
             }
         }
         
@@ -90,7 +90,7 @@ namespace Tecan.Sila2.Discovery
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            string errors = ("" + Argument.Require(FeatureIdentifier, "featureIdentifier"));
+            string errors = ("" + Argument.Require(FeatureIdentifier, "FeatureIdentifier"));
             if ((IdentifierConstraint.IsValid(FeatureIdentifier.Value, Tecan.Sila2.IdentifierType.FeatureIdentifier) == false))
             {
                 errors = (errors + string.Format("FeatureIdentifier \'{0}\' is not a valid FeatureIdentifier", FeatureIdentifier.Value));
@@ -155,7 +155,7 @@ namespace Tecan.Sila2.Discovery
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return ("" + Argument.Require(FeatureDefinition, "featureDefinition"));
+            return ("" + Argument.Require(FeatureDefinition, "FeatureDefinition"));
         }
     }
     
@@ -221,7 +221,7 @@ namespace Tecan.Sila2.Discovery
             Argument.Validate(ServerName, "serverName");
             if ((ServerName.Value.Length > 255))
             {
-                throw new ArgumentException(string.Format("ServerName  has length {0} and is longer than allowed length 255", ServerName.Value.Length), "serverName");
+                throw new ArgumentException(string.Format("ServerName  has length {0} and is longer than allowed length 255", ServerName.Value.Length), "ServerName");
             }
         }
         
@@ -231,7 +231,7 @@ namespace Tecan.Sila2.Discovery
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            string errors = ("" + Argument.Require(ServerName, "serverName"));
+            string errors = ("" + Argument.Require(ServerName, "ServerName"));
             if ((ServerName.Value.Length > 255))
             {
                 errors = (errors + string.Format("ServerName  has length {0} and is longer than allowed length 255", ServerName.Value.Length));
@@ -289,7 +289,7 @@ namespace Tecan.Sila2.Discovery
             Argument.Validate(Value, "value");
             if ((Value.Value.Length > 255))
             {
-                throw new ArgumentException(string.Format("Value  has length {0} and is longer than allowed length 255", Value.Value.Length), "value");
+                throw new ArgumentException(string.Format("Value  has length {0} and is longer than allowed length 255", Value.Value.Length), "Value");
             }
         }
         
@@ -299,7 +299,7 @@ namespace Tecan.Sila2.Discovery
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            string errors = ("" + Argument.Require(Value, "value"));
+            string errors = ("" + Argument.Require(Value, "Value"));
             if ((Value.Value.Length > 255))
             {
                 errors = (errors + string.Format("Value  has length {0} and is longer than allowed length 255", Value.Value.Length));
@@ -357,7 +357,7 @@ namespace Tecan.Sila2.Discovery
             Argument.Validate(Value, "value");
             if ((RegexConstraint.IsMatch(Value.Value, "[A-Z][a-zA-Z0-9]*") == false))
             {
-                throw new ArgumentException(string.Format("Value \'{0}\' does not match pattern \'[A-Z][a-zA-Z0-9]*\'", Value.Value), "value");
+                throw new ArgumentException(string.Format("Value \'{0}\' does not match pattern \'[A-Z][a-zA-Z0-9]*\'", Value.Value), "Value");
             }
         }
         
@@ -367,7 +367,7 @@ namespace Tecan.Sila2.Discovery
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            string errors = ("" + Argument.Require(Value, "value"));
+            string errors = ("" + Argument.Require(Value, "Value"));
             if ((RegexConstraint.IsMatch(Value.Value, "[A-Z][a-zA-Z0-9]*") == false))
             {
                 errors = (errors + string.Format("Value \'{0}\' does not match pattern \'[A-Z][a-zA-Z0-9]*\'", Value.Value));
@@ -425,12 +425,12 @@ namespace Tecan.Sila2.Discovery
             Argument.Validate(Value, "value");
             if ((Value.Value.Length != 36))
             {
-                throw new ArgumentException(string.Format("Value has length {0} but should have been 36", Value.Value.Length), "value");
+                throw new ArgumentException(string.Format("Value has length {0} but should have been 36", Value.Value.Length), "Value");
             }
             if ((RegexConstraint.IsMatch(Value.Value, "[0-9a-f]{8}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{12}") == false))
             {
                 throw new ArgumentException(string.Format("Value \'{0}\' does not match pattern \'[0-9a-f]{8}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-" +
-                            "f]{4}\\-[0-9a-f]{12}\'", Value.Value), "value");
+                            "f]{4}\\-[0-9a-f]{12}\'", Value.Value), "Value");
             }
         }
         
@@ -440,7 +440,7 @@ namespace Tecan.Sila2.Discovery
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            string errors = ("" + Argument.Require(Value, "value"));
+            string errors = ("" + Argument.Require(Value, "Value"));
             if ((Value.Value.Length != 36))
             {
                 errors = (errors + string.Format("Value has length {0} but should have been 36", Value.Value.Length));
@@ -504,7 +504,7 @@ namespace Tecan.Sila2.Discovery
             if ((RegexConstraint.IsMatch(Value.Value, "(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(\\.(0|[1-9][0-9]*))?(_[_a-zA-Z0-9]+)?") == false))
             {
                 throw new ArgumentException(string.Format("Value \'{0}\' does not match pattern \'(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(\\.(0|[1-9][0" +
-                            "-9]*))?(_[_a-zA-Z0-9]+)?\'", Value.Value), "value");
+                            "-9]*))?(_[_a-zA-Z0-9]+)?\'", Value.Value), "Value");
             }
         }
         
@@ -514,7 +514,7 @@ namespace Tecan.Sila2.Discovery
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            string errors = ("" + Argument.Require(Value, "value"));
+            string errors = ("" + Argument.Require(Value, "Value"));
             if ((RegexConstraint.IsMatch(Value.Value, "(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(\\.(0|[1-9][0-9]*))?(_[_a-zA-Z0-9]+)?") == false))
             {
                 errors = (errors + string.Format("Value \'{0}\' does not match pattern \'(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(\\.(0|[1-9][0" +
@@ -573,7 +573,7 @@ namespace Tecan.Sila2.Discovery
             Argument.Validate(Value, "value");
             if ((RegexConstraint.IsMatch(Value.Value, "https?://.+") == false))
             {
-                throw new ArgumentException(string.Format("Value \'{0}\' does not match pattern \'https?://.+\'", Value.Value), "value");
+                throw new ArgumentException(string.Format("Value \'{0}\' does not match pattern \'https?://.+\'", Value.Value), "Value");
             }
         }
         
@@ -583,7 +583,7 @@ namespace Tecan.Sila2.Discovery
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            string errors = ("" + Argument.Require(Value, "value"));
+            string errors = ("" + Argument.Require(Value, "Value"));
             if ((RegexConstraint.IsMatch(Value.Value, "https?://.+") == false))
             {
                 errors = (errors + string.Format("Value \'{0}\' does not match pattern \'https?://.+\'", Value.Value));

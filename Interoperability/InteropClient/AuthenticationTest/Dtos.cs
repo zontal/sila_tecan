@@ -135,7 +135,7 @@ namespace Tecan.Sila2.Interop.Client.AuthenticationTest.AuthenticationTest
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return ("" + Argument.Require(BinaryToUpload, "binaryToUpload"));
+            return ("" + Argument.Require(BinaryToUpload, "BinaryToUpload"));
         }
     }
 }

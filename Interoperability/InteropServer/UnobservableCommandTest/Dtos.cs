@@ -136,7 +136,7 @@ namespace Tecan.Sila2.Interop.Server.UnobservableCommandTest
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return ("" + Argument.Require(Integer, "integer"));
+            return ("" + Argument.Require(Integer, "Integer"));
         }
     }
     
@@ -196,7 +196,7 @@ namespace Tecan.Sila2.Interop.Server.UnobservableCommandTest
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return ("" + Argument.Require(StringRepresentation, "stringRepresentation"));
+            return ("" + Argument.Require(StringRepresentation, "StringRepresentation"));
         }
     }
     
@@ -289,8 +289,8 @@ namespace Tecan.Sila2.Interop.Server.UnobservableCommandTest
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return (("" + Argument.Require(Integer, "integer")) 
-                        + Argument.Require(String, "string"));
+            return (("" + Argument.Require(Integer, "Integer")) 
+                        + Argument.Require(String, "String"));
         }
     }
     
@@ -350,7 +350,7 @@ namespace Tecan.Sila2.Interop.Server.UnobservableCommandTest
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return ("" + Argument.Require(JoinedParameters, "joinedParameters"));
+            return ("" + Argument.Require(JoinedParameters, "JoinedParameters"));
         }
     }
     
@@ -423,7 +423,7 @@ namespace Tecan.Sila2.Interop.Server.UnobservableCommandTest
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return ("" + Argument.Require(String, "string"));
+            return ("" + Argument.Require(String, "String"));
         }
     }
     
@@ -514,8 +514,8 @@ namespace Tecan.Sila2.Interop.Server.UnobservableCommandTest
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            string errors = (("" + Argument.Require(FirstCharacter, "firstCharacter")) 
-                        + Argument.Require(Remainder, "remainder"));
+            string errors = (("" + Argument.Require(FirstCharacter, "FirstCharacter")) 
+                        + Argument.Require(Remainder, "Remainder"));
             if ((FirstCharacter.Value.Length > 1))
             {
                 errors = (errors + string.Format("FirstCharacter  has length {0} and is longer than allowed length 1", FirstCharacter.Value.Length));

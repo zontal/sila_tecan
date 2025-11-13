@@ -84,7 +84,7 @@ namespace Tecan.Sila2.Interop.Client.AnyTypeTest.AnyTypeTest
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return ("" + Argument.Require(AnyTypeValue, "anyTypeValue"));
+            return ("" + Argument.Require(AnyTypeValue, "AnyTypeValue"));
         }
     }
     
@@ -175,8 +175,8 @@ namespace Tecan.Sila2.Interop.Client.AnyTypeTest.AnyTypeTest
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return (("" + Argument.Require(ReceivedAnyType, "receivedAnyType")) 
-                        + Argument.Require(ReceivedValue, "receivedValue"));
+            return (("" + Argument.Require(ReceivedAnyType, "ReceivedAnyType")) 
+                        + Argument.Require(ReceivedValue, "ReceivedValue"));
         }
     }
 }

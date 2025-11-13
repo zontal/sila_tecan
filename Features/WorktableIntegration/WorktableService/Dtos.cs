@@ -155,9 +155,9 @@ namespace Tecan.Sila2.WorktableIntegration
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return ((("" + Argument.Require(X, "x")) 
-                        + Argument.Require(Y, "y")) 
-                        + Argument.Require(Z, "z"));
+            return ((("" + Argument.Require(X, "X")) 
+                        + Argument.Require(Y, "Y")) 
+                        + Argument.Require(Z, "Z"));
         }
         
         /// <summary>
@@ -357,8 +357,8 @@ namespace Tecan.Sila2.WorktableIntegration
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return (("" + Argument.Require(Width, "width")) 
-                        + Argument.Require(Depth, "depth"));
+            return (("" + Argument.Require(Width, "Width")) 
+                        + Argument.Require(Depth, "Depth"));
         }
         
         /// <summary>
@@ -585,10 +585,10 @@ namespace Tecan.Sila2.WorktableIntegration
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return (((("" + Argument.Require(Name, "name")) 
-                        + Argument.Require(Template, "template")) 
-                        + Argument.Require(Offset, "offset")) 
-                        + Argument.Require(Rotation, "rotation"));
+            return (((("" + Argument.Require(Name, "Name")) 
+                        + Argument.Require(Template, "Template")) 
+                        + Argument.Require(Offset, "Offset")) 
+                        + Argument.Require(Rotation, "Rotation"));
         }
         
         /// <summary>
@@ -830,9 +830,9 @@ namespace Tecan.Sila2.WorktableIntegration
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return ((("" + Argument.Require(Name, "name")) 
-                        + Argument.Require(SiteRectangle, "siteRectangle")) 
-                        + Argument.Require(Tags, "tags"));
+            return ((("" + Argument.Require(Name, "Name")) 
+                        + Argument.Require(SiteRectangle, "SiteRectangle")) 
+                        + Argument.Require(Tags, "Tags"));
         }
         
         /// <summary>
@@ -1032,8 +1032,8 @@ namespace Tecan.Sila2.WorktableIntegration
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return (("" + Argument.Require(Rectangle, "rectangle")) 
-                        + Argument.Require(Height, "height"));
+            return (("" + Argument.Require(Rectangle, "Rectangle")) 
+                        + Argument.Require(Height, "Height"));
         }
         
         /// <summary>

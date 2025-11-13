@@ -110,7 +110,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// </summary>
         public void Validate()
         {
-            Argument.Validate( Intermediate, "intermediate" );
+            Argument.Validate( Intermediate, "Intermediate" );
         }
 
         /// <summary>
@@ -119,7 +119,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return ("" + Argument.Require( Intermediate, "intermediate" ));
+            return ("" + Argument.Require( Intermediate, "Intermediate" ));
         }
     }
 }

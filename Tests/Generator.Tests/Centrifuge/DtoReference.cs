@@ -71,7 +71,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// </summary>
         public void Validate()
         {
-            Argument.Validate( Speeds, "speeds" );
+            Argument.Validate( Speeds, "Speeds" );
         }
 
         /// <summary>
@@ -80,7 +80,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return ("" + Argument.Require( Speeds, "speeds" ));
+            return ("" + Argument.Require( Speeds, "Speeds" ));
         }
     }
 
@@ -143,7 +143,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// </summary>
         public void Validate()
         {
-            Argument.Validate( Value, "value" );
+            Argument.Validate( Value, "Value" );
         }
 
         /// <summary>
@@ -152,7 +152,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return ("" + Argument.Require( Value, "value" ));
+            return ("" + Argument.Require( Value, "Value" ));
         }
     }
 }

@@ -111,7 +111,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// </summary>
         public void Validate()
         {
-            Argument.Validate(ReturnValue, "returnValue");
+            Argument.Validate(ReturnValue, "ReturnValue");
         }
         
         /// <summary>
@@ -120,7 +120,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return ("" + Argument.Require(ReturnValue, "returnValue"));
+            return ("" + Argument.Require(ReturnValue, "ReturnValue"));
         }
     }
     
@@ -180,7 +180,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// </summary>
         public void Validate()
         {
-            Argument.Validate(Method, "method");
+            Argument.Validate(Method, "Method");
         }
         
         /// <summary>
@@ -189,7 +189,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return ("" + Argument.Require(Method, "method"));
+            return ("" + Argument.Require(Method, "Method"));
         }
     }
     
@@ -302,8 +302,8 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return (("" + Argument.Require(Message, "message")) 
-                        + Argument.Require(AmbiguousChannel, "ambiguousChannel"));
+            return (("" + Argument.Require(Message, "Message")) 
+                        + Argument.Require(AmbiguousChannel, "AmbiguousChannel"));
         }
         
         /// <summary>

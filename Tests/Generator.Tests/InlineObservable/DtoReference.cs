@@ -72,7 +72,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// </summary>
         public void Validate()
         {
-            Argument.Validate( Parameter, "parameter" );
+            Argument.Validate( Parameter, "Parameter" );
         }
 
         /// <summary>
@@ -81,7 +81,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return ("" + Argument.Require( Parameter, "parameter" ));
+            return ("" + Argument.Require( Parameter, "Parameter" ));
         }
     }
 
@@ -128,7 +128,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// </summary>
         public void Validate()
         {
-            Argument.Validate( ReturnValue, "returnValue" );
+            Argument.Validate( ReturnValue, "ReturnValue" );
         }
 
         /// <summary>
@@ -137,7 +137,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return ("" + Argument.Require( ReturnValue, "returnValue" ));
+            return ("" + Argument.Require( ReturnValue, "ReturnValue" ));
         }
     }
 }

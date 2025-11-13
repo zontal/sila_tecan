@@ -84,7 +84,7 @@ namespace Tecan.Sila2.Cancellation
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return ("" + Argument.Require(CommandExecutionUUID, "commandExecutionUUID"));
+            return ("" + Argument.Require(CommandExecutionUUID, "CommandExecutionUUID"));
         }
     }
     
@@ -207,7 +207,7 @@ namespace Tecan.Sila2.Cancellation
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            string errors = ("" + Argument.Require(UUID, "uUID"));
+            string errors = ("" + Argument.Require(UUID, "UUID"));
             if ((UUID.Value.Length != 36))
             {
                 errors = (errors + string.Format("UUID has length {0} but should have been 36", UUID.Value.Length));

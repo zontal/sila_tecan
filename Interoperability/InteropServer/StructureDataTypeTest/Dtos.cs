@@ -84,7 +84,7 @@ namespace Tecan.Sila2.Interop.Server.StructureDataTypeTest
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return ("" + Argument.Require(StructureValue, "structureValue"));
+            return ("" + Argument.Require(StructureValue, "StructureValue"));
         }
     }
     
@@ -144,7 +144,7 @@ namespace Tecan.Sila2.Interop.Server.StructureDataTypeTest
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return ("" + Argument.Require(ReceivedValues, "receivedValues"));
+            return ("" + Argument.Require(ReceivedValues, "ReceivedValues"));
         }
     }
     
@@ -216,7 +216,7 @@ namespace Tecan.Sila2.Interop.Server.StructureDataTypeTest
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return ("" + Argument.Require(DeepStructureValue, "deepStructureValue"));
+            return ("" + Argument.Require(DeepStructureValue, "DeepStructureValue"));
         }
     }
     
@@ -276,7 +276,7 @@ namespace Tecan.Sila2.Interop.Server.StructureDataTypeTest
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return ("" + Argument.Require(ReceivedValues, "receivedValues"));
+            return ("" + Argument.Require(ReceivedValues, "ReceivedValues"));
         }
     }
     
@@ -556,15 +556,15 @@ namespace Tecan.Sila2.Interop.Server.StructureDataTypeTest
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return ((((((((("" + Argument.Require(StringTypeValue, "stringTypeValue")) 
-                        + Argument.Require(IntegerTypeValue, "integerTypeValue")) 
-                        + Argument.Require(RealTypeValue, "realTypeValue")) 
-                        + Argument.Require(BooleanTypeValue, "booleanTypeValue")) 
-                        + Argument.Require(BinaryTypeValue, "binaryTypeValue")) 
-                        + Argument.Require(DateTypeValue, "dateTypeValue")) 
-                        + Argument.Require(TimeTypeValue, "timeTypeValue")) 
-                        + Argument.Require(TimestampTypeValue, "timestampTypeValue")) 
-                        + Argument.Require(AnyTypeValue, "anyTypeValue"));
+            return ((((((((("" + Argument.Require(StringTypeValue, "StringTypeValue")) 
+                        + Argument.Require(IntegerTypeValue, "IntegerTypeValue")) 
+                        + Argument.Require(RealTypeValue, "RealTypeValue")) 
+                        + Argument.Require(BooleanTypeValue, "BooleanTypeValue")) 
+                        + Argument.Require(BinaryTypeValue, "BinaryTypeValue")) 
+                        + Argument.Require(DateTypeValue, "DateTypeValue")) 
+                        + Argument.Require(TimeTypeValue, "TimeTypeValue")) 
+                        + Argument.Require(TimestampTypeValue, "TimestampTypeValue")) 
+                        + Argument.Require(AnyTypeValue, "AnyTypeValue"));
         }
         
         /// <summary>
@@ -901,9 +901,9 @@ namespace Tecan.Sila2.Interop.Server.StructureDataTypeTest
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return ((("" + Argument.Require(OuterStringTypeValue, "outerStringTypeValue")) 
-                        + Argument.Require(OuterIntegerTypeValue, "outerIntegerTypeValue")) 
-                        + Argument.Require(MiddleStructure, "middleStructure"));
+            return ((("" + Argument.Require(OuterStringTypeValue, "OuterStringTypeValue")) 
+                        + Argument.Require(OuterIntegerTypeValue, "OuterIntegerTypeValue")) 
+                        + Argument.Require(MiddleStructure, "MiddleStructure"));
         }
         
         /// <summary>
@@ -1094,9 +1094,9 @@ namespace Tecan.Sila2.Interop.Server.StructureDataTypeTest
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return ((("" + Argument.Require(MiddleStringTypeValue, "middleStringTypeValue")) 
-                        + Argument.Require(MiddleIntegerTypeValue, "middleIntegerTypeValue")) 
-                        + Argument.Require(InnerStructure, "innerStructure"));
+            return ((("" + Argument.Require(MiddleStringTypeValue, "MiddleStringTypeValue")) 
+                        + Argument.Require(MiddleIntegerTypeValue, "MiddleIntegerTypeValue")) 
+                        + Argument.Require(InnerStructure, "InnerStructure"));
         }
     }
     
@@ -1187,8 +1187,8 @@ namespace Tecan.Sila2.Interop.Server.StructureDataTypeTest
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return (("" + Argument.Require(InnerStringTypeValue, "innerStringTypeValue")) 
-                        + Argument.Require(InnerIntegerTypeValue, "innerIntegerTypeValue"));
+            return (("" + Argument.Require(InnerStringTypeValue, "InnerStringTypeValue")) 
+                        + Argument.Require(InnerIntegerTypeValue, "InnerIntegerTypeValue"));
         }
     }
 }

@@ -113,8 +113,8 @@ namespace Tecan.Sila2.Locking.LockController
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return (("" + Argument.Require(LockIdentifier, "lockIdentifier")) 
-                        + Argument.Require(Timeout, "timeout"));
+            return (("" + Argument.Require(LockIdentifier, "LockIdentifier")) 
+                        + Argument.Require(Timeout, "Timeout"));
         }
     }
     
@@ -186,7 +186,7 @@ namespace Tecan.Sila2.Locking.LockController
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return ("" + Argument.Require(LockIdentifier, "lockIdentifier"));
+            return ("" + Argument.Require(LockIdentifier, "LockIdentifier"));
         }
     }
 }

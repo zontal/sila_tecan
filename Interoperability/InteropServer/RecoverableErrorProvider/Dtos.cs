@@ -98,12 +98,12 @@ namespace Tecan.Sila2.Interop.Server.RecoverableErrorProvider
             Argument.Validate(DurationUntilError, "durationUntilError");
             if ((DurationUntilError.Value < 0))
             {
-                throw new ArgumentException(string.Format("DurationUntilError should have been at least 0 but was \'{0}\'", DurationUntilError.Value), "durationUntilError");
+                throw new ArgumentException(string.Format("DurationUntilError should have been at least 0 but was \'{0}\'", DurationUntilError.Value), "DurationUntilError");
             }
             Argument.Validate(AutomaticExecutionTimeout, "automaticExecutionTimeout");
             if ((AutomaticExecutionTimeout.Value < 0))
             {
-                throw new ArgumentException(string.Format("AutomaticExecutionTimeout should have been at least 0 but was \'{0}\'", AutomaticExecutionTimeout.Value), "automaticExecutionTimeout");
+                throw new ArgumentException(string.Format("AutomaticExecutionTimeout should have been at least 0 but was \'{0}\'", AutomaticExecutionTimeout.Value), "AutomaticExecutionTimeout");
             }
         }
         
@@ -113,8 +113,8 @@ namespace Tecan.Sila2.Interop.Server.RecoverableErrorProvider
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            string errors = (("" + Argument.Require(DurationUntilError, "durationUntilError")) 
-                        + Argument.Require(AutomaticExecutionTimeout, "automaticExecutionTimeout"));
+            string errors = (("" + Argument.Require(DurationUntilError, "DurationUntilError")) 
+                        + Argument.Require(AutomaticExecutionTimeout, "AutomaticExecutionTimeout"));
             if ((DurationUntilError.Value < 0))
             {
                 errors = (errors + string.Format("DurationUntilError should have been at least 0 but was \'{0}\'", DurationUntilError.Value));
@@ -183,7 +183,7 @@ namespace Tecan.Sila2.Interop.Server.RecoverableErrorProvider
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return ("" + Argument.Require(SelectedContinuationOption, "selectedContinuationOption"));
+            return ("" + Argument.Require(SelectedContinuationOption, "SelectedContinuationOption"));
         }
     }
 }

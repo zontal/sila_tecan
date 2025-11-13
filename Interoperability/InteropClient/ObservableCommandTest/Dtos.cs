@@ -105,8 +105,8 @@ namespace Tecan.Sila2.Interop.Client.ObservableCommandTest.ObservableCommandTest
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return (("" + Argument.Require(N, "n")) 
-                        + Argument.Require(Delay, "delay"));
+            return (("" + Argument.Require(N, "N")) 
+                        + Argument.Require(Delay, "Delay"));
         }
     }
     
@@ -166,7 +166,7 @@ namespace Tecan.Sila2.Interop.Client.ObservableCommandTest.ObservableCommandTest
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return ("" + Argument.Require(CurrentIteration, "currentIteration"));
+            return ("" + Argument.Require(CurrentIteration, "CurrentIteration"));
         }
     }
     
@@ -226,7 +226,7 @@ namespace Tecan.Sila2.Interop.Client.ObservableCommandTest.ObservableCommandTest
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return ("" + Argument.Require(IterationResponse, "iterationResponse"));
+            return ("" + Argument.Require(IterationResponse, "IterationResponse"));
         }
     }
     
@@ -319,8 +319,8 @@ namespace Tecan.Sila2.Interop.Client.ObservableCommandTest.ObservableCommandTest
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return (("" + Argument.Require(Value, "value")) 
-                        + Argument.Require(Delay, "delay"));
+            return (("" + Argument.Require(Value, "Value")) 
+                        + Argument.Require(Delay, "Delay"));
         }
     }
     
@@ -380,7 +380,7 @@ namespace Tecan.Sila2.Interop.Client.ObservableCommandTest.ObservableCommandTest
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return ("" + Argument.Require(ReceivedValue, "receivedValue"));
+            return ("" + Argument.Require(ReceivedValue, "ReceivedValue"));
         }
     }
 }

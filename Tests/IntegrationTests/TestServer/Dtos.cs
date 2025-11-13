@@ -80,7 +80,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return ("" + Argument.Require(Data, "data"));
+            return ("" + Argument.Require(Data, "Data"));
         }
     }
     
@@ -136,7 +136,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return ("" + Argument.Require(ReturnValue, "returnValue"));
+            return ("" + Argument.Require(ReturnValue, "ReturnValue"));
         }
     }
     
@@ -204,7 +204,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return ("" + Argument.Require(Data, "data"));
+            return ("" + Argument.Require(Data, "Data"));
         }
     }
     
@@ -260,7 +260,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return ("" + Argument.Require(ReturnValue, "returnValue"));
+            return ("" + Argument.Require(ReturnValue, "ReturnValue"));
         }
     }
     
@@ -328,7 +328,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return ("" + Argument.Require(Data, "data"));
+            return ("" + Argument.Require(Data, "Data"));
         }
     }
     
@@ -384,7 +384,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return ("" + Argument.Require(ReturnValue, "returnValue"));
+            return ("" + Argument.Require(ReturnValue, "ReturnValue"));
         }
     }
     
@@ -452,7 +452,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return ("" + Argument.Require(Data, "data"));
+            return ("" + Argument.Require(Data, "Data"));
         }
     }
     
@@ -508,7 +508,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return ("" + Argument.Require(ReturnValue, "returnValue"));
+            return ("" + Argument.Require(ReturnValue, "ReturnValue"));
         }
     }
     
@@ -576,7 +576,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return ("" + Argument.Require(Timestamp, "timestamp"));
+            return ("" + Argument.Require(Timestamp, "Timestamp"));
         }
     }
     
@@ -632,7 +632,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return ("" + Argument.Require(ReturnValue, "returnValue"));
+            return ("" + Argument.Require(ReturnValue, "ReturnValue"));
         }
     }
     
@@ -700,7 +700,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return ("" + Argument.Require(Time, "time"));
+            return ("" + Argument.Require(Time, "Time"));
         }
     }
     
@@ -756,7 +756,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return ("" + Argument.Require(ReturnValue, "returnValue"));
+            return ("" + Argument.Require(ReturnValue, "ReturnValue"));
         }
     }
     
@@ -824,7 +824,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return ("" + Argument.Require(Value, "value"));
+            return ("" + Argument.Require(Value, "Value"));
         }
     }
     
@@ -880,7 +880,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return ("" + Argument.Require(ReturnValue, "returnValue"));
+            return ("" + Argument.Require(ReturnValue, "ReturnValue"));
         }
     }
     
@@ -948,7 +948,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return ("" + Argument.Require(Value, "value"));
+            return ("" + Argument.Require(Value, "Value"));
         }
     }
     
@@ -1004,7 +1004,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return ("" + Argument.Require(ReturnValue, "returnValue"));
+            return ("" + Argument.Require(ReturnValue, "ReturnValue"));
         }
     }
     
@@ -1072,7 +1072,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return ("" + Argument.Require(File, "file"));
+            return ("" + Argument.Require(File, "File"));
         }
     }
     
@@ -1128,7 +1128,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return ("" + Argument.Require(ReturnValue, "returnValue"));
+            return ("" + Argument.Require(ReturnValue, "ReturnValue"));
         }
     }
     
@@ -1196,7 +1196,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return ("" + Argument.Require(Bytes, "bytes"));
+            return ("" + Argument.Require(Bytes, "Bytes"));
         }
     }
     
@@ -1252,7 +1252,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return ("" + Argument.Require(ReturnValue, "returnValue"));
+            return ("" + Argument.Require(ReturnValue, "ReturnValue"));
         }
     }
     
@@ -1320,7 +1320,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return ("" + Argument.Require(Dynamic, "dynamic"));
+            return ("" + Argument.Require(Dynamic, "Dynamic"));
         }
     }
     
@@ -1376,7 +1376,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return ("" + Argument.Require(ReturnValue, "returnValue"));
+            return ("" + Argument.Require(ReturnValue, "ReturnValue"));
         }
     }
     
@@ -1444,7 +1444,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return ("" + Argument.Require(Strings, "strings"));
+            return ("" + Argument.Require(Strings, "Strings"));
         }
     }
     
@@ -1500,7 +1500,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return ("" + Argument.Require(ReturnValue, "returnValue"));
+            return ("" + Argument.Require(ReturnValue, "ReturnValue"));
         }
     }
     
@@ -1568,7 +1568,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return ("" + Argument.Require(Structure, "structure"));
+            return ("" + Argument.Require(Structure, "Structure"));
         }
     }
     
@@ -1624,7 +1624,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return ("" + Argument.Require(ReturnValue, "returnValue"));
+            return ("" + Argument.Require(ReturnValue, "ReturnValue"));
         }
     }
     
@@ -1731,7 +1731,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return ("" + Argument.Require(ReturnValue, "returnValue"));
+            return ("" + Argument.Require(ReturnValue, "ReturnValue"));
         }
     }
     
@@ -1839,7 +1839,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return ("" + Argument.Require(Intermediate, "intermediate"));
+            return ("" + Argument.Require(Intermediate, "Intermediate"));
         }
     }
     
@@ -1907,7 +1907,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return ("" + Argument.Require(Duration, "duration"));
+            return ("" + Argument.Require(Duration, "Duration"));
         }
     }
     
@@ -2077,7 +2077,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return ("" + Argument.Require(CommandId, "commandId"));
+            return ("" + Argument.Require(CommandId, "CommandId"));
         }
     }
     
@@ -2133,7 +2133,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return ("" + Argument.Require(ReturnValue, "returnValue"));
+            return ("" + Argument.Require(ReturnValue, "ReturnValue"));
         }
     }
     
@@ -2252,7 +2252,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return ("" + Argument.Require(Value, "value"));
+            return ("" + Argument.Require(Value, "Value"));
         }
     }
     
@@ -2445,12 +2445,12 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return (((((("" + Argument.Require(Boolean, "boolean")) 
-                        + Argument.Require(Real, "real")) 
-                        + Argument.Require(Long, "long")) 
-                        + Argument.Require(Int, "int")) 
-                        + Argument.Require(Timestamp, "timestamp")) 
-                        + Argument.Require(Time, "time"));
+            return (((((("" + Argument.Require(Boolean, "Boolean")) 
+                        + Argument.Require(Real, "Real")) 
+                        + Argument.Require(Long, "Long")) 
+                        + Argument.Require(Int, "Int")) 
+                        + Argument.Require(Timestamp, "Timestamp")) 
+                        + Argument.Require(Time, "Time"));
         }
         
         /// <summary>

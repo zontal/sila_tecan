@@ -84,7 +84,7 @@ namespace Tecan.Sila2.Interop.Client.MultiClientTest.MultiClientTest
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return ("" + Argument.Require(Duration, "duration"));
+            return ("" + Argument.Require(Duration, "Duration"));
         }
     }
     
@@ -156,7 +156,7 @@ namespace Tecan.Sila2.Interop.Client.MultiClientTest.MultiClientTest
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return ("" + Argument.Require(Duration, "duration"));
+            return ("" + Argument.Require(Duration, "Duration"));
         }
     }
     
@@ -228,7 +228,7 @@ namespace Tecan.Sila2.Interop.Client.MultiClientTest.MultiClientTest
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return ("" + Argument.Require(Duration, "duration"));
+            return ("" + Argument.Require(Duration, "Duration"));
         }
     }
 }

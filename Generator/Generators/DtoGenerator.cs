@@ -526,7 +526,7 @@ namespace Tecan.Sila2.Generator.Generators
                 {
                     constructor.Comments.Add( new CodeCommentStatement( $@"<param name=""{parameter.Name}"">{element.Description}</param>", true ) );
                 }
-                validateMethod.Statements.Add( new CodeMethodInvokeExpression( validate, property, new CodePrimitiveExpression( parameter.Name ) ) );
+                validateMethod.Statements.Add( new CodeMethodInvokeExpression( validate, property, new CodePrimitiveExpression( element.Identifier ) ) );
                 if(element.DataType.Item is ConstrainedType constrained)
                 {
                     foreach(var validationGenerator in _validators)
@@ -602,7 +602,7 @@ namespace Tecan.Sila2.Generator.Generators
                     {
                         ImplementValidationErrorConstraints( constraints.Constraints, constraints.DataType, dto, validationMethod.Statements, errorsRef, property );
                     }
-                    var validate = new CodeMethodInvokeExpression( requireCall, property, new CodePrimitiveExpression( element.Identifier.ToCamelCase() ) );
+                    var validate = new CodeMethodInvokeExpression( requireCall, property, new CodePrimitiveExpression( element.Identifier ) );
                     errors.InitExpression = new CodeBinaryOperatorExpression( errors.InitExpression, CodeBinaryOperatorType.Add, validate );
 
                     index++;

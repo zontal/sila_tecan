@@ -112,9 +112,9 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// </summary>
         public void Validate()
         {
-            Argument.Validate( Target, "target" );
-            Argument.Validate( MaxAcceleration, "maxAcceleration" );
-            Argument.Validate( TimeRange, "timeRange" );
+            Argument.Validate( Target, "Target" );
+            Argument.Validate( MaxAcceleration, "MaxAcceleration" );
+            Argument.Validate( TimeRange, "TimeRange" );
         }
 
         /// <summary>
@@ -123,9 +123,9 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return ((("" + Argument.Require( Target, "target" ))
-                        + Argument.Require( MaxAcceleration, "maxAcceleration" ))
-                        + Argument.Require( TimeRange, "timeRange" ));
+            return ((("" + Argument.Require( Target, "Target" ))
+                        + Argument.Require( MaxAcceleration, "MaxAcceleration" ))
+                        + Argument.Require( TimeRange, "TimeRange" ));
         }
     }
 
@@ -175,7 +175,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// </summary>
         public void Validate()
         {
-            Argument.Validate( Value, "value" );
+            Argument.Validate( Value, "Value" );
         }
 
         /// <summary>
@@ -184,7 +184,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// <returns>A validation error or null, if no validation error occurred.</returns>
         public string GetValidationErrors()
         {
-            return ("" + Argument.Require( Value, "value" ));
+            return ("" + Argument.Require( Value, "Value" ));
         }
     }
 }
