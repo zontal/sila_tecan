@@ -26,10 +26,10 @@ namespace Tecan.Sila2.DynamicClient
         /// <param name="store">A binary store to resolve binary data</param>
         public AnyTypeDto( DynamicObjectProperty value, IBinaryStore store = null )
         {
-            if( value != null )
+            if (value != null)
             {
-                Type = DataTypeSerializer.SaveToString( value.Type );
-                Payload = Serializer.Serialize( value, store );
+                Type = DataTypeSerializer.SaveToString(value.Type);
+                Payload = Serializer.Serialize(value, store, 1);
             }
         }
 
@@ -69,7 +69,7 @@ namespace Tecan.Sila2.DynamicClient
 
             var type = DataTypeSerializer.LoadType( Type );
             var property = new DynamicObjectProperty( Identifier, DisplayName, Description, type );
-            Serializer.Deserialize( property, Payload, false, resolver );
+            Serializer.Deserialize( property, Payload, true, resolver );
             return property;
         }
 

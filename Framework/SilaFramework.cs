@@ -1182,10 +1182,18 @@ namespace Tecan.Sila2
         /// </summary>
         /// <param name="value">The inner value</param>
         /// <param name="store">A binary store to resolve binary data</param>
-        public TimezoneDto( TimeSpan value, IBinaryStore store = null )
+        public TimezoneDto(TimeSpan value, IBinaryStore store = null)
         {
             Hours = value.Hours;
-            Minutes = (uint)value.Minutes;
+            if (value.Minutes < 0)
+            {
+                Hours--;
+                Minutes = (uint)(value.Minutes + 60);
+            }
+            else
+            {
+                Minutes = (uint)value.Minutes;
+            }
         }
 
         /// <summary>
