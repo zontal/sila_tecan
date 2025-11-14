@@ -39,6 +39,7 @@
 	  <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.9.1" />
 	  <PackageReference Include="NUnit" Version="3.13.3" />
 	  <PackageReference Include="NUnit3TestAdapter" Version="4.4.2" />
+	  <PackageReference Include="System.Net.Http.WinHttpHandler" Version="10.0.0" />
   </ItemGroup>
 
 </Project>

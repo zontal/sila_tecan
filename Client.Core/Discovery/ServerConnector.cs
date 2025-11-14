@@ -79,14 +79,8 @@ namespace Tecan.Sila2.Discovery
                 {
                     var discoveryCertificate = CertificateGenerator.LoadCertificateFromPem( RestoreCa( details ) );
                     var certificateValidator = new ServerCertificateValidator( discoveryCertificate );
-                    var clientHandler = new HttpClientHandler
-                    {
-                        ServerCertificateCustomValidationCallback = certificateValidator.ValidateActualCertificate
-                    };
-                    var channel = GrpcChannel.ForAddress( prependScheme ? "https://" + target : target, new GrpcChannelOptions
-                    {
-                        HttpHandler = clientHandler,
-                    } );
+                    var channel = GrpcChannel.ForAddress( prependScheme ? "https://" + target : target,
+                        CreateChannelOptions(certificateValidator.ValidateActualCertificate));
                     return CheckExpectedGuid( CheckCertificate( GetServerData( channel, () => certificateValidator.ServerCertificate ), certificateValidator.ServerCertificate ), expectedGuid );
                 }
                 catch(Exception e)
@@ -98,17 +92,26 @@ namespace Tecan.Sila2.Discovery
             return ConnectInsecure( target, prependScheme );
         }
 
+        /// <summary>
+        /// Creates the channel options for the given certificate validator
+        /// </summary>
+        /// <param name="certificateValidator">A function to validate certificates</param>
+        /// <returns>the gRPC channel options to use for the constructed channel</returns>
+        protected virtual GrpcChannelOptions CreateChannelOptions(Func<HttpRequestMessage, X509Certificate2, X509Chain, SslPolicyErrors, bool> certificateValidator)
+        {
+            return new GrpcChannelOptions
+            {
+                HttpHandler = new HttpClientHandler
+                {
+                    ServerCertificateCustomValidationCallback = certificateValidator
+                }
+            };
+        }
+
         private ServerData ConnectEncrypted(string target, Guid? expectedGuid, bool prependScheme, X509Certificate2 ca)
         {
             var certificateValidator = new ServerCertificateValidator(ca);
-            var clientHandler = new HttpClientHandler
-            {
-                ServerCertificateCustomValidationCallback = certificateValidator.ValidateActualCertificate
-            };
-            var channel = GrpcChannel.ForAddress(prependScheme ? "https://" + target : target, new GrpcChannelOptions
-            {
-                HttpHandler = clientHandler,
-            });
+            var channel = GrpcChannel.ForAddress(prependScheme ? "https://" + target : target, CreateChannelOptions(certificateValidator.ValidateActualCertificate));
             var server = CheckCertificateAuthority(GetServerData(channel, () => certificateValidator.ServerCertificate), certificateValidator.ServerCertificate, ca);
             if (!certificateValidator.CheckDiscoveryCertificateMatchesActualCertificate())
             {
