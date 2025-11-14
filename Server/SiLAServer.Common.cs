@@ -293,7 +293,7 @@ namespace Tecan.Sila2.Server
             }
             catch(Exception exception)
             {
-                _logger.Error( $"Error while executing command {request.CommandIdentifier}", exception );
+                _logger.Error( $"Error while executing command {request.CommandIdentifier}", exception.InnerException ?? exception );
                 _requestPipeline.ReportError( interceptions, exception );
 
                 if(exception is OperationCanceledException)

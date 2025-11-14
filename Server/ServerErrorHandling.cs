@@ -43,7 +43,7 @@ namespace Tecan.Sila2.Server
                     Message = message,
                     Parameter = parameter
                 }
-            } ) ) );
+            } ) ), message);
         }
 
         /// <summary>
@@ -60,7 +60,7 @@ namespace Tecan.Sila2.Server
                     Message = exception.Message,
                     Parameter = exception.ParamName
                 }
-            } ) ) );
+            } ) ), exception.Message);
         }
 
         /// <summary>
@@ -76,7 +76,7 @@ namespace Tecan.Sila2.Server
                 {
                     Message = exception.Message
                 }
-            } ) ) );
+            } ) ), exception.Message );
         }
 
         /// <summary>
@@ -86,7 +86,7 @@ namespace Tecan.Sila2.Server
         /// <returns>The exception to raise</returns>
         public Exception CreateBinaryError( BinaryTransferError binaryTransferError )
         {
-            return new RpcException( new Status( StatusCode.Aborted, ToBase64String( binaryTransferError ) ) );
+            return new RpcException( new Status( StatusCode.Aborted, ToBase64String( binaryTransferError ) ), binaryTransferError.Message );
         }
 
         /// <summary>
@@ -105,7 +105,7 @@ namespace Tecan.Sila2.Server
                     Message = details ?? description,
                     ErrorIdentifier = identifier
                 }
-            } ) ) );
+            } ) ), details ?? description );
         }
 
         /// <summary>
@@ -132,7 +132,7 @@ namespace Tecan.Sila2.Server
                     Type = identifier,
                     Message = message ?? GetDefaultMessage( identifier )
                 }
-            } ) ) );
+            } ) ), message ?? GetDefaultMessage(identifier) );
         }
 
         private static string GetDefaultMessage( FrameworkErrorType errorType )
