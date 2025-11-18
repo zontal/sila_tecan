@@ -34,7 +34,7 @@ namespace Tecan.Sila2
         /// <inheritdoc />
         protected override AuthConfiguration LoadConfiguration()
         {
-            if(File.Exists( ConfigName ))
+            if (_configurationStore.Exists(ConfigName, typeof(AuthConfiguration)))
             {
                 return _configurationStore.Read<AuthConfiguration>( ConfigName );
             }

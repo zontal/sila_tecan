@@ -13,7 +13,7 @@ namespace Tecan.Sila2
     public abstract class AuthConfigurationProviderBase : IAuthConfigurationProvider
     {
         private readonly IServerDiscovery _discovery;
-        private readonly AuthConfiguration _configuration;
+        private readonly Lazy<AuthConfiguration> _configuration;
         private readonly IServerConnector _serverConnector;
 
         private const string ProviderFeatureId = "org.silastandard/core/AuthorizationProviderService/v1";
@@ -27,24 +27,51 @@ namespace Tecan.Sila2
         {
             _discovery = discovery;
             _serverConnector = serverConnector;
-#pragma warning disable S1699 // Constructors should only call non-overridable methods
-            _configuration = LoadConfiguration();
-#pragma warning restore S1699 // Constructors should only call non-overridable methods
+            _configuration = new Lazy<AuthConfiguration>(ReloadConfiguration);
+        }
 
+        /// <summary>
+        /// Forces to reload the auth configuration
+        /// </summary>
+        private AuthConfiguration ReloadConfiguration()
+        {
             try
             {
-                if(_configuration.AuthProvider is DiscoveredServer discovered)
+                var configuration = LoadConfiguration();
+                try
                 {
-                    SetAuthorizationProvider( discovered.ServerUUID );
+                    if (configuration.AuthProvider is DiscoveredServer discovered)
+                    {
+                        SetAuthorizationProvider(discovered.ServerUUID);
+                    }
+                    else if (configuration.AuthProvider is ExplicitServer explicitServer)
+                    {
+                        SetAuthorizationProvider(explicitServer.Host, int.Parse(explicitServer.Port));
+                    }
+                    return configuration;
                 }
-                else if(_configuration.AuthProvider is ExplicitServer explicitServer)
+                catch (Exception e)
                 {
-                    SetAuthorizationProvider( explicitServer.Host, int.Parse( explicitServer.Port ) );
+                    LogManager.GetLogger<AuthConfigurationProviderBase>().Error("Restoring authorization provider failed", e);
                 }
+                return configuration;
             }
-            catch(Exception e)
+            catch (Exception ex)
             {
-                LogManager.GetLogger<AuthConfigurationProviderBase>().Error( "Restoring authorization provider failed", e );
+                LogManager.GetLogger<AuthConfigurationProviderBase>().Error("Loading auth configuration failed", ex);
+                return new AuthConfiguration();
+            }
+        }
+
+        /// <summary>
+        /// Ensures that the authentication/authorization data is loaded successfully
+        /// </summary>
+        public void LoadConfigurationData()
+        {
+            if (!_configuration.IsValueCreated)
+            {
+                var provider = _configuration.Value.AuthProvider;
+                LogManager.GetLogger<AuthConfigurationProviderBase>().Info($"Authorization Data loaded with provider {provider}");
             }
         }
 
@@ -57,7 +84,7 @@ namespace Tecan.Sila2
         /// <inheritdoc />
         public User Login( string username, string password )
         {
-            return Login( username, password, _configuration );
+            return Login( username, password, _configuration.Value );
         }
 
         /// <summary>
@@ -94,8 +121,7 @@ namespace Tecan.Sila2
                 throw new InvalidOperationException( "The server is not configured to discover authorization providers through a server uuid." );
             }
 
-            var servers = _discovery.GetServers( TimeSpan.FromSeconds( 10 ) );
-            var server = servers?.FirstOrDefault( s => s.Config.Uuid == serverId );
+            var server = _discovery.Connect( serverId, TimeSpan.FromSeconds( 10 ) );
             if(server == null)
             {
                 throw new ArgumentException( $"The server with id {serverUuid} could not be found.", nameof( serverUuid ) );
@@ -132,23 +158,23 @@ namespace Tecan.Sila2
         public void SetAuthorizationProvider(string serverUuid)
         {
             SetAuthorizationProviderCore(serverUuid);
-            _configuration.AuthProvider = new DiscoveredServer()
+            _configuration.Value.AuthProvider = new DiscoveredServer()
             {
                 ServerUUID = serverUuid
             };
-            SaveConfiguration(_configuration);
+            SaveConfiguration(_configuration.Value);
         }
 
         /// <inheritdoc />
         public void SetAuthorizationProvider( string host, int port )
         {
             SetAuthorizationProviderCore( host, port );
-            _configuration.AuthProvider = new ExplicitServer()
+            _configuration.Value.AuthProvider = new ExplicitServer()
             {
                 Host = host,
                 Port = port.ToString()
             };
-            SaveConfiguration( _configuration );
+            SaveConfiguration( _configuration.Value );
         }
 
         /// <summary>
@@ -160,7 +186,7 @@ namespace Tecan.Sila2
         /// <inheritdoc />
         public bool IsValidApiKey(string apiKey, string commandIdentifier)
         {
-            return _configuration.Keys != null && _configuration.Keys.Any(k =>
+            return _configuration.Value.Keys != null && _configuration.Value.Keys.Any(k =>
                 apiKey == k.Value && (k.IsWildcard || (k.Permission != null && k.Permission.Any(p => commandIdentifier.StartsWith(p)))));
         }
     }
