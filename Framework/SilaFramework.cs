@@ -15,6 +15,8 @@ namespace Tecan.Sila2
     [ProtoContract()]
     public class StringDto : ISilaTransferObject<string>
     {
+        private const int MaxLength = 2048 * 1024;
+
         /// <summary>
         /// Creates a new dto
         /// </summary>
@@ -61,6 +63,10 @@ namespace Tecan.Sila2
         /// <returns>null, because the type does not perform validation</returns>
         public string GetValidationErrors()
         {
+            if (Value != null && Value.Length > MaxLength)
+            {
+                return "Strings in SiLA2 must be shorter than 2**21 characters";
+            }
             return null;
         }
 
@@ -78,7 +84,7 @@ namespace Tecan.Sila2
         /// <inheritdoc />
         public override string ToString()
         {
-            return Value.ToString();
+            return Value;
         }
     }
 
@@ -925,7 +931,19 @@ namespace Tecan.Sila2
         /// <returns>Null as no errors have been found</returns>
         public string GetValidationErrors()
         {
-            return null;
+            if (Year < 1 || Year > 9999)
+            {
+                return "Year must be between 1 and 9999";
+            }
+            if ( Month == 0 || Month > 12 || Day == 0 || Day > DateTime.DaysInMonth((int)Year, (int)Month))
+            {
+                return $"{Day}/{Month}/{Year} does not represent a valid date.";
+            }
+            if (Timezone == null)
+            {
+                return "Timezone is missing";
+            }
+            return Timezone.GetValidationErrors();
         }
 
         /// <summary>
@@ -961,12 +979,30 @@ namespace Tecan.Sila2
         /// </summary>
         /// <param name="value">The inner value</param>
         /// <param name="store">A binary store to resolve binary data</param>
-        public TimeDto( TimeSpan value, IBinaryStore store = null )
+        public TimeDto(TimeSpan value, IBinaryStore store = null)
+        {
+            if (value < TimeSpan.Zero)
+            {
+                var timezone = TimeSpan.FromHours(value.Hours);
+                if (value - timezone < TimeSpan.Zero)
+                {
+                    timezone += TimeSpan.FromHours(-1);
+                }
+                Init(value - timezone);
+                Timezone = timezone;
+            }
+            else
+            {
+                Init(value);
+                Timezone = new TimezoneDto(TimeSpan.Zero);
+            }
+        }
+
+        private void Init(TimeSpan value)
         {
             Second = (uint)value.Seconds;
             Minute = (uint)value.Minutes;
             Hour = (uint)value.Hours;
-            Timezone = new TimezoneDto( TimeSpan.Zero );
             Millisecond = (uint)value.Milliseconds;
         }
 
@@ -1025,7 +1061,15 @@ namespace Tecan.Sila2
         /// <returns>Null as no errors have been found</returns>
         public string GetValidationErrors()
         {
-            return null;
+            if (Second >= 60 || Minute >= 60 || Millisecond >= 1000)
+            {
+                return "Invalid time";
+            }
+            if (Timezone == null)
+            {
+                return "Timezone is missing";
+            }
+            return Timezone.GetValidationErrors();
         }
 
         /// <summary>
@@ -1146,7 +1190,23 @@ namespace Tecan.Sila2
         /// <returns>Null as no errors have been found</returns>
         public string GetValidationErrors()
         {
-            return null;
+            if (Year < 1 || Year > 9999)
+            {
+                return "Year must be between 1 and 9999";
+            }
+            if (Month == 0 || Month > 12 || Day == 0 || Day > DateTime.DaysInMonth((int)Year, (int)Month))
+            {
+                return $"{Day}/{Month}/{Year} does not represent a valid date.";
+            }
+            if (Second >= 60 || Minute >= 60 || Millisecond >= 1000)
+            {
+                return "Invalid time";
+            }
+            if (Timezone == null)
+            {
+                return "Timezone is missing";
+            }
+            return Timezone.GetValidationErrors();
         }
 
         /// <summary>
@@ -1233,6 +1293,14 @@ namespace Tecan.Sila2
         /// <returns>Null as no errors have been found</returns>
         public string GetValidationErrors()
         {
+            if ( Minutes >= 60 || Hours > 14 || Hours < -14 )
+            {
+                return "Invalid time zone";
+            }
+            if (Minutes != 0 && Hours == 14)
+            {
+                return "Invalid time zone";
+            }
             return null;
         }
 
