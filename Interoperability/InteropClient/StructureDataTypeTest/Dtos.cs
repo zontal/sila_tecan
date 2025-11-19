@@ -75,7 +75,7 @@ namespace Tecan.Sila2.Interop.Client.StructureDataTypeTest.StructureDataTypeTest
         /// </summary>
         public void Validate()
         {
-            Argument.Validate(StructureValue, "structureValue");
+            Argument.Validate(StructureValue, "StructureValue");
         }
         
         /// <summary>
@@ -135,7 +135,7 @@ namespace Tecan.Sila2.Interop.Client.StructureDataTypeTest.StructureDataTypeTest
         /// </summary>
         public void Validate()
         {
-            Argument.Validate(ReceivedValues, "receivedValues");
+            Argument.Validate(ReceivedValues, "ReceivedValues");
         }
         
         /// <summary>
@@ -207,7 +207,7 @@ namespace Tecan.Sila2.Interop.Client.StructureDataTypeTest.StructureDataTypeTest
         /// </summary>
         public void Validate()
         {
-            Argument.Validate(DeepStructureValue, "deepStructureValue");
+            Argument.Validate(DeepStructureValue, "DeepStructureValue");
         }
         
         /// <summary>
@@ -267,7 +267,7 @@ namespace Tecan.Sila2.Interop.Client.StructureDataTypeTest.StructureDataTypeTest
         /// </summary>
         public void Validate()
         {
-            Argument.Validate(ReceivedValues, "receivedValues");
+            Argument.Validate(ReceivedValues, "ReceivedValues");
         }
         
         /// <summary>

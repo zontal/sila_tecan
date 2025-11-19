@@ -125,18 +125,18 @@ namespace Tecan.Sila2.Recovery
         /// </summary>
         public void Validate()
         {
-            Argument.Validate(CommandExecutionUUID, "commandExecutionUUID");
+            Argument.Validate(CommandExecutionUUID, "CommandExecutionUUID");
             if ((CommandExecutionUUID.Value.Length != 36))
             {
-                throw new ArgumentException(string.Format("CommandExecutionUUID has length {0} but should have been 36", CommandExecutionUUID.Value.Length), "CommandExecutionUUID");
+                throw new ArgumentException(string.Format("CommandExecutionUUID has length {0} but should have been 36", CommandExecutionUUID.Value.Length), "commandExecutionUUID");
             }
             if ((RegexConstraint.IsMatch(CommandExecutionUUID.Value, "[0-9a-f]{8}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{12}") == false))
             {
                 throw new ArgumentException(string.Format("CommandExecutionUUID \'{0}\' does not match pattern \'[0-9a-f]{8}\\-[0-9a-f]{4}\\-[0-9" +
-                            "a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{12}\'", CommandExecutionUUID.Value), "CommandExecutionUUID");
+                            "a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{12}\'", CommandExecutionUUID.Value), "commandExecutionUUID");
             }
-            Argument.Validate(ContinuationOption, "continuationOption");
-            Argument.Validate(InputData, "inputData");
+            Argument.Validate(ContinuationOption, "ContinuationOption");
+            Argument.Validate(InputData, "InputData");
         }
         
         /// <summary>
@@ -220,15 +220,15 @@ namespace Tecan.Sila2.Recovery
         /// </summary>
         public void Validate()
         {
-            Argument.Validate(CommandExecutionUUID, "commandExecutionUUID");
+            Argument.Validate(CommandExecutionUUID, "CommandExecutionUUID");
             if ((CommandExecutionUUID.Value.Length != 36))
             {
-                throw new ArgumentException(string.Format("CommandExecutionUUID has length {0} but should have been 36", CommandExecutionUUID.Value.Length), "CommandExecutionUUID");
+                throw new ArgumentException(string.Format("CommandExecutionUUID has length {0} but should have been 36", CommandExecutionUUID.Value.Length), "commandExecutionUUID");
             }
             if ((RegexConstraint.IsMatch(CommandExecutionUUID.Value, "[0-9a-f]{8}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{12}") == false))
             {
                 throw new ArgumentException(string.Format("CommandExecutionUUID \'{0}\' does not match pattern \'[0-9a-f]{8}\\-[0-9a-f]{4}\\-[0-9" +
-                            "a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{12}\'", CommandExecutionUUID.Value), "CommandExecutionUUID");
+                            "a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{12}\'", CommandExecutionUUID.Value), "commandExecutionUUID");
             }
         }
         
@@ -311,7 +311,7 @@ namespace Tecan.Sila2.Recovery
         /// </summary>
         public void Validate()
         {
-            Argument.Validate(ErrorHandlingTimeout, "errorHandlingTimeout");
+            Argument.Validate(ErrorHandlingTimeout, "ErrorHandlingTimeout");
         }
         
         /// <summary>

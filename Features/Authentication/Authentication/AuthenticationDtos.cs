@@ -135,19 +135,19 @@ namespace Tecan.Sila2.Authentication
         /// </summary>
         public void Validate()
         {
-            Argument.Validate(UserIdentification, "userIdentification");
-            Argument.Validate(Password, "password");
-            Argument.Validate(RequestedServer, "requestedServer");
+            Argument.Validate(UserIdentification, "UserIdentification");
+            Argument.Validate(Password, "Password");
+            Argument.Validate(RequestedServer, "RequestedServer");
             if ((RequestedServer.Value.Length != 36))
             {
-                throw new ArgumentException(string.Format("RequestedServer has length {0} but should have been 36", RequestedServer.Value.Length), "RequestedServer");
+                throw new ArgumentException(string.Format("RequestedServer has length {0} but should have been 36", RequestedServer.Value.Length), "requestedServer");
             }
             if ((RegexConstraint.IsMatch(RequestedServer.Value, "[0-9a-f]{8}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{12}") == false))
             {
                 throw new ArgumentException(string.Format("RequestedServer \'{0}\' does not match pattern \'[0-9a-f]{8}\\-[0-9a-f]{4}\\-[0-9a-f]{" +
-                            "4}\\-[0-9a-f]{4}\\-[0-9a-f]{12}\'", RequestedServer.Value), "RequestedServer");
+                            "4}\\-[0-9a-f]{4}\\-[0-9a-f]{12}\'", RequestedServer.Value), "requestedServer");
             }
-            Argument.Validate(RequestedFeatures, "requestedFeatures");
+            Argument.Validate(RequestedFeatures, "RequestedFeatures");
         }
         
         /// <summary>
@@ -325,7 +325,7 @@ namespace Tecan.Sila2.Authentication
         /// </summary>
         public void Validate()
         {
-            Argument.Validate(AccessToken, "accessToken");
+            Argument.Validate(AccessToken, "AccessToken");
         }
         
         /// <summary>

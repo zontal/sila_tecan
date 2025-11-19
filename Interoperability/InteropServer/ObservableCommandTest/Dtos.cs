@@ -95,8 +95,8 @@ namespace Tecan.Sila2.Interop.Server.ObservableCommandTest
         /// </summary>
         public void Validate()
         {
-            Argument.Validate(N, "n");
-            Argument.Validate(Delay, "delay");
+            Argument.Validate(N, "N");
+            Argument.Validate(Delay, "Delay");
         }
         
         /// <summary>
@@ -157,7 +157,7 @@ namespace Tecan.Sila2.Interop.Server.ObservableCommandTest
         /// </summary>
         public void Validate()
         {
-            Argument.Validate(CurrentIteration, "currentIteration");
+            Argument.Validate(CurrentIteration, "CurrentIteration");
         }
         
         /// <summary>
@@ -217,7 +217,7 @@ namespace Tecan.Sila2.Interop.Server.ObservableCommandTest
         /// </summary>
         public void Validate()
         {
-            Argument.Validate(IterationResponse, "iterationResponse");
+            Argument.Validate(IterationResponse, "IterationResponse");
         }
         
         /// <summary>
@@ -309,8 +309,8 @@ namespace Tecan.Sila2.Interop.Server.ObservableCommandTest
         /// </summary>
         public void Validate()
         {
-            Argument.Validate(Value, "value");
-            Argument.Validate(Delay, "delay");
+            Argument.Validate(Value, "Value");
+            Argument.Validate(Delay, "Delay");
         }
         
         /// <summary>
@@ -371,7 +371,7 @@ namespace Tecan.Sila2.Interop.Server.ObservableCommandTest
         /// </summary>
         public void Validate()
         {
-            Argument.Validate(ReceivedValue, "receivedValue");
+            Argument.Validate(ReceivedValue, "ReceivedValue");
         }
         
         /// <summary>

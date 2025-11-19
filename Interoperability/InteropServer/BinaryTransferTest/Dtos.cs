@@ -75,7 +75,7 @@ namespace Tecan.Sila2.Interop.Server.BinaryTransferTest
         /// </summary>
         public void Validate()
         {
-            Argument.Validate(BinaryValue, "binaryValue");
+            Argument.Validate(BinaryValue, "BinaryValue");
         }
         
         /// <summary>
@@ -135,7 +135,7 @@ namespace Tecan.Sila2.Interop.Server.BinaryTransferTest
         /// </summary>
         public void Validate()
         {
-            Argument.Validate(ReceivedValue, "receivedValue");
+            Argument.Validate(ReceivedValue, "ReceivedValue");
         }
         
         /// <summary>
@@ -207,7 +207,7 @@ namespace Tecan.Sila2.Interop.Server.BinaryTransferTest
         /// </summary>
         public void Validate()
         {
-            Argument.Validate(Binaries, "binaries");
+            Argument.Validate(Binaries, "Binaries");
         }
         
         /// <summary>
@@ -267,7 +267,7 @@ namespace Tecan.Sila2.Interop.Server.BinaryTransferTest
         /// </summary>
         public void Validate()
         {
-            Argument.Validate(Binary, "binary");
+            Argument.Validate(Binary, "Binary");
         }
         
         /// <summary>
@@ -327,7 +327,7 @@ namespace Tecan.Sila2.Interop.Server.BinaryTransferTest
         /// </summary>
         public void Validate()
         {
-            Argument.Validate(JointBinary, "jointBinary");
+            Argument.Validate(JointBinary, "JointBinary");
         }
         
         /// <summary>
@@ -399,7 +399,7 @@ namespace Tecan.Sila2.Interop.Server.BinaryTransferTest
         /// </summary>
         public void Validate()
         {
-            Argument.Validate(Binary, "binary");
+            Argument.Validate(Binary, "Binary");
         }
         
         /// <summary>

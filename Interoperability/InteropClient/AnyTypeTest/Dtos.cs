@@ -75,7 +75,7 @@ namespace Tecan.Sila2.Interop.Client.AnyTypeTest.AnyTypeTest
         /// </summary>
         public void Validate()
         {
-            Argument.Validate(AnyTypeValue, "anyTypeValue");
+            Argument.Validate(AnyTypeValue, "AnyTypeValue");
         }
         
         /// <summary>

@@ -75,7 +75,7 @@ namespace Tecan.Sila2.Interop.Client.BasicDataTypesTest.BasicDataTypesTest
         /// </summary>
         public void Validate()
         {
-            Argument.Validate(StringValue, "stringValue");
+            Argument.Validate(StringValue, "StringValue");
         }
         
         /// <summary>
@@ -135,7 +135,7 @@ namespace Tecan.Sila2.Interop.Client.BasicDataTypesTest.BasicDataTypesTest
         /// </summary>
         public void Validate()
         {
-            Argument.Validate(ReceivedValue, "receivedValue");
+            Argument.Validate(ReceivedValue, "ReceivedValue");
         }
         
         /// <summary>
@@ -207,7 +207,7 @@ namespace Tecan.Sila2.Interop.Client.BasicDataTypesTest.BasicDataTypesTest
         /// </summary>
         public void Validate()
         {
-            Argument.Validate(IntegerValue, "integerValue");
+            Argument.Validate(IntegerValue, "IntegerValue");
         }
         
         /// <summary>
@@ -267,7 +267,7 @@ namespace Tecan.Sila2.Interop.Client.BasicDataTypesTest.BasicDataTypesTest
         /// </summary>
         public void Validate()
         {
-            Argument.Validate(ReceivedValue, "receivedValue");
+            Argument.Validate(ReceivedValue, "ReceivedValue");
         }
         
         /// <summary>
@@ -339,7 +339,7 @@ namespace Tecan.Sila2.Interop.Client.BasicDataTypesTest.BasicDataTypesTest
         /// </summary>
         public void Validate()
         {
-            Argument.Validate(RealValue, "realValue");
+            Argument.Validate(RealValue, "RealValue");
         }
         
         /// <summary>
@@ -399,7 +399,7 @@ namespace Tecan.Sila2.Interop.Client.BasicDataTypesTest.BasicDataTypesTest
         /// </summary>
         public void Validate()
         {
-            Argument.Validate(ReceivedValue, "receivedValue");
+            Argument.Validate(ReceivedValue, "ReceivedValue");
         }
         
         /// <summary>
@@ -471,7 +471,7 @@ namespace Tecan.Sila2.Interop.Client.BasicDataTypesTest.BasicDataTypesTest
         /// </summary>
         public void Validate()
         {
-            Argument.Validate(BooleanValue, "booleanValue");
+            Argument.Validate(BooleanValue, "BooleanValue");
         }
         
         /// <summary>
@@ -531,7 +531,7 @@ namespace Tecan.Sila2.Interop.Client.BasicDataTypesTest.BasicDataTypesTest
         /// </summary>
         public void Validate()
         {
-            Argument.Validate(ReceivedValue, "receivedValue");
+            Argument.Validate(ReceivedValue, "ReceivedValue");
         }
         
         /// <summary>
@@ -603,7 +603,7 @@ namespace Tecan.Sila2.Interop.Client.BasicDataTypesTest.BasicDataTypesTest
         /// </summary>
         public void Validate()
         {
-            Argument.Validate(DateValue, "dateValue");
+            Argument.Validate(DateValue, "DateValue");
         }
         
         /// <summary>
@@ -663,7 +663,7 @@ namespace Tecan.Sila2.Interop.Client.BasicDataTypesTest.BasicDataTypesTest
         /// </summary>
         public void Validate()
         {
-            Argument.Validate(ReceivedValue, "receivedValue");
+            Argument.Validate(ReceivedValue, "ReceivedValue");
         }
         
         /// <summary>
@@ -735,7 +735,7 @@ namespace Tecan.Sila2.Interop.Client.BasicDataTypesTest.BasicDataTypesTest
         /// </summary>
         public void Validate()
         {
-            Argument.Validate(TimeValue, "timeValue");
+            Argument.Validate(TimeValue, "TimeValue");
         }
         
         /// <summary>
@@ -795,7 +795,7 @@ namespace Tecan.Sila2.Interop.Client.BasicDataTypesTest.BasicDataTypesTest
         /// </summary>
         public void Validate()
         {
-            Argument.Validate(ReceivedValue, "receivedValue");
+            Argument.Validate(ReceivedValue, "ReceivedValue");
         }
         
         /// <summary>
@@ -867,7 +867,7 @@ namespace Tecan.Sila2.Interop.Client.BasicDataTypesTest.BasicDataTypesTest
         /// </summary>
         public void Validate()
         {
-            Argument.Validate(TimestampValue, "timestampValue");
+            Argument.Validate(TimestampValue, "TimestampValue");
         }
         
         /// <summary>
@@ -927,7 +927,7 @@ namespace Tecan.Sila2.Interop.Client.BasicDataTypesTest.BasicDataTypesTest
         /// </summary>
         public void Validate()
         {
-            Argument.Validate(ReceivedValue, "receivedValue");
+            Argument.Validate(ReceivedValue, "ReceivedValue");
         }
         
         /// <summary>

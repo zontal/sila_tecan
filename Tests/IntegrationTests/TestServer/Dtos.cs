@@ -71,7 +71,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         /// </summary>
         public void Validate()
         {
-            Argument.Validate(Data, "data");
+            Argument.Validate(Data, "Data");
         }
         
         /// <summary>
@@ -127,7 +127,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         /// </summary>
         public void Validate()
         {
-            Argument.Validate(ReturnValue, "returnValue");
+            Argument.Validate(ReturnValue, "ReturnValue");
         }
         
         /// <summary>
@@ -195,7 +195,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         /// </summary>
         public void Validate()
         {
-            Argument.Validate(Data, "data");
+            Argument.Validate(Data, "Data");
         }
         
         /// <summary>
@@ -251,7 +251,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         /// </summary>
         public void Validate()
         {
-            Argument.Validate(ReturnValue, "returnValue");
+            Argument.Validate(ReturnValue, "ReturnValue");
         }
         
         /// <summary>
@@ -319,7 +319,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         /// </summary>
         public void Validate()
         {
-            Argument.Validate(Data, "data");
+            Argument.Validate(Data, "Data");
         }
         
         /// <summary>
@@ -375,7 +375,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         /// </summary>
         public void Validate()
         {
-            Argument.Validate(ReturnValue, "returnValue");
+            Argument.Validate(ReturnValue, "ReturnValue");
         }
         
         /// <summary>
@@ -443,7 +443,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         /// </summary>
         public void Validate()
         {
-            Argument.Validate(Data, "data");
+            Argument.Validate(Data, "Data");
         }
         
         /// <summary>
@@ -499,7 +499,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         /// </summary>
         public void Validate()
         {
-            Argument.Validate(ReturnValue, "returnValue");
+            Argument.Validate(ReturnValue, "ReturnValue");
         }
         
         /// <summary>
@@ -567,7 +567,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         /// </summary>
         public void Validate()
         {
-            Argument.Validate(Timestamp, "timestamp");
+            Argument.Validate(Timestamp, "Timestamp");
         }
         
         /// <summary>
@@ -623,7 +623,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         /// </summary>
         public void Validate()
         {
-            Argument.Validate(ReturnValue, "returnValue");
+            Argument.Validate(ReturnValue, "ReturnValue");
         }
         
         /// <summary>
@@ -691,7 +691,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         /// </summary>
         public void Validate()
         {
-            Argument.Validate(Time, "time");
+            Argument.Validate(Time, "Time");
         }
         
         /// <summary>
@@ -747,7 +747,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         /// </summary>
         public void Validate()
         {
-            Argument.Validate(ReturnValue, "returnValue");
+            Argument.Validate(ReturnValue, "ReturnValue");
         }
         
         /// <summary>
@@ -815,7 +815,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         /// </summary>
         public void Validate()
         {
-            Argument.Validate(Value, "value");
+            Argument.Validate(Value, "Value");
         }
         
         /// <summary>
@@ -871,7 +871,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         /// </summary>
         public void Validate()
         {
-            Argument.Validate(ReturnValue, "returnValue");
+            Argument.Validate(ReturnValue, "ReturnValue");
         }
         
         /// <summary>
@@ -939,7 +939,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         /// </summary>
         public void Validate()
         {
-            Argument.Validate(Value, "value");
+            Argument.Validate(Value, "Value");
         }
         
         /// <summary>
@@ -995,7 +995,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         /// </summary>
         public void Validate()
         {
-            Argument.Validate(ReturnValue, "returnValue");
+            Argument.Validate(ReturnValue, "ReturnValue");
         }
         
         /// <summary>
@@ -1063,7 +1063,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         /// </summary>
         public void Validate()
         {
-            Argument.Validate(File, "file");
+            Argument.Validate(File, "File");
         }
         
         /// <summary>
@@ -1119,7 +1119,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         /// </summary>
         public void Validate()
         {
-            Argument.Validate(ReturnValue, "returnValue");
+            Argument.Validate(ReturnValue, "ReturnValue");
         }
         
         /// <summary>
@@ -1187,7 +1187,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         /// </summary>
         public void Validate()
         {
-            Argument.Validate(Bytes, "bytes");
+            Argument.Validate(Bytes, "Bytes");
         }
         
         /// <summary>
@@ -1243,7 +1243,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         /// </summary>
         public void Validate()
         {
-            Argument.Validate(ReturnValue, "returnValue");
+            Argument.Validate(ReturnValue, "ReturnValue");
         }
         
         /// <summary>
@@ -1311,7 +1311,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         /// </summary>
         public void Validate()
         {
-            Argument.Validate(Dynamic, "dynamic");
+            Argument.Validate(Dynamic, "Dynamic");
         }
         
         /// <summary>
@@ -1367,7 +1367,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         /// </summary>
         public void Validate()
         {
-            Argument.Validate(ReturnValue, "returnValue");
+            Argument.Validate(ReturnValue, "ReturnValue");
         }
         
         /// <summary>
@@ -1435,7 +1435,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         /// </summary>
         public void Validate()
         {
-            Argument.Validate(Strings, "strings");
+            Argument.Validate(Strings, "Strings");
         }
         
         /// <summary>
@@ -1491,7 +1491,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         /// </summary>
         public void Validate()
         {
-            Argument.Validate(ReturnValue, "returnValue");
+            Argument.Validate(ReturnValue, "ReturnValue");
         }
         
         /// <summary>
@@ -1559,7 +1559,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         /// </summary>
         public void Validate()
         {
-            Argument.Validate(Structure, "structure");
+            Argument.Validate(Structure, "Structure");
         }
         
         /// <summary>
@@ -1615,7 +1615,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         /// </summary>
         public void Validate()
         {
-            Argument.Validate(ReturnValue, "returnValue");
+            Argument.Validate(ReturnValue, "ReturnValue");
         }
         
         /// <summary>
@@ -1722,7 +1722,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         /// </summary>
         public void Validate()
         {
-            Argument.Validate(ReturnValue, "returnValue");
+            Argument.Validate(ReturnValue, "ReturnValue");
         }
         
         /// <summary>
@@ -1830,7 +1830,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         /// </summary>
         public void Validate()
         {
-            Argument.Validate(Intermediate, "intermediate");
+            Argument.Validate(Intermediate, "Intermediate");
         }
         
         /// <summary>
@@ -1898,7 +1898,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         /// </summary>
         public void Validate()
         {
-            Argument.Validate(Duration, "duration");
+            Argument.Validate(Duration, "Duration");
         }
         
         /// <summary>
@@ -2068,7 +2068,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         /// </summary>
         public void Validate()
         {
-            Argument.Validate(CommandId, "commandId");
+            Argument.Validate(CommandId, "CommandId");
         }
         
         /// <summary>
@@ -2124,7 +2124,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         /// </summary>
         public void Validate()
         {
-            Argument.Validate(ReturnValue, "returnValue");
+            Argument.Validate(ReturnValue, "ReturnValue");
         }
         
         /// <summary>
@@ -2243,7 +2243,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         /// </summary>
         public void Validate()
         {
-            Argument.Validate(Value, "value");
+            Argument.Validate(Value, "Value");
         }
         
         /// <summary>

@@ -77,10 +77,10 @@ namespace Tecan.Sila2.Discovery
         /// </summary>
         public void Validate()
         {
-            Argument.Validate(FeatureIdentifier, "featureIdentifier");
+            Argument.Validate(FeatureIdentifier, "FeatureIdentifier");
             if ((IdentifierConstraint.IsValid(FeatureIdentifier.Value, Tecan.Sila2.IdentifierType.FeatureIdentifier) == false))
             {
-                throw new ArgumentException(string.Format("FeatureIdentifier \'{0}\' is not a valid FeatureIdentifier", FeatureIdentifier.Value), "FeatureIdentifier");
+                throw new ArgumentException(string.Format("FeatureIdentifier \'{0}\' is not a valid FeatureIdentifier", FeatureIdentifier.Value), "featureIdentifier");
             }
         }
         
@@ -146,7 +146,7 @@ namespace Tecan.Sila2.Discovery
         /// </summary>
         public void Validate()
         {
-            Argument.Validate(FeatureDefinition, "featureDefinition");
+            Argument.Validate(FeatureDefinition, "FeatureDefinition");
         }
         
         /// <summary>
@@ -218,10 +218,10 @@ namespace Tecan.Sila2.Discovery
         /// </summary>
         public void Validate()
         {
-            Argument.Validate(ServerName, "serverName");
+            Argument.Validate(ServerName, "ServerName");
             if ((ServerName.Value.Length > 255))
             {
-                throw new ArgumentException(string.Format("ServerName  has length {0} and is longer than allowed length 255", ServerName.Value.Length), "ServerName");
+                throw new ArgumentException(string.Format("ServerName  has length {0} and is longer than allowed length 255", ServerName.Value.Length), "serverName");
             }
         }
         
@@ -286,10 +286,10 @@ namespace Tecan.Sila2.Discovery
         /// </summary>
         public void Validate()
         {
-            Argument.Validate(Value, "value");
+            Argument.Validate(Value, "Value");
             if ((Value.Value.Length > 255))
             {
-                throw new ArgumentException(string.Format("Value  has length {0} and is longer than allowed length 255", Value.Value.Length), "Value");
+                throw new ArgumentException(string.Format("Value  has length {0} and is longer than allowed length 255", Value.Value.Length), "value");
             }
         }
         
@@ -354,10 +354,10 @@ namespace Tecan.Sila2.Discovery
         /// </summary>
         public void Validate()
         {
-            Argument.Validate(Value, "value");
+            Argument.Validate(Value, "Value");
             if ((RegexConstraint.IsMatch(Value.Value, "[A-Z][a-zA-Z0-9]*") == false))
             {
-                throw new ArgumentException(string.Format("Value \'{0}\' does not match pattern \'[A-Z][a-zA-Z0-9]*\'", Value.Value), "Value");
+                throw new ArgumentException(string.Format("Value \'{0}\' does not match pattern \'[A-Z][a-zA-Z0-9]*\'", Value.Value), "value");
             }
         }
         
@@ -422,15 +422,15 @@ namespace Tecan.Sila2.Discovery
         /// </summary>
         public void Validate()
         {
-            Argument.Validate(Value, "value");
+            Argument.Validate(Value, "Value");
             if ((Value.Value.Length != 36))
             {
-                throw new ArgumentException(string.Format("Value has length {0} but should have been 36", Value.Value.Length), "Value");
+                throw new ArgumentException(string.Format("Value has length {0} but should have been 36", Value.Value.Length), "value");
             }
             if ((RegexConstraint.IsMatch(Value.Value, "[0-9a-f]{8}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{12}") == false))
             {
                 throw new ArgumentException(string.Format("Value \'{0}\' does not match pattern \'[0-9a-f]{8}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-" +
-                            "f]{4}\\-[0-9a-f]{12}\'", Value.Value), "Value");
+                            "f]{4}\\-[0-9a-f]{12}\'", Value.Value), "value");
             }
         }
         
@@ -500,11 +500,11 @@ namespace Tecan.Sila2.Discovery
         /// </summary>
         public void Validate()
         {
-            Argument.Validate(Value, "value");
+            Argument.Validate(Value, "Value");
             if ((RegexConstraint.IsMatch(Value.Value, "(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(\\.(0|[1-9][0-9]*))?(_[_a-zA-Z0-9]+)?") == false))
             {
                 throw new ArgumentException(string.Format("Value \'{0}\' does not match pattern \'(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(\\.(0|[1-9][0" +
-                            "-9]*))?(_[_a-zA-Z0-9]+)?\'", Value.Value), "Value");
+                            "-9]*))?(_[_a-zA-Z0-9]+)?\'", Value.Value), "value");
             }
         }
         
@@ -570,10 +570,10 @@ namespace Tecan.Sila2.Discovery
         /// </summary>
         public void Validate()
         {
-            Argument.Validate(Value, "value");
+            Argument.Validate(Value, "Value");
             if ((RegexConstraint.IsMatch(Value.Value, "https?://.+") == false))
             {
-                throw new ArgumentException(string.Format("Value \'{0}\' does not match pattern \'https?://.+\'", Value.Value), "Value");
+                throw new ArgumentException(string.Format("Value \'{0}\' does not match pattern \'https?://.+\'", Value.Value), "value");
             }
         }
         

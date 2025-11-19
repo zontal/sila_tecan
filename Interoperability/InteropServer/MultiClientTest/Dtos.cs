@@ -75,7 +75,7 @@ namespace Tecan.Sila2.Interop.Server.MultiClientTest
         /// </summary>
         public void Validate()
         {
-            Argument.Validate(Duration, "duration");
+            Argument.Validate(Duration, "Duration");
         }
         
         /// <summary>
@@ -147,7 +147,7 @@ namespace Tecan.Sila2.Interop.Server.MultiClientTest
         /// </summary>
         public void Validate()
         {
-            Argument.Validate(Duration, "duration");
+            Argument.Validate(Duration, "Duration");
         }
         
         /// <summary>
@@ -219,7 +219,7 @@ namespace Tecan.Sila2.Interop.Server.MultiClientTest
         /// </summary>
         public void Validate()
         {
-            Argument.Validate(Duration, "duration");
+            Argument.Validate(Duration, "Duration");
         }
         
         /// <summary>

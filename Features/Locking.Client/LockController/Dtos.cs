@@ -103,8 +103,8 @@ namespace Tecan.Sila2.Locking.LockController
         /// </summary>
         public void Validate()
         {
-            Argument.Validate(LockIdentifier, "lockIdentifier");
-            Argument.Validate(Timeout, "timeout");
+            Argument.Validate(LockIdentifier, "LockIdentifier");
+            Argument.Validate(Timeout, "Timeout");
         }
         
         /// <summary>
@@ -177,7 +177,7 @@ namespace Tecan.Sila2.Locking.LockController
         /// </summary>
         public void Validate()
         {
-            Argument.Validate(LockIdentifier, "lockIdentifier");
+            Argument.Validate(LockIdentifier, "LockIdentifier");
         }
         
         /// <summary>

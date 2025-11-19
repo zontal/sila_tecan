@@ -95,15 +95,15 @@ namespace Tecan.Sila2.Interop.Server.RecoverableErrorProvider
         /// </summary>
         public void Validate()
         {
-            Argument.Validate(DurationUntilError, "durationUntilError");
+            Argument.Validate(DurationUntilError, "DurationUntilError");
             if ((DurationUntilError.Value < 0))
             {
-                throw new ArgumentException(string.Format("DurationUntilError should have been at least 0 but was \'{0}\'", DurationUntilError.Value), "DurationUntilError");
+                throw new ArgumentException(string.Format("DurationUntilError should have been at least 0 but was \'{0}\'", DurationUntilError.Value), "durationUntilError");
             }
-            Argument.Validate(AutomaticExecutionTimeout, "automaticExecutionTimeout");
+            Argument.Validate(AutomaticExecutionTimeout, "AutomaticExecutionTimeout");
             if ((AutomaticExecutionTimeout.Value < 0))
             {
-                throw new ArgumentException(string.Format("AutomaticExecutionTimeout should have been at least 0 but was \'{0}\'", AutomaticExecutionTimeout.Value), "AutomaticExecutionTimeout");
+                throw new ArgumentException(string.Format("AutomaticExecutionTimeout should have been at least 0 but was \'{0}\'", AutomaticExecutionTimeout.Value), "automaticExecutionTimeout");
             }
         }
         
@@ -174,7 +174,7 @@ namespace Tecan.Sila2.Interop.Server.RecoverableErrorProvider
         /// </summary>
         public void Validate()
         {
-            Argument.Validate(SelectedContinuationOption, "selectedContinuationOption");
+            Argument.Validate(SelectedContinuationOption, "SelectedContinuationOption");
         }
         
         /// <summary>

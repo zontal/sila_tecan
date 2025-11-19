@@ -75,7 +75,7 @@ namespace Tecan.Sila2.Cancellation.CancelController
         /// </summary>
         public void Validate()
         {
-            Argument.Validate(CommandExecutionUUID, "commandExecutionUUID");
+            Argument.Validate(CommandExecutionUUID, "CommandExecutionUUID");
         }
         
         /// <summary>

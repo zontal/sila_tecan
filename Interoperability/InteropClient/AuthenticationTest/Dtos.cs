@@ -126,7 +126,7 @@ namespace Tecan.Sila2.Interop.Client.AuthenticationTest.AuthenticationTest
         /// </summary>
         public void Validate()
         {
-            Argument.Validate(BinaryToUpload, "binaryToUpload");
+            Argument.Validate(BinaryToUpload, "BinaryToUpload");
         }
         
         /// <summary>

@@ -127,7 +127,7 @@ namespace Tecan.Sila2.Interop.Server.UnobservableCommandTest
         /// </summary>
         public void Validate()
         {
-            Argument.Validate(Integer, "integer");
+            Argument.Validate(Integer, "Integer");
         }
         
         /// <summary>
@@ -187,7 +187,7 @@ namespace Tecan.Sila2.Interop.Server.UnobservableCommandTest
         /// </summary>
         public void Validate()
         {
-            Argument.Validate(StringRepresentation, "stringRepresentation");
+            Argument.Validate(StringRepresentation, "StringRepresentation");
         }
         
         /// <summary>
@@ -279,8 +279,8 @@ namespace Tecan.Sila2.Interop.Server.UnobservableCommandTest
         /// </summary>
         public void Validate()
         {
-            Argument.Validate(Integer, "integer");
-            Argument.Validate(String, "string");
+            Argument.Validate(Integer, "Integer");
+            Argument.Validate(String, "String");
         }
         
         /// <summary>
@@ -341,7 +341,7 @@ namespace Tecan.Sila2.Interop.Server.UnobservableCommandTest
         /// </summary>
         public void Validate()
         {
-            Argument.Validate(JoinedParameters, "joinedParameters");
+            Argument.Validate(JoinedParameters, "JoinedParameters");
         }
         
         /// <summary>
@@ -414,7 +414,7 @@ namespace Tecan.Sila2.Interop.Server.UnobservableCommandTest
         /// </summary>
         public void Validate()
         {
-            Argument.Validate(String, "string");
+            Argument.Validate(String, "String");
         }
         
         /// <summary>

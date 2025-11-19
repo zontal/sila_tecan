@@ -75,7 +75,7 @@ namespace Tecan.Sila2.Interop.Server.CancellationTest
         /// </summary>
         public void Validate()
         {
-            Argument.Validate(Duration, "duration");
+            Argument.Validate(Duration, "Duration");
         }
         
         /// <summary>

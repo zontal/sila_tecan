@@ -75,7 +75,7 @@ namespace Tecan.Sila2.Interop.Client.ObservablePropertyTest.ObservablePropertyTe
         /// </summary>
         public void Validate()
         {
-            Argument.Validate(Value, "value");
+            Argument.Validate(Value, "Value");
         }
         
         /// <summary>

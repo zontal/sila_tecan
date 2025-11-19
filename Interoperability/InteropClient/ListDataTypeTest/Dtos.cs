@@ -75,7 +75,7 @@ namespace Tecan.Sila2.Interop.Client.ListDataTypeTest.ListDataTypeTest
         /// </summary>
         public void Validate()
         {
-            Argument.Validate(StringList, "stringList");
+            Argument.Validate(StringList, "StringList");
         }
         
         /// <summary>
@@ -135,7 +135,7 @@ namespace Tecan.Sila2.Interop.Client.ListDataTypeTest.ListDataTypeTest
         /// </summary>
         public void Validate()
         {
-            Argument.Validate(ReceivedValues, "receivedValues");
+            Argument.Validate(ReceivedValues, "ReceivedValues");
         }
         
         /// <summary>
@@ -207,7 +207,7 @@ namespace Tecan.Sila2.Interop.Client.ListDataTypeTest.ListDataTypeTest
         /// </summary>
         public void Validate()
         {
-            Argument.Validate(IntegerList, "integerList");
+            Argument.Validate(IntegerList, "IntegerList");
         }
         
         /// <summary>
@@ -267,7 +267,7 @@ namespace Tecan.Sila2.Interop.Client.ListDataTypeTest.ListDataTypeTest
         /// </summary>
         public void Validate()
         {
-            Argument.Validate(ReceivedValues, "receivedValues");
+            Argument.Validate(ReceivedValues, "ReceivedValues");
         }
         
         /// <summary>
@@ -339,7 +339,7 @@ namespace Tecan.Sila2.Interop.Client.ListDataTypeTest.ListDataTypeTest
         /// </summary>
         public void Validate()
         {
-            Argument.Validate(StructureList, "structureList");
+            Argument.Validate(StructureList, "StructureList");
         }
         
         /// <summary>
@@ -399,7 +399,7 @@ namespace Tecan.Sila2.Interop.Client.ListDataTypeTest.ListDataTypeTest
         /// </summary>
         public void Validate()
         {
-            Argument.Validate(ReceivedValues, "receivedValues");
+            Argument.Validate(ReceivedValues, "ReceivedValues");
         }
         
         /// <summary>

@@ -240,26 +240,26 @@ namespace Tecan.Sila2.Server.ConnectionConfiguration
         /// </summary>
         public void Validate()
         {
-            Argument.Validate(ClientName, "clientName");
+            Argument.Validate(ClientName, "ClientName");
             if ((ClientName.Value.Length > 255))
             {
-                throw new ArgumentException(string.Format("ClientName  has length {0} and is longer than allowed length 255", ClientName.Value.Length), "ClientName");
+                throw new ArgumentException(string.Format("ClientName  has length {0} and is longer than allowed length 255", ClientName.Value.Length), "clientName");
             }
-            Argument.Validate(SiLAClientHost, "siLAClientHost");
+            Argument.Validate(SiLAClientHost, "SiLAClientHost");
             if ((SiLAClientHost.Value.Length > 255))
             {
-                throw new ArgumentException(string.Format("SiLAClientHost  has length {0} and is longer than allowed length 255", SiLAClientHost.Value.Length), "SiLAClientHost");
+                throw new ArgumentException(string.Format("SiLAClientHost  has length {0} and is longer than allowed length 255", SiLAClientHost.Value.Length), "siLAClientHost");
             }
-            Argument.Validate(SiLAClientPort, "siLAClientPort");
+            Argument.Validate(SiLAClientPort, "SiLAClientPort");
             if ((SiLAClientPort.Value <= 0))
             {
-                throw new ArgumentException(string.Format("SiLAClientPort should have been at least more than 0 but was \'{0}\'", SiLAClientPort.Value), "SiLAClientPort");
+                throw new ArgumentException(string.Format("SiLAClientPort should have been at least more than 0 but was \'{0}\'", SiLAClientPort.Value), "siLAClientPort");
             }
             if ((SiLAClientPort.Value > 65536))
             {
-                throw new ArgumentException(string.Format("SiLAClientPort should have been at most 65536 but was \'{0}\'", SiLAClientPort.Value), "SiLAClientPort");
+                throw new ArgumentException(string.Format("SiLAClientPort should have been at most 65536 but was \'{0}\'", SiLAClientPort.Value), "siLAClientPort");
             }
-            Argument.Validate(Persist, "persist");
+            Argument.Validate(Persist, "Persist");
         }
         
         /// <summary>
@@ -372,12 +372,12 @@ namespace Tecan.Sila2.Server.ConnectionConfiguration
         /// </summary>
         public void Validate()
         {
-            Argument.Validate(ClientName, "clientName");
+            Argument.Validate(ClientName, "ClientName");
             if ((ClientName.Value.Length > 255))
             {
-                throw new ArgumentException(string.Format("ClientName  has length {0} and is longer than allowed length 255", ClientName.Value.Length), "ClientName");
+                throw new ArgumentException(string.Format("ClientName  has length {0} and is longer than allowed length 255", ClientName.Value.Length), "clientName");
             }
-            Argument.Validate(Remove, "remove");
+            Argument.Validate(Remove, "Remove");
         }
         
         /// <summary>

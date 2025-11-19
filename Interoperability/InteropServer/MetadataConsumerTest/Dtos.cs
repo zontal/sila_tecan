@@ -114,7 +114,7 @@ namespace Tecan.Sila2.Interop.Server.MetadataConsumerTest
         /// </summary>
         public void Validate()
         {
-            Argument.Validate(ReceivedStringMetadata, "receivedStringMetadata");
+            Argument.Validate(ReceivedStringMetadata, "ReceivedStringMetadata");
         }
         
         /// <summary>
@@ -336,10 +336,10 @@ namespace Tecan.Sila2.Interop.Server.MetadataConsumerTest
         /// </summary>
         public void Validate()
         {
-            Argument.Validate(Value, "value");
+            Argument.Validate(Value, "Value");
             if ((Value.Value.Length != 1))
             {
-                throw new ArgumentException(string.Format("Value has length {0} but should have been 1", Value.Value.Length), "Value");
+                throw new ArgumentException(string.Format("Value has length {0} but should have been 1", Value.Value.Length), "value");
             }
         }
         
