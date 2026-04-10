@@ -93,6 +93,7 @@ namespace Tecan.Sila2.Server
             else
             {
                 _certificate = certificate;
+                AnnounceCertificate(_certificate);
             }
 
             if (networkInterfaceFilter != null)
@@ -117,24 +118,29 @@ namespace Tecan.Sila2.Server
         {
             if (context != null)
             {
-                _loggingChannel.Info("Found certificates, starting server with TLS.");
                 _certificate = CertificateGenerator.GetServerCertificate(context, serverUuid, out var ca);
 
                 if (_certificate != null)
                 {
-                    var certLines = Convert.ToBase64String((ca ?? _certificate).Export(X509ContentType.Cert), Base64FormattingOptions.InsertLineBreaks).Split('\n');
-                    _announcementDetails.Add("ca0", "-----BEGIN CERTIFICATE-----");
-                    for (int i = 0; i < certLines.Length; i++)
-                    {
-                        _announcementDetails.Add("ca" + (i + 1), certLines[i].TrimEnd('\r'));
-                    }
-                    _announcementDetails.Add("ca" + (certLines.Length + 1), "-----END CERTIFICATE-----");
+                    AnnounceCertificate(ca);
                     return;
                 }
             }
             _loggingChannel.Warn($"No certificates found. Server will start with plain-text communication");
             _certificate = null;
             _announcementDetails.Add("encrypted", "false");
+        }
+
+        private void AnnounceCertificate(X509Certificate2 ca)
+        {
+            _loggingChannel.Info("Announcing certificate for discovery.");
+            var certLines = Convert.ToBase64String((ca ?? _certificate).Export(X509ContentType.Cert), Base64FormattingOptions.InsertLineBreaks).Split('\n');
+            _announcementDetails.Add("ca0", "-----BEGIN CERTIFICATE-----");
+            for (int i = 0; i < certLines.Length; i++)
+            {
+                _announcementDetails.Add("ca" + (i + 1), certLines[i].TrimEnd('\r'));
+            }
+            _announcementDetails.Add("ca" + (certLines.Length + 1), "-----END CERTIFICATE-----");
         }
 
         /// <summary>

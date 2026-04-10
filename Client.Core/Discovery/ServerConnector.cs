@@ -77,11 +77,14 @@ namespace Tecan.Sila2.Discovery
                 }
                 try
                 {
-                    var discoveryCertificate = CertificateGenerator.LoadCertificateFromPem( RestoreCa( details ) );
-                    var certificateValidator = new ServerCertificateValidator( discoveryCertificate );
-                    var channel = GrpcChannel.ForAddress( prependScheme ? "https://" + target : target,
-                        CreateChannelOptions(certificateValidator.ValidateActualCertificate));
-                    return CheckExpectedGuid( CheckCertificate( GetServerData( channel, () => certificateValidator.ServerCertificate ), certificateValidator.ServerCertificate ), expectedGuid );
+                    X509Certificate2 certificate = null;
+                    var channel = GrpcChannel.ForAddress(prependScheme ? "https://" + target : target,
+                        CreateChannelOptions((_, cert, _, errors) =>
+                        {
+                            certificate = cert;
+                            return true;
+                        }));
+                    return CheckExpectedGuid( CheckCertificate( GetServerData( channel, () => certificate ), certificate ), expectedGuid );
                 }
                 catch(Exception e)
                 {
