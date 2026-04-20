@@ -88,33 +88,43 @@ namespace Tecan.Sila2.Discovery
             {
                 var handler = new EventHandler<MessageEventArgs>( ( s, e ) =>
                 {
-                    // The first Answer will be a PTRRecord, in that case request an SRV if it is not already contained in the answer
-                    RequestSrvForPtrRecord( e.Message, mdns );
-
-                    // The second Answer will be a SRVRecord (also contain A and AAAA records or as separate answers)
-                    var servers = e.Message.Answers.Concat( e.Message.AdditionalRecords ).OfType<SRVRecord>().Where( p => p.Name.ToString().Contains( DiscoveryConstants.ServiceName ) );
-                    foreach(var server in servers)
+                    try
                     {
-                        var aRecord = e.Message.AdditionalRecords.OfType<ARecord>().FirstOrDefault() ?? e.Message.Answers.OfType<ARecord>().FirstOrDefault();
-                        lock(_connectedServers)
+                        // The first Answer will be a PTRRecord, in that case request an SRV if it is not already contained in the answer
+                        RequestSrvForPtrRecord(e.Message, mdns);
+
+                        // The second Answer will be a SRVRecord (also contain A and AAAA records or as separate answers)
+                        var servers = e.Message.Answers.Concat(e.Message.AdditionalRecords).OfType<SRVRecord>().Where(p => p.Name.ToString().Contains(DiscoveryConstants.ServiceName));
+                        foreach (var server in servers)
                         {
-                            var serverName = server.Name.ToString();
-                            if(aRecord != null && !_connectedServers.ContainsKey( serverName ) && (expected == null || expected == serverName))
+                            var aRecord = e.Message.AdditionalRecords.OfType<ARecord>().FirstOrDefault() ?? e.Message.Answers.OfType<ARecord>().FirstOrDefault();
+                            lock (_connectedServers)
                             {
-                                // see whether there are TXT records
-                                var details = ReadDetails( e.Message.Answers.Concat( e.Message.AdditionalRecords ) );
-                                try
+                                var serverName = server.Name?.ToString() ?? string.Empty;
+                                if (aRecord != null && !_connectedServers.ContainsKey(serverName) && (expected == null || expected == serverName))
                                 {
-                                    var channel = _serverConnector.Connect( aRecord.Address, server.Port, Guid.TryParse( serverName.Substring( 0, GuidLength ), out var serverUuid ) ? serverUuid : null, details );
-                                    _connectedServers[serverName] = channel;
-                                    serverFoundCallback( channel );
-                                }
-                                catch(Exception exception)
-                                {
-                                    _loggingChannel.Error( $"Failed to create channel to {aRecord.Address} on port {server.Port}", exception );
+                                    // see whether there are TXT records
+                                    var details = ReadDetails(e.Message.Answers.Concat(e.Message.AdditionalRecords));
+                                    try
+                                    {
+                                        var channel = _serverConnector.Connect(aRecord.Address, server.Port, Guid.TryParse(serverName.Substring(0, GuidLength), out var serverUuid) ? serverUuid : null, details);
+                                        if (channel != null)
+                                        {
+                                            _connectedServers[serverName] = channel;
+                                            serverFoundCallback(channel);
+                                        }
+                                    }
+                                    catch (Exception exception)
+                                    {
+                                        _loggingChannel.Error($"Failed to create channel to {aRecord.Address} on port {server.Port}", exception);
+                                    }
                                 }
                             }
                         }
+                    }
+                    catch (Exception handlerException)
+                    {
+                        _loggingChannel.Error("Error handling DNS message", handlerException);
                     }
                 } );
 
