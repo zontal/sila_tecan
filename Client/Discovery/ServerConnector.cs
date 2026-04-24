@@ -236,7 +236,7 @@ namespace Tecan.Sila2.Discovery
             var config = GetServerConfig(silaService);
             var info = GetServerInfo(silaService);
             var features = GetImplementedFeatures(silaService);
-            var server = new ServerData(config, info, features, clientChannel, serverCertificate?.Invoke());
+            var server = new ServerData(config, info, features, clientChannel, serverCertificate?.Invoke(), channel.Target);
             return server;
         }
 

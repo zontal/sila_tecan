@@ -49,20 +49,20 @@ namespace Tecan.Sila2.ServerPooling
             var bufferedWriter = new BufferedStreamWriter<SilaClientMessage>( responseStream );
             var channel = new ServerConnection( bufferedWriter, requestStream, context.CancellationToken );
             var runTask = Task.WhenAll( channel.Run(), bufferedWriter.StartWriting( channel.CancellationToken ) );
-            var server = CreateServerData( channel );
+            var server = CreateServerData( channel, context.Peer );
             _pooledServers.Add( server );
             ServerConnected?.Invoke( this, new ServerDataEventArgs( server ) );
             return runTask;
         }
 
 
-        private ServerData CreateServerData(IClientChannel channel)
+        private ServerData CreateServerData(IClientChannel channel, string peer)
         {
             var silaService = new SiLAServiceClient( channel, _discoveryExecutionManager );
             var config = GetServerConfig( silaService );
             var info = GetServerInfo( silaService );
             var features = GetImplementedFeatures( silaService );
-            var server = new ServerData( config, info, features, channel );
+            var server = new ServerData( config, info, features, channel, null, peer );
             return server;
         }
 

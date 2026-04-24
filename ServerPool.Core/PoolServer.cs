@@ -46,7 +46,7 @@ namespace Tecan.Sila2.ServerPooling
             var channel = new ServerConnection(bufferedWriter, requestStream, context.CancellationToken);
             var runTask = Task.WhenAll(channel.Run(), bufferedWriter.StartWriting(channel.CancellationToken));
             X509Certificate2 certificate = ExtractCertificate(context);
-            var server = CreateServerData(channel, certificate);
+            var server = CreateServerData(channel, certificate, context.Peer);
             _pooledServers.Add(server);
             ServerConnected?.Invoke(this, new ServerDataEventArgs(server));
             return runTask;
@@ -64,13 +64,13 @@ namespace Tecan.Sila2.ServerPooling
             }
         }
 
-        private ServerData CreateServerData( IClientChannel channel, X509Certificate2 serverCertificate )
+        private ServerData CreateServerData( IClientChannel channel, X509Certificate2 serverCertificate, string peer )
         {
             var silaService = new SiLAServiceClient( channel, _discoveryExecutionManager );
             var config = GetServerConfig( silaService );
             var info = GetServerInfo( silaService );
             var features = GetImplementedFeatures( silaService );
-            var server = new ServerData( config, info, features, channel, serverCertificate );
+            var server = new ServerData( config, info, features, channel, serverCertificate, peer );
             return server;
         }
 

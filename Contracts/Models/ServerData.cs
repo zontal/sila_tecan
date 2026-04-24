@@ -35,6 +35,11 @@ namespace Tecan.Sila2
         public X509Certificate2 Certificate { get; }
 
         /// <summary>
+        /// A reference to the client
+        /// </summary>
+        public string Address { get; }
+
+        /// <summary>
         /// Server model constructor (immutable object)
         /// </summary>
         /// <param name="serverConfig">Server configuration data</param>
@@ -42,7 +47,7 @@ namespace Tecan.Sila2
         /// <param name="features">Server features</param>
         /// <param name="channel">The channel to the server</param>
         public ServerData(ServerConfig serverConfig, ServerInformation serverInformation, IEnumerable<Feature> features, IClientChannel channel)
-            : this(serverConfig, serverInformation, features, channel, null)
+            : this(serverConfig, serverInformation, features, channel, null, null)
         {
         }
 
@@ -55,12 +60,27 @@ namespace Tecan.Sila2
         /// <param name="channel">The channel to the server</param>
         /// <param name="certificate">the certificate from the server</param>
         public ServerData(ServerConfig serverConfig, ServerInformation serverInformation, IEnumerable<Feature> features, IClientChannel channel, X509Certificate2 certificate)
+            : this(serverConfig, serverInformation, features, channel, certificate, null)
+        {
+        }
+
+        /// <summary>
+        /// Server model constructor (immutable object)
+        /// </summary>
+        /// <param name="serverConfig">Server configuration data</param>
+        /// <param name="serverInformation">Server information</param>
+        /// <param name="features">Server features</param>
+        /// <param name="channel">The channel to the server</param>
+        /// <param name="certificate">the certificate from the server</param>
+        /// <param name="address">A reference to the client</param>
+        public ServerData(ServerConfig serverConfig, ServerInformation serverInformation, IEnumerable<Feature> features, IClientChannel channel, X509Certificate2 certificate, string address)
         {
             Config = serverConfig;
             Info = serverInformation;
             Features = features;
             Channel = channel;
             Certificate = certificate;
+            Address = address;
         }
     }
 }
