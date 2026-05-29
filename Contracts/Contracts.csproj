@@ -6,7 +6,7 @@
     <SccLocalPath>SAK</SccLocalPath>
   </PropertyGroup>
   <PropertyGroup>
-      <TargetFrameworks>netstandard2.0;net6.0;net8.0</TargetFrameworks>
+      <TargetFrameworks>netstandard2.0;net10.0;net8.0</TargetFrameworks>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <RootNamespace>Tecan.Sila2</RootNamespace>
     <AssemblyName>Tecan.Sila2.Contracts</AssemblyName>

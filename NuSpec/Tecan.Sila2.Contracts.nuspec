@@ -9,23 +9,28 @@
         <copyright>Copyright 2019 by Tecan Trading Ltd., Switzerland</copyright>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <license type="expression">BSD-3-Clause</license>
+		<icon>images\icon.png</icon>
         <projectUrl>https://gitlab.com/SiLA2/vendors/sila_tecan</projectUrl>
-        <repository type="git" url="https://gitlab.com/SiLA2/vendors/sila_tecan.git" />
+        <repository type="git" url="https://gitlab.com/SiLA2/vendors/sila_tecan.git" commit="$commit_id$" />
         <dependencies>
             <dependency id="System.Threading.Channels" version="4.7.0" />
         </dependencies>
+		<readme>docs\Tecan.Sila2.Contracts.md</readme>
     </metadata>
     <files>
         <file src="..\Build\netstandard2.0\Tecan.Sila2.Contracts.dll" target="lib\netstandard2.0\" />
         <file src="..\Build\netstandard2.0\Tecan.Sila2.Contracts.pdb" target="lib\netstandard2.0\" />
         <file src="..\Build\netstandard2.0\Tecan.Sila2.Contracts.xml" target="lib\netstandard2.0\" />
 
-        <file src="..\Build\net6.0\Tecan.Sila2.Contracts.dll" target="lib\net6.0\" />
-        <file src="..\Build\net6.0\Tecan.Sila2.Contracts.pdb" target="lib\net6.0\" />
-        <file src="..\Build\net6.0\Tecan.Sila2.Contracts.xml" target="lib\net6.0\" />
+        <file src="..\Build\net10.0\Tecan.Sila2.Contracts.dll" target="lib\net10.0\" />
+        <file src="..\Build\net10.0\Tecan.Sila2.Contracts.pdb" target="lib\net10.0\" />
+        <file src="..\Build\net10.0\Tecan.Sila2.Contracts.xml" target="lib\net10.0\" />
 
 		<file src="..\Build\net8.0\Tecan.Sila2.Contracts.dll" target="lib\net8.0\" />
 		<file src="..\Build\net8.0\Tecan.Sila2.Contracts.pdb" target="lib\net8.0\" />
 		<file src="..\Build\net8.0\Tecan.Sila2.Contracts.xml" target="lib\net8.0\" />
+
+		<file src="icon.png" target="images" />
+		<file src="Tecan.Sila2.Contracts.md" target="docs" />
     </files>
 </package>

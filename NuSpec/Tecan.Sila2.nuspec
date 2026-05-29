@@ -10,8 +10,9 @@
         <copyright>Copyright 2019 by Tecan Trading Ltd., Switzerland</copyright>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <license type="expression">BSD-3-Clause</license>
+		<icon>images\icon.png</icon>
         <projectUrl>https://gitlab.com/SiLA2/vendors/sila_tecan</projectUrl>
-        <repository type="git" url="https://gitlab.com/SiLA2/vendors/sila_tecan.git" />
+        <repository type="git" url="https://gitlab.com/SiLA2/vendors/sila_tecan.git" commit="$commit_id$" />
         <dependencies>
 			<group targetFramework=".NETStandard2.0">
 				<dependency id="IPNetwork2" version="2.1.2" />
@@ -21,8 +22,7 @@
 				<dependency id="System.ComponentModel.Composition" version="4.5" />
 				<dependency id="Common.Logging" version="3.4.1" />
 			</group>
-			<group targetFramework="net6.0">
-				<dependency id="IPNetwork2" version="2.1.2" />
+			<group targetFramework="net10.0">
 				<dependency id="Tecan.Sila2.Contracts" version="[$version$,5.0)" />
 				<dependency id="Tecan.Sila2.Annotations" version="[$version$,5.0)" />
 				<dependency id="protobuf-net" version="3.2.12" />
@@ -37,15 +37,16 @@
 				<dependency id="Common.Logging" version="3.4.1" />
 			</group>
         </dependencies>
+		<readme>docs\Tecan.Sila2.md</readme>
     </metadata>
     <files>
         <file src="..\Build\netstandard2.0\Tecan.Sila2.dll" target="lib\netstandard2.0\" />
         <file src="..\Build\netstandard2.0\Tecan.Sila2.pdb" target="lib\netstandard2.0\" />
         <file src="..\Build\netstandard2.0\Tecan.Sila2.xml" target="lib\netstandard2.0\" />
 
-        <file src="..\Build\net6.0\Tecan.Sila2.dll" target="lib\net6.0\" />
-        <file src="..\Build\net6.0\Tecan.Sila2.pdb" target="lib\net6.0\" />
-        <file src="..\Build\net6.0\Tecan.Sila2.xml" target="lib\net6.0\" />
+        <file src="..\Build\net10.0\Tecan.Sila2.dll" target="lib\net10.0\" />
+        <file src="..\Build\net10.0\Tecan.Sila2.pdb" target="lib\net10.0\" />
+        <file src="..\Build\net10.0\Tecan.Sila2.xml" target="lib\net10.0\" />
 
 		<file src="..\Build\net8.0\Tecan.Sila2.dll" target="lib\net8.0\" />
 		<file src="..\Build\net8.0\Tecan.Sila2.pdb" target="lib\net8.0\" />
@@ -54,5 +55,8 @@
         <file src="..\Build\Generator\net8.0\*.dll" target="tools" />
         <file src="..\Build\Generator\net8.0\*.exe" target="tools" />
 		<file src="..\Build\Generator\net8.0\*.runtimeconfig.json" target="tools" />
+
+		<file src="icon.png" target="images" />
+		<file src="Tecan.Sila2.md" target="docs" />
     </files>
 </package>

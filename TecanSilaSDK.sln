@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.0.31903.59
+# Visual Studio Version 18
+VisualStudioVersion = 18.3.11512.155 d18.3
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Contracts", "Contracts\Contracts.csproj", "{A998329A-5157-4B80-992A-AF904E65CC2F}"
 EndProject
@@ -25,33 +25,63 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DynamicClient", "DynamicCli
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NuSpec", "NuSpec", "{B34C24C7-1092-4634-BB86-EA4FABB6F5B2}"
 	ProjectSection(SolutionItems) = preProject
+		NuSpec\DotnetToolSettings.xml = NuSpec\DotnetToolSettings.xml
+		NuSpec\Tecan.Sila2.AnIML.md = NuSpec\Tecan.Sila2.AnIML.md
 		NuSpec\Tecan.Sila2.AnIML.nuspec = NuSpec\Tecan.Sila2.AnIML.nuspec
+		NuSpec\Tecan.Sila2.Annotations.md = NuSpec\Tecan.Sila2.Annotations.md
 		NuSpec\Tecan.Sila2.Annotations.nuspec = NuSpec\Tecan.Sila2.Annotations.nuspec
+		NuSpec\Tecan.Sila2.Client.md = NuSpec\Tecan.Sila2.Client.md
+		NuSpec\Tecan.Sila2.Client.NetCore.md = NuSpec\Tecan.Sila2.Client.NetCore.md
 		NuSpec\Tecan.Sila2.Client.NetCore.nuspec = NuSpec\Tecan.Sila2.Client.NetCore.nuspec
 		NuSpec\Tecan.Sila2.Client.nuspec = NuSpec\Tecan.Sila2.Client.nuspec
+		NuSpec\Tecan.Sila2.Contracts.md = NuSpec\Tecan.Sila2.Contracts.md
 		NuSpec\Tecan.Sila2.Contracts.nuspec = NuSpec\Tecan.Sila2.Contracts.nuspec
+		NuSpec\Tecan.Sila2.DynamicClient.md = NuSpec\Tecan.Sila2.DynamicClient.md
 		NuSpec\Tecan.Sila2.DynamicClient.nuspec = NuSpec\Tecan.Sila2.DynamicClient.nuspec
+		NuSpec\Tecan.Sila2.Features.Auth.Client.md = NuSpec\Tecan.Sila2.Features.Auth.Client.md
 		NuSpec\Tecan.Sila2.Features.Auth.Client.nuspec = NuSpec\Tecan.Sila2.Features.Auth.Client.nuspec
+		NuSpec\Tecan.Sila2.Features.Auth.md = NuSpec\Tecan.Sila2.Features.Auth.md
 		NuSpec\Tecan.Sila2.Features.Auth.nuspec = NuSpec\Tecan.Sila2.Features.Auth.nuspec
+		NuSpec\Tecan.Sila2.Features.Cancellation.Client.md = NuSpec\Tecan.Sila2.Features.Cancellation.Client.md
 		NuSpec\Tecan.Sila2.Features.Cancellation.Client.nuspec = NuSpec\Tecan.Sila2.Features.Cancellation.Client.nuspec
+		NuSpec\Tecan.Sila2.Features.Cancellation.md = NuSpec\Tecan.Sila2.Features.Cancellation.md
 		NuSpec\Tecan.Sila2.Features.Cancellation.nuspec = NuSpec\Tecan.Sila2.Features.Cancellation.nuspec
+		NuSpec\Tecan.Sila2.Features.ConnectionConfiguration.Client.md = NuSpec\Tecan.Sila2.Features.ConnectionConfiguration.Client.md
 		NuSpec\Tecan.Sila2.Features.ConnectionConfiguration.Client.nuspec = NuSpec\Tecan.Sila2.Features.ConnectionConfiguration.Client.nuspec
+		NuSpec\Tecan.Sila2.Features.Locking.Client.md = NuSpec\Tecan.Sila2.Features.Locking.Client.md
 		NuSpec\Tecan.Sila2.Features.Locking.Client.nuspec = NuSpec\Tecan.Sila2.Features.Locking.Client.nuspec
+		NuSpec\Tecan.Sila2.Features.Locking.md = NuSpec\Tecan.Sila2.Features.Locking.md
 		NuSpec\Tecan.Sila2.Features.Locking.nuspec = NuSpec\Tecan.Sila2.Features.Locking.nuspec
+		NuSpec\Tecan.Sila2.Features.ParameterConstraintsProvider.Client.md = NuSpec\Tecan.Sila2.Features.ParameterConstraintsProvider.Client.md
 		NuSpec\Tecan.Sila2.Features.ParameterConstraintsProvider.Client.nuspec = NuSpec\Tecan.Sila2.Features.ParameterConstraintsProvider.Client.nuspec
+		NuSpec\Tecan.Sila2.Features.ParameterConstraintsProvider.md = NuSpec\Tecan.Sila2.Features.ParameterConstraintsProvider.md
 		NuSpec\Tecan.Sila2.Features.ParameterConstraintsProvider.nuspec = NuSpec\Tecan.Sila2.Features.ParameterConstraintsProvider.nuspec
+		NuSpec\Tecan.Sila2.Features.Recovery.md = NuSpec\Tecan.Sila2.Features.Recovery.md
 		NuSpec\Tecan.Sila2.Features.Recovery.nuspec = NuSpec\Tecan.Sila2.Features.Recovery.nuspec
+		NuSpec\Tecan.Sila2.Features.WorktableIntegration.Client.md = NuSpec\Tecan.Sila2.Features.WorktableIntegration.Client.md
 		NuSpec\Tecan.Sila2.Features.WorktableIntegration.Client.nuspec = NuSpec\Tecan.Sila2.Features.WorktableIntegration.Client.nuspec
+		NuSpec\Tecan.Sila2.Features.WorktableIntegration.md = NuSpec\Tecan.Sila2.Features.WorktableIntegration.md
 		NuSpec\Tecan.Sila2.Features.WorktableIntegration.nuspec = NuSpec\Tecan.Sila2.Features.WorktableIntegration.nuspec
+		NuSpec\Tecan.Sila2.Generator.md = NuSpec\Tecan.Sila2.Generator.md
 		NuSpec\Tecan.Sila2.Generator.nuspec = NuSpec\Tecan.Sila2.Generator.nuspec
+		NuSpec\Tecan.Sila2.Grpc.md = NuSpec\Tecan.Sila2.Grpc.md
 		NuSpec\Tecan.Sila2.Grpc.nuspec = NuSpec\Tecan.Sila2.Grpc.nuspec
+		NuSpec\Tecan.Sila2.md = NuSpec\Tecan.Sila2.md
+		NuSpec\Tecan.Sila2.NetCore.md = NuSpec\Tecan.Sila2.NetCore.md
 		NuSpec\Tecan.Sila2.NetCore.nuspec = NuSpec\Tecan.Sila2.NetCore.nuspec
 		NuSpec\Tecan.Sila2.nuspec = NuSpec\Tecan.Sila2.nuspec
+		NuSpec\Tecan.Sila2.Server.DryIoC.md = NuSpec\Tecan.Sila2.Server.DryIoC.md
 		NuSpec\Tecan.Sila2.Server.DryIoC.nuspec = NuSpec\Tecan.Sila2.Server.DryIoC.nuspec
+		NuSpec\Tecan.Sila2.Server.md = NuSpec\Tecan.Sila2.Server.md
+		NuSpec\Tecan.Sila2.Server.NetCore.md = NuSpec\Tecan.Sila2.Server.NetCore.md
 		NuSpec\Tecan.Sila2.Server.NetCore.nuspec = NuSpec\Tecan.Sila2.Server.NetCore.nuspec
 		NuSpec\Tecan.Sila2.Server.nuspec = NuSpec\Tecan.Sila2.Server.nuspec
+		NuSpec\Tecan.Sila2.ServerPool.md = NuSpec\Tecan.Sila2.ServerPool.md
+		NuSpec\Tecan.Sila2.ServerPool.NetCore.md = NuSpec\Tecan.Sila2.ServerPool.NetCore.md
 		NuSpec\Tecan.Sila2.ServerPool.NetCore.nuspec = NuSpec\Tecan.Sila2.ServerPool.NetCore.nuspec
 		NuSpec\Tecan.Sila2.ServerPool.nuspec = NuSpec\Tecan.Sila2.ServerPool.nuspec
+		NuSpec\Tecan.Sila2.SilaGen.md = NuSpec\Tecan.Sila2.SilaGen.md
+		NuSpec\Tecan.Sila2.SilaGen.nuspec = NuSpec\Tecan.Sila2.SilaGen.nuspec
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Locking", "Features\Locking\Locking.csproj", "{191090FF-ECE4-4949-B053-420FF60C067D}"

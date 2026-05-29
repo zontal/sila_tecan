@@ -1,12 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-    <PropertyGroup Label="Globals">
-        <SccProjectName>SAK</SccProjectName>
-        <SccProvider>SAK</SccProvider>
-        <SccAuxPath>SAK</SccAuxPath>
-        <SccLocalPath>SAK</SccLocalPath>
-    </PropertyGroup>
-
     <PropertyGroup>
         <TargetFrameworks>net472;net8.0</TargetFrameworks>
         <RootNamespace>Tecan.Sila2.Generator</RootNamespace>
@@ -15,10 +8,7 @@
         <LangVersion>latest</LangVersion>
     </PropertyGroup>
 
-    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-        <OutputPath>..\Build\Generator\</OutputPath>
-    </PropertyGroup>
-    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PropertyGroup>
         <OutputPath>..\Build\Generator\</OutputPath>
     </PropertyGroup>
 
@@ -26,13 +16,10 @@
         <StartupObject />
         <ApplicationIcon />
         <OutputType>Exe</OutputType>
+		<RollForward>LatestMajor</RollForward>
     </PropertyGroup>
 
-    <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net472|AnyCPU'">
-      <DocumentationFile>..\Build\Generator\SilaGen.xml</DocumentationFile>
-    </PropertyGroup>
-
-    <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net472|AnyCPU'">
+    <PropertyGroup>
       <DocumentationFile>..\Build\Generator\SilaGen.xml</DocumentationFile>
     </PropertyGroup>
 

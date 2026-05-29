@@ -3,7 +3,7 @@
     <PropertyGroup>
         <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
         <OutputType>Exe</OutputType>
-        <TargetFrameworks>net6.0;net8.0</TargetFrameworks>
+        <TargetFrameworks>net10.0;net8.0</TargetFrameworks>
         <RootNamespace>Tecan.Sila2.Interop.Client</RootNamespace>
     </PropertyGroup>
 

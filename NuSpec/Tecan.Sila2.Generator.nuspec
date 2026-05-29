@@ -9,8 +9,9 @@
         <copyright>Copyright 2019 by Tecan Trading AG, Switzerland</copyright>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <license type="expression">BSD-3-Clause</license>
+		<icon>images\icon.png</icon>
         <projectUrl>https://gitlab.com/SiLA2/vendors/sila_tecan</projectUrl>
-        <repository type="git" url="https://gitlab.com/SiLA2/vendors/sila_tecan.git" />
+        <repository type="git" url="https://gitlab.com/SiLA2/vendors/sila_tecan.git" commit="$commit_id$" />
         <dependencies>
             <dependency id="Tecan.Sila2" version="[$version$,5.0)" />
             <dependency id="Tecan.Sila2.DynamicClient" version="[$version$,5.0)" />
@@ -21,6 +22,7 @@
             <dependency id="Microsoft.Build.Utilities.Core" version="16.3.0" />
             <dependency id="System.CodeDOM" version="4.5.0" />
         </dependencies>
+		<readme>docs\Tecan.Sila2.Generator.md</readme>
     </metadata>
     <files>
         <file src="..\Build\Generator\net472\SilaGen.exe" target="lib\net472\" />
@@ -30,5 +32,8 @@
         <file src="..\Build\Generator\net8.0\SilaGen.dll" target="lib\net8.0\" />
         <file src="..\Build\Generator\net8.0\SilaGen.pdb" target="lib\net8.0\" />
         <file src="..\Build\Generator\SilaGen.xml" target="lib\net8.0\" />
+
+		<file src="icon.png" target="images" />
+		<file src="Tecan.Sila2.Generator.md" target="docs" />
     </files>
 </package>

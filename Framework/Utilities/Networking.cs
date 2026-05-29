@@ -7,7 +7,7 @@ using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Text.RegularExpressions;
 
-#if NET8_0_OR_GREATER
+#if NET8_0
 using IPNetwork = System.Net.IPNetwork;
 #endif
 

@@ -1,4 +1,4 @@
-image: mcr.microsoft.com/dotnet/sdk:8.0
+image: mcr.microsoft.com/dotnet/sdk:10.0
 
 variables:
   OBJECTS_DIRECTORY: 'obj'
@@ -17,6 +17,8 @@ stages:
   - build
   - test
   - interop
+  - sec
+  - analysis
 
 build:
   stage: build
@@ -29,12 +31,12 @@ tests:
   allow_failure: true
   script:
     - 'dotnet restore --packages $NUGET_PACKAGES_DIRECTORY'
-    - 'dotnet test Tests/DynamicClientTests/DynamicClientTests.csproj --no-restore -f net8.0 --logger "console;verbosity=detailed" --logger "html;logfilename=testResults.html"'
-    - 'dotnet test Tests/Features/Authentication.Tests/Authentication.Tests.csproj --no-restore -f net8.0 --logger "console;verbosity=detailed" --logger "html;logfilename=testResults.html"'
-    - 'dotnet test Tests/Features/Locking.Tests/Locking.Tests.csproj --no-restore -f net8.0 --logger "console;verbosity=detailed" --logger "html;logfilename=testResults.html"'
-    - 'dotnet test Tests/Features/ParameterDefaultsProvider.Tests/ParameterDefaultsProvider.Tests.csproj --no-restore -f net8.0 --logger "console;verbosity=detailed" --logger "html;logfilename=testResults.html"'
-    - 'dotnet test Tests/Features/Recovery.Tests/Recovery.Tests.csproj --no-restore -f net8.0 --logger "console;verbosity=detailed" --logger "html;logfilename=testResults.html"'
-    - 'dotnet test Tests/Generator.Tests/GeneratorTest.csproj --no-restore -f net8.0 --logger "console;verbosity=detailed" --logger "html;logfilename=testResults.html"'
+    - 'dotnet test Tests/DynamicClientTests/DynamicClientTests.csproj --no-restore -f net10.0 --logger "console;verbosity=detailed" --logger "html;logfilename=testResults.html"'
+    - 'dotnet test Tests/Features/Authentication.Tests/Authentication.Tests.csproj --no-restore -f net10.0 --logger "console;verbosity=detailed" --logger "html;logfilename=testResults.html"'
+    - 'dotnet test Tests/Features/Locking.Tests/Locking.Tests.csproj --no-restore -f net10.0 --logger "console;verbosity=detailed" --logger "html;logfilename=testResults.html"'
+    - 'dotnet test Tests/Features/ParameterDefaultsProvider.Tests/ParameterDefaultsProvider.Tests.csproj --no-restore -f net10.0 --logger "console;verbosity=detailed" --logger "html;logfilename=testResults.html"'
+    - 'dotnet test Tests/Features/Recovery.Tests/Recovery.Tests.csproj --no-restore -f net10.0 --logger "console;verbosity=detailed" --logger "html;logfilename=testResults.html"'
+    - 'dotnet test Tests/Generator.Tests/GeneratorTest.csproj --no-restore -f net10.0 --logger "console;verbosity=detailed" --logger "html;logfilename=testResults.html"'
   artifacts:
     when: always
     paths:
@@ -45,13 +47,13 @@ interop_server_managed:
   allow_failure: true
   script:
     - 'dotnet restore --packages $NUGET_PACKAGES_DIRECTORY'
-    - 'dotnet build --no-restore Interoperability/InteropServer.NetCore/InteropServer.NetCore.csproj -f net8.0'
-    - 'dotnet Build/Interop/ServerNetCore/net8.0/Tecan.Sila2.Interop.Server.dll > server.log 2>&1 & server_pid=$!'
+    - 'dotnet build --no-restore Interoperability/InteropServer.NetCore/InteropServer.NetCore.csproj -f net10.0'
+    - 'dotnet Build/Interop/ServerNetCore/net10.0/Tecan.Sila2.Interop.Server.dll > server.log 2>&1 & server_pid=$!'
     - echo "Interop server started"
     - apt-get update
     - apt-get install -yq python3-pip
     - pip install sila2_interop_communication_tester --break-system-packages
-    - python3 -m sila2_interop_communication_tester.test_client --report-file managed_server8-test-report.xml --testsuite-name "Managed gRPC .NET 8 Server" --html-file managed_server8-test-report.html
+    - python3 -m sila2_interop_communication_tester.test_client --report-file managed_server8-test-report.xml --testsuite-name "Managed gRPC .NET 10 Server" --html-file managed_server8-test-report.html
     - kill -INT $server_pid
   artifacts:
     when: always
@@ -68,10 +70,10 @@ interop_client_managed:
     - apt-get install -yq python3-pip
     - pip install sila2_interop_communication_tester --break-system-packages
   script:
-    - python3 -m sila2_interop_communication_tester.test_server --report-file managed_client8-test-report.xml --testsuite-name "Managed gRPC .NET 8 Client" --html-file managed_client8-test-report.html & server_pid=$!
+    - python3 -m sila2_interop_communication_tester.test_server --report-file managed_client8-test-report.xml --testsuite-name "Managed gRPC .NET 10 Client" --html-file managed_client8-test-report.html & server_pid=$!
     - sleep 5
     - dotnet build Interoperability/InteropClient.NetCore/InteropClient.NetCore.csproj
-    - cd Build/Interop/Client.NetCore/net8.0
+    - cd Build/Interop/Client.NetCore/net10.0
     - dotnet InteropClient.NetCore.dll
     - sleep 5
     - kill -INT $server_pid
@@ -87,8 +89,8 @@ interop_server_unmanaged:
   allow_failure: true
   script:
     - 'dotnet restore --packages $NUGET_PACKAGES_DIRECTORY'
-    - 'dotnet build --no-restore Interoperability/InteropServer/InteropServer.csproj -f net8.0'
-    - 'dotnet Build/Interop/Server/net8.0/InteropServer.dll > server.log 2>&1 & server_pid=$!'
+    - 'dotnet build --no-restore Interoperability/InteropServer/InteropServer.csproj -f net10.0'
+    - 'dotnet Build/Interop/Server/net10.0/InteropServer.dll > server.log 2>&1 & server_pid=$!'
     - echo "Interop server started"
     - apt-get update
     - apt-get install -yq python3-pip
@@ -113,7 +115,7 @@ interop_client_unmanaged:
     - python3 -m sila2_interop_communication_tester.test_server --report-file unmanaged_client8-test-report.xml --testsuite-name "Unmanaged gRPC .NET 8 Client" --html-file unmanaged_client8-test-report.html & server_pid=$!
     - sleep 5
     - dotnet build Interoperability/InteropClient.NetCore/InteropClient.NetCore.csproj
-    - cd Build/Interop/Client.NetCore/net8.0
+    - cd Build/Interop/Client.NetCore/net10.0
     - dotnet InteropClient.NetCore.dll
     - sleep 5
     - kill -INT $server_pid
@@ -123,3 +125,67 @@ interop_client_unmanaged:
     paths:
       - unmanaged_client8-test-report.xml
       - unmanaged_client8-test-report.html
+
+
+sast-scan:
+  image: semgrep/semgrep:latest
+  stage: sec
+  before_script: []
+  script: 
+    # run semgrep scan with automatic configuration detection 
+    # and additional security rules 
+    - semgrep scan .
+      --config auto
+      --config p/csharp 
+      --config p/security-audit 
+      --config p/secrets 
+      --config p/command-injection 
+      --config p/sql-injection 
+      --config p/owasp-top-ten 
+      --config p/cwe-top-25 
+      --config p/trailofbits 
+      --config p/insecure-transport 
+      --config p/supply-chain 
+      --exclude-rule csharp.dotnet.security.mvc-missing-antiforgery.mvc-missing-antiforgery
+      --gitlab-sast-output=gl-sast-report.json
+      --sarif-output=sast-report.sarif
+      --error # fail on detected issues
+  artifacts:
+    when: always
+    reports:
+      sast: gl-sast-report.json
+    paths: 
+      - gl-sast-report.json
+      - sast-report.sarif 
+
+owasp_dependency_check:
+  image:
+    name: registry.gitlab.com/gitlab-ci-utils/docker-dependency-check:latest
+    entrypoint: [""]
+  stage: sec
+  script:
+    - 'cd frontend && npm install && cd ..'
+    - 'mkdir reports'
+    - '/usr/share/dependency-check/bin/dependency-check.sh --scan "./" --format ALL --project "$CI_PROJECT_NAME" --out reports'
+  allow_failure: true
+  artifacts:
+    when: always
+    reports:
+      dependency_scanning: reports/dependency-check-gitlab.json
+    paths:
+      - "reports/dependency-check-report.html"
+      - "reports/dependency-check-gitlab.json"
+
+sokrates:
+  image:
+    name: registry.gitlab.com/gitlab-ci-utils/docker-sokrates:latest
+    entrypoint: [""]
+  stage: analysis
+  needs: []
+  allow_failure: true
+  script:
+    - /sokrates/analyze.sh
+    - if [ -z "$(ls -A _sokrates/)" ]; then exit 2; fi
+  artifacts:
+    paths:
+      - _sokrates/
