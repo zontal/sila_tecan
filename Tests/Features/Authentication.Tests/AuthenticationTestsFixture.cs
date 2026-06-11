@@ -63,7 +63,7 @@ namespace Tecan.Sila2.Authentication.Tests
 
             var interception = _authService.Intercept( "org.silastandard/core/SiLAService/v1/Command/GetFeatureDefinition", token.AccessToken );
             Assert.That( interception, Is.Null );
-            Assert.DoesNotThrow( () => _authService.Logout( token.AccessToken ) );
+            Assert.DoesNotThrow((NUnit.Framework.TestDelegate)(() => _authService.Logout( token.AccessToken ) ));
         }
 
         [TestCase( "test", "test-pwd", "org.silastandard/core/SiLAService/v1", "org.silastandard/core/LockController/v1/Command/LockServer" )]
@@ -78,8 +78,8 @@ namespace Tecan.Sila2.Authentication.Tests
 
             var token = _authService.Login( userName, password, _serverId, tokenFeatures );
             _configProviderMock.Setup(p => p.IsValidApiKey(It.IsAny<string>(), It.IsAny<string>())).Returns(false);
-            Assert.Throws<AuthorizationInvalidAccessTokenException>( () => _authService.Intercept( requestedCommand, token.AccessToken ) );
-            Assert.DoesNotThrow( () => _authService.Logout( token.AccessToken ) );
+            Assert.Throws<AuthorizationInvalidAccessTokenException>((NUnit.Framework.TestDelegate)(() => _authService.Intercept( requestedCommand, token.AccessToken ) ));
+            Assert.DoesNotThrow((NUnit.Framework.TestDelegate)(() => _authService.Logout( token.AccessToken ) ));
         }
 
         [Test]
@@ -87,15 +87,13 @@ namespace Tecan.Sila2.Authentication.Tests
         {
             _configProviderMock.Setup( p => p.AuthorizationProvider ).Returns( null as IAuthorizationProviderService );
             _configProviderMock.Setup( p => p.IsValidApiKey(It.IsAny<string>(), It.IsAny<string>())).Returns( false );
-            Assert.Throws<AuthorizationInvalidAccessTokenException>( () =>
-                _authService.Intercept( "org.silastandard/core/SiLAService/v1/Command/GetFeatureDefinition", Guid.NewGuid().ToString() ) );
+            Assert.Throws<AuthorizationInvalidAccessTokenException>((NUnit.Framework.TestDelegate)(() => _authService.Intercept( "org.silastandard/core/SiLAService/v1/Command/GetFeatureDefinition", Guid.NewGuid().ToString() ) ));
         }
 
         [Test]
         public void AuthenticateRequest_NoToken_ThrowsException()
         {
-            Assert.Throws<AuthorizationInvalidAccessTokenException>( () =>
-                _authService.Intercept( "org.silastandard/core/SiLAService/v1/Command/GetFeatureDefinition", null ) );
+            Assert.Throws<AuthorizationInvalidAccessTokenException>((NUnit.Framework.TestDelegate)(() => _authService.Intercept( "org.silastandard/core/SiLAService/v1/Command/GetFeatureDefinition", null ) ));
         }
 
         [TestCase( "testadmin", "testadmin-pwd" )]
@@ -109,7 +107,7 @@ namespace Tecan.Sila2.Authentication.Tests
 
             var interception = _authService.Intercept( "org.silastandard/core/SiLAService/v1/Command/GetFeatureDefinition", token.AccessToken );
             Assert.That( interception, Is.Null );
-            Assert.DoesNotThrow( () => _authService.Logout( token.AccessToken ) );
+            Assert.DoesNotThrow((NUnit.Framework.TestDelegate)(() => _authService.Logout( token.AccessToken ) ));
         }
 
         [Test]
@@ -136,8 +134,7 @@ namespace Tecan.Sila2.Authentication.Tests
             _configProviderMock.Setup( p => p.AuthorizationProvider ).Returns( providerMock.Object );
             _configProviderMock.Setup(p => p.IsValidApiKey(It.IsAny<string>(), It.IsAny<string>())).Returns(false);
 
-            Assert.Throws<AuthorizationInvalidAccessTokenException>( () =>
-                _authService.Intercept( "org.silastandard/core/SiLAService/v1/Command/GetFeatureDefinition", accessToken ) );
+            Assert.Throws<AuthorizationInvalidAccessTokenException>((NUnit.Framework.TestDelegate)(() => _authService.Intercept( "org.silastandard/core/SiLAService/v1/Command/GetFeatureDefinition", accessToken ) ));
         }
 
         [Test]
@@ -157,17 +154,17 @@ namespace Tecan.Sila2.Authentication.Tests
         [TestCase( "doesnotexist", "no-pwd" )]
         public void Login_WrongCredentials_ThrowsException( string userName, string password )
         {
-            Assert.Throws<AuthenticationFailedException>( () => _authService.Login( userName, password, _serverId, new List<string>()
+            Assert.Throws<AuthenticationFailedException>((NUnit.Framework.TestDelegate)(() => _authService.Login( userName, password, _serverId, new List<string>()
             {
                 "org.silastandard/core/SiLAService/v1"
-            } ) );
+            } ) ));
         }
 
         [Test]
         public void Login_DifferentServer_ThrowsException()
         {
             _serverMock.Setup( s => s.ServerName ).Returns( "Test Server" );
-            Assert.Throws<AuthenticationFailedException>( () => _authService.Login( "testadmin", "testadmin-pwd", Guid.NewGuid().ToString(), new List<string>() ) );
+            Assert.Throws<AuthenticationFailedException>((NUnit.Framework.TestDelegate)(() => _authService.Login( "testadmin", "testadmin-pwd", Guid.NewGuid().ToString(), new List<string>() ) ));
         }
     }
 }

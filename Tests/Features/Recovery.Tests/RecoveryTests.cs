@@ -86,7 +86,7 @@ namespace Tecan.Sila2.Recovery.Tests
             Thread.Sleep( 1000 );
             Assert.That( recoverTask.IsCompleted, Is.False );
 
-            Assert.Throws<UnknownContinuationOptionException>( () => recoveryService.ExecuteContinuationOption( DefaultExecutionUuid, "Does not exist", null ) );
+            Assert.Throws<UnknownContinuationOptionException>((NUnit.Framework.TestDelegate)(() => recoveryService.ExecuteContinuationOption( DefaultExecutionUuid, "Does not exist", null ) ));
         }
 
         [Test]
@@ -105,7 +105,7 @@ namespace Tecan.Sila2.Recovery.Tests
             Thread.Sleep( 1000 );
             Assert.That( recoverTask.IsCompleted, Is.False );
 
-            Assert.Throws<InvalidCommandExecutionUUIDException>( () => recoveryService.ExecuteContinuationOption( "does not exist", "Strategy1", null ) );
+            Assert.Throws<InvalidCommandExecutionUUIDException>((NUnit.Framework.TestDelegate)(() => recoveryService.ExecuteContinuationOption( "does not exist", "Strategy1", null ) ));
         }
 
         [Test]

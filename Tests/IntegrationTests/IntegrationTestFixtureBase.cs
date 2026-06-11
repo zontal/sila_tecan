@@ -737,7 +737,7 @@ namespace Tecan.Sila2.IntegrationTests
             var cancelClient = new CancelControllerClient( _server.Channel, executionManager );
             cancelClient.CancelCommand( command.CommandId );
 
-            Assert.ThrowsAsync<OperationCanceledException>( () => command.Response );
+            Assert.ThrowsAsync<OperationCanceledException>((NUnit.Framework.AsyncTestDelegate)(async () => await command.Response));
 
             Unlock( lockId, token );
             Logout( token );
@@ -768,7 +768,7 @@ namespace Tecan.Sila2.IntegrationTests
             var command = commandClient.Invoke( request );
             command.Cancel();
 
-            Assert.ThrowsAsync<OperationCanceledException>( () => command.Response );
+            Assert.ThrowsAsync<OperationCanceledException>((NUnit.Framework.AsyncTestDelegate)(async () => await command.Response));
             // the cancellation is very fast, because it does not wait for the server.
             // we need to wait a bit in order to make sure the command was also cancelled at the server
             Thread.Sleep(1000);
@@ -845,7 +845,7 @@ namespace Tecan.Sila2.IntegrationTests
             var executionManager = new TestAuthLockingExecutionManager( lockId, token, _server.Channel );
             var testClient = new TestServerClient( _server.Channel, executionManager );
 
-            Assert.Throws<FakeException>( () => testClient.RunIntoFailure() );
+            Assert.Throws<FakeException>((NUnit.Framework.TestDelegate)(() => testClient.RunIntoFailure() ));
 
             Unlock( lockId, token );
             Logout( token );
@@ -860,7 +860,7 @@ namespace Tecan.Sila2.IntegrationTests
             var testClient = new TestServerClient( _server.Channel, executionManager );
             var command = testClient.RunIntoFailureObservably();
 
-            Assert.ThrowsAsync<FakeException>( () => command.Response );
+            Assert.ThrowsAsync<FakeException>((NUnit.Framework.AsyncTestDelegate)(async () => await command.Response));
 
             Unlock( lockId, token );
             Logout( token );
@@ -879,7 +879,7 @@ namespace Tecan.Sila2.IntegrationTests
             var featureContext = new FeatureContext( feature, _server, executionManager );
             var commandClient = new NonObservableCommandClient( feature.Items.OfType<FeatureCommand>().Single( c => c.Identifier == nameof( ITestServer.RunIntoFailure ) ), featureContext );
 
-            var exception = Assert.ThrowsAsync<DefinedErrorException>( () => commandClient.InvokeAsync( commandClient.CreateRequest() ) );
+            var exception = Assert.ThrowsAsync<DefinedErrorException>((NUnit.Framework.AsyncTestDelegate)(async () => await commandClient.InvokeAsync( commandClient.CreateRequest() ) ));
             var fake = feature.Items.OfType<FeatureDefinedExecutionError>().Single( e => e.Identifier == "Fake" );
             Assert.That( exception.ErrorIdentifier, Is.EqualTo( feature.GetFullyQualifiedIdentifier( fake ) ) );
 
@@ -899,7 +899,7 @@ namespace Tecan.Sila2.IntegrationTests
             var commandClient = new ObservableCommandClient( feature.Items.OfType<FeatureCommand>().Single( c => c.Identifier == nameof( ITestServer.RunIntoFailureObservably ) ), featureContext );
             var command = commandClient.Invoke( commandClient.CreateRequest() );
 
-            var exception = Assert.ThrowsAsync<DefinedErrorException>( () => command.Response );
+            var exception = Assert.ThrowsAsync<DefinedErrorException>((NUnit.Framework.AsyncTestDelegate)(async () => await command.Response ));
             var fake = feature.Items.OfType<FeatureDefinedExecutionError>().Single( e => e.Identifier == "Fake" );
             Assert.That( exception.ErrorIdentifier, Is.EqualTo( feature.GetFullyQualifiedIdentifier( fake ) ) );
 
@@ -916,7 +916,7 @@ namespace Tecan.Sila2.IntegrationTests
             var executionManager = new TestAuthLockingExecutionManager( lockId, token, _server.Channel );
             var testClient = new TestServerClient( _server.Channel, executionManager );
 
-            var exception = Assert.Throws<SilaException>( () => testClient.ThrowRuntimeException() );
+            var exception = Assert.Throws<SilaException>((NUnit.Framework.TestDelegate)(() => testClient.ThrowRuntimeException() ));
             Assert.That( exception.Message, Is.EqualTo( "This came totally unexpected!" ) );
 
             Unlock( lockId, token );
@@ -936,7 +936,7 @@ namespace Tecan.Sila2.IntegrationTests
             var commandClient = new NonObservableCommandClient( feature.Items.OfType<FeatureCommand>().Single( c => c.Identifier == nameof( ITestServer.ThrowRuntimeException ) ), featureContext );
             var command = commandClient.InvokeAsync( commandClient.CreateRequest() );
 
-            var exception = Assert.ThrowsAsync<SilaException>( () => command );
+            var exception = Assert.ThrowsAsync<SilaException>((NUnit.Framework.AsyncTestDelegate)(async () => await command ));
             Assert.That( exception.Message, Is.EqualTo( "This came totally unexpected!" ) );
 
             Unlock( lockId, token );
@@ -1029,8 +1029,8 @@ namespace Tecan.Sila2.IntegrationTests
         [Test]
         public void InvalidLogin_ThrowsSilaException()
         {
-            Assert.Throws<SilaFrameworkException>( () => Lock( null ) );
-            Assert.Throws<DefinedErrorException>( () => Lock( "bullshit" ) );
+            Assert.Throws<SilaFrameworkException>((NUnit.Framework.TestDelegate)(() => Lock( null ) ));
+            Assert.Throws<DefinedErrorException>((NUnit.Framework.TestDelegate)(() => Lock( "bullshit" ) ));
         }
 
         protected string Login()

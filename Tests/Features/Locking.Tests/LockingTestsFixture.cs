@@ -16,7 +16,7 @@ namespace Tecan.Sila2.Locking.Tests
         [Test]
         public void Intercept_NoLockIdentifier_ThrowsException()
         {
-            Assert.Throws<InvalidLockIdentifierException>(() => _lockController.Intercept( "org.silastandard/core/SiLAService/v1/Command/GetFeatureDefinition", null ));
+            Assert.Throws<InvalidLockIdentifierException>((NUnit.Framework.TestDelegate)(() => _lockController.Intercept( "org.silastandard/core/SiLAService/v1/Command/GetFeatureDefinition", null )));
         }
 
         [Test]
@@ -29,7 +29,7 @@ namespace Tecan.Sila2.Locking.Tests
 
             var interception = _lockController.Intercept( "org.silastandard/core/SiLAService/v1/Command/GetFeatureDefinition", lockIdentifier );
             Assert.That(interception, Is.Null);
-            Assert.DoesNotThrow( () => _lockController.UnlockServer( lockIdentifier ) );
+            Assert.DoesNotThrow((NUnit.Framework.TestDelegate)(() => _lockController.UnlockServer( lockIdentifier )));
         }
 
         [Test]
@@ -40,7 +40,7 @@ namespace Tecan.Sila2.Locking.Tests
             _lockController.LockServer( lockIdentifier, 3600 );
             Assert.That( _lockController.IsLocked, Is.True );
 
-            Assert.Throws<InvalidLockIdentifierException>( () => _lockController.Intercept( "org.silastandard/core/SiLAService/v1/Command/GetFeatureDefinition", "Bar" ) );
+            Assert.Throws<InvalidLockIdentifierException>((NUnit.Framework.TestDelegate)(() => _lockController.Intercept( "org.silastandard/core/SiLAService/v1/Command/GetFeatureDefinition", "Bar" ) ));
 
             var interception = _lockController.Intercept( "org.silastandard/core/SiLAService/v1/Command/GetFeatureDefinition", lockIdentifier );
             Assert.That( interception, Is.Null );
@@ -54,13 +54,13 @@ namespace Tecan.Sila2.Locking.Tests
             _lockController.LockServer( lockIdentifier, 3600 );
             Assert.That( _lockController.IsLocked, Is.True );
 
-            Assert.Throws<ServerAlreadyLockedException>(() => _lockController.UnlockServer("Bar"));
+            Assert.Throws<ServerAlreadyLockedException>((NUnit.Framework.TestDelegate)(() => _lockController.UnlockServer("Bar")));
         }
 
         [Test]
         public void UnlockServer_Unlocked_ThrowsException()
         {
-            Assert.Throws<ServerNotLockedException>( () => _lockController.UnlockServer( "Foo" ) );
+            Assert.Throws<ServerNotLockedException>((NUnit.Framework.TestDelegate)(() => _lockController.UnlockServer( "Foo" ) ));
         }
 
         [Test]
@@ -71,7 +71,7 @@ namespace Tecan.Sila2.Locking.Tests
             _lockController.LockServer( lockIdentifier, 3600 );
             Assert.That( _lockController.IsLocked, Is.True );
 
-            Assert.Throws<ServerAlreadyLockedException>( () => _lockController.LockServer( "Bar", 3600 ) );
+            Assert.Throws<ServerAlreadyLockedException>((NUnit.Framework.TestDelegate)(() => _lockController.LockServer( "Bar", 3600 ) ));
         }
     }
 }

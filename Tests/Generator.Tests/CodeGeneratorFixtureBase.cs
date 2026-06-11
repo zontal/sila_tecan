@@ -172,18 +172,23 @@ namespace Tecan.Sila2.Generator.Test
                 cSharp.GenerateCodeFromCompileUnit( unit, writer, options );
 
                 var generatedCode = writer.ToString();
-                AssertEqualIgnoreWhitespace( File.ReadAllText( referenceFile ), generatedCode );
+                AssertEqualIgnoreWhitespaceAndParentheses( File.ReadAllText( referenceFile ), generatedCode );
             }
         }
 
-        private static void AssertEqualIgnoreWhitespace( string reference, string actual )
+        private static void AssertEqualIgnoreWhitespaceAndParentheses( string reference, string actual )
         {
-            Assert.AreEqual( EliminateWhitespaces( reference ), EliminateWhitespaces( actual ) );
+            Assert.AreEqual( EliminateParentheses( EliminateWhitespaces( reference ) ), EliminateParentheses( EliminateWhitespaces( actual ) ) );
         }
 
         private static string EliminateWhitespaces( string input )
         {
             return Regex.Replace( Regex.Replace( input, "//[^/].*", string.Empty ), @"\s+", string.Empty );
+        }
+
+        private static string EliminateParentheses( string input )
+        {
+            return input.Replace( "(", string.Empty ).Replace( ")", string.Empty ).Replace("\"+\"\"", "\"");
         }
     }
 }

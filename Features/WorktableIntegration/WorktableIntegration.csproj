@@ -38,7 +38,7 @@
     </ItemGroup>
     <ItemGroup>
         <PackageReference Include="Grpc.Core" Version="2.46.6" />
-        <PackageReference Include="protobuf-net" Version="3.2.12" />
+        <PackageReference Include="protobuf-net" Version="3.2.56" />
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\..\Contracts\Contracts.csproj" />

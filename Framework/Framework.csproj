@@ -31,9 +31,9 @@
 
     <ItemGroup>
         <PackageReference Include="IPNetwork2" Version="2.1.2" Condition="'$(TargetFramework)' == 'netstandard2.0'" />
-        <PackageReference Include="protobuf-net" Version="3.2.12" />
-        <PackageReference Include="System.ComponentModel.Composition" Version="4.6.0" />
-        <PackageReference Include="System.Threading.Channels" Version="4.7.0" />
+        <PackageReference Include="protobuf-net" Version="3.2.56" />
+        <PackageReference Include="System.ComponentModel.Composition" Version="10.0.8" />
+        <PackageReference Include="System.Threading.Channels" Version="10.0.8" />
         <PackageReference Include="Common.Logging" Version="3.4.1" />
     </ItemGroup>
 
