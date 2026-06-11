@@ -15,7 +15,7 @@
         <dependencies>
             <dependency id="Tecan.Sila2" version="[$version$,5.0)" />
         </dependencies>
-		<readme>docs\Tecan.Sila2.Auth.Client.md</readme>
+		<readme>docs\Tecan.Sila2.Features.Auth.Client.md</readme>
     </metadata>
     <files>
         <file src="..\Build\Features\Client\netstandard2.0\Tecan.Sila2.Authentication.Client.dll" target="lib\netstandard2.0\" />
@@ -31,6 +31,6 @@
 		<file src="..\Build\Features\Client\net8.0\Tecan.Sila2.Authentication.Client.xml" target="lib\net8.0\" />
 
 		<file src="icon.png" target="images" />
-		<file src="Tecan.Sila2.Auth.Client.md" target="docs" />
+		<file src="Tecan.Sila2.Features.Auth.Client.md" target="docs" />
     </files>
 </package>
