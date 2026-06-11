@@ -39,8 +39,18 @@ namespace Tecan.Sila2.Server
             throw new InvalidOperationException( $"The server was started incorrectly: " + string.Join( ", ", arg ) );
         }
 
-        private static ServerStartInformation CreateServerStartInfo( ServerCommandLineArguments arguments )
+        /// <summary>
+        /// Creates the server start information based on the command line arguments
+        /// </summary>
+        /// <param name="arguments">the parsed arguments</param>
+        /// <returns>The appropriate server start information</returns>
+        public static ServerStartInformation CreateServerStartInfo( ServerCommandLineArguments arguments )
         {
+            if (arguments == null)
+            {
+                throw new ArgumentNullException(nameof(arguments));
+            }
+
             var selfInfo = ServerInformationFactory.GetServerInformation();
 
             var info = new ServerStartInformation( selfInfo, arguments.Port, arguments.InterfaceFilter, arguments.ServerUuid, arguments.Name );
@@ -49,7 +59,11 @@ namespace Tecan.Sila2.Server
             {
                 try
                 {
+#if NET10_0_OR_GREATER
+                    info.ServerCertificate = X509CertificateLoader.LoadCertificateFromFile(arguments.CertificatePath);
+#else
                     info.ServerCertificate = new X509Certificate2(arguments.CertificatePath);
+#endif
                     if (CertificateUtilities.TryFindServerUuid(info.ServerCertificate, out var certUuid))
                     {
                         if (info.ServerUuid != Guid.Empty && info.ServerUuid != certUuid)
