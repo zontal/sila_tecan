@@ -26,6 +26,9 @@ namespace Tecan.Sila2.Server
         {
             var container = new Container().WithMef();
             configureContainer?.Invoke( container );
+#if NET10_0
+            container.RegisterInstance(typeof(TimeProvider), TimeProvider.System);
+#endif
             return builder.UseServiceProviderFactory( new DryIocServiceProviderFactory( container ) );
         }
 
