@@ -52,7 +52,8 @@ namespace Tecan.Sila2.Generator.TypeTranslation
             { typeof(float?), (BasicType.Real, true) },
             { typeof(double?), (BasicType.Real, true) },
             { typeof(bool?), (BasicType.Boolean, true) },
-            { typeof(object), (BasicType.Any, false) }
+            { typeof(object), (BasicType.Any, false) },
+            { typeof(TimeWithTimezone), (BasicType.Time, true) }
         };
 
         public int Priority => 1;
@@ -170,6 +171,13 @@ namespace Tecan.Sila2.Generator.TypeTranslation
 
                         return extractedResult;
                     }
+                    else if (tuple.Type == BasicType.Time)
+                    {
+                        if (targetType.BaseType == typeof( TimeWithTimezone ).FullName)
+                        {
+                            extractedResult.Method.MethodName = nameof( TimeDto.ExtractToTimeWithTimezone );
+                        }
+                    }
 
                     return new CodeCastExpression( targetType, extractedResult );
                 }
@@ -201,6 +209,14 @@ namespace Tecan.Sila2.Generator.TypeTranslation
                         }
 
                         return extractedResult;
+                    }
+
+                    if (tuple.Type == BasicType.Time)
+                    {
+                        if (targetType.BaseType == typeof( TimeWithTimezone ).FullName)
+                        {
+                            extractedResult.Method.MethodName = nameof( TimeDto.TryExtractToTimeWithTimezone );
+                        }
                     }
 
                     return new CodeCastExpression( targetType, extractedResult );

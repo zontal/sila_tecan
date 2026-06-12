@@ -1,5 +1,6 @@
 ﻿using System;
 using System.CodeDom;
+using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
 using System.IO;
@@ -76,6 +77,16 @@ namespace Tecan.Sila2.Generator.CommandLine
         }
 
         /// <summary>
+        /// Defines a custom type mapping in the format &lt;SiLA Identifier&gt;=&lt;C#Type&gt;. Can be specified multiple times for multiple type mappings.
+        /// </summary>
+        [Option( 't', "type-mapping", HelpText = "Defines a custom type mapping in the format <SiLA Identifier>=<C#Type>. Can be specified multiple times for multiple type mappings.", Required = false)]
+        public IEnumerable<string> TypeMappings
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// Gets a value indicating whether the client should be generated
         /// </summary>
         public bool GenerateClient { get; private set; } = true;
@@ -91,6 +102,26 @@ namespace Tecan.Sila2.Generator.CommandLine
             channel.Info( "Loading feature" );
             var feature = FeatureSerializer.Load( FeaturePath );
             var ns = Namespace ?? feature.Namespace;
+
+            if (TypeMappings != null)
+            {
+                var nameRegistry = container.GetExportedValue<ICodeNameRegistry>();
+
+                foreach (var mapping in TypeMappings)
+                {
+                    var parts = mapping.Split( new[] { '=' }, 2 );
+                    if (parts.Length != 2)
+                    {
+                        channel.Warn( $"Invalid type mapping format: '{mapping}'. Expected format is <SiLA Identifier>=<C#Type>." );
+                        continue;
+                    }
+                    var silaIdentifier = parts[0].Trim();
+                    var csharpType = parts[1].Trim();
+                    channel.Info( $"Adding custom type mapping: {silaIdentifier} -> {csharpType}" );
+
+                    nameRegistry.RegisterDifferentType(silaIdentifier, csharpType);
+                }
+            }
 
             var dtoGenerator = container.GetExportedValue<IDtoGenerator>();
             var providerGenerator = container.GetExportedValue<IServerGenerator>();

@@ -33,7 +33,7 @@ namespace Tecan.Sila2.Interop.Client.BasicDataTypesTest.BasicDataTypesTest
         
         private System.Lazy<System.DateTimeOffset> _dateValue;
         
-        private System.Lazy<System.TimeSpan> _timeValue;
+        private System.Lazy<TimeWithTimezone> _timeValue;
         
         private System.Lazy<System.DateTimeOffset> _timestampValue;
         
@@ -113,7 +113,7 @@ namespace Tecan.Sila2.Interop.Client.BasicDataTypesTest.BasicDataTypesTest
         /// <summary>
         /// Returns the Time value 12:34:56, timezone +2.
         /// </summary>
-        public virtual System.TimeSpan TimeValue
+        public virtual TimeWithTimezone TimeValue
         {
             get
             {
@@ -212,12 +212,12 @@ namespace Tecan.Sila2.Interop.Client.BasicDataTypesTest.BasicDataTypesTest
             }
         }
         
-        private System.TimeSpan RequestTimeValue()
+        private TimeWithTimezone RequestTimeValue()
         {
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/BasicDataTypesTest/v1/Property/TimeValue");
             try
             {
-                System.TimeSpan response = _channel.ReadProperty<PropertyResponse<Tecan.Sila2.TimeDto>>(_serviceName, "TimeValue", "org.silastandard/test/BasicDataTypesTest/v1/Property/TimeValue", callInfo).Value.Extract(_executionManager.DownloadBinaryStore);
+                TimeWithTimezone response = _channel.ReadProperty<PropertyResponse<Tecan.Sila2.TimeDto>>(_serviceName, "TimeValue", "org.silastandard/test/BasicDataTypesTest/v1/Property/TimeValue", callInfo).Value.ExtractToTimeWithTimezone(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -254,7 +254,7 @@ namespace Tecan.Sila2.Interop.Client.BasicDataTypesTest.BasicDataTypesTest
             _realValue = new System.Lazy<double>(RequestRealValue);
             _booleanValue = new System.Lazy<bool>(RequestBooleanValue);
             _dateValue = new System.Lazy<System.DateTimeOffset>(RequestDateValue);
-            _timeValue = new System.Lazy<System.TimeSpan>(RequestTimeValue);
+            _timeValue = new System.Lazy<TimeWithTimezone>(RequestTimeValue);
             _timestampValue = new System.Lazy<System.DateTimeOffset>(RequestTimestampValue);
         }
         
@@ -372,14 +372,14 @@ namespace Tecan.Sila2.Interop.Client.BasicDataTypesTest.BasicDataTypesTest
         /// Receives a Time value and returns the Time value that has been received.
         /// </summary>
         /// <param name="timeValue">The Time value to be returned.</param>
-        public virtual System.TimeSpan EchoTimeValue(System.TimeSpan timeValue)
+        public virtual TimeWithTimezone EchoTimeValue(TimeWithTimezone timeValue)
         {
             EchoTimeValueRequestDto request = new EchoTimeValueRequestDto(timeValue, null);
             request.Validate();
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/BasicDataTypesTest/v1/Command/EchoTimeValue");
             try
             {
-                System.TimeSpan response = _channel.ExecuteUnobservableCommand<EchoTimeValueRequestDto, EchoTimeValueResponseDto>(_serviceName, "EchoTimeValue", request, callInfo).ReceivedValue.Extract(_executionManager.DownloadBinaryStore);
+                TimeWithTimezone response = _channel.ExecuteUnobservableCommand<EchoTimeValueRequestDto, EchoTimeValueResponseDto>(_serviceName, "EchoTimeValue", request, callInfo).ReceivedValue.ExtractToTimeWithTimezone(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)

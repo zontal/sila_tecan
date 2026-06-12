@@ -33,9 +33,9 @@ namespace Tecan.Sila2.Interop.Server.AnyTypeTest
 
         private static DynamicObjectProperty CreateDynamicStructValue()
         {
-            var stringProperty = CreateProperty( "StringTypeValue", BasicType.String, "A String value" );
-            var integerProperty = CreateProperty( "IntegerTypeValue", BasicType.Integer, 83737665L );
-            var dateProperty = CreateProperty( "DateTypeValue", BasicType.Date, new DateTimeOffset( 2022, 8, 5, 0, 0, 0, TimeSpan.FromHours( 2 ) ) );
+            var stringProperty = CreateProperty( "StringTypeValue", "String Type Value", "A string value.", BasicType.String, "A String value" );
+            var integerProperty = CreateProperty( "IntegerTypeValue", "Integer Type Value", "An integer value.", BasicType.Integer, 83737665L );
+            var dateProperty = CreateProperty( "DateTypeValue", "Date Type Value", "A date value.", BasicType.Date, new DateTimeOffset( 2022, 8, 5, 0, 0, 0, TimeSpan.FromHours( 2 ) ) );
 
 
             return new DynamicObjectProperty(
@@ -50,9 +50,9 @@ namespace Tecan.Sila2.Interop.Server.AnyTypeTest
                 } );
         }
 
-        private static DynamicObjectProperty CreateProperty( string name, BasicType basicType, object value )
+        private static DynamicObjectProperty CreateProperty( string name, string displayName, string description, BasicType basicType, object value )
         {
-            return new DynamicObjectProperty( name, name, "The " + name, new DataTypeType { Item = basicType } )
+            return new DynamicObjectProperty( name, displayName, description, new DataTypeType { Item = basicType } )
             {
                 Value = value
             };

@@ -769,7 +769,7 @@ namespace Tecan.Sila2.Interop.Server.BasicDataTypesTest
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
         /// <param name="receivedValue">The Time value that has been received.</param>
-        public EchoTimeValueResponseDto(System.TimeSpan receivedValue, Tecan.Sila2.IBinaryStore store)
+        public EchoTimeValueResponseDto(TimeWithTimezone receivedValue, Tecan.Sila2.IBinaryStore store)
         {
             ReceivedValue = new Tecan.Sila2.TimeDto(receivedValue, store);
         }

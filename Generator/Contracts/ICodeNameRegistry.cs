@@ -30,6 +30,13 @@ namespace Tecan.Sila2.Generator.Contracts
         void RegisterDifferentType( string identifier, Type type );
 
         /// <summary>
+        /// Registers that the feature element with the given identifier uses a different type than expected
+        /// </summary>
+        /// <param name="identifier">The identifier of the feature element</param>
+        /// <param name="type">The deviating type</param>
+        void RegisterDifferentType(string identifier, string type);
+
+        /// <summary>
         /// Determines whether the element with the given identifier has been registered with a different name
         /// </summary>
         /// <param name="identifier">The identifier of the feature element</param>

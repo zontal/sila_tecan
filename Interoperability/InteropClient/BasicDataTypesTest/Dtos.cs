@@ -697,7 +697,7 @@ namespace Tecan.Sila2.Interop.Client.BasicDataTypesTest.BasicDataTypesTest
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
         /// <param name="timeValue">The Time value to be returned.</param>
-        public EchoTimeValueRequestDto(System.TimeSpan timeValue, Tecan.Sila2.IBinaryStore store)
+        public EchoTimeValueRequestDto(TimeWithTimezone timeValue, Tecan.Sila2.IBinaryStore store)
         {
             TimeValue = new Tecan.Sila2.TimeDto(timeValue, store);
         }

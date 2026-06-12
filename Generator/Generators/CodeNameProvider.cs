@@ -79,6 +79,25 @@ namespace Tecan.Sila2.Generator.Generators
             _typeOverrides[ identifier ] = type;
         }
 
+        public void RegisterDifferentType(string identifier, string type)
+        {
+            RegisterDifferentType(identifier, ResolveType(type));
+        }
+
+        private Type ResolveType(string type)
+        {
+            if (type == nameof(TimeWithTimezone))
+            {
+                return typeof(TimeWithTimezone);
+            }
+            var contractsResolve = typeof(TimeWithTimezone).Assembly.GetType(type, false);
+            if (contractsResolve != null)
+            {
+                return contractsResolve;
+            }
+            return Type.GetType(type);
+        }
+
         public void RegisterMethod( string commandIdentifier, MethodInfo method )
         {
             _nonstandardMethods[ commandIdentifier ] = method;

@@ -64,7 +64,7 @@ namespace Tecan.Sila2.Interop.Server.BasicDataTypesTest
         /// <summary>
         /// Returns the Time value 12:34:56, timezone +2.
         /// </summary>
-        System.TimeSpan TimeValue
+        TimeWithTimezone TimeValue
         {
             get;
         }
@@ -123,7 +123,7 @@ namespace Tecan.Sila2.Interop.Server.BasicDataTypesTest
         /// <param name="timeValue">The Time value to be returned.</param>
         /// <returns>The Time value that has been received.</returns>
         [return: Tecan.Sila2.SilaIdentifierAttribute("ReceivedValue")]
-        System.TimeSpan EchoTimeValue(System.TimeSpan timeValue);
+        TimeWithTimezone EchoTimeValue(TimeWithTimezone timeValue);
         
         /// <summary>
         /// Receives a Timestamp value and returns a message containing the Timestamp value that has been received.

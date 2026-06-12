@@ -19,7 +19,7 @@ namespace Tecan.Sila2.Interop.Server.BasicDataTypesTest
 
         public DateTimeOffset DateValue => new DateTimeOffset( 2022, 8, 5, 0, 0, 0, TimeSpan.FromHours( 2 ) );
 
-        public TimeSpan TimeValue => new TimeSpan( 0, 12, 34, 56, 789 );
+        public TimeWithTimezone TimeValue => new TimeWithTimezone( new TimeSpan( 0, 12, 34, 56, 789 ), TimeSpan.FromHours(2));
 
         public DateTimeOffset TimestampValue => new DateTimeOffset( 2022, 8, 5, 12, 34, 56, 789, TimeSpan.FromHours( 2 ) );
 
@@ -60,7 +60,7 @@ namespace Tecan.Sila2.Interop.Server.BasicDataTypesTest
         }
 
         [return: SilaIdentifier( "ReceivedValue" )]
-        public TimeSpan EchoTimeValue( TimeSpan timeValue )
+        public TimeWithTimezone EchoTimeValue( TimeWithTimezone timeValue )
         {
             return timeValue;
         }

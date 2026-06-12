@@ -89,7 +89,7 @@ namespace Tecan.Sila2.Interop.Server.StructureDataTypeTest
         
         private System.DateTimeOffset _dateTypeValue;
         
-        private System.TimeSpan _timeTypeValue;
+        private TimeWithTimezone _timeTypeValue;
         
         private System.DateTimeOffset _timestampTypeValue;
         
@@ -98,7 +98,7 @@ namespace Tecan.Sila2.Interop.Server.StructureDataTypeTest
         /// <summary>
         /// Initializes a new instance
         /// </summary>
-        public TestStructure(string stringTypeValue, long integerTypeValue, double realTypeValue, bool booleanTypeValue, System.IO.Stream binaryTypeValue, System.DateTimeOffset dateTypeValue, System.TimeSpan timeTypeValue, System.DateTimeOffset timestampTypeValue, Tecan.Sila2.DynamicClient.DynamicObjectProperty anyTypeValue)
+        public TestStructure(string stringTypeValue, long integerTypeValue, double realTypeValue, bool booleanTypeValue, System.IO.Stream binaryTypeValue, System.DateTimeOffset dateTypeValue, TimeWithTimezone timeTypeValue, System.DateTimeOffset timestampTypeValue, Tecan.Sila2.DynamicClient.DynamicObjectProperty anyTypeValue)
         {
             _stringTypeValue = stringTypeValue;
             _integerTypeValue = integerTypeValue;
@@ -180,7 +180,7 @@ namespace Tecan.Sila2.Interop.Server.StructureDataTypeTest
         /// <summary>
         /// A value of SiLA data type Time.
         /// </summary>
-        public System.TimeSpan TimeTypeValue
+        public TimeWithTimezone TimeTypeValue
         {
             get
             {

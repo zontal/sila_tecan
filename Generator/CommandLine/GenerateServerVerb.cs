@@ -112,6 +112,16 @@ namespace Tecan.Sila2.Generator.CommandLine
             set;
         }
 
+        /// <summary>
+        /// Defines a custom type mapping in the format &lt;SiLA Identifier&gt;=&lt;C#Type&gt;. Can be specified multiple times for multiple type mappings.
+        /// </summary>
+        [Option('t', "type-mapping", HelpText = "Defines a custom type mapping in the format <SiLA Identifier>=<C#Type>. Can be specified multiple times for multiple type mappings.", Required = false)]
+        public IEnumerable<string> TypeMappings
+        {
+            get;
+            set;
+        }
+
         public override void Execute( CompositionContainer container )
         {
             var channel = SetupLogging( container );
@@ -175,7 +185,8 @@ namespace Tecan.Sila2.Generator.CommandLine
                     Namespace = Namespace ?? rootNamespace + "." + feature.Identifier,
                     ProviderPath = Path.Combine( directory, feature.Identifier, ProviderPath ),
                     ServerOnly = !Client,
-                    MinimumSeverity = MinimumSeverity
+                    MinimumSeverity = MinimumSeverity,
+                    TypeMappings = TypeMappings,
                 };
                 channel.Info( "Generate provider" );
                 generateProvider.Execute( container );

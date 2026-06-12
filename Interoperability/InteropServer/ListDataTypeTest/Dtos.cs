@@ -669,7 +669,7 @@ namespace Tecan.Sila2.Interop.Server.ListDataTypeTest
         /// <returns>the inner value</returns>
         public TestStructure Extract(Tecan.Sila2.IBinaryStore store)
         {
-            return new TestStructure(StringTypeValue.Extract(store), IntegerTypeValue.Extract(store), RealTypeValue.Extract(store), BooleanTypeValue.Extract(store), BinaryTypeValue.Extract(store), DateTypeValue.Extract(store), TimeTypeValue.Extract(store), TimestampTypeValue.Extract(store), AnyTypeValue.Extract(store));
+            return new TestStructure(StringTypeValue.Extract(store), IntegerTypeValue.Extract(store), RealTypeValue.Extract(store), BooleanTypeValue.Extract(store), BinaryTypeValue.Extract(store), DateTypeValue.Extract(store), TimeTypeValue.ExtractToTimeWithTimezone(store), TimestampTypeValue.Extract(store), AnyTypeValue.Extract(store));
         }
         
         /// <summary>

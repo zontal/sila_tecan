@@ -1,5 +1,6 @@
 ﻿using System;
 using CommandLine;
+using Tecan.Sila2.DynamicClient;
 using Tecan.Sila2.Server;
 
 namespace Tecan.Sila2.Interop.Server
@@ -9,6 +10,7 @@ namespace Tecan.Sila2.Interop.Server
         static void Main(string[] args)
         {
             var bootstrapper = new Bootstrapper();
+            DynamicObjectSerializer.UseTimeWithTimezoneForTime = true;
 
             if(Parser.Default.ParseArguments<ServerCommandLineArguments>( args )
                 .MapResult( parsedArgs =>

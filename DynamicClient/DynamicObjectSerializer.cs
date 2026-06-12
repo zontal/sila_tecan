@@ -17,6 +17,11 @@ namespace Tecan.Sila2.DynamicClient
     public class DynamicObjectSerializer
     {
         /// <summary>
+        /// If set to true, time values will be serialized with timezone information if available, and deserialized into TimeWithTimezone objects. If false, time values will be serialized without timezone information and deserialized into TimeSpan objects. Default is false.
+        /// </summary>
+        public static bool UseTimeWithTimezoneForTime { get; set; } = false;
+
+        /// <summary>
         /// Gets a function used to resolve data types identified by name
         /// </summary>
         public Func<string, DataTypeType> DataTypeResolver { get; }
@@ -222,17 +227,24 @@ namespace Tecan.Sila2.DynamicClient
             setProperty( new DateTimeOffset( year, month, day, 0, 0, 0, timeZone ) );
         }
 
-        private static void ReadTime( ProtoReader reader, Action<object> setProperty )
+        private static void ReadTime(ProtoReader reader, Action<object> setProperty)
         {
-            var seconds = ReadIntOfField( reader, 1 );
-            var minute = ReadIntOfField( reader, 2 );
-            var hour = ReadIntOfField( reader, 3 );
+            var seconds = ReadIntOfField(reader, 1);
+            var minute = ReadIntOfField(reader, 2);
+            var hour = ReadIntOfField(reader, 3);
 
-            var timeZone = ReadTimezone( reader, 4 );
-            var millisecond = ReadIntOfField( reader, 5 );
-            var time = new TimeSpan( 0, hour, minute, seconds, millisecond );
+            var timeZone = ReadTimezone(reader, 4);
+            var millisecond = ReadIntOfField(reader, 5);
+            var time = new TimeSpan(0, hour, minute, seconds, millisecond);
 
-            setProperty( time + timeZone );
+            if (UseTimeWithTimezoneForTime)
+            {
+                setProperty(new TimeWithTimezone(time, timeZone));
+            }
+            else
+            {
+                setProperty(time + timeZone);
+            }
         }
 
         private static TimeSpan ReadTimezone( ProtoReader reader, int field )
@@ -589,9 +601,23 @@ namespace Tecan.Sila2.DynamicClient
                 ProtoWriter.WriteFieldHeader(5, WireType.Varint, writer);
                 ProtoWriter.WriteUInt32((uint)dateTimeOffset.Millisecond, writer);
             }
+            else if (value is TimeWithTimezone timeWithTimezone)
+            {
+
+                ProtoWriter.WriteFieldHeader(1, WireType.Varint, writer);
+                ProtoWriter.WriteUInt32((uint)timeWithTimezone.Time.Seconds, writer);
+                ProtoWriter.WriteFieldHeader(2, WireType.Varint, writer);
+                ProtoWriter.WriteUInt32((uint)timeWithTimezone.Time.Minutes, writer);
+                ProtoWriter.WriteFieldHeader(3, WireType.Varint, writer);
+                ProtoWriter.WriteUInt32((uint)timeWithTimezone.Time.Hours, writer);
+                ProtoWriter.WriteFieldHeader(4, WireType.String, writer);
+                WriteOffset(writer, timeWithTimezone.Timezone);
+                ProtoWriter.WriteFieldHeader(5, WireType.Varint, writer);
+                ProtoWriter.WriteUInt32((uint)timeWithTimezone.Time.Milliseconds, writer);
+            }
             else
             {
-                throw new NotSupportedException("Expected TimeSpan or DateTimeOffset value for a time");
+                throw new NotSupportedException("Expected TimeSpan, TimeWithTimezone or DateTimeOffset value for a time");
             }
         }
 

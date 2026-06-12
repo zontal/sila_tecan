@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
+using Tecan.Sila2.DynamicClient;
 using Tecan.Sila2.Server;
 
 var serverInfo = ServerConfigReader.ReadServerStartInformation(new [] {"-i", "127.0.0.1"});
@@ -16,6 +17,8 @@ if(int.TryParse( Environment.GetEnvironmentVariable( "Port" ), out var port ))
 {
     serverInfo.Port = port;
 }
+
+DynamicObjectSerializer.UseTimeWithTimezoneForTime = true;
 
 var builder = WebApplication.CreateBuilder( args );
 // Add services to the container.

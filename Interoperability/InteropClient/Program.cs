@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Channels;
@@ -13,17 +15,22 @@ using Tecan.Sila2.Client;
 using Tecan.Sila2.Client.ExecutionManagement;
 using Tecan.Sila2.Discovery;
 using Tecan.Sila2.DynamicClient;
+using Tecan.Sila2.Interop.Client.AnyTypeTest.AnyTypeTest;
 using Tecan.Sila2.Interop.Client.AuthenticationTest;
 using Tecan.Sila2.Interop.Client.AuthenticationTest.AuthenticationTest;
+using Tecan.Sila2.Interop.Client.BasicDataTypesTest.BasicDataTypesTest;
 using Tecan.Sila2.Interop.Client.BinaryTransferTest;
 using Tecan.Sila2.Interop.Client.BinaryTransferTest.BinaryTransferTest;
 using Tecan.Sila2.Interop.Client.ErrorHandlingTest;
 using Tecan.Sila2.Interop.Client.ErrorHandlingTest.ErrorHandlingTest;
+using Tecan.Sila2.Interop.Client.ListDataTypeTest;
+using Tecan.Sila2.Interop.Client.ListDataTypeTest.ListDataTypeTest;
 using Tecan.Sila2.Interop.Client.MetadataConsumerTest.MetadataConsumerTest;
 using Tecan.Sila2.Interop.Client.MetadataProvider;
 using Tecan.Sila2.Interop.Client.ObservableCommandTest.ObservableCommandTest;
 using Tecan.Sila2.Interop.Client.ObservablePropertyTest;
 using Tecan.Sila2.Interop.Client.ObservablePropertyTest.ObservablePropertyTest;
+using Tecan.Sila2.Interop.Client.StructureDataTypeTest.StructureDataTypeTest;
 using Tecan.Sila2.Interop.Client.UnobservableCommandTest;
 using Tecan.Sila2.Interop.Client.UnobservableCommandTest.UnobservableCommandTest;
 using Tecan.Sila2.Interop.Client.UnobservablePropertyTest.UnobservablePropertyTest;
@@ -74,11 +81,15 @@ namespace Tecan.Sila2.Interop.Client
             RunTest(TestSilaService);
             RunTest(TestUnobservableCommand);
             RunTest(TestUnobservableProperty);
+            RunTest(TestBasicDataTypes);
+            RunTest(TestList);
+            RunTest(TestStructure);
+            RunTest(TestAnyType);
             RunTest(TestMetadataConsumer);
             RunTest(TestErrorHandling);
             RunTest(TestObservableProperty);
             RunTest(TestObservableCommand);
-            RunTest( TestBinaryTransfer );
+            RunTest(TestBinaryTransfer );
             RunTest(TestAuthentication);
         }
 
@@ -103,6 +114,24 @@ namespace Tecan.Sila2.Interop.Client
             {
                 Console.Error.WriteLine( $"Expected {expected} but got {actual}" );
                 Environment.ExitCode = 1;
+            }
+        }
+
+        private void AssertSequence<T>(T[] expected, IEnumerable<T> actual)
+        {
+            if (expected.Length > 0)
+            {
+                var index = 0;
+                foreach (var item in actual)
+                {
+                    Assert(expected[index], item);
+                    index++;
+                }
+                Assert(expected.Length, index);
+            }
+            else
+            {
+                Assert(false, actual != null && actual.Any());
             }
         }
 
@@ -149,6 +178,206 @@ namespace Tecan.Sila2.Interop.Client
                 client.RequiresTokenForBinaryUpload(CreateStream("abc"));
                 client.RequiresTokenForBinaryUpload(CreateStream(Repeat("abc", 1_000_000)));
             }
+        }
+
+        private void TestAnyType()
+        {
+            var client = new AnyTypeTestClient(_channel, _executionManager);
+
+            Assert(null, client.SetAnyTypeValue(new DynamicObjectProperty(null, new DataTypeType
+            {
+                // there is no predefined void type, so we construct the void type manually
+                Item = new ConstrainedType
+                {
+                    DataType = new DataTypeType { Item = BasicType.String },
+                    Constraints = new Constraints
+                    {
+                        Length = "0"
+                    }
+                }
+            })).ReceivedValue.Value);
+            Assert("SiLA_Any_type_of_String_type", client.SetAnyTypeValue(new DynamicObjectProperty("SiLA_Any_type_of_String_type")).ReceivedValue.Value);
+            Assert(5124L, (long)client.SetAnyTypeValue(new DynamicObjectProperty(5124)).ReceivedValue.Value);
+            Assert(3.1415926, (double)client.SetAnyTypeValue(new DynamicObjectProperty(3.1415926)).ReceivedValue.Value);
+            Assert(true, (bool)client.SetAnyTypeValue(new DynamicObjectProperty(true)).ReceivedValue.Value);
+            Assert("SiLA_Any_type_of_Binary_type", RestoreString((Stream)client.SetAnyTypeValue(new DynamicObjectProperty(new MemoryStream(Encoding.UTF8.GetBytes("SiLA_Any_type_of_Binary_type")), BasicType.Binary)).ReceivedValue.Value));
+            Assert(new DateTimeOffset(2022,08,05, 0, 0, 0, TimeSpan.FromHours(2)), (DateTimeOffset)client.SetAnyTypeValue(new DynamicObjectProperty(new DateTimeOffset(2022, 8, 5, 0, 0, 0, TimeSpan.FromHours(2)), BasicType.Date)).ReceivedValue.Value);
+            Assert(new DateTimeOffset(2022, 08, 05, 12, 34, 56, 789, TimeSpan.FromHours(2)), (DateTimeOffset)client.SetAnyTypeValue(new DynamicObjectProperty(new DateTimeOffset(2022, 8, 5, 12, 34, 56, 789, TimeSpan.FromHours(2)), BasicType.Timestamp)).ReceivedValue.Value);
+            Assert(new TimeSpan(0, 14, 34, 56, 789), (TimeSpan)client.SetAnyTypeValue(new DynamicObjectProperty(new TimeWithTimezone(new TimeSpan(0, 12, 34, 56, 789), TimeSpan.FromHours(2)), BasicType.Time)).ReceivedValue.Value);
+            AssertSequence(["SiLA 2", "Any", "Type", "String", "List"], ((IEnumerable)client.SetAnyTypeValue(new DynamicObjectProperty(new List<string>
+            {
+                "SiLA 2",
+                "Any",
+                "Type",
+                "String",
+                "List"
+            }, new DataTypeType { Item = new ListType { DataType = new DataTypeType { Item = BasicType.String } } })).ReceivedValue.Value).Cast<string>());
+
+            var stringValue = new SiLAElement { Identifier = "StringTypeValue", DisplayName = "String Type Value", Description = "A string value.", DataType = new DataTypeType { Item = BasicType.String } };
+            var intValue = new SiLAElement { Identifier = "IntegerTypeValue", DisplayName = "Integer Type Value", Description = "An integer value.", DataType = new DataTypeType { Item = BasicType.Integer } };
+            var dateValue = new SiLAElement { Identifier = "DateTypeValue", DisplayName = "Date Type Value", Description = "A date value.", DataType = new DataTypeType { Item = BasicType.Date } };
+
+            var str = (DynamicObject)client.SetAnyTypeValue(new DynamicObjectProperty(new DynamicObject
+            {
+                Elements =
+                {
+                    new DynamicObjectProperty(stringValue) { Value = "A String value" },
+                    new DynamicObjectProperty(intValue) { Value = 83737665L },
+                    new DynamicObjectProperty(dateValue) { Value = new DateTimeOffset(2022, 08, 05, 0, 0, 0, TimeSpan.FromHours(2)) }
+                }
+            },
+            new DataTypeType
+            {
+                Item = new StructureType
+                {
+                    Element = [stringValue, intValue, dateValue] 
+                }
+            })).ReceivedValue.Value;
+            Assert("A String value", (string)str.Elements.Single(p => p.Identifier == stringValue.Identifier).Value);
+            Assert(83737665L, (long)str.Elements.Single(p => p.Identifier == intValue.Identifier).Value);
+            Assert(new DateTimeOffset(2022, 08, 05, 0, 0, 0, TimeSpan.FromHours(2)), (DateTimeOffset)str.Elements.Single(p => p.Identifier == dateValue.Identifier).Value);
+
+            Assert("SiLA_Any_type_of_String_type", (string)client.AnyTypeStringValue.Value);
+            Assert(5124L, (long)client.AnyTypeIntegerValue.Value);
+            Assert(3.1415926, (double)client.AnyTypeRealValue.Value);
+            Assert(true, (bool)client.AnyTypeBooleanValue.Value);
+            Assert("SiLA_Any_type_of_Binary_type", RestoreString((Stream)client.AnyTypeBinaryValue.Value));
+            Assert(new TimeSpan(0, 14, 34, 56, 789), (TimeSpan)client.AnyTypeTimeValue.Value);
+            Assert(new DateTimeOffset(2022, 08, 05, 0, 0, 0, TimeSpan.FromHours(2)), (DateTimeOffset)client.AnyTypeDateValue.Value);
+            Assert(new DateTimeOffset(2022, 08, 05, 12, 34, 56, 789, TimeSpan.FromHours(2)), (DateTimeOffset)client.AnyTypeTimestampValue.Value);
+            var values = (IReadOnlyList<object>)client.AnyTypeListValue.Value;
+            Assert(5, values.Count);
+            Assert("SiLA 2", values[0]);
+            Assert("Any", values[1]);
+            Assert("Type", values[2]);
+            Assert("String", values[3]);
+            Assert("List", values[4]);
+
+            var obj = (DynamicObject)client.AnyTypeStructureValue.Value;
+            Assert("A String value", (string)obj.Elements.Single(p => p.Identifier == "StringTypeValue").Value);
+            Assert(83737665L, (long)obj.Elements.Single(p => p.Identifier == "IntegerTypeValue").Value);
+            Assert(new DateTimeOffset(2022, 08, 05, 0, 0, 0, TimeSpan.FromHours(2)), (DateTimeOffset)obj.Elements.Single(p => p.Identifier == "DateTypeValue").Value);
+        }
+
+        private void TestBasicDataTypes()
+        {
+            var client = new BasicDataTypesTestClient(_channel, _executionManager);
+
+            Assert("SiLA2_Test_String_Value", client.EchoStringValue("SiLA2_Test_String_Value"));
+            Assert(5124, client.EchoIntegerValue(5124));
+            Assert(3.1415926, client.EchoRealValue(3.1415926));
+            Assert(true, client.EchoBooleanValue(true));
+            Assert(new DateTimeOffset(2022, 8, 5, 0, 0, 0, TimeSpan.FromHours(2)), client.EchoDateValue(new DateTimeOffset(2022, 8, 5, 0, 0, 0, TimeSpan.FromHours(2))));
+            Assert(new DateTimeOffset(2022, 8, 5, 12, 34, 56, 789, TimeSpan.FromHours(2)), client.EchoTimestampValue(new DateTimeOffset(2022, 8, 5, 12, 34, 56, 789, TimeSpan.FromHours(2))));
+            Assert(new TimeWithTimezone(new TimeSpan(0, 12, 34, 56, 789), TimeSpan.FromHours(2)), client.EchoTimeValue(new TimeWithTimezone(new TimeSpan(0, 12, 34, 56, 789), TimeSpan.FromHours(2))));
+
+            Assert("SiLA2_Test_String_Value", client.StringValue);
+            Assert(5124, client.IntegerValue);
+            Assert(3.1415926, client.RealValue);
+            Assert(true, client.BooleanValue);
+            Assert(new DateTimeOffset(2022, 8, 5, 0, 0, 0, TimeSpan.FromHours(2)), client.DateValue);
+            Assert(new DateTimeOffset(2022, 8, 5, 12, 34, 56, 789, TimeSpan.FromHours(2)), client.TimestampValue);
+            // time zone is added to the timespan
+            Assert(new TimeWithTimezone( new TimeSpan(0, 12, 34, 56, 789), TimeSpan.FromHours(2) ), client.TimeValue);
+        }
+
+        private void TestList()
+        {
+            var client = new ListDataTypeTestClient(_channel, _executionManager);
+
+            AssertSequence(["SiLA 2", "is", "great"], client.EchoStringList(["SiLA 2", "is", "great"]));
+            AssertSequence([1, 2, 3], client.EchoIntegerList([1, 2, 3]));
+
+            AssertSequence(Array.Empty<string>(), client.EmptyStringList);
+
+            AssertSequence(["SiLA 2", "is", "great"], client.StringList);
+            AssertSequence([1, 2, 3], client.IntegerList);
+
+            var testStructure = client.StructureList.ToList();
+            AssertTestStructure(testStructure);
+            testStructure = client.EchoStructureList(testStructure).ToList();
+            AssertTestStructure(testStructure);
+        }
+
+        private void AssertTestStructure(List<TestStructure> testStructure)
+        {
+            Assert(3, testStructure.Count);
+
+            Assert("SiLA2_Test_String_Value_1", testStructure[0].StringTypeValue);
+            Assert(5124, testStructure[0].IntegerTypeValue);
+            Assert(3.1415926, testStructure[0].RealTypeValue);
+            Assert(true, testStructure[0].BooleanTypeValue);
+            Assert("Binary_String_Value_1", RestoreString(testStructure[0].BinaryTypeValue));
+            Assert(new DateTimeOffset(2022, 8, 5, 0, 0, 0, TimeSpan.FromHours(2)), testStructure[0].DateTypeValue);
+            Assert(new DateTimeOffset(2022, 8, 5, 12, 34, 56, TimeSpan.FromHours(2)), testStructure[0].TimestampTypeValue);
+            Assert(new TimeWithTimezone( new TimeSpan(12, 34, 56), TimeSpan.FromHours(2)), testStructure[0].TimeTypeValue);
+            Assert("Any_Type_String_Value_1", (string)testStructure[0].AnyTypeValue.Value);
+
+
+            Assert("SiLA2_Test_String_Value_2", testStructure[1].StringTypeValue);
+            Assert(5125, testStructure[1].IntegerTypeValue);
+            Assert(4.1415926, testStructure[1].RealTypeValue);
+            Assert(false, testStructure[1].BooleanTypeValue);
+            Assert("Binary_String_Value_2", RestoreString(testStructure[1].BinaryTypeValue));
+            Assert(new DateTimeOffset(2023, 9, 6, 0, 0, 0, TimeSpan.FromHours(2)), testStructure[1].DateTypeValue);
+            Assert(new DateTimeOffset(2023, 9, 6, 13, 35, 57, TimeSpan.FromHours(2)), testStructure[1].TimestampTypeValue);
+            Assert(new TimeWithTimezone(new TimeSpan(13, 35, 57), TimeSpan.FromHours(2)), testStructure[1].TimeTypeValue);
+            Assert("Any_Type_String_Value_2", (string)testStructure[1].AnyTypeValue.Value);
+
+            Assert("SiLA2_Test_String_Value_3", testStructure[2].StringTypeValue);
+            Assert(5126, testStructure[2].IntegerTypeValue);
+            Assert(5.1415926, testStructure[2].RealTypeValue);
+            Assert(true, testStructure[2].BooleanTypeValue);
+            Assert("Binary_String_Value_3", RestoreString(testStructure[2].BinaryTypeValue));
+            Assert(new DateTimeOffset(2024, 10, 7, 0, 0, 0, TimeSpan.FromHours(2)), testStructure[2].DateTypeValue);
+            Assert(new DateTimeOffset(2024, 10, 7, 14, 36, 58, 789, TimeSpan.FromHours(2)), testStructure[2].TimestampTypeValue);
+            Assert(new TimeWithTimezone(new TimeSpan(0, 14, 36, 58, 789), TimeSpan.FromHours(2)), testStructure[2].TimeTypeValue);
+            Assert("Any_Type_String_Value_3", (string)testStructure[2].AnyTypeValue.Value);
+        }
+
+        private void TestStructure()
+        {
+            var client = new StructureDataTypeTestClient(_channel, _executionManager);
+
+            var structValue = client.StructureValue;
+            AssertStructureValue(structValue);
+            structValue = client.EchoStructureValue(structValue);
+            AssertStructureValue(structValue);
+
+            var deepStruct = client.DeepStructureValue;
+            AssertDeepStructure(deepStruct);
+            deepStruct = client.EchoDeepStructureValue(deepStruct);
+            AssertDeepStructure(deepStruct);
+        }
+
+        private void AssertDeepStructure(StructureDataTypeTest.DeepStructure deepStruct)
+        {
+            Assert("Outer_Test_String", deepStruct.OuterStringTypeValue);
+            Assert(1111, deepStruct.OuterIntegerTypeValue);
+            Assert("Middle_Test_String", deepStruct.MiddleStructure.MiddleStringTypeValue);
+            Assert(2222, deepStruct.MiddleStructure.MiddleIntegerTypeValue);
+            Assert("Inner_Test_String", deepStruct.MiddleStructure.InnerStructure.InnerStringTypeValue);
+            Assert(3333, deepStruct.MiddleStructure.InnerStructure.InnerIntegerTypeValue);
+        }
+
+        private void AssertStructureValue(StructureDataTypeTest.TestStructure structValue)
+        {
+            Assert("SiLA2_Test_String_Value", structValue.StringTypeValue);
+            Assert(5124, structValue.IntegerTypeValue);
+            Assert(3.1415926, structValue.RealTypeValue);
+            Assert(true, structValue.BooleanTypeValue);
+            Assert("SiLA2_Binary_String_Value", RestoreString(structValue.BinaryTypeValue));
+            Assert(new DateTimeOffset(2022, 8, 5, 0, 0, 0, TimeSpan.FromHours(2)), structValue.DateTypeValue);
+            Assert(new DateTimeOffset(2022, 8, 5, 12, 34, 56, 789, TimeSpan.FromHours(2)), structValue.TimestampTypeValue);
+            Assert(new TimeWithTimezone(new TimeSpan(0, 12, 34, 56, 789), TimeSpan.FromHours(2)), structValue.TimeTypeValue);
+        }
+
+        private string RestoreString(Stream value)
+        {
+            var reader = new StreamReader(value, Encoding.ASCII, leaveOpen: true);
+            var ret = reader.ReadToEnd();
+            value.Position = 0;
+            return ret;
         }
 
         private void TestBinaryTransfer()

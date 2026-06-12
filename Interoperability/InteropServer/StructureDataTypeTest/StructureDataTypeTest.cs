@@ -18,7 +18,7 @@ namespace Tecan.Sila2.Interop.Server.StructureDataTypeTest
             true,
             new MemoryStream( Encoding.ASCII.GetBytes( "SiLA2_Binary_String_Value" ) ),
             new DateTime( 2022, 8, 5 ),
-            new TimeSpan( 0, 12, 34, 56, 789 ),
+            new TimeWithTimezone( new TimeSpan( 0, 12, 34, 56, 789 ), TimeSpan.FromHours(2)),
             new DateTime( 2022, 8, 5, 12, 34, 56 ),
             new DynamicObjectProperty( "SiLA2_Any_Type_String_Value" ) );
 

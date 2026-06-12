@@ -29,7 +29,7 @@ namespace Tecan.Sila2.DynamicClient
             if (value != null)
             {
                 Type = DataTypeSerializer.SaveToString(value.Type);
-                Payload = Serializer.Serialize(value, store, 1);
+                Payload = Serializer.Serialize(value, store ?? NeverBinaryStore.Instance, 1);
             }
         }
 

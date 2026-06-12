@@ -202,7 +202,7 @@ namespace Tecan.Sila2.Interop.Server.BasicDataTypesTest
             try
             {
                 request.Validate();
-                return new EchoTimeValueResponseDto(_implementation.EchoTimeValue(request.TimeValue.TryExtract(_server, "org.silastandard/test/BasicDataTypesTest/v1/Command/EchoTimeValue/Parameter/TimeV" +
+                return new EchoTimeValueResponseDto(_implementation.EchoTimeValue(request.TimeValue.TryExtractToTimeWithTimezone(_server, "org.silastandard/test/BasicDataTypesTest/v1/Command/EchoTimeValue/Parameter/TimeV" +
                                 "alue")), _server);
             } catch (System.ArgumentException ex)
             {

@@ -1,10 +1,11 @@
-﻿using System;
+﻿using CommandLine;
+using Microsoft.Build.Evaluation;
+using System;
+using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
 using System.IO;
 using System.Reflection;
-using CommandLine;
-using Microsoft.Build.Evaluation;
 using Tecan.Sila2.Generator.Contracts;
 using Tecan.Sila2.Generator.Generators;
 using Tecan.Sila2.Generator.Helper;
@@ -49,6 +50,16 @@ namespace Tecan.Sila2.Generator.CommandLine
         /// </summary>
         [Option('l', "no-lazy-properties", HelpText = "If set, the generated code will query unobservable properties every time", Required = false )]
         public bool EagerProperties { get; set; }
+
+        /// <summary>
+        /// Defines a custom type mapping in the format &lt;SiLA Identifier&gt;=&lt;C#Type&gt;. Can be specified multiple times for multiple type mappings.
+        /// </summary>
+        [Option('t', "type-mapping", HelpText = "Defines a custom type mapping in the format <SiLA Identifier>=<C#Type>. Can be specified multiple times for multiple type mappings.", Required = false)]
+        public IEnumerable<string> TypeMappings
+        {
+            get;
+            set;
+        }
 
         /// <inheritdoc />
         public override void Execute( CompositionContainer container )
@@ -109,7 +120,8 @@ namespace Tecan.Sila2.Generator.CommandLine
                 DtoPath = Path.Combine( directory, feature.Identifier, "Dtos.cs" ),
                 ProviderPath = Path.Combine( directory, feature.Identifier, "Client.cs" ),
                 Namespace = Namespace + "." + feature.Identifier,
-                MinimumSeverity = MinimumSeverity
+                MinimumSeverity = MinimumSeverity,
+                TypeMappings = TypeMappings,
             };
             generateProvider.Execute( container );
         }
