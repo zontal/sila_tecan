@@ -79,10 +79,10 @@ namespace Tecan.Sila2.Discovery
                 {
                     X509Certificate2 certificate = null;
                     var channel = GrpcChannel.ForAddress(prependScheme ? "https://" + target : target,
-                        CreateChannelOptions((_, cert, _, errors) =>
+                        CreateChannelOptions((req, cert, chain, errors) =>
                         {
                             certificate = cert;
-                            return true;
+                            return AcceptConnection(req, cert, chain, errors);
                         }));
                     return CheckExpectedGuid( CheckCertificate( GetServerData( channel, () => certificate ), certificate ), expectedGuid );
                 }
@@ -93,6 +93,19 @@ namespace Tecan.Sila2.Discovery
                 }
             }
             return ConnectInsecure( target, prependScheme );
+        }
+
+        /// <summary>
+        /// Determines whether the given connection should be accepted based on the provided certificate and potential errors. By default, all connections are accepted, but this can be overridden to implement custom validation logic.
+        /// </summary>
+        /// <param name="request">the HTTP request message</param>
+        /// <param name="certificate">the server certificate</param>
+        /// <param name="chain">the X.509 certificate chain presented by the server</param>
+        /// <param name="policyErrors">policy errors that occured</param>
+        /// <returns>true, if the connection is accepted, otherwise false</returns>
+        protected virtual bool AcceptConnection(HttpRequestMessage request, X509Certificate2 certificate, X509Chain chain, SslPolicyErrors policyErrors)
+        {
+            return true;
         }
 
         /// <summary>
