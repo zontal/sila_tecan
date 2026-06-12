@@ -724,7 +724,7 @@ namespace Tecan.Sila2.Auth.BasicDataTypesTest
         /// Create a new instance
         /// </summary>
         /// <param name="store">An object to organize binaries.</param>
-        public EchoTimeValueResponseDto(System.TimeSpan receivedValue, Tecan.Sila2.IBinaryStore store)
+        public EchoTimeValueResponseDto(TimeWithTimezone receivedValue, Tecan.Sila2.IBinaryStore store)
         {
             ReceivedValue = new Tecan.Sila2.TimeDto(receivedValue, store);
         }
