@@ -53,7 +53,7 @@ interop_server_managed:
     - apt-get update
     - apt-get install -yq python3-pip
     - pip install sila2_interop_communication_tester --break-system-packages
-    - python3 -m sila2_interop_communication_tester.test_client --report-file managed_server8-test-report.xml --testsuite-name "Managed gRPC .NET 10 Server" --html-file managed_server8-test-report.html
+    - python3 -m sila2_interop_communication_tester.test_client --report-file managed_server8-test-report.xml --testsuite-name "Tecan SiLA2 SDK managed gRPC .NET 10 Server" --html-file managed_server8-test-report.html
     - kill -INT $server_pid
   artifacts:
     when: always
@@ -70,7 +70,7 @@ interop_client_managed:
     - apt-get install -yq python3-pip
     - pip install sila2_interop_communication_tester --break-system-packages
   script:
-    - python3 -m sila2_interop_communication_tester.test_server --report-file managed_client8-test-report.xml --testsuite-name "Managed gRPC .NET 10 Client" --html-file managed_client8-test-report.html & server_pid=$!
+    - python3 -m sila2_interop_communication_tester.test_server --report-file managed_client8-test-report.xml --testsuite-name "Tecan SiLA2 SDK managed gRPC .NET 10 Client" --html-file managed_client8-test-report.html & server_pid=$!
     - sleep 5
     - dotnet build Interoperability/InteropClient.NetCore/InteropClient.NetCore.csproj
     - cd Build/Interop/Client.NetCore/net10.0
@@ -95,7 +95,7 @@ interop_server_unmanaged:
     - apt-get update
     - apt-get install -yq python3-pip
     - pip install sila2_interop_communication_tester --break-system-packages
-    - python3 -m sila2_interop_communication_tester.test_client --report-file unmanaged_server8-test-report.xml --testsuite-name "Unmanaged gRPC .NET 8 Server" --html-file unmanaged_server8-test-report.html
+    - python3 -m sila2_interop_communication_tester.test_client --report-file unmanaged_server8-test-report.xml --testsuite-name "Tecan SiLA2 SDK unmanaged gRPC .NET 10 Server" --html-file unmanaged_server8-test-report.html
     - kill -INT $server_pid
   artifacts:
     when: always
@@ -112,7 +112,7 @@ interop_client_unmanaged:
     - apt-get install -yq python3-pip
     - pip install sila2_interop_communication_tester --break-system-packages
   script:
-    - python3 -m sila2_interop_communication_tester.test_server --report-file unmanaged_client8-test-report.xml --testsuite-name "Unmanaged gRPC .NET 8 Client" --html-file unmanaged_client8-test-report.html & server_pid=$!
+    - python3 -m sila2_interop_communication_tester.test_server --report-file unmanaged_client8-test-report.xml --testsuite-name "Tecan SiLA2 SDK unmanaged gRPC .NET 10 Client" --html-file unmanaged_client8-test-report.html & server_pid=$!
     - sleep 5
     - dotnet build Interoperability/InteropClient.NetCore/InteropClient.NetCore.csproj
     - cd Build/Interop/Client.NetCore/net10.0
