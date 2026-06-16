@@ -16,6 +16,9 @@
             <dependency id="Tecan.Sila2" version="[$version$,5.0)" />
             <dependency id="Tecan.Sila2.Grpc" version="[$version$,5.0)" />
             <dependency id="CommandLineParser" version="2.9.1" />
+			<dependency id="Grpc.Core" version="2.46.6" />
+			<dependency id="Makaretu.Dns.Multicast.New" version="0.38.0" />
+			<dependency id="System.Threading.Channels" version="10.0.9" />
         </dependencies>
 		<readme>docs\Tecan.Sila2.Server.md</readme>
     </metadata>

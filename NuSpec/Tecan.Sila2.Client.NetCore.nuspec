@@ -16,7 +16,7 @@
         <dependencies>
             <dependency id="Tecan.Sila2" version="[$version$,5.0)" />
             <dependency id="Tecan.Sila2.NetCore" version="[$version$,5.0)" />
-            <dependency id="Grpc.Net.Client" version="2.60" />
+            <dependency id="Grpc.Net.Client" version="2.80.0" />
             <dependency id="Makaretu.Dns.Multicast.New" version="0.38.0" />
         </dependencies>
 		<readme>docs\Tecan.Sila2.Client.NetCore.md</readme>

@@ -16,7 +16,6 @@
         <dependencies>
             <dependency id="Tecan.Sila2.Contracts" version="[$version$,5.0)" />
             <dependency id="Grpc.Core" version="2.46.6" />
-			<dependency id="Makaretu.Dns.Multicast.New" version="0.38.0" />
         </dependencies>
 		<readme>docs\Tecan.Sila2.Grpc.md</readme>
     </metadata>

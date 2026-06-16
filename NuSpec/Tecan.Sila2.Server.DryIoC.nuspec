@@ -15,9 +15,12 @@
         <dependencies>
             <dependency id="Tecan.Sila2" version="[$version$,5.0)" />
             <dependency id="Tecan.Sila2.Server.NetCore" version="[$version$,5.0)" />
-            <dependency id="DryIoc.MefAttributedModel.dll" version="6.1.0" />
-            <dependency id="DryIoc.Microsoft.DependencyInjection" version="5.1.0" />
-            <dependency id="CommandLineParser" version="2.8.0" />
+            <dependency id="CommandLineParser" version="2.9.1" />
+            <dependency id="DryIoc.MefAttributedModel.dll" version="7.0.2" />
+            <dependency id="DryIoc.Microsoft.DependencyInjection" version="6.2.0" />
+			<dependency id="Grpc.AspNetCore.Server" version="2.80.0" />
+			<dependency id="Makaretu.Dns.Multicast.New" version="0.38.0" />
+			<dependency id="System.Threading.Channels" version="10.0.9" />
         </dependencies>
 		<readme>docs\Tecan.Sila2.Server.DryIoC.md</readme>
     </metadata>

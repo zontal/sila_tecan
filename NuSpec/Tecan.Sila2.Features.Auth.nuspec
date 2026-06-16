@@ -14,7 +14,7 @@
         <repository type="git" url="https://gitlab.com/SiLA2/vendors/sila_tecan.git" commit="$commit_id$" />
         <dependencies>
             <dependency id="Tecan.Sila2" version="[$version$,5.0)" />
-            <dependency id="Microsoft.AspNetCore.Cryptography.KeyDerivation" version="6.0.8" />
+            <dependency id="Microsoft.AspNetCore.Cryptography.KeyDerivation" version="10.0.9" />
         </dependencies>
 		<readme>docs\Tecan.Sila2.Features.Auth.md</readme>
     </metadata>

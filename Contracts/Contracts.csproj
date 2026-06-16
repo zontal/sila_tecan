@@ -24,6 +24,6 @@
     <Compile Include="..\CommonAssemblyInfo.cs" Link="Properties\CommonAssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="System.Threading.Channels" Version="10.0.8" />
+    <PackageReference Include="System.Threading.Channels" Version="10.0.9" />
   </ItemGroup>
 </Project>
