@@ -186,6 +186,9 @@ sokrates:
   script:
     - /sokrates/analyze.sh
     - if [ -z "$(ls -A _sokrates/)" ]; then exit 2; fi
+    - cp -r _sokrates/reports/html/* public
   artifacts:
     paths:
-      - _sokrates/
+      - public
+  rules:
+    - if: $CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH
