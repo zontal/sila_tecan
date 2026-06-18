@@ -176,7 +176,7 @@ owasp_dependency_check:
       - "reports/dependency-check-report.html"
       - "reports/dependency-check-gitlab.json"
 
-sokrates:
+pages:
   image:
     name: registry.gitlab.com/gitlab-ci-utils/docker-sokrates:latest
     entrypoint: [""]
