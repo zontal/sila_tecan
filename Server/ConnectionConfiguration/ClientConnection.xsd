@@ -1,16 +1,26 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <xs:schema id="ClientConnection"
-    targetNamespace="http://tempuri.org/ClientConnection.xsd"
+    targetNamespace="https://gitlab.com/SiLA2/vendors/sila_tecan/ClientConnection.xsd"
     elementFormDefault="qualified"
-    xmlns="http://tempuri.org/ClientConnection.xsd"
-    xmlns:mstns="http://tempuri.org/ClientConnection.xsd"
+    xmlns="https://gitlab.com/SiLA2/vendors/sila_tecan/ClientConnection.xsd"
     xmlns:xs="http://www.w3.org/2001/XMLSchema"
 >
-    <xs:element name="ClientConnection">
-        <xs:complexType>
-            <xs:attribute name="Name" type="xs:string" use="required" />
-            <xs:attribute name="Host" type="xs:string" use="required" />
-            <xs:attribute name="Port" type="xs:int" use="required" />
-        </xs:complexType>
+    <xs:element name="ClientConnections" type="ClientConnectionConfig">
     </xs:element>
+	<xs:complexType name="ClientConnectionConfig">
+		<xs:sequence>
+			<xs:element name="Connection" maxOccurs="unbounded" type="ClientConnection" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ClientConnection">
+		<xs:attribute name="Name" type="xs:string" use="required" />
+		<xs:attribute name="Host" type="xs:string" use="required" />
+		<xs:attribute name="Port" type="PortNumber" use="required" />		
+	</xs:complexType>
+	<xs:simpleType name="PortNumber">
+		<xs:restriction base="xs:int">
+			<xs:maxExclusive value="65536" />
+			<xs:minExclusive value="0" />
+		</xs:restriction>
+	</xs:simpleType>
 </xs:schema>

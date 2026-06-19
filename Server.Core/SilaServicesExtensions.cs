@@ -128,7 +128,9 @@ namespace Microsoft.Extensions.DependencyInjection
             services.TryAddSingleton<SiLAServer, SiLAServer>();
             services.TryAddSingleton<ISiLAServer>(sp => sp.GetRequiredService<SiLAServer>());
             services.TryAddSingleton<ISiLAService>(sp => sp.GetRequiredService<SiLAServer>());
-            services.TryAddSingleton<IConnectionConfigurationService, ConnectionConfigurationService>();
+            services.TryAddSingleton<ConnectionConfigurationService, ConnectionConfigurationService>();
+            services.TryAddSingleton<IConnectionConfigurationStatus>(sp => sp.GetRequiredService<ConnectionConfigurationService>());
+            services.TryAddSingleton<IConnectionConfigurationService>(sp => sp.GetRequiredService<ConnectionConfigurationService>());
             services.TryAddEnumerable(ServiceDescriptor.Singleton<IRequestInterceptor, CheckNoMetadataAllowedInterceptor>());
             services.TryAddEnumerable(ServiceDescriptor.Singleton<IFeatureProvider, SiLAServiceProvider>());
             services.TryAddEnumerable(ServiceDescriptor.Singleton<IFeatureProvider, ConnectionConfigurationServiceProvider>());

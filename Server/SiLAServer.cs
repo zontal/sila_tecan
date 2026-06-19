@@ -12,6 +12,7 @@ using Grpc.Core;
 using Grpc.Core.Interceptors;
 using Tecan.Sila2.Discovery;
 using Tecan.Sila2.Server.Binary;
+using Tecan.Sila2.Server.ConnectionConfiguration;
 using Tecan.Sila2.Server.ServerPooling;
 using Tecan.Sila2.Server.ServiceDefinition;
 using Tecan.Sila2.ServerPooling;
@@ -125,6 +126,11 @@ namespace Tecan.Sila2.Server
             feature.Register( builder );
             _serverProvider.AddService( definitionBuilder.Build().Intercept( _loggingInterceptor ) );
             _logger.Info( $"Exposing feature {feature.FeatureDefinition.FullyQualifiedIdentifier}" );
+
+            if (feature is ConnectionConfigurationServiceProvider connectionConfigurationServiceProvider)
+            {
+                _clientConnectionStatus = connectionConfigurationServiceProvider.ConnectionConfigurationStatus;
+            }
         }
 
     }

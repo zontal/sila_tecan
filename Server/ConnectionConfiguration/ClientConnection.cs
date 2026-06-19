@@ -9,19 +9,41 @@
 //------------------------------------------------------------------------------
 
 // 
-// Dieser Quellcode wurde automatisch generiert von xsd, Version=4.8.9037.0.
+// Dieser Quellcode wurde automatisch generiert von xsd, Version=4.8.3928.0.
 // 
-namespace Tecan.Sila2.Server.ConnectionConfiguration {
+namespace Tecan.Sila2.Server {
     using System.Xml.Serialization;
     
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.9037.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.3928.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://tempuri.org/ClientConnection.xsd")]
-    [System.Xml.Serialization.XmlRootAttribute(Namespace="http://tempuri.org/ClientConnection.xsd", IsNullable=false)]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://gitlab.com/SiLA2/vendors/sila_tecan/ClientConnection.xsd")]
+    [System.Xml.Serialization.XmlRootAttribute("ClientConnections", Namespace="https://gitlab.com/SiLA2/vendors/sila_tecan/ClientConnection.xsd", IsNullable=false)]
+    public partial class ClientConnectionConfig {
+        
+        private ClientConnection[] connectionField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute("Connection")]
+        public ClientConnection[] Connection {
+            get {
+                return this.connectionField;
+            }
+            set {
+                this.connectionField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.3928.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://gitlab.com/SiLA2/vendors/sila_tecan/ClientConnection.xsd")]
     public partial class ClientConnection {
         
         private string nameField;

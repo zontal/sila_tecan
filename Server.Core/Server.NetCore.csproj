@@ -33,6 +33,7 @@
         <Compile Include="..\Server\ConnectionConfiguration\ConnectionConfigurationProvider.cs" Link="ConnectionConfiguration\ConnectionConfigurationProvider.cs" />
         <Compile Include="..\Server\ConnectionConfiguration\ConnectionConfigurationService.cs" Link="ConnectionConfiguration\ConnectionConfigurationService.cs" />
         <Compile Include="..\Server\ConnectionConfiguration\IConnectionConfigurationService.cs" Link="ConnectionConfiguration\IConnectionConfigurationService.cs" />
+		<Compile Include="..\Server\ConnectionConfiguration\IConnectionConfigurationStatus.cs" Link="ConnectionConfiguration\IConnectionConfigurationStatus.cs" />
         <Compile Include="..\Server\Defaults\CheckNoMetadataAllowedInterceptor.cs" Link="Defaults\CheckNoMetadataAllowedInterceptor.cs" />
         <Compile Include="..\Server\Defaults\ConsoleLogging.cs" Link="Defaults\ConsoleLogging.cs" />
         <Compile Include="..\Server\Defaults\FileManagement.cs" Link="Defaults\FileManagement.cs" />

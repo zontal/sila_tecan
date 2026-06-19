@@ -8,22 +8,38 @@ using System.Text;
 namespace Tecan.Sila2.Server.ConnectionConfiguration
 {
     [Export( typeof( IConnectionConfigurationService ) )]
+    [Export(typeof(IConnectionConfigurationStatus))]
     [PartCreationPolicy( CreationPolicy.Shared )]
-    internal class ConnectionConfigurationService : IConnectionConfigurationService
+    internal class ConnectionConfigurationService : IConnectionConfigurationService, IConnectionConfigurationStatus
     {
         private readonly ISiLAServer _server;
         private readonly Dictionary<string, ClientEntry> _connections = new Dictionary<string, ClientEntry>();
         private readonly ILog _loggingChannel = LogManager.GetLogger<ConnectionConfigurationService>();
         private readonly IConfigurationStore _configurationStore;
         private readonly ServerStartInformation _serverStartInformation;
+        private readonly ClientConnectionConfig _config;
         private bool _isEnabled;
 
         [ImportingConstructor]
-        public ConnectionConfigurationService( ISiLAServer server, IConfigurationStore configurationStore, ServerStartInformation serverStartInformation )
+        public ConnectionConfigurationService(ISiLAServer server, IConfigurationStore configurationStore, ServerStartInformation serverStartInformation)
         {
             _configurationStore = configurationStore;
             _server = server;
             _serverStartInformation = serverStartInformation;
+
+            try
+            {
+                _config = _configurationStore.Read<ClientConnectionConfig>(serverStartInformation.ConfigName);
+                _config.Connection ??= Array.Empty<ClientConnection>();
+            }
+            catch (Exception ex)
+            {
+                _loggingChannel.Warn("No client connection configuration found, starting with default configuration.", ex);
+                _config = new ClientConnectionConfig
+                {
+                    Connection = Array.Empty<ClientConnection>()
+                };
+            }
         }
 
         public bool ServerInitiatedConnectionModeStatus => _isEnabled;
@@ -38,29 +54,44 @@ namespace Tecan.Sila2.Server.ConnectionConfiguration
             }
             lock(_connections)
             {
-                if(_connections.ContainsKey( clientName ))
+                if (_connections.ContainsKey(clientName))
                 {
-                    throw new Exception( $"A client with the name {clientName} already exists." );
+                    throw new Exception($"A client with the name {clientName} already exists.");
                 }
-                _loggingChannel.Info( $"Connecting to {clientName}..." );
-                var channel = _server.ConnectToPool( $"{siLAClientHost}:{siLAClientPort}" );
-                _loggingChannel.Info( $"Connection to {clientName} ({siLAClientHost}:{siLAClientPort}) established successfully" );
-                _connections.Add( clientName, new ClientEntry( siLAClientHost, (int)siLAClientPort, channel ) );
+                _loggingChannel.Info($"Connecting to {clientName}...");
+                ConnectCore(clientName, siLAClientHost, siLAClientPort);
             }
-            if(persist)
+            if (persist)
             {
-                _configurationStore.Write( GetName( clientName ), new ClientConnection
+                var newConnections = new ClientConnection[_connections.Count + 1];
+                Array.Copy(_config.Connection, newConnections, _config.Connection.Length);
+                newConnections[newConnections.Length - 1] = new ClientConnection
                 {
                     Name = clientName,
                     Host = siLAClientHost,
                     Port = (int)siLAClientPort
-                } );
+                };
+                TrySaveConfiguration();
             }
         }
 
-        private string GetName( string clientName )
+        private void ConnectCore(string clientName, string siLAClientHost, long siLAClientPort)
         {
-            return new string( clientName.Where( char.IsLetterOrDigit ).ToArray() );
+            var channel = _server.ConnectToPool($"{siLAClientHost}:{siLAClientPort}");
+            _loggingChannel.Info($"Connection to {clientName} ({siLAClientHost}:{siLAClientPort}) established successfully");
+            _connections[clientName] = new ClientEntry(siLAClientHost, (int)siLAClientPort, channel);
+        }
+
+        private void TrySaveConfiguration()
+        {
+            try
+            {
+                _configurationStore.Write(_serverStartInformation.ConfigName, _config);
+            }
+            catch (Exception ex)
+            {
+                _loggingChannel.Warn( "Could not persist client connection configuration", ex );
+            }
         }
 
         public void DisableServerInitiatedConnectionMode()
@@ -89,16 +120,21 @@ namespace Tecan.Sila2.Server.ConnectionConfiguration
                 {
                     _loggingChannel.Info( $"Disconnecting client {clientName}" );
                     channel.Channel.Dispose();
-                    _connections.Remove( clientName );
+                    if (!_connections.Remove( clientName ))
+                    {
+                        _loggingChannel.Warn($"Client named {clientName} could not be removed.");
+                        return;
+                    }
+                }
+                if (remove)
+                {
+                    _config.Connection = _config.Connection.Where( c => c.Name != clientName ).ToArray();
+                    TrySaveConfiguration();
                 }
             }
             else
             {
                 _loggingChannel.Warn( $"No client '{clientName}' connected." );
-            }
-            if(remove)
-            {
-                _configurationStore.Delete( GetName( clientName ), typeof( ClientConnection ) );
             }
         }
 
@@ -125,12 +161,23 @@ namespace Tecan.Sila2.Server.ConnectionConfiguration
                 if(currentConfiguration.EnableServerConnections != enabled)
                 {
                     currentConfiguration.EnableServerConnections = enabled;
-                    _configurationStore.Write<ServerConfiguration>( _serverStartInformation.ConfigName, currentConfiguration );
+                    _configurationStore.Write(_serverStartInformation.ConfigName, currentConfiguration);
                 }
             }
             catch(Exception ex)
             {
                 _loggingChannel.Error( "Could not persist connection mode", ex );
+            }
+        }
+
+        public void Start()
+        { 
+            lock (_connections)
+            {
+                foreach (var configuredConnection in _config.Connection)
+                {
+                    ConnectCore(configuredConnection.Name, configuredConnection.Host, configuredConnection.Port);
+                }
             }
         }
 

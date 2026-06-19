@@ -12,6 +12,7 @@ using Grpc.Core;
 using Grpc.Core.Interceptors;
 using Tecan.Sila2.Discovery;
 using Tecan.Sila2.Server.Binary;
+using Tecan.Sila2.Server.ConnectionConfiguration;
 using Tecan.Sila2.Server.ServerPooling;
 using Tecan.Sila2.Server.ServiceDefinition;
 using Tecan.Sila2.ServerPooling;
@@ -52,6 +53,7 @@ namespace Tecan.Sila2.Server
         private readonly IServerPoolConnectionFactory _poolConnectionFactory;
         private readonly RequestPipeline _requestPipeline;
         private readonly string _configurationName;
+        private IConnectionConfigurationStatus _clientConnectionStatus;
 
         #endregion
 
@@ -179,6 +181,15 @@ namespace Tecan.Sila2.Server
             {
                 _announcer.Start();
                 _logger.Info( $"Announcing as '{_announcer.Profile.FullyQualifiedName}'" );
+            }
+
+            if (_clientConnectionStatus != null)
+            {
+                var configuration = _configurationStore.Read<ServerConfiguration>(_configurationName);
+                if (configuration != null && configuration.EnableServerConnections)
+                {
+                    _clientConnectionStatus.Start();
+                }
             }
         }
 
@@ -482,9 +493,9 @@ namespace Tecan.Sila2.Server
         }
 
         /// <inheritdoc />
-        public IDisposable ConnectToPool( string poolAddress )
+        public IPoolConnection ConnectToPool( string poolAddress )
         {
-            var connection = new PoolConnection( _poolDispatcher, _poolConnectionFactory.CreatePoolConnection( poolAddress ).AsyncDuplexStreamingCall( PoolingConstants.ConnectSilaServerMethod, null, new CallOptions() ) );
+            var connection = new PoolConnection( _poolDispatcher, _poolConnectionFactory.CreatePoolConnection( poolAddress ).AsyncDuplexStreamingCall( PoolingConstants.ConnectSilaServerMethod, null, new CallOptions() ), poolAddress );
             connection.Start();
             return connection;
         }

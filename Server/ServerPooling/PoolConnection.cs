@@ -11,7 +11,7 @@ using Channel = System.Threading.Channels.Channel;
 
 namespace Tecan.Sila2.ServerPooling
 {
-    internal class PoolConnection : IDisposable, IClientStreamWriter<SilaServerMessage>
+    internal class PoolConnection : IDisposable, IPoolConnection, IClientStreamWriter<SilaServerMessage>
     {
         private readonly ServerPoolDispatcher _dispatcher;
         private readonly AsyncDuplexStreamingCall<SilaServerMessage, SilaClientMessage> _call;
@@ -20,8 +20,15 @@ namespace Tecan.Sila2.ServerPooling
 
         public WriteOptions WriteOptions { get => _call.RequestStream.WriteOptions; set => _call.RequestStream.WriteOptions = value; }
 
-        public PoolConnection( ServerPoolDispatcher dispatcher, AsyncDuplexStreamingCall<SilaServerMessage, SilaClientMessage> call )
+        public string Host { get; }
+
+        public bool IsAlive { get; private set; }
+
+        public PoolConnection( ServerPoolDispatcher dispatcher, AsyncDuplexStreamingCall<SilaServerMessage, SilaClientMessage> call, string host )
         {
+            Host = host;
+            IsAlive = false;
+
             _dispatcher = dispatcher;
             _call = call;
             _channel = Channel.CreateUnbounded<SilaServerMessage>( new UnboundedChannelOptions
@@ -36,6 +43,7 @@ namespace Tecan.Sila2.ServerPooling
         {
             StartReading();
             StartWriting();
+            IsAlive = true;
         }
 
         private async void StartReading()
@@ -50,6 +58,7 @@ namespace Tecan.Sila2.ServerPooling
             catch (Exception exception)
             {
                 _log.Error( "Error reading message from client", exception );
+                IsAlive = false;
             }
             await _call.RequestStream.CompleteAsync();
         }
@@ -67,6 +76,7 @@ namespace Tecan.Sila2.ServerPooling
             catch (Exception exception)
             {
                 _log.Error( "Error sending message to client, aborting connection", exception );
+                IsAlive = false;
                 await _call.RequestStream.CompleteAsync();
             }
         }
@@ -85,6 +95,14 @@ namespace Tecan.Sila2.ServerPooling
         public Task WriteAsync( SilaServerMessage message )
         {
             return _channel.Writer.WriteAsync( message ).AsTask();
+        }
+
+        public void Restart()
+        {
+            if (!IsAlive)
+            {
+                Start();
+            }
         }
     }
 }

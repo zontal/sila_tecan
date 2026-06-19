@@ -1,4 +1,11 @@
-﻿using System;
+﻿using Common.Logging;
+using Grpc.AspNetCore.Server.Model;
+using Grpc.Core;
+using Grpc.Core.Interceptors;
+using Grpc.Net.Client;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Routing;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.IO;
@@ -7,15 +14,9 @@ using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
-using Common.Logging;
-using Grpc.AspNetCore.Server.Model;
-using Grpc.Core;
-using Grpc.Core.Interceptors;
-using Grpc.Net.Client;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Routing;
 using Tecan.Sila2.Discovery;
 using Tecan.Sila2.Server.Binary;
+using Tecan.Sila2.Server.ConnectionConfiguration;
 using Tecan.Sila2.Server.ServerPooling;
 using Tecan.Sila2.Server.ServiceDefinition;
 using Tecan.Sila2.ServerPooling;
@@ -128,6 +129,11 @@ namespace Tecan.Sila2.Server
             var builder = new ServerBuilder( this, feature.FeatureDefinition, _poolDispatcher, _serviceBinder );
             feature.Register( builder );
             _logger.Info( $"Exposing feature {feature.FeatureDefinition.FullyQualifiedIdentifier}" );
+
+            if (feature is ConnectionConfigurationServiceProvider connectionConfigurationServiceProvider)
+            {
+                _clientConnectionStatus = connectionConfigurationServiceProvider.ConnectionConfigurationStatus;
+            }
         }
 
         #endregion

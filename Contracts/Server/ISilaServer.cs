@@ -54,7 +54,7 @@ namespace Tecan.Sila2.Server
         /// Connects the server to the server pool with the given address
         /// </summary>
         /// <param name="poolAddress"></param>
-        IDisposable ConnectToPool( string poolAddress );
+        IPoolConnection ConnectToPool( string poolAddress );
     }
 
     /// <summary>
