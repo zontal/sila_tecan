@@ -74,8 +74,8 @@ namespace Tecan.Sila2.IntegrationTests
             {
 #if NETCOREAPP
                 FileName = "dotnet",
-#if NET6_0
-                Arguments = Path.Combine( dir, "net6.0", "TestServer.dll" ) + " " + payloadArguments,
+#if NET10_0
+                Arguments = Path.Combine( dir, "net10.0", "TestServer.dll" ) + " " + payloadArguments,
 #else
                 Arguments = Path.Combine( dir, "net8.0", "TestServer.dll" ) + " " + payloadArguments,
 #endif
@@ -876,7 +876,7 @@ namespace Tecan.Sila2.IntegrationTests
             var propertyClient = new PropertyClient( property, featureContext );
             var result = propertyClient.RequestValue();
 
-            Assert.That( result.Value, Is.EqualTo("TestServer") );
+            Assert.That( result.Value, Is.EqualTo("TestServer").Or.EqualTo("TestServer.NetCore") );
         }
 
 

@@ -20,7 +20,7 @@ namespace Tecan.Sila2.IntegrationTests
             var processStartInfo = new ProcessStartInfo()
             {
                 FileName = "dotnet",
-                Arguments = Path.Combine( dir, "net8.0", "TestServer.NetCore.dll" ) + " " + payloadArguments,
+                Arguments = Path.Combine( dir, "net10.0", "TestServer.NetCore.dll" ) + " " + payloadArguments,
                 CreateNoWindow = true,
                 ErrorDialog = false,
                 RedirectStandardInput = true,
