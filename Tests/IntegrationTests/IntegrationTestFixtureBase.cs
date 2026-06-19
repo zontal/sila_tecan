@@ -867,6 +867,18 @@ namespace Tecan.Sila2.IntegrationTests
 
         }
 
+        [Test]
+        public void UnobservablePropertyDynamic_ReturnsCorrectResult()
+        {
+            var feature = _server.Features.Single( f => f.Identifier == "SiLAService");
+            var property = feature.Items.OfType<FeatureProperty>().Single( p => p.Identifier == "ServerType" );
+            var featureContext = new FeatureContext( feature, _server, new DiscoveryExecutionManager() );
+            var propertyClient = new PropertyClient( property, featureContext );
+            var result = propertyClient.RequestValue();
+
+            Assert.That( result.Value, Is.EqualTo("TestServer") );
+        }
+
 
         [Test]
         public void UnobservableCommandDynamic_RunsIntoDefinedException_TranslatedSuccessfully()
