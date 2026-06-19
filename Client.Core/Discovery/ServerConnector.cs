@@ -126,14 +126,14 @@ namespace Tecan.Sila2.Discovery
 
         private ServerData ConnectEncrypted(string target, Guid? expectedGuid, bool prependScheme, X509Certificate2 ca)
         {
-            var certificateValidator = new ServerCertificateValidator(ca);
-            var channel = GrpcChannel.ForAddress(prependScheme ? "https://" + target : target, CreateChannelOptions(certificateValidator.ValidateActualCertificate));
-            var server = CheckCertificateAuthority(GetServerData(channel, () => certificateValidator.ServerCertificate), certificateValidator.ServerCertificate, ca);
-            if (!certificateValidator.CheckDiscoveryCertificateMatchesActualCertificate())
+            X509Certificate2 certificate = null;
+            var channel = GrpcChannel.ForAddress(prependScheme ? "https://" + target : target, CreateChannelOptions((msg, cert, chain, err) =>
             {
-                server = ServerDiscoveryCertificateDoesNotMatchActualCertificate(server, certificateValidator.DiscoveryCertificate, certificateValidator.ServerCertificate);
-            }
-            return CheckExpectedGuid(CheckCertificate(server, certificateValidator.ServerCertificate), expectedGuid);
+                certificate = cert;
+                return AcceptConnection(msg, cert, chain, err);
+            }));
+            var server = CheckCertificateAuthority(GetServerData(channel, () => certificate), certificate, ca);
+            return CheckExpectedGuid(CheckCertificate(server, certificate), expectedGuid);
         }
 
         private ServerData ConnectInsecure( string target, bool prependScheme )
@@ -198,6 +198,10 @@ namespace Tecan.Sila2.Discovery
         /// <returns>The connected server or null, if the connection should be refused</returns>
         protected virtual ServerData CheckCertificateAuthority( ServerData server, X509Certificate2 serverCertificate, X509Certificate2 certificateAuthority )
         {
+            if (serverCertificate.IssuerName.Name != certificateAuthority.SubjectName.Name)
+            {
+                server = ServerDiscoveryCertificateDoesNotMatchActualCertificate(server, serverCertificate, certificateAuthority);
+            }
             return server;
         }
 
