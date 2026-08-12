@@ -25,6 +25,8 @@ build:
   script:
     - 'dotnet restore --packages $NUGET_PACKAGES_DIRECTORY'
     - 'dotnet build --no-restore'
+  rules:
+    - if: '$CI_PIPELINE_SOURCE != "schedule"'
 
 tests:
   stage: test
@@ -41,6 +43,8 @@ tests:
     when: always
     paths:
       - "**/testResults.html"
+  rules:
+    - if: '$CI_PIPELINE_SOURCE != "schedule"'
 
 interop_server_managed:
   stage: interop
@@ -61,6 +65,8 @@ interop_server_managed:
       - server.log
       - managed_server8-test-report.xml
       - managed_server8-test-report.html
+  rules:
+    - if: '$CI_PIPELINE_SOURCE != "schedule"'
 
 interop_client_managed:
   stage: interop
@@ -83,6 +89,8 @@ interop_client_managed:
     paths:
       - managed_client8-test-report.xml
       - managed_client8-test-report.html
+  rules:
+    - if: '$CI_PIPELINE_SOURCE != "schedule"'
 
 interop_server_unmanaged:
   stage: interop
@@ -103,6 +111,8 @@ interop_server_unmanaged:
       - server.log
       - unmanaged_server8-test-report.xml
       - unmanaged_server8-test-report.html
+  rules:
+    - if: '$CI_PIPELINE_SOURCE != "schedule"'
 
 interop_client_unmanaged:
   stage: interop
@@ -125,6 +135,8 @@ interop_client_unmanaged:
     paths:
       - unmanaged_client8-test-report.xml
       - unmanaged_client8-test-report.html
+  rules:
+    - if: '$CI_PIPELINE_SOURCE != "schedule"'
 
 
 sast-scan:
@@ -157,6 +169,8 @@ sast-scan:
     paths: 
       - gl-sast-report.json
       - sast-report.sarif 
+  rules:
+    - if: '$CI_PIPELINE_SOURCE != "schedule"'
 
 owasp_dependency_check:
   image:
@@ -166,7 +180,7 @@ owasp_dependency_check:
   script:
     - 'cd frontend && npm install && cd ..'
     - 'mkdir reports'
-    - '/usr/share/dependency-check/bin/dependency-check.sh --scan "./" --format ALL --project "$CI_PROJECT_NAME" --out reports'
+    - '/usr/share/dependency-check/bin/dependency-check.sh --scan "./" --format ALL --project "$CI_PROJECT_NAME" --out reports --nvdUser "$nvduser" --nvdPassword "$nvdpassword"'
   allow_failure: true
   artifacts:
     when: always
@@ -193,3 +207,4 @@ pages:
       - public
   rules:
     - if: $CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH
+    - if: '$CI_PIPELINE_SOURCE != "schedule"'
