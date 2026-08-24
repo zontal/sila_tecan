@@ -65,8 +65,6 @@ interop_server_managed:
       - server.log
       - managed_server8-test-report.xml
       - managed_server8-test-report.html
-  rules:
-    - if: '$CI_PIPELINE_SOURCE != "schedule"'
 
 interop_client_managed:
   stage: interop
@@ -89,8 +87,6 @@ interop_client_managed:
     paths:
       - managed_client8-test-report.xml
       - managed_client8-test-report.html
-  rules:
-    - if: '$CI_PIPELINE_SOURCE != "schedule"'
 
 interop_server_unmanaged:
   stage: interop
@@ -111,8 +107,6 @@ interop_server_unmanaged:
       - server.log
       - unmanaged_server8-test-report.xml
       - unmanaged_server8-test-report.html
-  rules:
-    - if: '$CI_PIPELINE_SOURCE != "schedule"'
 
 interop_client_unmanaged:
   stage: interop
@@ -135,8 +129,6 @@ interop_client_unmanaged:
     paths:
       - unmanaged_client8-test-report.xml
       - unmanaged_client8-test-report.html
-  rules:
-    - if: '$CI_PIPELINE_SOURCE != "schedule"'
 
 
 sast-scan:
@@ -206,5 +198,4 @@ pages:
     paths:
       - public
   rules:
-    - if: $CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH
-    - if: '$CI_PIPELINE_SOURCE != "schedule"'
+    - if: '$CI_PIPELINE_SOURCE != "schedule" && $CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH'
