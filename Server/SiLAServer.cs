@@ -72,10 +72,12 @@ namespace Tecan.Sila2.Server
             _implementedFeatures = new List<IFeatureProvider>();
             _loggingInterceptor = new LoggingInterceptor( _logger );
 
+            var networkFilterString = startupInfo.NetworkInterfaces ?? configuration?.InterfaceFilter;
+
             // create gRPC server such that it uses only the specified network interfaces
-            if((startupInfo.NetworkInterfaces ?? configuration?.InterfaceFilter) != null)
+            if (networkFilterString != null && networkFilterString != "none")
             {
-                var filter = Networking.CreateNetworkInterfaceFilter( startupInfo.NetworkInterfaces ?? configuration?.InterfaceFilter );
+                var filter = Networking.CreateNetworkInterfaceFilter( networkFilterString );
 
                 _announcer = new ServiceAnnouncer( ServerUUID, (ushort)port, filter );
 

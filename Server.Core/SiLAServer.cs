@@ -83,9 +83,11 @@ namespace Tecan.Sila2.Server
             serviceHandlerRepository.AddServiceHandler( _download );
             serviceHandlerRepository.AddServiceHandler( _upload );
 
-            if((startupInfo.NetworkInterfaces ?? configuration?.InterfaceFilter) != null)
+            var networkFilterString = startupInfo.NetworkInterfaces ?? configuration?.InterfaceFilter;
+
+            if (networkFilterString != null && networkFilterString != "none")
             {
-                var filter = Networking.CreateNetworkInterfaceFilter( startupInfo.NetworkInterfaces ?? configuration?.InterfaceFilter );
+                var filter = Networking.CreateNetworkInterfaceFilter( networkFilterString );
 
                 _announcer = new ServiceAnnouncer( ServerUUID, (ushort)port, filter );
 
