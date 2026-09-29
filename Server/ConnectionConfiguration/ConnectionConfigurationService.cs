@@ -30,11 +30,14 @@ namespace Tecan.Sila2.Server.ConnectionConfiguration
             try
             {
                 _config = _configurationStore.Read<ClientConnectionConfig>(serverStartInformation.ConfigName);
-                _config.Connection ??= Array.Empty<ClientConnection>();
+                if (_config != null)
+                {
+                    _config.Connection ??= Array.Empty<ClientConnection>();
+                }
             }
             catch (Exception ex)
             {
-                _loggingChannel.Warn("No client connection configuration found, starting with default configuration.", ex);
+                _loggingChannel.Warn("Error loading connection configuration.", ex);
                 _config = new ClientConnectionConfig
                 {
                     Connection = Array.Empty<ClientConnection>()

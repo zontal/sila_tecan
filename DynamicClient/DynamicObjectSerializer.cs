@@ -667,7 +667,11 @@ namespace Tecan.Sila2.DynamicClient
                 for(var i = 0; i < type.Element.Length; i++)
                 {
                     var element = type.Element[i];
-                    var prop = dynamicObject.Elements.FirstOrDefault( p => p.Identifier == element.Identifier );
+                    if (element == null)
+                    {
+                        continue; 
+                    }
+                    var prop = dynamicObject.Elements.FirstOrDefault( p => p?.Identifier == element.Identifier );
                     if(prop != null)
                     {
                         Write( writer, prop.Value, i + 1, store, element.DataType );
