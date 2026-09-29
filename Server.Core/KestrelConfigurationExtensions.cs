@@ -38,16 +38,23 @@ namespace Tecan.Sila2.Server
             webBuilder.ConfigureKestrel( options =>
              {
                  var port = (serverStartInfo?.Port).GetValueOrDefault( ServerStartInformation.DefaultPort );
-                 if(serverStartInfo?.NetworkInterfaces != null)
+
+                 if (serverStartInfo?.NetworkInterfaces != null && !string.Equals(serverStartInfo?.NetworkInterfaces, "none", StringComparison.OrdinalIgnoreCase))
                  {
-                     foreach(var net in Networking.ListInterNetworkAddresses( Networking.CreateNetworkInterfaceFilter( serverStartInfo.NetworkInterfaces ), false ))
+                     var networks = false;
+                     foreach (var net in Networking.ListInterNetworkAddresses(Networking.CreateNetworkInterfaceFilter(serverStartInfo.NetworkInterfaces), false))
                      {
-                         options.Listen( net, port, connectionOptions );
+                         options.Listen(net, port, connectionOptions);
+                         networks = true;
+                     }
+                     if (!networks)
+                     {
+                         throw new InvalidOperationException($"No network interfaces found matching the filter '{serverStartInfo.NetworkInterfaces}'");
                      }
                  }
                  else
                  {
-                     options.ListenAnyIP( port, connectionOptions );
+                     options.ListenAnyIP(port, connectionOptions);
                  }
              } );
         }

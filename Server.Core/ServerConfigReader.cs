@@ -53,7 +53,7 @@ namespace Tecan.Sila2.Server
 
             var selfInfo = ServerInformationFactory.GetServerInformation();
 
-            var info = new ServerStartInformation( selfInfo, arguments.Port, arguments.InterfaceFilter, arguments.ServerUuid, arguments.Name );
+            var info = new ServerStartInformation( selfInfo, arguments.Port, arguments.InterfaceFilter, !arguments.NoDiscovery, arguments.ServerUuid, arguments.Name, arguments.ConfigName );
 
             if (arguments.CertificatePath != null)
             {

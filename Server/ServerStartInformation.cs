@@ -54,13 +54,30 @@ namespace Tecan.Sila2.Server
         /// <param name="name">the initial name of the server</param>
         /// <param name="configName">The name of the configuration to use</param>
         public ServerStartInformation( ServerInformation info, int? port, string networkInterfaces, Guid serverUuid, string name, string configName )
+            : this(info, port, networkInterfaces, true, serverUuid, name, configName)
         {
+        }
+
+
+        /// <summary>
+        /// Creates a new instance
+        /// </summary>
+        /// <param name="info">The server information</param>
+        /// <param name="port">The port the server is running on</param>
+        /// <param name="networkInterfaces">The network interfaces the server uses for discovery</param>
+        /// <param name="isDiscoveryEnabled">True, if the server supports discovery, false otherwise</param>
+        /// <param name="serverUuid">The unique identifier of the server</param>
+        /// <param name="name">the initial name of the server</param>
+        /// <param name="configName">The name of the configuration to use</param>
+        public ServerStartInformation(ServerInformation info, int? port, string networkInterfaces, bool isDiscoveryEnabled, Guid serverUuid, string name, string configName)
+        { 
             Name = name;
             Info = info;
             Port = port;
             NetworkInterfaces = networkInterfaces;
             ServerUuid = serverUuid;
             ConfigName = configName ?? DefaultServerConfigurationName;
+            IsDiscoveryEnabled = isDiscoveryEnabled;
         }
 
         /// <summary>
@@ -83,6 +100,11 @@ namespace Tecan.Sila2.Server
         {
             get;
         }
+
+        /// <summary>
+        /// True, if the server supports discovery, false otherwise
+        /// </summary>
+        public bool IsDiscoveryEnabled { get; set;  }
 
         /// <summary>
         /// Gets the port the server is running on

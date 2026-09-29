@@ -86,7 +86,7 @@ namespace Tecan.Sila2.Server
                 _channel = LogManager.GetLogger<Bootstrapper>();
 
                 ServiceConfigurationBuilder configurationBuilder = null;
-                var startup = new ServerStartInformation( selfInfo, args.Port, args.InterfaceFilter, args.ServerUuid, args.Name );
+                var startup = new ServerStartInformation( selfInfo, args.Port, args.InterfaceFilter, !args.NoDiscovery, args.ServerUuid, args.Name, args.ConfigName );
 
                 _host = Host.CreateDefaultBuilder()
                     .UseDryIoc( container =>

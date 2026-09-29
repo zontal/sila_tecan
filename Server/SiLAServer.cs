@@ -75,25 +75,33 @@ namespace Tecan.Sila2.Server
             var networkFilterString = startupInfo.NetworkInterfaces ?? configuration?.InterfaceFilter;
 
             // create gRPC server such that it uses only the specified network interfaces
-            if (networkFilterString != null && networkFilterString != "none")
+            if (networkFilterString != null && !string.Equals(networkFilterString, "none", StringComparison.OrdinalIgnoreCase))
             {
                 var filter = Networking.CreateNetworkInterfaceFilter( networkFilterString );
 
-                _announcer = new ServiceAnnouncer( ServerUUID, (ushort)port, filter );
-
-                _serverProvider.ConfigureForServer( uuid, port, filter );
-
-                if(_serverProvider.Credentials is SslServerCredentials secureCredentials)
+                if (startupInfo.IsDiscoveryEnabled)
                 {
-                    var lines = secureCredentials.RootCertificates.Split( new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries );
-                    for(int i = 0; i < lines.Length; i++)
+                    _announcer = new ServiceAnnouncer(ServerUUID, (ushort)port, filter);
+
+                    _serverProvider.ConfigureForServer(uuid, port, filter);
+
+                    if (_serverProvider.Credentials is SslServerCredentials secureCredentials)
                     {
-                        _announcer.SetProperty( "ca" + i, lines[i] );
+                        var lines = secureCredentials.RootCertificates.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+                        for (int i = 0; i < lines.Length; i++)
+                        {
+                            _announcer.SetProperty("ca" + i, lines[i]);
+                        }
+                    }
+                    else
+                    {
+                        _announcer.SetProperty("encrypted", "false");
                     }
                 }
                 else
                 {
-                    _announcer.SetProperty( "encrypted", "false" );
+                    _logger.Warn("Server is running without Discovery!");
+                    _serverProvider.ConfigureForServer(uuid, port, filter);
                 }
             }
             else

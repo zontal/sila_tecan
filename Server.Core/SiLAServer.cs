@@ -85,11 +85,26 @@ namespace Tecan.Sila2.Server
 
             var networkFilterString = startupInfo.NetworkInterfaces ?? configuration?.InterfaceFilter;
 
-            if (networkFilterString != null && networkFilterString != "none")
+            if (networkFilterString != null && !string.Equals(networkFilterString, "none", StringComparison.OrdinalIgnoreCase))
             {
                 var filter = Networking.CreateNetworkInterfaceFilter( networkFilterString );
 
-                _announcer = new ServiceAnnouncer( ServerUUID, (ushort)port, filter );
+                if (startupInfo.IsDiscoveryEnabled)
+                {
+                    _announcer = new ServiceAnnouncer( ServerUUID, (ushort)port, filter );
+
+                    if (serviceHandlerRepository.AnnouncementDetails != null)
+                    {
+                        foreach (var pair in serviceHandlerRepository.AnnouncementDetails)
+                        {
+                            _announcer.SetProperty(pair.Key, pair.Value);
+                        }
+                    }
+                }
+                else
+                {
+                    _logger.Warn("Server is running without Discovery!");
+                }
 
                 serviceHandlerRepository.ConfigureForServer( uuid, port, filter, startupInfo.ServerCertificate );
             }
@@ -98,14 +113,6 @@ namespace Tecan.Sila2.Server
                 _logger.Warn( "Server is running without Discovery!" );
                 // if no interface was specified, the SiLA server will (try to) run on all of them
                 serviceHandlerRepository.ConfigureForServer( uuid, port, null, startupInfo.ServerCertificate );
-            }
-
-            if(serviceHandlerRepository.AnnouncementDetails != null && _announcer != null)
-            {
-                foreach(var pair in serviceHandlerRepository.AnnouncementDetails)
-                {
-                    _announcer.SetProperty( pair.Key, pair.Value );
-                }
             }
 
             var cleanupInterval = TimeSpan.FromSeconds( 30 );

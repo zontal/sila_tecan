@@ -104,13 +104,13 @@ namespace Tecan.Sila2.Server
 
                 _channel = LogManager.GetLogger<Bootstrapper>();
                 var interfaceFilter = args.InterfaceFilter;
-                if(interfaceFilter == "None")
+                if(string.Equals(interfaceFilter, "none", StringComparison.OrdinalIgnoreCase))
                 {
                     interfaceFilter = null;
                 }
                 var certificateProvider = _container.GetExportedValue<IServerCertificateProvider>();
                 certificateProvider.Initialize(args.CertificatePath);
-                var startup = new ServerStartInformation( selfInfo, args.Port, args.InterfaceFilter, args.ServerUuid, args.Name );
+                var startup = new ServerStartInformation( selfInfo, args.Port, args.InterfaceFilter, !args.NoDiscovery, args.ServerUuid, args.Name, args.ConfigName );
                 _container.ComposeExportedValue( startup );
                 _server = _container.GetExportedValue<ISiLAServer>();
                 _grpcServer = _container.GetExportedValue<IServerProvider>();
