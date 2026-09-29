@@ -84,19 +84,16 @@ namespace Tecan.Sila2.Generator.CommandLine
         private string CreateConfig( string serverUUID, bool isCa )
         {
             var fileName = Path.GetTempFileName();
-            using(var writer = new StreamWriter( fileName ))
+            using (var writer = new StreamWriter(fileName))
             {
-                writer.WriteLine( "[req]" );
-                if(!isCa)
-                {
-                    writer.WriteLine( "req_extensions = v3_req" );
-                    writer.WriteLine( "x509_extensions = v3_req" );
-                }
-                writer.WriteLine( "distinguished_name = req_distinguished_name" );
-                writer.WriteLine( "[req_distinguished_name]" );
+                writer.WriteLine("[req]");
+                writer.WriteLine("req_extensions = v3_req");
+                writer.WriteLine("x509_extensions = v3_req");
+                writer.WriteLine("distinguished_name = req_distinguished_name");
+                writer.WriteLine("[req_distinguished_name]");
+                writer.WriteLine("[v3_req]");
                 if (!isCa)
                 {
-                    writer.WriteLine("[v3_req]");
                     writer.WriteLine("basicConstraints = CA:FALSE");
                     writer.WriteLine("keyUsage = digitalSignature, keyEncipherment");
                     if (!string.IsNullOrEmpty(serverUUID))
@@ -108,6 +105,13 @@ namespace Tecan.Sila2.Generator.CommandLine
                     {
                         writer.WriteLine("subjectAltName = " + string.Join(",", Hosts.Select(PrintSANHost)));
                     }
+                }
+                else
+                {
+                    writer.WriteLine("basicConstraints = critical, CA:TRUE");
+                    writer.WriteLine("keyUsage = critical, keyCertSign, cRLSign");
+                    writer.WriteLine("subjectKeyIdentifier = hash");
+                    writer.WriteLine("authorityKeyIdentifier = keyid:always,issuer");
                 }
             }
             return fileName;
