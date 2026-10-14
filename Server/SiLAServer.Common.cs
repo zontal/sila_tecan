@@ -57,6 +57,11 @@ namespace Tecan.Sila2.Server
 
         #endregion
 
+        static SiLAServer()
+        {
+            ConfigurationSerializers.EnsureRegistered();
+        }
+
         #region Utils
 
         /// <summary>

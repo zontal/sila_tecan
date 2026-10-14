@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Xml;
-using System.Xml.Serialization;
 
 namespace Tecan.Sila2
 {
@@ -10,7 +9,6 @@ namespace Tecan.Sila2
     /// </summary>
     public static class DataTypeSerializer
     {
-        private static readonly XmlSerializer Serializer = new XmlSerializer( typeof(DataTypeType), new XmlRootAttribute("DataType") { Namespace = "http://www.sila-standard.org" } );
         private static readonly XmlWriterSettings settings = new XmlWriterSettings()
         {
             Indent = false,
@@ -28,7 +26,7 @@ namespace Tecan.Sila2
             {
                 using (var xmlWriter = XmlWriter.Create(writer, settings))
                 {
-                    Serializer.Serialize(xmlWriter, dataType);
+                    FeatureDefinitionXml.WriteDataType( xmlWriter, dataType );
                     return writer.ToString();
                 }
             }
@@ -41,7 +39,7 @@ namespace Tecan.Sila2
         /// <returns>The deserialized data type</returns>
         public static DataTypeType LoadType( string xml )
         {
-            return (DataTypeType)Serializer.Deserialize( new StringReader( xml ) );
+            return FeatureDefinitionXml.ReadDataType( new StringReader( xml ) );
         }
     }
 }

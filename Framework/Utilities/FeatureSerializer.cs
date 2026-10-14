@@ -2,7 +2,6 @@
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Xml.Serialization;
 
 namespace Tecan.Sila2
 {
@@ -11,9 +10,6 @@ namespace Tecan.Sila2
     /// </summary>
     public class FeatureSerializer
     {
-
-        private static readonly XmlSerializer Serializer = new XmlSerializer( typeof( Feature ) );
-
         /// <summary>
         /// Saves the given feature to the given path
         /// </summary>
@@ -23,7 +19,7 @@ namespace Tecan.Sila2
         {
             using(var writer = new StreamWriter( path ))
             {
-                Serializer.Serialize( writer, feature );
+                FeatureDefinitionXml.WriteFeature( writer, feature );
             }
         }
 
@@ -36,7 +32,7 @@ namespace Tecan.Sila2
         {
             using(var writer = new Utf8StringWriter())
             {
-                Serializer.Serialize( writer, feature );
+                FeatureDefinitionXml.WriteFeature( writer, feature );
                 return writer.ToString();
             }
         }
@@ -59,7 +55,7 @@ namespace Tecan.Sila2
                 xml = xml.Substring( actualStart );
             }
 
-            return (Feature)Serializer.Deserialize( new StringReader( xml ) );
+            return FeatureDefinitionXml.ReadFeature( new StringReader( xml ) );
         }
 
         /// <summary>
@@ -73,7 +69,7 @@ namespace Tecan.Sila2
             {
                 using(var reader = new StreamReader( path ))
                 {
-                    return (Feature)Serializer.Deserialize( reader );
+                    return FeatureDefinitionXml.ReadFeature( reader );
                 }
             }
             catch(InvalidOperationException)
@@ -113,7 +109,7 @@ namespace Tecan.Sila2
         {
             using(var reader = new StreamReader( stream ))
             {
-                return (Feature)Serializer.Deserialize( reader );
+                return FeatureDefinitionXml.ReadFeature( reader );
             }
         }
     }
