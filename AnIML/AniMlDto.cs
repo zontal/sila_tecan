@@ -7,7 +7,6 @@ using Tecan.AnIML.Serialization;
 
 namespace Tecan.Sila2
 {
-#pragma warning disable PBN0013 // the AnIML document is transferred as a message of its own, not as a polymorphic sub-type of BinaryDto
     /// <summary>
     /// Denotes a data transfer object for AnIML documents
     /// </summary>

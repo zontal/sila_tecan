@@ -17,7 +17,14 @@ namespace Tecan.Sila2.IntegrationTests
     {
         private const int MaxDepth = 3;
 
-        public static IEnumerable<TestCaseData> FrameworkContracts => GetContracts( typeof( FrameworkTypeModel ) );
+        public static IEnumerable<TestCaseData> FrameworkContracts =>
+            new[]
+            {
+                typeof( FrameworkTypeModel ),
+                typeof( Discovery.SiLAServiceTypeModel ),
+                typeof( DynamicClient.DynamicClientTypeModel ),
+                typeof( AniMlTypeModel ),
+            }.SelectMany( GetContracts );
 
         public static IEnumerable<TestCaseData> GeneratedFeatureContracts =>
             new[]
@@ -38,7 +45,7 @@ namespace Tecan.Sila2.IntegrationTests
 
             var runtimeBytes = Serialize( contract, instance, RuntimeTypeModel.Create() );
             var generatedBytes = Serialize( contract, instance, model );
-            if(contract.GetProperties().Any( property => property.CanWrite ))
+            if(DeclaresProtoMembers( contract ))
             {
                 Assert.That( runtimeBytes, Is.Not.Empty, "the test instance should carry data" );
             }
@@ -87,6 +94,13 @@ namespace Tecan.Sila2.IntegrationTests
             Assert.That( () => ByteSerializer.Create<StringDto>( null ), Throws.ArgumentNullException );
             Assert.That( () => ByteSerializer.ToByteArray( new StringDto( "x" ), null ), Throws.ArgumentNullException );
             Assert.That( () => ByteSerializer.FromByteArray<StringDto>( new byte[0], null ), Throws.ArgumentNullException );
+        }
+
+        private static bool DeclaresProtoMembers( Type contract )
+        {
+            // protobuf-net serializes inherited members only for sub-types declared with ProtoInclude
+            return contract.GetProperties( BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly )
+                .Any( property => property.IsDefined( typeof( ProtoBuf.ProtoMemberAttribute ), false ) );
         }
 
         private static IEnumerable<TestCaseData> GetContracts( Type modelType )
