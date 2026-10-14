@@ -777,7 +777,7 @@ namespace Tecan.Sila2.Generator.Generators
             }
             if (SerializationModelHelper.UseGeneratedModel)
             {
-                registerCall.Parameters.Add(SerializationModelHelper.GetSerializer(feature, _nameProvider.GetPropertyResponseType(featureProperty, _translationProvider)));
+                registerCall.Parameters.Add(GetSerializer(feature, _nameProvider.GetPropertyResponseType(featureProperty, _translationProvider)));
             }
             registerMethod.Statements.Add(registerCall);
         }
@@ -795,8 +795,8 @@ namespace Tecan.Sila2.Generator.Generators
                     new CodeMethodReferenceExpression(null, featureCommand.Identifier));
                 if (SerializationModelHelper.UseGeneratedModel)
                 {
-                    registerCall.Parameters.Add(SerializationModelHelper.GetSerializer(feature, _nameProvider.GenerateCommandRequestType(featureCommand)));
-                    registerCall.Parameters.Add(SerializationModelHelper.GetSerializer(feature, _nameProvider.GenerateCommandResponseType(featureCommand)));
+                    registerCall.Parameters.Add(GetSerializer(feature, _nameProvider.GenerateCommandRequestType(featureCommand)));
+                    registerCall.Parameters.Add(GetSerializer(feature, _nameProvider.GenerateCommandResponseType(featureCommand)));
                 }
                 registerMethod.Statements.Add(registerCall);
             }
@@ -838,14 +838,14 @@ namespace Tecan.Sila2.Generator.Generators
 
                 if (SerializationModelHelper.UseGeneratedModel)
                 {
-                    arguments.Add(SerializationModelHelper.GetSerializer(feature, _nameProvider.GenerateCommandRequestType(featureCommand)));
+                    arguments.Add(GetSerializer(feature, _nameProvider.GenerateCommandRequestType(featureCommand)));
                     if (hasIntermediates)
                     {
-                        arguments.Add(SerializationModelHelper.GetSerializer(feature, _nameProvider.GenerateCommandIntermediateType(featureCommand)));
+                        arguments.Add(GetSerializer(feature, _nameProvider.GenerateCommandIntermediateType(featureCommand)));
                     }
                     if (featureCommand.Response != null && featureCommand.Response.Length > 0)
                     {
-                        arguments.Add(SerializationModelHelper.GetSerializer(feature, _nameProvider.GenerateCommandResponseType(featureCommand)));
+                        arguments.Add(GetSerializer(feature, _nameProvider.GenerateCommandResponseType(featureCommand)));
                     }
                 }
 
@@ -1018,7 +1018,7 @@ namespace Tecan.Sila2.Generator.Generators
                 new CodePropertyReferenceExpression( null, nameof( IRequestInterceptor.MetadataIdentifier ) ) );
             if(SerializationModelHelper.UseGeneratedModel)
             {
-                extractMetadata.Parameters.Add( SerializationModelHelper.GetSerializer( feature, SerializationModelHelper.GetMetadataType( metadata, _translationProvider, structHandler ) ) );
+                extractMetadata.Parameters.Add( GetSerializer( feature, SerializationModelHelper.GetMetadataType( metadata, _translationProvider, structHandler ) ) );
             }
             var statements = GenerateExceptionHandling( feature, null, metadata.DefinedExecutionErrors, id => FindError( feature, id ), interceptMethod.Statements, serverRef );
             statements.Add( new CodeMethodReturnStatement(
@@ -1050,6 +1050,11 @@ namespace Tecan.Sila2.Generator.Generators
                 HasSet = false,
                 Type = new CodeTypeReference( type )
             };
+        }
+
+        private CodeExpression GetSerializer(Feature feature, CodeTypeReference dtoType)
+        {
+            return SerializationModelHelper.GetSerializer(feature, dtoType, _nameProvider, _translationProvider);
         }
     }
 }

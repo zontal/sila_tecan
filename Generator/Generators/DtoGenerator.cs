@@ -110,8 +110,8 @@ namespace Tecan.Sila2.Generator.Generators
         private void AddSerializationModel( Feature feature, CodeCompileUnit unit, CodeNamespace nSpace )
         {
             _loggingChannel.Debug( $"Generating the serialization model for feature {feature.Identifier}" );
-            var roots = SerializationModelHelper.GetRootTypes( feature, NameProvider, _translationProvider );
-            if(roots.Count == 0)
+            var serializerDefinitions = SerializationModelHelper.GetSerializers( feature, NameProvider, _translationProvider );
+            if(serializerDefinitions.Count == 0)
             {
                 return;
             }
@@ -126,7 +126,7 @@ namespace Tecan.Sila2.Generator.Generators
             };
             model.BaseTypes.Add( new CodeTypeReference( typeof( ProtoBuf.Meta.TypeModel ) ) );
             model.CustomAttributes.Add( new CodeAttributeDeclaration( new CodeTypeReference( "ProtoBuf.ProtoModelAttribute" ) ) );
-            foreach(var root in roots)
+            foreach(var root in serializerDefinitions.Select( definition => definition.Key ))
             {
                 model.CustomAttributes.Add( new CodeAttributeDeclaration( new CodeTypeReference( "ProtoBuf.ProtoSerializableAttribute" ),
                     new CodeAttributeArgument( new CodeTypeOfExpression( root ) ) ) );
@@ -141,9 +141,10 @@ namespace Tecan.Sila2.Generator.Generators
             };
             serializers.Members.Add( new CodeConstructor { Attributes = MemberAttributes.Private } );
             var modelInstance = new CodePropertyReferenceExpression( new CodeTypeReferenceExpression( modelName ), "Instance" );
-            foreach(var root in roots)
+            foreach(var definition in serializerDefinitions)
             {
-                var name = SerializationModelHelper.GetSerializerFieldName( root );
+                var root = definition.Key;
+                var name = definition.Value;
                 var serializerType = new CodeTypeReference( typeof( ByteSerializer<> ).Name, root );
                 var field = new CodeMemberField( serializerType, "_" + name.ToCamelCase() )
                 {

@@ -42,31 +42,6 @@ namespace Tecan.Sila2.Generator.Helper
         }
 
         /// <summary>
-        /// Gets the name of the field that holds the byte serializer for the given data transfer type
-        /// </summary>
-        /// <param name="dtoType">The data transfer type</param>
-        /// <returns>A valid C# identifier</returns>
-        public static string GetSerializerFieldName( CodeTypeReference dtoType )
-        {
-            var baseType = dtoType.BaseType;
-            var lastDot = baseType.LastIndexOf( '.' );
-            if(lastDot != -1)
-            {
-                baseType = baseType.Substring( lastDot + 1 );
-            }
-            var arity = baseType.IndexOf( '`' );
-            if(arity != -1)
-            {
-                baseType = baseType.Substring( 0, arity );
-            }
-            if(dtoType.TypeArguments.Count == 0)
-            {
-                return baseType;
-            }
-            return baseType + "Of" + string.Join( "And", dtoType.TypeArguments.Cast<CodeTypeReference>().Select( GetSerializerFieldName ) );
-        }
-
-        /// <summary>
         /// Determines whether the given data transfer type is the empty request, which has a dedicated serializer
         /// </summary>
         /// <param name="dtoType">The data transfer type</param>
@@ -81,39 +56,60 @@ namespace Tecan.Sila2.Generator.Helper
         /// </summary>
         /// <param name="feature">The feature for which code is generated</param>
         /// <param name="dtoType">The data transfer type</param>
+        /// <param name="nameProvider">The name provider used to name the data transfer types</param>
+        /// <param name="translationProvider">The type translation provider</param>
         /// <returns>A code expression of type ByteSerializer&lt;T&gt;</returns>
-        public static CodeExpression GetSerializer( Feature feature, CodeTypeReference dtoType )
+        public static CodeExpression GetSerializer( Feature feature, CodeTypeReference dtoType, ICodeNameProvider nameProvider, ITypeTranslationProvider translationProvider )
         {
             if(IsEmptyRequest( dtoType ))
             {
                 return new CodeFieldReferenceExpression( new CodeTypeReferenceExpression( nameof( EmptyRequest ) ), nameof( EmptyRequest.Marshaller ) );
             }
-            return new CodeFieldReferenceExpression( new CodeTypeReferenceExpression( GetSerializersName( feature ) ), GetSerializerFieldName( dtoType ) );
+            var key = GetTypeKey( dtoType );
+            var serializer = GetSerializers( feature, nameProvider, translationProvider ).FirstOrDefault( s => GetTypeKey( s.Key ) == key );
+            if(serializer.Value == null)
+            {
+                throw new InvalidOperationException( $"No byte serializer is generated for the data transfer type {key} of feature {feature.Identifier}." );
+            }
+            return new CodePropertyReferenceExpression( new CodeTypeReferenceExpression( GetSerializersName( feature ) ), serializer.Value );
         }
 
         /// <summary>
-        /// Gets the data transfer types that the generated code of a feature serializes directly
+        /// Gets the data transfer types that the generated code of a feature serializes directly, together with the names of their byte serializers
         /// </summary>
         /// <param name="feature">The feature</param>
         /// <param name="nameProvider">The name provider used to name the data transfer types</param>
         /// <param name="translationProvider">The type translation provider</param>
-        /// <returns>A collection of distinct type references</returns>
-        public static IReadOnlyList<CodeTypeReference> GetRootTypes( Feature feature, ICodeNameProvider nameProvider, ITypeTranslationProvider translationProvider )
+        /// <returns>A collection of distinct types, each with a unique serializer name</returns>
+        /// <remarks>
+        /// Serializer names are derived from the type names. Distinct types that would get the same name, such as
+        /// <c>PropertyResponse&lt;List&lt;StringDto&gt;&gt;</c> and <c>PropertyResponse&lt;ListOfStringDto&gt;</c>, are told apart by a numeric suffix
+        /// in the order in which the feature declares them.
+        /// </remarks>
+        public static IReadOnlyList<KeyValuePair<CodeTypeReference, string>> GetSerializers( Feature feature, ICodeNameProvider nameProvider, ITypeTranslationProvider translationProvider )
         {
-            var roots = new List<CodeTypeReference>();
-            var names = new HashSet<string>( StringComparer.Ordinal );
+            var serializers = new List<KeyValuePair<CodeTypeReference, string>>();
+            var types = new HashSet<string>( StringComparer.Ordinal );
+            var names = new HashSet<string>( StringComparer.Ordinal ) { GetSerializersName( feature ) };
 
             void Add( CodeTypeReference type )
             {
-                if(type != null && !IsEmptyRequest( type ) && names.Add( GetSerializerFieldName( type ) ))
+                if(type == null || IsEmptyRequest( type ) || !types.Add( GetTypeKey( type ) ))
                 {
-                    roots.Add( type );
+                    return;
                 }
+                var baseName = GetSerializerName( type );
+                var name = baseName;
+                for(var index = 2; !names.Add( name ); index++)
+                {
+                    name = baseName + index;
+                }
+                serializers.Add( new KeyValuePair<CodeTypeReference, string>( type, name ) );
             }
 
             if(feature.Items == null)
             {
-                return roots;
+                return serializers;
             }
 
             foreach(var command in feature.Items.OfType<FeatureCommand>())
@@ -139,7 +135,50 @@ namespace Tecan.Sila2.Generator.Helper
                 Add( GetMetadataType( metadata, translationProvider ) );
             }
 
-            return roots;
+            return serializers;
+        }
+
+        private static string GetSerializerName( CodeTypeReference dtoType )
+        {
+            if(dtoType.ArrayElementType != null)
+            {
+                return GetSerializerName( dtoType.ArrayElementType ) + "Array";
+            }
+            var baseType = StripArity( dtoType.BaseType );
+            var lastDot = baseType.LastIndexOf( '.' );
+            if(lastDot != -1)
+            {
+                baseType = baseType.Substring( lastDot + 1 );
+            }
+            if(dtoType.TypeArguments.Count == 0)
+            {
+                return baseType;
+            }
+            return baseType + "Of" + string.Join( "And", dtoType.TypeArguments.Cast<CodeTypeReference>().Select( GetSerializerName ) );
+        }
+
+        private static string GetTypeKey( CodeTypeReference type )
+        {
+            if(type.ArrayElementType != null)
+            {
+                return GetTypeKey( type.ArrayElementType ) + "[" + new string( ',', Math.Max( 0, type.ArrayRank - 1 ) ) + "]";
+            }
+            var baseType = StripArity( type.BaseType );
+            if(baseType.StartsWith( "global::", StringComparison.Ordinal ))
+            {
+                baseType = baseType.Substring( "global::".Length );
+            }
+            if(type.TypeArguments.Count == 0)
+            {
+                return baseType;
+            }
+            return baseType + "<" + string.Join( ",", type.TypeArguments.Cast<CodeTypeReference>().Select( GetTypeKey ) ) + ">";
+        }
+
+        private static string StripArity( string typeName )
+        {
+            var arity = typeName.IndexOf( '`' );
+            return arity == -1 ? typeName : typeName.Substring( 0, arity );
         }
 
         /// <summary>

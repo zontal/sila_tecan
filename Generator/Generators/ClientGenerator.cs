@@ -533,14 +533,14 @@ namespace Tecan.Sila2.Generator.Generators
 
             if(SerializationModelHelper.UseGeneratedModel)
             {
-                actualCall.Parameters.Add( SerializationModelHelper.GetSerializer( feature, _nameProvider.GenerateCommandRequestType( featureCommand ) ) );
+                actualCall.Parameters.Add( GetSerializer( feature, _nameProvider.GenerateCommandRequestType( featureCommand ) ) );
                 if(intermediateType != null)
                 {
-                    actualCall.Parameters.Add( SerializationModelHelper.GetSerializer( feature, _nameProvider.GenerateCommandIntermediateType( featureCommand ) ) );
+                    actualCall.Parameters.Add( GetSerializer( feature, _nameProvider.GenerateCommandIntermediateType( featureCommand ) ) );
                 }
                 if(featureCommand.Response != null && featureCommand.Response.Length > 0)
                 {
-                    actualCall.Parameters.Add( SerializationModelHelper.GetSerializer( feature, _nameProvider.GenerateCommandResponseType( featureCommand ) ) );
+                    actualCall.Parameters.Add( GetSerializer( feature, _nameProvider.GenerateCommandResponseType( featureCommand ) ) );
                 }
             }
 
@@ -615,10 +615,10 @@ namespace Tecan.Sila2.Generator.Generators
                 callInfoRef );
             if(SerializationModelHelper.UseGeneratedModel)
             {
-                executeCall.Parameters.Add( SerializationModelHelper.GetSerializer( feature, _nameProvider.GenerateCommandRequestType( featureCommand ) ) );
+                executeCall.Parameters.Add( GetSerializer( feature, _nameProvider.GenerateCommandRequestType( featureCommand ) ) );
                 if(featureCommand.Response != null && featureCommand.Response.Length > 0)
                 {
-                    executeCall.Parameters.Add( SerializationModelHelper.GetSerializer( feature, _nameProvider.GenerateCommandResponseType( featureCommand ) ) );
+                    executeCall.Parameters.Add( GetSerializer( feature, _nameProvider.GenerateCommandResponseType( featureCommand ) ) );
                 }
             }
             CodeExpression convertedCall;
@@ -881,7 +881,7 @@ namespace Tecan.Sila2.Generator.Generators
                 callInfoRef );
             if(SerializationModelHelper.UseGeneratedModel)
             {
-                readCall.Parameters.Add( SerializationModelHelper.GetSerializer( feature, _nameProvider.GetPropertyResponseType( featureProperty, _translationProvider ) ) );
+                readCall.Parameters.Add( GetSerializer( feature, _nameProvider.GetPropertyResponseType( featureProperty, _translationProvider ) ) );
             }
             var response = GenerateClientConvertResponse(
                 featureProperty.DataType, "Value",
@@ -922,7 +922,7 @@ namespace Tecan.Sila2.Generator.Generators
                 new CodeMethodInvokeExpression( new CodeFieldReferenceExpression( null, ExecutionManagerFieldName ), nameof( IClientExecutionManager.CreateCallOptions ), new CodePrimitiveExpression( feature.GetFullyQualifiedIdentifier( featureProperty ) ) ) );
             if(SerializationModelHelper.UseGeneratedModel)
             {
-                subscription.Parameters.Add( SerializationModelHelper.GetSerializer( feature, _nameProvider.GetPropertyResponseType( featureProperty, _translationProvider ) ) );
+                subscription.Parameters.Add( GetSerializer( feature, _nameProvider.GetPropertyResponseType( featureProperty, _translationProvider ) ) );
             }
             subscription.Parameters.Add( new CodePropertyReferenceExpression( tokenSource, nameof( CancellationTokenSource.Token ) ) );
             var ifSubscriptionNull = new CodeBinaryOperatorExpression( updateTask, CodeBinaryOperatorType.IdentityEquality, new CodePrimitiveExpression() );
@@ -1028,6 +1028,11 @@ namespace Tecan.Sila2.Generator.Generators
             }
 
             client.Members.Add( constructor );
+        }
+
+        private CodeExpression GetSerializer( Feature feature, CodeTypeReference dtoType )
+        {
+            return SerializationModelHelper.GetSerializer( feature, dtoType, _nameProvider, _translationProvider );
         }
     }
 }
