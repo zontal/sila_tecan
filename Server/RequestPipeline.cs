@@ -19,6 +19,7 @@ namespace Tecan.Sila2.Server
 
         public RequestPipeline( SiLAServer server, IEnumerable<IRequestInterceptor> interceptors, IConfigurationStore configurationStore, string configurationName )
         {
+            ConfigurationSerializers.EnsureRegistered();
             _interceptors = interceptors;
             _server = server;
             _configurationStore = configurationStore;

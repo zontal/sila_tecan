@@ -25,6 +25,7 @@
     <ItemGroup>
         <Compile Include="..\CommonAssemblyInfo.cs" Link="Properties\CommonAssemblyInfo.cs" />
         <Compile Include="..\Server\Binary\BinaryDownload.cs" Link="Binary\BinaryDownload.cs" />
+        <Compile Include="..\Server\ConfigurationSerializers.cs" Link="ConfigurationSerializers.cs" />
         <Compile Include="..\Server\Binary\BinaryUpload.cs" Link="Binary\BinaryUpload.cs" />
         <Compile Include="..\Server\Binary\FileUploadData.cs" Link="Binary\FileUploadData.cs" />
         <Compile Include="..\Server\Binary\IFileManagement.cs" Link="Binary\IFileManagement.cs" />
