@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Xml;
 using System.Xml.Serialization;
 
@@ -21,7 +23,7 @@ namespace Tecan.Sila2
             return namespaces.ToArray();
         }
 
-        private static void Serialize<T>( XmlWriter writer, string rootName, string rootNamespace, bool rootIsNullable, T value, Action<XmlWriter, T> writeContent ) where T : class
+        private static void Serialize<T>( XmlWriter writer, string rootName, string rootNamespace, bool rootIsNullable, T value, Action<ModelWriter, T> writeContent ) where T : class
         {
             try
             {
@@ -39,7 +41,9 @@ namespace Tecan.Sila2
                 }
                 else
                 {
-                    writeContent( writer, value );
+                    var modelWriter = new ModelWriter( writer );
+                    modelWriter.Enter( value );
+                    writeContent( modelWriter, value );
                 }
                 writer.WriteEndElement();
             }
@@ -48,6 +52,84 @@ namespace Tecan.Sila2
                 throw new InvalidOperationException( "There was an error generating the XML document.", exception );
             }
             writer.Flush();
+        }
+
+        /// <summary>
+        /// Writes the elements of the model and, like the XmlSerializer, rejects circular references between model objects
+        /// </summary>
+        private sealed class ModelWriter
+        {
+            private readonly HashSet<object> _objectsInUse = new HashSet<object>( ReferenceComparer.Instance );
+            private readonly XmlWriter _writer;
+
+            public ModelWriter( XmlWriter writer )
+            {
+                _writer = writer;
+            }
+
+            /// <summary>
+            /// Marks the given model object as being written
+            /// </summary>
+            /// <exception cref="InvalidOperationException">Thrown if the object is already being written, i.e. the model contains a cycle</exception>
+            public void Enter( object value )
+            {
+                if(!_objectsInUse.Add( value ))
+                {
+                    throw new InvalidOperationException( $"A circular reference was detected while serializing an object of type {value.GetType().FullName}." );
+                }
+            }
+
+            public void WriteStartElement( string localName, string ns, object value )
+            {
+                Enter( value );
+                _writer.WriteStartElement( localName, ns );
+            }
+
+            public void WriteEndElement( object value )
+            {
+                _writer.WriteEndElement();
+                _objectsInUse.Remove( value );
+            }
+
+            public void WriteStartElement( string localName, string ns )
+            {
+                _writer.WriteStartElement( localName, ns );
+            }
+
+            public void WriteEndElement()
+            {
+                _writer.WriteEndElement();
+            }
+
+            public void WriteElementString( string localName, string ns, string value )
+            {
+                _writer.WriteElementString( localName, ns, value );
+            }
+
+            public void WriteAttributeString( string localName, string ns, string value )
+            {
+                _writer.WriteAttributeString( localName, ns, value );
+            }
+
+            public void WriteRaw( string data )
+            {
+                _writer.WriteRaw( data );
+            }
+        }
+
+        private sealed class ReferenceComparer : IEqualityComparer<object>
+        {
+            public static readonly ReferenceComparer Instance = new ReferenceComparer();
+
+            public new bool Equals( object x, object y )
+            {
+                return ReferenceEquals( x, y );
+            }
+
+            public int GetHashCode( object obj )
+            {
+                return RuntimeHelpers.GetHashCode( obj );
+            }
         }
 
         private static void WriteRootStartElement( XmlWriter writer, string rootName, string rootNamespace )
@@ -62,7 +144,7 @@ namespace Tecan.Sila2
             }
         }
 
-        private static void WriteStringElement( XmlWriter writer, string localName, string value )
+        private static void WriteStringElement( ModelWriter writer, string localName, string value )
         {
             if(value != null)
             {
@@ -70,7 +152,7 @@ namespace Tecan.Sila2
             }
         }
 
-        private static void WriteAttribute( XmlWriter writer, string localName, string value )
+        private static void WriteAttribute( ModelWriter writer, string localName, string value )
         {
             if(value != null)
             {
@@ -78,14 +160,14 @@ namespace Tecan.Sila2
             }
         }
 
-        private static void WriteDecimalElement( XmlWriter writer, string localName, decimal value )
+        private static void WriteDecimalElement( ModelWriter writer, string localName, decimal value )
         {
             writer.WriteStartElement( localName, SilaNamespace );
             writer.WriteRaw( XmlConvert.ToString( value ) );
             writer.WriteEndElement();
         }
 
-        private static void WriteStringArray( XmlWriter writer, string localName, string itemName, string[] values )
+        private static void WriteStringArray( ModelWriter writer, string localName, string itemName, string[] values )
         {
             if(values == null)
             {
@@ -99,7 +181,7 @@ namespace Tecan.Sila2
             writer.WriteEndElement();
         }
 
-        private static void WriteElements( XmlWriter writer, string localName, SiLAElement[] elements )
+        private static void WriteElements( ModelWriter writer, string localName, SiLAElement[] elements )
         {
             if(elements == null)
             {
@@ -132,7 +214,7 @@ namespace Tecan.Sila2
             return new InvalidOperationException( $"Instance validation error: '{value}' is not a valid value for {typeof( FeatureDefinitionXml ).Namespace}.{typeName}." );
         }
 
-        private static void WriteFeature( XmlWriter writer, Feature feature )
+        private static void WriteFeature( ModelWriter writer, Feature feature )
         {
             CheckExactType( feature );
             if(feature.Locale != "en-us")
@@ -183,10 +265,10 @@ namespace Tecan.Sila2
             }
         }
 
-        private static void WriteFeatureCommand( XmlWriter writer, FeatureCommand command )
+        private static void WriteFeatureCommand( ModelWriter writer, FeatureCommand command )
         {
             CheckExactType( command );
-            writer.WriteStartElement( "Command", SilaNamespace );
+            writer.WriteStartElement( "Command", SilaNamespace, command );
             WriteStringElement( writer, "Identifier", command.Identifier );
             WriteStringElement( writer, "DisplayName", command.DisplayName );
             WriteStringElement( writer, "Description", command.Description );
@@ -195,36 +277,37 @@ namespace Tecan.Sila2
             WriteElements( writer, "Response", command.Response );
             WriteElements( writer, "IntermediateResponse", command.IntermediateResponse );
             WriteStringArray( writer, "DefinedExecutionErrors", "Identifier", command.DefinedExecutionErrors );
-            writer.WriteEndElement();
+            writer.WriteEndElement( command );
         }
 
-        private static void WriteSiLAElement( XmlWriter writer, string localName, SiLAElement element )
+        private static void WriteSiLAElement( ModelWriter writer, string localName, SiLAElement element )
         {
             if(element == null)
             {
                 return;
             }
             CheckExactType( element );
-            writer.WriteStartElement( localName, SilaNamespace );
+            writer.WriteStartElement( localName, SilaNamespace, element );
             WriteStringElement( writer, "Identifier", element.Identifier );
             WriteStringElement( writer, "DisplayName", element.DisplayName );
             WriteStringElement( writer, "Description", element.Description );
             WriteDataTypeElement( writer, "DataType", element.DataType );
-            writer.WriteEndElement();
+            writer.WriteEndElement( element );
         }
 
-        private static void WriteDataTypeElement( XmlWriter writer, string localName, DataTypeType dataType )
+        private static void WriteDataTypeElement( ModelWriter writer, string localName, DataTypeType dataType )
         {
             if(dataType == null)
             {
                 return;
             }
-            writer.WriteStartElement( localName, SilaNamespace );
+            CheckExactType( dataType );
+            writer.WriteStartElement( localName, SilaNamespace, dataType );
             WriteDataTypeType( writer, dataType );
-            writer.WriteEndElement();
+            writer.WriteEndElement( dataType );
         }
 
-        private static void WriteDataTypeType( XmlWriter writer, DataTypeType dataType )
+        private static void WriteDataTypeType( ModelWriter writer, DataTypeType dataType )
         {
             CheckExactType( dataType );
             switch(dataType.Item)
@@ -236,37 +319,38 @@ namespace Tecan.Sila2
                     break;
                 case ConstrainedType constrained:
                     CheckExactType( constrained );
-                    writer.WriteStartElement( "Constrained", SilaNamespace );
+                    writer.WriteStartElement( "Constrained", SilaNamespace, constrained );
                     WriteDataTypeElement( writer, "DataType", constrained.DataType );
                     if(constrained.Constraints != null)
                     {
-                        writer.WriteStartElement( "Constraints", SilaNamespace );
+                        CheckExactType( constrained.Constraints );
+                        writer.WriteStartElement( "Constraints", SilaNamespace, constrained.Constraints );
                         WriteConstraints( writer, constrained.Constraints );
-                        writer.WriteEndElement();
+                        writer.WriteEndElement( constrained.Constraints );
                     }
-                    writer.WriteEndElement();
+                    writer.WriteEndElement( constrained );
                     break;
                 case string identifier:
                     WriteStringElement( writer, "DataTypeIdentifier", identifier );
                     break;
                 case ListType list:
                     CheckExactType( list );
-                    writer.WriteStartElement( "List", SilaNamespace );
+                    writer.WriteStartElement( "List", SilaNamespace, list );
                     WriteDataTypeElement( writer, "DataType", list.DataType );
-                    writer.WriteEndElement();
+                    writer.WriteEndElement( list );
                     break;
                 case StructureType structure:
                     CheckExactType( structure );
-                    writer.WriteStartElement( "Structure", SilaNamespace );
+                    writer.WriteStartElement( "Structure", SilaNamespace, structure );
                     WriteElements( writer, "Element", structure.Element );
-                    writer.WriteEndElement();
+                    writer.WriteEndElement( structure );
                     break;
                 default:
                     throw UnexpectedType( dataType.Item );
             }
         }
 
-        private static void WriteConstraints( XmlWriter writer, Constraints constraints )
+        private static void WriteConstraints( ModelWriter writer, Constraints constraints )
         {
             CheckExactType( constraints );
             WriteStringElement( writer, "Length", constraints.Length );
@@ -308,10 +392,10 @@ namespace Tecan.Sila2
             }
         }
 
-        private static void WriteConstraintsUnit( XmlWriter writer, ConstraintsUnit unit )
+        private static void WriteConstraintsUnit( ModelWriter writer, ConstraintsUnit unit )
         {
             CheckExactType( unit );
-            writer.WriteStartElement( "Unit", SilaNamespace );
+            writer.WriteStartElement( "Unit", SilaNamespace, unit );
             WriteStringElement( writer, "Label", unit.Label );
             WriteDecimalElement( writer, "Factor", unit.Factor );
             WriteDecimalElement( writer, "Offset", unit.Offset );
@@ -324,19 +408,19 @@ namespace Tecan.Sila2
                         continue;
                     }
                     CheckExactType( component );
-                    writer.WriteStartElement( "UnitComponent", SilaNamespace );
+                    writer.WriteStartElement( "UnitComponent", SilaNamespace, component );
                     WriteStringElement( writer, "SIUnit", ToString( component.SIUnit ) );
                     WriteStringElement( writer, "Exponent", component.Exponent );
-                    writer.WriteEndElement();
+                    writer.WriteEndElement( component );
                 }
             }
-            writer.WriteEndElement();
+            writer.WriteEndElement( unit );
         }
 
-        private static void WriteConstraintsContentType( XmlWriter writer, ConstraintsContentType contentType )
+        private static void WriteConstraintsContentType( ModelWriter writer, ConstraintsContentType contentType )
         {
             CheckExactType( contentType );
-            writer.WriteStartElement( "ContentType", SilaNamespace );
+            writer.WriteStartElement( "ContentType", SilaNamespace, contentType );
             WriteStringElement( writer, "Type", contentType.Type );
             WriteStringElement( writer, "Subtype", contentType.Subtype );
             if(contentType.Parameters != null)
@@ -349,20 +433,20 @@ namespace Tecan.Sila2
                         continue;
                     }
                     CheckExactType( parameter );
-                    writer.WriteStartElement( "Parameter", SilaNamespace );
+                    writer.WriteStartElement( "Parameter", SilaNamespace, parameter );
                     WriteStringElement( writer, "Attribute", parameter.Attribute );
                     WriteStringElement( writer, "Value", parameter.Value );
-                    writer.WriteEndElement();
+                    writer.WriteEndElement( parameter );
                 }
                 writer.WriteEndElement();
             }
-            writer.WriteEndElement();
+            writer.WriteEndElement( contentType );
         }
 
-        private static void WriteConstraintsSchema( XmlWriter writer, ConstraintsSchema schema )
+        private static void WriteConstraintsSchema( ModelWriter writer, ConstraintsSchema schema )
         {
             CheckExactType( schema );
-            writer.WriteStartElement( "Schema", SilaNamespace );
+            writer.WriteStartElement( "Schema", SilaNamespace, schema );
             WriteStringElement( writer, "Type", ToString( schema.Type ) );
             if(schema.Item != null)
             {
@@ -378,42 +462,42 @@ namespace Tecan.Sila2
                         throw new InvalidOperationException( $"Invalid or missing value of the choice identifier 'ItemElementName' of type '{typeof( ItemChoiceType ).FullName}'." );
                 }
             }
-            writer.WriteEndElement();
+            writer.WriteEndElement( schema );
         }
 
-        private static void WriteFeatureDefinedExecutionError( XmlWriter writer, FeatureDefinedExecutionError error )
+        private static void WriteFeatureDefinedExecutionError( ModelWriter writer, FeatureDefinedExecutionError error )
         {
             CheckExactType( error );
-            writer.WriteStartElement( "DefinedExecutionError", SilaNamespace );
+            writer.WriteStartElement( "DefinedExecutionError", SilaNamespace, error );
             WriteStringElement( writer, "Identifier", error.Identifier );
             WriteStringElement( writer, "DisplayName", error.DisplayName );
             WriteStringElement( writer, "Description", error.Description );
-            writer.WriteEndElement();
+            writer.WriteEndElement( error );
         }
 
-        private static void WriteFeatureMetadata( XmlWriter writer, FeatureMetadata metadata )
+        private static void WriteFeatureMetadata( ModelWriter writer, FeatureMetadata metadata )
         {
             CheckExactType( metadata );
-            writer.WriteStartElement( "Metadata", SilaNamespace );
+            writer.WriteStartElement( "Metadata", SilaNamespace, metadata );
             WriteStringElement( writer, "Identifier", metadata.Identifier );
             WriteStringElement( writer, "DisplayName", metadata.DisplayName );
             WriteStringElement( writer, "Description", metadata.Description );
             WriteDataTypeElement( writer, "DataType", metadata.DataType );
             WriteStringArray( writer, "DefinedExecutionErrors", "Identifier", metadata.DefinedExecutionErrors );
-            writer.WriteEndElement();
+            writer.WriteEndElement( metadata );
         }
 
-        private static void WriteFeatureProperty( XmlWriter writer, FeatureProperty property )
+        private static void WriteFeatureProperty( ModelWriter writer, FeatureProperty property )
         {
             CheckExactType( property );
-            writer.WriteStartElement( "Property", SilaNamespace );
+            writer.WriteStartElement( "Property", SilaNamespace, property );
             WriteStringElement( writer, "Identifier", property.Identifier );
             WriteStringElement( writer, "DisplayName", property.DisplayName );
             WriteStringElement( writer, "Description", property.Description );
             WriteStringElement( writer, "Observable", ToString( property.Observable ) );
             WriteDataTypeElement( writer, "DataType", property.DataType );
             WriteStringArray( writer, "DefinedExecutionErrors", "Identifier", property.DefinedExecutionErrors );
-            writer.WriteEndElement();
+            writer.WriteEndElement( property );
         }
 
         private static string ToString( FeatureMaturityLevel value )

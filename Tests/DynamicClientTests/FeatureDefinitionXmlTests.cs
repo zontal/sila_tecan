@@ -722,6 +722,110 @@ namespace Tecan.Sila2.DynamicClient.Test
             AssertSameOutcome( () => OracleSaveFeature( feature ), () => FeatureSerializer.SaveToString( feature ) );
         }
 
+        private static DataTypeType SelfReferencingList()
+        {
+            var dataType = new DataTypeType();
+            dataType.Item = new ListType { DataType = dataType };
+            return dataType;
+        }
+
+        private static DataTypeType SelfReferencingConstrained()
+        {
+            var dataType = new DataTypeType();
+            dataType.Item = new ConstrainedType { DataType = dataType, Constraints = new Constraints { Length = "1" } };
+            return dataType;
+        }
+
+        private static DataTypeType StructureContainingItself()
+        {
+            var dataType = new DataTypeType();
+            dataType.Item = new StructureType { Element = new[] { Element( "A", Basic( BasicType.String ) ), Element( "B", dataType ) } };
+            return dataType;
+        }
+
+        private static Constraints ConstraintsAllowingThemselves()
+        {
+            var constraints = new Constraints();
+            constraints.AllowedTypes = new[] { Basic( BasicType.Integer ), Constrained( Basic( BasicType.String ), constraints ) };
+            return constraints;
+        }
+
+        private static Feature FeatureWith( params SiLAElement[] dataTypeDefinitions )
+        {
+            return new Feature { Identifier = "F", Items = dataTypeDefinitions.Cast<object>().ToArray() };
+        }
+
+        private static void AssertCircularReferenceLikeXmlSerializer<T>( Func<string> oracle, Func<string> actual )
+        {
+            var expected = Assert.Catch( () => oracle() );
+            Assert.That( expected, Is.InstanceOf<InvalidOperationException>() );
+            Assert.That( expected.InnerException, Is.InstanceOf<InvalidOperationException>() );
+            Assert.That( expected.InnerException.Message, Does.Contain( typeof( T ).FullName ) );
+
+            var exception = Assert.Catch( () => actual() );
+            Assert.That( exception, Is.InstanceOf( expected.GetType() ) );
+            Assert.That( exception.Message, Is.EqualTo( expected.Message ) );
+            Assert.That( exception.InnerException, Is.InstanceOf( expected.InnerException.GetType() ) );
+            Assert.That( exception.InnerException.Message, Is.EqualTo( expected.InnerException.Message ) );
+        }
+
+        [Test]
+        public void DataType_SaveCyclicModel_ThrowsLikeXmlSerializer()
+        {
+            foreach(var dataType in new[] { SelfReferencingList(), SelfReferencingConstrained(), StructureContainingItself() })
+            {
+                AssertCircularReferenceLikeXmlSerializer<DataTypeType>( () => OracleSaveDataType( dataType ), () => DataTypeSerializer.SaveToString( dataType ) );
+            }
+        }
+
+        [Test]
+        public void Constraints_SaveCyclicModel_ThrowsLikeXmlSerializer()
+        {
+            var constraints = ConstraintsAllowingThemselves();
+            AssertCircularReferenceLikeXmlSerializer<Constraints>( () => OracleSaveConstraints( constraints ), () => ConstraintSerializer.SaveToString( constraints ) );
+        }
+
+        [Test]
+        public void Feature_SaveCyclicModel_ThrowsLikeXmlSerializer()
+        {
+            var feature = FeatureWith( Element( "T", SelfReferencingList() ) );
+            AssertCircularReferenceLikeXmlSerializer<DataTypeType>( () => OracleSaveFeature( feature ), () => FeatureSerializer.SaveToString( feature ) );
+
+            feature = FeatureWith( Element( "C", new DataTypeType { Item = new ConstrainedType { DataType = Basic( BasicType.Any ), Constraints = ConstraintsAllowingThemselves() } } ) );
+            AssertCircularReferenceLikeXmlSerializer<Constraints>( () => OracleSaveFeature( feature ), () => FeatureSerializer.SaveToString( feature ) );
+
+            var element = Element( "E", null );
+            element.DataType = new DataTypeType { Item = new StructureType { Element = new[] { element } } };
+            feature = FeatureWith( element );
+            AssertCircularReferenceLikeXmlSerializer<SiLAElement>( () => OracleSaveFeature( feature ), () => FeatureSerializer.SaveToString( feature ) );
+        }
+
+        [Test]
+        public void SaveSharedModelObjects_EqualsXmlSerializer()
+        {
+            var shared = Constrained( Basic( BasicType.String ), new Constraints { MaximalLength = "10" } );
+            var sharedElement = Element( "S", shared );
+            var structure = new DataTypeType { Item = new StructureType { Element = new[] { sharedElement, Element( "T", shared ), sharedElement } } };
+            var constraints = new Constraints { AllowedTypes = new[] { shared, shared, structure } };
+            var feature = new Feature
+            {
+                Identifier = "Shared",
+                Items = new object[]
+                {
+                    new FeatureCommand { Identifier = "C", Parameter = new[] { sharedElement, sharedElement }, Response = new[] { sharedElement } },
+                    new FeatureProperty { Identifier = "P", DataType = shared },
+                    new FeatureMetadata { Identifier = "M", DataType = structure },
+                    sharedElement,
+                    Element( "U", new DataTypeType { Item = new ListType { DataType = structure } } ),
+                    Element( "V", Constrained( Basic( BasicType.Any ), constraints ) ),
+                }
+            };
+
+            Assert.That( FeatureSerializer.SaveToString( feature ), Is.EqualTo( OracleSaveFeature( feature ) ) );
+            Assert.That( DataTypeSerializer.SaveToString( structure ), Is.EqualTo( OracleSaveDataType( structure ) ) );
+            Assert.That( ConstraintSerializer.SaveToString( constraints ), Is.EqualTo( OracleSaveConstraints( constraints ) ) );
+        }
+
         #endregion
 
         #region Parsing edge cases
