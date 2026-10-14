@@ -7,6 +7,7 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Xml;
 using System.Xml.Serialization;
 using Tecan.Sila2.Server;
 
@@ -101,30 +102,46 @@ namespace Tecan.Sila2.ParameterDefaultsProvider.Tests
                 new MetadataConfiguration { Affected = new[] { "a", null, string.Empty } } ) ).SetArgDisplayNames( "Metadata configuration" );
         }
 
+        private static T XmlSerializerRoundTrip<T>( T configuration ) where T : class
+        {
+            // XmlWriter.Create escapes white space in attribute values on every runtime, so that the round trip shows what the
+            // XmlSerializer mapping preserves rather than the attribute value normalization of XmlTextWriter on .NET Framework
+            var serializer = new XmlSerializer( typeof( T ) );
+            using(var stream = new MemoryStream())
+            {
+                using(var writer = XmlWriter.Create( stream ))
+                {
+                    serializer.Serialize( writer, configuration );
+                }
+                stream.Position = 0;
+                return (T)serializer.Deserialize( stream );
+            }
+        }
+
+        private static T ReadWithXmlSerializer<T>( string path ) where T : class
+        {
+            using(var stream = File.OpenRead( path ))
+            {
+                return (T)new XmlSerializer( typeof( T ) ).Deserialize( stream );
+            }
+        }
+
         private void WriteAndRead<T>( T configuration ) where T : class
         {
-            var serializer = new XmlSerializer( typeof( T ) );
+            // what the XmlSerializer preserves of the configuration
+            var expected = XmlSerializerRoundTrip( configuration );
 
             var name = CreateName<T>( out var path );
             _store.Write( name, configuration );
-            var written = File.ReadAllText( path );
-            Assert.That( written, Does.Not.Contain( "xmlns:xsd" ), "The registered serializer was not used" );
-            T expected;
-            using(var stream = File.OpenRead( path ))
-            {
-                expected = (T)serializer.Deserialize( stream );
-            }
-            AssertDeepEqual( expected, _store.Read<T>( name ) );
+            Assert.That( File.ReadAllText( path ), Does.Not.Contain( "xmlns:xsd" ), "The registered serializer was not used" );
+            AssertDeepEqual( expected, ReadWithXmlSerializer<T>( path ), "written, read by XmlSerializer" );
+            AssertDeepEqual( expected, _store.Read<T>( name ), "written, read by store" );
 
             using(var stream = File.Create( path ))
             {
-                serializer.Serialize( stream, configuration );
+                new XmlSerializer( typeof( T ) ).Serialize( stream, configuration );
             }
-            using(var stream = File.OpenRead( path ))
-            {
-                expected = (T)serializer.Deserialize( stream );
-            }
-            AssertDeepEqual( expected, _store.Read<T>( name ) );
+            AssertDeepEqual( ReadWithXmlSerializer<T>( path ), _store.Read<T>( name ), "written by XmlSerializer, read by store" );
         }
 
         [TestCaseSource( nameof( Configurations ) )]
@@ -142,17 +159,14 @@ namespace Tecan.Sila2.ParameterDefaultsProvider.Tests
             T expected;
             try
             {
-                using(var stream = File.OpenRead( path ))
-                {
-                    expected = (T)new XmlSerializer( typeof( T ) ).Deserialize( stream );
-                }
+                expected = ReadWithXmlSerializer<T>( path );
             }
             catch(InvalidOperationException)
             {
                 // the store returns null for configurations it cannot read
                 expected = null;
             }
-            AssertDeepEqual( expected, _store.Read<T>( name ) );
+            AssertDeepEqual( expected, _store.Read<T>( name ), xml );
         }
 
         private static string RepositoryRoot
@@ -182,6 +196,42 @@ namespace Tecan.Sila2.ParameterDefaultsProvider.Tests
             yield return new TestCaseData( typeof( ClientConnection ), "<ClientConnection xsi:nil=\"true\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"/>" ).SetArgDisplayNames( "Client connection nil" );
             yield return new TestCaseData( typeof( MetadataConfigurationSet ), "<MetadataConfigurationSet><Configurations><MetadataConfiguration Identifier=\"a\"><Affected><string>x</string><string/></Affected><Affected><string>y</string></Affected></MetadataConfiguration></Configurations><Configurations><MetadataConfiguration/></Configurations></MetadataConfigurationSet>" ).SetArgDisplayNames( "Metadata configuration" );
             yield return new TestCaseData( typeof( MetadataConfigurationSet ), "<MetadataConfigurationSet xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"><Configurations><MetadataConfiguration xsi:nil=\"true\"/><MetadataConfiguration><Affected xsi:nil=\"true\"/></MetadataConfiguration></Configurations></MetadataConfigurationSet>" ).SetArgDisplayNames( "Metadata configuration nil" );
+            const string xsi = "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"";
+            var typed = new Dictionary<string, (Type, string)>
+            {
+                ["Server configuration anonymous type"] = (typeof( ServerConfiguration ), $"<ServerConfiguration xsi:type=\"ServerConfiguration\" Port=\"1\" xmlns=\"{serverNs}\" {xsi}/>"),
+                ["Server configuration other type"] = (typeof( ServerConfiguration ), $"<ServerConfiguration xsi:type=\"Other\" Port=\"1\" xmlns=\"{serverNs}\" {xsi}/>"),
+                ["Client connections type"] = (typeof( ClientConnectionConfig ), $"<ClientConnections xsi:type=\"ClientConnectionConfig\" xmlns=\"{connectionNs}\" {xsi}><Connection Name=\"a\"/></ClientConnections>"),
+                ["Client connections prefixed type"] = (typeof( ClientConnectionConfig ), $"<c:ClientConnections xsi:type=\"c:ClientConnectionConfig\" xmlns:c=\"{connectionNs}\" {xsi}><c:Connection Name=\"a\"/></c:ClientConnections>"),
+                ["Client connections other type"] = (typeof( ClientConnectionConfig ), $"<ClientConnections xsi:type=\"ClientConnections\" xmlns=\"{connectionNs}\" {xsi}/>"),
+                ["Client connections type without namespace"] = (typeof( ClientConnectionConfig ), $"<c:ClientConnections xsi:type=\"ClientConnectionConfig\" xmlns:c=\"{connectionNs}\" {xsi}/>"),
+                ["Connection type"] = (typeof( ClientConnectionConfig ), $"<ClientConnections xmlns=\"{connectionNs}\" {xsi}><Connection xsi:type=\"ClientConnection\" Name=\"a\"/></ClientConnections>"),
+                ["Connection other type"] = (typeof( ClientConnectionConfig ), $"<ClientConnections xmlns=\"{connectionNs}\" {xsi}><Connection Name=\"a\"/><Connection xsi:type=\"ClientConnectionConfig\" Name=\"b\"/></ClientConnections>"),
+                ["Connection 2000 type"] = (typeof( ClientConnectionConfig ), $"<ClientConnections xmlns=\"{connectionNs}\" xmlns:x=\"http://www.w3.org/2000/10/XMLSchema-instance\"><Connection x:type=\"Other\" Name=\"a\"/></ClientConnections>"),
+                ["Client connection type"] = (typeof( ClientConnection ), $"<ClientConnection xsi:type=\"c:ClientConnection\" xmlns:c=\"{connectionNs}\" Name=\"a\" {xsi}/>"),
+                ["Client connection type without namespace"] = (typeof( ClientConnection ), $"<ClientConnection xsi:type=\"ClientConnection\" Name=\"a\" {xsi}/>"),
+                ["Client connection nil other type"] = (typeof( ClientConnection ), $"<ClientConnection xsi:nil=\"true\" xsi:type=\"Other\" {xsi}/>"),
+                ["Client connection undefined prefix"] = (typeof( ClientConnection ), $"<ClientConnection xsi:type=\"p:ClientConnection\" {xsi}/>"),
+                ["Metadata set type"] = (typeof( MetadataConfigurationSet ), $"<MetadataConfigurationSet xsi:type=\"MetadataConfigurationSet\" {xsi}><Configurations><MetadataConfiguration Identifier=\"a\"/></Configurations></MetadataConfigurationSet>"),
+                ["Metadata set other type"] = (typeof( MetadataConfigurationSet ), $"<MetadataConfigurationSet xsi:type=\"Other\" {xsi}/>"),
+                ["Metadata set nil other type"] = (typeof( MetadataConfigurationSet ), $"<MetadataConfigurationSet xsi:nil=\"true\" xsi:type=\"Other\" {xsi}/>"),
+                ["Metadata configuration type"] = (typeof( MetadataConfigurationSet ), $"<MetadataConfigurationSet {xsi}><Configurations><MetadataConfiguration xsi:type=\"MetadataConfiguration\" Identifier=\"a\"/></Configurations></MetadataConfigurationSet>"),
+                ["Metadata configuration other type"] = (typeof( MetadataConfigurationSet ), $"<MetadataConfigurationSet {xsi}><Configurations><MetadataConfiguration Identifier=\"a\"/><MetadataConfiguration xsi:type=\"MetadataConfigurationSet\" Identifier=\"b\"/></Configurations></MetadataConfigurationSet>"),
+                ["Metadata configuration nil other type"] = (typeof( MetadataConfigurationSet ), $"<MetadataConfigurationSet {xsi}><Configurations><MetadataConfiguration xsi:nil=\"true\" xsi:type=\"Other\"/></Configurations></MetadataConfigurationSet>"),
+                ["Metadata wrappers typed"] = (typeof( MetadataConfigurationSet ), $"<MetadataConfigurationSet xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" {xsi}><Configurations xsi:type=\"Other\"><MetadataConfiguration Identifier=\"a\"><Affected xsi:type=\"Other\"><string xsi:type=\"xsd:int\">1</string></Affected></MetadataConfiguration></Configurations></MetadataConfigurationSet>"),
+                ["Metadata strings typed"] = (typeof( MetadataConfigurationSet ), $"<MetadataConfigurationSet xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" {xsi}><Configurations><MetadataConfiguration><Affected><string xsi:type=\"xsd:string\">a</string><string xsi:type=\"Other\">b</string></Affected></MetadataConfiguration></Configurations></MetadataConfigurationSet>"),
+                ["Client connection null"] = (typeof( ClientConnection ), $"<ClientConnection xsi:null=\"true\" Name=\"a\" {xsi}/>"),
+                ["Client connection 1999 null"] = (typeof( ClientConnection ), "<ClientConnection x:null=\"1\" Name=\"a\" xmlns:x=\"http://www.w3.org/1999/XMLSchema-instance\"/>"),
+                ["Client connection 2000 null false"] = (typeof( ClientConnection ), "<ClientConnection x:null=\"false\" Name=\"a\" xmlns:x=\"http://www.w3.org/2000/10/XMLSchema-instance\"/>"),
+                ["Client connection 2000 nil"] = (typeof( ClientConnection ), "<ClientConnection x:nil=\"true\" Name=\"a\" xmlns:x=\"http://www.w3.org/2000/10/XMLSchema-instance\"/>"),
+                ["Connection null"] = (typeof( ClientConnectionConfig ), $"<ClientConnections xmlns=\"{connectionNs}\" {xsi}><Connection xsi:nil=\"true\" Name=\"a\"/><Connection xsi:null=\"true\" Name=\"b\"/></ClientConnections>"),
+                ["Metadata set 2000 null"] = (typeof( MetadataConfigurationSet ), "<MetadataConfigurationSet x:null=\"true\" xmlns:x=\"http://www.w3.org/2000/10/XMLSchema-instance\"><Configurations><MetadataConfiguration Identifier=\"a\"/></Configurations></MetadataConfigurationSet>"),
+                ["Metadata items null"] = (typeof( MetadataConfigurationSet ), "<MetadataConfigurationSet xmlns:x=\"http://www.w3.org/1999/XMLSchema-instance\"><Configurations x:null=\"true\"><MetadataConfiguration Identifier=\"a\"/></Configurations><Configurations><MetadataConfiguration x:null=\"true\" Identifier=\"b\"/><MetadataConfiguration Identifier=\"c\"><Affected x:null=\"true\"><string>x</string></Affected><Affected><string x:null=\"true\">y</string></Affected></MetadataConfiguration></Configurations></MetadataConfigurationSet>"),
+            };
+            foreach(var document in typed)
+            {
+                yield return new TestCaseData( document.Value.Item1, document.Value.Item2 ).SetArgDisplayNames( document.Key );
+            }
             yield return new TestCaseData( typeof( MetadataConfigurationSet ), File.ReadAllText( Path.Combine( RepositoryRoot, "Interoperability", "InteropServer", "default.MetadataConfigurationSet.xml" ) ) ).SetArgDisplayNames( "Interop metadata configuration" );
         }
 

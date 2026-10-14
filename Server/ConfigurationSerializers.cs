@@ -14,6 +14,8 @@ namespace Tecan.Sila2.Server
         private const string ServerConfigurationNamespace = "https://gitlab.com/SiLA2/vendors/sila_tecan/-/blob/master/Server/ServerConfiguration.xsd";
         private const string ClientConnectionNamespace = "https://gitlab.com/SiLA2/vendors/sila_tecan/ClientConnection.xsd";
         private const string XsiNamespace = "http://www.w3.org/2001/XMLSchema-instance";
+        private const string Xsi2000Namespace = "http://www.w3.org/2000/10/XMLSchema-instance";
+        private const string Xsi1999Namespace = "http://www.w3.org/1999/XMLSchema-instance";
 
         private static readonly bool Registered = Register();
 
@@ -48,9 +50,50 @@ namespace Tecan.Sila2.Server
             }
         }
 
+        /// <summary>
+        /// Rejects an xsi:type that does not denote the XML type of the model class, as the XmlSerializer does
+        /// </summary>
+        /// <param name="reader">The reader positioned on the element</param>
+        /// <param name="typeName">The name of the XML type or null for anonymous types, which do not accept any xsi:type</param>
+        /// <param name="typeNamespace">The namespace of the XML type</param>
+        private static void CheckType( XmlReader reader, string typeName, string typeNamespace )
+        {
+            var type = reader.GetAttribute( "type", XsiNamespace )
+                ?? reader.GetAttribute( "type", Xsi2000Namespace )
+                ?? reader.GetAttribute( "type", Xsi1999Namespace );
+            if(type == null)
+            {
+                return;
+            }
+            var colon = type.LastIndexOf( ':' );
+            string localName;
+            string ns;
+            if(colon <= 0)
+            {
+                localName = type;
+                ns = reader.LookupNamespace( string.Empty ) ?? string.Empty;
+            }
+            else
+            {
+                var prefix = type.Substring( 0, colon );
+                localName = type.Substring( colon + 1 );
+                ns = reader.LookupNamespace( prefix ) ?? throw new InvalidOperationException( $"Namespace prefix '{prefix}' is not defined." );
+            }
+            if(typeName == null || localName != typeName || ns != typeNamespace)
+            {
+                throw new InvalidOperationException( $"The specified type was not recognized: name='{localName}', namespace='{ns}', at <{reader.LocalName} xmlns='{reader.NamespaceURI}'>." );
+            }
+        }
+
+        /// <summary>
+        /// Determines whether the element is marked as null with the attributes the XmlSerializer accepts
+        /// </summary>
         private static bool IsNil( XmlReader reader )
         {
-            var nil = reader.GetAttribute( "nil", XsiNamespace );
+            var nil = reader.GetAttribute( "nil", XsiNamespace )
+                ?? reader.GetAttribute( "null", XsiNamespace )
+                ?? reader.GetAttribute( "null", Xsi2000Namespace )
+                ?? reader.GetAttribute( "null", Xsi1999Namespace );
             return nil != null && XmlConvert.ToBoolean( nil );
         }
 
@@ -81,6 +124,7 @@ namespace Tecan.Sila2.Server
         private static ServerConfiguration ReadServerConfiguration( XmlReader reader )
         {
             ReadRoot( reader, nameof( ServerConfiguration ), ServerConfigurationNamespace );
+            CheckType( reader, null, ServerConfigurationNamespace );
             var configuration = new ServerConfiguration();
             bool identifierRead = false, portRead = false, nameRead = false, filterRead = false, connectionsRead = false;
             while(reader.MoveToNextAttribute())
@@ -121,6 +165,7 @@ namespace Tecan.Sila2.Server
         private static ClientConnectionConfig ReadClientConnectionConfig( XmlReader reader )
         {
             ReadRoot( reader, "ClientConnections", ClientConnectionNamespace );
+            CheckType( reader, nameof( ClientConnectionConfig ), ClientConnectionNamespace );
             var configuration = new ClientConnectionConfig();
             List<ClientConnection> connections = null;
             ReadChildren( reader, r =>
@@ -128,6 +173,7 @@ namespace Tecan.Sila2.Server
                 if(r.LocalName == "Connection" && r.NamespaceURI == ClientConnectionNamespace)
                 {
                     connections = connections ?? new List<ClientConnection>();
+                    CheckType( r, nameof( ClientConnection ), ClientConnectionNamespace );
                     connections.Add( ReadClientConnectionContent( r ) );
                     return true;
                 }
@@ -141,6 +187,7 @@ namespace Tecan.Sila2.Server
         {
             // the type has no root attribute, so the XmlSerializer uses the type name without namespace for the root element
             ReadRoot( reader, nameof( ClientConnection ), string.Empty );
+            CheckType( reader, nameof( ClientConnection ), ClientConnectionNamespace );
             if(IsNil( reader ))
             {
                 reader.Skip();
@@ -182,6 +229,7 @@ namespace Tecan.Sila2.Server
         private static MetadataConfigurationSet ReadMetadataConfigurationSet( XmlReader reader )
         {
             ReadRoot( reader, nameof( MetadataConfigurationSet ), string.Empty );
+            CheckType( reader, nameof( MetadataConfigurationSet ), string.Empty );
             if(IsNil( reader ))
             {
                 reader.Skip();
@@ -206,6 +254,7 @@ namespace Tecan.Sila2.Server
                     {
                         return false;
                     }
+                    CheckType( item, nameof( MetadataConfiguration ), string.Empty );
                     if(IsNil( item ))
                     {
                         item.Skip();
