@@ -68,8 +68,7 @@ namespace Tecan.Sila2.Server
         {
             if(bootstrapper == null) throw new ArgumentNullException( nameof( bootstrapper ) );
 
-            return Parser.Default.ParseArguments<ServerCommandLineArguments>( args )
-                .MapResult( bootstrapper.StartServer, bootstrapper.HandleError );
+            return ServerCommandLineParser.ParseArguments( args, bootstrapper.StartServer, bootstrapper.HandleError );
         }
 
         /// <summary>
