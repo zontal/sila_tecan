@@ -30,8 +30,7 @@ namespace Tecan.Sila2.Server
         /// <returns>The appropriate server start information</returns>
         public static ServerStartInformation ReadServerStartInformation( string[] args )
         {
-            return Parser.Default.ParseArguments<ServerCommandLineArguments>( args )
-                .MapResult( CreateServerStartInfo, HandleError );
+            return ServerCommandLineParser.ParseArguments( args, CreateServerStartInfo, HandleError );
         }
 
         private static ServerStartInformation HandleError( IEnumerable<Error> arg )
