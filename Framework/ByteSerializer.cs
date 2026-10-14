@@ -66,7 +66,8 @@ namespace Tecan.Sila2
         /// <param name="data">The data</param>
         /// <param name="model">The protobuf-net type model that is able to serialize <typeparamref name="T"/>, usually a compile-time generated model</param>
         /// <returns>A data transfer object instance</returns>
-        public static T FromByteArray<[DynamicallyAccessedMembers( TrimmingAnnotations.DataTransferObjectMembers )] T>( byte[] data, TypeModel model )
+        [UnconditionalSuppressMessage( "Trimming", "IL2091", Justification = TrimmingMessages.GeneratedTypeModel )]
+        public static T FromByteArray<T>( byte[] data, TypeModel model )
         {
             if(model == null)
             {
@@ -85,7 +86,8 @@ namespace Tecan.Sila2
         /// <param name="instance">The data transfer object</param>
         /// <param name="model">The protobuf-net type model that is able to serialize <typeparamref name="T"/>, usually a compile-time generated model</param>
         /// <returns>A byte array</returns>
-        public static byte[] ToByteArray<[DynamicallyAccessedMembers( TrimmingAnnotations.DataTransferObjectMembers )] T>( T instance, TypeModel model )
+        [UnconditionalSuppressMessage( "Trimming", "IL2091", Justification = TrimmingMessages.GeneratedTypeModel )]
+        public static byte[] ToByteArray<T>( T instance, TypeModel model )
         {
             if(model == null)
             {
@@ -105,7 +107,7 @@ namespace Tecan.Sila2
         /// <param name="model">The protobuf-net type model that is able to serialize <typeparamref name="T"/>, usually a compile-time generated model such as <see cref="FrameworkTypeModel"/></param>
         /// <returns>A byte serializer instance</returns>
         /// <remarks>Byte serializers created from a compile-time generated model are compatible with trimming and Native AOT.</remarks>
-        public static ByteSerializer<T> Create<[DynamicallyAccessedMembers( TrimmingAnnotations.DataTransferObjectMembers )] T>( TypeModel model )
+        public static ByteSerializer<T> Create<T>( TypeModel model )
         {
             if(model == null)
             {

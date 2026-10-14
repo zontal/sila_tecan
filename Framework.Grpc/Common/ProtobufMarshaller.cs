@@ -74,7 +74,7 @@ namespace Tecan.Sila2
         /// <typeparam name="T">The data transfer object type</typeparam>
         /// <param name="model">The protobuf-net type model that is able to serialize <typeparamref name="T"/>, usually a compile-time generated model such as <see cref="FrameworkTypeModel"/></param>
         /// <returns>A Marshaller</returns>
-        public static Marshaller<T> Create<[DynamicallyAccessedMembers( TrimmingAnnotations.DataTransferObjectMembers )] T>( TypeModel model )
+        public static Marshaller<T> Create<T>( TypeModel model )
         {
             return FromByteSerializer( ByteSerializer.Create<T>( model ) );
         }

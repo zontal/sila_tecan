@@ -1,10 +1,9 @@
 using System;
-using System.Diagnostics.CodeAnalysis;
 
 namespace Tecan.Sila2
 {
     /// <summary>
-    /// Messages for members that are not compatible with trimming or Native AOT
+    /// Messages and justifications for members with respect to trimming and Native AOT
     /// </summary>
     internal static class TrimmingMessages
     {
@@ -13,22 +12,12 @@ namespace Tecan.Sila2
         /// </summary>
         public const string RuntimeTypeModel = "Serializes data transfer objects through the reflection-based protobuf-net runtime model, which is not compatible with trimming and Native AOT. "
             + "Pass a ByteSerializer created from a compile-time generated protobuf-net model instead (see ByteSerializer.Create).";
-    }
 
-    /// <summary>
-    /// Annotations for members that are compatible with trimming and Native AOT
-    /// </summary>
-    internal static class TrimmingAnnotations
-    {
         /// <summary>
-        /// The members of a data transfer object type that protobuf-net type models may access, as declared by protobuf-net
+        /// The justification for serializing data transfer objects through a given protobuf-net type model without annotating the data transfer object type
         /// </summary>
-        public const DynamicallyAccessedMemberTypes DataTransferObjectMembers =
-            DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.NonPublicConstructors
-            | DynamicallyAccessedMemberTypes.PublicMethods | DynamicallyAccessedMemberTypes.NonPublicMethods
-            | DynamicallyAccessedMemberTypes.PublicFields | DynamicallyAccessedMemberTypes.NonPublicFields
-            | DynamicallyAccessedMemberTypes.PublicNestedTypes | DynamicallyAccessedMemberTypes.NonPublicNestedTypes
-            | DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.NonPublicProperties;
+        public const string GeneratedTypeModel = "Compile-time generated protobuf-net type models access the members of the data transfer objects statically. "
+            + "Reflection-based type models are created through the protobuf-net runtime model, which reports its own trimming warnings.";
     }
 }
 
@@ -61,36 +50,26 @@ namespace System.Diagnostics.CodeAnalysis
         public string Url { get; set; }
     }
 
-    [Flags]
-    internal enum DynamicallyAccessedMemberTypes
+    [AttributeUsage( AttributeTargets.All, Inherited = false, AllowMultiple = true )]
+    internal sealed class UnconditionalSuppressMessageAttribute : Attribute
     {
-        None = 0,
-        PublicParameterlessConstructor = 0x0001,
-        PublicConstructors = 0x0002 | PublicParameterlessConstructor,
-        NonPublicConstructors = 0x0004,
-        PublicMethods = 0x0008,
-        NonPublicMethods = 0x0010,
-        PublicFields = 0x0020,
-        NonPublicFields = 0x0040,
-        PublicNestedTypes = 0x0080,
-        NonPublicNestedTypes = 0x0100,
-        PublicProperties = 0x0200,
-        NonPublicProperties = 0x0400,
-        PublicEvents = 0x0800,
-        NonPublicEvents = 0x1000,
-        Interfaces = 0x2000,
-        All = ~None
-    }
-
-    [AttributeUsage( AttributeTargets.Field | AttributeTargets.ReturnValue | AttributeTargets.GenericParameter | AttributeTargets.Parameter | AttributeTargets.Property | AttributeTargets.Method | AttributeTargets.Class | AttributeTargets.Interface | AttributeTargets.Struct, Inherited = false )]
-    internal sealed class DynamicallyAccessedMembersAttribute : Attribute
-    {
-        public DynamicallyAccessedMembersAttribute( DynamicallyAccessedMemberTypes memberTypes )
+        public UnconditionalSuppressMessageAttribute( string category, string checkId )
         {
-            MemberTypes = memberTypes;
+            Category = category;
+            CheckId = checkId;
         }
 
-        public DynamicallyAccessedMemberTypes MemberTypes { get; }
+        public string Category { get; }
+
+        public string CheckId { get; }
+
+        public string Scope { get; set; }
+
+        public string Target { get; set; }
+
+        public string MessageId { get; set; }
+
+        public string Justification { get; set; }
     }
 }
 #endif
