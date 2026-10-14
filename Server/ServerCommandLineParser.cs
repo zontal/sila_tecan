@@ -12,15 +12,15 @@ using CommandLine.Text;
 namespace Tecan.Sila2.Server
 {
     /// <summary>
-    /// Parses the server command line into <see cref="ServerCommandLineArguments"/> without reflection
+    /// Parses the server command line into <see cref="ServerCommandLineArguments"/> without discovering its options through reflection
     /// </summary>
     /// <remarks>
     /// The parser reproduces what CommandLine.Parser.Default of CommandLineParser 2.9.1 does for
     /// <see cref="ServerCommandLineArguments"/>: the same tokens are accepted, the same values are assigned, the same
-    /// errors are reported, and the same help and version screens are written to the standard error stream.
-    /// CommandLineParser discovers the options through reflection, which is not compatible with trimming and
-    /// Native AOT, so the options are declared here explicitly. They must be kept in sync with the
-    /// <see cref="OptionAttribute"/> declarations of <see cref="ServerCommandLineArguments"/>.
+    /// errors (instances of the CommandLineParser error types) are reported, and the same help and version screens are
+    /// written to the standard error stream. CommandLineParser discovers the options through reflection, which is not
+    /// compatible with trimming and Native AOT, so the options are declared here explicitly. They must be kept in sync
+    /// with the <see cref="OptionAttribute"/> declarations of <see cref="ServerCommandLineArguments"/>.
     /// </remarks>
     internal static class ServerCommandLineParser
     {
@@ -82,7 +82,7 @@ namespace Tecan.Sila2.Server
         /// <param name="args">The command line arguments</param>
         /// <param name="errors">The errors in the command line</param>
         /// <returns>The parsed arguments or null, if the command line contains errors</returns>
-        internal static ServerCommandLineArguments Parse( IEnumerable<string> args, out IReadOnlyList<ServerCommandLineError> errors )
+        internal static ServerCommandLineArguments Parse( IEnumerable<string> args, out IReadOnlyList<Error> errors )
         {
             if(args == null)
             {
@@ -92,17 +92,17 @@ namespace Tecan.Sila2.Server
             var argumentList = args.ToList();
             if(argumentList.Count > 0 && argumentList[0] == "--help")
             {
-                errors = new[] { new ServerCommandLineError( ErrorType.HelpRequestedError, true, null, null, null, null ) };
+                errors = new Error[] { CommandLineParserErrors.HelpRequested() };
                 return null;
             }
 
             if(argumentList.Count > 0 && argumentList[0] == "--version")
             {
-                errors = new[] { new ServerCommandLineError( ErrorType.VersionRequestedError, true, null, null, null, null ) };
+                errors = new Error[] { CommandLineParserErrors.VersionRequested() };
                 return null;
             }
 
-            var found = new List<ServerCommandLineError>();
+            var found = new List<Error>();
             var tokens = Tokenize( argumentList, found );
             var assignments = Partition( tokens );
 
@@ -133,17 +133,17 @@ namespace Tecan.Sila2.Server
                 }
                 else
                 {
-                    found.Add( CreateOptionError( ErrorType.BadFormatConversionError, option, "' is defined with a bad format." ) );
+                    found.Add( CommandLineParserErrors.BadFormatConversion( option.ShortName, option.LongName ) );
                 }
             }
 
             found.AddRange( FindRepeatedOptions( tokens, assignedOptions ) );
 
-            var distinctErrors = new List<ServerCommandLineError>();
-            var seen = new HashSet<ServerCommandLineError>();
+            var distinctErrors = new List<Error>();
+            var seen = new HashSet<string>();
             foreach(var error in found)
             {
-                if(seen.Add( error ))
+                if(seen.Add( error.Tag + "\0" + GetMessage( error ) ))
                 {
                     distinctErrors.Add( error );
                 }
@@ -160,7 +160,7 @@ namespace Tecan.Sila2.Server
         /// <param name="maximumDisplayWidth">The width of the console</param>
         /// <param name="entryAssembly">The assembly whose attributes provide the heading and copyright, or null if there is no entry assembly</param>
         /// <returns>The help screen</returns>
-        internal static string BuildHelpText( IReadOnlyCollection<ServerCommandLineError> errors, int maximumDisplayWidth, Assembly entryAssembly )
+        internal static string BuildHelpText( IReadOnlyCollection<Error> errors, int maximumDisplayWidth, Assembly entryAssembly )
         {
             var assembly = entryAssembly ?? typeof( Parser ).Assembly;
             var heading = GetHeading( assembly );
@@ -173,7 +173,7 @@ namespace Tecan.Sila2.Server
             var preOptions = new StringBuilder();
             var meaningfulErrors = errors
                 .Where( error => !error.StopsProcessing )
-                .Where( error => !( error.Tag == ErrorType.UnknownOptionError && string.Equals( error.Token, "help", StringComparison.OrdinalIgnoreCase ) ) )
+                .Where( error => !( error is UnknownOptionError unknownOption && string.Equals( unknownOption.Token, "help", StringComparison.OrdinalIgnoreCase ) ) )
                 .ToList();
             if(meaningfulErrors.Count > 0)
             {
@@ -184,7 +184,7 @@ namespace Tecan.Sila2.Server
                     AddLine( preOptions, Environment.NewLine + "ERROR(S):", maximumDisplayWidth );
                     foreach(var error in meaningfulErrors)
                     {
-                        AddLine( preOptions, "  " + error.Message, maximumDisplayWidth );
+                        AddLine( preOptions, "  " + GetMessage( error ), maximumDisplayWidth );
                     }
                 }
             }
@@ -216,7 +216,7 @@ namespace Tecan.Sila2.Server
             return helpText.Append( Environment.NewLine ).Append( Environment.NewLine ).Append( BuildOptionsText( maximumDisplayWidth ) ).ToString();
         }
 
-        private static List<Token> Tokenize( List<string> arguments, List<ServerCommandLineError> errors )
+        private static List<Token> Tokenize( List<string> arguments, List<Error> errors )
         {
             var tokens = new List<Token>();
             foreach(var argument in arguments)
@@ -239,7 +239,7 @@ namespace Tecan.Sila2.Server
             {
                 if(token.IsName && FindOption( token.Text ) == null)
                 {
-                    errors.Add( new ServerCommandLineError( ErrorType.UnknownOptionError, false, token.Text, null, null, "Option '" + token.Text + "' is unknown." ) );
+                    errors.Add( CommandLineParserErrors.UnknownOption( token.Text ) );
                 }
             }
 
@@ -247,7 +247,7 @@ namespace Tecan.Sila2.Server
             return tokens;
         }
 
-        private static void TokenizeLongName( string argument, List<Token> tokens, List<ServerCommandLineError> errors )
+        private static void TokenizeLongName( string argument, List<Token> tokens, List<Error> errors )
         {
             if(argument.Length <= 2)
             {
@@ -265,7 +265,7 @@ namespace Tecan.Sila2.Server
             var match = LongNameWithValue.Match( text );
             if(equalIndex == 1 || !match.Success)
             {
-                errors.Add( new ServerCommandLineError( ErrorType.BadFormatTokenError, false, argument, null, null, "Token '" + argument + "' is not recognized." ) );
+                errors.Add( CommandLineParserErrors.BadFormatToken( argument ) );
                 return;
             }
 
@@ -354,7 +354,7 @@ namespace Tecan.Sila2.Server
             return assignments;
         }
 
-        private static IEnumerable<ServerCommandLineError> FindRepeatedOptions( List<Token> tokens, List<OptionDefinition> assignedOptions )
+        private static IEnumerable<Error> FindRepeatedOptions( List<Token> tokens, List<OptionDefinition> assignedOptions )
         {
             var names = tokens.Where( token => token.IsName ).Select( token => token.Text ).ToList();
             var occurrences = names.SelectMany( name => assignedOptions.Where( option => option.ShortName == name ) )
@@ -362,7 +362,7 @@ namespace Tecan.Sila2.Server
             return occurrences
                 .GroupBy( option => option )
                 .Where( group => group.Count() > 1 )
-                .Select( group => CreateOptionError( ErrorType.RepeatedOptionError, group.Key, "' is defined multiple times." ) );
+                .Select( group => CommandLineParserErrors.RepeatedOption( group.Key.ShortName, group.Key.LongName ) );
         }
 
         private static OptionDefinition FindOption( string name )
@@ -375,9 +375,21 @@ namespace Tecan.Sila2.Server
             return name.Length == 1 ? name == option.ShortName : name == option.LongName;
         }
 
-        private static ServerCommandLineError CreateOptionError( ErrorType tag, OptionDefinition option, string messageSuffix )
+        private static string GetMessage( Error error )
         {
-            return new ServerCommandLineError( tag, false, null, option.ShortName, option.LongName, "Option '" + option.NameText + messageSuffix );
+            switch(error)
+            {
+                case BadFormatTokenError badFormatToken:
+                    return "Token '" + badFormatToken.Token + "' is not recognized.";
+                case UnknownOptionError unknownOption:
+                    return "Option '" + unknownOption.Token + "' is unknown.";
+                case BadFormatConversionError badFormatConversion:
+                    return "Option '" + badFormatConversion.NameInfo.NameText + "' is defined with a bad format.";
+                case RepeatedOptionError repeatedOption:
+                    return "Option '" + repeatedOption.NameInfo.NameText + "' is defined multiple times.";
+                default:
+                    return string.Empty;
+            }
         }
 
         /// <summary>
@@ -524,6 +536,64 @@ namespace Tecan.Sila2.Server
             lines.AddRange( wrapped.Select( builder => indent + builder.ToString().TrimEnd() ) );
         }
 
+        /// <summary>
+        /// Creates the error objects CommandLineParser reports, so that error handlers can keep inspecting the
+        /// concrete error types such as <see cref="HelpRequestedError"/> or <see cref="UnknownOptionError"/>
+        /// </summary>
+        /// <remarks>
+        /// The constructors of these types are internal to CommandLineParser. They are looked up on statically known
+        /// types, which trimming and Native AOT analyze and preserve.
+        /// </remarks>
+        private static class CommandLineParserErrors
+        {
+            private const BindingFlags NonPublicInstance = BindingFlags.Instance | BindingFlags.NonPublic;
+
+            public static Error HelpRequested()
+            {
+                return Create<HelpRequestedError>( typeof( HelpRequestedError ).GetConstructor( NonPublicInstance, null, Type.EmptyTypes, null ) );
+            }
+
+            public static Error VersionRequested()
+            {
+                return Create<VersionRequestedError>( typeof( VersionRequestedError ).GetConstructor( NonPublicInstance, null, Type.EmptyTypes, null ) );
+            }
+
+            public static Error UnknownOption( string token )
+            {
+                return Create<UnknownOptionError>( typeof( UnknownOptionError ).GetConstructor( NonPublicInstance, null, new[] { typeof( string ) }, null ), token );
+            }
+
+            public static Error BadFormatToken( string token )
+            {
+                return Create<BadFormatTokenError>( typeof( BadFormatTokenError ).GetConstructor( NonPublicInstance, null, new[] { typeof( string ) }, null ), token );
+            }
+
+            public static Error BadFormatConversion( string shortName, string longName )
+            {
+                return Create<BadFormatConversionError>( typeof( BadFormatConversionError ).GetConstructor( NonPublicInstance, null, new[] { typeof( NameInfo ) }, null ), CreateNameInfo( shortName, longName ) );
+            }
+
+            public static Error RepeatedOption( string shortName, string longName )
+            {
+                return Create<RepeatedOptionError>( typeof( RepeatedOptionError ).GetConstructor( NonPublicInstance, null, new[] { typeof( NameInfo ) }, null ), CreateNameInfo( shortName, longName ) );
+            }
+
+            private static NameInfo CreateNameInfo( string shortName, string longName )
+            {
+                return Create<NameInfo>( typeof( NameInfo ).GetConstructor( NonPublicInstance, null, new[] { typeof( string ), typeof( string ) }, null ), shortName, longName );
+            }
+
+            private static T Create<T>( ConstructorInfo constructor, params object[] arguments )
+            {
+                if(constructor == null)
+                {
+                    throw new InvalidOperationException( $"The server command line parser requires CommandLineParser 2.9.1, but {typeof( T ).FullName} of the loaded CommandLineParser version has no matching constructor." );
+                }
+
+                return (T)constructor.Invoke( arguments );
+            }
+        }
+
         private sealed class Token
         {
             public Token( bool isName, string text )
@@ -557,8 +627,6 @@ namespace Tecan.Sila2.Server
             public string HelpText { get; }
 
             public OptionKind Kind { get; }
-
-            public string NameText => ShortName.Length > 0 ? ShortName + ", " + LongName : LongName;
 
             public string HelpScreenName => ShortName.Length > 0 ? "-" + ShortName + ", --" + LongName : "--" + LongName;
 

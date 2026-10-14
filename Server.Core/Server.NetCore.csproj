@@ -45,7 +45,6 @@
         <Compile Include="..\Server\Properties\AssemblyInfo.cs" Link="Properties\AssemblyInfo.cs" />
         <Compile Include="..\Server\RequestPipeline.cs" Link="RequestPipeline.cs" />
         <Compile Include="..\Server\ServerCommandlineArguments.cs" Link="ServerCommandlineArguments.cs" />
-        <Compile Include="..\Server\ServerCommandLineError.cs" Link="ServerCommandLineError.cs" />
         <Compile Include="..\Server\ServerCommandLineParser.cs" Link="ServerCommandLineParser.cs" />
         <Compile Include="..\Server\ServerConfiguration.cs" Link="ServerConfiguration.cs" />
         <Compile Include="..\Server\ServerErrorHandling.cs" Link="ServerErrorHandling.cs" />

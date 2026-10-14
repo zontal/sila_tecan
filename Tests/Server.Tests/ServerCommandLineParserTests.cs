@@ -248,6 +248,38 @@ namespace Tecan.Sila2.Server.Tests
         }
 
         [Test]
+        public void Bootstrapper_Start_PassesCommandLineParserErrorTypesToHandleError()
+        {
+            var bootstrapper = new RecordingBootstrapper();
+
+            CaptureStandardError( () => Bootstrapper.Start( new[] { "--foo", "-p", "x", "--x=1", "-n", "a", "--name", "b" }, bootstrapper ), out _ );
+
+            Assert.That( bootstrapper.Errors, Has.Count.EqualTo( 4 ) );
+            Assert.That( bootstrapper.Errors[0], Is.TypeOf<BadFormatTokenError>().With.Property( nameof( TokenError.Token ) ).EqualTo( "--x=1" ) );
+            Assert.That( bootstrapper.Errors[1], Is.TypeOf<UnknownOptionError>().With.Property( nameof( TokenError.Token ) ).EqualTo( "foo" ) );
+            var badFormat = (NamedError)bootstrapper.Errors[2];
+            Assert.That( badFormat, Is.TypeOf<BadFormatConversionError>() );
+            Assert.That( badFormat.NameInfo.NameText, Is.EqualTo( "p, port" ) );
+            var repeated = (NamedError)bootstrapper.Errors[3];
+            Assert.That( repeated, Is.TypeOf<RepeatedOptionError>() );
+            Assert.That( repeated.NameInfo.NameText, Is.EqualTo( "n, name" ) );
+            Assert.That( bootstrapper.Errors.Any( error => error.StopsProcessing ), Is.False );
+        }
+
+        [TestCase( "--help", typeof( HelpRequestedError ) )]
+        [TestCase( "--version", typeof( VersionRequestedError ) )]
+        public void Bootstrapper_Start_HelpOrVersion_PassesCommandLineParserErrorType( string argument, Type expectedType )
+        {
+            var bootstrapper = new RecordingBootstrapper();
+
+            CaptureStandardError( () => Bootstrapper.Start( new[] { argument }, bootstrapper ), out _ );
+
+            Assert.That( bootstrapper.Errors, Has.Count.EqualTo( 1 ) );
+            Assert.That( bootstrapper.Errors[0], Is.TypeOf( expectedType ) );
+            Assert.That( bootstrapper.Errors[0].StopsProcessing, Is.True );
+        }
+
+        [Test]
         public void Bootstrapper_HandleError_SetsExitCode()
         {
             var exitCode = Environment.ExitCode;
@@ -359,6 +391,7 @@ namespace Tecan.Sila2.Server.Tests
             var expectedErrors = ( (NotParsed<ServerCommandLineArguments>)expected ).Errors.ToList();
             Assert.That( actual, Is.Null, commandLine );
             Assert.That( errors.Select( DescribeError ), Is.EqualTo( expectedErrors.Select( DescribeError ) ), commandLine );
+            Assert.That( errors, Is.EqualTo( expectedErrors ), commandLine );
             Assert.That( ServerCommandLineParser.BuildHelpText( errors, width, Assembly.GetEntryAssembly() ), Is.EqualTo( writer.ToString() ), commandLine );
         }
 
@@ -367,9 +400,6 @@ namespace Tecan.Sila2.Server.Tests
             string details;
             switch(error)
             {
-                case ServerCommandLineError serverError:
-                    details = serverError.Token ?? ( serverError.LongName == null ? "" : serverError.ShortName + "|" + serverError.LongName );
-                    break;
                 case TokenError tokenError:
                     details = tokenError.Token;
                     break;
@@ -381,7 +411,7 @@ namespace Tecan.Sila2.Server.Tests
                     break;
             }
 
-            return $"{error} {error.Tag} {error.StopsProcessing} {details}";
+            return $"{error.GetType().FullName} {error} {error.Tag} {error.StopsProcessing} {details}";
         }
 
         private static string CommandLineParserHelpScreen( string[] args )
