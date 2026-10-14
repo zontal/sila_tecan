@@ -7,6 +7,7 @@
 //     the code is regenerated.
 // </auto-generated>
 //------------------------------------------------------------------------------
+#pragma warning disable PBN9001
 
 using System;
 using Tecan.Sila2;
@@ -85,6 +86,67 @@ namespace Tecan.Sila2.Interop.Server.ObservablePropertyTest
         public string GetValidationErrors()
         {
             return ("" + Argument.Require(Value, "Value"));
+        }
+    }
+    
+    /// <summary>
+    /// The compile-time protobuf-net type model for the data transfer objects of the Observable Property Test feature
+    /// </summary>
+    [ProtoBuf.ProtoModelAttribute()]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(SetValueRequestDto))]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(PropertyResponse<Tecan.Sila2.IntegerDto>))]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(PropertyResponse<Tecan.Sila2.BooleanDto>))]
+    public sealed partial class ObservablePropertyTestTypeModel : ProtoBuf.Meta.TypeModel
+    {
+    }
+    
+    /// <summary>
+    /// Byte serializers for the data transfer objects of the Observable Property Test feature that use the compile-time generated ObservablePropertyTestTypeModel
+    /// </summary>
+    public sealed class ObservablePropertyTestSerializers
+    {
+        
+        private static ByteSerializer<SetValueRequestDto> _setValueRequestDto = ByteSerializer.Create<SetValueRequestDto>(ObservablePropertyTestTypeModel.Instance);
+        
+        private static ByteSerializer<PropertyResponse<Tecan.Sila2.IntegerDto>> _propertyResponseOfIntegerDto = ByteSerializer.Create<PropertyResponse<Tecan.Sila2.IntegerDto>>(ObservablePropertyTestTypeModel.Instance);
+        
+        private static ByteSerializer<PropertyResponse<Tecan.Sila2.BooleanDto>> _propertyResponseOfBooleanDto = ByteSerializer.Create<PropertyResponse<Tecan.Sila2.BooleanDto>>(ObservablePropertyTestTypeModel.Instance);
+        
+        private ObservablePropertyTestSerializers()
+        {
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for SetValueRequestDto
+        /// </summary>
+        public static ByteSerializer<SetValueRequestDto> SetValueRequestDto
+        {
+            get
+            {
+                return _setValueRequestDto;
+            }
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for PropertyResponseOfIntegerDto
+        /// </summary>
+        public static ByteSerializer<PropertyResponse<Tecan.Sila2.IntegerDto>> PropertyResponseOfIntegerDto
+        {
+            get
+            {
+                return _propertyResponseOfIntegerDto;
+            }
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for PropertyResponseOfBooleanDto
+        /// </summary>
+        public static ByteSerializer<PropertyResponse<Tecan.Sila2.BooleanDto>> PropertyResponseOfBooleanDto
+        {
+            get
+            {
+                return _propertyResponseOfBooleanDto;
+            }
         }
     }
 }

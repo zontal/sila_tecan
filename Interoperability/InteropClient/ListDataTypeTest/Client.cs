@@ -114,7 +114,7 @@ namespace Tecan.Sila2.Interop.Client.ListDataTypeTest.ListDataTypeTest
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/ListDataTypeTest/v1/Property/EmptyStringList");
             try
             {
-                System.Collections.Generic.ICollection<string> response = _channel.ReadProperty<PropertyResponse<System.Collections.Generic.List<Tecan.Sila2.StringDto>>>(_serviceName, "EmptyStringList", "org.silastandard/test/ListDataTypeTest/v1/Property/EmptyStringList", callInfo).Value.Extract(_executionManager.DownloadBinaryStore);
+                System.Collections.Generic.ICollection<string> response = _channel.ReadProperty<PropertyResponse<System.Collections.Generic.List<Tecan.Sila2.StringDto>>>(_serviceName, "EmptyStringList", "org.silastandard/test/ListDataTypeTest/v1/Property/EmptyStringList", callInfo, ListDataTypeTestSerializers.PropertyResponseOfListOfStringDto).Value.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -130,7 +130,7 @@ namespace Tecan.Sila2.Interop.Client.ListDataTypeTest.ListDataTypeTest
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/ListDataTypeTest/v1/Property/StringList");
             try
             {
-                System.Collections.Generic.ICollection<string> response = _channel.ReadProperty<PropertyResponse<System.Collections.Generic.List<Tecan.Sila2.StringDto>>>(_serviceName, "StringList", "org.silastandard/test/ListDataTypeTest/v1/Property/StringList", callInfo).Value.Extract(_executionManager.DownloadBinaryStore);
+                System.Collections.Generic.ICollection<string> response = _channel.ReadProperty<PropertyResponse<System.Collections.Generic.List<Tecan.Sila2.StringDto>>>(_serviceName, "StringList", "org.silastandard/test/ListDataTypeTest/v1/Property/StringList", callInfo, ListDataTypeTestSerializers.PropertyResponseOfListOfStringDto).Value.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -146,7 +146,7 @@ namespace Tecan.Sila2.Interop.Client.ListDataTypeTest.ListDataTypeTest
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/ListDataTypeTest/v1/Property/IntegerList");
             try
             {
-                System.Collections.Generic.ICollection<long> response = _channel.ReadProperty<PropertyResponse<System.Collections.Generic.List<Tecan.Sila2.IntegerDto>>>(_serviceName, "IntegerList", "org.silastandard/test/ListDataTypeTest/v1/Property/IntegerList", callInfo).Value.Extract(_executionManager.DownloadBinaryStore);
+                System.Collections.Generic.ICollection<long> response = _channel.ReadProperty<PropertyResponse<System.Collections.Generic.List<Tecan.Sila2.IntegerDto>>>(_serviceName, "IntegerList", "org.silastandard/test/ListDataTypeTest/v1/Property/IntegerList", callInfo, ListDataTypeTestSerializers.PropertyResponseOfListOfIntegerDto).Value.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -162,7 +162,7 @@ namespace Tecan.Sila2.Interop.Client.ListDataTypeTest.ListDataTypeTest
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/ListDataTypeTest/v1/Property/StructureList");
             try
             {
-                System.Collections.Generic.ICollection<TestStructure> response = _channel.ReadProperty<PropertyResponse<System.Collections.Generic.List<TestStructureDto>>>(_serviceName, "StructureList", "org.silastandard/test/ListDataTypeTest/v1/Property/StructureList", callInfo).Value.Extract(_executionManager.DownloadBinaryStore);
+                System.Collections.Generic.ICollection<TestStructure> response = _channel.ReadProperty<PropertyResponse<System.Collections.Generic.List<TestStructureDto>>>(_serviceName, "StructureList", "org.silastandard/test/ListDataTypeTest/v1/Property/StructureList", callInfo, ListDataTypeTestSerializers.PropertyResponseOfListOfTestStructureDto).Value.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -195,7 +195,7 @@ namespace Tecan.Sila2.Interop.Client.ListDataTypeTest.ListDataTypeTest
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/ListDataTypeTest/v1/Command/EchoStringList");
             try
             {
-                System.Collections.Generic.ICollection<string> response = _channel.ExecuteUnobservableCommand<EchoStringListRequestDto, EchoStringListResponseDto>(_serviceName, "EchoStringList", request, callInfo).ReceivedValues.Extract(_executionManager.DownloadBinaryStore);
+                System.Collections.Generic.ICollection<string> response = _channel.ExecuteUnobservableCommand<EchoStringListRequestDto, EchoStringListResponseDto>(_serviceName, "EchoStringList", request, callInfo, ListDataTypeTestSerializers.EchoStringListRequestDto, ListDataTypeTestSerializers.EchoStringListResponseDto).ReceivedValues.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -217,7 +217,7 @@ namespace Tecan.Sila2.Interop.Client.ListDataTypeTest.ListDataTypeTest
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/ListDataTypeTest/v1/Command/EchoIntegerList");
             try
             {
-                System.Collections.Generic.ICollection<long> response = _channel.ExecuteUnobservableCommand<EchoIntegerListRequestDto, EchoIntegerListResponseDto>(_serviceName, "EchoIntegerList", request, callInfo).ReceivedValues.Extract(_executionManager.DownloadBinaryStore);
+                System.Collections.Generic.ICollection<long> response = _channel.ExecuteUnobservableCommand<EchoIntegerListRequestDto, EchoIntegerListResponseDto>(_serviceName, "EchoIntegerList", request, callInfo, ListDataTypeTestSerializers.EchoIntegerListRequestDto, ListDataTypeTestSerializers.EchoIntegerListResponseDto).ReceivedValues.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -240,7 +240,7 @@ namespace Tecan.Sila2.Interop.Client.ListDataTypeTest.ListDataTypeTest
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/ListDataTypeTest/v1/Command/EchoStructureList");
             try
             {
-                System.Collections.Generic.ICollection<TestStructure> response = _channel.ExecuteUnobservableCommand<EchoStructureListRequestDto, EchoStructureListResponseDto>(_serviceName, "EchoStructureList", request, callInfo).ReceivedValues.Extract(_executionManager.DownloadBinaryStore);
+                System.Collections.Generic.ICollection<TestStructure> response = _channel.ExecuteUnobservableCommand<EchoStructureListRequestDto, EchoStructureListResponseDto>(_serviceName, "EchoStructureList", request, callInfo, ListDataTypeTestSerializers.EchoStructureListRequestDto, ListDataTypeTestSerializers.EchoStructureListResponseDto).ReceivedValues.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)

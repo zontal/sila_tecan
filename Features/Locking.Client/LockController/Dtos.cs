@@ -7,6 +7,7 @@
 //     the code is regenerated.
 // </auto-generated>
 //------------------------------------------------------------------------------
+#pragma warning disable PBN9001
 
 using System;
 using Tecan.Sila2;
@@ -187,6 +188,81 @@ namespace Tecan.Sila2.Locking.LockController
         public string GetValidationErrors()
         {
             return ("" + Argument.Require(LockIdentifier, "LockIdentifier"));
+        }
+    }
+    
+    /// <summary>
+    /// The compile-time protobuf-net type model for the data transfer objects of the Lock Controller feature
+    /// </summary>
+    [ProtoBuf.ProtoModelAttribute()]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(LockServerRequestDto))]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(UnlockServerRequestDto))]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(PropertyResponse<Tecan.Sila2.BooleanDto>))]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(PropertyResponse<Tecan.Sila2.StringDto>))]
+    public sealed partial class LockControllerTypeModel : ProtoBuf.Meta.TypeModel
+    {
+    }
+    
+    /// <summary>
+    /// Byte serializers for the data transfer objects of the Lock Controller feature that use the compile-time generated LockControllerTypeModel
+    /// </summary>
+    public sealed class LockControllerSerializers
+    {
+        
+        private static ByteSerializer<LockServerRequestDto> _lockServerRequestDto = ByteSerializer.Create<LockServerRequestDto>(LockControllerTypeModel.Instance);
+        
+        private static ByteSerializer<UnlockServerRequestDto> _unlockServerRequestDto = ByteSerializer.Create<UnlockServerRequestDto>(LockControllerTypeModel.Instance);
+        
+        private static ByteSerializer<PropertyResponse<Tecan.Sila2.BooleanDto>> _propertyResponseOfBooleanDto = ByteSerializer.Create<PropertyResponse<Tecan.Sila2.BooleanDto>>(LockControllerTypeModel.Instance);
+        
+        private static ByteSerializer<PropertyResponse<Tecan.Sila2.StringDto>> _propertyResponseOfStringDto = ByteSerializer.Create<PropertyResponse<Tecan.Sila2.StringDto>>(LockControllerTypeModel.Instance);
+        
+        private LockControllerSerializers()
+        {
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for LockServerRequestDto
+        /// </summary>
+        public static ByteSerializer<LockServerRequestDto> LockServerRequestDto
+        {
+            get
+            {
+                return _lockServerRequestDto;
+            }
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for UnlockServerRequestDto
+        /// </summary>
+        public static ByteSerializer<UnlockServerRequestDto> UnlockServerRequestDto
+        {
+            get
+            {
+                return _unlockServerRequestDto;
+            }
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for PropertyResponseOfBooleanDto
+        /// </summary>
+        public static ByteSerializer<PropertyResponse<Tecan.Sila2.BooleanDto>> PropertyResponseOfBooleanDto
+        {
+            get
+            {
+                return _propertyResponseOfBooleanDto;
+            }
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for PropertyResponseOfStringDto
+        /// </summary>
+        public static ByteSerializer<PropertyResponse<Tecan.Sila2.StringDto>> PropertyResponseOfStringDto
+        {
+            get
+            {
+                return _propertyResponseOfStringDto;
+            }
         }
     }
 }

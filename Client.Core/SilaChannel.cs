@@ -3,6 +3,7 @@ using Grpc.Core;
 using Grpc.Net.Client;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -29,6 +30,8 @@ namespace Tecan.Sila2.Discovery
         }
 
         /// <inheritdoc />
+        [RequiresUnreferencedCode( TrimmingMessages.RuntimeTypeModel )]
+        [RequiresDynamicCode( TrimmingMessages.RuntimeTypeModel )]
         public T ReadProperty<T>( string serviceName, string propertyName, string propertyIdentifier, IClientCallInfo callInfo ) where T : class, ISilaTransferObject
         {
             return ReadProperty( serviceName, propertyName, propertyIdentifier, callInfo, ProtobufMarshaller<T>.Default );
@@ -54,6 +57,8 @@ namespace Tecan.Sila2.Discovery
         }
 
         /// <inheritdoc />
+        [RequiresUnreferencedCode( TrimmingMessages.RuntimeTypeModel )]
+        [RequiresDynamicCode( TrimmingMessages.RuntimeTypeModel )]
         public Task SubscribeProperty<T>( string serviceName, string propertyName, string propertyIdentifier, Action<T> newValueReceived, IClientCallInfo callInfo, CancellationToken cancellationToken = default ) where T : class, ISilaTransferObject
         {
             return SubscribeProperty( serviceName, propertyName, newValueReceived, callInfo, ProtobufMarshaller<T>.Default, null, cancellationToken );
@@ -66,6 +71,8 @@ namespace Tecan.Sila2.Discovery
         }
 
         /// <inheritdoc />
+        [RequiresUnreferencedCode( TrimmingMessages.RuntimeTypeModel )]
+        [RequiresDynamicCode( TrimmingMessages.RuntimeTypeModel )]
         public Task SubscribeProperty<T>(string serviceName, string propertyName, string propertyIdentifier, Action<T> newValueReceived, IClientCallInfo callInfo, Action cleanup, CancellationToken cancellationToken = default) where T : class, ISilaTransferObject
         {
             return SubscribeProperty(serviceName, propertyName, newValueReceived, callInfo, ProtobufMarshaller<T>.Default, cleanup, cancellationToken);
@@ -136,6 +143,8 @@ namespace Tecan.Sila2.Discovery
         }
 
         /// <inheritdoc />
+        [RequiresUnreferencedCode( TrimmingMessages.RuntimeTypeModel )]
+        [RequiresDynamicCode( TrimmingMessages.RuntimeTypeModel )]
         public void ExecuteUnobservableCommand<TRequest>(
             string serviceName,
             string commandName,
@@ -171,6 +180,8 @@ namespace Tecan.Sila2.Discovery
         }
 
         /// <inheritdoc />
+        [RequiresUnreferencedCode( TrimmingMessages.RuntimeTypeModel )]
+        [RequiresDynamicCode( TrimmingMessages.RuntimeTypeModel )]
         public TResponse ExecuteUnobservableCommand<TRequest, TResponse>(
             string serviceName,
             string commandName,
@@ -239,6 +250,8 @@ namespace Tecan.Sila2.Discovery
         }
 
         /// <inheritdoc />
+        [RequiresUnreferencedCode( TrimmingMessages.RuntimeTypeModel )]
+        [RequiresDynamicCode( TrimmingMessages.RuntimeTypeModel )]
         public IObservableCommand ExecuteObservableCommand<TRequest>(
             string serviceName,
             string commandName,
@@ -272,9 +285,9 @@ namespace Tecan.Sila2.Discovery
             Marshaller<TRequest> requestSerializer )
             where TRequest : class, ISilaRequestObject
         {
-            var commandMethod = new Method<TRequest, CommandConfirmation>( MethodType.Unary, serviceName, commandName, requestSerializer, ProtobufMarshaller<CommandConfirmation>.Default );
-            var commandStateMethod = new Method<CommandExecutionUuid, ExecutionState>( MethodType.ServerStreaming, serviceName, commandName + "_Info", ProtobufMarshaller<CommandExecutionUuid>.Default, ProtobufMarshaller<ExecutionState>.Default );
-            var resultMethod = new Method<CommandExecutionUuid, EmptyRequest>( MethodType.Unary, serviceName, commandName + "_Result", ProtobufMarshaller<CommandExecutionUuid>.Default, EmptyRequestMarshaller.Instance );
+            var commandMethod = new Method<TRequest, CommandConfirmation>( MethodType.Unary, serviceName, commandName, requestSerializer, FrameworkMarshallers.CommandConfirmation );
+            var commandStateMethod = new Method<CommandExecutionUuid, ExecutionState>( MethodType.ServerStreaming, serviceName, commandName + "_Info", FrameworkMarshallers.CommandExecutionUuid, FrameworkMarshallers.ExecutionState );
+            var resultMethod = new Method<CommandExecutionUuid, EmptyRequest>( MethodType.Unary, serviceName, commandName + "_Result", FrameworkMarshallers.CommandExecutionUuid, EmptyRequestMarshaller.Instance );
 
             var confirmation = CallInvoker.BlockingUnaryCall( commandMethod, null,
                 callInfo.ToCallOptions(), request );
@@ -291,6 +304,8 @@ namespace Tecan.Sila2.Discovery
         }
 
         /// <inheritdoc />
+        [RequiresUnreferencedCode( TrimmingMessages.RuntimeTypeModel )]
+        [RequiresDynamicCode( TrimmingMessages.RuntimeTypeModel )]
         public IObservableCommand<TResponse> ExecuteObservableCommand<TRequest, TResponse, TResponseDto>(
             string serviceName,
             string commandName,
@@ -332,9 +347,9 @@ namespace Tecan.Sila2.Discovery
             where TRequest : class, ISilaRequestObject
             where TResponseDto : class, ISilaTransferObject
         {
-            var commandMethod = new Method<TRequest, CommandConfirmation>( MethodType.Unary, serviceName, commandName, requestSerializer, ProtobufMarshaller<CommandConfirmation>.Default );
-            var commandStateMethod = new Method<CommandExecutionUuid, ExecutionState>( MethodType.ServerStreaming, serviceName, commandName + "_Info", ProtobufMarshaller<CommandExecutionUuid>.Default, ProtobufMarshaller<ExecutionState>.Default );
-            var resultMethod = new Method<CommandExecutionUuid, TResponseDto>( MethodType.Unary, serviceName, commandName + "_Result", ProtobufMarshaller<CommandExecutionUuid>.Default, responseSerializer );
+            var commandMethod = new Method<TRequest, CommandConfirmation>( MethodType.Unary, serviceName, commandName, requestSerializer, FrameworkMarshallers.CommandConfirmation );
+            var commandStateMethod = new Method<CommandExecutionUuid, ExecutionState>( MethodType.ServerStreaming, serviceName, commandName + "_Info", FrameworkMarshallers.CommandExecutionUuid, FrameworkMarshallers.ExecutionState );
+            var resultMethod = new Method<CommandExecutionUuid, TResponseDto>( MethodType.Unary, serviceName, commandName + "_Result", FrameworkMarshallers.CommandExecutionUuid, responseSerializer );
 
             var confirmation = CallInvoker.BlockingUnaryCall( commandMethod, null,
                 callInfo.ToCallOptions(), request );
@@ -352,6 +367,8 @@ namespace Tecan.Sila2.Discovery
         }
 
         /// <inheritdoc />
+        [RequiresUnreferencedCode( TrimmingMessages.RuntimeTypeModel )]
+        [RequiresDynamicCode( TrimmingMessages.RuntimeTypeModel )]
         public IIntermediateObservableCommand<TIntermediate> ExecuteIntermediatesCommand<TRequest, TIntermediate, TIntermediateDto>(
             string serviceName,
             string commandName,
@@ -393,10 +410,10 @@ namespace Tecan.Sila2.Discovery
             where TRequest : class, ISilaRequestObject
             where TIntermediateDto : class, ISilaTransferObject
         {
-            var commandMethod = new Method<TRequest, CommandConfirmation>( MethodType.Unary, serviceName, commandName, requestSerializer, ProtobufMarshaller<CommandConfirmation>.Default );
-            var commandStateMethod = new Method<CommandExecutionUuid, ExecutionState>( MethodType.ServerStreaming, serviceName, commandName + "_Info", ProtobufMarshaller<CommandExecutionUuid>.Default, ProtobufMarshaller<ExecutionState>.Default );
-            var commandIntermediatesMethod = new Method<CommandExecutionUuid, TIntermediateDto>( MethodType.ServerStreaming, serviceName, commandName + "_Intermediate", ProtobufMarshaller<CommandExecutionUuid>.Default, intermediateSerializer );
-            var resultMethod = new Method<CommandExecutionUuid, EmptyRequest>( MethodType.Unary, serviceName, commandName + "_Result", ProtobufMarshaller<CommandExecutionUuid>.Default, EmptyRequestMarshaller.Instance );
+            var commandMethod = new Method<TRequest, CommandConfirmation>( MethodType.Unary, serviceName, commandName, requestSerializer, FrameworkMarshallers.CommandConfirmation );
+            var commandStateMethod = new Method<CommandExecutionUuid, ExecutionState>( MethodType.ServerStreaming, serviceName, commandName + "_Info", FrameworkMarshallers.CommandExecutionUuid, FrameworkMarshallers.ExecutionState );
+            var commandIntermediatesMethod = new Method<CommandExecutionUuid, TIntermediateDto>( MethodType.ServerStreaming, serviceName, commandName + "_Intermediate", FrameworkMarshallers.CommandExecutionUuid, intermediateSerializer );
+            var resultMethod = new Method<CommandExecutionUuid, EmptyRequest>( MethodType.Unary, serviceName, commandName + "_Result", FrameworkMarshallers.CommandExecutionUuid, EmptyRequestMarshaller.Instance );
 
             var confirmation = CallInvoker.BlockingUnaryCall( commandMethod, null,
                 callInfo.ToCallOptions(), request );
@@ -415,6 +432,8 @@ namespace Tecan.Sila2.Discovery
         }
 
         /// <inheritdoc />
+        [RequiresUnreferencedCode( TrimmingMessages.RuntimeTypeModel )]
+        [RequiresDynamicCode( TrimmingMessages.RuntimeTypeModel )]
         public IIntermediateObservableCommand<TIntermediate, TResponse> ExecuteIntermediatesCommand<TRequest, TIntermediate, TIntermediateDto, TResponse, TResponseDto>(
             string serviceName,
             string commandName,
@@ -466,10 +485,10 @@ namespace Tecan.Sila2.Discovery
             where TIntermediateDto : class, ISilaTransferObject
             where TResponseDto : class, ISilaTransferObject
         {
-            var commandMethod = new Method<TRequest, CommandConfirmation>( MethodType.Unary, serviceName, commandName, requestSerializer, ProtobufMarshaller<CommandConfirmation>.Default );
-            var commandStateMethod = new Method<CommandExecutionUuid, ExecutionState>( MethodType.ServerStreaming, serviceName, commandName + "_Info", ProtobufMarshaller<CommandExecutionUuid>.Default, ProtobufMarshaller<ExecutionState>.Default );
-            var commandIntermediatesMethod = new Method<CommandExecutionUuid, TIntermediateDto>( MethodType.ServerStreaming, serviceName, commandName + "_Intermediate", ProtobufMarshaller<CommandExecutionUuid>.Default, intermediateSerializer );
-            var resultMethod = new Method<CommandExecutionUuid, TResponseDto>( MethodType.Unary, serviceName, commandName + "_Result", ProtobufMarshaller<CommandExecutionUuid>.Default, responseSerializer );
+            var commandMethod = new Method<TRequest, CommandConfirmation>( MethodType.Unary, serviceName, commandName, requestSerializer, FrameworkMarshallers.CommandConfirmation );
+            var commandStateMethod = new Method<CommandExecutionUuid, ExecutionState>( MethodType.ServerStreaming, serviceName, commandName + "_Info", FrameworkMarshallers.CommandExecutionUuid, FrameworkMarshallers.ExecutionState );
+            var commandIntermediatesMethod = new Method<CommandExecutionUuid, TIntermediateDto>( MethodType.ServerStreaming, serviceName, commandName + "_Intermediate", FrameworkMarshallers.CommandExecutionUuid, intermediateSerializer );
+            var resultMethod = new Method<CommandExecutionUuid, TResponseDto>( MethodType.Unary, serviceName, commandName + "_Result", FrameworkMarshallers.CommandExecutionUuid, responseSerializer );
 
             var confirmation = CallInvoker.BlockingUnaryCall( commandMethod, null,
                 callInfo.ToCallOptions(), request );
@@ -496,11 +515,11 @@ namespace Tecan.Sila2.Discovery
         /// <inheritdoc />
         public IEnumerable<string> GetAffected( string serviceName, string metadataName, string metadataIdentifier )
         {
-            var method = new Method<EmptyRequest, MetadataAffectedResponse>( MethodType.Unary, serviceName,
-                $"Get_FCPAffectedByMetadata_{metadataName}", EmptyRequestMarshaller.Instance, ProtobufMarshaller<MetadataAffectedResponse>.Default );
+            var method = new Method<EmptyRequest, List<StringDto>>( MethodType.Unary, serviceName,
+                $"Get_FCPAffectedByMetadata_{metadataName}", EmptyRequestMarshaller.Instance, FrameworkMarshallers.AffectedCalls );
 
             var result = CallInvoker.BlockingUnaryCall( method, null, new CallOptions(), EmptyRequest.Instance );
-            return result.Affected.Select( dto => dto.Value );
+            return result.Select( dto => dto.Value );
         }
 
         /// <inheritdoc />

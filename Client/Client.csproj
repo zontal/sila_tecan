@@ -16,6 +16,7 @@
 
     <ItemGroup>
         <Compile Include="..\CommonAssemblyInfo.cs" Link="Properties\CommonAssemblyInfo.cs" />
+        <Compile Include="..\TrimmingAnnotations.cs" Link="Properties\TrimmingAnnotations.cs" />
     </ItemGroup>
 
     <ItemGroup>

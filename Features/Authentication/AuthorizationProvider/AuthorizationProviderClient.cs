@@ -54,7 +54,7 @@ namespace Tecan.Sila2.AuthorizationProvider
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/core/AuthorizationProviderService/v1/Command/Verify");
             try
             {
-                long response = _channel.ExecuteUnobservableCommand<VerifyRequestDto, VerifyResponseDto>(_serviceName, "Verify", request, callInfo).TokenLifetime.Extract(_executionManager.DownloadBinaryStore);
+                long response = _channel.ExecuteUnobservableCommand<VerifyRequestDto, VerifyResponseDto>(_serviceName, "Verify", request, callInfo, AuthorizationProviderServiceSerializers.VerifyRequestDto, AuthorizationProviderServiceSerializers.VerifyResponseDto).TokenLifetime.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)

@@ -17,7 +17,7 @@ namespace Tecan.Sila2.ServerPooling
             MethodType.DuplexStreaming,
             "sila2.org.silastandard.CloudClientEndpoint",
             "ConnectSILAServer",
-            ProtobufMarshaller<SilaServerMessage>.Default,
-            ProtobufMarshaller<SilaClientMessage>.Default ); 
+            ProtobufMarshaller.Create<SilaServerMessage>( FrameworkTypeModel.Instance ),
+            ProtobufMarshaller.Create<SilaClientMessage>( FrameworkTypeModel.Instance ) ); 
     }
 }

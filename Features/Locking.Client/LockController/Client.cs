@@ -61,7 +61,7 @@ namespace Tecan.Sila2.Locking.LockController
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/core/LockController/v1/Property/IsLocked");
             try
             {
-                bool response = _channel.ReadProperty<PropertyResponse<Tecan.Sila2.BooleanDto>>(_serviceName, "IsLocked", "org.silastandard/core/LockController/v1/Property/IsLocked", callInfo).Value.Extract(_executionManager.DownloadBinaryStore);
+                bool response = _channel.ReadProperty<PropertyResponse<Tecan.Sila2.BooleanDto>>(_serviceName, "IsLocked", "org.silastandard/core/LockController/v1/Property/IsLocked", callInfo, LockControllerSerializers.PropertyResponseOfBooleanDto).Value.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -100,7 +100,7 @@ namespace Tecan.Sila2.Locking.LockController
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/core/LockController/v1/Command/LockServer");
             try
             {
-                _channel.ExecuteUnobservableCommand<LockServerRequestDto>(_serviceName, "LockServer", request, callInfo);
+                _channel.ExecuteUnobservableCommand<LockServerRequestDto>(_serviceName, "LockServer", request, callInfo, LockControllerSerializers.LockServerRequestDto);
                 callInfo.FinishSuccessful();
                 return;
             } catch (System.Exception ex)
@@ -139,7 +139,7 @@ namespace Tecan.Sila2.Locking.LockController
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/core/LockController/v1/Command/UnlockServer");
             try
             {
-                _channel.ExecuteUnobservableCommand<UnlockServerRequestDto>(_serviceName, "UnlockServer", request, callInfo);
+                _channel.ExecuteUnobservableCommand<UnlockServerRequestDto>(_serviceName, "UnlockServer", request, callInfo, LockControllerSerializers.UnlockServerRequestDto);
                 callInfo.FinishSuccessful();
                 return;
             } catch (System.Exception ex)

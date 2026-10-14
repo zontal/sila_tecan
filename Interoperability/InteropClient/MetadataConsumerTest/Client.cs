@@ -76,7 +76,7 @@ namespace Tecan.Sila2.Interop.Client.MetadataConsumerTest.MetadataConsumerTest
                         {
                             _receivedStringMetadataAsCharactersUpdateTask = _channel.SubscribeProperty<ReceivedStringMetadataAsCharactersResponseDto>(_serviceName, "ReceivedStringMetadataAsCharacters", "org.silastandard/test/MetadataConsumerTest/v1/Property/ReceivedStringMetadataAsCh" +
                                     "aracters", ReceiveNewReceivedStringMetadataAsCharacters, _executionManager.CreateCallOptions("org.silastandard/test/MetadataConsumerTest/v1/Property/ReceivedStringMetadataAsCh" +
-                                        "aracters"), _cancellationTokenSource.Token);
+                                        "aracters"), MetadataConsumerTestSerializers.ReceivedStringMetadataAsCharactersResponseDto, _cancellationTokenSource.Token);
                         }
                     } finally
                     {
@@ -94,7 +94,7 @@ namespace Tecan.Sila2.Interop.Client.MetadataConsumerTest.MetadataConsumerTest
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/MetadataConsumerTest/v1/Property/ReceivedStringMetadata");
             try
             {
-                string response = _channel.ReadProperty<PropertyResponse<Tecan.Sila2.StringDto>>(_serviceName, "ReceivedStringMetadata", "org.silastandard/test/MetadataConsumerTest/v1/Property/ReceivedStringMetadata", callInfo).Value.Extract(_executionManager.DownloadBinaryStore);
+                string response = _channel.ReadProperty<PropertyResponse<Tecan.Sila2.StringDto>>(_serviceName, "ReceivedStringMetadata", "org.silastandard/test/MetadataConsumerTest/v1/Property/ReceivedStringMetadata", callInfo, MetadataConsumerTestSerializers.PropertyResponseOfStringDto).Value.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -146,7 +146,7 @@ namespace Tecan.Sila2.Interop.Client.MetadataConsumerTest.MetadataConsumerTest
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/MetadataConsumerTest/v1/Command/EchoStringMetadata");
             try
             {
-                string response = _channel.ExecuteUnobservableCommand<EchoStringMetadataRequestDto, EchoStringMetadataResponseDto>(_serviceName, "EchoStringMetadata", request, callInfo).ReceivedStringMetadata.Extract(_executionManager.DownloadBinaryStore);
+                string response = _channel.ExecuteUnobservableCommand<EchoStringMetadataRequestDto, EchoStringMetadataResponseDto>(_serviceName, "EchoStringMetadata", request, callInfo, MetadataConsumerTestSerializers.EchoStringMetadataRequestDto, MetadataConsumerTestSerializers.EchoStringMetadataResponseDto).ReceivedStringMetadata.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -167,7 +167,7 @@ namespace Tecan.Sila2.Interop.Client.MetadataConsumerTest.MetadataConsumerTest
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/MetadataConsumerTest/v1/Command/UnpackMetadata");
             try
             {
-                UnpackMetadataResponse response = _channel.ExecuteUnobservableCommand<UnpackMetadataRequestDto, UnpackMetadataResponseDto>(_serviceName, "UnpackMetadata", request, callInfo).Extract(_executionManager.DownloadBinaryStore);
+                UnpackMetadataResponse response = _channel.ExecuteUnobservableCommand<UnpackMetadataRequestDto, UnpackMetadataResponseDto>(_serviceName, "UnpackMetadata", request, callInfo, MetadataConsumerTestSerializers.UnpackMetadataRequestDto, MetadataConsumerTestSerializers.UnpackMetadataResponseDto).Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)

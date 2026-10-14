@@ -27,11 +27,12 @@
 
     <ItemGroup>
         <Compile Include="..\CommonAssemblyInfo.cs" Link="Properties\CommonAssemblyInfo.cs" />
+        <Compile Include="..\TrimmingAnnotations.cs" Link="Properties\TrimmingAnnotations.cs" />
     </ItemGroup>
 
     <ItemGroup>
         <PackageReference Include="IPNetwork2" Version="2.1.2" Condition="'$(TargetFramework)' == 'netstandard2.0'" />
-        <PackageReference Include="protobuf-net" Version="3.2.56" />
+        <PackageReference Include="protobuf-net" Version="3.4.30" />
         <PackageReference Include="System.ComponentModel.Composition" Version="10.0.9" />
         <PackageReference Include="System.Threading.Channels" Version="10.0.9" />
         <PackageReference Include="Common.Logging" Version="3.4.1" />

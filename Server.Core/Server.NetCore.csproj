@@ -24,6 +24,7 @@
 
     <ItemGroup>
         <Compile Include="..\CommonAssemblyInfo.cs" Link="Properties\CommonAssemblyInfo.cs" />
+        <Compile Include="..\TrimmingAnnotations.cs" Link="Properties\TrimmingAnnotations.cs" />
         <Compile Include="..\Server\Binary\BinaryDownload.cs" Link="Binary\BinaryDownload.cs" />
         <Compile Include="..\Server\Binary\BinaryUpload.cs" Link="Binary\BinaryUpload.cs" />
         <Compile Include="..\Server\Binary\FileUploadData.cs" Link="Binary\FileUploadData.cs" />

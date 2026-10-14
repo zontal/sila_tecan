@@ -30,10 +30,10 @@
         <Compile Include="..\Client\ExecutionManagement\ExecutionManager.cs" Link="ExecutionManagement\ExecutionManager.cs" />
         <Compile Include="..\Client\ExecutionManagement\ExecutionManagerFactory.cs" Link="ExecutionManagement\ExecutionManagerFactory.cs" />
         <Compile Include="..\Client\ExecutionManagement\InterceptionRepository.cs" Link="ExecutionManagement\InterceptionRepository.cs" />
-        <Compile Include="..\Client\MetadataAffectedResponse.cs" Link="MetadataAffectedResponse.cs" />
         <Compile Include="..\Client\ObservableClientCommand.cs" Link="ObservableClientCommand.cs" />
         <Compile Include="..\Client\ObservableIntermediateClientCommand.cs" Link="ObservableIntermediateClientCommand.cs" />
         <Compile Include="..\CommonAssemblyInfo.cs" Link="Properties\CommonAssemblyInfo.cs" />
+        <Compile Include="..\TrimmingAnnotations.cs" Link="Properties\TrimmingAnnotations.cs" />
     </ItemGroup>
 
     <ItemGroup>

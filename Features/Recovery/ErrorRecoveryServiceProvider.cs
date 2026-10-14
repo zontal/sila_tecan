@@ -61,10 +61,10 @@ namespace Tecan.Sila2.Recovery
         /// <param name="registration">The registration component to which the feature should be registered</param>
         public void Register(IServerBuilder registration)
         {
-            registration.RegisterUnobservableCommand<ExecuteContinuationOptionRequestDto, EmptyRequest>("ExecuteContinuationOption", ExecuteContinuationOption);
-            registration.RegisterUnobservableCommand<AbortErrorHandlingRequestDto, EmptyRequest>("AbortErrorHandling", AbortErrorHandling);
-            registration.RegisterUnobservableCommand<SetErrorHandlingTimeoutRequestDto, EmptyRequest>("SetErrorHandlingTimeout", SetErrorHandlingTimeout);
-            registration.RegisterObservableProperty("RecoverableErrors", GetRecoverableErrors, _implementation);
+            registration.RegisterUnobservableCommand<ExecuteContinuationOptionRequestDto, EmptyRequest>("ExecuteContinuationOption", ExecuteContinuationOption, ErrorRecoveryServiceSerializers.ExecuteContinuationOptionRequestDto, EmptyRequest.Marshaller);
+            registration.RegisterUnobservableCommand<AbortErrorHandlingRequestDto, EmptyRequest>("AbortErrorHandling", AbortErrorHandling, ErrorRecoveryServiceSerializers.AbortErrorHandlingRequestDto, EmptyRequest.Marshaller);
+            registration.RegisterUnobservableCommand<SetErrorHandlingTimeoutRequestDto, EmptyRequest>("SetErrorHandlingTimeout", SetErrorHandlingTimeout, ErrorRecoveryServiceSerializers.SetErrorHandlingTimeoutRequestDto, EmptyRequest.Marshaller);
+            registration.RegisterObservableProperty("RecoverableErrors", GetRecoverableErrors, _implementation, ErrorRecoveryServiceSerializers.PropertyResponseOfListOfRecoverableErrorDto);
         }
         
         /// <summary>

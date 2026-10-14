@@ -73,7 +73,7 @@ namespace Tecan.Sila2.Interop.Client.BinaryTransferTest.BinaryTransferTest
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/BinaryTransferTest/v1/Property/BinaryValueDirectly");
             try
             {
-                System.IO.Stream response = _channel.ReadProperty<PropertyResponse<Tecan.Sila2.BinaryDto>>(_serviceName, "BinaryValueDirectly", "org.silastandard/test/BinaryTransferTest/v1/Property/BinaryValueDirectly", callInfo).Value.Extract(_executionManager.DownloadBinaryStore);
+                System.IO.Stream response = _channel.ReadProperty<PropertyResponse<Tecan.Sila2.BinaryDto>>(_serviceName, "BinaryValueDirectly", "org.silastandard/test/BinaryTransferTest/v1/Property/BinaryValueDirectly", callInfo, BinaryTransferTestSerializers.PropertyResponseOfBinaryDto).Value.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -89,7 +89,7 @@ namespace Tecan.Sila2.Interop.Client.BinaryTransferTest.BinaryTransferTest
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/BinaryTransferTest/v1/Property/BinaryValueDownload");
             try
             {
-                System.IO.Stream response = _channel.ReadProperty<PropertyResponse<Tecan.Sila2.BinaryDto>>(_serviceName, "BinaryValueDownload", "org.silastandard/test/BinaryTransferTest/v1/Property/BinaryValueDownload", callInfo).Value.Extract(_executionManager.DownloadBinaryStore);
+                System.IO.Stream response = _channel.ReadProperty<PropertyResponse<Tecan.Sila2.BinaryDto>>(_serviceName, "BinaryValueDownload", "org.silastandard/test/BinaryTransferTest/v1/Property/BinaryValueDownload", callInfo, BinaryTransferTestSerializers.PropertyResponseOfBinaryDto).Value.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -122,7 +122,7 @@ namespace Tecan.Sila2.Interop.Client.BinaryTransferTest.BinaryTransferTest
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/BinaryTransferTest/v1/Command/EchoBinaryValue");
             try
             {
-                System.IO.Stream response = _channel.ExecuteUnobservableCommand<EchoBinaryValueRequestDto, EchoBinaryValueResponseDto>(_serviceName, "EchoBinaryValue", request, callInfo).ReceivedValue.Extract(_executionManager.DownloadBinaryStore);
+                System.IO.Stream response = _channel.ExecuteUnobservableCommand<EchoBinaryValueRequestDto, EchoBinaryValueResponseDto>(_serviceName, "EchoBinaryValue", request, callInfo, BinaryTransferTestSerializers.EchoBinaryValueRequestDto, BinaryTransferTestSerializers.EchoBinaryValueResponseDto).ReceivedValue.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -142,7 +142,7 @@ namespace Tecan.Sila2.Interop.Client.BinaryTransferTest.BinaryTransferTest
             EchoBinariesObservablyRequestDto request = new EchoBinariesObservablyRequestDto(binaries, _executionManager.CreateBinaryStore("org.silastandard/test/BinaryTransferTest/v1/Command/EchoBinariesObservably/Parame" +
                         "ter/Binaries"));
             request.Validate();
-            return _channel.ExecuteIntermediatesCommand<EchoBinariesObservablyRequestDto, System.IO.Stream, EchoBinariesObservablyIntermediateDto, System.IO.Stream, EchoBinariesObservablyResponseDto>(_serviceName, "EchoBinariesObservably", request, ConvertEchoBinariesObservablyIntermediate, ConvertEchoBinariesObservablyResponse, ConvertEchoBinariesObservablyException, _executionManager.CreateCallOptions(request.CommandIdentifier));
+            return _channel.ExecuteIntermediatesCommand<EchoBinariesObservablyRequestDto, System.IO.Stream, EchoBinariesObservablyIntermediateDto, System.IO.Stream, EchoBinariesObservablyResponseDto>(_serviceName, "EchoBinariesObservably", request, ConvertEchoBinariesObservablyIntermediate, ConvertEchoBinariesObservablyResponse, ConvertEchoBinariesObservablyException, _executionManager.CreateCallOptions(request.CommandIdentifier), BinaryTransferTestSerializers.EchoBinariesObservablyRequestDto, BinaryTransferTestSerializers.EchoBinariesObservablyIntermediateDto, BinaryTransferTestSerializers.EchoBinariesObservablyResponseDto);
         }
         
         /// <summary>
@@ -188,7 +188,7 @@ namespace Tecan.Sila2.Interop.Client.BinaryTransferTest.BinaryTransferTest
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/BinaryTransferTest/v1/Command/EchoBinaryAndMetadataString");
             try
             {
-                EchoBinaryAndMetadataStringResponse response = _channel.ExecuteUnobservableCommand<EchoBinaryAndMetadataStringRequestDto, EchoBinaryAndMetadataStringResponseDto>(_serviceName, "EchoBinaryAndMetadataString", request, callInfo).Extract(_executionManager.DownloadBinaryStore);
+                EchoBinaryAndMetadataStringResponse response = _channel.ExecuteUnobservableCommand<EchoBinaryAndMetadataStringRequestDto, EchoBinaryAndMetadataStringResponseDto>(_serviceName, "EchoBinaryAndMetadataString", request, callInfo, BinaryTransferTestSerializers.EchoBinaryAndMetadataStringRequestDto, BinaryTransferTestSerializers.EchoBinaryAndMetadataStringResponseDto).Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)

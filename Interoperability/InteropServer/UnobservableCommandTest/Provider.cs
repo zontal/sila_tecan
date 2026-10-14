@@ -61,10 +61,10 @@ namespace Tecan.Sila2.Interop.Server.UnobservableCommandTest
         /// <param name="registration">The registration component to which the feature should be registered</param>
         public void Register(IServerBuilder registration)
         {
-            registration.RegisterUnobservableCommand<CommandWithoutParametersAndResponsesRequestDto, EmptyRequest>("CommandWithoutParametersAndResponses", CommandWithoutParametersAndResponses);
-            registration.RegisterUnobservableCommand<ConvertIntegerToStringRequestDto, ConvertIntegerToStringResponseDto>("ConvertIntegerToString", ConvertIntegerToString);
-            registration.RegisterUnobservableCommand<JoinIntegerAndStringRequestDto, JoinIntegerAndStringResponseDto>("JoinIntegerAndString", JoinIntegerAndString);
-            registration.RegisterUnobservableCommand<SplitStringAfterFirstCharacterRequestDto, SplitStringAfterFirstCharacterResponseDto>("SplitStringAfterFirstCharacter", SplitStringAfterFirstCharacter);
+            registration.RegisterUnobservableCommand<CommandWithoutParametersAndResponsesRequestDto, EmptyRequest>("CommandWithoutParametersAndResponses", CommandWithoutParametersAndResponses, UnobservableCommandTestSerializers.CommandWithoutParametersAndResponsesRequestDto, EmptyRequest.Marshaller);
+            registration.RegisterUnobservableCommand<ConvertIntegerToStringRequestDto, ConvertIntegerToStringResponseDto>("ConvertIntegerToString", ConvertIntegerToString, UnobservableCommandTestSerializers.ConvertIntegerToStringRequestDto, UnobservableCommandTestSerializers.ConvertIntegerToStringResponseDto);
+            registration.RegisterUnobservableCommand<JoinIntegerAndStringRequestDto, JoinIntegerAndStringResponseDto>("JoinIntegerAndString", JoinIntegerAndString, UnobservableCommandTestSerializers.JoinIntegerAndStringRequestDto, UnobservableCommandTestSerializers.JoinIntegerAndStringResponseDto);
+            registration.RegisterUnobservableCommand<SplitStringAfterFirstCharacterRequestDto, SplitStringAfterFirstCharacterResponseDto>("SplitStringAfterFirstCharacter", SplitStringAfterFirstCharacter, UnobservableCommandTestSerializers.SplitStringAfterFirstCharacterRequestDto, UnobservableCommandTestSerializers.SplitStringAfterFirstCharacterResponseDto);
         }
         
         /// <summary>

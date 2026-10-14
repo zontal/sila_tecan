@@ -18,12 +18,29 @@ namespace Tecan.Sila2.Generator.Helper
     {
         private static readonly CSharpCodeProvider CSharp = new CSharpCodeProvider();
 
+        private const string DisabledWarningsKey = "Tecan.Sila2.Generator.DisabledWarnings";
+
         /// <summary>
         /// Generates the C# code of the given compilation unit to the given file path
         /// </summary>
         /// <param name="unit">The CodeDOM unit that contains the generated code</param>
         /// <param name="path">The file path where the code should be generated to</param>
         public static void GenerateCSharp( CodeCompileUnit unit, string path )
+        {
+            var directory = Path.GetDirectoryName( Path.GetFullPath( path ) );
+            if(directory != null && !Directory.Exists( directory )) Directory.CreateDirectory( directory );
+            using(var writer = new StreamWriter( Path.GetFullPath( path ) ))
+            {
+                writer.Write( GenerateCSharpCode( unit ) );
+            }
+        }
+
+        /// <summary>
+        /// Generates the C# code of the given compilation unit
+        /// </summary>
+        /// <param name="unit">The CodeDOM unit that contains the generated code</param>
+        /// <returns>The generated C# code</returns>
+        public static string GenerateCSharpCode( CodeCompileUnit unit )
         {
             var options = new CodeGeneratorOptions
             {
@@ -33,12 +50,48 @@ namespace Tecan.Sila2.Generator.Helper
                 IndentString = "    ",
                 VerbatimOrder = false
             };
-            var directory = Path.GetDirectoryName( Path.GetFullPath( path ) );
-            if(directory != null && !Directory.Exists( directory )) Directory.CreateDirectory( directory );
-            using(var writer = new StreamWriter( Path.GetFullPath( path ) ))
+            using(var writer = new StringWriter())
             {
                 CSharp.GenerateCodeFromCompileUnit( unit, writer, options );
+                var code = writer.ToString();
+                if(unit.UserData[DisabledWarningsKey] is ISet<string> disabledWarnings && disabledWarnings.Count > 0)
+                {
+                    code = InsertAfterHeader( code, string.Join( string.Empty, disabledWarnings.Select( warning => "#pragma warning disable " + warning + writer.NewLine ) ) );
+                }
+                return code;
             }
+        }
+
+        /// <summary>
+        /// Marks that the code generated for the given unit must disable the given compiler warning
+        /// </summary>
+        /// <param name="unit">The CodeDOM unit</param>
+        /// <param name="diagnosticId">The id of the warning that should be disabled</param>
+        /// <remarks>CodeDOM cannot express pragmas, so they are inserted after the header of the generated code.</remarks>
+        public static void DisableWarning( CodeCompileUnit unit, string diagnosticId )
+        {
+            if(!(unit.UserData[DisabledWarningsKey] is ISet<string> disabledWarnings))
+            {
+                disabledWarnings = new SortedSet<string>( StringComparer.Ordinal );
+                unit.UserData[DisabledWarningsKey] = disabledWarnings;
+            }
+            disabledWarnings.Add( diagnosticId );
+        }
+
+        private static string InsertAfterHeader( string code, string text )
+        {
+            var position = 0;
+            while(code.Length > position + 1 && code[position] == '/' && code[position + 1] == '/')
+            {
+                var lineEnd = code.IndexOf( '\n', position );
+                if(lineEnd == -1)
+                {
+                    position = code.Length;
+                    break;
+                }
+                position = lineEnd + 1;
+            }
+            return code.Substring( 0, position ) + text + code.Substring( position );
         }
 
         /// <summary>

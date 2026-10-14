@@ -101,8 +101,8 @@ namespace Tecan.Sila2.Interop.Server.ObservableCommandTest
         /// <param name="registration">The registration component to which the feature should be registered</param>
         public void Register(IServerBuilder registration)
         {
-            registration.RegisterCommandWithIntermediates<CountRequestDto, long, CountIntermediateDto, long, CountResponseDto>("Count", Count, ConvertCountIntermediate, ConvertCountResponse, ConvertCountExceptions);
-            registration.RegisterObservableCommand<EchoValueAfterDelayRequestDto, long, EchoValueAfterDelayResponseDto>("EchoValueAfterDelay", EchoValueAfterDelay, ConvertEchoValueAfterDelayResponse, ConvertEchoValueAfterDelayExceptions);
+            registration.RegisterCommandWithIntermediates<CountRequestDto, long, CountIntermediateDto, long, CountResponseDto>("Count", Count, ConvertCountIntermediate, ConvertCountResponse, ConvertCountExceptions, ObservableCommandTestSerializers.CountRequestDto, ObservableCommandTestSerializers.CountIntermediateDto, ObservableCommandTestSerializers.CountResponseDto);
+            registration.RegisterObservableCommand<EchoValueAfterDelayRequestDto, long, EchoValueAfterDelayResponseDto>("EchoValueAfterDelay", EchoValueAfterDelay, ConvertEchoValueAfterDelayResponse, ConvertEchoValueAfterDelayExceptions, ObservableCommandTestSerializers.EchoValueAfterDelayRequestDto, ObservableCommandTestSerializers.EchoValueAfterDelayResponseDto);
         }
         
         private CountIntermediateDto ConvertCountIntermediate(long intermediate)

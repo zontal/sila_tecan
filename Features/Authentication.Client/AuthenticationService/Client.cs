@@ -54,7 +54,7 @@ namespace Tecan.Sila2.Authentication.AuthenticationService
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/core/AuthenticationService/v1/Command/Login");
             try
             {
-                LoginResponse response = _channel.ExecuteUnobservableCommand<LoginRequestDto, LoginResponseDto>(_serviceName, "Login", request, callInfo).Extract(_executionManager.DownloadBinaryStore);
+                LoginResponse response = _channel.ExecuteUnobservableCommand<LoginRequestDto, LoginResponseDto>(_serviceName, "Login", request, callInfo, AuthenticationServiceSerializers.LoginRequestDto, AuthenticationServiceSerializers.LoginResponseDto).Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -92,7 +92,7 @@ namespace Tecan.Sila2.Authentication.AuthenticationService
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/core/AuthenticationService/v1/Command/Logout");
             try
             {
-                _channel.ExecuteUnobservableCommand<LogoutRequestDto>(_serviceName, "Logout", request, callInfo);
+                _channel.ExecuteUnobservableCommand<LogoutRequestDto>(_serviceName, "Logout", request, callInfo, AuthenticationServiceSerializers.LogoutRequestDto);
                 callInfo.FinishSuccessful();
                 return;
             } catch (System.Exception ex)

@@ -7,6 +7,7 @@
 //     the code is regenerated.
 // </auto-generated>
 //------------------------------------------------------------------------------
+#pragma warning disable PBN9001
 
 using System;
 using Tecan.Sila2;
@@ -136,6 +137,53 @@ namespace Tecan.Sila2.Interop.Server.AuthenticationTest
         public string GetValidationErrors()
         {
             return ("" + Argument.Require(BinaryToUpload, "BinaryToUpload"));
+        }
+    }
+    
+    /// <summary>
+    /// The compile-time protobuf-net type model for the data transfer objects of the Authentication Test feature
+    /// </summary>
+    [ProtoBuf.ProtoModelAttribute()]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(RequiresTokenRequestDto))]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(RequiresTokenForBinaryUploadRequestDto))]
+    public sealed partial class AuthenticationTestTypeModel : ProtoBuf.Meta.TypeModel
+    {
+    }
+    
+    /// <summary>
+    /// Byte serializers for the data transfer objects of the Authentication Test feature that use the compile-time generated AuthenticationTestTypeModel
+    /// </summary>
+    public sealed class AuthenticationTestSerializers
+    {
+        
+        private static ByteSerializer<RequiresTokenRequestDto> _requiresTokenRequestDto = ByteSerializer.Create<RequiresTokenRequestDto>(AuthenticationTestTypeModel.Instance);
+        
+        private static ByteSerializer<RequiresTokenForBinaryUploadRequestDto> _requiresTokenForBinaryUploadRequestDto = ByteSerializer.Create<RequiresTokenForBinaryUploadRequestDto>(AuthenticationTestTypeModel.Instance);
+        
+        private AuthenticationTestSerializers()
+        {
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for RequiresTokenRequestDto
+        /// </summary>
+        public static ByteSerializer<RequiresTokenRequestDto> RequiresTokenRequestDto
+        {
+            get
+            {
+                return _requiresTokenRequestDto;
+            }
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for RequiresTokenForBinaryUploadRequestDto
+        /// </summary>
+        public static ByteSerializer<RequiresTokenForBinaryUploadRequestDto> RequiresTokenForBinaryUploadRequestDto
+        {
+            get
+            {
+                return _requiresTokenForBinaryUploadRequestDto;
+            }
         }
     }
 }

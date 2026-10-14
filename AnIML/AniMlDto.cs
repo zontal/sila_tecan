@@ -7,12 +7,20 @@ using Tecan.AnIML.Serialization;
 
 namespace Tecan.Sila2
 {
+#pragma warning disable PBN0013 // the AnIML document is transferred as a message of its own, not as a polymorphic sub-type of BinaryDto
     /// <summary>
     /// Denotes a data transfer object for AnIML documents
     /// </summary>
     [ProtoBuf.ProtoContract()]
     public class AniMlDto : BinaryDto, ISilaTransferObject<AniMlDocument>
     {
+        /// <summary>
+        /// Creates an empty data transfer object, used for deserialization
+        /// </summary>
+        public AniMlDto()
+        {
+        }
+
         /// <summary>
         /// Creates a new data transfer object for the given AnIML document
         /// </summary>

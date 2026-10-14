@@ -1,4 +1,6 @@
-﻿using Grpc.Core;
+﻿using System.Diagnostics.CodeAnalysis;
+using Grpc.Core;
+using ProtoBuf.Meta;
 
 namespace Tecan.Sila2
 {
@@ -6,6 +8,12 @@ namespace Tecan.Sila2
     /// A generic marshaller implementation based on Protobuf-net
     /// </summary>
     /// <typeparam name="T">The data transfer object type</typeparam>
+    /// <remarks>
+    /// The members of this class use the reflection-based protobuf-net runtime model. Use <see cref="ProtobufMarshaller"/>
+    /// to create marshallers that are compatible with trimming and Native AOT.
+    /// </remarks>
+    [RequiresUnreferencedCode( TrimmingMessages.RuntimeTypeModel )]
+    [RequiresDynamicCode( TrimmingMessages.RuntimeTypeModel )]
     public class ProtobufMarshaller<T>
     {
         /// <summary>
@@ -40,7 +48,35 @@ namespace Tecan.Sila2
         /// <returns>A Marshaller</returns>
         public static Marshaller<T> FromByteSerializer(ByteSerializer<T> serializer)
         {
+            return ProtobufMarshaller.FromByteSerializer( serializer );
+        }
+    }
+
+    /// <summary>
+    /// Creates marshallers for data transfer objects that are compatible with trimming and Native AOT
+    /// </summary>
+    public static class ProtobufMarshaller
+    {
+        /// <summary>
+        /// Converts the given byte serializer to a Marshaller
+        /// </summary>
+        /// <typeparam name="T">The data transfer object type</typeparam>
+        /// <param name="serializer">The serializer</param>
+        /// <returns>A Marshaller</returns>
+        public static Marshaller<T> FromByteSerializer<T>( ByteSerializer<T> serializer )
+        {
             return new Marshaller<T>( serializer.Serializer, serializer.Deserializer );
+        }
+
+        /// <summary>
+        /// Creates a Marshaller that uses the given protobuf-net type model
+        /// </summary>
+        /// <typeparam name="T">The data transfer object type</typeparam>
+        /// <param name="model">The protobuf-net type model that is able to serialize <typeparamref name="T"/>, usually a compile-time generated model such as <see cref="FrameworkTypeModel"/></param>
+        /// <returns>A Marshaller</returns>
+        public static Marshaller<T> Create<[DynamicallyAccessedMembers( TrimmingAnnotations.DataTransferObjectMembers )] T>( TypeModel model )
+        {
+            return FromByteSerializer( ByteSerializer.Create<T>( model ) );
         }
     }
 }

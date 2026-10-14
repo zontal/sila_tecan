@@ -72,16 +72,16 @@ namespace Tecan.Sila2.Interop.Server.ErrorHandlingTest
         /// <param name="registration">The registration component to which the feature should be registered</param>
         public void Register(IServerBuilder registration)
         {
-            registration.RegisterUnobservableCommand<RaiseDefinedExecutionErrorRequestDto, EmptyRequest>("RaiseDefinedExecutionError", RaiseDefinedExecutionError);
-            registration.RegisterObservableCommand<RaiseDefinedExecutionErrorObservablyRequestDto>("RaiseDefinedExecutionErrorObservably", RaiseDefinedExecutionErrorObservably, ConvertRaiseDefinedExecutionErrorObservablyExceptions);
-            registration.RegisterUnobservableCommand<RaiseUndefinedExecutionErrorRequestDto, EmptyRequest>("RaiseUndefinedExecutionError", RaiseUndefinedExecutionError);
-            registration.RegisterObservableCommand<RaiseUndefinedExecutionErrorObservablyRequestDto>("RaiseUndefinedExecutionErrorObservably", RaiseUndefinedExecutionErrorObservably, null);
-            registration.RegisterUnobservableProperty("RaiseDefinedExecutionErrorOnGet", GetRaiseDefinedExecutionErrorOnGet);
-            registration.RegisterObservableProperty("RaiseDefinedExecutionErrorOnSubscribe", GetRaiseDefinedExecutionErrorOnSubscribe, _implementation);
-            registration.RegisterUnobservableProperty("RaiseUndefinedExecutionErrorOnGet", GetRaiseUndefinedExecutionErrorOnGet);
-            registration.RegisterObservableProperty("RaiseUndefinedExecutionErrorOnSubscribe", GetRaiseUndefinedExecutionErrorOnSubscribe, _implementation);
-            registration.RegisterObservableProperty("RaiseDefinedExecutionErrorAfterValueWasSent", GetRaiseDefinedExecutionErrorAfterValueWasSent, _implementation);
-            registration.RegisterObservableProperty("RaiseUndefinedExecutionErrorAfterValueWasSent", GetRaiseUndefinedExecutionErrorAfterValueWasSent, _implementation);
+            registration.RegisterUnobservableCommand<RaiseDefinedExecutionErrorRequestDto, EmptyRequest>("RaiseDefinedExecutionError", RaiseDefinedExecutionError, ErrorHandlingTestSerializers.RaiseDefinedExecutionErrorRequestDto, EmptyRequest.Marshaller);
+            registration.RegisterObservableCommand<RaiseDefinedExecutionErrorObservablyRequestDto>("RaiseDefinedExecutionErrorObservably", RaiseDefinedExecutionErrorObservably, ConvertRaiseDefinedExecutionErrorObservablyExceptions, ErrorHandlingTestSerializers.RaiseDefinedExecutionErrorObservablyRequestDto);
+            registration.RegisterUnobservableCommand<RaiseUndefinedExecutionErrorRequestDto, EmptyRequest>("RaiseUndefinedExecutionError", RaiseUndefinedExecutionError, ErrorHandlingTestSerializers.RaiseUndefinedExecutionErrorRequestDto, EmptyRequest.Marshaller);
+            registration.RegisterObservableCommand<RaiseUndefinedExecutionErrorObservablyRequestDto>("RaiseUndefinedExecutionErrorObservably", RaiseUndefinedExecutionErrorObservably, null, ErrorHandlingTestSerializers.RaiseUndefinedExecutionErrorObservablyRequestDto);
+            registration.RegisterUnobservableProperty("RaiseDefinedExecutionErrorOnGet", GetRaiseDefinedExecutionErrorOnGet, ErrorHandlingTestSerializers.PropertyResponseOfIntegerDto);
+            registration.RegisterObservableProperty("RaiseDefinedExecutionErrorOnSubscribe", GetRaiseDefinedExecutionErrorOnSubscribe, _implementation, ErrorHandlingTestSerializers.PropertyResponseOfIntegerDto);
+            registration.RegisterUnobservableProperty("RaiseUndefinedExecutionErrorOnGet", GetRaiseUndefinedExecutionErrorOnGet, ErrorHandlingTestSerializers.PropertyResponseOfIntegerDto);
+            registration.RegisterObservableProperty("RaiseUndefinedExecutionErrorOnSubscribe", GetRaiseUndefinedExecutionErrorOnSubscribe, _implementation, ErrorHandlingTestSerializers.PropertyResponseOfIntegerDto);
+            registration.RegisterObservableProperty("RaiseDefinedExecutionErrorAfterValueWasSent", GetRaiseDefinedExecutionErrorAfterValueWasSent, _implementation, ErrorHandlingTestSerializers.PropertyResponseOfIntegerDto);
+            registration.RegisterObservableProperty("RaiseUndefinedExecutionErrorAfterValueWasSent", GetRaiseUndefinedExecutionErrorAfterValueWasSent, _implementation, ErrorHandlingTestSerializers.PropertyResponseOfIntegerDto);
         }
         
         /// <summary>

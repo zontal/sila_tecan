@@ -43,8 +43,8 @@ namespace Tecan.Sila2.Client
 
         private static Exception ConvertExceptionCore(Func<string, string, Exception> executionErrorConversion, RpcException rpcEx)
         {
-            var error = ProtobufMarshaller<SiLAErrorDto>.FromByteArray(
-                                        Convert.FromBase64String(rpcEx.Status.Detail));
+            var error = ByteSerializer.FromByteArray<SiLAErrorDto>(
+                                        Convert.FromBase64String(rpcEx.Status.Detail), FrameworkTypeModel.Instance);
             if (error.DefinedExecutionError != null)
             {
                 if (error.DefinedExecutionError.ErrorIdentifier == CancellationIdentifier)
@@ -90,7 +90,7 @@ namespace Tecan.Sila2.Client
         {
             try
             {
-                var binaryTransferError = ProtobufMarshaller<BinaryTransferError>.FromByteArray( Convert.FromBase64String( rpcEx.Status.Detail ) );
+                var binaryTransferError = ByteSerializer.FromByteArray<BinaryTransferError>( Convert.FromBase64String( rpcEx.Status.Detail ), FrameworkTypeModel.Instance );
                 switch(binaryTransferError.Type)
                 {
                     case BinaryTransferError.ErrorType.InvalidBinaryTransferUuid:

@@ -68,7 +68,7 @@ namespace Tecan.Sila2.Interop.Client.ObservablePropertyTest.ObservablePropertyTe
                         System.Threading.Monitor.Enter(_cancellationTokenSource);
                         if ((_fixedValueUpdateTask == null))
                         {
-                            _fixedValueUpdateTask = _channel.SubscribeProperty<PropertyResponse<Tecan.Sila2.IntegerDto>>(_serviceName, "FixedValue", "org.silastandard/test/ObservablePropertyTest/v1/Property/FixedValue", ReceiveNewFixedValue, _executionManager.CreateCallOptions("org.silastandard/test/ObservablePropertyTest/v1/Property/FixedValue"), _cancellationTokenSource.Token);
+                            _fixedValueUpdateTask = _channel.SubscribeProperty<PropertyResponse<Tecan.Sila2.IntegerDto>>(_serviceName, "FixedValue", "org.silastandard/test/ObservablePropertyTest/v1/Property/FixedValue", ReceiveNewFixedValue, _executionManager.CreateCallOptions("org.silastandard/test/ObservablePropertyTest/v1/Property/FixedValue"), ObservablePropertyTestSerializers.PropertyResponseOfIntegerDto, _cancellationTokenSource.Token);
                         }
                     } finally
                     {
@@ -93,7 +93,7 @@ namespace Tecan.Sila2.Interop.Client.ObservablePropertyTest.ObservablePropertyTe
                         System.Threading.Monitor.Enter(_cancellationTokenSource);
                         if ((_alternatingUpdateTask == null))
                         {
-                            _alternatingUpdateTask = _channel.SubscribeProperty<PropertyResponse<Tecan.Sila2.BooleanDto>>(_serviceName, "Alternating", "org.silastandard/test/ObservablePropertyTest/v1/Property/Alternating", ReceiveNewAlternating, _executionManager.CreateCallOptions("org.silastandard/test/ObservablePropertyTest/v1/Property/Alternating"), _cancellationTokenSource.Token);
+                            _alternatingUpdateTask = _channel.SubscribeProperty<PropertyResponse<Tecan.Sila2.BooleanDto>>(_serviceName, "Alternating", "org.silastandard/test/ObservablePropertyTest/v1/Property/Alternating", ReceiveNewAlternating, _executionManager.CreateCallOptions("org.silastandard/test/ObservablePropertyTest/v1/Property/Alternating"), ObservablePropertyTestSerializers.PropertyResponseOfBooleanDto, _cancellationTokenSource.Token);
                         }
                     } finally
                     {
@@ -118,7 +118,7 @@ namespace Tecan.Sila2.Interop.Client.ObservablePropertyTest.ObservablePropertyTe
                         System.Threading.Monitor.Enter(_cancellationTokenSource);
                         if ((_editableUpdateTask == null))
                         {
-                            _editableUpdateTask = _channel.SubscribeProperty<PropertyResponse<Tecan.Sila2.IntegerDto>>(_serviceName, "Editable", "org.silastandard/test/ObservablePropertyTest/v1/Property/Editable", ReceiveNewEditable, _executionManager.CreateCallOptions("org.silastandard/test/ObservablePropertyTest/v1/Property/Editable"), _cancellationTokenSource.Token);
+                            _editableUpdateTask = _channel.SubscribeProperty<PropertyResponse<Tecan.Sila2.IntegerDto>>(_serviceName, "Editable", "org.silastandard/test/ObservablePropertyTest/v1/Property/Editable", ReceiveNewEditable, _executionManager.CreateCallOptions("org.silastandard/test/ObservablePropertyTest/v1/Property/Editable"), ObservablePropertyTestSerializers.PropertyResponseOfIntegerDto, _cancellationTokenSource.Token);
                         }
                     } finally
                     {
@@ -193,7 +193,7 @@ namespace Tecan.Sila2.Interop.Client.ObservablePropertyTest.ObservablePropertyTe
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/ObservablePropertyTest/v1/Command/SetValue");
             try
             {
-                _channel.ExecuteUnobservableCommand<SetValueRequestDto>(_serviceName, "SetValue", request, callInfo);
+                _channel.ExecuteUnobservableCommand<SetValueRequestDto>(_serviceName, "SetValue", request, callInfo, ObservablePropertyTestSerializers.SetValueRequestDto);
                 callInfo.FinishSuccessful();
                 return;
             } catch (System.Exception ex)

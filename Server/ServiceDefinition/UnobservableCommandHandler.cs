@@ -51,7 +51,7 @@ namespace Tecan.Sila2.Server.ServiceDefinition
             }
             catch(RpcException rpc)
             {
-                var error = ProtobufMarshaller<SiLAErrorDto>.FromByteArray( Convert.FromBase64String( rpc.Status.Detail ) );
+                var error = ByteSerializer.FromByteArray<SiLAErrorDto>( Convert.FromBase64String( rpc.Status.Detail ), FrameworkTypeModel.Instance );
                 await responseWriter.WriteAsync( new SilaServerMessage
                 {
                     RequestUuid = message.RequestUuid,

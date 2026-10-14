@@ -4,6 +4,11 @@
 
 Use this package to install SilaGen as a .NET Tool.
 
+## Trimming and Native AOT
+
+The generated data transfer objects include a compile-time protobuf-net type model per feature and the generated providers and clients pass serializers based on this model to the SDK, so the generated code is compatible with trimming and Native AOT.
+The project that contains the generated code needs C# 12 or later (`<LangVersion>12</LangVersion>`, the default for .NET 8 and later). Use the option `--runtime-type-model` to generate code that uses the reflection-based protobuf-net runtime model instead, as previous versions of SilaGen did.
+
 ## Where can I get more information?
 
 |||

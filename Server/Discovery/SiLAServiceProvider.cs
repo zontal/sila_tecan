@@ -61,15 +61,15 @@ namespace Tecan.Sila2.Discovery
         /// <param name="registration">The registration component to which the feature should be registered</param>
         public void Register(IServerBuilder registration)
         {
-            registration.RegisterUnobservableCommand<GetFeatureDefinitionRequestDto, GetFeatureDefinitionResponseDto>("GetFeatureDefinition", GetFeatureDefinition);
-            registration.RegisterUnobservableCommand<SetServerNameRequestDto, EmptyRequest>("SetServerName", SetServerName);
-            registration.RegisterUnobservableProperty("ServerName", GetServerName);
-            registration.RegisterUnobservableProperty("ServerType", GetServerType);
-            registration.RegisterUnobservableProperty("ServerUUID", GetServerUUID);
-            registration.RegisterUnobservableProperty("ServerDescription", GetServerDescription);
-            registration.RegisterUnobservableProperty("ServerVersion", GetServerVersion);
-            registration.RegisterUnobservableProperty("ServerVendorURL", GetServerVendorURL);
-            registration.RegisterUnobservableProperty("ImplementedFeatures", GetImplementedFeatures);
+            registration.RegisterUnobservableCommand<GetFeatureDefinitionRequestDto, GetFeatureDefinitionResponseDto>("GetFeatureDefinition", GetFeatureDefinition, SiLAServiceSerializers.GetFeatureDefinitionRequestDto, SiLAServiceSerializers.GetFeatureDefinitionResponseDto);
+            registration.RegisterUnobservableCommand<SetServerNameRequestDto, EmptyRequest>("SetServerName", SetServerName, SiLAServiceSerializers.SetServerNameRequestDto, EmptyRequest.Marshaller);
+            registration.RegisterUnobservableProperty("ServerName", GetServerName, SiLAServiceSerializers.ServerNameResponseDto);
+            registration.RegisterUnobservableProperty("ServerType", GetServerType, SiLAServiceSerializers.ServerTypeResponseDto);
+            registration.RegisterUnobservableProperty("ServerUUID", GetServerUUID, SiLAServiceSerializers.ServerUUIDResponseDto);
+            registration.RegisterUnobservableProperty("ServerDescription", GetServerDescription, SiLAServiceSerializers.PropertyResponseOfStringDto);
+            registration.RegisterUnobservableProperty("ServerVersion", GetServerVersion, SiLAServiceSerializers.ServerVersionResponseDto);
+            registration.RegisterUnobservableProperty("ServerVendorURL", GetServerVendorURL, SiLAServiceSerializers.ServerVendorURLResponseDto);
+            registration.RegisterUnobservableProperty("ImplementedFeatures", GetImplementedFeatures, SiLAServiceSerializers.PropertyResponseOfListOfStringDto);
         }
         
         /// <summary>

@@ -15,6 +15,7 @@
 
     <ItemGroup>
         <Compile Include="..\CommonAssemblyInfo.cs" Link="Properties\CommonAssemblyInfo.cs" />
+        <Compile Include="..\TrimmingAnnotations.cs" Link="Properties\TrimmingAnnotations.cs" />
         <Compile Include="..\ServerPool\BufferedStreamWriter.cs" Link="BufferedStreamWriter.cs" />
         <Compile Include="..\ServerPool\CreateBinaryHandler.cs" Link="CreateBinaryHandler.cs" />
         <Compile Include="..\ServerPool\ErrorHandling.cs" Link="ErrorHandling.cs" />

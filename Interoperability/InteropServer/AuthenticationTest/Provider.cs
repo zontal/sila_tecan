@@ -61,8 +61,8 @@ namespace Tecan.Sila2.Interop.Server.AuthenticationTest
         /// <param name="registration">The registration component to which the feature should be registered</param>
         public void Register(IServerBuilder registration)
         {
-            registration.RegisterUnobservableCommand<RequiresTokenRequestDto, EmptyRequest>("RequiresToken", RequiresToken);
-            registration.RegisterUnobservableCommand<RequiresTokenForBinaryUploadRequestDto, EmptyRequest>("RequiresTokenForBinaryUpload", RequiresTokenForBinaryUpload);
+            registration.RegisterUnobservableCommand<RequiresTokenRequestDto, EmptyRequest>("RequiresToken", RequiresToken, AuthenticationTestSerializers.RequiresTokenRequestDto, EmptyRequest.Marshaller);
+            registration.RegisterUnobservableCommand<RequiresTokenForBinaryUploadRequestDto, EmptyRequest>("RequiresTokenForBinaryUpload", RequiresTokenForBinaryUpload, AuthenticationTestSerializers.RequiresTokenForBinaryUploadRequestDto, EmptyRequest.Marshaller);
             registration.RegisterBinaryCommandParameter("org.silastandard/test/AuthenticationTest/v1/Command/RequiresTokenForBinaryUpload/" +
                     "Parameter/BinaryToUpload");
         }

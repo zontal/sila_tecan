@@ -51,7 +51,7 @@ namespace Tecan.Sila2.Interop.Client.UnobservableCommandTest.UnobservableCommand
                     "AndResponses");
             try
             {
-                _channel.ExecuteUnobservableCommand<CommandWithoutParametersAndResponsesRequestDto>(_serviceName, "CommandWithoutParametersAndResponses", request, callInfo);
+                _channel.ExecuteUnobservableCommand<CommandWithoutParametersAndResponsesRequestDto>(_serviceName, "CommandWithoutParametersAndResponses", request, callInfo, UnobservableCommandTestSerializers.CommandWithoutParametersAndResponsesRequestDto);
                 callInfo.FinishSuccessful();
                 return;
             } catch (System.Exception ex)
@@ -73,7 +73,7 @@ namespace Tecan.Sila2.Interop.Client.UnobservableCommandTest.UnobservableCommand
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/UnobservableCommandTest/v1/Command/ConvertIntegerToString");
             try
             {
-                string response = _channel.ExecuteUnobservableCommand<ConvertIntegerToStringRequestDto, ConvertIntegerToStringResponseDto>(_serviceName, "ConvertIntegerToString", request, callInfo).StringRepresentation.Extract(_executionManager.DownloadBinaryStore);
+                string response = _channel.ExecuteUnobservableCommand<ConvertIntegerToStringRequestDto, ConvertIntegerToStringResponseDto>(_serviceName, "ConvertIntegerToString", request, callInfo, UnobservableCommandTestSerializers.ConvertIntegerToStringRequestDto, UnobservableCommandTestSerializers.ConvertIntegerToStringResponseDto).StringRepresentation.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -97,7 +97,7 @@ namespace Tecan.Sila2.Interop.Client.UnobservableCommandTest.UnobservableCommand
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/UnobservableCommandTest/v1/Command/JoinIntegerAndString");
             try
             {
-                string response = _channel.ExecuteUnobservableCommand<JoinIntegerAndStringRequestDto, JoinIntegerAndStringResponseDto>(_serviceName, "JoinIntegerAndString", request, callInfo).JoinedParameters.Extract(_executionManager.DownloadBinaryStore);
+                string response = _channel.ExecuteUnobservableCommand<JoinIntegerAndStringRequestDto, JoinIntegerAndStringResponseDto>(_serviceName, "JoinIntegerAndString", request, callInfo, UnobservableCommandTestSerializers.JoinIntegerAndStringRequestDto, UnobservableCommandTestSerializers.JoinIntegerAndStringResponseDto).JoinedParameters.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -121,7 +121,7 @@ namespace Tecan.Sila2.Interop.Client.UnobservableCommandTest.UnobservableCommand
                     "racter");
             try
             {
-                SplitStringAfterFirstCharacterResponse response = _channel.ExecuteUnobservableCommand<SplitStringAfterFirstCharacterRequestDto, SplitStringAfterFirstCharacterResponseDto>(_serviceName, "SplitStringAfterFirstCharacter", request, callInfo).Extract(_executionManager.DownloadBinaryStore);
+                SplitStringAfterFirstCharacterResponse response = _channel.ExecuteUnobservableCommand<SplitStringAfterFirstCharacterRequestDto, SplitStringAfterFirstCharacterResponseDto>(_serviceName, "SplitStringAfterFirstCharacter", request, callInfo, UnobservableCommandTestSerializers.SplitStringAfterFirstCharacterRequestDto, UnobservableCommandTestSerializers.SplitStringAfterFirstCharacterResponseDto).Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)

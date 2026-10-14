@@ -48,7 +48,7 @@ namespace Tecan.Sila2.Interop.Client.MultiClientTest.MultiClientTest
         {
             RunInParallelRequestDto request = new RunInParallelRequestDto(duration, null);
             request.Validate();
-            return _channel.ExecuteObservableCommand<RunInParallelRequestDto>(_serviceName, "RunInParallel", request, ConvertRunInParallelException, _executionManager.CreateCallOptions(request.CommandIdentifier));
+            return _channel.ExecuteObservableCommand<RunInParallelRequestDto>(_serviceName, "RunInParallel", request, ConvertRunInParallelException, _executionManager.CreateCallOptions(request.CommandIdentifier), MultiClientTestSerializers.RunInParallelRequestDto);
         }
         
         /// <summary>
@@ -70,7 +70,7 @@ namespace Tecan.Sila2.Interop.Client.MultiClientTest.MultiClientTest
         {
             RunQueuedRequestDto request = new RunQueuedRequestDto(duration, null);
             request.Validate();
-            return _channel.ExecuteObservableCommand<RunQueuedRequestDto>(_serviceName, "RunQueued", request, ConvertRunQueuedException, _executionManager.CreateCallOptions(request.CommandIdentifier));
+            return _channel.ExecuteObservableCommand<RunQueuedRequestDto>(_serviceName, "RunQueued", request, ConvertRunQueuedException, _executionManager.CreateCallOptions(request.CommandIdentifier), MultiClientTestSerializers.RunQueuedRequestDto);
         }
         
         /// <summary>
@@ -92,7 +92,7 @@ namespace Tecan.Sila2.Interop.Client.MultiClientTest.MultiClientTest
         {
             RejectParallelExecutionRequestDto request = new RejectParallelExecutionRequestDto(duration, null);
             request.Validate();
-            return _channel.ExecuteObservableCommand<RejectParallelExecutionRequestDto>(_serviceName, "RejectParallelExecution", request, ConvertRejectParallelExecutionException, _executionManager.CreateCallOptions(request.CommandIdentifier));
+            return _channel.ExecuteObservableCommand<RejectParallelExecutionRequestDto>(_serviceName, "RejectParallelExecution", request, ConvertRejectParallelExecutionException, _executionManager.CreateCallOptions(request.CommandIdentifier), MultiClientTestSerializers.RejectParallelExecutionRequestDto);
         }
         
         /// <summary>

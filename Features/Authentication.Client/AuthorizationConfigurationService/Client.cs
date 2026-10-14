@@ -62,7 +62,7 @@ namespace Tecan.Sila2.Authorization.AuthorizationConfigurationService
             try
             {
                 string response = _channel.ReadProperty<AuthorizationProviderResponseDto>(_serviceName, "AuthorizationProvider", "org.silastandard/core/AuthorizationConfigurationService/v1/Property/Authorization" +
-                        "Provider", callInfo).Value.Extract(_executionManager.DownloadBinaryStore);
+                        "Provider", callInfo, AuthorizationConfigurationServiceSerializers.AuthorizationProviderResponseDto).Value.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -93,7 +93,7 @@ namespace Tecan.Sila2.Authorization.AuthorizationConfigurationService
                     "onProvider");
             try
             {
-                _channel.ExecuteUnobservableCommand<SetAuthorizationProviderRequestDto>(_serviceName, "SetAuthorizationProvider", request, callInfo);
+                _channel.ExecuteUnobservableCommand<SetAuthorizationProviderRequestDto>(_serviceName, "SetAuthorizationProvider", request, callInfo, AuthorizationConfigurationServiceSerializers.SetAuthorizationProviderRequestDto);
                 callInfo.FinishSuccessful();
                 return;
             } catch (System.Exception ex)

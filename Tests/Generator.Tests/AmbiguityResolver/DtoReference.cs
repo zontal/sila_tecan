@@ -7,6 +7,7 @@
 //     the code is regenerated.
 // </auto-generated>
 //------------------------------------------------------------------------------
+#pragma warning disable PBN9001
 
 using System;
 using Tecan.Sila2;
@@ -359,6 +360,67 @@ namespace Tecan.Sila2.Generator.Test.TestReference
                 {
                     _ambiguousChannel = value;
                 }
+            }
+        }
+    }
+    
+    /// <summary>
+    /// The compile-time protobuf-net type model for the data transfer objects of the Ambiguity Resolver Service feature
+    /// </summary>
+    [ProtoBuf.ProtoModelAttribute()]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(CheckAmbiguousEntriesRequestDto))]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(CheckAmbiguousEntriesResponseDto))]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(OverloadedMethodRequestDto))]
+    public sealed partial class AmbiguityResolverServiceTypeModel : ProtoBuf.Meta.TypeModel
+    {
+    }
+    
+    /// <summary>
+    /// Byte serializers for the data transfer objects of the Ambiguity Resolver Service feature that use the compile-time generated AmbiguityResolverServiceTypeModel
+    /// </summary>
+    public sealed class AmbiguityResolverServiceSerializers
+    {
+        
+        private static ByteSerializer<CheckAmbiguousEntriesRequestDto> _checkAmbiguousEntriesRequestDto = ByteSerializer.Create<CheckAmbiguousEntriesRequestDto>(AmbiguityResolverServiceTypeModel.Instance);
+        
+        private static ByteSerializer<CheckAmbiguousEntriesResponseDto> _checkAmbiguousEntriesResponseDto = ByteSerializer.Create<CheckAmbiguousEntriesResponseDto>(AmbiguityResolverServiceTypeModel.Instance);
+        
+        private static ByteSerializer<OverloadedMethodRequestDto> _overloadedMethodRequestDto = ByteSerializer.Create<OverloadedMethodRequestDto>(AmbiguityResolverServiceTypeModel.Instance);
+        
+        private AmbiguityResolverServiceSerializers()
+        {
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for CheckAmbiguousEntriesRequestDto
+        /// </summary>
+        public static ByteSerializer<CheckAmbiguousEntriesRequestDto> CheckAmbiguousEntriesRequestDto
+        {
+            get
+            {
+                return _checkAmbiguousEntriesRequestDto;
+            }
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for CheckAmbiguousEntriesResponseDto
+        /// </summary>
+        public static ByteSerializer<CheckAmbiguousEntriesResponseDto> CheckAmbiguousEntriesResponseDto
+        {
+            get
+            {
+                return _checkAmbiguousEntriesResponseDto;
+            }
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for OverloadedMethodRequestDto
+        /// </summary>
+        public static ByteSerializer<OverloadedMethodRequestDto> OverloadedMethodRequestDto
+        {
+            get
+            {
+                return _overloadedMethodRequestDto;
             }
         }
     }

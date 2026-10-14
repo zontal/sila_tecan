@@ -7,6 +7,7 @@
 //     the code is regenerated.
 // </auto-generated>
 //------------------------------------------------------------------------------
+#pragma warning disable PBN9001
 
 using System;
 using Tecan.Sila2;
@@ -588,6 +589,137 @@ namespace Tecan.Sila2.Generator.Test.TestReference
                 errors = (errors + string.Format("FeatureIdentifier  has length {0} and is longer than allowed length 255", FeatureIdentifier.Value.Length));
             }
             return errors;
+        }
+    }
+    
+    /// <summary>
+    /// The compile-time protobuf-net type model for the data transfer objects of the SiLA Service feature
+    /// </summary>
+    [ProtoBuf.ProtoModelAttribute()]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(GetFeatureDefinitionRequestDto))]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(GetFeatureDefinitionResponseDto))]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(SetServerNameRequestDto))]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(PropertyResponse<Tecan.Sila2.StringDto>))]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(ServerUUIDResponseDto))]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(ServerVersionResponseDto))]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(PropertyResponse<UrlDto>))]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(PropertyResponse<System.Collections.Generic.List<FeatureIdentifierDto>>))]
+    public sealed partial class SiLAServiceTypeModel : ProtoBuf.Meta.TypeModel
+    {
+    }
+    
+    /// <summary>
+    /// Byte serializers for the data transfer objects of the SiLA Service feature that use the compile-time generated SiLAServiceTypeModel
+    /// </summary>
+    public sealed class SiLAServiceSerializers
+    {
+        
+        private static ByteSerializer<GetFeatureDefinitionRequestDto> _getFeatureDefinitionRequestDto = ByteSerializer.Create<GetFeatureDefinitionRequestDto>(SiLAServiceTypeModel.Instance);
+        
+        private static ByteSerializer<GetFeatureDefinitionResponseDto> _getFeatureDefinitionResponseDto = ByteSerializer.Create<GetFeatureDefinitionResponseDto>(SiLAServiceTypeModel.Instance);
+        
+        private static ByteSerializer<SetServerNameRequestDto> _setServerNameRequestDto = ByteSerializer.Create<SetServerNameRequestDto>(SiLAServiceTypeModel.Instance);
+        
+        private static ByteSerializer<PropertyResponse<Tecan.Sila2.StringDto>> _propertyResponseOfStringDto = ByteSerializer.Create<PropertyResponse<Tecan.Sila2.StringDto>>(SiLAServiceTypeModel.Instance);
+        
+        private static ByteSerializer<ServerUUIDResponseDto> _serverUUIDResponseDto = ByteSerializer.Create<ServerUUIDResponseDto>(SiLAServiceTypeModel.Instance);
+        
+        private static ByteSerializer<ServerVersionResponseDto> _serverVersionResponseDto = ByteSerializer.Create<ServerVersionResponseDto>(SiLAServiceTypeModel.Instance);
+        
+        private static ByteSerializer<PropertyResponse<UrlDto>> _propertyResponseOfUrlDto = ByteSerializer.Create<PropertyResponse<UrlDto>>(SiLAServiceTypeModel.Instance);
+        
+        private static ByteSerializer<PropertyResponse<System.Collections.Generic.List<FeatureIdentifierDto>>> _propertyResponseOfListOfFeatureIdentifierDto = ByteSerializer.Create<PropertyResponse<System.Collections.Generic.List<FeatureIdentifierDto>>>(SiLAServiceTypeModel.Instance);
+        
+        private SiLAServiceSerializers()
+        {
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for GetFeatureDefinitionRequestDto
+        /// </summary>
+        public static ByteSerializer<GetFeatureDefinitionRequestDto> GetFeatureDefinitionRequestDto
+        {
+            get
+            {
+                return _getFeatureDefinitionRequestDto;
+            }
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for GetFeatureDefinitionResponseDto
+        /// </summary>
+        public static ByteSerializer<GetFeatureDefinitionResponseDto> GetFeatureDefinitionResponseDto
+        {
+            get
+            {
+                return _getFeatureDefinitionResponseDto;
+            }
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for SetServerNameRequestDto
+        /// </summary>
+        public static ByteSerializer<SetServerNameRequestDto> SetServerNameRequestDto
+        {
+            get
+            {
+                return _setServerNameRequestDto;
+            }
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for PropertyResponseOfStringDto
+        /// </summary>
+        public static ByteSerializer<PropertyResponse<Tecan.Sila2.StringDto>> PropertyResponseOfStringDto
+        {
+            get
+            {
+                return _propertyResponseOfStringDto;
+            }
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for ServerUUIDResponseDto
+        /// </summary>
+        public static ByteSerializer<ServerUUIDResponseDto> ServerUUIDResponseDto
+        {
+            get
+            {
+                return _serverUUIDResponseDto;
+            }
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for ServerVersionResponseDto
+        /// </summary>
+        public static ByteSerializer<ServerVersionResponseDto> ServerVersionResponseDto
+        {
+            get
+            {
+                return _serverVersionResponseDto;
+            }
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for PropertyResponseOfUrlDto
+        /// </summary>
+        public static ByteSerializer<PropertyResponse<UrlDto>> PropertyResponseOfUrlDto
+        {
+            get
+            {
+                return _propertyResponseOfUrlDto;
+            }
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for PropertyResponseOfListOfFeatureIdentifierDto
+        /// </summary>
+        public static ByteSerializer<PropertyResponse<System.Collections.Generic.List<FeatureIdentifierDto>>> PropertyResponseOfListOfFeatureIdentifierDto
+        {
+            get
+            {
+                return _propertyResponseOfListOfFeatureIdentifierDto;
+            }
         }
     }
 }

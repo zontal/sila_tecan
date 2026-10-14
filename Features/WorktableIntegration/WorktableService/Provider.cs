@@ -62,9 +62,9 @@ namespace Tecan.Sila2.WorktableIntegration
         /// <param name="registration">The registration component to which the feature should be registered</param>
         public void Register(IServerBuilder registration)
         {
-            registration.RegisterUnobservableProperty("BoundingBox", GetBoundingBox);
-            registration.RegisterUnobservableProperty("SiteTemplates", GetSiteTemplates);
-            registration.RegisterUnobservableProperty("Sites", GetSites);
+            registration.RegisterUnobservableProperty("BoundingBox", GetBoundingBox, WorktableServiceSerializers.PropertyResponseOfBoundingBoxDto);
+            registration.RegisterUnobservableProperty("SiteTemplates", GetSiteTemplates, WorktableServiceSerializers.PropertyResponseOfListOfSiteTemplateDto);
+            registration.RegisterUnobservableProperty("Sites", GetSites, WorktableServiceSerializers.PropertyResponseOfListOfSiteDto);
         }
         
         /// <summary>

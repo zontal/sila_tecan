@@ -24,9 +24,11 @@
 
     <ItemGroup>
       <Compile Include="..\CommonAssemblyInfo.cs" Link="Properties\CommonAssemblyInfo.cs" />
+      <Compile Include="..\TrimmingAnnotations.cs" Link="Properties\TrimmingAnnotations.cs" />
       <Compile Include="..\Framework.Grpc\Binary\BinaryStorageConstants.cs" Link="Binary\BinaryStorageConstants.cs" />
       <Compile Include="..\Framework.Grpc\ClientMetadata.cs" Link="ClientMetadata.cs" />
       <Compile Include="..\Framework.Grpc\Common\EmptyRequestMarshaller.cs" Link="Common\EmptyRequestMarshaller.cs" />
+      <Compile Include="..\Framework.Grpc\Common\FrameworkMarshallers.cs" Link="Common\FrameworkMarshallers.cs" />
       <Compile Include="..\Framework.Grpc\Common\ProtobufMarshaller.cs" Link="Common\ProtobufMarshaller.cs" />
       <Compile Include="..\Framework.Grpc\ServerPooling\PoolingConstants.cs" Link="ServerPooling\PoolingConstants.cs" />
     </ItemGroup>

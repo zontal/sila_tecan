@@ -56,7 +56,7 @@ namespace Tecan.Sila2.Cancellation.CancelController
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/core.commands/CancelController/v1/Command/CancelCommand");
             try
             {
-                _channel.ExecuteUnobservableCommand<CancelCommandRequestDto>(_serviceName, "CancelCommand", request, callInfo);
+                _channel.ExecuteUnobservableCommand<CancelCommandRequestDto>(_serviceName, "CancelCommand", request, callInfo, CancelControllerSerializers.CancelCommandRequestDto);
                 callInfo.FinishSuccessful();
                 return;
             } catch (System.Exception ex)
@@ -100,7 +100,7 @@ namespace Tecan.Sila2.Cancellation.CancelController
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/core.commands/CancelController/v1/Command/CancelAll");
             try
             {
-                _channel.ExecuteUnobservableCommand<CancelAllRequestDto>(_serviceName, "CancelAll", request, callInfo);
+                _channel.ExecuteUnobservableCommand<CancelAllRequestDto>(_serviceName, "CancelAll", request, callInfo, CancelControllerSerializers.CancelAllRequestDto);
                 callInfo.FinishSuccessful();
                 return;
             } catch (System.Exception ex)

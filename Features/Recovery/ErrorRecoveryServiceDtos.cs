@@ -7,6 +7,7 @@
 //     the code is regenerated.
 // </auto-generated>
 //------------------------------------------------------------------------------
+#pragma warning disable PBN9001
 
 using System;
 using Tecan.Sila2;
@@ -1013,6 +1014,81 @@ namespace Tecan.Sila2.Recovery
                 errors = (errors + string.Format("Timeout should have been at least 0 but was \'{0}\'", Timeout.Value));
             }
             return errors;
+        }
+    }
+    
+    /// <summary>
+    /// The compile-time protobuf-net type model for the data transfer objects of the Error Recovery Service feature
+    /// </summary>
+    [ProtoBuf.ProtoModelAttribute()]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(ExecuteContinuationOptionRequestDto))]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(AbortErrorHandlingRequestDto))]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(SetErrorHandlingTimeoutRequestDto))]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(PropertyResponse<System.Collections.Generic.List<RecoverableErrorDto>>))]
+    public sealed partial class ErrorRecoveryServiceTypeModel : ProtoBuf.Meta.TypeModel
+    {
+    }
+    
+    /// <summary>
+    /// Byte serializers for the data transfer objects of the Error Recovery Service feature that use the compile-time generated ErrorRecoveryServiceTypeModel
+    /// </summary>
+    public sealed class ErrorRecoveryServiceSerializers
+    {
+        
+        private static ByteSerializer<ExecuteContinuationOptionRequestDto> _executeContinuationOptionRequestDto = ByteSerializer.Create<ExecuteContinuationOptionRequestDto>(ErrorRecoveryServiceTypeModel.Instance);
+        
+        private static ByteSerializer<AbortErrorHandlingRequestDto> _abortErrorHandlingRequestDto = ByteSerializer.Create<AbortErrorHandlingRequestDto>(ErrorRecoveryServiceTypeModel.Instance);
+        
+        private static ByteSerializer<SetErrorHandlingTimeoutRequestDto> _setErrorHandlingTimeoutRequestDto = ByteSerializer.Create<SetErrorHandlingTimeoutRequestDto>(ErrorRecoveryServiceTypeModel.Instance);
+        
+        private static ByteSerializer<PropertyResponse<System.Collections.Generic.List<RecoverableErrorDto>>> _propertyResponseOfListOfRecoverableErrorDto = ByteSerializer.Create<PropertyResponse<System.Collections.Generic.List<RecoverableErrorDto>>>(ErrorRecoveryServiceTypeModel.Instance);
+        
+        private ErrorRecoveryServiceSerializers()
+        {
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for ExecuteContinuationOptionRequestDto
+        /// </summary>
+        public static ByteSerializer<ExecuteContinuationOptionRequestDto> ExecuteContinuationOptionRequestDto
+        {
+            get
+            {
+                return _executeContinuationOptionRequestDto;
+            }
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for AbortErrorHandlingRequestDto
+        /// </summary>
+        public static ByteSerializer<AbortErrorHandlingRequestDto> AbortErrorHandlingRequestDto
+        {
+            get
+            {
+                return _abortErrorHandlingRequestDto;
+            }
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for SetErrorHandlingTimeoutRequestDto
+        /// </summary>
+        public static ByteSerializer<SetErrorHandlingTimeoutRequestDto> SetErrorHandlingTimeoutRequestDto
+        {
+            get
+            {
+                return _setErrorHandlingTimeoutRequestDto;
+            }
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for PropertyResponseOfListOfRecoverableErrorDto
+        /// </summary>
+        public static ByteSerializer<PropertyResponse<System.Collections.Generic.List<RecoverableErrorDto>>> PropertyResponseOfListOfRecoverableErrorDto
+        {
+            get
+            {
+                return _propertyResponseOfListOfRecoverableErrorDto;
+            }
         }
     }
 }

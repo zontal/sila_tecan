@@ -61,20 +61,20 @@ namespace Tecan.Sila2.Interop.Server.BasicDataTypesTest
         /// <param name="registration">The registration component to which the feature should be registered</param>
         public void Register(IServerBuilder registration)
         {
-            registration.RegisterUnobservableCommand<EchoStringValueRequestDto, EchoStringValueResponseDto>("EchoStringValue", EchoStringValue);
-            registration.RegisterUnobservableCommand<EchoIntegerValueRequestDto, EchoIntegerValueResponseDto>("EchoIntegerValue", EchoIntegerValue);
-            registration.RegisterUnobservableCommand<EchoRealValueRequestDto, EchoRealValueResponseDto>("EchoRealValue", EchoRealValue);
-            registration.RegisterUnobservableCommand<EchoBooleanValueRequestDto, EchoBooleanValueResponseDto>("EchoBooleanValue", EchoBooleanValue);
-            registration.RegisterUnobservableCommand<EchoDateValueRequestDto, EchoDateValueResponseDto>("EchoDateValue", EchoDateValue);
-            registration.RegisterUnobservableCommand<EchoTimeValueRequestDto, EchoTimeValueResponseDto>("EchoTimeValue", EchoTimeValue);
-            registration.RegisterUnobservableCommand<EchoTimestampValueRequestDto, EchoTimestampValueResponseDto>("EchoTimestampValue", EchoTimestampValue);
-            registration.RegisterUnobservableProperty("StringValue", GetStringValue);
-            registration.RegisterUnobservableProperty("IntegerValue", GetIntegerValue);
-            registration.RegisterUnobservableProperty("RealValue", GetRealValue);
-            registration.RegisterUnobservableProperty("BooleanValue", GetBooleanValue);
-            registration.RegisterUnobservableProperty("DateValue", GetDateValue);
-            registration.RegisterUnobservableProperty("TimeValue", GetTimeValue);
-            registration.RegisterUnobservableProperty("TimestampValue", GetTimestampValue);
+            registration.RegisterUnobservableCommand<EchoStringValueRequestDto, EchoStringValueResponseDto>("EchoStringValue", EchoStringValue, BasicDataTypesTestSerializers.EchoStringValueRequestDto, BasicDataTypesTestSerializers.EchoStringValueResponseDto);
+            registration.RegisterUnobservableCommand<EchoIntegerValueRequestDto, EchoIntegerValueResponseDto>("EchoIntegerValue", EchoIntegerValue, BasicDataTypesTestSerializers.EchoIntegerValueRequestDto, BasicDataTypesTestSerializers.EchoIntegerValueResponseDto);
+            registration.RegisterUnobservableCommand<EchoRealValueRequestDto, EchoRealValueResponseDto>("EchoRealValue", EchoRealValue, BasicDataTypesTestSerializers.EchoRealValueRequestDto, BasicDataTypesTestSerializers.EchoRealValueResponseDto);
+            registration.RegisterUnobservableCommand<EchoBooleanValueRequestDto, EchoBooleanValueResponseDto>("EchoBooleanValue", EchoBooleanValue, BasicDataTypesTestSerializers.EchoBooleanValueRequestDto, BasicDataTypesTestSerializers.EchoBooleanValueResponseDto);
+            registration.RegisterUnobservableCommand<EchoDateValueRequestDto, EchoDateValueResponseDto>("EchoDateValue", EchoDateValue, BasicDataTypesTestSerializers.EchoDateValueRequestDto, BasicDataTypesTestSerializers.EchoDateValueResponseDto);
+            registration.RegisterUnobservableCommand<EchoTimeValueRequestDto, EchoTimeValueResponseDto>("EchoTimeValue", EchoTimeValue, BasicDataTypesTestSerializers.EchoTimeValueRequestDto, BasicDataTypesTestSerializers.EchoTimeValueResponseDto);
+            registration.RegisterUnobservableCommand<EchoTimestampValueRequestDto, EchoTimestampValueResponseDto>("EchoTimestampValue", EchoTimestampValue, BasicDataTypesTestSerializers.EchoTimestampValueRequestDto, BasicDataTypesTestSerializers.EchoTimestampValueResponseDto);
+            registration.RegisterUnobservableProperty("StringValue", GetStringValue, BasicDataTypesTestSerializers.PropertyResponseOfStringDto);
+            registration.RegisterUnobservableProperty("IntegerValue", GetIntegerValue, BasicDataTypesTestSerializers.PropertyResponseOfIntegerDto);
+            registration.RegisterUnobservableProperty("RealValue", GetRealValue, BasicDataTypesTestSerializers.PropertyResponseOfRealDto);
+            registration.RegisterUnobservableProperty("BooleanValue", GetBooleanValue, BasicDataTypesTestSerializers.PropertyResponseOfBooleanDto);
+            registration.RegisterUnobservableProperty("DateValue", GetDateValue, BasicDataTypesTestSerializers.PropertyResponseOfDateDto);
+            registration.RegisterUnobservableProperty("TimeValue", GetTimeValue, BasicDataTypesTestSerializers.PropertyResponseOfTimeDto);
+            registration.RegisterUnobservableProperty("TimestampValue", GetTimestampValue, BasicDataTypesTestSerializers.PropertyResponseOfTimestampDto);
         }
         
         /// <summary>

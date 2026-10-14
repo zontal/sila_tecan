@@ -57,7 +57,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
                         System.Threading.Monitor.Enter(_cancellationTokenSource);
                         if ((_dummyValueUpdateTask == null))
                         {
-                            _dummyValueUpdateTask = _channel.SubscribeProperty<PropertyResponse<Tecan.Sila2.IntegerDto>>(_serviceName, "DummyValue", "tecan.sila/integrationtests/TestServer/v1/Property/DummyValue", ReceiveNewDummyValue, _executionManager.CreateCallOptions("tecan.sila/integrationtests/TestServer/v1/Property/DummyValue"), _cancellationTokenSource.Token);
+                            _dummyValueUpdateTask = _channel.SubscribeProperty<PropertyResponse<Tecan.Sila2.IntegerDto>>(_serviceName, "DummyValue", "tecan.sila/integrationtests/TestServer/v1/Property/DummyValue", ReceiveNewDummyValue, _executionManager.CreateCallOptions("tecan.sila/integrationtests/TestServer/v1/Property/DummyValue"), TestServerSerializers.PropertyResponseOfIntegerDto, _cancellationTokenSource.Token);
                         }
                     } finally
                     {
@@ -100,7 +100,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("tecan.sila/integrationtests/TestServer/v1/Command/PassBool");
             try
             {
-                bool response = _channel.ExecuteUnobservableCommand<PassBoolRequestDto, PassBoolResponseDto>(_serviceName, "PassBool", request, callInfo).ReturnValue.Extract(_executionManager.DownloadBinaryStore);
+                bool response = _channel.ExecuteUnobservableCommand<PassBoolRequestDto, PassBoolResponseDto>(_serviceName, "PassBool", request, callInfo, TestServerSerializers.PassBoolRequestDto, TestServerSerializers.PassBoolResponseDto).ReturnValue.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -118,7 +118,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("tecan.sila/integrationtests/TestServer/v1/Command/PassDouble");
             try
             {
-                double response = _channel.ExecuteUnobservableCommand<PassDoubleRequestDto, PassDoubleResponseDto>(_serviceName, "PassDouble", request, callInfo).ReturnValue.Extract(_executionManager.DownloadBinaryStore);
+                double response = _channel.ExecuteUnobservableCommand<PassDoubleRequestDto, PassDoubleResponseDto>(_serviceName, "PassDouble", request, callInfo, TestServerSerializers.PassDoubleRequestDto, TestServerSerializers.PassDoubleResponseDto).ReturnValue.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -136,7 +136,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("tecan.sila/integrationtests/TestServer/v1/Command/PassLong");
             try
             {
-                long response = _channel.ExecuteUnobservableCommand<PassLongRequestDto, PassLongResponseDto>(_serviceName, "PassLong", request, callInfo).ReturnValue.Extract(_executionManager.DownloadBinaryStore);
+                long response = _channel.ExecuteUnobservableCommand<PassLongRequestDto, PassLongResponseDto>(_serviceName, "PassLong", request, callInfo, TestServerSerializers.PassLongRequestDto, TestServerSerializers.PassLongResponseDto).ReturnValue.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -154,7 +154,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("tecan.sila/integrationtests/TestServer/v1/Command/PassInt");
             try
             {
-                long response = _channel.ExecuteUnobservableCommand<PassIntRequestDto, PassIntResponseDto>(_serviceName, "PassInt", request, callInfo).ReturnValue.Extract(_executionManager.DownloadBinaryStore);
+                long response = _channel.ExecuteUnobservableCommand<PassIntRequestDto, PassIntResponseDto>(_serviceName, "PassInt", request, callInfo, TestServerSerializers.PassIntRequestDto, TestServerSerializers.PassIntResponseDto).ReturnValue.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -172,7 +172,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("tecan.sila/integrationtests/TestServer/v1/Command/PassTimestamp");
             try
             {
-                System.DateTimeOffset response = _channel.ExecuteUnobservableCommand<PassTimestampRequestDto, PassTimestampResponseDto>(_serviceName, "PassTimestamp", request, callInfo).ReturnValue.Extract(_executionManager.DownloadBinaryStore);
+                System.DateTimeOffset response = _channel.ExecuteUnobservableCommand<PassTimestampRequestDto, PassTimestampResponseDto>(_serviceName, "PassTimestamp", request, callInfo, TestServerSerializers.PassTimestampRequestDto, TestServerSerializers.PassTimestampResponseDto).ReturnValue.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -190,7 +190,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("tecan.sila/integrationtests/TestServer/v1/Command/PassTime");
             try
             {
-                System.TimeSpan response = _channel.ExecuteUnobservableCommand<PassTimeRequestDto, PassTimeResponseDto>(_serviceName, "PassTime", request, callInfo).ReturnValue.Extract(_executionManager.DownloadBinaryStore);
+                System.TimeSpan response = _channel.ExecuteUnobservableCommand<PassTimeRequestDto, PassTimeResponseDto>(_serviceName, "PassTime", request, callInfo, TestServerSerializers.PassTimeRequestDto, TestServerSerializers.PassTimeResponseDto).ReturnValue.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -208,7 +208,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("tecan.sila/integrationtests/TestServer/v1/Command/PassString");
             try
             {
-                string response = _channel.ExecuteUnobservableCommand<PassStringRequestDto, PassStringResponseDto>(_serviceName, "PassString", request, callInfo).ReturnValue.Extract(_executionManager.DownloadBinaryStore);
+                string response = _channel.ExecuteUnobservableCommand<PassStringRequestDto, PassStringResponseDto>(_serviceName, "PassString", request, callInfo, TestServerSerializers.PassStringRequestDto, TestServerSerializers.PassStringResponseDto).ReturnValue.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -226,7 +226,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("tecan.sila/integrationtests/TestServer/v1/Command/PassStream");
             try
             {
-                System.IO.Stream response = _channel.ExecuteUnobservableCommand<PassStreamRequestDto, PassStreamResponseDto>(_serviceName, "PassStream", request, callInfo).ReturnValue.Extract(_executionManager.DownloadBinaryStore);
+                System.IO.Stream response = _channel.ExecuteUnobservableCommand<PassStreamRequestDto, PassStreamResponseDto>(_serviceName, "PassStream", request, callInfo, TestServerSerializers.PassStreamRequestDto, TestServerSerializers.PassStreamResponseDto).ReturnValue.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -244,7 +244,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("tecan.sila/integrationtests/TestServer/v1/Command/PassFile");
             try
             {
-                System.IO.Stream response = _channel.ExecuteUnobservableCommand<PassFileRequestDto, PassFileResponseDto>(_serviceName, "PassFile", request, callInfo).ReturnValue.Extract(_executionManager.DownloadBinaryStore);
+                System.IO.Stream response = _channel.ExecuteUnobservableCommand<PassFileRequestDto, PassFileResponseDto>(_serviceName, "PassFile", request, callInfo, TestServerSerializers.PassFileRequestDto, TestServerSerializers.PassFileResponseDto).ReturnValue.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -262,7 +262,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("tecan.sila/integrationtests/TestServer/v1/Command/PassBytes");
             try
             {
-                System.IO.Stream response = _channel.ExecuteUnobservableCommand<PassBytesRequestDto, PassBytesResponseDto>(_serviceName, "PassBytes", request, callInfo).ReturnValue.Extract(_executionManager.DownloadBinaryStore);
+                System.IO.Stream response = _channel.ExecuteUnobservableCommand<PassBytesRequestDto, PassBytesResponseDto>(_serviceName, "PassBytes", request, callInfo, TestServerSerializers.PassBytesRequestDto, TestServerSerializers.PassBytesResponseDto).ReturnValue.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -280,7 +280,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("tecan.sila/integrationtests/TestServer/v1/Command/PassDynamic");
             try
             {
-                Tecan.Sila2.DynamicClient.DynamicObjectProperty response = _channel.ExecuteUnobservableCommand<PassDynamicRequestDto, PassDynamicResponseDto>(_serviceName, "PassDynamic", request, callInfo).ReturnValue.Extract(_executionManager.DownloadBinaryStore);
+                Tecan.Sila2.DynamicClient.DynamicObjectProperty response = _channel.ExecuteUnobservableCommand<PassDynamicRequestDto, PassDynamicResponseDto>(_serviceName, "PassDynamic", request, callInfo, TestServerSerializers.PassDynamicRequestDto, TestServerSerializers.PassDynamicResponseDto).ReturnValue.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -298,7 +298,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("tecan.sila/integrationtests/TestServer/v1/Command/PassCollection");
             try
             {
-                System.Collections.Generic.ICollection<string> response = _channel.ExecuteUnobservableCommand<PassCollectionRequestDto, PassCollectionResponseDto>(_serviceName, "PassCollection", request, callInfo).ReturnValue.Extract(_executionManager.DownloadBinaryStore);
+                System.Collections.Generic.ICollection<string> response = _channel.ExecuteUnobservableCommand<PassCollectionRequestDto, PassCollectionResponseDto>(_serviceName, "PassCollection", request, callInfo, TestServerSerializers.PassCollectionRequestDto, TestServerSerializers.PassCollectionResponseDto).ReturnValue.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -316,7 +316,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("tecan.sila/integrationtests/TestServer/v1/Command/PassStructure");
             try
             {
-                SomeStructure response = _channel.ExecuteUnobservableCommand<PassStructureRequestDto, PassStructureResponseDto>(_serviceName, "PassStructure", request, callInfo).ReturnValue.Extract(_executionManager.DownloadBinaryStore);
+                SomeStructure response = _channel.ExecuteUnobservableCommand<PassStructureRequestDto, PassStructureResponseDto>(_serviceName, "PassStructure", request, callInfo, TestServerSerializers.PassStructureRequestDto, TestServerSerializers.PassStructureResponseDto).ReturnValue.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -331,7 +331,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         {
             RunObservableRequestDto request = new RunObservableRequestDto(null);
             request.Validate();
-            return _channel.ExecuteObservableCommand<RunObservableRequestDto, long, RunObservableResponseDto>(_serviceName, "RunObservable", request, ConvertRunObservableResponse, ConvertRunObservableException, _executionManager.CreateCallOptions(request.CommandIdentifier));
+            return _channel.ExecuteObservableCommand<RunObservableRequestDto, long, RunObservableResponseDto>(_serviceName, "RunObservable", request, ConvertRunObservableResponse, ConvertRunObservableException, _executionManager.CreateCallOptions(request.CommandIdentifier), TestServerSerializers.RunObservableRequestDto, TestServerSerializers.RunObservableResponseDto);
         }
         
         /// <summary>
@@ -359,7 +359,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         {
             RunIntermediateObservableCommandRequestDto request = new RunIntermediateObservableCommandRequestDto(null);
             request.Validate();
-            return _channel.ExecuteIntermediatesCommand<RunIntermediateObservableCommandRequestDto, long, RunIntermediateObservableCommandIntermediateDto>(_serviceName, "RunIntermediateObservableCommand", request, ConvertRunIntermediateObservableCommandIntermediate, ConvertRunIntermediateObservableCommandException, _executionManager.CreateCallOptions(request.CommandIdentifier));
+            return _channel.ExecuteIntermediatesCommand<RunIntermediateObservableCommandRequestDto, long, RunIntermediateObservableCommandIntermediateDto>(_serviceName, "RunIntermediateObservableCommand", request, ConvertRunIntermediateObservableCommandIntermediate, ConvertRunIntermediateObservableCommandException, _executionManager.CreateCallOptions(request.CommandIdentifier), TestServerSerializers.RunIntermediateObservableCommandRequestDto, TestServerSerializers.RunIntermediateObservableCommandIntermediateDto);
         }
         
         /// <summary>
@@ -387,7 +387,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         {
             WaitForCancelOrThrowRequestDto request = new WaitForCancelOrThrowRequestDto(duration, null);
             request.Validate();
-            return _channel.ExecuteObservableCommand<WaitForCancelOrThrowRequestDto>(_serviceName, "WaitForCancelOrThrow", request, ConvertWaitForCancelOrThrowException, _executionManager.CreateCallOptions(request.CommandIdentifier));
+            return _channel.ExecuteObservableCommand<WaitForCancelOrThrowRequestDto>(_serviceName, "WaitForCancelOrThrow", request, ConvertWaitForCancelOrThrowException, _executionManager.CreateCallOptions(request.CommandIdentifier), TestServerSerializers.WaitForCancelOrThrowRequestDto);
         }
         
         /// <summary>
@@ -413,7 +413,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("tecan.sila/integrationtests/TestServer/v1/Command/RunIntoFailure");
             try
             {
-                _channel.ExecuteUnobservableCommand<RunIntoFailureRequestDto>(_serviceName, "RunIntoFailure", request, callInfo);
+                _channel.ExecuteUnobservableCommand<RunIntoFailureRequestDto>(_serviceName, "RunIntoFailure", request, callInfo, TestServerSerializers.RunIntoFailureRequestDto);
                 callInfo.FinishSuccessful();
                 return;
             } catch (System.Exception ex)
@@ -443,7 +443,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
         {
             RunIntoFailureObservablyRequestDto request = new RunIntoFailureObservablyRequestDto(null);
             request.Validate();
-            return _channel.ExecuteObservableCommand<RunIntoFailureObservablyRequestDto>(_serviceName, "RunIntoFailureObservably", request, ConvertRunIntoFailureObservablyException, _executionManager.CreateCallOptions(request.CommandIdentifier));
+            return _channel.ExecuteObservableCommand<RunIntoFailureObservablyRequestDto>(_serviceName, "RunIntoFailureObservably", request, ConvertRunIntoFailureObservablyException, _executionManager.CreateCallOptions(request.CommandIdentifier), TestServerSerializers.RunIntoFailureObservablyRequestDto);
         }
         
         /// <summary>
@@ -468,7 +468,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("tecan.sila/integrationtests/TestServer/v1/Command/IsCancelled");
             try
             {
-                bool response = _channel.ExecuteUnobservableCommand<IsCancelledRequestDto, IsCancelledResponseDto>(_serviceName, "IsCancelled", request, callInfo).ReturnValue.Extract(_executionManager.DownloadBinaryStore);
+                bool response = _channel.ExecuteUnobservableCommand<IsCancelledRequestDto, IsCancelledResponseDto>(_serviceName, "IsCancelled", request, callInfo, TestServerSerializers.IsCancelledRequestDto, TestServerSerializers.IsCancelledResponseDto).ReturnValue.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -486,7 +486,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("tecan.sila/integrationtests/TestServer/v1/Command/ThrowRuntimeException");
             try
             {
-                _channel.ExecuteUnobservableCommand<ThrowRuntimeExceptionRequestDto>(_serviceName, "ThrowRuntimeException", request, callInfo);
+                _channel.ExecuteUnobservableCommand<ThrowRuntimeExceptionRequestDto>(_serviceName, "ThrowRuntimeException", request, callInfo, TestServerSerializers.ThrowRuntimeExceptionRequestDto);
                 callInfo.FinishSuccessful();
                 return;
             } catch (System.Exception ex)
@@ -504,7 +504,7 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("tecan.sila/integrationtests/TestServer/v1/Command/SetDummy");
             try
             {
-                _channel.ExecuteUnobservableCommand<SetDummyRequestDto>(_serviceName, "SetDummy", request, callInfo);
+                _channel.ExecuteUnobservableCommand<SetDummyRequestDto>(_serviceName, "SetDummy", request, callInfo, TestServerSerializers.SetDummyRequestDto);
                 callInfo.FinishSuccessful();
                 return;
             } catch (System.Exception ex)

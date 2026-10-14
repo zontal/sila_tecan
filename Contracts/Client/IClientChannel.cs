@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -29,6 +30,8 @@ namespace Tecan.Sila2.Client
         /// <param name="propertyIdentifier">The fully qualified identifier of the property</param>
         /// <param name="callInfo">An object that encapsulates the call information</param>
         /// <returns>The property value as data transfer object</returns>
+        [RequiresUnreferencedCode( TrimmingMessages.RuntimeTypeModel )]
+        [RequiresDynamicCode( TrimmingMessages.RuntimeTypeModel )]
         T ReadProperty<T>( string serviceName, string propertyName, string propertyIdentifier, IClientCallInfo callInfo ) where T : class, ISilaTransferObject;
 
         /// <summary>
@@ -66,6 +69,8 @@ namespace Tecan.Sila2.Client
         /// <param name="callInfo">An object that encapsulates the call information</param>
         /// <param name="cancellationToken">A cancellation token that can be used to cancel the subscription</param>
         /// <returns>A task that ends when the subscription is terminated</returns>
+        [RequiresUnreferencedCode( TrimmingMessages.RuntimeTypeModel )]
+        [RequiresDynamicCode( TrimmingMessages.RuntimeTypeModel )]
         Task SubscribeProperty<T>( string serviceName, string propertyName, string propertyIdentifier, Action<T> newValueReceived, IClientCallInfo callInfo, CancellationToken cancellationToken = default ) where T : class, ISilaTransferObject;
 
         /// <summary>
@@ -94,6 +99,8 @@ namespace Tecan.Sila2.Client
         /// <param name="cleanup">A cleanup action that should be performed as the subscription completes</param>
         /// <param name="cancellationToken">A cancellation token that can be used to cancel the subscription</param>
         /// <returns>A task that ends when the subscription is terminated</returns>
+        [RequiresUnreferencedCode( TrimmingMessages.RuntimeTypeModel )]
+        [RequiresDynamicCode( TrimmingMessages.RuntimeTypeModel )]
         Task SubscribeProperty<T>(string serviceName, string propertyName, string propertyIdentifier, Action<T> newValueReceived, IClientCallInfo callInfo, Action cleanup, CancellationToken cancellationToken = default) where T : class, ISilaTransferObject;
 
         /// <summary>
@@ -118,6 +125,8 @@ namespace Tecan.Sila2.Client
         /// <param name="commandName">The name of the command</param>
         /// <param name="request">The request object</param>
         /// <param name="callInfo">An object that encapsulates the call information</param>
+        [RequiresUnreferencedCode( TrimmingMessages.RuntimeTypeModel )]
+        [RequiresDynamicCode( TrimmingMessages.RuntimeTypeModel )]
         void ExecuteUnobservableCommand<TRequest>(
             string serviceName,
             string commandName,
@@ -152,6 +161,8 @@ namespace Tecan.Sila2.Client
         /// <param name="request">The request object</param>
         /// <param name="callInfo">An object that encapsulates the call information</param>
         /// <returns>A data transfer object of the command response</returns>
+        [RequiresUnreferencedCode( TrimmingMessages.RuntimeTypeModel )]
+        [RequiresDynamicCode( TrimmingMessages.RuntimeTypeModel )]
         TResponse ExecuteUnobservableCommand<TRequest, TResponse>(
             string serviceName,
             string commandName,
@@ -231,6 +242,8 @@ namespace Tecan.Sila2.Client
         /// <param name="errorConverter">A callback method to translate SiLA2 error codes</param>
         /// <param name="callInfo">An object that encapsulates the call information</param>
         /// <returns>An object representing the observable command execution</returns>
+        [RequiresUnreferencedCode( TrimmingMessages.RuntimeTypeModel )]
+        [RequiresDynamicCode( TrimmingMessages.RuntimeTypeModel )]
         IObservableCommand ExecuteObservableCommand<TRequest>(
             string serviceName,
             string commandName,
@@ -272,6 +285,8 @@ namespace Tecan.Sila2.Client
         /// <param name="errorConverter">A callback method to translate SiLA2 error codes</param>
         /// <param name="callInfo">An object that encapsulates the call information</param>
         /// <returns>An object representing the observable command execution</returns>
+        [RequiresUnreferencedCode( TrimmingMessages.RuntimeTypeModel )]
+        [RequiresDynamicCode( TrimmingMessages.RuntimeTypeModel )]
         IObservableCommand<TResponse> ExecuteObservableCommand<TRequest, TResponse, TResponseDto>(
             string serviceName,
             string commandName,
@@ -322,6 +337,8 @@ namespace Tecan.Sila2.Client
         /// <param name="errorConverter">A callback method to translate SiLA2 error codes</param>
         /// <param name="callInfo">An object that encapsulates the call information</param>
         /// <returns>An object representing the observable command execution</returns>
+        [RequiresUnreferencedCode( TrimmingMessages.RuntimeTypeModel )]
+        [RequiresDynamicCode( TrimmingMessages.RuntimeTypeModel )]
         IIntermediateObservableCommand<TIntermediate> ExecuteIntermediatesCommand<TRequest, TIntermediate, TIntermediateDto>(
             string serviceName,
             string commandName,
@@ -375,6 +392,8 @@ namespace Tecan.Sila2.Client
         /// <param name="errorConverter">A callback method to translate SiLA2 error codes</param>
         /// <param name="callInfo">An object that encapsulates the call information</param>
         /// <returns>An object representing the observable command execution</returns>
+        [RequiresUnreferencedCode( TrimmingMessages.RuntimeTypeModel )]
+        [RequiresDynamicCode( TrimmingMessages.RuntimeTypeModel )]
         IIntermediateObservableCommand<TIntermediate, TResponse> ExecuteIntermediatesCommand<TRequest, TIntermediate, TIntermediateDto, TResponse, TResponseDto>(
             string serviceName,
             string commandName,

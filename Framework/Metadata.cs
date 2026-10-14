@@ -1,4 +1,5 @@
-﻿using ProtoBuf;
+﻿using System.Diagnostics.CodeAnalysis;
+using ProtoBuf;
 
 namespace Tecan.Sila2.Server
 {
@@ -14,14 +15,30 @@ namespace Tecan.Sila2.Server
         /// <param name="metadata">The metadata that was used with this request</param>
         /// <param name="metadataIdentifier">The global unique identifier of the metadata</param>
         /// <returns>The deserialized metadata</returns>
+        [RequiresUnreferencedCode( TrimmingMessages.RuntimeTypeModel )]
+        [RequiresDynamicCode( TrimmingMessages.RuntimeTypeModel )]
         public static TMetadata Extract<TMetadata>( IMetadataRepository metadata, string metadataIdentifier )
+            where TMetadata : new()
+        {
+            return Extract( metadata, metadataIdentifier, ByteSerializer.GetDefault<PropertyResponse<TMetadata>>() );
+        }
+
+        /// <summary>
+        /// Extracts the metadata with the given identifier from the call context
+        /// </summary>
+        /// <typeparam name="TMetadata">The type of the metadata</typeparam>
+        /// <param name="metadata">The metadata that was used with this request</param>
+        /// <param name="metadataIdentifier">The global unique identifier of the metadata</param>
+        /// <param name="serializer">A serializer for the metadata message</param>
+        /// <returns>The deserialized metadata</returns>
+        public static TMetadata Extract<TMetadata>( IMetadataRepository metadata, string metadataIdentifier, ByteSerializer<PropertyResponse<TMetadata>> serializer )
             where TMetadata : new()
         {
             if(metadata != null && metadata.TryGetMetadata( metadataIdentifier, out var metadataValue ))
             {
                 try
                 {
-                    var deserialized = ByteSerializer.FromByteArray<PropertyResponse<TMetadata>>( metadataValue );
+                    var deserialized = serializer.Deserializer( metadataValue );
                     if(deserialized == null || deserialized.Value == null)
                     {
                         throw new MissingMetadataException( metadataIdentifier );

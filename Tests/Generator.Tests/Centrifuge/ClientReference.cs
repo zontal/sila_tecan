@@ -47,7 +47,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
                 Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions( "tecan.sila.generator.test/testreference/Centrifuge/v4/Property/Speed" );
                 try
                 {
-                    int response = ((int)(_channel.ReadProperty<PropertyResponse<Tecan.Sila2.IntegerDto>>( _serviceName, "Speed", "tecan.sila.generator.test/testreference/Centrifuge/v4/Property/Speed", callInfo ).Value.Extract( _executionManager.DownloadBinaryStore )));
+                    int response = ((int)(_channel.ReadProperty<PropertyResponse<Tecan.Sila2.IntegerDto>>( _serviceName, "Speed", "tecan.sila.generator.test/testreference/Centrifuge/v4/Property/Speed", callInfo, CentrifugeSerializers.PropertyResponseOfIntegerDto ).Value.Extract( _executionManager.DownloadBinaryStore )));
                     callInfo.FinishSuccessful();
                     return response;
                 }
@@ -64,7 +64,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
                 Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions( "tecan.sila.generator.test/testreference/Centrifuge/v4/Command/SetSpeed" );
                 try
                 {
-                    _channel.ExecuteUnobservableCommand<SetSpeedRequestDto>( _serviceName, "SetSpeed", request, callInfo );
+                    _channel.ExecuteUnobservableCommand<SetSpeedRequestDto>( _serviceName, "SetSpeed", request, callInfo, CentrifugeSerializers.SetSpeedRequestDto );
                     callInfo.FinishSuccessful();
                     return;
                 }
@@ -84,7 +84,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions( "tecan.sila.generator.test/testreference/Centrifuge/v4/Command/RunCrazy" );
             try
             {
-                _channel.ExecuteUnobservableCommand<RunCrazyRequestDto>( _serviceName, "RunCrazy", request, callInfo );
+                _channel.ExecuteUnobservableCommand<RunCrazyRequestDto>( _serviceName, "RunCrazy", request, callInfo, CentrifugeSerializers.RunCrazyRequestDto );
                 callInfo.FinishSuccessful();
                 return;
             }

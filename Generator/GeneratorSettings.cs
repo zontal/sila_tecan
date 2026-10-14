@@ -19,5 +19,15 @@ namespace Tecan.Sila2.Generator
             get;
             set;
         }
+
+        /// <summary>
+        /// Gets or sets whether the generated code should serialize data transfer objects through the reflection-based
+        /// protobuf-net runtime model instead of a compile-time generated type model
+        /// </summary>
+        public static bool UseRuntimeTypeModel
+        {
+            get;
+            set;
+        }
     }
 }

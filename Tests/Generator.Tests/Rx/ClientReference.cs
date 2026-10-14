@@ -45,7 +45,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         {
             RunRxObservableRequestDto request = new RunRxObservableRequestDto( null );
             request.Validate();
-            return new CommandObservable<bool>( _channel.ExecuteIntermediatesCommand<RunRxObservableRequestDto, bool, RunRxObservableIntermediateDto>( _serviceName, "RunRxObservable", request, ConvertRunRxObservableIntermediate, ConvertRunRxObservableException, _executionManager.CreateCallOptions( request.CommandIdentifier ) ) );
+            return new CommandObservable<bool>( _channel.ExecuteIntermediatesCommand<RunRxObservableRequestDto, bool, RunRxObservableIntermediateDto>( _serviceName, "RunRxObservable", request, ConvertRunRxObservableIntermediate, ConvertRunRxObservableException, _executionManager.CreateCallOptions( request.CommandIdentifier ), RxServiceSerializers.RunRxObservableRequestDto, RxServiceSerializers.RunRxObservableIntermediateDto ) );
         }
 
         ///  <summary>

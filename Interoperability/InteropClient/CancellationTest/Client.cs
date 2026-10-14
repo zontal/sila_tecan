@@ -48,7 +48,7 @@ namespace Tecan.Sila2.Interop.Client.CancellationTest.CancellationTest
         {
             WaitForCancelRequestDto request = new WaitForCancelRequestDto(duration, null);
             request.Validate();
-            return _channel.ExecuteObservableCommand<WaitForCancelRequestDto>(_serviceName, "WaitForCancel", request, ConvertWaitForCancelException, _executionManager.CreateCallOptions(request.CommandIdentifier));
+            return _channel.ExecuteObservableCommand<WaitForCancelRequestDto>(_serviceName, "WaitForCancel", request, ConvertWaitForCancelException, _executionManager.CreateCallOptions(request.CommandIdentifier), CancellationTestSerializers.WaitForCancelRequestDto);
         }
         
         /// <summary>

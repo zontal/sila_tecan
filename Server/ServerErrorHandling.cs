@@ -18,13 +18,13 @@ namespace Tecan.Sila2.Server
 
         private static string ToBase64String( SiLAErrorDto error )
         {
-            var bytes = ProtobufMarshaller<SiLAErrorDto>.Default.Serializer( error );
+            var bytes = ByteSerializer.ToByteArray( error, FrameworkTypeModel.Instance );
             return Convert.ToBase64String( bytes );
         }
 
         private static string ToBase64String( BinaryTransferError error )
         {
-            var bytes = ProtobufMarshaller<BinaryTransferError>.Default.Serializer( error );
+            var bytes = ByteSerializer.ToByteArray( error, FrameworkTypeModel.Instance );
             return Convert.ToBase64String( bytes );
         }
 

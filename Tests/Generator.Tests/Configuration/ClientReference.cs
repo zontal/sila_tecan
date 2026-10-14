@@ -49,7 +49,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions( "tecan.sila.generator.test/testreference/ConfiguredService/v4/Property/Speed" );
             try
             {
-                Tecan.Sila2.Generator.Test.TestReference.Speed response = new Tecan.Sila2.Generator.Test.TestReference.Speed( _channel.ReadProperty<SpeedResponseDto>( _serviceName, "Speed", "tecan.sila.generator.test/testreference/ConfiguredService/v4/Property/Speed", callInfo ).Value.Extract( _executionManager.DownloadBinaryStore ) );
+                Tecan.Sila2.Generator.Test.TestReference.Speed response = new Tecan.Sila2.Generator.Test.TestReference.Speed( _channel.ReadProperty<SpeedResponseDto>( _serviceName, "Speed", "tecan.sila.generator.test/testreference/ConfiguredService/v4/Property/Speed", callInfo, ConfiguredServiceSerializers.SpeedResponseDto ).Value.Extract( _executionManager.DownloadBinaryStore ) );
                 callInfo.FinishSuccessful();
                 return response;
             }
@@ -74,7 +74,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
                     "" );
             try
             {
-                _channel.ExecuteUnobservableCommand<AccelerateToRequestDto>( _serviceName, "AccelerateTo", request, callInfo );
+                _channel.ExecuteUnobservableCommand<AccelerateToRequestDto>( _serviceName, "AccelerateTo", request, callInfo, ConfiguredServiceSerializers.AccelerateToRequestDto );
                 callInfo.FinishSuccessful();
                 return;
             }

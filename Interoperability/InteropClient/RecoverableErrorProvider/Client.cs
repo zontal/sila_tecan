@@ -55,7 +55,7 @@ namespace Tecan.Sila2.Interop.Client.RecoverableErrorProvider.RecoverableErrorPr
         {
             RaiseRecoverableErrorRequestDto request = new RaiseRecoverableErrorRequestDto(durationUntilError, automaticExecutionTimeout, null);
             request.Validate();
-            return _channel.ExecuteObservableCommand<RaiseRecoverableErrorRequestDto, string, RaiseRecoverableErrorResponseDto>(_serviceName, "RaiseRecoverableError", request, ConvertRaiseRecoverableErrorResponse, ConvertRaiseRecoverableErrorException, _executionManager.CreateCallOptions(request.CommandIdentifier));
+            return _channel.ExecuteObservableCommand<RaiseRecoverableErrorRequestDto, string, RaiseRecoverableErrorResponseDto>(_serviceName, "RaiseRecoverableError", request, ConvertRaiseRecoverableErrorResponse, ConvertRaiseRecoverableErrorException, _executionManager.CreateCallOptions(request.CommandIdentifier), RecoverableErrorProviderSerializers.RaiseRecoverableErrorRequestDto, RecoverableErrorProviderSerializers.RaiseRecoverableErrorResponseDto);
         }
         
         /// <summary>

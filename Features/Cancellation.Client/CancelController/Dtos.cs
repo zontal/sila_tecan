@@ -7,6 +7,7 @@
 //     the code is regenerated.
 // </auto-generated>
 //------------------------------------------------------------------------------
+#pragma warning disable PBN9001
 
 using System;
 using Tecan.Sila2;
@@ -218,6 +219,53 @@ namespace Tecan.Sila2.Cancellation.CancelController
                         "]{4}\\-[0-9a-f]{12}\'", UUID.Value));
             }
             return errors;
+        }
+    }
+    
+    /// <summary>
+    /// The compile-time protobuf-net type model for the data transfer objects of the Cancel Controller feature
+    /// </summary>
+    [ProtoBuf.ProtoModelAttribute()]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(CancelCommandRequestDto))]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(CancelAllRequestDto))]
+    public sealed partial class CancelControllerTypeModel : ProtoBuf.Meta.TypeModel
+    {
+    }
+    
+    /// <summary>
+    /// Byte serializers for the data transfer objects of the Cancel Controller feature that use the compile-time generated CancelControllerTypeModel
+    /// </summary>
+    public sealed class CancelControllerSerializers
+    {
+        
+        private static ByteSerializer<CancelCommandRequestDto> _cancelCommandRequestDto = ByteSerializer.Create<CancelCommandRequestDto>(CancelControllerTypeModel.Instance);
+        
+        private static ByteSerializer<CancelAllRequestDto> _cancelAllRequestDto = ByteSerializer.Create<CancelAllRequestDto>(CancelControllerTypeModel.Instance);
+        
+        private CancelControllerSerializers()
+        {
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for CancelCommandRequestDto
+        /// </summary>
+        public static ByteSerializer<CancelCommandRequestDto> CancelCommandRequestDto
+        {
+            get
+            {
+                return _cancelCommandRequestDto;
+            }
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for CancelAllRequestDto
+        /// </summary>
+        public static ByteSerializer<CancelAllRequestDto> CancelAllRequestDto
+        {
+            get
+            {
+                return _cancelAllRequestDto;
+            }
         }
     }
 }

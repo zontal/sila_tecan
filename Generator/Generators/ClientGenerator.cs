@@ -531,6 +531,19 @@ namespace Tecan.Sila2.Generator.Generators
             actualCall.Parameters.Add( new CodeMethodReferenceExpression( null, exceptionConverter.Name ) );
             actualCall.Parameters.Add( callInfo );
 
+            if(SerializationModelHelper.UseGeneratedModel)
+            {
+                actualCall.Parameters.Add( SerializationModelHelper.GetSerializer( feature, _nameProvider.GenerateCommandRequestType( featureCommand ) ) );
+                if(intermediateType != null)
+                {
+                    actualCall.Parameters.Add( SerializationModelHelper.GetSerializer( feature, _nameProvider.GenerateCommandIntermediateType( featureCommand ) ) );
+                }
+                if(featureCommand.Response != null && featureCommand.Response.Length > 0)
+                {
+                    actualCall.Parameters.Add( SerializationModelHelper.GetSerializer( feature, _nameProvider.GenerateCommandResponseType( featureCommand ) ) );
+                }
+            }
+
             return actualCall;
         }
 
@@ -600,6 +613,14 @@ namespace Tecan.Sila2.Generator.Generators
                 new CodePrimitiveExpression( featureCommand.Identifier ),
                 requestRef,
                 callInfoRef );
+            if(SerializationModelHelper.UseGeneratedModel)
+            {
+                executeCall.Parameters.Add( SerializationModelHelper.GetSerializer( feature, _nameProvider.GenerateCommandRequestType( featureCommand ) ) );
+                if(featureCommand.Response != null && featureCommand.Response.Length > 0)
+                {
+                    executeCall.Parameters.Add( SerializationModelHelper.GetSerializer( feature, _nameProvider.GenerateCommandResponseType( featureCommand ) ) );
+                }
+            }
             CodeExpression convertedCall;
             if(featureCommand.Response != null && featureCommand.Response.Length > 0)
             {
@@ -853,13 +874,18 @@ namespace Tecan.Sila2.Generator.Generators
             {
                 origin += "." + propertyExpression.Property;
             }
+            var readCall = new CodeMethodInvokeExpression( method,
+                new CodeFieldReferenceExpression( null, ServiceNameFieldName ),
+                new CodePrimitiveExpression( featureProperty.Identifier ),
+                new CodePrimitiveExpression( feature.GetFullyQualifiedIdentifier( featureProperty ) ),
+                callInfoRef );
+            if(SerializationModelHelper.UseGeneratedModel)
+            {
+                readCall.Parameters.Add( SerializationModelHelper.GetSerializer( feature, _nameProvider.GetPropertyResponseType( featureProperty, _translationProvider ) ) );
+            }
             var response = GenerateClientConvertResponse(
                 featureProperty.DataType, "Value",
-                new CodeMethodInvokeExpression( method,
-                    new CodeFieldReferenceExpression( null, ServiceNameFieldName ),
-                    new CodePrimitiveExpression( featureProperty.Identifier ),
-                    new CodePrimitiveExpression( feature.GetFullyQualifiedIdentifier( featureProperty ) ),
-                    callInfoRef ),
+                readCall,
                 _nameProvider.GetMemberType( origin ) );
             if(propertyExpression != null)
             {
@@ -893,8 +919,12 @@ namespace Tecan.Sila2.Generator.Generators
                 new CodePrimitiveExpression( featureProperty.Identifier ),
                 new CodePrimitiveExpression( feature.GetFullyQualifiedIdentifier( featureProperty ) ),
                 new CodeMethodReferenceExpression( null, receiveValueMethod.Name ),
-                new CodeMethodInvokeExpression( new CodeFieldReferenceExpression( null, ExecutionManagerFieldName ), nameof( IClientExecutionManager.CreateCallOptions ), new CodePrimitiveExpression( feature.GetFullyQualifiedIdentifier( featureProperty ) ) ),
-                new CodePropertyReferenceExpression( tokenSource, nameof( CancellationTokenSource.Token ) ) );
+                new CodeMethodInvokeExpression( new CodeFieldReferenceExpression( null, ExecutionManagerFieldName ), nameof( IClientExecutionManager.CreateCallOptions ), new CodePrimitiveExpression( feature.GetFullyQualifiedIdentifier( featureProperty ) ) ) );
+            if(SerializationModelHelper.UseGeneratedModel)
+            {
+                subscription.Parameters.Add( SerializationModelHelper.GetSerializer( feature, _nameProvider.GetPropertyResponseType( featureProperty, _translationProvider ) ) );
+            }
+            subscription.Parameters.Add( new CodePropertyReferenceExpression( tokenSource, nameof( CancellationTokenSource.Token ) ) );
             var ifSubscriptionNull = new CodeBinaryOperatorExpression( updateTask, CodeBinaryOperatorType.IdentityEquality, new CodePrimitiveExpression() );
             var ifUpdateTaskNull = new CodeConditionStatement( ifSubscriptionNull, new CodeAssignStatement( updateTask, subscription ) ); ;
             var monitor = new CodeTypeReferenceExpression( typeof( Monitor ) );

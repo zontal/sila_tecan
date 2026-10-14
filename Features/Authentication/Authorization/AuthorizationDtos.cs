@@ -7,6 +7,7 @@
 //     the code is regenerated.
 // </auto-generated>
 //------------------------------------------------------------------------------
+#pragma warning disable PBN9001
 
 using System;
 using Tecan.Sila2;
@@ -15,4 +16,37 @@ using Tecan.Sila2;
 namespace Tecan.Sila2.Authorization
 {
     
+    
+    /// <summary>
+    /// The compile-time protobuf-net type model for the data transfer objects of the Authorization Service feature
+    /// </summary>
+    [ProtoBuf.ProtoModelAttribute()]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(PropertyResponse<Tecan.Sila2.StringDto>))]
+    public sealed partial class AuthorizationServiceTypeModel : ProtoBuf.Meta.TypeModel
+    {
+    }
+    
+    /// <summary>
+    /// Byte serializers for the data transfer objects of the Authorization Service feature that use the compile-time generated AuthorizationServiceTypeModel
+    /// </summary>
+    public sealed class AuthorizationServiceSerializers
+    {
+        
+        private static ByteSerializer<PropertyResponse<Tecan.Sila2.StringDto>> _propertyResponseOfStringDto = ByteSerializer.Create<PropertyResponse<Tecan.Sila2.StringDto>>(AuthorizationServiceTypeModel.Instance);
+        
+        private AuthorizationServiceSerializers()
+        {
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for PropertyResponseOfStringDto
+        /// </summary>
+        public static ByteSerializer<PropertyResponse<Tecan.Sila2.StringDto>> PropertyResponseOfStringDto
+        {
+            get
+            {
+                return _propertyResponseOfStringDto;
+            }
+        }
+    }
 }

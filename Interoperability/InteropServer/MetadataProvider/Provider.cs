@@ -155,7 +155,7 @@ namespace Tecan.Sila2.Interop.Server.MetadataProvider
         /// <returns>A request interception or null, if this is not necessary</returns>
         public Tecan.Sila2.Server.IRequestInterception Intercept(string commandIdentifier, Tecan.Sila2.Server.ISiLAServer server, Tecan.Sila2.Server.IMetadataRepository metadata)
         {
-            return Intercept(commandIdentifier, Tecan.Sila2.Server.Metadata.Extract<Tecan.Sila2.StringDto>(metadata, MetadataIdentifier).Extract(server));
+            return Intercept(commandIdentifier, Tecan.Sila2.Server.Metadata.Extract<Tecan.Sila2.StringDto>(metadata, MetadataIdentifier, MetadataProviderSerializers.PropertyResponseOfStringDto).Extract(server));
         }
     }
     
@@ -228,7 +228,7 @@ namespace Tecan.Sila2.Interop.Server.MetadataProvider
         /// <returns>A request interception or null, if this is not necessary</returns>
         public Tecan.Sila2.Server.IRequestInterception Intercept(string commandIdentifier, Tecan.Sila2.Server.ISiLAServer server, Tecan.Sila2.Server.IMetadataRepository metadata)
         {
-            return Intercept(commandIdentifier, Tecan.Sila2.Server.Metadata.Extract<TwoIntegersMetadataDto>(metadata, MetadataIdentifier).Extract(server));
+            return Intercept(commandIdentifier, Tecan.Sila2.Server.Metadata.Extract<TwoIntegersMetadataDto>(metadata, MetadataIdentifier, MetadataProviderSerializers.PropertyResponseOfTwoIntegersMetadataDto).Extract(server));
         }
     }
 }

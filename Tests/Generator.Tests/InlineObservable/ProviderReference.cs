@@ -78,7 +78,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// <param name="registration">The registration component to which the feature should be registered</param>
         public void Register( IServerBuilder registration )
         {
-            registration.RegisterObservableCommand<TestInlineObservableRequestDto, bool, TestInlineObservableResponseDto>( "TestInlineObservable", TestInlineObservable, ConvertTestInlineObservableResponse, ConvertTestInlineObservableExceptions );
+            registration.RegisterObservableCommand<TestInlineObservableRequestDto, bool, TestInlineObservableResponseDto>( "TestInlineObservable", TestInlineObservable, ConvertTestInlineObservableResponse, ConvertTestInlineObservableExceptions, InlineObservableServiceSerializers.TestInlineObservableRequestDto, InlineObservableServiceSerializers.TestInlineObservableResponseDto );
         }
 
         private TestInlineObservableResponseDto ConvertTestInlineObservableResponse( bool result )

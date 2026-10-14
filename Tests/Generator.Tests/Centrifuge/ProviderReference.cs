@@ -61,9 +61,9 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// <param name="registration">The registration component to which the feature should be registered</param>
         public void Register( IServerBuilder registration )
         {
-            registration.RegisterUnobservableCommand<RunCrazyRequestDto, EmptyRequest>( "RunCrazy", RunCrazy );
-            registration.RegisterUnobservableCommand<SetSpeedRequestDto, EmptyRequest>( "SetSpeed", SetSpeed );
-            registration.RegisterUnobservableProperty( "Speed", GetSpeed );
+            registration.RegisterUnobservableCommand<RunCrazyRequestDto, EmptyRequest>( "RunCrazy", RunCrazy, CentrifugeSerializers.RunCrazyRequestDto, EmptyRequest.Marshaller );
+            registration.RegisterUnobservableCommand<SetSpeedRequestDto, EmptyRequest>( "SetSpeed", SetSpeed, CentrifugeSerializers.SetSpeedRequestDto, EmptyRequest.Marshaller );
+            registration.RegisterUnobservableProperty( "Speed", GetSpeed, CentrifugeSerializers.PropertyResponseOfIntegerDto );
         }
 
         /// <summary>

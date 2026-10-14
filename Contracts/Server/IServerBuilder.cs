@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Tecan.Sila2.Server
 {
@@ -21,6 +22,8 @@ namespace Tecan.Sila2.Server
         /// <typeparam name="T">The data transfer type of the property</typeparam>
         /// <param name="propertyName">The local identifier of the property</param>
         /// <param name="implementation">The implementation of the property, i.e. the getter</param>
+        [RequiresUnreferencedCode( TrimmingMessages.RuntimeTypeModel )]
+        [RequiresDynamicCode( TrimmingMessages.RuntimeTypeModel )]
         void RegisterUnobservableProperty<T>( string propertyName, Func<T> implementation ) where T : class;
 
         /// <summary>
@@ -40,6 +43,8 @@ namespace Tecan.Sila2.Server
         /// <param name="implementation">The implementation of the property, i.e. the getter</param>
         /// <param name="changeSource">The source for changes</param>
         /// <param name="clientPropertyName">The client property name</param>
+        [RequiresUnreferencedCode( TrimmingMessages.RuntimeTypeModel )]
+        [RequiresDynamicCode( TrimmingMessages.RuntimeTypeModel )]
         void RegisterObservableProperty<T>( string propertyName, Func<T> implementation, object changeSource, string clientPropertyName = null ) where T : class;
 
         /// <summary>
@@ -60,6 +65,8 @@ namespace Tecan.Sila2.Server
         /// <typeparam name="TResponse">The data transfer type of the response</typeparam>
         /// <param name="methodName">The local identifier of the command</param>
         /// <param name="implementation">The implementation of the command</param>
+        [RequiresUnreferencedCode( TrimmingMessages.RuntimeTypeModel )]
+        [RequiresDynamicCode( TrimmingMessages.RuntimeTypeModel )]
         void RegisterUnobservableCommand<TRequest, TResponse>( string methodName, Func<TRequest, TResponse> implementation )
             where TRequest : class, ISilaRequestObject
             where TResponse : class;
@@ -84,6 +91,8 @@ namespace Tecan.Sila2.Server
         /// <param name="methodName">The local identifier of the command</param>
         /// <param name="implementation">The implementation of the command</param>
         /// <param name="exceptionConverter">A function that converts exceptions of the command</param>
+        [RequiresUnreferencedCode( TrimmingMessages.RuntimeTypeModel )]
+        [RequiresDynamicCode( TrimmingMessages.RuntimeTypeModel )]
         void RegisterObservableCommand<TRequest>( string methodName, Func<TRequest, IObservableCommand> implementation, Func<Exception, Exception> exceptionConverter )
             where TRequest : class, ISilaRequestObject;
 
@@ -108,6 +117,8 @@ namespace Tecan.Sila2.Server
         /// <param name="implementation">The implementation of the command</param>
         /// <param name="exceptionConverter">A function that converts exceptions of the command</param>
         /// <param name="responseConverter">A function that converts the response</param>
+        [RequiresUnreferencedCode( TrimmingMessages.RuntimeTypeModel )]
+        [RequiresDynamicCode( TrimmingMessages.RuntimeTypeModel )]
         void RegisterObservableCommand<TRequest, TResponse, TResponseDto>( string methodName, Func<TRequest, IObservableCommand<TResponse>> implementation,
             Func<TResponse, TResponseDto> responseConverter, Func<Exception, Exception> exceptionConverter )
             where TRequest : class, ISilaRequestObject
@@ -140,6 +151,8 @@ namespace Tecan.Sila2.Server
         /// <param name="implementation">The implementation of the command</param>
         /// <param name="exceptionConverter">A function that converts exceptions of the command</param>
         /// <param name="intermediateConverter">A function that converts intermediate responses</param>
+        [RequiresUnreferencedCode( TrimmingMessages.RuntimeTypeModel )]
+        [RequiresDynamicCode( TrimmingMessages.RuntimeTypeModel )]
         void RegisterCommandWithIntermediates<TRequest, TIntermediate, TIntermediateDto>( string commandName,
             Func<TRequest, IIntermediateObservableCommand<TIntermediate>> implementation, Func<TIntermediate, TIntermediateDto> intermediateConverter,
             Func<Exception, Exception> exceptionConverter )
@@ -177,6 +190,8 @@ namespace Tecan.Sila2.Server
         /// <param name="exceptionConverter">A function that converts exceptions of the command</param>
         /// <param name="intermediateConverter">A function that converts intermediate responses</param>
         /// <param name="responseConverter">A function that converts the response</param>
+        [RequiresUnreferencedCode( TrimmingMessages.RuntimeTypeModel )]
+        [RequiresDynamicCode( TrimmingMessages.RuntimeTypeModel )]
         void RegisterCommandWithIntermediates<TRequest, TIntermediate, TIntermediateDto, TResponse, TResponseDto>( string commandName,
             Func<TRequest, IIntermediateObservableCommand<TIntermediate, TResponse>> implementation, Func<TIntermediate, TIntermediateDto> intermediateConverter,
             Func<TResponse, TResponseDto> responseConverter,

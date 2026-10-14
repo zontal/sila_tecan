@@ -93,31 +93,31 @@ namespace Tecan.Sila2.IntegrationTests
         /// <param name="registration">The registration component to which the feature should be registered</param>
         public void Register(IServerBuilder registration)
         {
-            registration.RegisterUnobservableCommand<PassBoolRequestDto, PassBoolResponseDto>("PassBool", PassBool);
-            registration.RegisterUnobservableCommand<PassDoubleRequestDto, PassDoubleResponseDto>("PassDouble", PassDouble);
-            registration.RegisterUnobservableCommand<PassLongRequestDto, PassLongResponseDto>("PassLong", PassLong);
-            registration.RegisterUnobservableCommand<PassIntRequestDto, PassIntResponseDto>("PassInt", PassInt);
-            registration.RegisterUnobservableCommand<PassTimestampRequestDto, PassTimestampResponseDto>("PassTimestamp", PassTimestamp);
-            registration.RegisterUnobservableCommand<PassTimeRequestDto, PassTimeResponseDto>("PassTime", PassTime);
-            registration.RegisterUnobservableCommand<PassStringRequestDto, PassStringResponseDto>("PassString", PassString);
-            registration.RegisterUnobservableCommand<PassStreamRequestDto, PassStreamResponseDto>("PassStream", PassStream);
+            registration.RegisterUnobservableCommand<PassBoolRequestDto, PassBoolResponseDto>("PassBool", PassBool, TestServerSerializers.PassBoolRequestDto, TestServerSerializers.PassBoolResponseDto);
+            registration.RegisterUnobservableCommand<PassDoubleRequestDto, PassDoubleResponseDto>("PassDouble", PassDouble, TestServerSerializers.PassDoubleRequestDto, TestServerSerializers.PassDoubleResponseDto);
+            registration.RegisterUnobservableCommand<PassLongRequestDto, PassLongResponseDto>("PassLong", PassLong, TestServerSerializers.PassLongRequestDto, TestServerSerializers.PassLongResponseDto);
+            registration.RegisterUnobservableCommand<PassIntRequestDto, PassIntResponseDto>("PassInt", PassInt, TestServerSerializers.PassIntRequestDto, TestServerSerializers.PassIntResponseDto);
+            registration.RegisterUnobservableCommand<PassTimestampRequestDto, PassTimestampResponseDto>("PassTimestamp", PassTimestamp, TestServerSerializers.PassTimestampRequestDto, TestServerSerializers.PassTimestampResponseDto);
+            registration.RegisterUnobservableCommand<PassTimeRequestDto, PassTimeResponseDto>("PassTime", PassTime, TestServerSerializers.PassTimeRequestDto, TestServerSerializers.PassTimeResponseDto);
+            registration.RegisterUnobservableCommand<PassStringRequestDto, PassStringResponseDto>("PassString", PassString, TestServerSerializers.PassStringRequestDto, TestServerSerializers.PassStringResponseDto);
+            registration.RegisterUnobservableCommand<PassStreamRequestDto, PassStreamResponseDto>("PassStream", PassStream, TestServerSerializers.PassStreamRequestDto, TestServerSerializers.PassStreamResponseDto);
             registration.RegisterBinaryCommandParameter("tecan.sila/integrationtests/TestServer/v1/Command/PassStream/Parameter/Value");
-            registration.RegisterUnobservableCommand<PassFileRequestDto, PassFileResponseDto>("PassFile", PassFile);
+            registration.RegisterUnobservableCommand<PassFileRequestDto, PassFileResponseDto>("PassFile", PassFile, TestServerSerializers.PassFileRequestDto, TestServerSerializers.PassFileResponseDto);
             registration.RegisterBinaryCommandParameter("tecan.sila/integrationtests/TestServer/v1/Command/PassFile/Parameter/File");
-            registration.RegisterUnobservableCommand<PassBytesRequestDto, PassBytesResponseDto>("PassBytes", PassBytes);
+            registration.RegisterUnobservableCommand<PassBytesRequestDto, PassBytesResponseDto>("PassBytes", PassBytes, TestServerSerializers.PassBytesRequestDto, TestServerSerializers.PassBytesResponseDto);
             registration.RegisterBinaryCommandParameter("tecan.sila/integrationtests/TestServer/v1/Command/PassBytes/Parameter/Bytes");
-            registration.RegisterUnobservableCommand<PassDynamicRequestDto, PassDynamicResponseDto>("PassDynamic", PassDynamic);
-            registration.RegisterUnobservableCommand<PassCollectionRequestDto, PassCollectionResponseDto>("PassCollection", PassCollection);
-            registration.RegisterUnobservableCommand<PassStructureRequestDto, PassStructureResponseDto>("PassStructure", PassStructure);
-            registration.RegisterObservableCommand<RunObservableRequestDto, int, RunObservableResponseDto>("RunObservable", RunObservable, ConvertRunObservableResponse, null);
-            registration.RegisterCommandWithIntermediates<RunIntermediateObservableCommandRequestDto, int, RunIntermediateObservableCommandIntermediateDto>("RunIntermediateObservableCommand", RunIntermediateObservableCommand, ConvertRunIntermediateObservableCommandIntermediate, null);
-            registration.RegisterObservableCommand<WaitForCancelOrThrowRequestDto>("WaitForCancelOrThrow", WaitForCancelOrThrow, ConvertWaitForCancelOrThrowExceptions);
-            registration.RegisterUnobservableCommand<RunIntoFailureRequestDto, EmptyRequest>("RunIntoFailure", RunIntoFailure);
-            registration.RegisterObservableCommand<RunIntoFailureObservablyRequestDto>("RunIntoFailureObservably", RunIntoFailureObservably, ConvertRunIntoFailureObservablyExceptions);
-            registration.RegisterUnobservableCommand<IsCancelledRequestDto, IsCancelledResponseDto>("IsCancelled", IsCancelled);
-            registration.RegisterUnobservableCommand<ThrowRuntimeExceptionRequestDto, EmptyRequest>("ThrowRuntimeException", ThrowRuntimeException);
-            registration.RegisterUnobservableCommand<SetDummyRequestDto, EmptyRequest>("SetDummy", SetDummy);
-            registration.RegisterObservableProperty("DummyValue", GetDummyValue, _implementation);
+            registration.RegisterUnobservableCommand<PassDynamicRequestDto, PassDynamicResponseDto>("PassDynamic", PassDynamic, TestServerSerializers.PassDynamicRequestDto, TestServerSerializers.PassDynamicResponseDto);
+            registration.RegisterUnobservableCommand<PassCollectionRequestDto, PassCollectionResponseDto>("PassCollection", PassCollection, TestServerSerializers.PassCollectionRequestDto, TestServerSerializers.PassCollectionResponseDto);
+            registration.RegisterUnobservableCommand<PassStructureRequestDto, PassStructureResponseDto>("PassStructure", PassStructure, TestServerSerializers.PassStructureRequestDto, TestServerSerializers.PassStructureResponseDto);
+            registration.RegisterObservableCommand<RunObservableRequestDto, int, RunObservableResponseDto>("RunObservable", RunObservable, ConvertRunObservableResponse, null, TestServerSerializers.RunObservableRequestDto, TestServerSerializers.RunObservableResponseDto);
+            registration.RegisterCommandWithIntermediates<RunIntermediateObservableCommandRequestDto, int, RunIntermediateObservableCommandIntermediateDto>("RunIntermediateObservableCommand", RunIntermediateObservableCommand, ConvertRunIntermediateObservableCommandIntermediate, null, TestServerSerializers.RunIntermediateObservableCommandRequestDto, TestServerSerializers.RunIntermediateObservableCommandIntermediateDto);
+            registration.RegisterObservableCommand<WaitForCancelOrThrowRequestDto>("WaitForCancelOrThrow", WaitForCancelOrThrow, ConvertWaitForCancelOrThrowExceptions, TestServerSerializers.WaitForCancelOrThrowRequestDto);
+            registration.RegisterUnobservableCommand<RunIntoFailureRequestDto, EmptyRequest>("RunIntoFailure", RunIntoFailure, TestServerSerializers.RunIntoFailureRequestDto, EmptyRequest.Marshaller);
+            registration.RegisterObservableCommand<RunIntoFailureObservablyRequestDto>("RunIntoFailureObservably", RunIntoFailureObservably, ConvertRunIntoFailureObservablyExceptions, TestServerSerializers.RunIntoFailureObservablyRequestDto);
+            registration.RegisterUnobservableCommand<IsCancelledRequestDto, IsCancelledResponseDto>("IsCancelled", IsCancelled, TestServerSerializers.IsCancelledRequestDto, TestServerSerializers.IsCancelledResponseDto);
+            registration.RegisterUnobservableCommand<ThrowRuntimeExceptionRequestDto, EmptyRequest>("ThrowRuntimeException", ThrowRuntimeException, TestServerSerializers.ThrowRuntimeExceptionRequestDto, EmptyRequest.Marshaller);
+            registration.RegisterUnobservableCommand<SetDummyRequestDto, EmptyRequest>("SetDummy", SetDummy, TestServerSerializers.SetDummyRequestDto, EmptyRequest.Marshaller);
+            registration.RegisterObservableProperty("DummyValue", GetDummyValue, _implementation, TestServerSerializers.PropertyResponseOfIntegerDto);
         }
         
         /// <summary>

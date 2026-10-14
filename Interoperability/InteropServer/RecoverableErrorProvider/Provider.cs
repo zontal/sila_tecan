@@ -82,7 +82,7 @@ namespace Tecan.Sila2.Interop.Server.RecoverableErrorProvider
         /// <param name="registration">The registration component to which the feature should be registered</param>
         public void Register(IServerBuilder registration)
         {
-            registration.RegisterObservableCommand<RaiseRecoverableErrorRequestDto, string, RaiseRecoverableErrorResponseDto>("RaiseRecoverableError", RaiseRecoverableError, ConvertRaiseRecoverableErrorResponse, ConvertRaiseRecoverableErrorExceptions);
+            registration.RegisterObservableCommand<RaiseRecoverableErrorRequestDto, string, RaiseRecoverableErrorResponseDto>("RaiseRecoverableError", RaiseRecoverableError, ConvertRaiseRecoverableErrorResponse, ConvertRaiseRecoverableErrorExceptions, RecoverableErrorProviderSerializers.RaiseRecoverableErrorRequestDto, RecoverableErrorProviderSerializers.RaiseRecoverableErrorResponseDto);
         }
         
         private RaiseRecoverableErrorResponseDto ConvertRaiseRecoverableErrorResponse(string result)

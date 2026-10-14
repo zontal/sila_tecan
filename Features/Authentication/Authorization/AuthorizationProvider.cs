@@ -156,7 +156,7 @@ namespace Tecan.Sila2.Authorization
         {
             try
             {
-                return Intercept(commandIdentifier, Tecan.Sila2.Server.Metadata.Extract<Tecan.Sila2.StringDto>(metadata, MetadataIdentifier).Extract(server));
+                return Intercept(commandIdentifier, Tecan.Sila2.Server.Metadata.Extract<Tecan.Sila2.StringDto>(metadata, MetadataIdentifier, AuthorizationServiceSerializers.PropertyResponseOfStringDto).Extract(server));
             } catch (InvalidAccessTokenException ex)
             {
                 throw server.ErrorHandling.CreateExecutionError("org.silastandard/core/AuthorizationService/v1/DefinedExecutionError/InvalidAccess" +

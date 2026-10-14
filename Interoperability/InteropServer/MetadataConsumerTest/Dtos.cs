@@ -7,6 +7,7 @@
 //     the code is regenerated.
 // </auto-generated>
 //------------------------------------------------------------------------------
+#pragma warning disable PBN9001
 
 using System;
 using Tecan.Sila2;
@@ -355,6 +356,109 @@ namespace Tecan.Sila2.Interop.Server.MetadataConsumerTest
                 errors = (errors + string.Format("Value has length {0} but should have been 1", Value.Value.Length));
             }
             return errors;
+        }
+    }
+    
+    /// <summary>
+    /// The compile-time protobuf-net type model for the data transfer objects of the Metadata Consumer Test feature
+    /// </summary>
+    [ProtoBuf.ProtoModelAttribute()]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(EchoStringMetadataRequestDto))]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(EchoStringMetadataResponseDto))]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(UnpackMetadataRequestDto))]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(UnpackMetadataResponseDto))]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(PropertyResponse<Tecan.Sila2.StringDto>))]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(ReceivedStringMetadataAsCharactersResponseDto))]
+    public sealed partial class MetadataConsumerTestTypeModel : ProtoBuf.Meta.TypeModel
+    {
+    }
+    
+    /// <summary>
+    /// Byte serializers for the data transfer objects of the Metadata Consumer Test feature that use the compile-time generated MetadataConsumerTestTypeModel
+    /// </summary>
+    public sealed class MetadataConsumerTestSerializers
+    {
+        
+        private static ByteSerializer<EchoStringMetadataRequestDto> _echoStringMetadataRequestDto = ByteSerializer.Create<EchoStringMetadataRequestDto>(MetadataConsumerTestTypeModel.Instance);
+        
+        private static ByteSerializer<EchoStringMetadataResponseDto> _echoStringMetadataResponseDto = ByteSerializer.Create<EchoStringMetadataResponseDto>(MetadataConsumerTestTypeModel.Instance);
+        
+        private static ByteSerializer<UnpackMetadataRequestDto> _unpackMetadataRequestDto = ByteSerializer.Create<UnpackMetadataRequestDto>(MetadataConsumerTestTypeModel.Instance);
+        
+        private static ByteSerializer<UnpackMetadataResponseDto> _unpackMetadataResponseDto = ByteSerializer.Create<UnpackMetadataResponseDto>(MetadataConsumerTestTypeModel.Instance);
+        
+        private static ByteSerializer<PropertyResponse<Tecan.Sila2.StringDto>> _propertyResponseOfStringDto = ByteSerializer.Create<PropertyResponse<Tecan.Sila2.StringDto>>(MetadataConsumerTestTypeModel.Instance);
+        
+        private static ByteSerializer<ReceivedStringMetadataAsCharactersResponseDto> _receivedStringMetadataAsCharactersResponseDto = ByteSerializer.Create<ReceivedStringMetadataAsCharactersResponseDto>(MetadataConsumerTestTypeModel.Instance);
+        
+        private MetadataConsumerTestSerializers()
+        {
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for EchoStringMetadataRequestDto
+        /// </summary>
+        public static ByteSerializer<EchoStringMetadataRequestDto> EchoStringMetadataRequestDto
+        {
+            get
+            {
+                return _echoStringMetadataRequestDto;
+            }
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for EchoStringMetadataResponseDto
+        /// </summary>
+        public static ByteSerializer<EchoStringMetadataResponseDto> EchoStringMetadataResponseDto
+        {
+            get
+            {
+                return _echoStringMetadataResponseDto;
+            }
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for UnpackMetadataRequestDto
+        /// </summary>
+        public static ByteSerializer<UnpackMetadataRequestDto> UnpackMetadataRequestDto
+        {
+            get
+            {
+                return _unpackMetadataRequestDto;
+            }
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for UnpackMetadataResponseDto
+        /// </summary>
+        public static ByteSerializer<UnpackMetadataResponseDto> UnpackMetadataResponseDto
+        {
+            get
+            {
+                return _unpackMetadataResponseDto;
+            }
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for PropertyResponseOfStringDto
+        /// </summary>
+        public static ByteSerializer<PropertyResponse<Tecan.Sila2.StringDto>> PropertyResponseOfStringDto
+        {
+            get
+            {
+                return _propertyResponseOfStringDto;
+            }
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for ReceivedStringMetadataAsCharactersResponseDto
+        /// </summary>
+        public static ByteSerializer<ReceivedStringMetadataAsCharactersResponseDto> ReceivedStringMetadataAsCharactersResponseDto
+        {
+            get
+            {
+                return _receivedStringMetadataAsCharactersResponseDto;
+            }
         }
     }
 }

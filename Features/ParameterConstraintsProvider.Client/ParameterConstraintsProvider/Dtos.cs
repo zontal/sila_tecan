@@ -7,6 +7,7 @@
 //     the code is regenerated.
 // </auto-generated>
 //------------------------------------------------------------------------------
+#pragma warning disable PBN9001
 
 using System;
 using Tecan.Sila2;
@@ -110,6 +111,39 @@ namespace Tecan.Sila2.ParameterConstraintsProvider.ParameterConstraintsProvider
                 errors = (errors + string.Format("CommandParameterIdentifier \'{0}\' is not a valid CommandParameterIdentifier", CommandParameterIdentifier.Value));
             }
             return errors;
+        }
+    }
+    
+    /// <summary>
+    /// The compile-time protobuf-net type model for the data transfer objects of the Parameter Constraints Provider feature
+    /// </summary>
+    [ProtoBuf.ProtoModelAttribute()]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(PropertyResponse<System.Collections.Generic.List<ParametersConstraintDto>>))]
+    public sealed partial class ParameterConstraintsProviderTypeModel : ProtoBuf.Meta.TypeModel
+    {
+    }
+    
+    /// <summary>
+    /// Byte serializers for the data transfer objects of the Parameter Constraints Provider feature that use the compile-time generated ParameterConstraintsProviderTypeModel
+    /// </summary>
+    public sealed class ParameterConstraintsProviderSerializers
+    {
+        
+        private static ByteSerializer<PropertyResponse<System.Collections.Generic.List<ParametersConstraintDto>>> _propertyResponseOfListOfParametersConstraintDto = ByteSerializer.Create<PropertyResponse<System.Collections.Generic.List<ParametersConstraintDto>>>(ParameterConstraintsProviderTypeModel.Instance);
+        
+        private ParameterConstraintsProviderSerializers()
+        {
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for PropertyResponseOfListOfParametersConstraintDto
+        /// </summary>
+        public static ByteSerializer<PropertyResponse<System.Collections.Generic.List<ParametersConstraintDto>>> PropertyResponseOfListOfParametersConstraintDto
+        {
+            get
+            {
+                return _propertyResponseOfListOfParametersConstraintDto;
+            }
         }
     }
 }

@@ -72,7 +72,7 @@ namespace Tecan.Sila2.Interop.Client.UnobservablePropertyTest.UnobservableProper
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/UnobservablePropertyTest/v1/Property/AnswerToEverything");
             try
             {
-                long response = _channel.ReadProperty<PropertyResponse<Tecan.Sila2.IntegerDto>>(_serviceName, "AnswerToEverything", "org.silastandard/test/UnobservablePropertyTest/v1/Property/AnswerToEverything", callInfo).Value.Extract(_executionManager.DownloadBinaryStore);
+                long response = _channel.ReadProperty<PropertyResponse<Tecan.Sila2.IntegerDto>>(_serviceName, "AnswerToEverything", "org.silastandard/test/UnobservablePropertyTest/v1/Property/AnswerToEverything", callInfo, UnobservablePropertyTestSerializers.PropertyResponseOfIntegerDto).Value.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -88,7 +88,7 @@ namespace Tecan.Sila2.Interop.Client.UnobservablePropertyTest.UnobservableProper
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/UnobservablePropertyTest/v1/Property/SecondsSince1970");
             try
             {
-                long response = _channel.ReadProperty<PropertyResponse<Tecan.Sila2.IntegerDto>>(_serviceName, "SecondsSince1970", "org.silastandard/test/UnobservablePropertyTest/v1/Property/SecondsSince1970", callInfo).Value.Extract(_executionManager.DownloadBinaryStore);
+                long response = _channel.ReadProperty<PropertyResponse<Tecan.Sila2.IntegerDto>>(_serviceName, "SecondsSince1970", "org.silastandard/test/UnobservablePropertyTest/v1/Property/SecondsSince1970", callInfo, UnobservablePropertyTestSerializers.PropertyResponseOfIntegerDto).Value.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)

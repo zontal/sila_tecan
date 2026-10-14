@@ -7,6 +7,7 @@
 //     the code is regenerated.
 // </auto-generated>
 //------------------------------------------------------------------------------
+#pragma warning disable PBN9001
 
 using System;
 using Tecan.Sila2;
@@ -501,6 +502,151 @@ namespace Tecan.Sila2.Interop.Client.BinaryTransferTest.BinaryTransferTest
         {
             return (("" + Argument.Require(Binary, "Binary")) 
                         + Argument.Require(StringMetadata, "StringMetadata"));
+        }
+    }
+    
+    /// <summary>
+    /// The compile-time protobuf-net type model for the data transfer objects of the Binary Transfer Test feature
+    /// </summary>
+    [ProtoBuf.ProtoModelAttribute()]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(EchoBinaryValueRequestDto))]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(EchoBinaryValueResponseDto))]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(EchoBinariesObservablyRequestDto))]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(EchoBinariesObservablyIntermediateDto))]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(EchoBinariesObservablyResponseDto))]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(EchoBinaryAndMetadataStringRequestDto))]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(EchoBinaryAndMetadataStringResponseDto))]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(PropertyResponse<Tecan.Sila2.BinaryDto>))]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(PropertyResponse<Tecan.Sila2.StringDto>))]
+    public sealed partial class BinaryTransferTestTypeModel : ProtoBuf.Meta.TypeModel
+    {
+    }
+    
+    /// <summary>
+    /// Byte serializers for the data transfer objects of the Binary Transfer Test feature that use the compile-time generated BinaryTransferTestTypeModel
+    /// </summary>
+    public sealed class BinaryTransferTestSerializers
+    {
+        
+        private static ByteSerializer<EchoBinaryValueRequestDto> _echoBinaryValueRequestDto = ByteSerializer.Create<EchoBinaryValueRequestDto>(BinaryTransferTestTypeModel.Instance);
+        
+        private static ByteSerializer<EchoBinaryValueResponseDto> _echoBinaryValueResponseDto = ByteSerializer.Create<EchoBinaryValueResponseDto>(BinaryTransferTestTypeModel.Instance);
+        
+        private static ByteSerializer<EchoBinariesObservablyRequestDto> _echoBinariesObservablyRequestDto = ByteSerializer.Create<EchoBinariesObservablyRequestDto>(BinaryTransferTestTypeModel.Instance);
+        
+        private static ByteSerializer<EchoBinariesObservablyIntermediateDto> _echoBinariesObservablyIntermediateDto = ByteSerializer.Create<EchoBinariesObservablyIntermediateDto>(BinaryTransferTestTypeModel.Instance);
+        
+        private static ByteSerializer<EchoBinariesObservablyResponseDto> _echoBinariesObservablyResponseDto = ByteSerializer.Create<EchoBinariesObservablyResponseDto>(BinaryTransferTestTypeModel.Instance);
+        
+        private static ByteSerializer<EchoBinaryAndMetadataStringRequestDto> _echoBinaryAndMetadataStringRequestDto = ByteSerializer.Create<EchoBinaryAndMetadataStringRequestDto>(BinaryTransferTestTypeModel.Instance);
+        
+        private static ByteSerializer<EchoBinaryAndMetadataStringResponseDto> _echoBinaryAndMetadataStringResponseDto = ByteSerializer.Create<EchoBinaryAndMetadataStringResponseDto>(BinaryTransferTestTypeModel.Instance);
+        
+        private static ByteSerializer<PropertyResponse<Tecan.Sila2.BinaryDto>> _propertyResponseOfBinaryDto = ByteSerializer.Create<PropertyResponse<Tecan.Sila2.BinaryDto>>(BinaryTransferTestTypeModel.Instance);
+        
+        private static ByteSerializer<PropertyResponse<Tecan.Sila2.StringDto>> _propertyResponseOfStringDto = ByteSerializer.Create<PropertyResponse<Tecan.Sila2.StringDto>>(BinaryTransferTestTypeModel.Instance);
+        
+        private BinaryTransferTestSerializers()
+        {
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for EchoBinaryValueRequestDto
+        /// </summary>
+        public static ByteSerializer<EchoBinaryValueRequestDto> EchoBinaryValueRequestDto
+        {
+            get
+            {
+                return _echoBinaryValueRequestDto;
+            }
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for EchoBinaryValueResponseDto
+        /// </summary>
+        public static ByteSerializer<EchoBinaryValueResponseDto> EchoBinaryValueResponseDto
+        {
+            get
+            {
+                return _echoBinaryValueResponseDto;
+            }
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for EchoBinariesObservablyRequestDto
+        /// </summary>
+        public static ByteSerializer<EchoBinariesObservablyRequestDto> EchoBinariesObservablyRequestDto
+        {
+            get
+            {
+                return _echoBinariesObservablyRequestDto;
+            }
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for EchoBinariesObservablyIntermediateDto
+        /// </summary>
+        public static ByteSerializer<EchoBinariesObservablyIntermediateDto> EchoBinariesObservablyIntermediateDto
+        {
+            get
+            {
+                return _echoBinariesObservablyIntermediateDto;
+            }
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for EchoBinariesObservablyResponseDto
+        /// </summary>
+        public static ByteSerializer<EchoBinariesObservablyResponseDto> EchoBinariesObservablyResponseDto
+        {
+            get
+            {
+                return _echoBinariesObservablyResponseDto;
+            }
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for EchoBinaryAndMetadataStringRequestDto
+        /// </summary>
+        public static ByteSerializer<EchoBinaryAndMetadataStringRequestDto> EchoBinaryAndMetadataStringRequestDto
+        {
+            get
+            {
+                return _echoBinaryAndMetadataStringRequestDto;
+            }
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for EchoBinaryAndMetadataStringResponseDto
+        /// </summary>
+        public static ByteSerializer<EchoBinaryAndMetadataStringResponseDto> EchoBinaryAndMetadataStringResponseDto
+        {
+            get
+            {
+                return _echoBinaryAndMetadataStringResponseDto;
+            }
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for PropertyResponseOfBinaryDto
+        /// </summary>
+        public static ByteSerializer<PropertyResponse<Tecan.Sila2.BinaryDto>> PropertyResponseOfBinaryDto
+        {
+            get
+            {
+                return _propertyResponseOfBinaryDto;
+            }
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for PropertyResponseOfStringDto
+        /// </summary>
+        public static ByteSerializer<PropertyResponse<Tecan.Sila2.StringDto>> PropertyResponseOfStringDto
+        {
+            get
+            {
+                return _propertyResponseOfStringDto;
+            }
         }
     }
 }

@@ -7,6 +7,7 @@
 //     the code is regenerated.
 // </auto-generated>
 //------------------------------------------------------------------------------
+#pragma warning disable PBN9001
 
 using System;
 using Tecan.Sila2;
@@ -381,6 +382,95 @@ namespace Tecan.Sila2.Interop.Client.ObservableCommandTest.ObservableCommandTest
         public string GetValidationErrors()
         {
             return ("" + Argument.Require(ReceivedValue, "ReceivedValue"));
+        }
+    }
+    
+    /// <summary>
+    /// The compile-time protobuf-net type model for the data transfer objects of the Observable Command Test feature
+    /// </summary>
+    [ProtoBuf.ProtoModelAttribute()]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(CountRequestDto))]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(CountIntermediateDto))]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(CountResponseDto))]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(EchoValueAfterDelayRequestDto))]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(EchoValueAfterDelayResponseDto))]
+    public sealed partial class ObservableCommandTestTypeModel : ProtoBuf.Meta.TypeModel
+    {
+    }
+    
+    /// <summary>
+    /// Byte serializers for the data transfer objects of the Observable Command Test feature that use the compile-time generated ObservableCommandTestTypeModel
+    /// </summary>
+    public sealed class ObservableCommandTestSerializers
+    {
+        
+        private static ByteSerializer<CountRequestDto> _countRequestDto = ByteSerializer.Create<CountRequestDto>(ObservableCommandTestTypeModel.Instance);
+        
+        private static ByteSerializer<CountIntermediateDto> _countIntermediateDto = ByteSerializer.Create<CountIntermediateDto>(ObservableCommandTestTypeModel.Instance);
+        
+        private static ByteSerializer<CountResponseDto> _countResponseDto = ByteSerializer.Create<CountResponseDto>(ObservableCommandTestTypeModel.Instance);
+        
+        private static ByteSerializer<EchoValueAfterDelayRequestDto> _echoValueAfterDelayRequestDto = ByteSerializer.Create<EchoValueAfterDelayRequestDto>(ObservableCommandTestTypeModel.Instance);
+        
+        private static ByteSerializer<EchoValueAfterDelayResponseDto> _echoValueAfterDelayResponseDto = ByteSerializer.Create<EchoValueAfterDelayResponseDto>(ObservableCommandTestTypeModel.Instance);
+        
+        private ObservableCommandTestSerializers()
+        {
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for CountRequestDto
+        /// </summary>
+        public static ByteSerializer<CountRequestDto> CountRequestDto
+        {
+            get
+            {
+                return _countRequestDto;
+            }
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for CountIntermediateDto
+        /// </summary>
+        public static ByteSerializer<CountIntermediateDto> CountIntermediateDto
+        {
+            get
+            {
+                return _countIntermediateDto;
+            }
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for CountResponseDto
+        /// </summary>
+        public static ByteSerializer<CountResponseDto> CountResponseDto
+        {
+            get
+            {
+                return _countResponseDto;
+            }
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for EchoValueAfterDelayRequestDto
+        /// </summary>
+        public static ByteSerializer<EchoValueAfterDelayRequestDto> EchoValueAfterDelayRequestDto
+        {
+            get
+            {
+                return _echoValueAfterDelayRequestDto;
+            }
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for EchoValueAfterDelayResponseDto
+        /// </summary>
+        public static ByteSerializer<EchoValueAfterDelayResponseDto> EchoValueAfterDelayResponseDto
+        {
+            get
+            {
+                return _echoValueAfterDelayResponseDto;
+            }
         }
     }
 }

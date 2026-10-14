@@ -1,16 +1,15 @@
 ﻿using System;
 using System.CodeDom;
-using System.CodeDom.Compiler;
 using System.IO;
 using System.Reflection;
 using System.Security.Cryptography;
 using System.Security.Cryptography.Xml;
 using System.Text;
 using System.Text.RegularExpressions;
-using Microsoft.CSharp;
 using NUnit.Framework;
 using Tecan.Sila2.Generator.Contracts;
 using Tecan.Sila2.Generator.Generators;
+using Tecan.Sila2.Generator.Helper;
 using Tecan.Sila2.Generator.TypeTranslation;
 using Tecan.Sila2.Generator.Validation;
 
@@ -18,8 +17,6 @@ namespace Tecan.Sila2.Generator.Test
 {
     public abstract class CodeGeneratorFixtureBase
     {
-        private static readonly CSharpCodeProvider cSharp = new CSharpCodeProvider();
-
         private ITypeTranslationProvider _typeTranslationProvider;
         private IAmbiguityResolver _ambiguityResolver;
         private ICodeNameRegistry _codeNameRegistry;
@@ -159,21 +156,8 @@ namespace Tecan.Sila2.Generator.Test
 
         private static void GenerateAndCompare( CodeCompileUnit unit, string referenceFile )
         {
-            var options = new CodeGeneratorOptions
-            {
-                BlankLinesBetweenMembers = true,
-                BracingStyle = "C",
-                ElseOnClosing = true,
-                IndentString = "    ",
-                VerbatimOrder = false
-            };
-            using(var writer = new StringWriter())
-            {
-                cSharp.GenerateCodeFromCompileUnit( unit, writer, options );
-
-                var generatedCode = writer.ToString();
-                AssertEqualIgnoreWhitespaceAndParentheses( File.ReadAllText( referenceFile ), generatedCode );
-            }
+            var generatedCode = CodeGenerationHelper.GenerateCSharpCode( unit );
+            AssertEqualIgnoreWhitespaceAndParentheses( File.ReadAllText( referenceFile ), generatedCode );
         }
 
         private static void AssertEqualIgnoreWhitespaceAndParentheses( string reference, string actual )

@@ -52,7 +52,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
                     "ngth");
             try
             {
-                _channel.ExecuteUnobservableCommand<CheckStringConstraintLengthRequestDto>(_serviceName, "CheckStringConstraintLength", request, callInfo);
+                _channel.ExecuteUnobservableCommand<CheckStringConstraintLengthRequestDto>(_serviceName, "CheckStringConstraintLength", request, callInfo, ParameterConstraintsTestSerializers.CheckStringConstraintLengthRequestDto);
                 callInfo.FinishSuccessful();
                 return;
             } catch (System.Exception ex)
@@ -75,7 +75,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
                     "nimalLength");
             try
             {
-                _channel.ExecuteUnobservableCommand<CheckStringConstraintMinimalLengthRequestDto>(_serviceName, "CheckStringConstraintMinimalLength", request, callInfo);
+                _channel.ExecuteUnobservableCommand<CheckStringConstraintMinimalLengthRequestDto>(_serviceName, "CheckStringConstraintMinimalLength", request, callInfo, ParameterConstraintsTestSerializers.CheckStringConstraintMinimalLengthRequestDto);
                 callInfo.FinishSuccessful();
                 return;
             } catch (System.Exception ex)
@@ -98,7 +98,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
                     "ximalLength");
             try
             {
-                _channel.ExecuteUnobservableCommand<CheckStringConstraintMaximalLengthRequestDto>(_serviceName, "CheckStringConstraintMaximalLength", request, callInfo);
+                _channel.ExecuteUnobservableCommand<CheckStringConstraintMaximalLengthRequestDto>(_serviceName, "CheckStringConstraintMaximalLength", request, callInfo, ParameterConstraintsTestSerializers.CheckStringConstraintMaximalLengthRequestDto);
                 callInfo.FinishSuccessful();
                 return;
             } catch (System.Exception ex)
@@ -121,7 +121,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
                     "nMaxLength");
             try
             {
-                _channel.ExecuteUnobservableCommand<CheckStringConstraintMinMaxLengthRequestDto>(_serviceName, "CheckStringConstraintMinMaxLength", request, callInfo);
+                _channel.ExecuteUnobservableCommand<CheckStringConstraintMinMaxLengthRequestDto>(_serviceName, "CheckStringConstraintMinMaxLength", request, callInfo, ParameterConstraintsTestSerializers.CheckStringConstraintMinMaxLengthRequestDto);
                 callInfo.FinishSuccessful();
                 return;
             } catch (System.Exception ex)
@@ -144,7 +144,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
                     "t");
             try
             {
-                _channel.ExecuteUnobservableCommand<CheckStringConstraintSetRequestDto>(_serviceName, "CheckStringConstraintSet", request, callInfo);
+                _channel.ExecuteUnobservableCommand<CheckStringConstraintSetRequestDto>(_serviceName, "CheckStringConstraintSet", request, callInfo, ParameterConstraintsTestSerializers.CheckStringConstraintSetRequestDto);
                 callInfo.FinishSuccessful();
                 return;
             } catch (System.Exception ex)
@@ -167,7 +167,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
                     "ttern");
             try
             {
-                _channel.ExecuteUnobservableCommand<CheckStringConstraintPatternRequestDto>(_serviceName, "CheckStringConstraintPattern", request, callInfo);
+                _channel.ExecuteUnobservableCommand<CheckStringConstraintPatternRequestDto>(_serviceName, "CheckStringConstraintPattern", request, callInfo, ParameterConstraintsTestSerializers.CheckStringConstraintPatternRequestDto);
                 callInfo.FinishSuccessful();
                 return;
             } catch (System.Exception ex)
@@ -190,7 +190,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
                     "ntentType");
             try
             {
-                _channel.ExecuteUnobservableCommand<CheckStringConstraintContentTypeRequestDto>(_serviceName, "CheckStringConstraintContentType", request, callInfo);
+                _channel.ExecuteUnobservableCommand<CheckStringConstraintContentTypeRequestDto>(_serviceName, "CheckStringConstraintContentType", request, callInfo, ParameterConstraintsTestSerializers.CheckStringConstraintContentTypeRequestDto);
                 callInfo.FinishSuccessful();
                 return;
             } catch (System.Exception ex)
@@ -221,7 +221,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
                     "llyQualifiedIdentifier");
             try
             {
-                _channel.ExecuteUnobservableCommand<CheckStringConstraintFullyQualifiedIdentifierRequestDto>(_serviceName, "CheckStringConstraintFullyQualifiedIdentifier", request, callInfo);
+                _channel.ExecuteUnobservableCommand<CheckStringConstraintFullyQualifiedIdentifierRequestDto>(_serviceName, "CheckStringConstraintFullyQualifiedIdentifier", request, callInfo, ParameterConstraintsTestSerializers.CheckStringConstraintFullyQualifiedIdentifierRequestDto);
                 callInfo.FinishSuccessful();
                 return;
             } catch (System.Exception ex)
@@ -244,7 +244,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
                     "hema");
             try
             {
-                _channel.ExecuteUnobservableCommand<CheckStringConstraintSchemaRequestDto>(_serviceName, "CheckStringConstraintSchema", request, callInfo);
+                _channel.ExecuteUnobservableCommand<CheckStringConstraintSchemaRequestDto>(_serviceName, "CheckStringConstraintSchema", request, callInfo, ParameterConstraintsTestSerializers.CheckStringConstraintSchemaRequestDto);
                 callInfo.FinishSuccessful();
                 return;
             } catch (System.Exception ex)
@@ -267,7 +267,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
                     "et");
             try
             {
-                _channel.ExecuteUnobservableCommand<CheckIntegerConstraintSetRequestDto>(_serviceName, "CheckIntegerConstraintSet", request, callInfo);
+                _channel.ExecuteUnobservableCommand<CheckIntegerConstraintSetRequestDto>(_serviceName, "CheckIntegerConstraintSet", request, callInfo, ParameterConstraintsTestSerializers.CheckIntegerConstraintSetRequestDto);
                 callInfo.FinishSuccessful();
                 return;
             } catch (System.Exception ex)
@@ -290,7 +290,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
                     "tedIntegerLimit");
             try
             {
-                _channel.ExecuteUnobservableCommand<CheckScientificallyNotatedIntegerLimitRequestDto>(_serviceName, "CheckScientificallyNotatedIntegerLimit", request, callInfo);
+                _channel.ExecuteUnobservableCommand<CheckScientificallyNotatedIntegerLimitRequestDto>(_serviceName, "CheckScientificallyNotatedIntegerLimit", request, callInfo, ParameterConstraintsTestSerializers.CheckScientificallyNotatedIntegerLimitRequestDto);
                 callInfo.FinishSuccessful();
                 return;
             } catch (System.Exception ex)
@@ -313,7 +313,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
                     "aximalExclusive");
             try
             {
-                _channel.ExecuteUnobservableCommand<CheckIntegerConstraintMaximalExclusiveRequestDto>(_serviceName, "CheckIntegerConstraintMaximalExclusive", request, callInfo);
+                _channel.ExecuteUnobservableCommand<CheckIntegerConstraintMaximalExclusiveRequestDto>(_serviceName, "CheckIntegerConstraintMaximalExclusive", request, callInfo, ParameterConstraintsTestSerializers.CheckIntegerConstraintMaximalExclusiveRequestDto);
                 callInfo.FinishSuccessful();
                 return;
             } catch (System.Exception ex)
@@ -336,7 +336,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
                     "aximalInclusive");
             try
             {
-                _channel.ExecuteUnobservableCommand<CheckIntegerConstraintMaximalInclusiveRequestDto>(_serviceName, "CheckIntegerConstraintMaximalInclusive", request, callInfo);
+                _channel.ExecuteUnobservableCommand<CheckIntegerConstraintMaximalInclusiveRequestDto>(_serviceName, "CheckIntegerConstraintMaximalInclusive", request, callInfo, ParameterConstraintsTestSerializers.CheckIntegerConstraintMaximalInclusiveRequestDto);
                 callInfo.FinishSuccessful();
                 return;
             } catch (System.Exception ex)
@@ -359,7 +359,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
                     "inimalExclusive");
             try
             {
-                _channel.ExecuteUnobservableCommand<CheckIntegerConstraintMinimalExclusiveRequestDto>(_serviceName, "CheckIntegerConstraintMinimalExclusive", request, callInfo);
+                _channel.ExecuteUnobservableCommand<CheckIntegerConstraintMinimalExclusiveRequestDto>(_serviceName, "CheckIntegerConstraintMinimalExclusive", request, callInfo, ParameterConstraintsTestSerializers.CheckIntegerConstraintMinimalExclusiveRequestDto);
                 callInfo.FinishSuccessful();
                 return;
             } catch (System.Exception ex)
@@ -382,7 +382,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
                     "inimalInclusive");
             try
             {
-                _channel.ExecuteUnobservableCommand<CheckIntegerConstraintMinimalInclusiveRequestDto>(_serviceName, "CheckIntegerConstraintMinimalInclusive", request, callInfo);
+                _channel.ExecuteUnobservableCommand<CheckIntegerConstraintMinimalInclusiveRequestDto>(_serviceName, "CheckIntegerConstraintMinimalInclusive", request, callInfo, ParameterConstraintsTestSerializers.CheckIntegerConstraintMinimalInclusiveRequestDto);
                 callInfo.FinishSuccessful();
                 return;
             } catch (System.Exception ex)
@@ -405,7 +405,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
                     "inMax");
             try
             {
-                _channel.ExecuteUnobservableCommand<CheckIntegerConstraintMinMaxRequestDto>(_serviceName, "CheckIntegerConstraintMinMax", request, callInfo);
+                _channel.ExecuteUnobservableCommand<CheckIntegerConstraintMinMaxRequestDto>(_serviceName, "CheckIntegerConstraintMinMax", request, callInfo, ParameterConstraintsTestSerializers.CheckIntegerConstraintMinMaxRequestDto);
                 callInfo.FinishSuccessful();
                 return;
             } catch (System.Exception ex)
@@ -428,7 +428,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
                     "nit");
             try
             {
-                _channel.ExecuteUnobservableCommand<CheckIntegerConstraintUnitRequestDto>(_serviceName, "CheckIntegerConstraintUnit", request, callInfo);
+                _channel.ExecuteUnobservableCommand<CheckIntegerConstraintUnitRequestDto>(_serviceName, "CheckIntegerConstraintUnit", request, callInfo, ParameterConstraintsTestSerializers.CheckIntegerConstraintUnitRequestDto);
                 callInfo.FinishSuccessful();
                 return;
             } catch (System.Exception ex)
@@ -450,7 +450,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckRealConstraintSet");
             try
             {
-                _channel.ExecuteUnobservableCommand<CheckRealConstraintSetRequestDto>(_serviceName, "CheckRealConstraintSet", request, callInfo);
+                _channel.ExecuteUnobservableCommand<CheckRealConstraintSetRequestDto>(_serviceName, "CheckRealConstraintSet", request, callInfo, ParameterConstraintsTestSerializers.CheckRealConstraintSetRequestDto);
                 callInfo.FinishSuccessful();
                 return;
             } catch (System.Exception ex)
@@ -473,7 +473,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
                     "tedRealLimit");
             try
             {
-                _channel.ExecuteUnobservableCommand<CheckScientificallyNotatedRealLimitRequestDto>(_serviceName, "CheckScientificallyNotatedRealLimit", request, callInfo);
+                _channel.ExecuteUnobservableCommand<CheckScientificallyNotatedRealLimitRequestDto>(_serviceName, "CheckScientificallyNotatedRealLimit", request, callInfo, ParameterConstraintsTestSerializers.CheckScientificallyNotatedRealLimitRequestDto);
                 callInfo.FinishSuccessful();
                 return;
             } catch (System.Exception ex)
@@ -496,7 +496,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
                     "malExclusive");
             try
             {
-                _channel.ExecuteUnobservableCommand<CheckRealConstraintMaximalExclusiveRequestDto>(_serviceName, "CheckRealConstraintMaximalExclusive", request, callInfo);
+                _channel.ExecuteUnobservableCommand<CheckRealConstraintMaximalExclusiveRequestDto>(_serviceName, "CheckRealConstraintMaximalExclusive", request, callInfo, ParameterConstraintsTestSerializers.CheckRealConstraintMaximalExclusiveRequestDto);
                 callInfo.FinishSuccessful();
                 return;
             } catch (System.Exception ex)
@@ -519,7 +519,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
                     "malInclusive");
             try
             {
-                _channel.ExecuteUnobservableCommand<CheckRealConstraintMaximalInclusiveRequestDto>(_serviceName, "CheckRealConstraintMaximalInclusive", request, callInfo);
+                _channel.ExecuteUnobservableCommand<CheckRealConstraintMaximalInclusiveRequestDto>(_serviceName, "CheckRealConstraintMaximalInclusive", request, callInfo, ParameterConstraintsTestSerializers.CheckRealConstraintMaximalInclusiveRequestDto);
                 callInfo.FinishSuccessful();
                 return;
             } catch (System.Exception ex)
@@ -542,7 +542,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
                     "malExclusive");
             try
             {
-                _channel.ExecuteUnobservableCommand<CheckRealConstraintMinimalExclusiveRequestDto>(_serviceName, "CheckRealConstraintMinimalExclusive", request, callInfo);
+                _channel.ExecuteUnobservableCommand<CheckRealConstraintMinimalExclusiveRequestDto>(_serviceName, "CheckRealConstraintMinimalExclusive", request, callInfo, ParameterConstraintsTestSerializers.CheckRealConstraintMinimalExclusiveRequestDto);
                 callInfo.FinishSuccessful();
                 return;
             } catch (System.Exception ex)
@@ -565,7 +565,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
                     "malInclusive");
             try
             {
-                _channel.ExecuteUnobservableCommand<CheckRealConstraintMinimalInclusiveRequestDto>(_serviceName, "CheckRealConstraintMinimalInclusive", request, callInfo);
+                _channel.ExecuteUnobservableCommand<CheckRealConstraintMinimalInclusiveRequestDto>(_serviceName, "CheckRealConstraintMinimalInclusive", request, callInfo, ParameterConstraintsTestSerializers.CheckRealConstraintMinimalInclusiveRequestDto);
                 callInfo.FinishSuccessful();
                 return;
             } catch (System.Exception ex)
@@ -588,7 +588,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
                     "ax");
             try
             {
-                _channel.ExecuteUnobservableCommand<CheckRealConstraintMinMaxRequestDto>(_serviceName, "CheckRealConstraintMinMax", request, callInfo);
+                _channel.ExecuteUnobservableCommand<CheckRealConstraintMinMaxRequestDto>(_serviceName, "CheckRealConstraintMinMax", request, callInfo, ParameterConstraintsTestSerializers.CheckRealConstraintMinMaxRequestDto);
                 callInfo.FinishSuccessful();
                 return;
             } catch (System.Exception ex)
@@ -611,7 +611,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
                     "");
             try
             {
-                _channel.ExecuteUnobservableCommand<CheckRealConstraintUnitRequestDto>(_serviceName, "CheckRealConstraintUnit", request, callInfo);
+                _channel.ExecuteUnobservableCommand<CheckRealConstraintUnitRequestDto>(_serviceName, "CheckRealConstraintUnit", request, callInfo, ParameterConstraintsTestSerializers.CheckRealConstraintUnitRequestDto);
                 callInfo.FinishSuccessful();
                 return;
             } catch (System.Exception ex)
@@ -633,7 +633,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckDateConstraintSet");
             try
             {
-                _channel.ExecuteUnobservableCommand<CheckDateConstraintSetRequestDto>(_serviceName, "CheckDateConstraintSet", request, callInfo);
+                _channel.ExecuteUnobservableCommand<CheckDateConstraintSetRequestDto>(_serviceName, "CheckDateConstraintSet", request, callInfo, ParameterConstraintsTestSerializers.CheckDateConstraintSetRequestDto);
                 callInfo.FinishSuccessful();
                 return;
             } catch (System.Exception ex)
@@ -656,7 +656,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
                     "malExclusive");
             try
             {
-                _channel.ExecuteUnobservableCommand<CheckDateConstraintMaximalExclusiveRequestDto>(_serviceName, "CheckDateConstraintMaximalExclusive", request, callInfo);
+                _channel.ExecuteUnobservableCommand<CheckDateConstraintMaximalExclusiveRequestDto>(_serviceName, "CheckDateConstraintMaximalExclusive", request, callInfo, ParameterConstraintsTestSerializers.CheckDateConstraintMaximalExclusiveRequestDto);
                 callInfo.FinishSuccessful();
                 return;
             } catch (System.Exception ex)
@@ -679,7 +679,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
                     "malInclusive");
             try
             {
-                _channel.ExecuteUnobservableCommand<CheckDateConstraintMaximalInclusiveRequestDto>(_serviceName, "CheckDateConstraintMaximalInclusive", request, callInfo);
+                _channel.ExecuteUnobservableCommand<CheckDateConstraintMaximalInclusiveRequestDto>(_serviceName, "CheckDateConstraintMaximalInclusive", request, callInfo, ParameterConstraintsTestSerializers.CheckDateConstraintMaximalInclusiveRequestDto);
                 callInfo.FinishSuccessful();
                 return;
             } catch (System.Exception ex)
@@ -702,7 +702,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
                     "malExclusive");
             try
             {
-                _channel.ExecuteUnobservableCommand<CheckDateConstraintMinimalExclusiveRequestDto>(_serviceName, "CheckDateConstraintMinimalExclusive", request, callInfo);
+                _channel.ExecuteUnobservableCommand<CheckDateConstraintMinimalExclusiveRequestDto>(_serviceName, "CheckDateConstraintMinimalExclusive", request, callInfo, ParameterConstraintsTestSerializers.CheckDateConstraintMinimalExclusiveRequestDto);
                 callInfo.FinishSuccessful();
                 return;
             } catch (System.Exception ex)
@@ -725,7 +725,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
                     "malInclusive");
             try
             {
-                _channel.ExecuteUnobservableCommand<CheckDateConstraintMinimalInclusiveRequestDto>(_serviceName, "CheckDateConstraintMinimalInclusive", request, callInfo);
+                _channel.ExecuteUnobservableCommand<CheckDateConstraintMinimalInclusiveRequestDto>(_serviceName, "CheckDateConstraintMinimalInclusive", request, callInfo, ParameterConstraintsTestSerializers.CheckDateConstraintMinimalInclusiveRequestDto);
                 callInfo.FinishSuccessful();
                 return;
             } catch (System.Exception ex)
@@ -748,7 +748,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
                     "ax");
             try
             {
-                _channel.ExecuteUnobservableCommand<CheckDateConstraintMinMaxRequestDto>(_serviceName, "CheckDateConstraintMinMax", request, callInfo);
+                _channel.ExecuteUnobservableCommand<CheckDateConstraintMinMaxRequestDto>(_serviceName, "CheckDateConstraintMinMax", request, callInfo, ParameterConstraintsTestSerializers.CheckDateConstraintMinMaxRequestDto);
                 callInfo.FinishSuccessful();
                 return;
             } catch (System.Exception ex)
@@ -770,7 +770,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/ParameterConstraintsTest/v1/Command/CheckTimeConstraintSet");
             try
             {
-                _channel.ExecuteUnobservableCommand<CheckTimeConstraintSetRequestDto>(_serviceName, "CheckTimeConstraintSet", request, callInfo);
+                _channel.ExecuteUnobservableCommand<CheckTimeConstraintSetRequestDto>(_serviceName, "CheckTimeConstraintSet", request, callInfo, ParameterConstraintsTestSerializers.CheckTimeConstraintSetRequestDto);
                 callInfo.FinishSuccessful();
                 return;
             } catch (System.Exception ex)
@@ -793,7 +793,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
                     "malExclusive");
             try
             {
-                _channel.ExecuteUnobservableCommand<CheckTimeConstraintMaximalExclusiveRequestDto>(_serviceName, "CheckTimeConstraintMaximalExclusive", request, callInfo);
+                _channel.ExecuteUnobservableCommand<CheckTimeConstraintMaximalExclusiveRequestDto>(_serviceName, "CheckTimeConstraintMaximalExclusive", request, callInfo, ParameterConstraintsTestSerializers.CheckTimeConstraintMaximalExclusiveRequestDto);
                 callInfo.FinishSuccessful();
                 return;
             } catch (System.Exception ex)
@@ -816,7 +816,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
                     "malInclusive");
             try
             {
-                _channel.ExecuteUnobservableCommand<CheckTimeConstraintMaximalInclusiveRequestDto>(_serviceName, "CheckTimeConstraintMaximalInclusive", request, callInfo);
+                _channel.ExecuteUnobservableCommand<CheckTimeConstraintMaximalInclusiveRequestDto>(_serviceName, "CheckTimeConstraintMaximalInclusive", request, callInfo, ParameterConstraintsTestSerializers.CheckTimeConstraintMaximalInclusiveRequestDto);
                 callInfo.FinishSuccessful();
                 return;
             } catch (System.Exception ex)
@@ -839,7 +839,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
                     "malExclusive");
             try
             {
-                _channel.ExecuteUnobservableCommand<CheckTimeConstraintMinimalExclusiveRequestDto>(_serviceName, "CheckTimeConstraintMinimalExclusive", request, callInfo);
+                _channel.ExecuteUnobservableCommand<CheckTimeConstraintMinimalExclusiveRequestDto>(_serviceName, "CheckTimeConstraintMinimalExclusive", request, callInfo, ParameterConstraintsTestSerializers.CheckTimeConstraintMinimalExclusiveRequestDto);
                 callInfo.FinishSuccessful();
                 return;
             } catch (System.Exception ex)
@@ -862,7 +862,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
                     "malInclusive");
             try
             {
-                _channel.ExecuteUnobservableCommand<CheckTimeConstraintMinimalInclusiveRequestDto>(_serviceName, "CheckTimeConstraintMinimalInclusive", request, callInfo);
+                _channel.ExecuteUnobservableCommand<CheckTimeConstraintMinimalInclusiveRequestDto>(_serviceName, "CheckTimeConstraintMinimalInclusive", request, callInfo, ParameterConstraintsTestSerializers.CheckTimeConstraintMinimalInclusiveRequestDto);
                 callInfo.FinishSuccessful();
                 return;
             } catch (System.Exception ex)
@@ -885,7 +885,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
                     "ax");
             try
             {
-                _channel.ExecuteUnobservableCommand<CheckTimeConstraintMinMaxRequestDto>(_serviceName, "CheckTimeConstraintMinMax", request, callInfo);
+                _channel.ExecuteUnobservableCommand<CheckTimeConstraintMinMaxRequestDto>(_serviceName, "CheckTimeConstraintMinMax", request, callInfo, ParameterConstraintsTestSerializers.CheckTimeConstraintMinMaxRequestDto);
                 callInfo.FinishSuccessful();
                 return;
             } catch (System.Exception ex)
@@ -908,7 +908,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
                     "tSet");
             try
             {
-                _channel.ExecuteUnobservableCommand<CheckTimestampConstraintSetRequestDto>(_serviceName, "CheckTimestampConstraintSet", request, callInfo);
+                _channel.ExecuteUnobservableCommand<CheckTimestampConstraintSetRequestDto>(_serviceName, "CheckTimestampConstraintSet", request, callInfo, ParameterConstraintsTestSerializers.CheckTimestampConstraintSetRequestDto);
                 callInfo.FinishSuccessful();
                 return;
             } catch (System.Exception ex)
@@ -931,7 +931,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
                     "tMaximalExclusive");
             try
             {
-                _channel.ExecuteUnobservableCommand<CheckTimestampConstraintMaximalExclusiveRequestDto>(_serviceName, "CheckTimestampConstraintMaximalExclusive", request, callInfo);
+                _channel.ExecuteUnobservableCommand<CheckTimestampConstraintMaximalExclusiveRequestDto>(_serviceName, "CheckTimestampConstraintMaximalExclusive", request, callInfo, ParameterConstraintsTestSerializers.CheckTimestampConstraintMaximalExclusiveRequestDto);
                 callInfo.FinishSuccessful();
                 return;
             } catch (System.Exception ex)
@@ -954,7 +954,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
                     "tMaximalInclusive");
             try
             {
-                _channel.ExecuteUnobservableCommand<CheckTimestampConstraintMaximalInclusiveRequestDto>(_serviceName, "CheckTimestampConstraintMaximalInclusive", request, callInfo);
+                _channel.ExecuteUnobservableCommand<CheckTimestampConstraintMaximalInclusiveRequestDto>(_serviceName, "CheckTimestampConstraintMaximalInclusive", request, callInfo, ParameterConstraintsTestSerializers.CheckTimestampConstraintMaximalInclusiveRequestDto);
                 callInfo.FinishSuccessful();
                 return;
             } catch (System.Exception ex)
@@ -977,7 +977,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
                     "tMinimalExclusive");
             try
             {
-                _channel.ExecuteUnobservableCommand<CheckTimestampConstraintMinimalExclusiveRequestDto>(_serviceName, "CheckTimestampConstraintMinimalExclusive", request, callInfo);
+                _channel.ExecuteUnobservableCommand<CheckTimestampConstraintMinimalExclusiveRequestDto>(_serviceName, "CheckTimestampConstraintMinimalExclusive", request, callInfo, ParameterConstraintsTestSerializers.CheckTimestampConstraintMinimalExclusiveRequestDto);
                 callInfo.FinishSuccessful();
                 return;
             } catch (System.Exception ex)
@@ -1000,7 +1000,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
                     "tMinimalInclusive");
             try
             {
-                _channel.ExecuteUnobservableCommand<CheckTimestampConstraintMinimalInclusiveRequestDto>(_serviceName, "CheckTimestampConstraintMinimalInclusive", request, callInfo);
+                _channel.ExecuteUnobservableCommand<CheckTimestampConstraintMinimalInclusiveRequestDto>(_serviceName, "CheckTimestampConstraintMinimalInclusive", request, callInfo, ParameterConstraintsTestSerializers.CheckTimestampConstraintMinimalInclusiveRequestDto);
                 callInfo.FinishSuccessful();
                 return;
             } catch (System.Exception ex)
@@ -1023,7 +1023,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
                     "tMinMax");
             try
             {
-                _channel.ExecuteUnobservableCommand<CheckTimestampConstraintMinMaxRequestDto>(_serviceName, "CheckTimestampConstraintMinMax", request, callInfo);
+                _channel.ExecuteUnobservableCommand<CheckTimestampConstraintMinMaxRequestDto>(_serviceName, "CheckTimestampConstraintMinMax", request, callInfo, ParameterConstraintsTestSerializers.CheckTimestampConstraintMinMaxRequestDto);
                 callInfo.FinishSuccessful();
                 return;
             } catch (System.Exception ex)
@@ -1046,7 +1046,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
                     "entCount");
             try
             {
-                _channel.ExecuteUnobservableCommand<CheckListConstraintElementCountRequestDto>(_serviceName, "CheckListConstraintElementCount", request, callInfo);
+                _channel.ExecuteUnobservableCommand<CheckListConstraintElementCountRequestDto>(_serviceName, "CheckListConstraintElementCount", request, callInfo, ParameterConstraintsTestSerializers.CheckListConstraintElementCountRequestDto);
                 callInfo.FinishSuccessful();
                 return;
             } catch (System.Exception ex)
@@ -1069,7 +1069,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
                     "malElementCount");
             try
             {
-                _channel.ExecuteUnobservableCommand<CheckListConstraintMinimalElementCountRequestDto>(_serviceName, "CheckListConstraintMinimalElementCount", request, callInfo);
+                _channel.ExecuteUnobservableCommand<CheckListConstraintMinimalElementCountRequestDto>(_serviceName, "CheckListConstraintMinimalElementCount", request, callInfo, ParameterConstraintsTestSerializers.CheckListConstraintMinimalElementCountRequestDto);
                 callInfo.FinishSuccessful();
                 return;
             } catch (System.Exception ex)
@@ -1092,7 +1092,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
                     "malElementCount");
             try
             {
-                _channel.ExecuteUnobservableCommand<CheckListConstraintMaximalElementCountRequestDto>(_serviceName, "CheckListConstraintMaximalElementCount", request, callInfo);
+                _channel.ExecuteUnobservableCommand<CheckListConstraintMaximalElementCountRequestDto>(_serviceName, "CheckListConstraintMaximalElementCount", request, callInfo, ParameterConstraintsTestSerializers.CheckListConstraintMaximalElementCountRequestDto);
                 callInfo.FinishSuccessful();
                 return;
             } catch (System.Exception ex)
@@ -1115,7 +1115,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
                     "axElementCount");
             try
             {
-                _channel.ExecuteUnobservableCommand<CheckListConstraintMinMaxElementCountRequestDto>(_serviceName, "CheckListConstraintMinMaxElementCount", request, callInfo);
+                _channel.ExecuteUnobservableCommand<CheckListConstraintMinMaxElementCountRequestDto>(_serviceName, "CheckListConstraintMinMaxElementCount", request, callInfo, ParameterConstraintsTestSerializers.CheckListConstraintMinMaxElementCountRequestDto);
                 callInfo.FinishSuccessful();
                 return;
             } catch (System.Exception ex)
@@ -1138,7 +1138,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
                     "ngth");
             try
             {
-                _channel.ExecuteUnobservableCommand<CheckBinaryConstraintLengthRequestDto>(_serviceName, "CheckBinaryConstraintLength", request, callInfo);
+                _channel.ExecuteUnobservableCommand<CheckBinaryConstraintLengthRequestDto>(_serviceName, "CheckBinaryConstraintLength", request, callInfo, ParameterConstraintsTestSerializers.CheckBinaryConstraintLengthRequestDto);
                 callInfo.FinishSuccessful();
                 return;
             } catch (System.Exception ex)
@@ -1161,7 +1161,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
                     "nimalLength");
             try
             {
-                _channel.ExecuteUnobservableCommand<CheckBinaryConstraintMinimalLengthRequestDto>(_serviceName, "CheckBinaryConstraintMinimalLength", request, callInfo);
+                _channel.ExecuteUnobservableCommand<CheckBinaryConstraintMinimalLengthRequestDto>(_serviceName, "CheckBinaryConstraintMinimalLength", request, callInfo, ParameterConstraintsTestSerializers.CheckBinaryConstraintMinimalLengthRequestDto);
                 callInfo.FinishSuccessful();
                 return;
             } catch (System.Exception ex)
@@ -1184,7 +1184,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
                     "ximalLength");
             try
             {
-                _channel.ExecuteUnobservableCommand<CheckBinaryConstraintMaximalLengthRequestDto>(_serviceName, "CheckBinaryConstraintMaximalLength", request, callInfo);
+                _channel.ExecuteUnobservableCommand<CheckBinaryConstraintMaximalLengthRequestDto>(_serviceName, "CheckBinaryConstraintMaximalLength", request, callInfo, ParameterConstraintsTestSerializers.CheckBinaryConstraintMaximalLengthRequestDto);
                 callInfo.FinishSuccessful();
                 return;
             } catch (System.Exception ex)
@@ -1207,7 +1207,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
                     "nMaxLength");
             try
             {
-                _channel.ExecuteUnobservableCommand<CheckBinaryConstraintMinMaxLengthRequestDto>(_serviceName, "CheckBinaryConstraintMinMaxLength", request, callInfo);
+                _channel.ExecuteUnobservableCommand<CheckBinaryConstraintMinMaxLengthRequestDto>(_serviceName, "CheckBinaryConstraintMinMaxLength", request, callInfo, ParameterConstraintsTestSerializers.CheckBinaryConstraintMinMaxLengthRequestDto);
                 callInfo.FinishSuccessful();
                 return;
             } catch (System.Exception ex)
@@ -1230,7 +1230,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
                     "ntentType");
             try
             {
-                _channel.ExecuteUnobservableCommand<CheckBinaryConstraintContentTypeRequestDto>(_serviceName, "CheckBinaryConstraintContentType", request, callInfo);
+                _channel.ExecuteUnobservableCommand<CheckBinaryConstraintContentTypeRequestDto>(_serviceName, "CheckBinaryConstraintContentType", request, callInfo, ParameterConstraintsTestSerializers.CheckBinaryConstraintContentTypeRequestDto);
                 callInfo.FinishSuccessful();
                 return;
             } catch (System.Exception ex)
@@ -1253,7 +1253,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
                     "hema");
             try
             {
-                _channel.ExecuteUnobservableCommand<CheckBinaryConstraintSchemaRequestDto>(_serviceName, "CheckBinaryConstraintSchema", request, callInfo);
+                _channel.ExecuteUnobservableCommand<CheckBinaryConstraintSchemaRequestDto>(_serviceName, "CheckBinaryConstraintSchema", request, callInfo, ParameterConstraintsTestSerializers.CheckBinaryConstraintSchemaRequestDto);
                 callInfo.FinishSuccessful();
                 return;
             } catch (System.Exception ex)
@@ -1276,7 +1276,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
                     "aint");
             try
             {
-                _channel.ExecuteUnobservableCommand<CheckAllowedTypesConstraintRequestDto>(_serviceName, "CheckAllowedTypesConstraint", request, callInfo);
+                _channel.ExecuteUnobservableCommand<CheckAllowedTypesConstraintRequestDto>(_serviceName, "CheckAllowedTypesConstraint", request, callInfo, ParameterConstraintsTestSerializers.CheckAllowedTypesConstraintRequestDto);
                 callInfo.FinishSuccessful();
                 return;
             } catch (System.Exception ex)
@@ -1299,7 +1299,7 @@ namespace Tecan.Sila2.Interop.Client.ParameterConstraintsTest.ParameterConstrain
                     "peConstraints");
             try
             {
-                _channel.ExecuteUnobservableCommand<CheckAllowedStructureTypeConstraintsRequestDto>(_serviceName, "CheckAllowedStructureTypeConstraints", request, callInfo);
+                _channel.ExecuteUnobservableCommand<CheckAllowedStructureTypeConstraintsRequestDto>(_serviceName, "CheckAllowedStructureTypeConstraints", request, callInfo, ParameterConstraintsTestSerializers.CheckAllowedStructureTypeConstraintsRequestDto);
                 callInfo.FinishSuccessful();
                 return;
             } catch (System.Exception ex)

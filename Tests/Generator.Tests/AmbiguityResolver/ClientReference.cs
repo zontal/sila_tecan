@@ -45,7 +45,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         {
             CheckAmbiguousEntriesRequestDto request = new CheckAmbiguousEntriesRequestDto(null);
             request.Validate();
-            return _channel.ExecuteObservableCommand<CheckAmbiguousEntriesRequestDto, AmbiguousClass, CheckAmbiguousEntriesResponseDto>(_serviceName, "CheckAmbiguousEntries", request, ConvertCheckAmbiguousEntriesResponse, ConvertCheckAmbiguousEntriesException, _executionManager.CreateCallOptions(request.CommandIdentifier));
+            return _channel.ExecuteObservableCommand<CheckAmbiguousEntriesRequestDto, AmbiguousClass, CheckAmbiguousEntriesResponseDto>(_serviceName, "CheckAmbiguousEntries", request, ConvertCheckAmbiguousEntriesResponse, ConvertCheckAmbiguousEntriesException, _executionManager.CreateCallOptions(request.CommandIdentifier), AmbiguityResolverServiceSerializers.CheckAmbiguousEntriesRequestDto, AmbiguityResolverServiceSerializers.CheckAmbiguousEntriesResponseDto);
         }
         
         /// <summary>
@@ -77,7 +77,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
                     "verloadedMethod");
             try
             {
-                _channel.ExecuteUnobservableCommand<OverloadedMethodRequestDto>(_serviceName, "OverloadedMethod", request, callInfo);
+                _channel.ExecuteUnobservableCommand<OverloadedMethodRequestDto>(_serviceName, "OverloadedMethod", request, callInfo, AmbiguityResolverServiceSerializers.OverloadedMethodRequestDto);
                 callInfo.FinishSuccessful();
                 return;
             } catch (System.Exception ex)

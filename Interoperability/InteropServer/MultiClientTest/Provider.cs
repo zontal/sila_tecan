@@ -108,9 +108,9 @@ namespace Tecan.Sila2.Interop.Server.MultiClientTest
         /// <param name="registration">The registration component to which the feature should be registered</param>
         public void Register(IServerBuilder registration)
         {
-            registration.RegisterObservableCommand<RunInParallelRequestDto>("RunInParallel", RunInParallel, ConvertRunInParallelExceptions);
-            registration.RegisterObservableCommand<RunQueuedRequestDto>("RunQueued", RunQueued, ConvertRunQueuedExceptions);
-            registration.RegisterObservableCommand<RejectParallelExecutionRequestDto>("RejectParallelExecution", RejectParallelExecution, ConvertRejectParallelExecutionExceptions);
+            registration.RegisterObservableCommand<RunInParallelRequestDto>("RunInParallel", RunInParallel, ConvertRunInParallelExceptions, MultiClientTestSerializers.RunInParallelRequestDto);
+            registration.RegisterObservableCommand<RunQueuedRequestDto>("RunQueued", RunQueued, ConvertRunQueuedExceptions, MultiClientTestSerializers.RunQueuedRequestDto);
+            registration.RegisterObservableCommand<RejectParallelExecutionRequestDto>("RejectParallelExecution", RejectParallelExecution, ConvertRejectParallelExecutionExceptions, MultiClientTestSerializers.RejectParallelExecutionRequestDto);
         }
         
         /// <summary>

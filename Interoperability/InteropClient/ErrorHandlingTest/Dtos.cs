@@ -7,6 +7,7 @@
 //     the code is regenerated.
 // </auto-generated>
 //------------------------------------------------------------------------------
+#pragma warning disable PBN9001
 
 using System;
 using Tecan.Sila2;
@@ -219,6 +220,95 @@ namespace Tecan.Sila2.Interop.Client.ErrorHandlingTest.ErrorHandlingTest
         public string GetValidationErrors()
         {
             return null;
+        }
+    }
+    
+    /// <summary>
+    /// The compile-time protobuf-net type model for the data transfer objects of the Error Handling Test feature
+    /// </summary>
+    [ProtoBuf.ProtoModelAttribute()]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(RaiseDefinedExecutionErrorRequestDto))]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(RaiseDefinedExecutionErrorObservablyRequestDto))]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(RaiseUndefinedExecutionErrorRequestDto))]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(RaiseUndefinedExecutionErrorObservablyRequestDto))]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(PropertyResponse<Tecan.Sila2.IntegerDto>))]
+    public sealed partial class ErrorHandlingTestTypeModel : ProtoBuf.Meta.TypeModel
+    {
+    }
+    
+    /// <summary>
+    /// Byte serializers for the data transfer objects of the Error Handling Test feature that use the compile-time generated ErrorHandlingTestTypeModel
+    /// </summary>
+    public sealed class ErrorHandlingTestSerializers
+    {
+        
+        private static ByteSerializer<RaiseDefinedExecutionErrorRequestDto> _raiseDefinedExecutionErrorRequestDto = ByteSerializer.Create<RaiseDefinedExecutionErrorRequestDto>(ErrorHandlingTestTypeModel.Instance);
+        
+        private static ByteSerializer<RaiseDefinedExecutionErrorObservablyRequestDto> _raiseDefinedExecutionErrorObservablyRequestDto = ByteSerializer.Create<RaiseDefinedExecutionErrorObservablyRequestDto>(ErrorHandlingTestTypeModel.Instance);
+        
+        private static ByteSerializer<RaiseUndefinedExecutionErrorRequestDto> _raiseUndefinedExecutionErrorRequestDto = ByteSerializer.Create<RaiseUndefinedExecutionErrorRequestDto>(ErrorHandlingTestTypeModel.Instance);
+        
+        private static ByteSerializer<RaiseUndefinedExecutionErrorObservablyRequestDto> _raiseUndefinedExecutionErrorObservablyRequestDto = ByteSerializer.Create<RaiseUndefinedExecutionErrorObservablyRequestDto>(ErrorHandlingTestTypeModel.Instance);
+        
+        private static ByteSerializer<PropertyResponse<Tecan.Sila2.IntegerDto>> _propertyResponseOfIntegerDto = ByteSerializer.Create<PropertyResponse<Tecan.Sila2.IntegerDto>>(ErrorHandlingTestTypeModel.Instance);
+        
+        private ErrorHandlingTestSerializers()
+        {
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for RaiseDefinedExecutionErrorRequestDto
+        /// </summary>
+        public static ByteSerializer<RaiseDefinedExecutionErrorRequestDto> RaiseDefinedExecutionErrorRequestDto
+        {
+            get
+            {
+                return _raiseDefinedExecutionErrorRequestDto;
+            }
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for RaiseDefinedExecutionErrorObservablyRequestDto
+        /// </summary>
+        public static ByteSerializer<RaiseDefinedExecutionErrorObservablyRequestDto> RaiseDefinedExecutionErrorObservablyRequestDto
+        {
+            get
+            {
+                return _raiseDefinedExecutionErrorObservablyRequestDto;
+            }
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for RaiseUndefinedExecutionErrorRequestDto
+        /// </summary>
+        public static ByteSerializer<RaiseUndefinedExecutionErrorRequestDto> RaiseUndefinedExecutionErrorRequestDto
+        {
+            get
+            {
+                return _raiseUndefinedExecutionErrorRequestDto;
+            }
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for RaiseUndefinedExecutionErrorObservablyRequestDto
+        /// </summary>
+        public static ByteSerializer<RaiseUndefinedExecutionErrorObservablyRequestDto> RaiseUndefinedExecutionErrorObservablyRequestDto
+        {
+            get
+            {
+                return _raiseUndefinedExecutionErrorObservablyRequestDto;
+            }
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for PropertyResponseOfIntegerDto
+        /// </summary>
+        public static ByteSerializer<PropertyResponse<Tecan.Sila2.IntegerDto>> PropertyResponseOfIntegerDto
+        {
+            get
+            {
+                return _propertyResponseOfIntegerDto;
+            }
         }
     }
 }

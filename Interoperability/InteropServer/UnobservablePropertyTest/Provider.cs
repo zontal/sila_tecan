@@ -61,8 +61,8 @@ namespace Tecan.Sila2.Interop.Server.UnobservablePropertyTest
         /// <param name="registration">The registration component to which the feature should be registered</param>
         public void Register(IServerBuilder registration)
         {
-            registration.RegisterUnobservableProperty("AnswerToEverything", GetAnswerToEverything);
-            registration.RegisterUnobservableProperty("SecondsSince1970", GetSecondsSince1970);
+            registration.RegisterUnobservableProperty("AnswerToEverything", GetAnswerToEverything, UnobservablePropertyTestSerializers.PropertyResponseOfIntegerDto);
+            registration.RegisterUnobservableProperty("SecondsSince1970", GetSecondsSince1970, UnobservablePropertyTestSerializers.PropertyResponseOfIntegerDto);
         }
         
         /// <summary>

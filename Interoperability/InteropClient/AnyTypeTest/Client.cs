@@ -179,7 +179,7 @@ namespace Tecan.Sila2.Interop.Client.AnyTypeTest.AnyTypeTest
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/AnyTypeTest/v1/Property/AnyTypeStringValue");
             try
             {
-                Tecan.Sila2.DynamicClient.DynamicObjectProperty response = _channel.ReadProperty<PropertyResponse<Tecan.Sila2.DynamicClient.AnyTypeDto>>(_serviceName, "AnyTypeStringValue", "org.silastandard/test/AnyTypeTest/v1/Property/AnyTypeStringValue", callInfo).Value.Extract(_executionManager.DownloadBinaryStore);
+                Tecan.Sila2.DynamicClient.DynamicObjectProperty response = _channel.ReadProperty<PropertyResponse<Tecan.Sila2.DynamicClient.AnyTypeDto>>(_serviceName, "AnyTypeStringValue", "org.silastandard/test/AnyTypeTest/v1/Property/AnyTypeStringValue", callInfo, AnyTypeTestSerializers.PropertyResponseOfAnyTypeDto).Value.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -195,7 +195,7 @@ namespace Tecan.Sila2.Interop.Client.AnyTypeTest.AnyTypeTest
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/AnyTypeTest/v1/Property/AnyTypeIntegerValue");
             try
             {
-                Tecan.Sila2.DynamicClient.DynamicObjectProperty response = _channel.ReadProperty<PropertyResponse<Tecan.Sila2.DynamicClient.AnyTypeDto>>(_serviceName, "AnyTypeIntegerValue", "org.silastandard/test/AnyTypeTest/v1/Property/AnyTypeIntegerValue", callInfo).Value.Extract(_executionManager.DownloadBinaryStore);
+                Tecan.Sila2.DynamicClient.DynamicObjectProperty response = _channel.ReadProperty<PropertyResponse<Tecan.Sila2.DynamicClient.AnyTypeDto>>(_serviceName, "AnyTypeIntegerValue", "org.silastandard/test/AnyTypeTest/v1/Property/AnyTypeIntegerValue", callInfo, AnyTypeTestSerializers.PropertyResponseOfAnyTypeDto).Value.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -211,7 +211,7 @@ namespace Tecan.Sila2.Interop.Client.AnyTypeTest.AnyTypeTest
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/AnyTypeTest/v1/Property/AnyTypeRealValue");
             try
             {
-                Tecan.Sila2.DynamicClient.DynamicObjectProperty response = _channel.ReadProperty<PropertyResponse<Tecan.Sila2.DynamicClient.AnyTypeDto>>(_serviceName, "AnyTypeRealValue", "org.silastandard/test/AnyTypeTest/v1/Property/AnyTypeRealValue", callInfo).Value.Extract(_executionManager.DownloadBinaryStore);
+                Tecan.Sila2.DynamicClient.DynamicObjectProperty response = _channel.ReadProperty<PropertyResponse<Tecan.Sila2.DynamicClient.AnyTypeDto>>(_serviceName, "AnyTypeRealValue", "org.silastandard/test/AnyTypeTest/v1/Property/AnyTypeRealValue", callInfo, AnyTypeTestSerializers.PropertyResponseOfAnyTypeDto).Value.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -227,7 +227,7 @@ namespace Tecan.Sila2.Interop.Client.AnyTypeTest.AnyTypeTest
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/AnyTypeTest/v1/Property/AnyTypeBooleanValue");
             try
             {
-                Tecan.Sila2.DynamicClient.DynamicObjectProperty response = _channel.ReadProperty<PropertyResponse<Tecan.Sila2.DynamicClient.AnyTypeDto>>(_serviceName, "AnyTypeBooleanValue", "org.silastandard/test/AnyTypeTest/v1/Property/AnyTypeBooleanValue", callInfo).Value.Extract(_executionManager.DownloadBinaryStore);
+                Tecan.Sila2.DynamicClient.DynamicObjectProperty response = _channel.ReadProperty<PropertyResponse<Tecan.Sila2.DynamicClient.AnyTypeDto>>(_serviceName, "AnyTypeBooleanValue", "org.silastandard/test/AnyTypeTest/v1/Property/AnyTypeBooleanValue", callInfo, AnyTypeTestSerializers.PropertyResponseOfAnyTypeDto).Value.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -243,7 +243,7 @@ namespace Tecan.Sila2.Interop.Client.AnyTypeTest.AnyTypeTest
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/AnyTypeTest/v1/Property/AnyTypeBinaryValue");
             try
             {
-                Tecan.Sila2.DynamicClient.DynamicObjectProperty response = _channel.ReadProperty<PropertyResponse<Tecan.Sila2.DynamicClient.AnyTypeDto>>(_serviceName, "AnyTypeBinaryValue", "org.silastandard/test/AnyTypeTest/v1/Property/AnyTypeBinaryValue", callInfo).Value.Extract(_executionManager.DownloadBinaryStore);
+                Tecan.Sila2.DynamicClient.DynamicObjectProperty response = _channel.ReadProperty<PropertyResponse<Tecan.Sila2.DynamicClient.AnyTypeDto>>(_serviceName, "AnyTypeBinaryValue", "org.silastandard/test/AnyTypeTest/v1/Property/AnyTypeBinaryValue", callInfo, AnyTypeTestSerializers.PropertyResponseOfAnyTypeDto).Value.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -259,7 +259,7 @@ namespace Tecan.Sila2.Interop.Client.AnyTypeTest.AnyTypeTest
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/AnyTypeTest/v1/Property/AnyTypeDateValue");
             try
             {
-                Tecan.Sila2.DynamicClient.DynamicObjectProperty response = _channel.ReadProperty<PropertyResponse<Tecan.Sila2.DynamicClient.AnyTypeDto>>(_serviceName, "AnyTypeDateValue", "org.silastandard/test/AnyTypeTest/v1/Property/AnyTypeDateValue", callInfo).Value.Extract(_executionManager.DownloadBinaryStore);
+                Tecan.Sila2.DynamicClient.DynamicObjectProperty response = _channel.ReadProperty<PropertyResponse<Tecan.Sila2.DynamicClient.AnyTypeDto>>(_serviceName, "AnyTypeDateValue", "org.silastandard/test/AnyTypeTest/v1/Property/AnyTypeDateValue", callInfo, AnyTypeTestSerializers.PropertyResponseOfAnyTypeDto).Value.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -275,7 +275,7 @@ namespace Tecan.Sila2.Interop.Client.AnyTypeTest.AnyTypeTest
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/AnyTypeTest/v1/Property/AnyTypeTimeValue");
             try
             {
-                Tecan.Sila2.DynamicClient.DynamicObjectProperty response = _channel.ReadProperty<PropertyResponse<Tecan.Sila2.DynamicClient.AnyTypeDto>>(_serviceName, "AnyTypeTimeValue", "org.silastandard/test/AnyTypeTest/v1/Property/AnyTypeTimeValue", callInfo).Value.Extract(_executionManager.DownloadBinaryStore);
+                Tecan.Sila2.DynamicClient.DynamicObjectProperty response = _channel.ReadProperty<PropertyResponse<Tecan.Sila2.DynamicClient.AnyTypeDto>>(_serviceName, "AnyTypeTimeValue", "org.silastandard/test/AnyTypeTest/v1/Property/AnyTypeTimeValue", callInfo, AnyTypeTestSerializers.PropertyResponseOfAnyTypeDto).Value.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -291,7 +291,7 @@ namespace Tecan.Sila2.Interop.Client.AnyTypeTest.AnyTypeTest
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/AnyTypeTest/v1/Property/AnyTypeTimestampValue");
             try
             {
-                Tecan.Sila2.DynamicClient.DynamicObjectProperty response = _channel.ReadProperty<PropertyResponse<Tecan.Sila2.DynamicClient.AnyTypeDto>>(_serviceName, "AnyTypeTimestampValue", "org.silastandard/test/AnyTypeTest/v1/Property/AnyTypeTimestampValue", callInfo).Value.Extract(_executionManager.DownloadBinaryStore);
+                Tecan.Sila2.DynamicClient.DynamicObjectProperty response = _channel.ReadProperty<PropertyResponse<Tecan.Sila2.DynamicClient.AnyTypeDto>>(_serviceName, "AnyTypeTimestampValue", "org.silastandard/test/AnyTypeTest/v1/Property/AnyTypeTimestampValue", callInfo, AnyTypeTestSerializers.PropertyResponseOfAnyTypeDto).Value.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -307,7 +307,7 @@ namespace Tecan.Sila2.Interop.Client.AnyTypeTest.AnyTypeTest
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/AnyTypeTest/v1/Property/AnyTypeListValue");
             try
             {
-                Tecan.Sila2.DynamicClient.DynamicObjectProperty response = _channel.ReadProperty<PropertyResponse<Tecan.Sila2.DynamicClient.AnyTypeDto>>(_serviceName, "AnyTypeListValue", "org.silastandard/test/AnyTypeTest/v1/Property/AnyTypeListValue", callInfo).Value.Extract(_executionManager.DownloadBinaryStore);
+                Tecan.Sila2.DynamicClient.DynamicObjectProperty response = _channel.ReadProperty<PropertyResponse<Tecan.Sila2.DynamicClient.AnyTypeDto>>(_serviceName, "AnyTypeListValue", "org.silastandard/test/AnyTypeTest/v1/Property/AnyTypeListValue", callInfo, AnyTypeTestSerializers.PropertyResponseOfAnyTypeDto).Value.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -323,7 +323,7 @@ namespace Tecan.Sila2.Interop.Client.AnyTypeTest.AnyTypeTest
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/AnyTypeTest/v1/Property/AnyTypeStructureValue");
             try
             {
-                Tecan.Sila2.DynamicClient.DynamicObjectProperty response = _channel.ReadProperty<PropertyResponse<Tecan.Sila2.DynamicClient.AnyTypeDto>>(_serviceName, "AnyTypeStructureValue", "org.silastandard/test/AnyTypeTest/v1/Property/AnyTypeStructureValue", callInfo).Value.Extract(_executionManager.DownloadBinaryStore);
+                Tecan.Sila2.DynamicClient.DynamicObjectProperty response = _channel.ReadProperty<PropertyResponse<Tecan.Sila2.DynamicClient.AnyTypeDto>>(_serviceName, "AnyTypeStructureValue", "org.silastandard/test/AnyTypeTest/v1/Property/AnyTypeStructureValue", callInfo, AnyTypeTestSerializers.PropertyResponseOfAnyTypeDto).Value.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -362,7 +362,7 @@ namespace Tecan.Sila2.Interop.Client.AnyTypeTest.AnyTypeTest
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/AnyTypeTest/v1/Command/SetAnyTypeValue");
             try
             {
-                SetAnyTypeValueResponse response = _channel.ExecuteUnobservableCommand<SetAnyTypeValueRequestDto, SetAnyTypeValueResponseDto>(_serviceName, "SetAnyTypeValue", request, callInfo).Extract(_executionManager.DownloadBinaryStore);
+                SetAnyTypeValueResponse response = _channel.ExecuteUnobservableCommand<SetAnyTypeValueRequestDto, SetAnyTypeValueResponseDto>(_serviceName, "SetAnyTypeValue", request, callInfo, AnyTypeTestSerializers.SetAnyTypeValueRequestDto, AnyTypeTestSerializers.SetAnyTypeValueResponseDto).Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)

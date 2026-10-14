@@ -7,6 +7,7 @@
 //     the code is regenerated.
 // </auto-generated>
 //------------------------------------------------------------------------------
+#pragma warning disable PBN9001
 
 using System;
 using Tecan.Sila2;
@@ -83,6 +84,39 @@ namespace Tecan.Sila2.ParameterDefaultsProvider.Tests
         public string GetValidationErrors()
         {
             return ("" + Argument.Require(Parameter, "parameter"));
+        }
+    }
+    
+    /// <summary>
+    /// The compile-time protobuf-net type model for the data transfer objects of the Example Set Provider Service feature
+    /// </summary>
+    [ProtoBuf.ProtoModelAttribute()]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(ExampleMethodRequestDto))]
+    public sealed partial class ExampleSetProviderServiceTypeModel : ProtoBuf.Meta.TypeModel
+    {
+    }
+    
+    /// <summary>
+    /// Byte serializers for the data transfer objects of the Example Set Provider Service feature that use the compile-time generated ExampleSetProviderServiceTypeModel
+    /// </summary>
+    public sealed class ExampleSetProviderServiceSerializers
+    {
+        
+        private static ByteSerializer<ExampleMethodRequestDto> _exampleMethodRequestDto = ByteSerializer.Create<ExampleMethodRequestDto>(ExampleSetProviderServiceTypeModel.Instance);
+        
+        private ExampleSetProviderServiceSerializers()
+        {
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for ExampleMethodRequestDto
+        /// </summary>
+        public static ByteSerializer<ExampleMethodRequestDto> ExampleMethodRequestDto
+        {
+            get
+            {
+                return _exampleMethodRequestDto;
+            }
         }
     }
 }

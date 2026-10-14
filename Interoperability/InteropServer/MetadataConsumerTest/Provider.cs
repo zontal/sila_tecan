@@ -61,10 +61,10 @@ namespace Tecan.Sila2.Interop.Server.MetadataConsumerTest
         /// <param name="registration">The registration component to which the feature should be registered</param>
         public void Register(IServerBuilder registration)
         {
-            registration.RegisterUnobservableCommand<EchoStringMetadataRequestDto, EchoStringMetadataResponseDto>("EchoStringMetadata", EchoStringMetadata);
-            registration.RegisterUnobservableCommand<UnpackMetadataRequestDto, UnpackMetadataResponseDto>("UnpackMetadata", UnpackMetadata);
-            registration.RegisterUnobservableProperty("ReceivedStringMetadata", GetReceivedStringMetadata);
-            registration.RegisterObservableProperty("ReceivedStringMetadataAsCharacters", GetReceivedStringMetadataAsCharacters, _implementation);
+            registration.RegisterUnobservableCommand<EchoStringMetadataRequestDto, EchoStringMetadataResponseDto>("EchoStringMetadata", EchoStringMetadata, MetadataConsumerTestSerializers.EchoStringMetadataRequestDto, MetadataConsumerTestSerializers.EchoStringMetadataResponseDto);
+            registration.RegisterUnobservableCommand<UnpackMetadataRequestDto, UnpackMetadataResponseDto>("UnpackMetadata", UnpackMetadata, MetadataConsumerTestSerializers.UnpackMetadataRequestDto, MetadataConsumerTestSerializers.UnpackMetadataResponseDto);
+            registration.RegisterUnobservableProperty("ReceivedStringMetadata", GetReceivedStringMetadata, MetadataConsumerTestSerializers.PropertyResponseOfStringDto);
+            registration.RegisterObservableProperty("ReceivedStringMetadataAsCharacters", GetReceivedStringMetadataAsCharacters, _implementation, MetadataConsumerTestSerializers.ReceivedStringMetadataAsCharactersResponseDto);
         }
         
         /// <summary>

@@ -7,6 +7,7 @@
 //     the code is regenerated.
 // </auto-generated>
 //------------------------------------------------------------------------------
+#pragma warning disable PBN9001
 
 using System;
 using Tecan.Sila2;
@@ -521,6 +522,123 @@ namespace Tecan.Sila2.Interop.Server.UnobservableCommandTest
                 errors = (errors + string.Format("FirstCharacter  has length {0} and is longer than allowed length 1", FirstCharacter.Value.Length));
             }
             return errors;
+        }
+    }
+    
+    /// <summary>
+    /// The compile-time protobuf-net type model for the data transfer objects of the Unobservable Command Test feature
+    /// </summary>
+    [ProtoBuf.ProtoModelAttribute()]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(CommandWithoutParametersAndResponsesRequestDto))]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(ConvertIntegerToStringRequestDto))]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(ConvertIntegerToStringResponseDto))]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(JoinIntegerAndStringRequestDto))]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(JoinIntegerAndStringResponseDto))]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(SplitStringAfterFirstCharacterRequestDto))]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(SplitStringAfterFirstCharacterResponseDto))]
+    public sealed partial class UnobservableCommandTestTypeModel : ProtoBuf.Meta.TypeModel
+    {
+    }
+    
+    /// <summary>
+    /// Byte serializers for the data transfer objects of the Unobservable Command Test feature that use the compile-time generated UnobservableCommandTestTypeModel
+    /// </summary>
+    public sealed class UnobservableCommandTestSerializers
+    {
+        
+        private static ByteSerializer<CommandWithoutParametersAndResponsesRequestDto> _commandWithoutParametersAndResponsesRequestDto = ByteSerializer.Create<CommandWithoutParametersAndResponsesRequestDto>(UnobservableCommandTestTypeModel.Instance);
+        
+        private static ByteSerializer<ConvertIntegerToStringRequestDto> _convertIntegerToStringRequestDto = ByteSerializer.Create<ConvertIntegerToStringRequestDto>(UnobservableCommandTestTypeModel.Instance);
+        
+        private static ByteSerializer<ConvertIntegerToStringResponseDto> _convertIntegerToStringResponseDto = ByteSerializer.Create<ConvertIntegerToStringResponseDto>(UnobservableCommandTestTypeModel.Instance);
+        
+        private static ByteSerializer<JoinIntegerAndStringRequestDto> _joinIntegerAndStringRequestDto = ByteSerializer.Create<JoinIntegerAndStringRequestDto>(UnobservableCommandTestTypeModel.Instance);
+        
+        private static ByteSerializer<JoinIntegerAndStringResponseDto> _joinIntegerAndStringResponseDto = ByteSerializer.Create<JoinIntegerAndStringResponseDto>(UnobservableCommandTestTypeModel.Instance);
+        
+        private static ByteSerializer<SplitStringAfterFirstCharacterRequestDto> _splitStringAfterFirstCharacterRequestDto = ByteSerializer.Create<SplitStringAfterFirstCharacterRequestDto>(UnobservableCommandTestTypeModel.Instance);
+        
+        private static ByteSerializer<SplitStringAfterFirstCharacterResponseDto> _splitStringAfterFirstCharacterResponseDto = ByteSerializer.Create<SplitStringAfterFirstCharacterResponseDto>(UnobservableCommandTestTypeModel.Instance);
+        
+        private UnobservableCommandTestSerializers()
+        {
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for CommandWithoutParametersAndResponsesRequestDto
+        /// </summary>
+        public static ByteSerializer<CommandWithoutParametersAndResponsesRequestDto> CommandWithoutParametersAndResponsesRequestDto
+        {
+            get
+            {
+                return _commandWithoutParametersAndResponsesRequestDto;
+            }
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for ConvertIntegerToStringRequestDto
+        /// </summary>
+        public static ByteSerializer<ConvertIntegerToStringRequestDto> ConvertIntegerToStringRequestDto
+        {
+            get
+            {
+                return _convertIntegerToStringRequestDto;
+            }
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for ConvertIntegerToStringResponseDto
+        /// </summary>
+        public static ByteSerializer<ConvertIntegerToStringResponseDto> ConvertIntegerToStringResponseDto
+        {
+            get
+            {
+                return _convertIntegerToStringResponseDto;
+            }
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for JoinIntegerAndStringRequestDto
+        /// </summary>
+        public static ByteSerializer<JoinIntegerAndStringRequestDto> JoinIntegerAndStringRequestDto
+        {
+            get
+            {
+                return _joinIntegerAndStringRequestDto;
+            }
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for JoinIntegerAndStringResponseDto
+        /// </summary>
+        public static ByteSerializer<JoinIntegerAndStringResponseDto> JoinIntegerAndStringResponseDto
+        {
+            get
+            {
+                return _joinIntegerAndStringResponseDto;
+            }
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for SplitStringAfterFirstCharacterRequestDto
+        /// </summary>
+        public static ByteSerializer<SplitStringAfterFirstCharacterRequestDto> SplitStringAfterFirstCharacterRequestDto
+        {
+            get
+            {
+                return _splitStringAfterFirstCharacterRequestDto;
+            }
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for SplitStringAfterFirstCharacterResponseDto
+        /// </summary>
+        public static ByteSerializer<SplitStringAfterFirstCharacterResponseDto> SplitStringAfterFirstCharacterResponseDto
+        {
+            get
+            {
+                return _splitStringAfterFirstCharacterResponseDto;
+            }
         }
     }
 }

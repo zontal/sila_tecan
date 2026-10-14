@@ -7,6 +7,7 @@
 //     the code is regenerated.
 // </auto-generated>
 //------------------------------------------------------------------------------
+#pragma warning disable PBN9001
 
 using System;
 using Tecan.Sila2;
@@ -85,6 +86,39 @@ namespace Tecan.Sila2.Interop.Server.CancellationTest
         public string GetValidationErrors()
         {
             return ("" + Argument.Require(Duration, "Duration"));
+        }
+    }
+    
+    /// <summary>
+    /// The compile-time protobuf-net type model for the data transfer objects of the Cancellation Test feature
+    /// </summary>
+    [ProtoBuf.ProtoModelAttribute()]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(WaitForCancelRequestDto))]
+    public sealed partial class CancellationTestTypeModel : ProtoBuf.Meta.TypeModel
+    {
+    }
+    
+    /// <summary>
+    /// Byte serializers for the data transfer objects of the Cancellation Test feature that use the compile-time generated CancellationTestTypeModel
+    /// </summary>
+    public sealed class CancellationTestSerializers
+    {
+        
+        private static ByteSerializer<WaitForCancelRequestDto> _waitForCancelRequestDto = ByteSerializer.Create<WaitForCancelRequestDto>(CancellationTestTypeModel.Instance);
+        
+        private CancellationTestSerializers()
+        {
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for WaitForCancelRequestDto
+        /// </summary>
+        public static ByteSerializer<WaitForCancelRequestDto> WaitForCancelRequestDto
+        {
+            get
+            {
+                return _waitForCancelRequestDto;
+            }
         }
     }
 }

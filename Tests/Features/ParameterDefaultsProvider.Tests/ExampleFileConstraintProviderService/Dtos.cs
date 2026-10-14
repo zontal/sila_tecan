@@ -7,6 +7,7 @@
 //     the code is regenerated.
 // </auto-generated>
 //------------------------------------------------------------------------------
+#pragma warning disable PBN9001
 
 using System;
 using Tecan.Sila2;
@@ -83,6 +84,39 @@ namespace Tecan.Sila2.ParameterDefaultsProvider.Tests
         public string GetValidationErrors()
         {
             return ("" + Argument.Require(Parameter, "parameter"));
+        }
+    }
+    
+    /// <summary>
+    /// The compile-time protobuf-net type model for the data transfer objects of the Example File Constraint Provider Service feature
+    /// </summary>
+    [ProtoBuf.ProtoModelAttribute()]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(FileExampleMethodRequestDto))]
+    public sealed partial class ExampleFileConstraintProviderServiceTypeModel : ProtoBuf.Meta.TypeModel
+    {
+    }
+    
+    /// <summary>
+    /// Byte serializers for the data transfer objects of the Example File Constraint Provider Service feature that use the compile-time generated ExampleFileConstraintProviderServiceTypeModel
+    /// </summary>
+    public sealed class ExampleFileConstraintProviderServiceSerializers
+    {
+        
+        private static ByteSerializer<FileExampleMethodRequestDto> _fileExampleMethodRequestDto = ByteSerializer.Create<FileExampleMethodRequestDto>(ExampleFileConstraintProviderServiceTypeModel.Instance);
+        
+        private ExampleFileConstraintProviderServiceSerializers()
+        {
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for FileExampleMethodRequestDto
+        /// </summary>
+        public static ByteSerializer<FileExampleMethodRequestDto> FileExampleMethodRequestDto
+        {
+            get
+            {
+                return _fileExampleMethodRequestDto;
+            }
         }
     }
 }

@@ -61,10 +61,10 @@ namespace Tecan.Sila2.Interop.Server.StructureDataTypeTest
         /// <param name="registration">The registration component to which the feature should be registered</param>
         public void Register(IServerBuilder registration)
         {
-            registration.RegisterUnobservableCommand<EchoStructureValueRequestDto, EchoStructureValueResponseDto>("EchoStructureValue", EchoStructureValue);
-            registration.RegisterUnobservableCommand<EchoDeepStructureValueRequestDto, EchoDeepStructureValueResponseDto>("EchoDeepStructureValue", EchoDeepStructureValue);
-            registration.RegisterUnobservableProperty("StructureValue", GetStructureValue);
-            registration.RegisterUnobservableProperty("DeepStructureValue", GetDeepStructureValue);
+            registration.RegisterUnobservableCommand<EchoStructureValueRequestDto, EchoStructureValueResponseDto>("EchoStructureValue", EchoStructureValue, StructureDataTypeTestSerializers.EchoStructureValueRequestDto, StructureDataTypeTestSerializers.EchoStructureValueResponseDto);
+            registration.RegisterUnobservableCommand<EchoDeepStructureValueRequestDto, EchoDeepStructureValueResponseDto>("EchoDeepStructureValue", EchoDeepStructureValue, StructureDataTypeTestSerializers.EchoDeepStructureValueRequestDto, StructureDataTypeTestSerializers.EchoDeepStructureValueResponseDto);
+            registration.RegisterUnobservableProperty("StructureValue", GetStructureValue, StructureDataTypeTestSerializers.PropertyResponseOfTestStructureDto);
+            registration.RegisterUnobservableProperty("DeepStructureValue", GetDeepStructureValue, StructureDataTypeTestSerializers.PropertyResponseOfDeepStructureDto);
         }
         
         /// <summary>

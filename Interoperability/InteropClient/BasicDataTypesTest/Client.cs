@@ -137,7 +137,7 @@ namespace Tecan.Sila2.Interop.Client.BasicDataTypesTest.BasicDataTypesTest
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/BasicDataTypesTest/v1/Property/StringValue");
             try
             {
-                string response = _channel.ReadProperty<PropertyResponse<Tecan.Sila2.StringDto>>(_serviceName, "StringValue", "org.silastandard/test/BasicDataTypesTest/v1/Property/StringValue", callInfo).Value.Extract(_executionManager.DownloadBinaryStore);
+                string response = _channel.ReadProperty<PropertyResponse<Tecan.Sila2.StringDto>>(_serviceName, "StringValue", "org.silastandard/test/BasicDataTypesTest/v1/Property/StringValue", callInfo, BasicDataTypesTestSerializers.PropertyResponseOfStringDto).Value.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -153,7 +153,7 @@ namespace Tecan.Sila2.Interop.Client.BasicDataTypesTest.BasicDataTypesTest
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/BasicDataTypesTest/v1/Property/IntegerValue");
             try
             {
-                long response = _channel.ReadProperty<PropertyResponse<Tecan.Sila2.IntegerDto>>(_serviceName, "IntegerValue", "org.silastandard/test/BasicDataTypesTest/v1/Property/IntegerValue", callInfo).Value.Extract(_executionManager.DownloadBinaryStore);
+                long response = _channel.ReadProperty<PropertyResponse<Tecan.Sila2.IntegerDto>>(_serviceName, "IntegerValue", "org.silastandard/test/BasicDataTypesTest/v1/Property/IntegerValue", callInfo, BasicDataTypesTestSerializers.PropertyResponseOfIntegerDto).Value.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -169,7 +169,7 @@ namespace Tecan.Sila2.Interop.Client.BasicDataTypesTest.BasicDataTypesTest
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/BasicDataTypesTest/v1/Property/RealValue");
             try
             {
-                double response = _channel.ReadProperty<PropertyResponse<Tecan.Sila2.RealDto>>(_serviceName, "RealValue", "org.silastandard/test/BasicDataTypesTest/v1/Property/RealValue", callInfo).Value.Extract(_executionManager.DownloadBinaryStore);
+                double response = _channel.ReadProperty<PropertyResponse<Tecan.Sila2.RealDto>>(_serviceName, "RealValue", "org.silastandard/test/BasicDataTypesTest/v1/Property/RealValue", callInfo, BasicDataTypesTestSerializers.PropertyResponseOfRealDto).Value.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -185,7 +185,7 @@ namespace Tecan.Sila2.Interop.Client.BasicDataTypesTest.BasicDataTypesTest
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/BasicDataTypesTest/v1/Property/BooleanValue");
             try
             {
-                bool response = _channel.ReadProperty<PropertyResponse<Tecan.Sila2.BooleanDto>>(_serviceName, "BooleanValue", "org.silastandard/test/BasicDataTypesTest/v1/Property/BooleanValue", callInfo).Value.Extract(_executionManager.DownloadBinaryStore);
+                bool response = _channel.ReadProperty<PropertyResponse<Tecan.Sila2.BooleanDto>>(_serviceName, "BooleanValue", "org.silastandard/test/BasicDataTypesTest/v1/Property/BooleanValue", callInfo, BasicDataTypesTestSerializers.PropertyResponseOfBooleanDto).Value.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -201,7 +201,7 @@ namespace Tecan.Sila2.Interop.Client.BasicDataTypesTest.BasicDataTypesTest
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/BasicDataTypesTest/v1/Property/DateValue");
             try
             {
-                System.DateTimeOffset response = _channel.ReadProperty<PropertyResponse<Tecan.Sila2.DateDto>>(_serviceName, "DateValue", "org.silastandard/test/BasicDataTypesTest/v1/Property/DateValue", callInfo).Value.Extract(_executionManager.DownloadBinaryStore);
+                System.DateTimeOffset response = _channel.ReadProperty<PropertyResponse<Tecan.Sila2.DateDto>>(_serviceName, "DateValue", "org.silastandard/test/BasicDataTypesTest/v1/Property/DateValue", callInfo, BasicDataTypesTestSerializers.PropertyResponseOfDateDto).Value.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -217,7 +217,7 @@ namespace Tecan.Sila2.Interop.Client.BasicDataTypesTest.BasicDataTypesTest
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/BasicDataTypesTest/v1/Property/TimeValue");
             try
             {
-                TimeWithTimezone response = _channel.ReadProperty<PropertyResponse<Tecan.Sila2.TimeDto>>(_serviceName, "TimeValue", "org.silastandard/test/BasicDataTypesTest/v1/Property/TimeValue", callInfo).Value.ExtractToTimeWithTimezone(_executionManager.DownloadBinaryStore);
+                TimeWithTimezone response = _channel.ReadProperty<PropertyResponse<Tecan.Sila2.TimeDto>>(_serviceName, "TimeValue", "org.silastandard/test/BasicDataTypesTest/v1/Property/TimeValue", callInfo, BasicDataTypesTestSerializers.PropertyResponseOfTimeDto).Value.ExtractToTimeWithTimezone(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -233,7 +233,7 @@ namespace Tecan.Sila2.Interop.Client.BasicDataTypesTest.BasicDataTypesTest
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/BasicDataTypesTest/v1/Property/TimestampValue");
             try
             {
-                System.DateTimeOffset response = _channel.ReadProperty<PropertyResponse<Tecan.Sila2.TimestampDto>>(_serviceName, "TimestampValue", "org.silastandard/test/BasicDataTypesTest/v1/Property/TimestampValue", callInfo).Value.Extract(_executionManager.DownloadBinaryStore);
+                System.DateTimeOffset response = _channel.ReadProperty<PropertyResponse<Tecan.Sila2.TimestampDto>>(_serviceName, "TimestampValue", "org.silastandard/test/BasicDataTypesTest/v1/Property/TimestampValue", callInfo, BasicDataTypesTestSerializers.PropertyResponseOfTimestampDto).Value.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -269,7 +269,7 @@ namespace Tecan.Sila2.Interop.Client.BasicDataTypesTest.BasicDataTypesTest
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/BasicDataTypesTest/v1/Command/EchoStringValue");
             try
             {
-                string response = _channel.ExecuteUnobservableCommand<EchoStringValueRequestDto, EchoStringValueResponseDto>(_serviceName, "EchoStringValue", request, callInfo).ReceivedValue.Extract(_executionManager.DownloadBinaryStore);
+                string response = _channel.ExecuteUnobservableCommand<EchoStringValueRequestDto, EchoStringValueResponseDto>(_serviceName, "EchoStringValue", request, callInfo, BasicDataTypesTestSerializers.EchoStringValueRequestDto, BasicDataTypesTestSerializers.EchoStringValueResponseDto).ReceivedValue.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -291,7 +291,7 @@ namespace Tecan.Sila2.Interop.Client.BasicDataTypesTest.BasicDataTypesTest
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/BasicDataTypesTest/v1/Command/EchoIntegerValue");
             try
             {
-                long response = _channel.ExecuteUnobservableCommand<EchoIntegerValueRequestDto, EchoIntegerValueResponseDto>(_serviceName, "EchoIntegerValue", request, callInfo).ReceivedValue.Extract(_executionManager.DownloadBinaryStore);
+                long response = _channel.ExecuteUnobservableCommand<EchoIntegerValueRequestDto, EchoIntegerValueResponseDto>(_serviceName, "EchoIntegerValue", request, callInfo, BasicDataTypesTestSerializers.EchoIntegerValueRequestDto, BasicDataTypesTestSerializers.EchoIntegerValueResponseDto).ReceivedValue.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -313,7 +313,7 @@ namespace Tecan.Sila2.Interop.Client.BasicDataTypesTest.BasicDataTypesTest
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/BasicDataTypesTest/v1/Command/EchoRealValue");
             try
             {
-                double response = _channel.ExecuteUnobservableCommand<EchoRealValueRequestDto, EchoRealValueResponseDto>(_serviceName, "EchoRealValue", request, callInfo).ReceivedValue.Extract(_executionManager.DownloadBinaryStore);
+                double response = _channel.ExecuteUnobservableCommand<EchoRealValueRequestDto, EchoRealValueResponseDto>(_serviceName, "EchoRealValue", request, callInfo, BasicDataTypesTestSerializers.EchoRealValueRequestDto, BasicDataTypesTestSerializers.EchoRealValueResponseDto).ReceivedValue.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -335,7 +335,7 @@ namespace Tecan.Sila2.Interop.Client.BasicDataTypesTest.BasicDataTypesTest
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/BasicDataTypesTest/v1/Command/EchoBooleanValue");
             try
             {
-                bool response = _channel.ExecuteUnobservableCommand<EchoBooleanValueRequestDto, EchoBooleanValueResponseDto>(_serviceName, "EchoBooleanValue", request, callInfo).ReceivedValue.Extract(_executionManager.DownloadBinaryStore);
+                bool response = _channel.ExecuteUnobservableCommand<EchoBooleanValueRequestDto, EchoBooleanValueResponseDto>(_serviceName, "EchoBooleanValue", request, callInfo, BasicDataTypesTestSerializers.EchoBooleanValueRequestDto, BasicDataTypesTestSerializers.EchoBooleanValueResponseDto).ReceivedValue.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -357,7 +357,7 @@ namespace Tecan.Sila2.Interop.Client.BasicDataTypesTest.BasicDataTypesTest
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/BasicDataTypesTest/v1/Command/EchoDateValue");
             try
             {
-                System.DateTimeOffset response = _channel.ExecuteUnobservableCommand<EchoDateValueRequestDto, EchoDateValueResponseDto>(_serviceName, "EchoDateValue", request, callInfo).ReceivedValue.Extract(_executionManager.DownloadBinaryStore);
+                System.DateTimeOffset response = _channel.ExecuteUnobservableCommand<EchoDateValueRequestDto, EchoDateValueResponseDto>(_serviceName, "EchoDateValue", request, callInfo, BasicDataTypesTestSerializers.EchoDateValueRequestDto, BasicDataTypesTestSerializers.EchoDateValueResponseDto).ReceivedValue.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -379,7 +379,7 @@ namespace Tecan.Sila2.Interop.Client.BasicDataTypesTest.BasicDataTypesTest
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/BasicDataTypesTest/v1/Command/EchoTimeValue");
             try
             {
-                TimeWithTimezone response = _channel.ExecuteUnobservableCommand<EchoTimeValueRequestDto, EchoTimeValueResponseDto>(_serviceName, "EchoTimeValue", request, callInfo).ReceivedValue.ExtractToTimeWithTimezone(_executionManager.DownloadBinaryStore);
+                TimeWithTimezone response = _channel.ExecuteUnobservableCommand<EchoTimeValueRequestDto, EchoTimeValueResponseDto>(_serviceName, "EchoTimeValue", request, callInfo, BasicDataTypesTestSerializers.EchoTimeValueRequestDto, BasicDataTypesTestSerializers.EchoTimeValueResponseDto).ReceivedValue.ExtractToTimeWithTimezone(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -401,7 +401,7 @@ namespace Tecan.Sila2.Interop.Client.BasicDataTypesTest.BasicDataTypesTest
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/BasicDataTypesTest/v1/Command/EchoTimestampValue");
             try
             {
-                System.DateTimeOffset response = _channel.ExecuteUnobservableCommand<EchoTimestampValueRequestDto, EchoTimestampValueResponseDto>(_serviceName, "EchoTimestampValue", request, callInfo).ReceivedValue.Extract(_executionManager.DownloadBinaryStore);
+                System.DateTimeOffset response = _channel.ExecuteUnobservableCommand<EchoTimestampValueRequestDto, EchoTimestampValueResponseDto>(_serviceName, "EchoTimestampValue", request, callInfo, BasicDataTypesTestSerializers.EchoTimestampValueRequestDto, BasicDataTypesTestSerializers.EchoTimestampValueResponseDto).ReceivedValue.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)

@@ -60,7 +60,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
                         System.Threading.Monitor.Enter(_cancellationTokenSource);
                         if ((_currentTemperatureUpdateTask == null))
                         {
-                            _currentTemperatureUpdateTask = _channel.SubscribeProperty<CurrentTemperatureResponseDto>(_serviceName, "CurrentTemperature", "tecan.sila.generator/test/TemperatureController/v4/Property/CurrentTemperature", ReceiveNewCurrentTemperature, _executionManager.CreateCallOptions("tecan.sila.generator/test/TemperatureController/v4/Property/CurrentTemperature"), _cancellationTokenSource.Token);
+                            _currentTemperatureUpdateTask = _channel.SubscribeProperty<CurrentTemperatureResponseDto>(_serviceName, "CurrentTemperature", "tecan.sila.generator/test/TemperatureController/v4/Property/CurrentTemperature", ReceiveNewCurrentTemperature, _executionManager.CreateCallOptions("tecan.sila.generator/test/TemperatureController/v4/Property/CurrentTemperature"), TemperatureControllerSerializers.CurrentTemperatureResponseDto, _cancellationTokenSource.Token);
                         }
                     } finally
                     {
@@ -107,7 +107,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         {
             ControlTemperatureRequestDto request = new ControlTemperatureRequestDto(targetTemperature, null);
             request.Validate();
-            return _channel.ExecuteObservableCommand<ControlTemperatureRequestDto>(_serviceName, "ControlTemperature", request, ConvertControlTemperatureException, _executionManager.CreateCallOptions(request.CommandIdentifier));
+            return _channel.ExecuteObservableCommand<ControlTemperatureRequestDto>(_serviceName, "ControlTemperature", request, ConvertControlTemperatureException, _executionManager.CreateCallOptions(request.CommandIdentifier), TemperatureControllerSerializers.ControlTemperatureRequestDto);
         }
         
         /// <summary>

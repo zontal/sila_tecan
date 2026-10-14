@@ -7,6 +7,7 @@
 //     the code is regenerated.
 // </auto-generated>
 //------------------------------------------------------------------------------
+#pragma warning disable PBN9001
 
 using System;
 using Tecan.Sila2;
@@ -105,6 +106,53 @@ namespace Tecan.Sila2.Interop.Server.MetadataProvider
         {
             return (("" + Argument.Require(FirstInteger, "FirstInteger")) 
                         + Argument.Require(SecondInteger, "SecondInteger"));
+        }
+    }
+    
+    /// <summary>
+    /// The compile-time protobuf-net type model for the data transfer objects of the Metadata Provider feature
+    /// </summary>
+    [ProtoBuf.ProtoModelAttribute()]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(PropertyResponse<Tecan.Sila2.StringDto>))]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(PropertyResponse<TwoIntegersMetadataDto>))]
+    public sealed partial class MetadataProviderTypeModel : ProtoBuf.Meta.TypeModel
+    {
+    }
+    
+    /// <summary>
+    /// Byte serializers for the data transfer objects of the Metadata Provider feature that use the compile-time generated MetadataProviderTypeModel
+    /// </summary>
+    public sealed class MetadataProviderSerializers
+    {
+        
+        private static ByteSerializer<PropertyResponse<Tecan.Sila2.StringDto>> _propertyResponseOfStringDto = ByteSerializer.Create<PropertyResponse<Tecan.Sila2.StringDto>>(MetadataProviderTypeModel.Instance);
+        
+        private static ByteSerializer<PropertyResponse<TwoIntegersMetadataDto>> _propertyResponseOfTwoIntegersMetadataDto = ByteSerializer.Create<PropertyResponse<TwoIntegersMetadataDto>>(MetadataProviderTypeModel.Instance);
+        
+        private MetadataProviderSerializers()
+        {
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for PropertyResponseOfStringDto
+        /// </summary>
+        public static ByteSerializer<PropertyResponse<Tecan.Sila2.StringDto>> PropertyResponseOfStringDto
+        {
+            get
+            {
+                return _propertyResponseOfStringDto;
+            }
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for PropertyResponseOfTwoIntegersMetadataDto
+        /// </summary>
+        public static ByteSerializer<PropertyResponse<TwoIntegersMetadataDto>> PropertyResponseOfTwoIntegersMetadataDto
+        {
+            get
+            {
+                return _propertyResponseOfTwoIntegersMetadataDto;
+            }
         }
     }
 }

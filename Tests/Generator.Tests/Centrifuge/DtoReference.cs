@@ -7,6 +7,7 @@
 //     the code is regenerated.
 // </auto-generated>
 //------------------------------------------------------------------------------
+#pragma warning disable PBN9001
 
 using System;
 using Tecan.Sila2;
@@ -153,6 +154,67 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         public string GetValidationErrors()
         {
             return ("" + Argument.Require( Value, "Value" ));
+        }
+    }
+    
+    /// <summary>
+    /// The compile-time protobuf-net type model for the data transfer objects of the Centrifuge feature
+    /// </summary>
+    [ProtoBuf.ProtoModelAttribute()]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(RunCrazyRequestDto))]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(SetSpeedRequestDto))]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(PropertyResponse<Tecan.Sila2.IntegerDto>))]
+    public sealed partial class CentrifugeTypeModel : ProtoBuf.Meta.TypeModel
+    {
+    }
+    
+    /// <summary>
+    /// Byte serializers for the data transfer objects of the Centrifuge feature that use the compile-time generated CentrifugeTypeModel
+    /// </summary>
+    public sealed class CentrifugeSerializers
+    {
+        
+        private static ByteSerializer<RunCrazyRequestDto> _runCrazyRequestDto = ByteSerializer.Create<RunCrazyRequestDto>(CentrifugeTypeModel.Instance);
+        
+        private static ByteSerializer<SetSpeedRequestDto> _setSpeedRequestDto = ByteSerializer.Create<SetSpeedRequestDto>(CentrifugeTypeModel.Instance);
+        
+        private static ByteSerializer<PropertyResponse<Tecan.Sila2.IntegerDto>> _propertyResponseOfIntegerDto = ByteSerializer.Create<PropertyResponse<Tecan.Sila2.IntegerDto>>(CentrifugeTypeModel.Instance);
+        
+        private CentrifugeSerializers()
+        {
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for RunCrazyRequestDto
+        /// </summary>
+        public static ByteSerializer<RunCrazyRequestDto> RunCrazyRequestDto
+        {
+            get
+            {
+                return _runCrazyRequestDto;
+            }
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for SetSpeedRequestDto
+        /// </summary>
+        public static ByteSerializer<SetSpeedRequestDto> SetSpeedRequestDto
+        {
+            get
+            {
+                return _setSpeedRequestDto;
+            }
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for PropertyResponseOfIntegerDto
+        /// </summary>
+        public static ByteSerializer<PropertyResponse<Tecan.Sila2.IntegerDto>> PropertyResponseOfIntegerDto
+        {
+            get
+            {
+                return _propertyResponseOfIntegerDto;
+            }
         }
     }
 }

@@ -7,6 +7,7 @@
 //     the code is regenerated.
 // </auto-generated>
 //------------------------------------------------------------------------------
+#pragma warning disable PBN9001
 
 using System;
 using Tecan.Sila2;
@@ -216,6 +217,53 @@ namespace Tecan.Sila2.Authorization.AuthorizationProviderService
         public string GetValidationErrors()
         {
             return ("" + Argument.Require(TokenLifetime, "TokenLifetime"));
+        }
+    }
+    
+    /// <summary>
+    /// The compile-time protobuf-net type model for the data transfer objects of the Authorization Provider Service feature
+    /// </summary>
+    [ProtoBuf.ProtoModelAttribute()]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(VerifyRequestDto))]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(VerifyResponseDto))]
+    public sealed partial class AuthorizationProviderServiceTypeModel : ProtoBuf.Meta.TypeModel
+    {
+    }
+    
+    /// <summary>
+    /// Byte serializers for the data transfer objects of the Authorization Provider Service feature that use the compile-time generated AuthorizationProviderServiceTypeModel
+    /// </summary>
+    public sealed class AuthorizationProviderServiceSerializers
+    {
+        
+        private static ByteSerializer<VerifyRequestDto> _verifyRequestDto = ByteSerializer.Create<VerifyRequestDto>(AuthorizationProviderServiceTypeModel.Instance);
+        
+        private static ByteSerializer<VerifyResponseDto> _verifyResponseDto = ByteSerializer.Create<VerifyResponseDto>(AuthorizationProviderServiceTypeModel.Instance);
+        
+        private AuthorizationProviderServiceSerializers()
+        {
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for VerifyRequestDto
+        /// </summary>
+        public static ByteSerializer<VerifyRequestDto> VerifyRequestDto
+        {
+            get
+            {
+                return _verifyRequestDto;
+            }
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for VerifyResponseDto
+        /// </summary>
+        public static ByteSerializer<VerifyResponseDto> VerifyResponseDto
+        {
+            get
+            {
+                return _verifyResponseDto;
+            }
         }
     }
 }

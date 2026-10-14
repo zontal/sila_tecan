@@ -61,8 +61,8 @@ namespace Tecan.Sila2.Authentication
         /// <param name="registration">The registration component to which the feature should be registered</param>
         public void Register(IServerBuilder registration)
         {
-            registration.RegisterUnobservableCommand<LoginRequestDto, LoginResponseDto>("Login", Login);
-            registration.RegisterUnobservableCommand<LogoutRequestDto, EmptyRequest>("Logout", Logout);
+            registration.RegisterUnobservableCommand<LoginRequestDto, LoginResponseDto>("Login", Login, AuthenticationServiceSerializers.LoginRequestDto, AuthenticationServiceSerializers.LoginResponseDto);
+            registration.RegisterUnobservableCommand<LogoutRequestDto, EmptyRequest>("Logout", Logout, AuthenticationServiceSerializers.LogoutRequestDto, EmptyRequest.Marshaller);
         }
         
         /// <summary>

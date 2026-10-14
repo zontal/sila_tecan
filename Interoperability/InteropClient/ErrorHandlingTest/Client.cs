@@ -90,7 +90,7 @@ namespace Tecan.Sila2.Interop.Client.ErrorHandlingTest.ErrorHandlingTest
                         {
                             _raiseDefinedExecutionErrorOnSubscribeUpdateTask = _channel.SubscribeProperty<PropertyResponse<Tecan.Sila2.IntegerDto>>(_serviceName, "RaiseDefinedExecutionErrorOnSubscribe", "org.silastandard/test/ErrorHandlingTest/v1/Property/RaiseDefinedExecutionErrorOnS" +
                                     "ubscribe", ReceiveNewRaiseDefinedExecutionErrorOnSubscribe, _executionManager.CreateCallOptions("org.silastandard/test/ErrorHandlingTest/v1/Property/RaiseDefinedExecutionErrorOnS" +
-                                        "ubscribe"), _cancellationTokenSource.Token);
+                                        "ubscribe"), ErrorHandlingTestSerializers.PropertyResponseOfIntegerDto, _cancellationTokenSource.Token);
                         }
                     } finally
                     {
@@ -128,7 +128,7 @@ namespace Tecan.Sila2.Interop.Client.ErrorHandlingTest.ErrorHandlingTest
                         {
                             _raiseUndefinedExecutionErrorOnSubscribeUpdateTask = _channel.SubscribeProperty<PropertyResponse<Tecan.Sila2.IntegerDto>>(_serviceName, "RaiseUndefinedExecutionErrorOnSubscribe", "org.silastandard/test/ErrorHandlingTest/v1/Property/RaiseUndefinedExecutionErrorO" +
                                     "nSubscribe", ReceiveNewRaiseUndefinedExecutionErrorOnSubscribe, _executionManager.CreateCallOptions("org.silastandard/test/ErrorHandlingTest/v1/Property/RaiseUndefinedExecutionErrorO" +
-                                        "nSubscribe"), _cancellationTokenSource.Token);
+                                        "nSubscribe"), ErrorHandlingTestSerializers.PropertyResponseOfIntegerDto, _cancellationTokenSource.Token);
                         }
                     } finally
                     {
@@ -155,7 +155,7 @@ namespace Tecan.Sila2.Interop.Client.ErrorHandlingTest.ErrorHandlingTest
                         {
                             _raiseDefinedExecutionErrorAfterValueWasSentUpdateTask = _channel.SubscribeProperty<PropertyResponse<Tecan.Sila2.IntegerDto>>(_serviceName, "RaiseDefinedExecutionErrorAfterValueWasSent", "org.silastandard/test/ErrorHandlingTest/v1/Property/RaiseDefinedExecutionErrorAft" +
                                     "erValueWasSent", ReceiveNewRaiseDefinedExecutionErrorAfterValueWasSent, _executionManager.CreateCallOptions("org.silastandard/test/ErrorHandlingTest/v1/Property/RaiseDefinedExecutionErrorAft" +
-                                        "erValueWasSent"), _cancellationTokenSource.Token);
+                                        "erValueWasSent"), ErrorHandlingTestSerializers.PropertyResponseOfIntegerDto, _cancellationTokenSource.Token);
                         }
                     } finally
                     {
@@ -182,7 +182,7 @@ namespace Tecan.Sila2.Interop.Client.ErrorHandlingTest.ErrorHandlingTest
                         {
                             _raiseUndefinedExecutionErrorAfterValueWasSentUpdateTask = _channel.SubscribeProperty<PropertyResponse<Tecan.Sila2.IntegerDto>>(_serviceName, "RaiseUndefinedExecutionErrorAfterValueWasSent", "org.silastandard/test/ErrorHandlingTest/v1/Property/RaiseUndefinedExecutionErrorA" +
                                     "fterValueWasSent", ReceiveNewRaiseUndefinedExecutionErrorAfterValueWasSent, _executionManager.CreateCallOptions("org.silastandard/test/ErrorHandlingTest/v1/Property/RaiseUndefinedExecutionErrorA" +
-                                        "fterValueWasSent"), _cancellationTokenSource.Token);
+                                        "fterValueWasSent"), ErrorHandlingTestSerializers.PropertyResponseOfIntegerDto, _cancellationTokenSource.Token);
                         }
                     } finally
                     {
@@ -202,7 +202,7 @@ namespace Tecan.Sila2.Interop.Client.ErrorHandlingTest.ErrorHandlingTest
             try
             {
                 long response = _channel.ReadProperty<PropertyResponse<Tecan.Sila2.IntegerDto>>(_serviceName, "RaiseDefinedExecutionErrorOnGet", "org.silastandard/test/ErrorHandlingTest/v1/Property/RaiseDefinedExecutionErrorOnG" +
-                        "et", callInfo).Value.Extract(_executionManager.DownloadBinaryStore);
+                        "et", callInfo, ErrorHandlingTestSerializers.PropertyResponseOfIntegerDto).Value.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -249,7 +249,7 @@ namespace Tecan.Sila2.Interop.Client.ErrorHandlingTest.ErrorHandlingTest
             try
             {
                 long response = _channel.ReadProperty<PropertyResponse<Tecan.Sila2.IntegerDto>>(_serviceName, "RaiseUndefinedExecutionErrorOnGet", "org.silastandard/test/ErrorHandlingTest/v1/Property/RaiseUndefinedExecutionErrorO" +
-                        "nGet", callInfo).Value.Extract(_executionManager.DownloadBinaryStore);
+                        "nGet", callInfo, ErrorHandlingTestSerializers.PropertyResponseOfIntegerDto).Value.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -330,7 +330,7 @@ namespace Tecan.Sila2.Interop.Client.ErrorHandlingTest.ErrorHandlingTest
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/ErrorHandlingTest/v1/Command/RaiseDefinedExecutionError");
             try
             {
-                _channel.ExecuteUnobservableCommand<RaiseDefinedExecutionErrorRequestDto>(_serviceName, "RaiseDefinedExecutionError", request, callInfo);
+                _channel.ExecuteUnobservableCommand<RaiseDefinedExecutionErrorRequestDto>(_serviceName, "RaiseDefinedExecutionError", request, callInfo, ErrorHandlingTestSerializers.RaiseDefinedExecutionErrorRequestDto);
                 callInfo.FinishSuccessful();
                 return;
             } catch (System.Exception ex)
@@ -363,7 +363,7 @@ namespace Tecan.Sila2.Interop.Client.ErrorHandlingTest.ErrorHandlingTest
         {
             RaiseDefinedExecutionErrorObservablyRequestDto request = new RaiseDefinedExecutionErrorObservablyRequestDto(null);
             request.Validate();
-            return _channel.ExecuteObservableCommand<RaiseDefinedExecutionErrorObservablyRequestDto>(_serviceName, "RaiseDefinedExecutionErrorObservably", request, ConvertRaiseDefinedExecutionErrorObservablyException, _executionManager.CreateCallOptions(request.CommandIdentifier));
+            return _channel.ExecuteObservableCommand<RaiseDefinedExecutionErrorObservablyRequestDto>(_serviceName, "RaiseDefinedExecutionErrorObservably", request, ConvertRaiseDefinedExecutionErrorObservablyException, _executionManager.CreateCallOptions(request.CommandIdentifier), ErrorHandlingTestSerializers.RaiseDefinedExecutionErrorObservablyRequestDto);
         }
         
         /// <summary>
@@ -391,7 +391,7 @@ namespace Tecan.Sila2.Interop.Client.ErrorHandlingTest.ErrorHandlingTest
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/ErrorHandlingTest/v1/Command/RaiseUndefinedExecutionError");
             try
             {
-                _channel.ExecuteUnobservableCommand<RaiseUndefinedExecutionErrorRequestDto>(_serviceName, "RaiseUndefinedExecutionError", request, callInfo);
+                _channel.ExecuteUnobservableCommand<RaiseUndefinedExecutionErrorRequestDto>(_serviceName, "RaiseUndefinedExecutionError", request, callInfo, ErrorHandlingTestSerializers.RaiseUndefinedExecutionErrorRequestDto);
                 callInfo.FinishSuccessful();
                 return;
             } catch (System.Exception ex)
@@ -409,7 +409,7 @@ namespace Tecan.Sila2.Interop.Client.ErrorHandlingTest.ErrorHandlingTest
         {
             RaiseUndefinedExecutionErrorObservablyRequestDto request = new RaiseUndefinedExecutionErrorObservablyRequestDto(null);
             request.Validate();
-            return _channel.ExecuteObservableCommand<RaiseUndefinedExecutionErrorObservablyRequestDto>(_serviceName, "RaiseUndefinedExecutionErrorObservably", request, ConvertRaiseUndefinedExecutionErrorObservablyException, _executionManager.CreateCallOptions(request.CommandIdentifier));
+            return _channel.ExecuteObservableCommand<RaiseUndefinedExecutionErrorObservablyRequestDto>(_serviceName, "RaiseUndefinedExecutionErrorObservably", request, ConvertRaiseUndefinedExecutionErrorObservablyException, _executionManager.CreateCallOptions(request.CommandIdentifier), ErrorHandlingTestSerializers.RaiseUndefinedExecutionErrorObservablyRequestDto);
         }
         
         /// <summary>

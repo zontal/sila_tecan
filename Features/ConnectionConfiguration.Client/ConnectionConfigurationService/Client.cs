@@ -75,7 +75,7 @@ namespace Tecan.Sila2.ConnectionConfiguration.ConnectionConfigurationService
             try
             {
                 bool response = _channel.ReadProperty<PropertyResponse<Tecan.Sila2.BooleanDto>>(_serviceName, "ServerInitiatedConnectionModeStatus", "org.silastandard/core/ConnectionConfigurationService/v1/Property/ServerInitiatedC" +
-                        "onnectionModeStatus", callInfo).Value.Extract(_executionManager.DownloadBinaryStore);
+                        "onnectionModeStatus", callInfo, ConnectionConfigurationServiceSerializers.PropertyResponseOfBooleanDto).Value.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -93,7 +93,7 @@ namespace Tecan.Sila2.ConnectionConfiguration.ConnectionConfigurationService
             try
             {
                 System.Collections.Generic.ICollection<ConfiguredSiLAClient> response = _channel.ReadProperty<PropertyResponse<System.Collections.Generic.List<ConfiguredSiLAClientDto>>>(_serviceName, "ConfiguredSiLAClients", "org.silastandard/core/ConnectionConfigurationService/v1/Property/ConfiguredSiLACl" +
-                        "ients", callInfo).Value.Extract(_executionManager.DownloadBinaryStore);
+                        "ients", callInfo, ConnectionConfigurationServiceSerializers.PropertyResponseOfListOfConfiguredSiLAClientDto).Value.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -124,7 +124,7 @@ namespace Tecan.Sila2.ConnectionConfiguration.ConnectionConfigurationService
                     "atedConnectionMode");
             try
             {
-                _channel.ExecuteUnobservableCommand<EnableServerInitiatedConnectionModeRequestDto>(_serviceName, "EnableServerInitiatedConnectionMode", request, callInfo);
+                _channel.ExecuteUnobservableCommand<EnableServerInitiatedConnectionModeRequestDto>(_serviceName, "EnableServerInitiatedConnectionMode", request, callInfo, ConnectionConfigurationServiceSerializers.EnableServerInitiatedConnectionModeRequestDto);
                 callInfo.FinishSuccessful();
                 return;
             } catch (System.Exception ex)
@@ -146,7 +146,7 @@ namespace Tecan.Sila2.ConnectionConfiguration.ConnectionConfigurationService
                     "iatedConnectionMode");
             try
             {
-                _channel.ExecuteUnobservableCommand<DisableServerInitiatedConnectionModeRequestDto>(_serviceName, "DisableServerInitiatedConnectionMode", request, callInfo);
+                _channel.ExecuteUnobservableCommand<DisableServerInitiatedConnectionModeRequestDto>(_serviceName, "DisableServerInitiatedConnectionMode", request, callInfo, ConnectionConfigurationServiceSerializers.DisableServerInitiatedConnectionModeRequestDto);
                 callInfo.FinishSuccessful();
                 return;
             } catch (System.Exception ex)
@@ -172,7 +172,7 @@ namespace Tecan.Sila2.ConnectionConfiguration.ConnectionConfigurationService
                     "");
             try
             {
-                _channel.ExecuteUnobservableCommand<ConnectSiLAClientRequestDto>(_serviceName, "ConnectSiLAClient", request, callInfo);
+                _channel.ExecuteUnobservableCommand<ConnectSiLAClientRequestDto>(_serviceName, "ConnectSiLAClient", request, callInfo, ConnectionConfigurationServiceSerializers.ConnectSiLAClientRequestDto);
                 callInfo.FinishSuccessful();
                 return;
             } catch (System.Exception ex)
@@ -196,7 +196,7 @@ namespace Tecan.Sila2.ConnectionConfiguration.ConnectionConfigurationService
                     "ent");
             try
             {
-                _channel.ExecuteUnobservableCommand<DisconnectSiLAClientRequestDto>(_serviceName, "DisconnectSiLAClient", request, callInfo);
+                _channel.ExecuteUnobservableCommand<DisconnectSiLAClientRequestDto>(_serviceName, "DisconnectSiLAClient", request, callInfo, ConnectionConfigurationServiceSerializers.DisconnectSiLAClientRequestDto);
                 callInfo.FinishSuccessful();
                 return;
             } catch (System.Exception ex)

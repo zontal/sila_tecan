@@ -7,6 +7,7 @@
 //     the code is regenerated.
 // </auto-generated>
 //------------------------------------------------------------------------------
+#pragma warning disable PBN9001
 
 using System;
 using Tecan.Sila2;
@@ -229,6 +230,67 @@ namespace Tecan.Sila2.Interop.Client.MultiClientTest.MultiClientTest
         public string GetValidationErrors()
         {
             return ("" + Argument.Require(Duration, "Duration"));
+        }
+    }
+    
+    /// <summary>
+    /// The compile-time protobuf-net type model for the data transfer objects of the Multi Client Test feature
+    /// </summary>
+    [ProtoBuf.ProtoModelAttribute()]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(RunInParallelRequestDto))]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(RunQueuedRequestDto))]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(RejectParallelExecutionRequestDto))]
+    public sealed partial class MultiClientTestTypeModel : ProtoBuf.Meta.TypeModel
+    {
+    }
+    
+    /// <summary>
+    /// Byte serializers for the data transfer objects of the Multi Client Test feature that use the compile-time generated MultiClientTestTypeModel
+    /// </summary>
+    public sealed class MultiClientTestSerializers
+    {
+        
+        private static ByteSerializer<RunInParallelRequestDto> _runInParallelRequestDto = ByteSerializer.Create<RunInParallelRequestDto>(MultiClientTestTypeModel.Instance);
+        
+        private static ByteSerializer<RunQueuedRequestDto> _runQueuedRequestDto = ByteSerializer.Create<RunQueuedRequestDto>(MultiClientTestTypeModel.Instance);
+        
+        private static ByteSerializer<RejectParallelExecutionRequestDto> _rejectParallelExecutionRequestDto = ByteSerializer.Create<RejectParallelExecutionRequestDto>(MultiClientTestTypeModel.Instance);
+        
+        private MultiClientTestSerializers()
+        {
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for RunInParallelRequestDto
+        /// </summary>
+        public static ByteSerializer<RunInParallelRequestDto> RunInParallelRequestDto
+        {
+            get
+            {
+                return _runInParallelRequestDto;
+            }
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for RunQueuedRequestDto
+        /// </summary>
+        public static ByteSerializer<RunQueuedRequestDto> RunQueuedRequestDto
+        {
+            get
+            {
+                return _runQueuedRequestDto;
+            }
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for RejectParallelExecutionRequestDto
+        /// </summary>
+        public static ByteSerializer<RejectParallelExecutionRequestDto> RejectParallelExecutionRequestDto
+        {
+            get
+            {
+                return _rejectParallelExecutionRequestDto;
+            }
         }
     }
 }

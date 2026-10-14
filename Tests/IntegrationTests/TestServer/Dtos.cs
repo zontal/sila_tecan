@@ -7,6 +7,7 @@
 //     the code is regenerated.
 // </auto-generated>
 //------------------------------------------------------------------------------
+#pragma warning disable PBN9001
 
 using System;
 using Tecan.Sila2;
@@ -2570,6 +2571,557 @@ namespace Tecan.Sila2.IntegrationTests.TestServer
                 {
                     _time = value;
                 }
+            }
+        }
+    }
+    
+    /// <summary>
+    /// The compile-time protobuf-net type model for the data transfer objects of the Test Server feature
+    /// </summary>
+    [ProtoBuf.ProtoModelAttribute()]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(PassBoolRequestDto))]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(PassBoolResponseDto))]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(PassDoubleRequestDto))]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(PassDoubleResponseDto))]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(PassLongRequestDto))]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(PassLongResponseDto))]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(PassIntRequestDto))]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(PassIntResponseDto))]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(PassTimestampRequestDto))]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(PassTimestampResponseDto))]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(PassTimeRequestDto))]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(PassTimeResponseDto))]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(PassStringRequestDto))]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(PassStringResponseDto))]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(PassStreamRequestDto))]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(PassStreamResponseDto))]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(PassFileRequestDto))]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(PassFileResponseDto))]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(PassBytesRequestDto))]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(PassBytesResponseDto))]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(PassDynamicRequestDto))]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(PassDynamicResponseDto))]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(PassCollectionRequestDto))]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(PassCollectionResponseDto))]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(PassStructureRequestDto))]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(PassStructureResponseDto))]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(RunObservableRequestDto))]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(RunObservableResponseDto))]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(RunIntermediateObservableCommandRequestDto))]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(RunIntermediateObservableCommandIntermediateDto))]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(WaitForCancelOrThrowRequestDto))]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(RunIntoFailureRequestDto))]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(RunIntoFailureObservablyRequestDto))]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(IsCancelledRequestDto))]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(IsCancelledResponseDto))]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(ThrowRuntimeExceptionRequestDto))]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(SetDummyRequestDto))]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(PropertyResponse<Tecan.Sila2.IntegerDto>))]
+    public sealed partial class TestServerTypeModel : ProtoBuf.Meta.TypeModel
+    {
+    }
+    
+    /// <summary>
+    /// Byte serializers for the data transfer objects of the Test Server feature that use the compile-time generated TestServerTypeModel
+    /// </summary>
+    public sealed class TestServerSerializers
+    {
+        
+        private static ByteSerializer<PassBoolRequestDto> _passBoolRequestDto = ByteSerializer.Create<PassBoolRequestDto>(TestServerTypeModel.Instance);
+        
+        private static ByteSerializer<PassBoolResponseDto> _passBoolResponseDto = ByteSerializer.Create<PassBoolResponseDto>(TestServerTypeModel.Instance);
+        
+        private static ByteSerializer<PassDoubleRequestDto> _passDoubleRequestDto = ByteSerializer.Create<PassDoubleRequestDto>(TestServerTypeModel.Instance);
+        
+        private static ByteSerializer<PassDoubleResponseDto> _passDoubleResponseDto = ByteSerializer.Create<PassDoubleResponseDto>(TestServerTypeModel.Instance);
+        
+        private static ByteSerializer<PassLongRequestDto> _passLongRequestDto = ByteSerializer.Create<PassLongRequestDto>(TestServerTypeModel.Instance);
+        
+        private static ByteSerializer<PassLongResponseDto> _passLongResponseDto = ByteSerializer.Create<PassLongResponseDto>(TestServerTypeModel.Instance);
+        
+        private static ByteSerializer<PassIntRequestDto> _passIntRequestDto = ByteSerializer.Create<PassIntRequestDto>(TestServerTypeModel.Instance);
+        
+        private static ByteSerializer<PassIntResponseDto> _passIntResponseDto = ByteSerializer.Create<PassIntResponseDto>(TestServerTypeModel.Instance);
+        
+        private static ByteSerializer<PassTimestampRequestDto> _passTimestampRequestDto = ByteSerializer.Create<PassTimestampRequestDto>(TestServerTypeModel.Instance);
+        
+        private static ByteSerializer<PassTimestampResponseDto> _passTimestampResponseDto = ByteSerializer.Create<PassTimestampResponseDto>(TestServerTypeModel.Instance);
+        
+        private static ByteSerializer<PassTimeRequestDto> _passTimeRequestDto = ByteSerializer.Create<PassTimeRequestDto>(TestServerTypeModel.Instance);
+        
+        private static ByteSerializer<PassTimeResponseDto> _passTimeResponseDto = ByteSerializer.Create<PassTimeResponseDto>(TestServerTypeModel.Instance);
+        
+        private static ByteSerializer<PassStringRequestDto> _passStringRequestDto = ByteSerializer.Create<PassStringRequestDto>(TestServerTypeModel.Instance);
+        
+        private static ByteSerializer<PassStringResponseDto> _passStringResponseDto = ByteSerializer.Create<PassStringResponseDto>(TestServerTypeModel.Instance);
+        
+        private static ByteSerializer<PassStreamRequestDto> _passStreamRequestDto = ByteSerializer.Create<PassStreamRequestDto>(TestServerTypeModel.Instance);
+        
+        private static ByteSerializer<PassStreamResponseDto> _passStreamResponseDto = ByteSerializer.Create<PassStreamResponseDto>(TestServerTypeModel.Instance);
+        
+        private static ByteSerializer<PassFileRequestDto> _passFileRequestDto = ByteSerializer.Create<PassFileRequestDto>(TestServerTypeModel.Instance);
+        
+        private static ByteSerializer<PassFileResponseDto> _passFileResponseDto = ByteSerializer.Create<PassFileResponseDto>(TestServerTypeModel.Instance);
+        
+        private static ByteSerializer<PassBytesRequestDto> _passBytesRequestDto = ByteSerializer.Create<PassBytesRequestDto>(TestServerTypeModel.Instance);
+        
+        private static ByteSerializer<PassBytesResponseDto> _passBytesResponseDto = ByteSerializer.Create<PassBytesResponseDto>(TestServerTypeModel.Instance);
+        
+        private static ByteSerializer<PassDynamicRequestDto> _passDynamicRequestDto = ByteSerializer.Create<PassDynamicRequestDto>(TestServerTypeModel.Instance);
+        
+        private static ByteSerializer<PassDynamicResponseDto> _passDynamicResponseDto = ByteSerializer.Create<PassDynamicResponseDto>(TestServerTypeModel.Instance);
+        
+        private static ByteSerializer<PassCollectionRequestDto> _passCollectionRequestDto = ByteSerializer.Create<PassCollectionRequestDto>(TestServerTypeModel.Instance);
+        
+        private static ByteSerializer<PassCollectionResponseDto> _passCollectionResponseDto = ByteSerializer.Create<PassCollectionResponseDto>(TestServerTypeModel.Instance);
+        
+        private static ByteSerializer<PassStructureRequestDto> _passStructureRequestDto = ByteSerializer.Create<PassStructureRequestDto>(TestServerTypeModel.Instance);
+        
+        private static ByteSerializer<PassStructureResponseDto> _passStructureResponseDto = ByteSerializer.Create<PassStructureResponseDto>(TestServerTypeModel.Instance);
+        
+        private static ByteSerializer<RunObservableRequestDto> _runObservableRequestDto = ByteSerializer.Create<RunObservableRequestDto>(TestServerTypeModel.Instance);
+        
+        private static ByteSerializer<RunObservableResponseDto> _runObservableResponseDto = ByteSerializer.Create<RunObservableResponseDto>(TestServerTypeModel.Instance);
+        
+        private static ByteSerializer<RunIntermediateObservableCommandRequestDto> _runIntermediateObservableCommandRequestDto = ByteSerializer.Create<RunIntermediateObservableCommandRequestDto>(TestServerTypeModel.Instance);
+        
+        private static ByteSerializer<RunIntermediateObservableCommandIntermediateDto> _runIntermediateObservableCommandIntermediateDto = ByteSerializer.Create<RunIntermediateObservableCommandIntermediateDto>(TestServerTypeModel.Instance);
+        
+        private static ByteSerializer<WaitForCancelOrThrowRequestDto> _waitForCancelOrThrowRequestDto = ByteSerializer.Create<WaitForCancelOrThrowRequestDto>(TestServerTypeModel.Instance);
+        
+        private static ByteSerializer<RunIntoFailureRequestDto> _runIntoFailureRequestDto = ByteSerializer.Create<RunIntoFailureRequestDto>(TestServerTypeModel.Instance);
+        
+        private static ByteSerializer<RunIntoFailureObservablyRequestDto> _runIntoFailureObservablyRequestDto = ByteSerializer.Create<RunIntoFailureObservablyRequestDto>(TestServerTypeModel.Instance);
+        
+        private static ByteSerializer<IsCancelledRequestDto> _isCancelledRequestDto = ByteSerializer.Create<IsCancelledRequestDto>(TestServerTypeModel.Instance);
+        
+        private static ByteSerializer<IsCancelledResponseDto> _isCancelledResponseDto = ByteSerializer.Create<IsCancelledResponseDto>(TestServerTypeModel.Instance);
+        
+        private static ByteSerializer<ThrowRuntimeExceptionRequestDto> _throwRuntimeExceptionRequestDto = ByteSerializer.Create<ThrowRuntimeExceptionRequestDto>(TestServerTypeModel.Instance);
+        
+        private static ByteSerializer<SetDummyRequestDto> _setDummyRequestDto = ByteSerializer.Create<SetDummyRequestDto>(TestServerTypeModel.Instance);
+        
+        private static ByteSerializer<PropertyResponse<Tecan.Sila2.IntegerDto>> _propertyResponseOfIntegerDto = ByteSerializer.Create<PropertyResponse<Tecan.Sila2.IntegerDto>>(TestServerTypeModel.Instance);
+        
+        private TestServerSerializers()
+        {
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for PassBoolRequestDto
+        /// </summary>
+        public static ByteSerializer<PassBoolRequestDto> PassBoolRequestDto
+        {
+            get
+            {
+                return _passBoolRequestDto;
+            }
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for PassBoolResponseDto
+        /// </summary>
+        public static ByteSerializer<PassBoolResponseDto> PassBoolResponseDto
+        {
+            get
+            {
+                return _passBoolResponseDto;
+            }
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for PassDoubleRequestDto
+        /// </summary>
+        public static ByteSerializer<PassDoubleRequestDto> PassDoubleRequestDto
+        {
+            get
+            {
+                return _passDoubleRequestDto;
+            }
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for PassDoubleResponseDto
+        /// </summary>
+        public static ByteSerializer<PassDoubleResponseDto> PassDoubleResponseDto
+        {
+            get
+            {
+                return _passDoubleResponseDto;
+            }
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for PassLongRequestDto
+        /// </summary>
+        public static ByteSerializer<PassLongRequestDto> PassLongRequestDto
+        {
+            get
+            {
+                return _passLongRequestDto;
+            }
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for PassLongResponseDto
+        /// </summary>
+        public static ByteSerializer<PassLongResponseDto> PassLongResponseDto
+        {
+            get
+            {
+                return _passLongResponseDto;
+            }
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for PassIntRequestDto
+        /// </summary>
+        public static ByteSerializer<PassIntRequestDto> PassIntRequestDto
+        {
+            get
+            {
+                return _passIntRequestDto;
+            }
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for PassIntResponseDto
+        /// </summary>
+        public static ByteSerializer<PassIntResponseDto> PassIntResponseDto
+        {
+            get
+            {
+                return _passIntResponseDto;
+            }
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for PassTimestampRequestDto
+        /// </summary>
+        public static ByteSerializer<PassTimestampRequestDto> PassTimestampRequestDto
+        {
+            get
+            {
+                return _passTimestampRequestDto;
+            }
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for PassTimestampResponseDto
+        /// </summary>
+        public static ByteSerializer<PassTimestampResponseDto> PassTimestampResponseDto
+        {
+            get
+            {
+                return _passTimestampResponseDto;
+            }
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for PassTimeRequestDto
+        /// </summary>
+        public static ByteSerializer<PassTimeRequestDto> PassTimeRequestDto
+        {
+            get
+            {
+                return _passTimeRequestDto;
+            }
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for PassTimeResponseDto
+        /// </summary>
+        public static ByteSerializer<PassTimeResponseDto> PassTimeResponseDto
+        {
+            get
+            {
+                return _passTimeResponseDto;
+            }
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for PassStringRequestDto
+        /// </summary>
+        public static ByteSerializer<PassStringRequestDto> PassStringRequestDto
+        {
+            get
+            {
+                return _passStringRequestDto;
+            }
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for PassStringResponseDto
+        /// </summary>
+        public static ByteSerializer<PassStringResponseDto> PassStringResponseDto
+        {
+            get
+            {
+                return _passStringResponseDto;
+            }
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for PassStreamRequestDto
+        /// </summary>
+        public static ByteSerializer<PassStreamRequestDto> PassStreamRequestDto
+        {
+            get
+            {
+                return _passStreamRequestDto;
+            }
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for PassStreamResponseDto
+        /// </summary>
+        public static ByteSerializer<PassStreamResponseDto> PassStreamResponseDto
+        {
+            get
+            {
+                return _passStreamResponseDto;
+            }
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for PassFileRequestDto
+        /// </summary>
+        public static ByteSerializer<PassFileRequestDto> PassFileRequestDto
+        {
+            get
+            {
+                return _passFileRequestDto;
+            }
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for PassFileResponseDto
+        /// </summary>
+        public static ByteSerializer<PassFileResponseDto> PassFileResponseDto
+        {
+            get
+            {
+                return _passFileResponseDto;
+            }
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for PassBytesRequestDto
+        /// </summary>
+        public static ByteSerializer<PassBytesRequestDto> PassBytesRequestDto
+        {
+            get
+            {
+                return _passBytesRequestDto;
+            }
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for PassBytesResponseDto
+        /// </summary>
+        public static ByteSerializer<PassBytesResponseDto> PassBytesResponseDto
+        {
+            get
+            {
+                return _passBytesResponseDto;
+            }
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for PassDynamicRequestDto
+        /// </summary>
+        public static ByteSerializer<PassDynamicRequestDto> PassDynamicRequestDto
+        {
+            get
+            {
+                return _passDynamicRequestDto;
+            }
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for PassDynamicResponseDto
+        /// </summary>
+        public static ByteSerializer<PassDynamicResponseDto> PassDynamicResponseDto
+        {
+            get
+            {
+                return _passDynamicResponseDto;
+            }
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for PassCollectionRequestDto
+        /// </summary>
+        public static ByteSerializer<PassCollectionRequestDto> PassCollectionRequestDto
+        {
+            get
+            {
+                return _passCollectionRequestDto;
+            }
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for PassCollectionResponseDto
+        /// </summary>
+        public static ByteSerializer<PassCollectionResponseDto> PassCollectionResponseDto
+        {
+            get
+            {
+                return _passCollectionResponseDto;
+            }
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for PassStructureRequestDto
+        /// </summary>
+        public static ByteSerializer<PassStructureRequestDto> PassStructureRequestDto
+        {
+            get
+            {
+                return _passStructureRequestDto;
+            }
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for PassStructureResponseDto
+        /// </summary>
+        public static ByteSerializer<PassStructureResponseDto> PassStructureResponseDto
+        {
+            get
+            {
+                return _passStructureResponseDto;
+            }
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for RunObservableRequestDto
+        /// </summary>
+        public static ByteSerializer<RunObservableRequestDto> RunObservableRequestDto
+        {
+            get
+            {
+                return _runObservableRequestDto;
+            }
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for RunObservableResponseDto
+        /// </summary>
+        public static ByteSerializer<RunObservableResponseDto> RunObservableResponseDto
+        {
+            get
+            {
+                return _runObservableResponseDto;
+            }
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for RunIntermediateObservableCommandRequestDto
+        /// </summary>
+        public static ByteSerializer<RunIntermediateObservableCommandRequestDto> RunIntermediateObservableCommandRequestDto
+        {
+            get
+            {
+                return _runIntermediateObservableCommandRequestDto;
+            }
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for RunIntermediateObservableCommandIntermediateDto
+        /// </summary>
+        public static ByteSerializer<RunIntermediateObservableCommandIntermediateDto> RunIntermediateObservableCommandIntermediateDto
+        {
+            get
+            {
+                return _runIntermediateObservableCommandIntermediateDto;
+            }
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for WaitForCancelOrThrowRequestDto
+        /// </summary>
+        public static ByteSerializer<WaitForCancelOrThrowRequestDto> WaitForCancelOrThrowRequestDto
+        {
+            get
+            {
+                return _waitForCancelOrThrowRequestDto;
+            }
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for RunIntoFailureRequestDto
+        /// </summary>
+        public static ByteSerializer<RunIntoFailureRequestDto> RunIntoFailureRequestDto
+        {
+            get
+            {
+                return _runIntoFailureRequestDto;
+            }
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for RunIntoFailureObservablyRequestDto
+        /// </summary>
+        public static ByteSerializer<RunIntoFailureObservablyRequestDto> RunIntoFailureObservablyRequestDto
+        {
+            get
+            {
+                return _runIntoFailureObservablyRequestDto;
+            }
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for IsCancelledRequestDto
+        /// </summary>
+        public static ByteSerializer<IsCancelledRequestDto> IsCancelledRequestDto
+        {
+            get
+            {
+                return _isCancelledRequestDto;
+            }
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for IsCancelledResponseDto
+        /// </summary>
+        public static ByteSerializer<IsCancelledResponseDto> IsCancelledResponseDto
+        {
+            get
+            {
+                return _isCancelledResponseDto;
+            }
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for ThrowRuntimeExceptionRequestDto
+        /// </summary>
+        public static ByteSerializer<ThrowRuntimeExceptionRequestDto> ThrowRuntimeExceptionRequestDto
+        {
+            get
+            {
+                return _throwRuntimeExceptionRequestDto;
+            }
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for SetDummyRequestDto
+        /// </summary>
+        public static ByteSerializer<SetDummyRequestDto> SetDummyRequestDto
+        {
+            get
+            {
+                return _setDummyRequestDto;
+            }
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for PropertyResponseOfIntegerDto
+        /// </summary>
+        public static ByteSerializer<PropertyResponse<Tecan.Sila2.IntegerDto>> PropertyResponseOfIntegerDto
+        {
+            get
+            {
+                return _propertyResponseOfIntegerDto;
             }
         }
     }

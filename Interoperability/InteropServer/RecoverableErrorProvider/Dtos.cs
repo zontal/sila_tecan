@@ -7,6 +7,7 @@
 //     the code is regenerated.
 // </auto-generated>
 //------------------------------------------------------------------------------
+#pragma warning disable PBN9001
 
 using System;
 using Tecan.Sila2;
@@ -184,6 +185,53 @@ namespace Tecan.Sila2.Interop.Server.RecoverableErrorProvider
         public string GetValidationErrors()
         {
             return ("" + Argument.Require(SelectedContinuationOption, "SelectedContinuationOption"));
+        }
+    }
+    
+    /// <summary>
+    /// The compile-time protobuf-net type model for the data transfer objects of the Recoverable Error Provider feature
+    /// </summary>
+    [ProtoBuf.ProtoModelAttribute()]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(RaiseRecoverableErrorRequestDto))]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(RaiseRecoverableErrorResponseDto))]
+    public sealed partial class RecoverableErrorProviderTypeModel : ProtoBuf.Meta.TypeModel
+    {
+    }
+    
+    /// <summary>
+    /// Byte serializers for the data transfer objects of the Recoverable Error Provider feature that use the compile-time generated RecoverableErrorProviderTypeModel
+    /// </summary>
+    public sealed class RecoverableErrorProviderSerializers
+    {
+        
+        private static ByteSerializer<RaiseRecoverableErrorRequestDto> _raiseRecoverableErrorRequestDto = ByteSerializer.Create<RaiseRecoverableErrorRequestDto>(RecoverableErrorProviderTypeModel.Instance);
+        
+        private static ByteSerializer<RaiseRecoverableErrorResponseDto> _raiseRecoverableErrorResponseDto = ByteSerializer.Create<RaiseRecoverableErrorResponseDto>(RecoverableErrorProviderTypeModel.Instance);
+        
+        private RecoverableErrorProviderSerializers()
+        {
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for RaiseRecoverableErrorRequestDto
+        /// </summary>
+        public static ByteSerializer<RaiseRecoverableErrorRequestDto> RaiseRecoverableErrorRequestDto
+        {
+            get
+            {
+                return _raiseRecoverableErrorRequestDto;
+            }
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for RaiseRecoverableErrorResponseDto
+        /// </summary>
+        public static ByteSerializer<RaiseRecoverableErrorResponseDto> RaiseRecoverableErrorResponseDto
+        {
+            get
+            {
+                return _raiseRecoverableErrorResponseDto;
+            }
         }
     }
 }

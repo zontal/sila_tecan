@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net48</TargetFramework>
+    <LangVersion>latest</LangVersion>
 	  <AssemblyName>Tecan.Sila2.IntegrationTests.FrameworkNetClient</AssemblyName>
 	  <RootNamespace>Tecan.Sila2.IntegrationTests</RootNamespace>
   </PropertyGroup>

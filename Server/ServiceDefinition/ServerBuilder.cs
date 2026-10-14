@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading;
 using System.Threading.Channels;
@@ -28,12 +29,14 @@ namespace Tecan.Sila2.Server.ServiceDefinition
 
         public void RegisterMetadata( string metadata, IRequestInterceptor requestInterceptor )
         {
-            var method = new Method<EmptyRequest, List<StringDto>>( MethodType.Unary, ServiceName, "Get_FCPAffectedByMetadata_" + metadata, EmptyRequestMarshaller.Instance, ProtobufMarshaller<List<StringDto>>.Default );
+            var method = new Method<EmptyRequest, List<StringDto>>( MethodType.Unary, ServiceName, "Get_FCPAffectedByMetadata_" + metadata, EmptyRequestMarshaller.Instance, FrameworkMarshallers.AffectedCalls );
             var builder = new MetadataHandler( _server, requestInterceptor );
             _serviceDefinitionBuilder.AddMethod( method, builder.GetAffectedBy );
             _dispatcher.RegisterHandler( requestInterceptor.MetadataIdentifier, builder );
         }
 
+        [RequiresUnreferencedCode( TrimmingMessages.RuntimeTypeModel )]
+        [RequiresDynamicCode( TrimmingMessages.RuntimeTypeModel )]
         public void RegisterUnobservableProperty<T>( string propertyName, Func<T> implementation ) where T : class
         {
             RegisterUnobservableProperty( propertyName, implementation, ProtobufMarshaller<T>.Default );
@@ -41,7 +44,7 @@ namespace Tecan.Sila2.Server.ServiceDefinition
 
         public void RegisterUnobservableProperty<T>( string propertyName, Func<T> implementation, ByteSerializer<T> propertySerializer ) where T : class
         {
-            RegisterUnobservableProperty( propertyName, implementation, ProtobufMarshaller<T>.FromByteSerializer( propertySerializer ) );
+            RegisterUnobservableProperty( propertyName, implementation, ProtobufMarshaller.FromByteSerializer( propertySerializer ) );
         }
 
         public void RegisterUnobservableProperty<T>( string propertyName, Func<T> implementation, Marshaller<T> propertySerializer ) where T : class
@@ -53,6 +56,8 @@ namespace Tecan.Sila2.Server.ServiceDefinition
             _dispatcher.RegisterHandler( _feature.FullyQualifiedIdentifier + "/Property/" + propertyName, builder );
         }
 
+        [RequiresUnreferencedCode( TrimmingMessages.RuntimeTypeModel )]
+        [RequiresDynamicCode( TrimmingMessages.RuntimeTypeModel )]
         public void RegisterObservableProperty<T>( string propertyName, Func<T> implementation, object changeSource, string clientPropertyName = null ) where T : class
         {
             RegisterObservableProperty( propertyName, implementation, changeSource, ProtobufMarshaller<T>.Default, clientPropertyName );
@@ -60,7 +65,7 @@ namespace Tecan.Sila2.Server.ServiceDefinition
 
         public void RegisterObservableProperty<T>( string propertyName, Func<T> implementation, object changeSource, ByteSerializer<T> propertySerializer, string clientPropertyName = null ) where T : class
         {
-            RegisterObservableProperty( propertyName, implementation, changeSource, ProtobufMarshaller<T>.FromByteSerializer( propertySerializer ), clientPropertyName );
+            RegisterObservableProperty( propertyName, implementation, changeSource, ProtobufMarshaller.FromByteSerializer( propertySerializer ), clientPropertyName );
         }
 
         private void RegisterObservableProperty<T>( string propertyName, Func<T> implementation, object changeSource, Marshaller<T> propertySerializer, string clientPropertyName ) where T : class
@@ -82,6 +87,8 @@ namespace Tecan.Sila2.Server.ServiceDefinition
             _dispatcher.RegisterHandler( _feature.FullyQualifiedIdentifier + "/Property/" + propertyName, builder );
         }
 
+        [RequiresUnreferencedCode( TrimmingMessages.RuntimeTypeModel )]
+        [RequiresDynamicCode( TrimmingMessages.RuntimeTypeModel )]
         public void RegisterUnobservableCommand<TRequest, TResponse>( string methodName, Func<TRequest, TResponse> implementation )
             where TRequest : class, ISilaRequestObject
             where TResponse : class
@@ -93,7 +100,7 @@ namespace Tecan.Sila2.Server.ServiceDefinition
             where TRequest : class, ISilaRequestObject
             where TResponse : class
         {
-            RegisterUnobservableCommand( methodName, implementation, ProtobufMarshaller<TRequest>.FromByteSerializer( requestSerializer ), ProtobufMarshaller<TResponse>.FromByteSerializer( responseSerializer ) );
+            RegisterUnobservableCommand( methodName, implementation, ProtobufMarshaller.FromByteSerializer( requestSerializer ), ProtobufMarshaller.FromByteSerializer( responseSerializer ) );
         }
 
         private void RegisterUnobservableCommand<TRequest, TResponse>( string methodName, Func<TRequest, TResponse> implementation, Marshaller<TRequest> requestSerializer, Marshaller<TResponse> responseSerializer )
@@ -106,6 +113,8 @@ namespace Tecan.Sila2.Server.ServiceDefinition
             _dispatcher.RegisterHandler( _feature.FullyQualifiedIdentifier + "/Command/" + methodName, builder );
         }
 
+        [RequiresUnreferencedCode( TrimmingMessages.RuntimeTypeModel )]
+        [RequiresDynamicCode( TrimmingMessages.RuntimeTypeModel )]
         public void RegisterObservableCommand<TRequest>( string methodName, Func<TRequest, IObservableCommand> implementation, Func<Exception, Exception> exceptionConverter )
             where TRequest : class, ISilaRequestObject
         {
@@ -115,9 +124,11 @@ namespace Tecan.Sila2.Server.ServiceDefinition
         public void RegisterObservableCommand<TRequest>( string methodName, Func<TRequest, IObservableCommand> implementation, Func<Exception, Exception> exceptionConverter, ByteSerializer<TRequest> requestSerializer )
             where TRequest : class, ISilaRequestObject
         {
-            RegisterObservableCommandCore( methodName, implementation, exceptionConverter, ProtobufMarshaller<TRequest>.FromByteSerializer( requestSerializer ), null );
+            RegisterObservableCommandCore( methodName, implementation, exceptionConverter, ProtobufMarshaller.FromByteSerializer( requestSerializer ), null );
         }
 
+        [RequiresUnreferencedCode( TrimmingMessages.RuntimeTypeModel )]
+        [RequiresDynamicCode( TrimmingMessages.RuntimeTypeModel )]
         public void RegisterObservableCommand<TRequest, TResponse, TResponseDto>( string methodName, Func<TRequest, IObservableCommand<TResponse>> implementation, Func<TResponse, TResponseDto> responseConverter, Func<Exception, Exception> exceptionConverter )
             where TRequest : class, ISilaRequestObject
             where TResponseDto : class
@@ -127,15 +138,15 @@ namespace Tecan.Sila2.Server.ServiceDefinition
 
         void IServerBuilder.RegisterObservableCommand<TRequest, TResponse, TResponseDto>( string methodName, Func<TRequest, IObservableCommand<TResponse>> implementation, Func<TResponse, TResponseDto> responseConverter, Func<Exception, Exception> exceptionConverter, ByteSerializer<TRequest> requestSerializer, ByteSerializer<TResponseDto> responseSerializer )
         {
-            RegisterObservableCommandCore( methodName, implementation, responseConverter, exceptionConverter, ProtobufMarshaller<TRequest>.FromByteSerializer( requestSerializer ), ProtobufMarshaller<TResponseDto>.FromByteSerializer( responseSerializer ), null );
+            RegisterObservableCommandCore( methodName, implementation, responseConverter, exceptionConverter, ProtobufMarshaller.FromByteSerializer( requestSerializer ), ProtobufMarshaller.FromByteSerializer( responseSerializer ), null );
         }
 
         private void RegisterObservableCommandCore<TRequest>( string methodName, Func<TRequest, IObservableCommand> implementation, Func<Exception, Exception> exceptionConverter, Marshaller<TRequest> requestSerializer, IIntermediateRequestHandler intermediateHandler )
             where TRequest : class, ISilaRequestObject
         {
-            var method = new Method<TRequest, CommandConfirmation>( MethodType.Unary, ServiceName, methodName, requestSerializer, ProtobufMarshaller<CommandConfirmation>.Default );
-            var stateMethod = new Method<CommandExecutionUuid, ExecutionState>( MethodType.ServerStreaming, ServiceName, methodName + "_Info", ProtobufMarshaller<CommandExecutionUuid>.Default, ProtobufMarshaller<ExecutionState>.Default );
-            var resultMethod = new Method<CommandExecutionUuid, EmptyRequest>( MethodType.Unary, ServiceName, methodName + "_Result", ProtobufMarshaller<CommandExecutionUuid>.Default, EmptyRequestMarshaller.Instance );
+            var method = new Method<TRequest, CommandConfirmation>( MethodType.Unary, ServiceName, methodName, requestSerializer, FrameworkMarshallers.CommandConfirmation );
+            var stateMethod = new Method<CommandExecutionUuid, ExecutionState>( MethodType.ServerStreaming, ServiceName, methodName + "_Info", FrameworkMarshallers.CommandExecutionUuid, FrameworkMarshallers.ExecutionState );
+            var resultMethod = new Method<CommandExecutionUuid, EmptyRequest>( MethodType.Unary, ServiceName, methodName + "_Result", FrameworkMarshallers.CommandExecutionUuid, EmptyRequestMarshaller.Instance );
             var builder = new ObservableCommandHandler<TRequest>( _server, implementation, exceptionConverter, intermediateHandler, requestSerializer );
             _serviceDefinitionBuilder.AddMethod( method, builder.Execute );
             _serviceDefinitionBuilder.AddMethod( stateMethod, builder.QueryState );
@@ -148,9 +159,9 @@ namespace Tecan.Sila2.Server.ServiceDefinition
             where TRequest : class, ISilaRequestObject
             where TResponseDto : class
         {
-            var method = new Method<TRequest, CommandConfirmation>( MethodType.Unary, ServiceName, methodName, requestSerializer, ProtobufMarshaller<CommandConfirmation>.Default );
-            var stateMethod = new Method<CommandExecutionUuid, ExecutionState>( MethodType.ServerStreaming, ServiceName, methodName + "_Info", ProtobufMarshaller<CommandExecutionUuid>.Default, ProtobufMarshaller<ExecutionState>.Default );
-            var resultMethod = new Method<CommandExecutionUuid, TResponseDto>( MethodType.Unary, ServiceName, methodName + "_Result", ProtobufMarshaller<CommandExecutionUuid>.Default, responseSerializer );
+            var method = new Method<TRequest, CommandConfirmation>( MethodType.Unary, ServiceName, methodName, requestSerializer, FrameworkMarshallers.CommandConfirmation );
+            var stateMethod = new Method<CommandExecutionUuid, ExecutionState>( MethodType.ServerStreaming, ServiceName, methodName + "_Info", FrameworkMarshallers.CommandExecutionUuid, FrameworkMarshallers.ExecutionState );
+            var resultMethod = new Method<CommandExecutionUuid, TResponseDto>( MethodType.Unary, ServiceName, methodName + "_Result", FrameworkMarshallers.CommandExecutionUuid, responseSerializer );
             var builder = new ObservableCommandHandler<TRequest, TResponse, TResponseDto>( _server, implementation, responseConverter, exceptionConverter, intermediateHandler, requestSerializer, responseSerializer );
             _serviceDefinitionBuilder.AddMethod( method, builder.Execute );
             _serviceDefinitionBuilder.AddMethod( stateMethod, builder.QueryState );
@@ -158,11 +169,13 @@ namespace Tecan.Sila2.Server.ServiceDefinition
             _dispatcher.RegisterHandler( _feature.FullyQualifiedIdentifier + "/Command/" + methodName, builder );
         }
 
+        [RequiresUnreferencedCode( TrimmingMessages.RuntimeTypeModel )]
+        [RequiresDynamicCode( TrimmingMessages.RuntimeTypeModel )]
         public void RegisterCommandWithIntermediates<TRequest, TIntermediate, TIntermediateDto>( string commandName, Func<TRequest, IIntermediateObservableCommand<TIntermediate>> implementation, Func<TIntermediate, TIntermediateDto> intermediateConverter, Func<Exception, Exception> exceptionConverter )
             where TRequest : class, ISilaRequestObject
             where TIntermediateDto : class
         {
-            var intermediateResults = new Method<CommandExecutionUuid, TIntermediateDto>( MethodType.ServerStreaming, ServiceName, commandName + "_Intermediate", ProtobufMarshaller<CommandExecutionUuid>.Default, ProtobufMarshaller<TIntermediateDto>.Default );
+            var intermediateResults = new Method<CommandExecutionUuid, TIntermediateDto>( MethodType.ServerStreaming, ServiceName, commandName + "_Intermediate", FrameworkMarshallers.CommandExecutionUuid, ProtobufMarshaller<TIntermediateDto>.Default );
             var builder = new IntermediateCommandHandler<TIntermediate, TIntermediateDto>( _server, intermediateConverter, exceptionConverter, ProtobufMarshaller<TIntermediateDto>.Default );
             RegisterObservableCommandCore( commandName, implementation, exceptionConverter, ProtobufMarshaller<TRequest>.Default, builder );
             _serviceDefinitionBuilder.AddMethod( intermediateResults, builder.GetIntermediateResponses );
@@ -172,19 +185,21 @@ namespace Tecan.Sila2.Server.ServiceDefinition
             where TRequest : class, ISilaRequestObject
             where TIntermediateDto : class
         {
-            var intermediateResults = new Method<CommandExecutionUuid, TIntermediateDto>( MethodType.ServerStreaming, ServiceName, commandName + "_Intermediate", ProtobufMarshaller<CommandExecutionUuid>.Default, ProtobufMarshaller<TIntermediateDto>.FromByteSerializer( intermediatesSerializer ) );
-            var builder = new IntermediateCommandHandler<TIntermediate, TIntermediateDto>( _server, intermediateConverter, exceptionConverter, ProtobufMarshaller<TIntermediateDto>.FromByteSerializer(intermediatesSerializer));
-            RegisterObservableCommandCore( commandName, implementation, exceptionConverter, ProtobufMarshaller<TRequest>.FromByteSerializer( requestSerializer ), builder );
+            var intermediateResults = new Method<CommandExecutionUuid, TIntermediateDto>( MethodType.ServerStreaming, ServiceName, commandName + "_Intermediate", FrameworkMarshallers.CommandExecutionUuid, ProtobufMarshaller.FromByteSerializer( intermediatesSerializer ) );
+            var builder = new IntermediateCommandHandler<TIntermediate, TIntermediateDto>( _server, intermediateConverter, exceptionConverter, ProtobufMarshaller.FromByteSerializer(intermediatesSerializer));
+            RegisterObservableCommandCore( commandName, implementation, exceptionConverter, ProtobufMarshaller.FromByteSerializer( requestSerializer ), builder );
             _serviceDefinitionBuilder.AddMethod( intermediateResults, builder.GetIntermediateResponses );
         }
 
+        [RequiresUnreferencedCode( TrimmingMessages.RuntimeTypeModel )]
+        [RequiresDynamicCode( TrimmingMessages.RuntimeTypeModel )]
         public void RegisterCommandWithIntermediates<TRequest, TIntermediate, TIntermediateDto, TResponse, TResponseDto>( string commandName, Func<TRequest, IIntermediateObservableCommand<TIntermediate, TResponse>> implementation, Func<TIntermediate, TIntermediateDto> intermediateConverter,
             Func<TResponse, TResponseDto> responseConverter, Func<Exception, Exception> exceptionConverter )
             where TRequest : class, ISilaRequestObject
             where TIntermediateDto : class
             where TResponseDto : class
         {
-            var intermediateResults = new Method<CommandExecutionUuid, TIntermediateDto>( MethodType.ServerStreaming, ServiceName, commandName + "_Intermediate", ProtobufMarshaller<CommandExecutionUuid>.Default, ProtobufMarshaller<TIntermediateDto>.Default );
+            var intermediateResults = new Method<CommandExecutionUuid, TIntermediateDto>( MethodType.ServerStreaming, ServiceName, commandName + "_Intermediate", FrameworkMarshallers.CommandExecutionUuid, ProtobufMarshaller<TIntermediateDto>.Default );
             var builder = new IntermediateCommandHandler<TIntermediate, TIntermediateDto>( _server, intermediateConverter, exceptionConverter, ProtobufMarshaller<TIntermediateDto>.Default );
             RegisterObservableCommandCore( commandName, implementation, responseConverter, exceptionConverter, ProtobufMarshaller<TRequest>.Default, ProtobufMarshaller<TResponseDto>.Default, builder );
             _serviceDefinitionBuilder.AddMethod( intermediateResults, builder.GetIntermediateResponses );
@@ -195,9 +210,9 @@ namespace Tecan.Sila2.Server.ServiceDefinition
             where TIntermediateDto : class
             where TResponseDto : class
         {
-            var intermediateResults = new Method<CommandExecutionUuid, TIntermediateDto>( MethodType.ServerStreaming, ServiceName, commandName + "_Intermediate", ProtobufMarshaller<CommandExecutionUuid>.Default, ProtobufMarshaller<TIntermediateDto>.FromByteSerializer( intermediatesSerializer ) );
-            var builder = new IntermediateCommandHandler<TIntermediate, TIntermediateDto>( _server, intermediateConverter, exceptionConverter, ProtobufMarshaller<TIntermediateDto>.FromByteSerializer(intermediatesSerializer) );
-            RegisterObservableCommandCore( commandName, implementation, responseConverter, exceptionConverter, ProtobufMarshaller<TRequest>.FromByteSerializer( requestSerializer ), ProtobufMarshaller<TResponseDto>.FromByteSerializer( responseSerializer ), builder );
+            var intermediateResults = new Method<CommandExecutionUuid, TIntermediateDto>( MethodType.ServerStreaming, ServiceName, commandName + "_Intermediate", FrameworkMarshallers.CommandExecutionUuid, ProtobufMarshaller.FromByteSerializer( intermediatesSerializer ) );
+            var builder = new IntermediateCommandHandler<TIntermediate, TIntermediateDto>( _server, intermediateConverter, exceptionConverter, ProtobufMarshaller.FromByteSerializer(intermediatesSerializer) );
+            RegisterObservableCommandCore( commandName, implementation, responseConverter, exceptionConverter, ProtobufMarshaller.FromByteSerializer( requestSerializer ), ProtobufMarshaller.FromByteSerializer( responseSerializer ), builder );
             _serviceDefinitionBuilder.AddMethod( intermediateResults, builder.GetIntermediateResponses );
         }
 

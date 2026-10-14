@@ -7,6 +7,7 @@
 //     the code is regenerated.
 // </auto-generated>
 //------------------------------------------------------------------------------
+#pragma warning disable PBN9001
 
 using System;
 using Tecan.Sila2;
@@ -183,6 +184,53 @@ namespace Tecan.Sila2.Authorization
                         "f]{4}\\-[0-9a-f]{12}\'", Value.Value));
             }
             return errors;
+        }
+    }
+    
+    /// <summary>
+    /// The compile-time protobuf-net type model for the data transfer objects of the Authorization Configuration feature
+    /// </summary>
+    [ProtoBuf.ProtoModelAttribute()]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(SetAuthorizationProviderRequestDto))]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(AuthorizationProviderResponseDto))]
+    public sealed partial class AuthorizationConfigurationServiceTypeModel : ProtoBuf.Meta.TypeModel
+    {
+    }
+    
+    /// <summary>
+    /// Byte serializers for the data transfer objects of the Authorization Configuration feature that use the compile-time generated AuthorizationConfigurationServiceTypeModel
+    /// </summary>
+    public sealed class AuthorizationConfigurationServiceSerializers
+    {
+        
+        private static ByteSerializer<SetAuthorizationProviderRequestDto> _setAuthorizationProviderRequestDto = ByteSerializer.Create<SetAuthorizationProviderRequestDto>(AuthorizationConfigurationServiceTypeModel.Instance);
+        
+        private static ByteSerializer<AuthorizationProviderResponseDto> _authorizationProviderResponseDto = ByteSerializer.Create<AuthorizationProviderResponseDto>(AuthorizationConfigurationServiceTypeModel.Instance);
+        
+        private AuthorizationConfigurationServiceSerializers()
+        {
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for SetAuthorizationProviderRequestDto
+        /// </summary>
+        public static ByteSerializer<SetAuthorizationProviderRequestDto> SetAuthorizationProviderRequestDto
+        {
+            get
+            {
+                return _setAuthorizationProviderRequestDto;
+            }
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for AuthorizationProviderResponseDto
+        /// </summary>
+        public static ByteSerializer<AuthorizationProviderResponseDto> AuthorizationProviderResponseDto
+        {
+            get
+            {
+                return _authorizationProviderResponseDto;
+            }
         }
     }
 }

@@ -61,9 +61,9 @@ namespace Tecan.Sila2.Locking
         /// <param name="registration">The registration component to which the feature should be registered</param>
         public void Register(IServerBuilder registration)
         {
-            registration.RegisterUnobservableCommand<LockServerRequestDto, EmptyRequest>("LockServer", LockServer);
-            registration.RegisterUnobservableCommand<UnlockServerRequestDto, EmptyRequest>("UnlockServer", UnlockServer);
-            registration.RegisterUnobservableProperty("IsLocked", GetIsLocked);
+            registration.RegisterUnobservableCommand<LockServerRequestDto, EmptyRequest>("LockServer", LockServer, LockControllerSerializers.LockServerRequestDto, EmptyRequest.Marshaller);
+            registration.RegisterUnobservableCommand<UnlockServerRequestDto, EmptyRequest>("UnlockServer", UnlockServer, LockControllerSerializers.UnlockServerRequestDto, EmptyRequest.Marshaller);
+            registration.RegisterUnobservableProperty("IsLocked", GetIsLocked, LockControllerSerializers.PropertyResponseOfBooleanDto);
             registration.RegisterMetadata("LockIdentifier", _implementation.LockIdentifier);
         }
         
@@ -243,7 +243,7 @@ namespace Tecan.Sila2.Locking
         {
             try
             {
-                return Intercept(commandIdentifier, Tecan.Sila2.Server.Metadata.Extract<Tecan.Sila2.StringDto>(metadata, MetadataIdentifier).Extract(server));
+                return Intercept(commandIdentifier, Tecan.Sila2.Server.Metadata.Extract<Tecan.Sila2.StringDto>(metadata, MetadataIdentifier, LockControllerSerializers.PropertyResponseOfStringDto).Extract(server));
             } catch (InvalidLockIdentifierException ex)
             {
                 throw server.ErrorHandling.CreateExecutionError("org.silastandard/core/LockController/v1/DefinedExecutionError/InvalidLockIdentifi" +

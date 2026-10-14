@@ -89,7 +89,7 @@ namespace Tecan.Sila2.Interop.Client.StructureDataTypeTest.StructureDataTypeTest
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/StructureDataTypeTest/v1/Property/StructureValue");
             try
             {
-                TestStructure response = _channel.ReadProperty<PropertyResponse<TestStructureDto>>(_serviceName, "StructureValue", "org.silastandard/test/StructureDataTypeTest/v1/Property/StructureValue", callInfo).Value.Extract(_executionManager.DownloadBinaryStore);
+                TestStructure response = _channel.ReadProperty<PropertyResponse<TestStructureDto>>(_serviceName, "StructureValue", "org.silastandard/test/StructureDataTypeTest/v1/Property/StructureValue", callInfo, StructureDataTypeTestSerializers.PropertyResponseOfTestStructureDto).Value.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -105,7 +105,7 @@ namespace Tecan.Sila2.Interop.Client.StructureDataTypeTest.StructureDataTypeTest
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/StructureDataTypeTest/v1/Property/DeepStructureValue");
             try
             {
-                DeepStructure response = _channel.ReadProperty<PropertyResponse<DeepStructureDto>>(_serviceName, "DeepStructureValue", "org.silastandard/test/StructureDataTypeTest/v1/Property/DeepStructureValue", callInfo).Value.Extract(_executionManager.DownloadBinaryStore);
+                DeepStructure response = _channel.ReadProperty<PropertyResponse<DeepStructureDto>>(_serviceName, "DeepStructureValue", "org.silastandard/test/StructureDataTypeTest/v1/Property/DeepStructureValue", callInfo, StructureDataTypeTestSerializers.PropertyResponseOfDeepStructureDto).Value.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -137,7 +137,7 @@ namespace Tecan.Sila2.Interop.Client.StructureDataTypeTest.StructureDataTypeTest
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/StructureDataTypeTest/v1/Command/EchoStructureValue");
             try
             {
-                TestStructure response = _channel.ExecuteUnobservableCommand<EchoStructureValueRequestDto, EchoStructureValueResponseDto>(_serviceName, "EchoStructureValue", request, callInfo).ReceivedValues.Extract(_executionManager.DownloadBinaryStore);
+                TestStructure response = _channel.ExecuteUnobservableCommand<EchoStructureValueRequestDto, EchoStructureValueResponseDto>(_serviceName, "EchoStructureValue", request, callInfo, StructureDataTypeTestSerializers.EchoStructureValueRequestDto, StructureDataTypeTestSerializers.EchoStructureValueResponseDto).ReceivedValues.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -159,7 +159,7 @@ namespace Tecan.Sila2.Interop.Client.StructureDataTypeTest.StructureDataTypeTest
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/StructureDataTypeTest/v1/Command/EchoDeepStructureValue");
             try
             {
-                DeepStructure response = _channel.ExecuteUnobservableCommand<EchoDeepStructureValueRequestDto, EchoDeepStructureValueResponseDto>(_serviceName, "EchoDeepStructureValue", request, callInfo).ReceivedValues.Extract(_executionManager.DownloadBinaryStore);
+                DeepStructure response = _channel.ExecuteUnobservableCommand<EchoDeepStructureValueRequestDto, EchoDeepStructureValueResponseDto>(_serviceName, "EchoDeepStructureValue", request, callInfo, StructureDataTypeTestSerializers.EchoDeepStructureValueRequestDto, StructureDataTypeTestSerializers.EchoDeepStructureValueResponseDto).ReceivedValues.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)

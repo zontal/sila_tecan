@@ -61,13 +61,13 @@ namespace Tecan.Sila2.Interop.Server.ListDataTypeTest
         /// <param name="registration">The registration component to which the feature should be registered</param>
         public void Register(IServerBuilder registration)
         {
-            registration.RegisterUnobservableCommand<EchoStringListRequestDto, EchoStringListResponseDto>("EchoStringList", EchoStringList);
-            registration.RegisterUnobservableCommand<EchoIntegerListRequestDto, EchoIntegerListResponseDto>("EchoIntegerList", EchoIntegerList);
-            registration.RegisterUnobservableCommand<EchoStructureListRequestDto, EchoStructureListResponseDto>("EchoStructureList", EchoStructureList);
-            registration.RegisterUnobservableProperty("EmptyStringList", GetEmptyStringList);
-            registration.RegisterUnobservableProperty("StringList", GetStringList);
-            registration.RegisterUnobservableProperty("IntegerList", GetIntegerList);
-            registration.RegisterUnobservableProperty("StructureList", GetStructureList);
+            registration.RegisterUnobservableCommand<EchoStringListRequestDto, EchoStringListResponseDto>("EchoStringList", EchoStringList, ListDataTypeTestSerializers.EchoStringListRequestDto, ListDataTypeTestSerializers.EchoStringListResponseDto);
+            registration.RegisterUnobservableCommand<EchoIntegerListRequestDto, EchoIntegerListResponseDto>("EchoIntegerList", EchoIntegerList, ListDataTypeTestSerializers.EchoIntegerListRequestDto, ListDataTypeTestSerializers.EchoIntegerListResponseDto);
+            registration.RegisterUnobservableCommand<EchoStructureListRequestDto, EchoStructureListResponseDto>("EchoStructureList", EchoStructureList, ListDataTypeTestSerializers.EchoStructureListRequestDto, ListDataTypeTestSerializers.EchoStructureListResponseDto);
+            registration.RegisterUnobservableProperty("EmptyStringList", GetEmptyStringList, ListDataTypeTestSerializers.PropertyResponseOfListOfStringDto);
+            registration.RegisterUnobservableProperty("StringList", GetStringList, ListDataTypeTestSerializers.PropertyResponseOfListOfStringDto);
+            registration.RegisterUnobservableProperty("IntegerList", GetIntegerList, ListDataTypeTestSerializers.PropertyResponseOfListOfIntegerDto);
+            registration.RegisterUnobservableProperty("StructureList", GetStructureList, ListDataTypeTestSerializers.PropertyResponseOfListOfTestStructureDto);
         }
         
         /// <summary>

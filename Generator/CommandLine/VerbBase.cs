@@ -42,6 +42,12 @@ namespace Tecan.Sila2.Generator.CommandLine
         public string ConfigFile { get; set; }
 
         /// <summary>
+        /// If set, the generated code serializes data transfer objects through the reflection-based protobuf-net runtime model
+        /// </summary>
+        [Option( "runtime-type-model", Required = false, HelpText = "If set, the generated code serializes data transfer objects through the reflection-based protobuf-net runtime model instead of a compile-time generated type model. The compile-time model requires C# 12 or later; code generated with this option is not compatible with Native AOT." )]
+        public bool UseRuntimeTypeModel { get; set; }
+
+        /// <summary>
         /// Set up the logging according to the command line
         /// </summary>
         /// <param name="container"></param>
@@ -49,6 +55,7 @@ namespace Tecan.Sila2.Generator.CommandLine
         {
             LogManager.Adapter = new ConsoleLogging( MinimumSeverity );
             GeneratorSettings.IsInteractive = !IsNonInteractive && Environment.UserInteractive;
+            GeneratorSettings.UseRuntimeTypeModel = UseRuntimeTypeModel;
             var channel = LogManager.GetLogger( GetType() );
             LoadConfiguration( channel, container.GetExportedValue<IGeneratorConfigSource>() );
             return channel;

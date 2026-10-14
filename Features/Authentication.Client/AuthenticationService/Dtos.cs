@@ -7,6 +7,7 @@
 //     the code is regenerated.
 // </auto-generated>
 //------------------------------------------------------------------------------
+#pragma warning disable PBN9001
 
 using System;
 using Tecan.Sila2;
@@ -335,6 +336,67 @@ namespace Tecan.Sila2.Authentication.AuthenticationService
         public string GetValidationErrors()
         {
             return ("" + Argument.Require(AccessToken, "AccessToken"));
+        }
+    }
+    
+    /// <summary>
+    /// The compile-time protobuf-net type model for the data transfer objects of the Authentication Service feature
+    /// </summary>
+    [ProtoBuf.ProtoModelAttribute()]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(LoginRequestDto))]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(LoginResponseDto))]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(LogoutRequestDto))]
+    public sealed partial class AuthenticationServiceTypeModel : ProtoBuf.Meta.TypeModel
+    {
+    }
+    
+    /// <summary>
+    /// Byte serializers for the data transfer objects of the Authentication Service feature that use the compile-time generated AuthenticationServiceTypeModel
+    /// </summary>
+    public sealed class AuthenticationServiceSerializers
+    {
+        
+        private static ByteSerializer<LoginRequestDto> _loginRequestDto = ByteSerializer.Create<LoginRequestDto>(AuthenticationServiceTypeModel.Instance);
+        
+        private static ByteSerializer<LoginResponseDto> _loginResponseDto = ByteSerializer.Create<LoginResponseDto>(AuthenticationServiceTypeModel.Instance);
+        
+        private static ByteSerializer<LogoutRequestDto> _logoutRequestDto = ByteSerializer.Create<LogoutRequestDto>(AuthenticationServiceTypeModel.Instance);
+        
+        private AuthenticationServiceSerializers()
+        {
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for LoginRequestDto
+        /// </summary>
+        public static ByteSerializer<LoginRequestDto> LoginRequestDto
+        {
+            get
+            {
+                return _loginRequestDto;
+            }
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for LoginResponseDto
+        /// </summary>
+        public static ByteSerializer<LoginResponseDto> LoginResponseDto
+        {
+            get
+            {
+                return _loginResponseDto;
+            }
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for LogoutRequestDto
+        /// </summary>
+        public static ByteSerializer<LogoutRequestDto> LogoutRequestDto
+        {
+            get
+            {
+                return _logoutRequestDto;
+            }
         }
     }
 }

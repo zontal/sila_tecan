@@ -1,0 +1,8 @@
+<Project>
+
+    <PropertyGroup>
+        <!-- a data transfer object that the protobuf-net source generator cannot add to a compile-time type model must fail the build, not the first call at runtime -->
+        <WarningsAsErrors>$(WarningsAsErrors);PBN3001;PBN3002;PBN3003;PBN3004</WarningsAsErrors>
+    </PropertyGroup>
+
+</Project>

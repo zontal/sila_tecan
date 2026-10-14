@@ -77,17 +77,17 @@ namespace Tecan.Sila2.Interop.Server.BinaryTransferTest
         /// <param name="registration">The registration component to which the feature should be registered</param>
         public void Register(IServerBuilder registration)
         {
-            registration.RegisterUnobservableCommand<EchoBinaryValueRequestDto, EchoBinaryValueResponseDto>("EchoBinaryValue", EchoBinaryValue);
+            registration.RegisterUnobservableCommand<EchoBinaryValueRequestDto, EchoBinaryValueResponseDto>("EchoBinaryValue", EchoBinaryValue, BinaryTransferTestSerializers.EchoBinaryValueRequestDto, BinaryTransferTestSerializers.EchoBinaryValueResponseDto);
             registration.RegisterBinaryCommandParameter("org.silastandard/test/BinaryTransferTest/v1/Command/EchoBinaryValue/Parameter/Bin" +
                     "aryValue");
-            registration.RegisterCommandWithIntermediates<EchoBinariesObservablyRequestDto, System.IO.Stream, EchoBinariesObservablyIntermediateDto, System.IO.Stream, EchoBinariesObservablyResponseDto>("EchoBinariesObservably", EchoBinariesObservably, ConvertEchoBinariesObservablyIntermediate, ConvertEchoBinariesObservablyResponse, ConvertEchoBinariesObservablyExceptions);
+            registration.RegisterCommandWithIntermediates<EchoBinariesObservablyRequestDto, System.IO.Stream, EchoBinariesObservablyIntermediateDto, System.IO.Stream, EchoBinariesObservablyResponseDto>("EchoBinariesObservably", EchoBinariesObservably, ConvertEchoBinariesObservablyIntermediate, ConvertEchoBinariesObservablyResponse, ConvertEchoBinariesObservablyExceptions, BinaryTransferTestSerializers.EchoBinariesObservablyRequestDto, BinaryTransferTestSerializers.EchoBinariesObservablyIntermediateDto, BinaryTransferTestSerializers.EchoBinariesObservablyResponseDto);
             registration.RegisterBinaryCommandParameter("org.silastandard/test/BinaryTransferTest/v1/Command/EchoBinariesObservably/Parame" +
                     "ter/Binaries");
-            registration.RegisterUnobservableCommand<EchoBinaryAndMetadataStringRequestDto, EchoBinaryAndMetadataStringResponseDto>("EchoBinaryAndMetadataString", EchoBinaryAndMetadataString);
+            registration.RegisterUnobservableCommand<EchoBinaryAndMetadataStringRequestDto, EchoBinaryAndMetadataStringResponseDto>("EchoBinaryAndMetadataString", EchoBinaryAndMetadataString, BinaryTransferTestSerializers.EchoBinaryAndMetadataStringRequestDto, BinaryTransferTestSerializers.EchoBinaryAndMetadataStringResponseDto);
             registration.RegisterBinaryCommandParameter("org.silastandard/test/BinaryTransferTest/v1/Command/EchoBinaryAndMetadataString/P" +
                     "arameter/Binary");
-            registration.RegisterUnobservableProperty("BinaryValueDirectly", GetBinaryValueDirectly);
-            registration.RegisterUnobservableProperty("BinaryValueDownload", GetBinaryValueDownload);
+            registration.RegisterUnobservableProperty("BinaryValueDirectly", GetBinaryValueDirectly, BinaryTransferTestSerializers.PropertyResponseOfBinaryDto);
+            registration.RegisterUnobservableProperty("BinaryValueDownload", GetBinaryValueDownload, BinaryTransferTestSerializers.PropertyResponseOfBinaryDto);
             registration.RegisterMetadata("String", _implementation.String);
         }
         
@@ -287,7 +287,7 @@ namespace Tecan.Sila2.Interop.Server.BinaryTransferTest
         /// <returns>A request interception or null, if this is not necessary</returns>
         public Tecan.Sila2.Server.IRequestInterception Intercept(string commandIdentifier, Tecan.Sila2.Server.ISiLAServer server, Tecan.Sila2.Server.IMetadataRepository metadata)
         {
-            return Intercept(commandIdentifier, Tecan.Sila2.Server.Metadata.Extract<Tecan.Sila2.StringDto>(metadata, MetadataIdentifier).Extract(server));
+            return Intercept(commandIdentifier, Tecan.Sila2.Server.Metadata.Extract<Tecan.Sila2.StringDto>(metadata, MetadataIdentifier, BinaryTransferTestSerializers.PropertyResponseOfStringDto).Extract(server));
         }
     }
 }

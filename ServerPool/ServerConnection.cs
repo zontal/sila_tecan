@@ -3,6 +3,7 @@ using Grpc.Core;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -66,6 +67,8 @@ namespace Tecan.Sila2.ServerPooling
         public bool IsServerInitiated => true;
 
         /// <inheritdoc />
+        [RequiresUnreferencedCode( TrimmingMessages.RuntimeTypeModel )]
+        [RequiresDynamicCode( TrimmingMessages.RuntimeTypeModel )]
         public T ReadProperty<T>( string serviceName, string propertyName, string propertyIdentifier, IClientCallInfo callInfo ) where T : class, ISilaTransferObject
         {
             return ReadProperty( serviceName, propertyName, propertyIdentifier, callInfo, ByteSerializer.GetDefault<T>() );
@@ -93,6 +96,8 @@ namespace Tecan.Sila2.ServerPooling
         }
 
         /// <inheritdoc />
+        [RequiresUnreferencedCode( TrimmingMessages.RuntimeTypeModel )]
+        [RequiresDynamicCode( TrimmingMessages.RuntimeTypeModel )]
         public Task SubscribeProperty<T>( string serviceName, string propertyName, string propertyIdentifier, Action<T> newValueReceived, IClientCallInfo callInfo, CancellationToken cancellationToken = default ) where T : class, ISilaTransferObject
         {
             return SubscribeProperty( serviceName, propertyName, propertyIdentifier, newValueReceived, callInfo, ByteSerializer.GetDefault<T>(), null, cancellationToken );
@@ -105,6 +110,8 @@ namespace Tecan.Sila2.ServerPooling
         }
 
         /// <inheritdoc />
+        [RequiresUnreferencedCode( TrimmingMessages.RuntimeTypeModel )]
+        [RequiresDynamicCode( TrimmingMessages.RuntimeTypeModel )]
         public Task SubscribeProperty<T>(string serviceName, string propertyName, string propertyIdentifier, Action<T> newValueReceived, IClientCallInfo callInfo, Action cleanup, CancellationToken cancellationToken = default) where T : class, ISilaTransferObject
         {
             return SubscribeProperty(serviceName, propertyName, propertyIdentifier, newValueReceived, callInfo, ByteSerializer.GetDefault<T>(), cleanup, cancellationToken);
@@ -144,6 +151,8 @@ namespace Tecan.Sila2.ServerPooling
         }
 
         /// <inheritdoc />
+        [RequiresUnreferencedCode( TrimmingMessages.RuntimeTypeModel )]
+        [RequiresDynamicCode( TrimmingMessages.RuntimeTypeModel )]
         public void ExecuteUnobservableCommand<TRequest>(
             string serviceName,
             string commandName,
@@ -167,6 +176,8 @@ namespace Tecan.Sila2.ServerPooling
         }
 
         /// <inheritdoc />
+        [RequiresUnreferencedCode( TrimmingMessages.RuntimeTypeModel )]
+        [RequiresDynamicCode( TrimmingMessages.RuntimeTypeModel )]
         public TResponse ExecuteUnobservableCommand<TRequest, TResponse>(
             string serviceName,
             string commandName,
@@ -246,6 +257,8 @@ namespace Tecan.Sila2.ServerPooling
         }
 
         /// <inheritdoc />
+        [RequiresUnreferencedCode( TrimmingMessages.RuntimeTypeModel )]
+        [RequiresDynamicCode( TrimmingMessages.RuntimeTypeModel )]
         public IObservableCommand ExecuteObservableCommand<TRequest>(
             string serviceName,
             string commandName,
@@ -287,6 +300,8 @@ namespace Tecan.Sila2.ServerPooling
         }
 
         /// <inheritdoc />
+        [RequiresUnreferencedCode( TrimmingMessages.RuntimeTypeModel )]
+        [RequiresDynamicCode( TrimmingMessages.RuntimeTypeModel )]
         public IObservableCommand<TResponse> ExecuteObservableCommand<TRequest, TResponse, TResponseDto>(
             string serviceName,
             string commandName,
@@ -333,6 +348,8 @@ namespace Tecan.Sila2.ServerPooling
         }
 
         /// <inheritdoc />
+        [RequiresUnreferencedCode( TrimmingMessages.RuntimeTypeModel )]
+        [RequiresDynamicCode( TrimmingMessages.RuntimeTypeModel )]
         public IIntermediateObservableCommand<TIntermediate> ExecuteIntermediatesCommand<TRequest, TIntermediate, TIntermediateDto>(
             string serviceName,
             string commandName,
@@ -379,6 +396,8 @@ namespace Tecan.Sila2.ServerPooling
         }
 
         /// <inheritdoc />
+        [RequiresUnreferencedCode( TrimmingMessages.RuntimeTypeModel )]
+        [RequiresDynamicCode( TrimmingMessages.RuntimeTypeModel )]
         public IIntermediateObservableCommand<TIntermediate, TResponse> ExecuteIntermediatesCommand<TRequest, TIntermediate, TIntermediateDto, TResponse, TResponseDto>(
             string serviceName,
             string commandName,

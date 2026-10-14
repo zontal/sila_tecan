@@ -50,7 +50,7 @@ namespace Tecan.Sila2.Interop.Client.AuthenticationTest.AuthenticationTest
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/AuthenticationTest/v1/Command/RequiresToken");
             try
             {
-                _channel.ExecuteUnobservableCommand<RequiresTokenRequestDto>(_serviceName, "RequiresToken", request, callInfo);
+                _channel.ExecuteUnobservableCommand<RequiresTokenRequestDto>(_serviceName, "RequiresToken", request, callInfo, AuthenticationTestSerializers.RequiresTokenRequestDto);
                 callInfo.FinishSuccessful();
                 return;
             } catch (System.Exception ex)
@@ -73,7 +73,7 @@ namespace Tecan.Sila2.Interop.Client.AuthenticationTest.AuthenticationTest
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("org.silastandard/test/AuthenticationTest/v1/Command/RequiresTokenForBinaryUpload");
             try
             {
-                _channel.ExecuteUnobservableCommand<RequiresTokenForBinaryUploadRequestDto>(_serviceName, "RequiresTokenForBinaryUpload", request, callInfo);
+                _channel.ExecuteUnobservableCommand<RequiresTokenForBinaryUploadRequestDto>(_serviceName, "RequiresTokenForBinaryUpload", request, callInfo, AuthenticationTestSerializers.RequiresTokenForBinaryUploadRequestDto);
                 callInfo.FinishSuccessful();
                 return;
             } catch (System.Exception ex)

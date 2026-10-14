@@ -63,7 +63,7 @@ namespace Tecan.Sila2.ParameterConstraintsProvider.ParameterConstraintsProvider
                         {
                             _parametersConstraintsUpdateTask = _channel.SubscribeProperty<PropertyResponse<System.Collections.Generic.List<ParametersConstraintDto>>>(_serviceName, "ParametersConstraints", "org.silastandard/core.commands/ParameterConstraintsProvider/v1/Property/Parameter" +
                                     "sConstraints", ReceiveNewParametersConstraints, _executionManager.CreateCallOptions("org.silastandard/core.commands/ParameterConstraintsProvider/v1/Property/Parameter" +
-                                        "sConstraints"), _cancellationTokenSource.Token);
+                                        "sConstraints"), ParameterConstraintsProviderSerializers.PropertyResponseOfListOfParametersConstraintDto, _cancellationTokenSource.Token);
                         }
                     } finally
                     {

@@ -61,17 +61,17 @@ namespace Tecan.Sila2.Interop.Server.AnyTypeTest
         /// <param name="registration">The registration component to which the feature should be registered</param>
         public void Register(IServerBuilder registration)
         {
-            registration.RegisterUnobservableCommand<SetAnyTypeValueRequestDto, SetAnyTypeValueResponseDto>("SetAnyTypeValue", SetAnyTypeValue);
-            registration.RegisterUnobservableProperty("AnyTypeStringValue", GetAnyTypeStringValue);
-            registration.RegisterUnobservableProperty("AnyTypeIntegerValue", GetAnyTypeIntegerValue);
-            registration.RegisterUnobservableProperty("AnyTypeRealValue", GetAnyTypeRealValue);
-            registration.RegisterUnobservableProperty("AnyTypeBooleanValue", GetAnyTypeBooleanValue);
-            registration.RegisterUnobservableProperty("AnyTypeBinaryValue", GetAnyTypeBinaryValue);
-            registration.RegisterUnobservableProperty("AnyTypeDateValue", GetAnyTypeDateValue);
-            registration.RegisterUnobservableProperty("AnyTypeTimeValue", GetAnyTypeTimeValue);
-            registration.RegisterUnobservableProperty("AnyTypeTimestampValue", GetAnyTypeTimestampValue);
-            registration.RegisterUnobservableProperty("AnyTypeListValue", GetAnyTypeListValue);
-            registration.RegisterUnobservableProperty("AnyTypeStructureValue", GetAnyTypeStructureValue);
+            registration.RegisterUnobservableCommand<SetAnyTypeValueRequestDto, SetAnyTypeValueResponseDto>("SetAnyTypeValue", SetAnyTypeValue, AnyTypeTestSerializers.SetAnyTypeValueRequestDto, AnyTypeTestSerializers.SetAnyTypeValueResponseDto);
+            registration.RegisterUnobservableProperty("AnyTypeStringValue", GetAnyTypeStringValue, AnyTypeTestSerializers.PropertyResponseOfAnyTypeDto);
+            registration.RegisterUnobservableProperty("AnyTypeIntegerValue", GetAnyTypeIntegerValue, AnyTypeTestSerializers.PropertyResponseOfAnyTypeDto);
+            registration.RegisterUnobservableProperty("AnyTypeRealValue", GetAnyTypeRealValue, AnyTypeTestSerializers.PropertyResponseOfAnyTypeDto);
+            registration.RegisterUnobservableProperty("AnyTypeBooleanValue", GetAnyTypeBooleanValue, AnyTypeTestSerializers.PropertyResponseOfAnyTypeDto);
+            registration.RegisterUnobservableProperty("AnyTypeBinaryValue", GetAnyTypeBinaryValue, AnyTypeTestSerializers.PropertyResponseOfAnyTypeDto);
+            registration.RegisterUnobservableProperty("AnyTypeDateValue", GetAnyTypeDateValue, AnyTypeTestSerializers.PropertyResponseOfAnyTypeDto);
+            registration.RegisterUnobservableProperty("AnyTypeTimeValue", GetAnyTypeTimeValue, AnyTypeTestSerializers.PropertyResponseOfAnyTypeDto);
+            registration.RegisterUnobservableProperty("AnyTypeTimestampValue", GetAnyTypeTimestampValue, AnyTypeTestSerializers.PropertyResponseOfAnyTypeDto);
+            registration.RegisterUnobservableProperty("AnyTypeListValue", GetAnyTypeListValue, AnyTypeTestSerializers.PropertyResponseOfAnyTypeDto);
+            registration.RegisterUnobservableProperty("AnyTypeStructureValue", GetAnyTypeStructureValue, AnyTypeTestSerializers.PropertyResponseOfAnyTypeDto);
         }
         
         /// <summary>

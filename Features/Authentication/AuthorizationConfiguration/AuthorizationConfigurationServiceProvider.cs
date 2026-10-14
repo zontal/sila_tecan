@@ -61,8 +61,8 @@ namespace Tecan.Sila2.Authorization
         /// <param name="registration">The registration component to which the feature should be registered</param>
         public void Register(IServerBuilder registration)
         {
-            registration.RegisterUnobservableCommand<SetAuthorizationProviderRequestDto, EmptyRequest>("SetAuthorizationProvider", SetAuthorizationProvider);
-            registration.RegisterUnobservableProperty("AuthorizationProvider", GetAuthorizationProvider);
+            registration.RegisterUnobservableCommand<SetAuthorizationProviderRequestDto, EmptyRequest>("SetAuthorizationProvider", SetAuthorizationProvider, AuthorizationConfigurationServiceSerializers.SetAuthorizationProviderRequestDto, EmptyRequest.Marshaller);
+            registration.RegisterUnobservableProperty("AuthorizationProvider", GetAuthorizationProvider, AuthorizationConfigurationServiceSerializers.AuthorizationProviderResponseDto);
         }
         
         /// <summary>

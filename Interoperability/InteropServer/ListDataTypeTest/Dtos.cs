@@ -7,6 +7,7 @@
 //     the code is regenerated.
 // </auto-generated>
 //------------------------------------------------------------------------------
+#pragma warning disable PBN9001
 
 using System;
 using Tecan.Sila2;
@@ -891,6 +892,151 @@ namespace Tecan.Sila2.Interop.Server.ListDataTypeTest
                 {
                     _anyTypeValue = value;
                 }
+            }
+        }
+    }
+    
+    /// <summary>
+    /// The compile-time protobuf-net type model for the data transfer objects of the List Data Type Test feature
+    /// </summary>
+    [ProtoBuf.ProtoModelAttribute()]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(EchoStringListRequestDto))]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(EchoStringListResponseDto))]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(EchoIntegerListRequestDto))]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(EchoIntegerListResponseDto))]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(EchoStructureListRequestDto))]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(EchoStructureListResponseDto))]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(PropertyResponse<System.Collections.Generic.List<Tecan.Sila2.StringDto>>))]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(PropertyResponse<System.Collections.Generic.List<Tecan.Sila2.IntegerDto>>))]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(PropertyResponse<System.Collections.Generic.List<TestStructureDto>>))]
+    public sealed partial class ListDataTypeTestTypeModel : ProtoBuf.Meta.TypeModel
+    {
+    }
+    
+    /// <summary>
+    /// Byte serializers for the data transfer objects of the List Data Type Test feature that use the compile-time generated ListDataTypeTestTypeModel
+    /// </summary>
+    public sealed class ListDataTypeTestSerializers
+    {
+        
+        private static ByteSerializer<EchoStringListRequestDto> _echoStringListRequestDto = ByteSerializer.Create<EchoStringListRequestDto>(ListDataTypeTestTypeModel.Instance);
+        
+        private static ByteSerializer<EchoStringListResponseDto> _echoStringListResponseDto = ByteSerializer.Create<EchoStringListResponseDto>(ListDataTypeTestTypeModel.Instance);
+        
+        private static ByteSerializer<EchoIntegerListRequestDto> _echoIntegerListRequestDto = ByteSerializer.Create<EchoIntegerListRequestDto>(ListDataTypeTestTypeModel.Instance);
+        
+        private static ByteSerializer<EchoIntegerListResponseDto> _echoIntegerListResponseDto = ByteSerializer.Create<EchoIntegerListResponseDto>(ListDataTypeTestTypeModel.Instance);
+        
+        private static ByteSerializer<EchoStructureListRequestDto> _echoStructureListRequestDto = ByteSerializer.Create<EchoStructureListRequestDto>(ListDataTypeTestTypeModel.Instance);
+        
+        private static ByteSerializer<EchoStructureListResponseDto> _echoStructureListResponseDto = ByteSerializer.Create<EchoStructureListResponseDto>(ListDataTypeTestTypeModel.Instance);
+        
+        private static ByteSerializer<PropertyResponse<System.Collections.Generic.List<Tecan.Sila2.StringDto>>> _propertyResponseOfListOfStringDto = ByteSerializer.Create<PropertyResponse<System.Collections.Generic.List<Tecan.Sila2.StringDto>>>(ListDataTypeTestTypeModel.Instance);
+        
+        private static ByteSerializer<PropertyResponse<System.Collections.Generic.List<Tecan.Sila2.IntegerDto>>> _propertyResponseOfListOfIntegerDto = ByteSerializer.Create<PropertyResponse<System.Collections.Generic.List<Tecan.Sila2.IntegerDto>>>(ListDataTypeTestTypeModel.Instance);
+        
+        private static ByteSerializer<PropertyResponse<System.Collections.Generic.List<TestStructureDto>>> _propertyResponseOfListOfTestStructureDto = ByteSerializer.Create<PropertyResponse<System.Collections.Generic.List<TestStructureDto>>>(ListDataTypeTestTypeModel.Instance);
+        
+        private ListDataTypeTestSerializers()
+        {
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for EchoStringListRequestDto
+        /// </summary>
+        public static ByteSerializer<EchoStringListRequestDto> EchoStringListRequestDto
+        {
+            get
+            {
+                return _echoStringListRequestDto;
+            }
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for EchoStringListResponseDto
+        /// </summary>
+        public static ByteSerializer<EchoStringListResponseDto> EchoStringListResponseDto
+        {
+            get
+            {
+                return _echoStringListResponseDto;
+            }
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for EchoIntegerListRequestDto
+        /// </summary>
+        public static ByteSerializer<EchoIntegerListRequestDto> EchoIntegerListRequestDto
+        {
+            get
+            {
+                return _echoIntegerListRequestDto;
+            }
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for EchoIntegerListResponseDto
+        /// </summary>
+        public static ByteSerializer<EchoIntegerListResponseDto> EchoIntegerListResponseDto
+        {
+            get
+            {
+                return _echoIntegerListResponseDto;
+            }
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for EchoStructureListRequestDto
+        /// </summary>
+        public static ByteSerializer<EchoStructureListRequestDto> EchoStructureListRequestDto
+        {
+            get
+            {
+                return _echoStructureListRequestDto;
+            }
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for EchoStructureListResponseDto
+        /// </summary>
+        public static ByteSerializer<EchoStructureListResponseDto> EchoStructureListResponseDto
+        {
+            get
+            {
+                return _echoStructureListResponseDto;
+            }
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for PropertyResponseOfListOfStringDto
+        /// </summary>
+        public static ByteSerializer<PropertyResponse<System.Collections.Generic.List<Tecan.Sila2.StringDto>>> PropertyResponseOfListOfStringDto
+        {
+            get
+            {
+                return _propertyResponseOfListOfStringDto;
+            }
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for PropertyResponseOfListOfIntegerDto
+        /// </summary>
+        public static ByteSerializer<PropertyResponse<System.Collections.Generic.List<Tecan.Sila2.IntegerDto>>> PropertyResponseOfListOfIntegerDto
+        {
+            get
+            {
+                return _propertyResponseOfListOfIntegerDto;
+            }
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for PropertyResponseOfListOfTestStructureDto
+        /// </summary>
+        public static ByteSerializer<PropertyResponse<System.Collections.Generic.List<TestStructureDto>>> PropertyResponseOfListOfTestStructureDto
+        {
+            get
+            {
+                return _propertyResponseOfListOfTestStructureDto;
             }
         }
     }

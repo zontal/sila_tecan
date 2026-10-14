@@ -49,7 +49,7 @@ namespace Tecan.Sila2.Interop.Client.ObservableCommandTest.ObservableCommandTest
         {
             CountRequestDto request = new CountRequestDto(n, delay, null);
             request.Validate();
-            return _channel.ExecuteIntermediatesCommand<CountRequestDto, long, CountIntermediateDto, long, CountResponseDto>(_serviceName, "Count", request, ConvertCountIntermediate, ConvertCountResponse, ConvertCountException, _executionManager.CreateCallOptions(request.CommandIdentifier));
+            return _channel.ExecuteIntermediatesCommand<CountRequestDto, long, CountIntermediateDto, long, CountResponseDto>(_serviceName, "Count", request, ConvertCountIntermediate, ConvertCountResponse, ConvertCountException, _executionManager.CreateCallOptions(request.CommandIdentifier), ObservableCommandTestSerializers.CountRequestDto, ObservableCommandTestSerializers.CountIntermediateDto, ObservableCommandTestSerializers.CountResponseDto);
         }
         
         /// <summary>
@@ -92,7 +92,7 @@ namespace Tecan.Sila2.Interop.Client.ObservableCommandTest.ObservableCommandTest
         {
             EchoValueAfterDelayRequestDto request = new EchoValueAfterDelayRequestDto(value, delay, null);
             request.Validate();
-            return _channel.ExecuteObservableCommand<EchoValueAfterDelayRequestDto, long, EchoValueAfterDelayResponseDto>(_serviceName, "EchoValueAfterDelay", request, ConvertEchoValueAfterDelayResponse, ConvertEchoValueAfterDelayException, _executionManager.CreateCallOptions(request.CommandIdentifier));
+            return _channel.ExecuteObservableCommand<EchoValueAfterDelayRequestDto, long, EchoValueAfterDelayResponseDto>(_serviceName, "EchoValueAfterDelay", request, ConvertEchoValueAfterDelayResponse, ConvertEchoValueAfterDelayException, _executionManager.CreateCallOptions(request.CommandIdentifier), ObservableCommandTestSerializers.EchoValueAfterDelayRequestDto, ObservableCommandTestSerializers.EchoValueAfterDelayResponseDto);
         }
         
         /// <summary>

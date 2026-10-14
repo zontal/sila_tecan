@@ -7,6 +7,7 @@
 //     the code is regenerated.
 // </auto-generated>
 //------------------------------------------------------------------------------
+#pragma warning disable PBN9001
 
 using System;
 using Tecan.Sila2;
@@ -937,6 +938,319 @@ namespace Tecan.Sila2.Interop.Client.BasicDataTypesTest.BasicDataTypesTest
         public string GetValidationErrors()
         {
             return ("" + Argument.Require(ReceivedValue, "ReceivedValue"));
+        }
+    }
+    
+    /// <summary>
+    /// The compile-time protobuf-net type model for the data transfer objects of the Basic Data Types Test feature
+    /// </summary>
+    [ProtoBuf.ProtoModelAttribute()]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(EchoStringValueRequestDto))]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(EchoStringValueResponseDto))]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(EchoIntegerValueRequestDto))]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(EchoIntegerValueResponseDto))]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(EchoRealValueRequestDto))]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(EchoRealValueResponseDto))]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(EchoBooleanValueRequestDto))]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(EchoBooleanValueResponseDto))]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(EchoDateValueRequestDto))]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(EchoDateValueResponseDto))]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(EchoTimeValueRequestDto))]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(EchoTimeValueResponseDto))]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(EchoTimestampValueRequestDto))]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(EchoTimestampValueResponseDto))]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(PropertyResponse<Tecan.Sila2.StringDto>))]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(PropertyResponse<Tecan.Sila2.IntegerDto>))]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(PropertyResponse<Tecan.Sila2.RealDto>))]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(PropertyResponse<Tecan.Sila2.BooleanDto>))]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(PropertyResponse<Tecan.Sila2.DateDto>))]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(PropertyResponse<Tecan.Sila2.TimeDto>))]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(PropertyResponse<Tecan.Sila2.TimestampDto>))]
+    public sealed partial class BasicDataTypesTestTypeModel : ProtoBuf.Meta.TypeModel
+    {
+    }
+    
+    /// <summary>
+    /// Byte serializers for the data transfer objects of the Basic Data Types Test feature that use the compile-time generated BasicDataTypesTestTypeModel
+    /// </summary>
+    public sealed class BasicDataTypesTestSerializers
+    {
+        
+        private static ByteSerializer<EchoStringValueRequestDto> _echoStringValueRequestDto = ByteSerializer.Create<EchoStringValueRequestDto>(BasicDataTypesTestTypeModel.Instance);
+        
+        private static ByteSerializer<EchoStringValueResponseDto> _echoStringValueResponseDto = ByteSerializer.Create<EchoStringValueResponseDto>(BasicDataTypesTestTypeModel.Instance);
+        
+        private static ByteSerializer<EchoIntegerValueRequestDto> _echoIntegerValueRequestDto = ByteSerializer.Create<EchoIntegerValueRequestDto>(BasicDataTypesTestTypeModel.Instance);
+        
+        private static ByteSerializer<EchoIntegerValueResponseDto> _echoIntegerValueResponseDto = ByteSerializer.Create<EchoIntegerValueResponseDto>(BasicDataTypesTestTypeModel.Instance);
+        
+        private static ByteSerializer<EchoRealValueRequestDto> _echoRealValueRequestDto = ByteSerializer.Create<EchoRealValueRequestDto>(BasicDataTypesTestTypeModel.Instance);
+        
+        private static ByteSerializer<EchoRealValueResponseDto> _echoRealValueResponseDto = ByteSerializer.Create<EchoRealValueResponseDto>(BasicDataTypesTestTypeModel.Instance);
+        
+        private static ByteSerializer<EchoBooleanValueRequestDto> _echoBooleanValueRequestDto = ByteSerializer.Create<EchoBooleanValueRequestDto>(BasicDataTypesTestTypeModel.Instance);
+        
+        private static ByteSerializer<EchoBooleanValueResponseDto> _echoBooleanValueResponseDto = ByteSerializer.Create<EchoBooleanValueResponseDto>(BasicDataTypesTestTypeModel.Instance);
+        
+        private static ByteSerializer<EchoDateValueRequestDto> _echoDateValueRequestDto = ByteSerializer.Create<EchoDateValueRequestDto>(BasicDataTypesTestTypeModel.Instance);
+        
+        private static ByteSerializer<EchoDateValueResponseDto> _echoDateValueResponseDto = ByteSerializer.Create<EchoDateValueResponseDto>(BasicDataTypesTestTypeModel.Instance);
+        
+        private static ByteSerializer<EchoTimeValueRequestDto> _echoTimeValueRequestDto = ByteSerializer.Create<EchoTimeValueRequestDto>(BasicDataTypesTestTypeModel.Instance);
+        
+        private static ByteSerializer<EchoTimeValueResponseDto> _echoTimeValueResponseDto = ByteSerializer.Create<EchoTimeValueResponseDto>(BasicDataTypesTestTypeModel.Instance);
+        
+        private static ByteSerializer<EchoTimestampValueRequestDto> _echoTimestampValueRequestDto = ByteSerializer.Create<EchoTimestampValueRequestDto>(BasicDataTypesTestTypeModel.Instance);
+        
+        private static ByteSerializer<EchoTimestampValueResponseDto> _echoTimestampValueResponseDto = ByteSerializer.Create<EchoTimestampValueResponseDto>(BasicDataTypesTestTypeModel.Instance);
+        
+        private static ByteSerializer<PropertyResponse<Tecan.Sila2.StringDto>> _propertyResponseOfStringDto = ByteSerializer.Create<PropertyResponse<Tecan.Sila2.StringDto>>(BasicDataTypesTestTypeModel.Instance);
+        
+        private static ByteSerializer<PropertyResponse<Tecan.Sila2.IntegerDto>> _propertyResponseOfIntegerDto = ByteSerializer.Create<PropertyResponse<Tecan.Sila2.IntegerDto>>(BasicDataTypesTestTypeModel.Instance);
+        
+        private static ByteSerializer<PropertyResponse<Tecan.Sila2.RealDto>> _propertyResponseOfRealDto = ByteSerializer.Create<PropertyResponse<Tecan.Sila2.RealDto>>(BasicDataTypesTestTypeModel.Instance);
+        
+        private static ByteSerializer<PropertyResponse<Tecan.Sila2.BooleanDto>> _propertyResponseOfBooleanDto = ByteSerializer.Create<PropertyResponse<Tecan.Sila2.BooleanDto>>(BasicDataTypesTestTypeModel.Instance);
+        
+        private static ByteSerializer<PropertyResponse<Tecan.Sila2.DateDto>> _propertyResponseOfDateDto = ByteSerializer.Create<PropertyResponse<Tecan.Sila2.DateDto>>(BasicDataTypesTestTypeModel.Instance);
+        
+        private static ByteSerializer<PropertyResponse<Tecan.Sila2.TimeDto>> _propertyResponseOfTimeDto = ByteSerializer.Create<PropertyResponse<Tecan.Sila2.TimeDto>>(BasicDataTypesTestTypeModel.Instance);
+        
+        private static ByteSerializer<PropertyResponse<Tecan.Sila2.TimestampDto>> _propertyResponseOfTimestampDto = ByteSerializer.Create<PropertyResponse<Tecan.Sila2.TimestampDto>>(BasicDataTypesTestTypeModel.Instance);
+        
+        private BasicDataTypesTestSerializers()
+        {
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for EchoStringValueRequestDto
+        /// </summary>
+        public static ByteSerializer<EchoStringValueRequestDto> EchoStringValueRequestDto
+        {
+            get
+            {
+                return _echoStringValueRequestDto;
+            }
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for EchoStringValueResponseDto
+        /// </summary>
+        public static ByteSerializer<EchoStringValueResponseDto> EchoStringValueResponseDto
+        {
+            get
+            {
+                return _echoStringValueResponseDto;
+            }
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for EchoIntegerValueRequestDto
+        /// </summary>
+        public static ByteSerializer<EchoIntegerValueRequestDto> EchoIntegerValueRequestDto
+        {
+            get
+            {
+                return _echoIntegerValueRequestDto;
+            }
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for EchoIntegerValueResponseDto
+        /// </summary>
+        public static ByteSerializer<EchoIntegerValueResponseDto> EchoIntegerValueResponseDto
+        {
+            get
+            {
+                return _echoIntegerValueResponseDto;
+            }
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for EchoRealValueRequestDto
+        /// </summary>
+        public static ByteSerializer<EchoRealValueRequestDto> EchoRealValueRequestDto
+        {
+            get
+            {
+                return _echoRealValueRequestDto;
+            }
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for EchoRealValueResponseDto
+        /// </summary>
+        public static ByteSerializer<EchoRealValueResponseDto> EchoRealValueResponseDto
+        {
+            get
+            {
+                return _echoRealValueResponseDto;
+            }
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for EchoBooleanValueRequestDto
+        /// </summary>
+        public static ByteSerializer<EchoBooleanValueRequestDto> EchoBooleanValueRequestDto
+        {
+            get
+            {
+                return _echoBooleanValueRequestDto;
+            }
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for EchoBooleanValueResponseDto
+        /// </summary>
+        public static ByteSerializer<EchoBooleanValueResponseDto> EchoBooleanValueResponseDto
+        {
+            get
+            {
+                return _echoBooleanValueResponseDto;
+            }
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for EchoDateValueRequestDto
+        /// </summary>
+        public static ByteSerializer<EchoDateValueRequestDto> EchoDateValueRequestDto
+        {
+            get
+            {
+                return _echoDateValueRequestDto;
+            }
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for EchoDateValueResponseDto
+        /// </summary>
+        public static ByteSerializer<EchoDateValueResponseDto> EchoDateValueResponseDto
+        {
+            get
+            {
+                return _echoDateValueResponseDto;
+            }
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for EchoTimeValueRequestDto
+        /// </summary>
+        public static ByteSerializer<EchoTimeValueRequestDto> EchoTimeValueRequestDto
+        {
+            get
+            {
+                return _echoTimeValueRequestDto;
+            }
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for EchoTimeValueResponseDto
+        /// </summary>
+        public static ByteSerializer<EchoTimeValueResponseDto> EchoTimeValueResponseDto
+        {
+            get
+            {
+                return _echoTimeValueResponseDto;
+            }
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for EchoTimestampValueRequestDto
+        /// </summary>
+        public static ByteSerializer<EchoTimestampValueRequestDto> EchoTimestampValueRequestDto
+        {
+            get
+            {
+                return _echoTimestampValueRequestDto;
+            }
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for EchoTimestampValueResponseDto
+        /// </summary>
+        public static ByteSerializer<EchoTimestampValueResponseDto> EchoTimestampValueResponseDto
+        {
+            get
+            {
+                return _echoTimestampValueResponseDto;
+            }
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for PropertyResponseOfStringDto
+        /// </summary>
+        public static ByteSerializer<PropertyResponse<Tecan.Sila2.StringDto>> PropertyResponseOfStringDto
+        {
+            get
+            {
+                return _propertyResponseOfStringDto;
+            }
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for PropertyResponseOfIntegerDto
+        /// </summary>
+        public static ByteSerializer<PropertyResponse<Tecan.Sila2.IntegerDto>> PropertyResponseOfIntegerDto
+        {
+            get
+            {
+                return _propertyResponseOfIntegerDto;
+            }
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for PropertyResponseOfRealDto
+        /// </summary>
+        public static ByteSerializer<PropertyResponse<Tecan.Sila2.RealDto>> PropertyResponseOfRealDto
+        {
+            get
+            {
+                return _propertyResponseOfRealDto;
+            }
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for PropertyResponseOfBooleanDto
+        /// </summary>
+        public static ByteSerializer<PropertyResponse<Tecan.Sila2.BooleanDto>> PropertyResponseOfBooleanDto
+        {
+            get
+            {
+                return _propertyResponseOfBooleanDto;
+            }
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for PropertyResponseOfDateDto
+        /// </summary>
+        public static ByteSerializer<PropertyResponse<Tecan.Sila2.DateDto>> PropertyResponseOfDateDto
+        {
+            get
+            {
+                return _propertyResponseOfDateDto;
+            }
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for PropertyResponseOfTimeDto
+        /// </summary>
+        public static ByteSerializer<PropertyResponse<Tecan.Sila2.TimeDto>> PropertyResponseOfTimeDto
+        {
+            get
+            {
+                return _propertyResponseOfTimeDto;
+            }
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for PropertyResponseOfTimestampDto
+        /// </summary>
+        public static ByteSerializer<PropertyResponse<Tecan.Sila2.TimestampDto>> PropertyResponseOfTimestampDto
+        {
+            get
+            {
+                return _propertyResponseOfTimestampDto;
+            }
         }
     }
 }

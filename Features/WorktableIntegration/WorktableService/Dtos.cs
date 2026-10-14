@@ -7,6 +7,7 @@
 //     the code is regenerated.
 // </auto-generated>
 //------------------------------------------------------------------------------
+#pragma warning disable PBN9001
 
 using System;
 using Tecan.Sila2;
@@ -1095,6 +1096,67 @@ namespace Tecan.Sila2.WorktableIntegration
                 {
                     _height = value;
                 }
+            }
+        }
+    }
+    
+    /// <summary>
+    /// The compile-time protobuf-net type model for the data transfer objects of the Worktable Service feature
+    /// </summary>
+    [ProtoBuf.ProtoModelAttribute()]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(PropertyResponse<BoundingBoxDto>))]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(PropertyResponse<System.Collections.Generic.List<SiteTemplateDto>>))]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(PropertyResponse<System.Collections.Generic.List<SiteDto>>))]
+    public sealed partial class WorktableServiceTypeModel : ProtoBuf.Meta.TypeModel
+    {
+    }
+    
+    /// <summary>
+    /// Byte serializers for the data transfer objects of the Worktable Service feature that use the compile-time generated WorktableServiceTypeModel
+    /// </summary>
+    public sealed class WorktableServiceSerializers
+    {
+        
+        private static ByteSerializer<PropertyResponse<BoundingBoxDto>> _propertyResponseOfBoundingBoxDto = ByteSerializer.Create<PropertyResponse<BoundingBoxDto>>(WorktableServiceTypeModel.Instance);
+        
+        private static ByteSerializer<PropertyResponse<System.Collections.Generic.List<SiteTemplateDto>>> _propertyResponseOfListOfSiteTemplateDto = ByteSerializer.Create<PropertyResponse<System.Collections.Generic.List<SiteTemplateDto>>>(WorktableServiceTypeModel.Instance);
+        
+        private static ByteSerializer<PropertyResponse<System.Collections.Generic.List<SiteDto>>> _propertyResponseOfListOfSiteDto = ByteSerializer.Create<PropertyResponse<System.Collections.Generic.List<SiteDto>>>(WorktableServiceTypeModel.Instance);
+        
+        private WorktableServiceSerializers()
+        {
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for PropertyResponseOfBoundingBoxDto
+        /// </summary>
+        public static ByteSerializer<PropertyResponse<BoundingBoxDto>> PropertyResponseOfBoundingBoxDto
+        {
+            get
+            {
+                return _propertyResponseOfBoundingBoxDto;
+            }
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for PropertyResponseOfListOfSiteTemplateDto
+        /// </summary>
+        public static ByteSerializer<PropertyResponse<System.Collections.Generic.List<SiteTemplateDto>>> PropertyResponseOfListOfSiteTemplateDto
+        {
+            get
+            {
+                return _propertyResponseOfListOfSiteTemplateDto;
+            }
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for PropertyResponseOfListOfSiteDto
+        /// </summary>
+        public static ByteSerializer<PropertyResponse<System.Collections.Generic.List<SiteDto>>> PropertyResponseOfListOfSiteDto
+        {
+            get
+            {
+                return _propertyResponseOfListOfSiteDto;
             }
         }
     }

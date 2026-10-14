@@ -740,7 +740,7 @@ namespace Tecan.Sila2.Generator.Generators
 
                 foreach (var featureProperty in feature.Items.OfType<FeatureProperty>())
                 {
-                    GenerateServerRegisterProperty(implementation, registerMethod, registration, featureProperty);
+                    GenerateServerRegisterProperty(feature, implementation, registerMethod, registration, featureProperty);
                 }
 
                 foreach (var featureMetadata in feature.Items.OfType<FeatureMetadata>())
@@ -755,38 +755,50 @@ namespace Tecan.Sila2.Generator.Generators
             server.Members.Add( registerMethod );
         }
 
-        private static void GenerateServerRegisterProperty(CodeExpression implementation, CodeMemberMethod registerMethod, CodeArgumentReferenceExpression registration, FeatureProperty featureProperty)
+        private void GenerateServerRegisterProperty(Feature feature, CodeExpression implementation, CodeMemberMethod registerMethod, CodeArgumentReferenceExpression registration, FeatureProperty featureProperty)
         {
+            CodeMethodInvokeExpression registerCall;
             if (featureProperty.Observable == FeaturePropertyObservable.No)
             {
-                registerMethod.Statements.Add(new CodeMethodInvokeExpression(
+                registerCall = new CodeMethodInvokeExpression(
                     registration,
                     nameof(IServerBuilder.RegisterUnobservableProperty),
                     new CodePrimitiveExpression(featureProperty.Identifier),
-                    new CodeMethodReferenceExpression(null, "Get" + featureProperty.Identifier)));
+                    new CodeMethodReferenceExpression(null, "Get" + featureProperty.Identifier));
             }
             else
             {
-                registerMethod.Statements.Add(new CodeMethodInvokeExpression(
+                registerCall = new CodeMethodInvokeExpression(
                     registration,
                     nameof(IServerBuilder.RegisterObservableProperty),
                     new CodePrimitiveExpression(featureProperty.Identifier),
                     new CodeMethodReferenceExpression(null, "Get" + featureProperty.Identifier),
-                    implementation));
+                    implementation);
             }
+            if (SerializationModelHelper.UseGeneratedModel)
+            {
+                registerCall.Parameters.Add(SerializationModelHelper.GetSerializer(feature, _nameProvider.GetPropertyResponseType(featureProperty, _translationProvider)));
+            }
+            registerMethod.Statements.Add(registerCall);
         }
 
         private void GenerateServerRegisterCommand(Feature feature, CodeTypeDeclaration server, CodeMemberMethod registerMethod, CodeArgumentReferenceExpression registration, FeatureCommand featureCommand)
         {
             if (featureCommand.Observable == FeatureCommandObservable.No)
             {
-                registerMethod.Statements.Add(new CodeMethodInvokeExpression(
+                var registerCall = new CodeMethodInvokeExpression(
                     new CodeMethodReferenceExpression(
                         registration, nameof(IServerBuilder.RegisterUnobservableCommand),
                         _nameProvider.GenerateCommandRequestType(featureCommand),
                         _nameProvider.GenerateCommandResponseType(featureCommand)),
                     new CodePrimitiveExpression(featureCommand.Identifier),
-                    new CodeMethodReferenceExpression(null, featureCommand.Identifier)));
+                    new CodeMethodReferenceExpression(null, featureCommand.Identifier));
+                if (SerializationModelHelper.UseGeneratedModel)
+                {
+                    registerCall.Parameters.Add(SerializationModelHelper.GetSerializer(feature, _nameProvider.GenerateCommandRequestType(featureCommand)));
+                    registerCall.Parameters.Add(SerializationModelHelper.GetSerializer(feature, _nameProvider.GenerateCommandResponseType(featureCommand)));
+                }
+                registerMethod.Statements.Add(registerCall);
             }
             else
             {
@@ -822,6 +834,19 @@ namespace Tecan.Sila2.Generator.Generators
                 else
                 {
                     arguments.Add(new CodePrimitiveExpression(null));
+                }
+
+                if (SerializationModelHelper.UseGeneratedModel)
+                {
+                    arguments.Add(SerializationModelHelper.GetSerializer(feature, _nameProvider.GenerateCommandRequestType(featureCommand)));
+                    if (hasIntermediates)
+                    {
+                        arguments.Add(SerializationModelHelper.GetSerializer(feature, _nameProvider.GenerateCommandIntermediateType(featureCommand)));
+                    }
+                    if (featureCommand.Response != null && featureCommand.Response.Length > 0)
+                    {
+                        arguments.Add(SerializationModelHelper.GetSerializer(feature, _nameProvider.GenerateCommandResponseType(featureCommand)));
+                    }
                 }
 
                 registerMethod.Statements.Add(new CodeMethodInvokeExpression(
@@ -991,6 +1016,10 @@ namespace Tecan.Sila2.Generator.Generators
                     _translationProvider.GetDtoTypeReference( metadata.DataType, metadata.Identifier, structHandler ) ),
                 new CodeArgumentReferenceExpression( "metadata" ),
                 new CodePropertyReferenceExpression( null, nameof( IRequestInterceptor.MetadataIdentifier ) ) );
+            if(SerializationModelHelper.UseGeneratedModel)
+            {
+                extractMetadata.Parameters.Add( SerializationModelHelper.GetSerializer( feature, SerializationModelHelper.GetMetadataType( metadata, _translationProvider, structHandler ) ) );
+            }
             var statements = GenerateExceptionHandling( feature, null, metadata.DefinedExecutionErrors, id => FindError( feature, id ), interceptMethod.Statements, serverRef );
             statements.Add( new CodeMethodReturnStatement(
                 new CodeMethodInvokeExpression(

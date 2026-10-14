@@ -109,7 +109,7 @@ namespace Tecan.Sila2.Locking
                 _serverLockData.AddOrUpdate( server, lockData, (_,ex) => ex );
             }
             lockData.RegisterCall(_lockTime);
-            metadata.Add( MetadataIdentifier, ByteSerializer.ToByteArray( new PropertyResponse<StringDto>( lockData.LockIdentifier ) ) );
+            metadata.Add( MetadataIdentifier, ByteSerializer.ToByteArray( new PropertyResponse<StringDto>( lockData.LockIdentifier ), FrameworkTypeModel.Instance ) );
             return lockData;
         }
 

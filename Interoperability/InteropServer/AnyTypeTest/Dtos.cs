@@ -7,6 +7,7 @@
 //     the code is regenerated.
 // </auto-generated>
 //------------------------------------------------------------------------------
+#pragma warning disable PBN9001
 
 using System;
 using Tecan.Sila2;
@@ -177,6 +178,67 @@ namespace Tecan.Sila2.Interop.Server.AnyTypeTest
         {
             return (("" + Argument.Require(ReceivedAnyType, "ReceivedAnyType")) 
                         + Argument.Require(ReceivedValue, "ReceivedValue"));
+        }
+    }
+    
+    /// <summary>
+    /// The compile-time protobuf-net type model for the data transfer objects of the Any Type Test feature
+    /// </summary>
+    [ProtoBuf.ProtoModelAttribute()]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(SetAnyTypeValueRequestDto))]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(SetAnyTypeValueResponseDto))]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(PropertyResponse<Tecan.Sila2.DynamicClient.AnyTypeDto>))]
+    public sealed partial class AnyTypeTestTypeModel : ProtoBuf.Meta.TypeModel
+    {
+    }
+    
+    /// <summary>
+    /// Byte serializers for the data transfer objects of the Any Type Test feature that use the compile-time generated AnyTypeTestTypeModel
+    /// </summary>
+    public sealed class AnyTypeTestSerializers
+    {
+        
+        private static ByteSerializer<SetAnyTypeValueRequestDto> _setAnyTypeValueRequestDto = ByteSerializer.Create<SetAnyTypeValueRequestDto>(AnyTypeTestTypeModel.Instance);
+        
+        private static ByteSerializer<SetAnyTypeValueResponseDto> _setAnyTypeValueResponseDto = ByteSerializer.Create<SetAnyTypeValueResponseDto>(AnyTypeTestTypeModel.Instance);
+        
+        private static ByteSerializer<PropertyResponse<Tecan.Sila2.DynamicClient.AnyTypeDto>> _propertyResponseOfAnyTypeDto = ByteSerializer.Create<PropertyResponse<Tecan.Sila2.DynamicClient.AnyTypeDto>>(AnyTypeTestTypeModel.Instance);
+        
+        private AnyTypeTestSerializers()
+        {
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for SetAnyTypeValueRequestDto
+        /// </summary>
+        public static ByteSerializer<SetAnyTypeValueRequestDto> SetAnyTypeValueRequestDto
+        {
+            get
+            {
+                return _setAnyTypeValueRequestDto;
+            }
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for SetAnyTypeValueResponseDto
+        /// </summary>
+        public static ByteSerializer<SetAnyTypeValueResponseDto> SetAnyTypeValueResponseDto
+        {
+            get
+            {
+                return _setAnyTypeValueResponseDto;
+            }
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for PropertyResponseOfAnyTypeDto
+        /// </summary>
+        public static ByteSerializer<PropertyResponse<Tecan.Sila2.DynamicClient.AnyTypeDto>> PropertyResponseOfAnyTypeDto
+        {
+            get
+            {
+                return _propertyResponseOfAnyTypeDto;
+            }
         }
     }
 }

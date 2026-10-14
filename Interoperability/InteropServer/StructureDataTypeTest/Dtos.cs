@@ -7,6 +7,7 @@
 //     the code is regenerated.
 // </auto-generated>
 //------------------------------------------------------------------------------
+#pragma warning disable PBN9001
 
 using System;
 using Tecan.Sila2;
@@ -1189,6 +1190,109 @@ namespace Tecan.Sila2.Interop.Server.StructureDataTypeTest
         {
             return (("" + Argument.Require(InnerStringTypeValue, "InnerStringTypeValue")) 
                         + Argument.Require(InnerIntegerTypeValue, "InnerIntegerTypeValue"));
+        }
+    }
+    
+    /// <summary>
+    /// The compile-time protobuf-net type model for the data transfer objects of the Structure Data Type Test feature
+    /// </summary>
+    [ProtoBuf.ProtoModelAttribute()]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(EchoStructureValueRequestDto))]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(EchoStructureValueResponseDto))]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(EchoDeepStructureValueRequestDto))]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(EchoDeepStructureValueResponseDto))]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(PropertyResponse<TestStructureDto>))]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(PropertyResponse<DeepStructureDto>))]
+    public sealed partial class StructureDataTypeTestTypeModel : ProtoBuf.Meta.TypeModel
+    {
+    }
+    
+    /// <summary>
+    /// Byte serializers for the data transfer objects of the Structure Data Type Test feature that use the compile-time generated StructureDataTypeTestTypeModel
+    /// </summary>
+    public sealed class StructureDataTypeTestSerializers
+    {
+        
+        private static ByteSerializer<EchoStructureValueRequestDto> _echoStructureValueRequestDto = ByteSerializer.Create<EchoStructureValueRequestDto>(StructureDataTypeTestTypeModel.Instance);
+        
+        private static ByteSerializer<EchoStructureValueResponseDto> _echoStructureValueResponseDto = ByteSerializer.Create<EchoStructureValueResponseDto>(StructureDataTypeTestTypeModel.Instance);
+        
+        private static ByteSerializer<EchoDeepStructureValueRequestDto> _echoDeepStructureValueRequestDto = ByteSerializer.Create<EchoDeepStructureValueRequestDto>(StructureDataTypeTestTypeModel.Instance);
+        
+        private static ByteSerializer<EchoDeepStructureValueResponseDto> _echoDeepStructureValueResponseDto = ByteSerializer.Create<EchoDeepStructureValueResponseDto>(StructureDataTypeTestTypeModel.Instance);
+        
+        private static ByteSerializer<PropertyResponse<TestStructureDto>> _propertyResponseOfTestStructureDto = ByteSerializer.Create<PropertyResponse<TestStructureDto>>(StructureDataTypeTestTypeModel.Instance);
+        
+        private static ByteSerializer<PropertyResponse<DeepStructureDto>> _propertyResponseOfDeepStructureDto = ByteSerializer.Create<PropertyResponse<DeepStructureDto>>(StructureDataTypeTestTypeModel.Instance);
+        
+        private StructureDataTypeTestSerializers()
+        {
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for EchoStructureValueRequestDto
+        /// </summary>
+        public static ByteSerializer<EchoStructureValueRequestDto> EchoStructureValueRequestDto
+        {
+            get
+            {
+                return _echoStructureValueRequestDto;
+            }
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for EchoStructureValueResponseDto
+        /// </summary>
+        public static ByteSerializer<EchoStructureValueResponseDto> EchoStructureValueResponseDto
+        {
+            get
+            {
+                return _echoStructureValueResponseDto;
+            }
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for EchoDeepStructureValueRequestDto
+        /// </summary>
+        public static ByteSerializer<EchoDeepStructureValueRequestDto> EchoDeepStructureValueRequestDto
+        {
+            get
+            {
+                return _echoDeepStructureValueRequestDto;
+            }
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for EchoDeepStructureValueResponseDto
+        /// </summary>
+        public static ByteSerializer<EchoDeepStructureValueResponseDto> EchoDeepStructureValueResponseDto
+        {
+            get
+            {
+                return _echoDeepStructureValueResponseDto;
+            }
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for PropertyResponseOfTestStructureDto
+        /// </summary>
+        public static ByteSerializer<PropertyResponse<TestStructureDto>> PropertyResponseOfTestStructureDto
+        {
+            get
+            {
+                return _propertyResponseOfTestStructureDto;
+            }
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for PropertyResponseOfDeepStructureDto
+        /// </summary>
+        public static ByteSerializer<PropertyResponse<DeepStructureDto>> PropertyResponseOfDeepStructureDto
+        {
+            get
+            {
+                return _propertyResponseOfDeepStructureDto;
+            }
         }
     }
 }

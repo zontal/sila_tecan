@@ -7,6 +7,7 @@
 //     the code is regenerated.
 // </auto-generated>
 //------------------------------------------------------------------------------
+#pragma warning disable PBN9001
 
 using System;
 using Tecan.Sila2;
@@ -15,4 +16,37 @@ using Tecan.Sila2;
 namespace Tecan.Sila2.Interop.Server.UnobservablePropertyTest
 {
     
+    
+    /// <summary>
+    /// The compile-time protobuf-net type model for the data transfer objects of the Unobservable Property Test feature
+    /// </summary>
+    [ProtoBuf.ProtoModelAttribute()]
+    [ProtoBuf.ProtoSerializableAttribute(typeof(PropertyResponse<Tecan.Sila2.IntegerDto>))]
+    public sealed partial class UnobservablePropertyTestTypeModel : ProtoBuf.Meta.TypeModel
+    {
+    }
+    
+    /// <summary>
+    /// Byte serializers for the data transfer objects of the Unobservable Property Test feature that use the compile-time generated UnobservablePropertyTestTypeModel
+    /// </summary>
+    public sealed class UnobservablePropertyTestSerializers
+    {
+        
+        private static ByteSerializer<PropertyResponse<Tecan.Sila2.IntegerDto>> _propertyResponseOfIntegerDto = ByteSerializer.Create<PropertyResponse<Tecan.Sila2.IntegerDto>>(UnobservablePropertyTestTypeModel.Instance);
+        
+        private UnobservablePropertyTestSerializers()
+        {
+        }
+        
+        /// <summary>
+        /// Gets the byte serializer for PropertyResponseOfIntegerDto
+        /// </summary>
+        public static ByteSerializer<PropertyResponse<Tecan.Sila2.IntegerDto>> PropertyResponseOfIntegerDto
+        {
+            get
+            {
+                return _propertyResponseOfIntegerDto;
+            }
+        }
+    }
 }

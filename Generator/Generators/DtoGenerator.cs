@@ -99,7 +99,76 @@ namespace Tecan.Sila2.Generator.Generators
 
             AddRemainingDataTypes(nSpace, structureHelper, structHandler);
 
+            if(SerializationModelHelper.UseGeneratedModel)
+            {
+                AddSerializationModel( feature, unit, nSpace );
+            }
+
             return unit;
+        }
+
+        private void AddSerializationModel( Feature feature, CodeCompileUnit unit, CodeNamespace nSpace )
+        {
+            _loggingChannel.Debug( $"Generating the serialization model for feature {feature.Identifier}" );
+            var roots = SerializationModelHelper.GetRootTypes( feature, NameProvider, _translationProvider );
+            if(roots.Count == 0)
+            {
+                return;
+            }
+            var modelName = SerializationModelHelper.GetModelName( feature );
+            var displayName = feature.DisplayName ?? feature.Identifier;
+
+            var model = new CodeTypeDeclaration( modelName )
+            {
+                IsClass = true,
+                IsPartial = true,
+                TypeAttributes = TypeAttributes.Public | TypeAttributes.Sealed
+            };
+            model.BaseTypes.Add( new CodeTypeReference( typeof( ProtoBuf.Meta.TypeModel ) ) );
+            model.CustomAttributes.Add( new CodeAttributeDeclaration( new CodeTypeReference( "ProtoBuf.ProtoModelAttribute" ) ) );
+            foreach(var root in roots)
+            {
+                model.CustomAttributes.Add( new CodeAttributeDeclaration( new CodeTypeReference( "ProtoBuf.ProtoSerializableAttribute" ),
+                    new CodeAttributeArgument( new CodeTypeOfExpression( root ) ) ) );
+            }
+            model.WriteDocumentation( $"The compile-time protobuf-net type model for the data transfer objects of the {displayName} feature" );
+            nSpace.Types.Add( model );
+
+            var serializers = new CodeTypeDeclaration( SerializationModelHelper.GetSerializersName( feature ) )
+            {
+                IsClass = true,
+                TypeAttributes = TypeAttributes.Public | TypeAttributes.Sealed
+            };
+            serializers.Members.Add( new CodeConstructor { Attributes = MemberAttributes.Private } );
+            var modelInstance = new CodePropertyReferenceExpression( new CodeTypeReferenceExpression( modelName ), "Instance" );
+            foreach(var root in roots)
+            {
+                var name = SerializationModelHelper.GetSerializerFieldName( root );
+                var serializerType = new CodeTypeReference( typeof( ByteSerializer<> ).Name, root );
+                var field = new CodeMemberField( serializerType, "_" + name.ToCamelCase() )
+                {
+                    Attributes = MemberAttributes.Private | MemberAttributes.Static,
+                    InitExpression = new CodeMethodInvokeExpression(
+                        new CodeMethodReferenceExpression( new CodeTypeReferenceExpression( nameof( ByteSerializer ) ), nameof( ByteSerializer.Create ), root ),
+                        modelInstance )
+                };
+                serializers.Members.Add( field );
+                serializers.Members.Add( new CodeMemberProperty
+                {
+                    Name = name,
+                    Type = serializerType,
+                    Attributes = MemberAttributes.Public | MemberAttributes.Static,
+                    HasGet = true,
+                    GetStatements =
+                    {
+                        new CodeMethodReturnStatement( new CodeFieldReferenceExpression( null, field.Name ) )
+                    }
+                }.WriteDocumentation( $"Gets the byte serializer for {name}" ) );
+            }
+            serializers.WriteDocumentation( $"Byte serializers for the data transfer objects of the {displayName} feature that use the compile-time generated {modelName}" );
+            nSpace.Types.Add( serializers );
+
+            CodeGenerationHelper.DisableWarning( unit, SerializationModelHelper.ExperimentalModelDiagnosticId );
         }
 
         private void AddRemainingDataTypes(CodeNamespace nSpace, AnonymousTypeHelper structureHelper, Action<string, StructureType> structHandler)
