@@ -51,6 +51,57 @@ namespace Tecan.Sila2.Generator.Test
   </DataTypeDefinition>
 </Feature>";
 
+        // data types named like the generated model and serializers classes
+        private const string ShadowingFeature = @"<?xml version=""1.0"" encoding=""utf-8""?>
+<Feature xmlns:xsd=""http://www.w3.org/2001/XMLSchema"" xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" SiLA2Version=""1.0"" FeatureVersion=""1.0"" Originator=""tecan.sila.generator.test"" Category=""test"" xmlns=""http://www.sila-standard.org"">
+  <Identifier>Foo</Identifier>
+  <DisplayName>Foo</DisplayName>
+  <Description />
+  <Property>
+    <Identifier>Model</Identifier>
+    <DisplayName>Model</DisplayName>
+    <Description />
+    <Observable>No</Observable>
+    <DataType>
+      <DataTypeIdentifier>FooTypeModel</DataTypeIdentifier>
+    </DataType>
+  </Property>
+  <Property>
+    <Identifier>Serializers</Identifier>
+    <DisplayName>Serializers</DisplayName>
+    <Description />
+    <Observable>No</Observable>
+    <DataType>
+      <DataTypeIdentifier>FooSerializers</DataTypeIdentifier>
+    </DataType>
+  </Property>
+  <DataTypeDefinition>
+    <Identifier>FooTypeModel</Identifier>
+    <DisplayName>Foo Type Model</DisplayName>
+    <Description />
+    <DataType>
+      <Structure>
+        <Element>
+          <Identifier>Name</Identifier>
+          <DisplayName>Name</DisplayName>
+          <Description />
+          <DataType>
+            <Basic>String</Basic>
+          </DataType>
+        </Element>
+      </Structure>
+    </DataType>
+  </DataTypeDefinition>
+  <DataTypeDefinition>
+    <Identifier>FooSerializers</Identifier>
+    <DisplayName>Foo Serializers</DisplayName>
+    <Description />
+    <DataType>
+      <Basic>Integer</Basic>
+    </DataType>
+  </DataTypeDefinition>
+</Feature>";
+
         private ITypeTranslationProvider _typeTranslationProvider;
         private ICodeNameProvider _nameProvider;
         private Feature _feature;
@@ -79,6 +130,25 @@ namespace Tecan.Sila2.Generator.Test
             Assert.That( serializers.Select( s => s.Value ), Is.EqualTo( new[] { "PropertyResponseOfListOfStringDto", "PropertyResponseOfListOfStringDto2" } ) );
             Assert.That( serializers[0].Key.TypeArguments[0].BaseType, Does.StartWith( "System.Collections.Generic.List" ) );
             Assert.That( serializers[1].Key.TypeArguments[0].BaseType, Is.EqualTo( "ListOfStringDto" ) );
+        }
+
+        [Test]
+        public void GeneratedCode_DataTypesNamedLikeGeneratedClasses_UseDistinctClassNames()
+        {
+            var feature = FeatureSerializer.LoadFromXml( ShadowingFeature );
+            var interfaceCode = CodeGenerationHelper.GenerateCSharpCode( new InterfaceGenerator( _typeTranslationProvider, null, new GeneratorConfigSource() ).GenerateInterfaceUnit( feature, Namespace ) );
+            var dtoCode = CodeGenerationHelper.GenerateCSharpCode( new DtoGenerator( _typeTranslationProvider, _nameProvider, new GeneratorConfigSource(), new IValidationCreator[0] ).GenerateInterfaceUnit( feature, Namespace ) );
+            var providerCode = CodeGenerationHelper.GenerateCSharpCode( new ServerGenerator( _typeTranslationProvider, _nameProvider, new MefGenerator(), null, new GeneratorConfigSource() ).GenerateServer( feature, Namespace ) );
+            var clientCode = CodeGenerationHelper.GenerateCSharpCode( new ClientGenerator( _nameProvider, _typeTranslationProvider, null, new MefGenerator(), new GeneratorConfigSource() ).GenerateClient( feature, Namespace ) );
+
+            Assert.That( SerializationModelHelper.GetModelName( feature ), Is.EqualTo( "FooTypeModel2" ) );
+            Assert.That( SerializationModelHelper.GetSerializersName( feature ), Is.EqualTo( "FooSerializers2" ) );
+            Assert.That( interfaceCode, Does.Contain( "class FooTypeModel" ) );
+            Assert.That( dtoCode, Does.Contain( "partial class FooTypeModel2 : ProtoBuf.Meta.TypeModel" ) );
+            Assert.That( dtoCode, Does.Contain( "class FooSerializers2" ) );
+            Assert.That( dtoCode, Does.Contain( "ByteSerializer.Create<PropertyResponse<FooTypeModelDto>>(FooTypeModel2.Instance)" ) );
+            Assert.That( providerCode, Does.Contain( "FooSerializers2.PropertyResponseOfFooTypeModelDto" ) );
+            Assert.That( clientCode, Does.Contain( "FooSerializers2.PropertyResponseOfFooTypeModelDto" ) );
         }
 
         [Test]

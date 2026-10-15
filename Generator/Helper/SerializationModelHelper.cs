@@ -28,7 +28,7 @@ namespace Tecan.Sila2.Generator.Helper
         /// <returns>The name of the type model class</returns>
         public static string GetModelName( Feature feature )
         {
-            return feature.Identifier + "TypeModel";
+            return GetUniqueTypeName( feature, feature.Identifier + "TypeModel" );
         }
 
         /// <summary>
@@ -38,7 +38,91 @@ namespace Tecan.Sila2.Generator.Helper
         /// <returns>The name of the serializers class</returns>
         public static string GetSerializersName( Feature feature )
         {
-            return feature.Identifier + "Serializers";
+            return GetUniqueTypeName( feature, feature.Identifier + "Serializers" );
+        }
+
+        private static string GetUniqueTypeName( Feature feature, string baseName )
+        {
+            var reserved = GetDeclaredNames( feature );
+            var name = baseName;
+            for(var index = 2; reserved.Contains( name ); index++)
+            {
+                name = baseName + index;
+            }
+            return name;
+        }
+
+        /// <summary>
+        /// Gets the names that the code generated for the given feature may use for its own types
+        /// </summary>
+        /// <param name="feature">The feature</param>
+        /// <returns>A set of the identifiers declared in the feature definition and their singular forms</returns>
+        /// <remarks>Generated domain types, including anonymous structures, are named after these identifiers.</remarks>
+        private static ISet<string> GetDeclaredNames( Feature feature )
+        {
+            var names = new HashSet<string>( StringComparer.Ordinal );
+
+            void AddIdentifier( string identifier )
+            {
+                if(!string.IsNullOrEmpty( identifier ))
+                {
+                    names.Add( identifier );
+                    names.Add( CodeGenerationHelper.TurnSingular( identifier ) );
+                }
+            }
+
+            void AddDataType( DataTypeType dataType )
+            {
+                switch(dataType?.Item)
+                {
+                    case ListType list:
+                        AddDataType( list.DataType );
+                        break;
+                    case ConstrainedType constrained:
+                        AddDataType( constrained.DataType );
+                        break;
+                    case StructureType structure:
+                        AddElements( structure.Element );
+                        break;
+                }
+            }
+
+            void AddElements( IEnumerable<SiLAElement> elements )
+            {
+                foreach(var element in elements ?? Enumerable.Empty<SiLAElement>())
+                {
+                    AddIdentifier( element.Identifier );
+                    AddDataType( element.DataType );
+                }
+            }
+
+            foreach(var item in feature.Items ?? new object[0])
+            {
+                switch(item)
+                {
+                    case FeatureCommand command:
+                        AddIdentifier( command.Identifier );
+                        AddElements( command.Parameter );
+                        AddElements( command.Response );
+                        AddElements( command.IntermediateResponse );
+                        break;
+                    case FeatureProperty property:
+                        AddIdentifier( property.Identifier );
+                        AddDataType( property.DataType );
+                        break;
+                    case FeatureMetadata metadata:
+                        AddIdentifier( metadata.Identifier );
+                        AddDataType( metadata.DataType );
+                        break;
+                    case FeatureDefinedExecutionError error:
+                        AddIdentifier( error.Identifier );
+                        break;
+                    case SiLAElement dataTypeDefinition:
+                        AddElements( new[] { dataTypeDefinition } );
+                        break;
+                }
+            }
+            return names;
         }
 
         /// <summary>
