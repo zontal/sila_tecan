@@ -158,9 +158,9 @@ namespace Tecan.Sila2.Generator.Test.TestReference
     public sealed class InlineObservableServiceSerializers
     {
         
-        private static ByteSerializer<TestInlineObservableRequestDto> _testInlineObservableRequestDto = ByteSerializer.Create<TestInlineObservableRequestDto>(InlineObservableServiceTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<TestInlineObservableRequestDto> _testInlineObservableRequestDto = Tecan.Sila2.ByteSerializer.Create<TestInlineObservableRequestDto>(InlineObservableServiceTypeModel.Instance);
         
-        private static ByteSerializer<TestInlineObservableResponseDto> _testInlineObservableResponseDto = ByteSerializer.Create<TestInlineObservableResponseDto>(InlineObservableServiceTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<TestInlineObservableResponseDto> _testInlineObservableResponseDto = Tecan.Sila2.ByteSerializer.Create<TestInlineObservableResponseDto>(InlineObservableServiceTypeModel.Instance);
         
         private InlineObservableServiceSerializers()
         {
@@ -169,7 +169,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// <summary>
         /// Gets the byte serializer for TestInlineObservableRequestDto
         /// </summary>
-        public static ByteSerializer<TestInlineObservableRequestDto> TestInlineObservableRequestDto
+        public static Tecan.Sila2.ByteSerializer<TestInlineObservableRequestDto> TestInlineObservableRequestDto
         {
             get
             {
@@ -180,7 +180,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// <summary>
         /// Gets the byte serializer for TestInlineObservableResponseDto
         /// </summary>
-        public static ByteSerializer<TestInlineObservableResponseDto> TestInlineObservableResponseDto
+        public static Tecan.Sila2.ByteSerializer<TestInlineObservableResponseDto> TestInlineObservableResponseDto
         {
             get
             {

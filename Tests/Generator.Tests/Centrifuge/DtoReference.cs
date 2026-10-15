@@ -174,11 +174,11 @@ namespace Tecan.Sila2.Generator.Test.TestReference
     public sealed class CentrifugeSerializers
     {
         
-        private static ByteSerializer<RunCrazyRequestDto> _runCrazyRequestDto = ByteSerializer.Create<RunCrazyRequestDto>(CentrifugeTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<RunCrazyRequestDto> _runCrazyRequestDto = Tecan.Sila2.ByteSerializer.Create<RunCrazyRequestDto>(CentrifugeTypeModel.Instance);
         
-        private static ByteSerializer<SetSpeedRequestDto> _setSpeedRequestDto = ByteSerializer.Create<SetSpeedRequestDto>(CentrifugeTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<SetSpeedRequestDto> _setSpeedRequestDto = Tecan.Sila2.ByteSerializer.Create<SetSpeedRequestDto>(CentrifugeTypeModel.Instance);
         
-        private static ByteSerializer<PropertyResponse<Tecan.Sila2.IntegerDto>> _propertyResponseOfIntegerDto = ByteSerializer.Create<PropertyResponse<Tecan.Sila2.IntegerDto>>(CentrifugeTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<PropertyResponse<Tecan.Sila2.IntegerDto>> _propertyResponseOfIntegerDto = Tecan.Sila2.ByteSerializer.Create<PropertyResponse<Tecan.Sila2.IntegerDto>>(CentrifugeTypeModel.Instance);
         
         private CentrifugeSerializers()
         {
@@ -187,7 +187,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// <summary>
         /// Gets the byte serializer for RunCrazyRequestDto
         /// </summary>
-        public static ByteSerializer<RunCrazyRequestDto> RunCrazyRequestDto
+        public static Tecan.Sila2.ByteSerializer<RunCrazyRequestDto> RunCrazyRequestDto
         {
             get
             {
@@ -198,7 +198,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// <summary>
         /// Gets the byte serializer for SetSpeedRequestDto
         /// </summary>
-        public static ByteSerializer<SetSpeedRequestDto> SetSpeedRequestDto
+        public static Tecan.Sila2.ByteSerializer<SetSpeedRequestDto> SetSpeedRequestDto
         {
             get
             {
@@ -209,7 +209,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// <summary>
         /// Gets the byte serializer for PropertyResponseOfIntegerDto
         /// </summary>
-        public static ByteSerializer<PropertyResponse<Tecan.Sila2.IntegerDto>> PropertyResponseOfIntegerDto
+        public static Tecan.Sila2.ByteSerializer<PropertyResponse<Tecan.Sila2.IntegerDto>> PropertyResponseOfIntegerDto
         {
             get
             {

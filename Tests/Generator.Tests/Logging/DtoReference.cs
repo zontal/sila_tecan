@@ -665,11 +665,11 @@ namespace Tecan.Sila2.Generator.Test.TestReference
     public sealed class LoggingServiceSerializers
     {
         
-        private static ByteSerializer<ListenForLogEntriesRequestDto> _listenForLogEntriesRequestDto = ByteSerializer.Create<ListenForLogEntriesRequestDto>(LoggingServiceTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<ListenForLogEntriesRequestDto> _listenForLogEntriesRequestDto = Tecan.Sila2.ByteSerializer.Create<ListenForLogEntriesRequestDto>(LoggingServiceTypeModel.Instance);
         
-        private static ByteSerializer<ListenForLogEntriesIntermediateDto> _listenForLogEntriesIntermediateDto = ByteSerializer.Create<ListenForLogEntriesIntermediateDto>(LoggingServiceTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<ListenForLogEntriesIntermediateDto> _listenForLogEntriesIntermediateDto = Tecan.Sila2.ByteSerializer.Create<ListenForLogEntriesIntermediateDto>(LoggingServiceTypeModel.Instance);
         
-        private static ByteSerializer<PropertyResponse<Tecan.Sila2.StringDto>> _propertyResponseOfStringDto = ByteSerializer.Create<PropertyResponse<Tecan.Sila2.StringDto>>(LoggingServiceTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<PropertyResponse<Tecan.Sila2.StringDto>> _propertyResponseOfStringDto = Tecan.Sila2.ByteSerializer.Create<PropertyResponse<Tecan.Sila2.StringDto>>(LoggingServiceTypeModel.Instance);
         
         private LoggingServiceSerializers()
         {
@@ -678,7 +678,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// <summary>
         /// Gets the byte serializer for ListenForLogEntriesRequestDto
         /// </summary>
-        public static ByteSerializer<ListenForLogEntriesRequestDto> ListenForLogEntriesRequestDto
+        public static Tecan.Sila2.ByteSerializer<ListenForLogEntriesRequestDto> ListenForLogEntriesRequestDto
         {
             get
             {
@@ -689,7 +689,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// <summary>
         /// Gets the byte serializer for ListenForLogEntriesIntermediateDto
         /// </summary>
-        public static ByteSerializer<ListenForLogEntriesIntermediateDto> ListenForLogEntriesIntermediateDto
+        public static Tecan.Sila2.ByteSerializer<ListenForLogEntriesIntermediateDto> ListenForLogEntriesIntermediateDto
         {
             get
             {
@@ -700,7 +700,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// <summary>
         /// Gets the byte serializer for PropertyResponseOfStringDto
         /// </summary>
-        public static ByteSerializer<PropertyResponse<Tecan.Sila2.StringDto>> PropertyResponseOfStringDto
+        public static Tecan.Sila2.ByteSerializer<PropertyResponse<Tecan.Sila2.StringDto>> PropertyResponseOfStringDto
         {
             get
             {

@@ -529,17 +529,17 @@ namespace Tecan.Sila2.Server.ConnectionConfiguration
     public sealed class ConnectionConfigurationServiceSerializers
     {
         
-        private static ByteSerializer<EnableServerInitiatedConnectionModeRequestDto> _enableServerInitiatedConnectionModeRequestDto = ByteSerializer.Create<EnableServerInitiatedConnectionModeRequestDto>(ConnectionConfigurationServiceTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<EnableServerInitiatedConnectionModeRequestDto> _enableServerInitiatedConnectionModeRequestDto = Tecan.Sila2.ByteSerializer.Create<EnableServerInitiatedConnectionModeRequestDto>(ConnectionConfigurationServiceTypeModel.Instance);
         
-        private static ByteSerializer<DisableServerInitiatedConnectionModeRequestDto> _disableServerInitiatedConnectionModeRequestDto = ByteSerializer.Create<DisableServerInitiatedConnectionModeRequestDto>(ConnectionConfigurationServiceTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<DisableServerInitiatedConnectionModeRequestDto> _disableServerInitiatedConnectionModeRequestDto = Tecan.Sila2.ByteSerializer.Create<DisableServerInitiatedConnectionModeRequestDto>(ConnectionConfigurationServiceTypeModel.Instance);
         
-        private static ByteSerializer<ConnectSiLAClientRequestDto> _connectSiLAClientRequestDto = ByteSerializer.Create<ConnectSiLAClientRequestDto>(ConnectionConfigurationServiceTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<ConnectSiLAClientRequestDto> _connectSiLAClientRequestDto = Tecan.Sila2.ByteSerializer.Create<ConnectSiLAClientRequestDto>(ConnectionConfigurationServiceTypeModel.Instance);
         
-        private static ByteSerializer<DisconnectSiLAClientRequestDto> _disconnectSiLAClientRequestDto = ByteSerializer.Create<DisconnectSiLAClientRequestDto>(ConnectionConfigurationServiceTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<DisconnectSiLAClientRequestDto> _disconnectSiLAClientRequestDto = Tecan.Sila2.ByteSerializer.Create<DisconnectSiLAClientRequestDto>(ConnectionConfigurationServiceTypeModel.Instance);
         
-        private static ByteSerializer<PropertyResponse<Tecan.Sila2.BooleanDto>> _propertyResponseOfBooleanDto = ByteSerializer.Create<PropertyResponse<Tecan.Sila2.BooleanDto>>(ConnectionConfigurationServiceTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<PropertyResponse<Tecan.Sila2.BooleanDto>> _propertyResponseOfBooleanDto = Tecan.Sila2.ByteSerializer.Create<PropertyResponse<Tecan.Sila2.BooleanDto>>(ConnectionConfigurationServiceTypeModel.Instance);
         
-        private static ByteSerializer<PropertyResponse<System.Collections.Generic.List<ConfiguredSiLAClientDto>>> _propertyResponseOfListOfConfiguredSiLAClientDto = ByteSerializer.Create<PropertyResponse<System.Collections.Generic.List<ConfiguredSiLAClientDto>>>(ConnectionConfigurationServiceTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<PropertyResponse<System.Collections.Generic.List<ConfiguredSiLAClientDto>>> _propertyResponseOfListOfConfiguredSiLAClientDto = Tecan.Sila2.ByteSerializer.Create<PropertyResponse<System.Collections.Generic.List<ConfiguredSiLAClientDto>>>(ConnectionConfigurationServiceTypeModel.Instance);
         
         private ConnectionConfigurationServiceSerializers()
         {
@@ -548,7 +548,7 @@ namespace Tecan.Sila2.Server.ConnectionConfiguration
         /// <summary>
         /// Gets the byte serializer for EnableServerInitiatedConnectionModeRequestDto
         /// </summary>
-        public static ByteSerializer<EnableServerInitiatedConnectionModeRequestDto> EnableServerInitiatedConnectionModeRequestDto
+        public static Tecan.Sila2.ByteSerializer<EnableServerInitiatedConnectionModeRequestDto> EnableServerInitiatedConnectionModeRequestDto
         {
             get
             {
@@ -559,7 +559,7 @@ namespace Tecan.Sila2.Server.ConnectionConfiguration
         /// <summary>
         /// Gets the byte serializer for DisableServerInitiatedConnectionModeRequestDto
         /// </summary>
-        public static ByteSerializer<DisableServerInitiatedConnectionModeRequestDto> DisableServerInitiatedConnectionModeRequestDto
+        public static Tecan.Sila2.ByteSerializer<DisableServerInitiatedConnectionModeRequestDto> DisableServerInitiatedConnectionModeRequestDto
         {
             get
             {
@@ -570,7 +570,7 @@ namespace Tecan.Sila2.Server.ConnectionConfiguration
         /// <summary>
         /// Gets the byte serializer for ConnectSiLAClientRequestDto
         /// </summary>
-        public static ByteSerializer<ConnectSiLAClientRequestDto> ConnectSiLAClientRequestDto
+        public static Tecan.Sila2.ByteSerializer<ConnectSiLAClientRequestDto> ConnectSiLAClientRequestDto
         {
             get
             {
@@ -581,7 +581,7 @@ namespace Tecan.Sila2.Server.ConnectionConfiguration
         /// <summary>
         /// Gets the byte serializer for DisconnectSiLAClientRequestDto
         /// </summary>
-        public static ByteSerializer<DisconnectSiLAClientRequestDto> DisconnectSiLAClientRequestDto
+        public static Tecan.Sila2.ByteSerializer<DisconnectSiLAClientRequestDto> DisconnectSiLAClientRequestDto
         {
             get
             {
@@ -592,7 +592,7 @@ namespace Tecan.Sila2.Server.ConnectionConfiguration
         /// <summary>
         /// Gets the byte serializer for PropertyResponseOfBooleanDto
         /// </summary>
-        public static ByteSerializer<PropertyResponse<Tecan.Sila2.BooleanDto>> PropertyResponseOfBooleanDto
+        public static Tecan.Sila2.ByteSerializer<PropertyResponse<Tecan.Sila2.BooleanDto>> PropertyResponseOfBooleanDto
         {
             get
             {
@@ -603,7 +603,7 @@ namespace Tecan.Sila2.Server.ConnectionConfiguration
         /// <summary>
         /// Gets the byte serializer for PropertyResponseOfListOfConfiguredSiLAClientDto
         /// </summary>
-        public static ByteSerializer<PropertyResponse<System.Collections.Generic.List<ConfiguredSiLAClientDto>>> PropertyResponseOfListOfConfiguredSiLAClientDto
+        public static Tecan.Sila2.ByteSerializer<PropertyResponse<System.Collections.Generic.List<ConfiguredSiLAClientDto>>> PropertyResponseOfListOfConfiguredSiLAClientDto
         {
             get
             {

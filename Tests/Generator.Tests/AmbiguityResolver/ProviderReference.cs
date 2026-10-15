@@ -62,7 +62,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         public void Register(IServerBuilder registration)
         {
             registration.RegisterObservableCommand<CheckAmbiguousEntriesRequestDto, AmbiguousClass, CheckAmbiguousEntriesResponseDto>("CheckAmbiguousEntries", CheckAmbiguousEntries, ConvertCheckAmbiguousEntriesResponse, null, AmbiguityResolverServiceSerializers.CheckAmbiguousEntriesRequestDto, AmbiguityResolverServiceSerializers.CheckAmbiguousEntriesResponseDto);
-            registration.RegisterUnobservableCommand<OverloadedMethodRequestDto, EmptyRequest>("OverloadedMethod", OverloadedMethod, AmbiguityResolverServiceSerializers.OverloadedMethodRequestDto, EmptyRequest.Marshaller);
+            registration.RegisterUnobservableCommand<OverloadedMethodRequestDto, EmptyRequest>("OverloadedMethod", OverloadedMethod, AmbiguityResolverServiceSerializers.OverloadedMethodRequestDto, Tecan.Sila2.EmptyRequest.Marshaller);
         }
         
         private CheckAmbiguousEntriesResponseDto ConvertCheckAmbiguousEntriesResponse(AmbiguousClass result)

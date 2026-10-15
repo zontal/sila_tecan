@@ -145,12 +145,12 @@ namespace Tecan.Sila2.Generator.Generators
             {
                 var root = definition.Key;
                 var name = definition.Value;
-                var serializerType = new CodeTypeReference( typeof( ByteSerializer<> ).Name, root );
+                var serializerType = new CodeTypeReference( typeof( ByteSerializer<> ).FullName, root );
                 var field = new CodeMemberField( serializerType, "_" + name.ToCamelCase() )
                 {
                     Attributes = MemberAttributes.Private | MemberAttributes.Static,
                     InitExpression = new CodeMethodInvokeExpression(
-                        new CodeMethodReferenceExpression( new CodeTypeReferenceExpression( nameof( ByteSerializer ) ), nameof( ByteSerializer.Create ), root ),
+                        new CodeMethodReferenceExpression( new CodeTypeReferenceExpression( typeof( ByteSerializer ) ), nameof( ByteSerializer.Create ), root ),
                         modelInstance )
                 };
                 serializers.Members.Add( field );

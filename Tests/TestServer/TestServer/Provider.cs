@@ -112,11 +112,11 @@ namespace Tecan.Sila2.IntegrationTests
             registration.RegisterObservableCommand<RunObservableRequestDto, int, RunObservableResponseDto>("RunObservable", RunObservable, ConvertRunObservableResponse, null, TestServerSerializers.RunObservableRequestDto, TestServerSerializers.RunObservableResponseDto);
             registration.RegisterCommandWithIntermediates<RunIntermediateObservableCommandRequestDto, int, RunIntermediateObservableCommandIntermediateDto>("RunIntermediateObservableCommand", RunIntermediateObservableCommand, ConvertRunIntermediateObservableCommandIntermediate, null, TestServerSerializers.RunIntermediateObservableCommandRequestDto, TestServerSerializers.RunIntermediateObservableCommandIntermediateDto);
             registration.RegisterObservableCommand<WaitForCancelOrThrowRequestDto>("WaitForCancelOrThrow", WaitForCancelOrThrow, ConvertWaitForCancelOrThrowExceptions, TestServerSerializers.WaitForCancelOrThrowRequestDto);
-            registration.RegisterUnobservableCommand<RunIntoFailureRequestDto, EmptyRequest>("RunIntoFailure", RunIntoFailure, TestServerSerializers.RunIntoFailureRequestDto, EmptyRequest.Marshaller);
+            registration.RegisterUnobservableCommand<RunIntoFailureRequestDto, EmptyRequest>("RunIntoFailure", RunIntoFailure, TestServerSerializers.RunIntoFailureRequestDto, Tecan.Sila2.EmptyRequest.Marshaller);
             registration.RegisterObservableCommand<RunIntoFailureObservablyRequestDto>("RunIntoFailureObservably", RunIntoFailureObservably, ConvertRunIntoFailureObservablyExceptions, TestServerSerializers.RunIntoFailureObservablyRequestDto);
             registration.RegisterUnobservableCommand<IsCancelledRequestDto, IsCancelledResponseDto>("IsCancelled", IsCancelled, TestServerSerializers.IsCancelledRequestDto, TestServerSerializers.IsCancelledResponseDto);
-            registration.RegisterUnobservableCommand<ThrowRuntimeExceptionRequestDto, EmptyRequest>("ThrowRuntimeException", ThrowRuntimeException, TestServerSerializers.ThrowRuntimeExceptionRequestDto, EmptyRequest.Marshaller);
-            registration.RegisterUnobservableCommand<SetDummyRequestDto, EmptyRequest>("SetDummy", SetDummy, TestServerSerializers.SetDummyRequestDto, EmptyRequest.Marshaller);
+            registration.RegisterUnobservableCommand<ThrowRuntimeExceptionRequestDto, EmptyRequest>("ThrowRuntimeException", ThrowRuntimeException, TestServerSerializers.ThrowRuntimeExceptionRequestDto, Tecan.Sila2.EmptyRequest.Marshaller);
+            registration.RegisterUnobservableCommand<SetDummyRequestDto, EmptyRequest>("SetDummy", SetDummy, TestServerSerializers.SetDummyRequestDto, Tecan.Sila2.EmptyRequest.Marshaller);
             registration.RegisterObservableProperty("DummyValue", GetDummyValue, _implementation, TestServerSerializers.PropertyResponseOfIntegerDto);
         }
         

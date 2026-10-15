@@ -147,7 +147,7 @@ namespace Tecan.Sila2.Generator.Helper
         {
             if(IsEmptyRequest( dtoType ))
             {
-                return new CodeFieldReferenceExpression( new CodeTypeReferenceExpression( nameof( EmptyRequest ) ), nameof( EmptyRequest.Marshaller ) );
+                return new CodeFieldReferenceExpression( new CodeTypeReferenceExpression( typeof( EmptyRequest ) ), nameof( EmptyRequest.Marshaller ) );
             }
             var key = GetTypeKey( dtoType );
             var serializer = GetSerializers( feature, nameProvider, translationProvider ).FirstOrDefault( s => GetTypeKey( s.Key ) == key );

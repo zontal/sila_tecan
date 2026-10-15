@@ -62,7 +62,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         public void Register(IServerBuilder registration)
         {
             registration.RegisterUnobservableCommand<GetFeatureDefinitionRequestDto, GetFeatureDefinitionResponseDto>("GetFeatureDefinition", GetFeatureDefinition, SiLAServiceSerializers.GetFeatureDefinitionRequestDto, SiLAServiceSerializers.GetFeatureDefinitionResponseDto);
-            registration.RegisterUnobservableCommand<SetServerNameRequestDto, EmptyRequest>("SetServerName", SetServerName, SiLAServiceSerializers.SetServerNameRequestDto, EmptyRequest.Marshaller);
+            registration.RegisterUnobservableCommand<SetServerNameRequestDto, EmptyRequest>("SetServerName", SetServerName, SiLAServiceSerializers.SetServerNameRequestDto, Tecan.Sila2.EmptyRequest.Marshaller);
             registration.RegisterUnobservableProperty("ServerName", GetServerName, SiLAServiceSerializers.PropertyResponseOfStringDto);
             registration.RegisterUnobservableProperty("ServerType", GetServerType, SiLAServiceSerializers.PropertyResponseOfStringDto);
             registration.RegisterUnobservableProperty("ServerUUID", GetServerUUID, SiLAServiceSerializers.ServerUUIDResponseDto);

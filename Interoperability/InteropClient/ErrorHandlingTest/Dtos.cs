@@ -242,15 +242,15 @@ namespace Tecan.Sila2.Interop.Client.ErrorHandlingTest.ErrorHandlingTest
     public sealed class ErrorHandlingTestSerializers
     {
         
-        private static ByteSerializer<RaiseDefinedExecutionErrorRequestDto> _raiseDefinedExecutionErrorRequestDto = ByteSerializer.Create<RaiseDefinedExecutionErrorRequestDto>(ErrorHandlingTestTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<RaiseDefinedExecutionErrorRequestDto> _raiseDefinedExecutionErrorRequestDto = Tecan.Sila2.ByteSerializer.Create<RaiseDefinedExecutionErrorRequestDto>(ErrorHandlingTestTypeModel.Instance);
         
-        private static ByteSerializer<RaiseDefinedExecutionErrorObservablyRequestDto> _raiseDefinedExecutionErrorObservablyRequestDto = ByteSerializer.Create<RaiseDefinedExecutionErrorObservablyRequestDto>(ErrorHandlingTestTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<RaiseDefinedExecutionErrorObservablyRequestDto> _raiseDefinedExecutionErrorObservablyRequestDto = Tecan.Sila2.ByteSerializer.Create<RaiseDefinedExecutionErrorObservablyRequestDto>(ErrorHandlingTestTypeModel.Instance);
         
-        private static ByteSerializer<RaiseUndefinedExecutionErrorRequestDto> _raiseUndefinedExecutionErrorRequestDto = ByteSerializer.Create<RaiseUndefinedExecutionErrorRequestDto>(ErrorHandlingTestTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<RaiseUndefinedExecutionErrorRequestDto> _raiseUndefinedExecutionErrorRequestDto = Tecan.Sila2.ByteSerializer.Create<RaiseUndefinedExecutionErrorRequestDto>(ErrorHandlingTestTypeModel.Instance);
         
-        private static ByteSerializer<RaiseUndefinedExecutionErrorObservablyRequestDto> _raiseUndefinedExecutionErrorObservablyRequestDto = ByteSerializer.Create<RaiseUndefinedExecutionErrorObservablyRequestDto>(ErrorHandlingTestTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<RaiseUndefinedExecutionErrorObservablyRequestDto> _raiseUndefinedExecutionErrorObservablyRequestDto = Tecan.Sila2.ByteSerializer.Create<RaiseUndefinedExecutionErrorObservablyRequestDto>(ErrorHandlingTestTypeModel.Instance);
         
-        private static ByteSerializer<PropertyResponse<Tecan.Sila2.IntegerDto>> _propertyResponseOfIntegerDto = ByteSerializer.Create<PropertyResponse<Tecan.Sila2.IntegerDto>>(ErrorHandlingTestTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<PropertyResponse<Tecan.Sila2.IntegerDto>> _propertyResponseOfIntegerDto = Tecan.Sila2.ByteSerializer.Create<PropertyResponse<Tecan.Sila2.IntegerDto>>(ErrorHandlingTestTypeModel.Instance);
         
         private ErrorHandlingTestSerializers()
         {
@@ -259,7 +259,7 @@ namespace Tecan.Sila2.Interop.Client.ErrorHandlingTest.ErrorHandlingTest
         /// <summary>
         /// Gets the byte serializer for RaiseDefinedExecutionErrorRequestDto
         /// </summary>
-        public static ByteSerializer<RaiseDefinedExecutionErrorRequestDto> RaiseDefinedExecutionErrorRequestDto
+        public static Tecan.Sila2.ByteSerializer<RaiseDefinedExecutionErrorRequestDto> RaiseDefinedExecutionErrorRequestDto
         {
             get
             {
@@ -270,7 +270,7 @@ namespace Tecan.Sila2.Interop.Client.ErrorHandlingTest.ErrorHandlingTest
         /// <summary>
         /// Gets the byte serializer for RaiseDefinedExecutionErrorObservablyRequestDto
         /// </summary>
-        public static ByteSerializer<RaiseDefinedExecutionErrorObservablyRequestDto> RaiseDefinedExecutionErrorObservablyRequestDto
+        public static Tecan.Sila2.ByteSerializer<RaiseDefinedExecutionErrorObservablyRequestDto> RaiseDefinedExecutionErrorObservablyRequestDto
         {
             get
             {
@@ -281,7 +281,7 @@ namespace Tecan.Sila2.Interop.Client.ErrorHandlingTest.ErrorHandlingTest
         /// <summary>
         /// Gets the byte serializer for RaiseUndefinedExecutionErrorRequestDto
         /// </summary>
-        public static ByteSerializer<RaiseUndefinedExecutionErrorRequestDto> RaiseUndefinedExecutionErrorRequestDto
+        public static Tecan.Sila2.ByteSerializer<RaiseUndefinedExecutionErrorRequestDto> RaiseUndefinedExecutionErrorRequestDto
         {
             get
             {
@@ -292,7 +292,7 @@ namespace Tecan.Sila2.Interop.Client.ErrorHandlingTest.ErrorHandlingTest
         /// <summary>
         /// Gets the byte serializer for RaiseUndefinedExecutionErrorObservablyRequestDto
         /// </summary>
-        public static ByteSerializer<RaiseUndefinedExecutionErrorObservablyRequestDto> RaiseUndefinedExecutionErrorObservablyRequestDto
+        public static Tecan.Sila2.ByteSerializer<RaiseUndefinedExecutionErrorObservablyRequestDto> RaiseUndefinedExecutionErrorObservablyRequestDto
         {
             get
             {
@@ -303,7 +303,7 @@ namespace Tecan.Sila2.Interop.Client.ErrorHandlingTest.ErrorHandlingTest
         /// <summary>
         /// Gets the byte serializer for PropertyResponseOfIntegerDto
         /// </summary>
-        public static ByteSerializer<PropertyResponse<Tecan.Sila2.IntegerDto>> PropertyResponseOfIntegerDto
+        public static Tecan.Sila2.ByteSerializer<PropertyResponse<Tecan.Sila2.IntegerDto>> PropertyResponseOfIntegerDto
         {
             get
             {

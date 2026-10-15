@@ -51,7 +51,7 @@ namespace Tecan.Sila2.Generator.Test
   </DataTypeDefinition>
 </Feature>";
 
-        // data types named like the generated model and serializers classes
+        // data types named like the generated model and serializers classes and like the SDK type used by the generated code
         private const string ShadowingFeature = @"<?xml version=""1.0"" encoding=""utf-8""?>
 <Feature xmlns:xsd=""http://www.w3.org/2001/XMLSchema"" xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" SiLA2Version=""1.0"" FeatureVersion=""1.0"" Originator=""tecan.sila.generator.test"" Category=""test"" xmlns=""http://www.sila-standard.org"">
   <Identifier>Foo</Identifier>
@@ -87,6 +87,23 @@ namespace Tecan.Sila2.Generator.Test
           <Description />
           <DataType>
             <Basic>String</Basic>
+          </DataType>
+        </Element>
+      </Structure>
+    </DataType>
+  </DataTypeDefinition>
+  <DataTypeDefinition>
+    <Identifier>ByteSerializer</Identifier>
+    <DisplayName>Byte Serializer</DisplayName>
+    <Description />
+    <DataType>
+      <Structure>
+        <Element>
+          <Identifier>Data</Identifier>
+          <DisplayName>Data</DisplayName>
+          <Description />
+          <DataType>
+            <Basic>Binary</Basic>
           </DataType>
         </Element>
       </Structure>
@@ -146,7 +163,9 @@ namespace Tecan.Sila2.Generator.Test
             Assert.That( interfaceCode, Does.Contain( "class FooTypeModel" ) );
             Assert.That( dtoCode, Does.Contain( "partial class FooTypeModel2 : ProtoBuf.Meta.TypeModel" ) );
             Assert.That( dtoCode, Does.Contain( "class FooSerializers2" ) );
-            Assert.That( dtoCode, Does.Contain( "ByteSerializer.Create<PropertyResponse<FooTypeModelDto>>(FooTypeModel2.Instance)" ) );
+            Assert.That( dtoCode, Does.Contain( "Tecan.Sila2.ByteSerializer.Create<PropertyResponse<FooTypeModelDto>>(FooTypeModel2.Instance)" ) );
+            Assert.That( interfaceCode, Does.Contain( "class ByteSerializer" ) );
+            Assert.That( dtoCode, Does.Not.Match( @"(?<![\w.])ByteSerializer[<.]" ) );
             Assert.That( providerCode, Does.Contain( "FooSerializers2.PropertyResponseOfFooTypeModelDto" ) );
             Assert.That( clientCode, Does.Contain( "FooSerializers2.PropertyResponseOfFooTypeModelDto" ) );
         }
@@ -161,8 +180,8 @@ namespace Tecan.Sila2.Generator.Test
 
             Assert.That( dtoCode, Does.Contain( "ProtoSerializableAttribute(typeof(PropertyResponse<System.Collections.Generic.List<Tecan.Sila2.StringDto>>))" ) );
             Assert.That( dtoCode, Does.Contain( "ProtoSerializableAttribute(typeof(PropertyResponse<ListOfStringDto>))" ) );
-            Assert.That( dtoCode, Does.Contain( "public static ByteSerializer<PropertyResponse<System.Collections.Generic.List<Tecan.Sila2.StringDto>>> PropertyResponseOfListOfStringDto" ) );
-            Assert.That( dtoCode, Does.Contain( "public static ByteSerializer<PropertyResponse<ListOfStringDto>> PropertyResponseOfListOfStringDto2" ) );
+            Assert.That( dtoCode, Does.Contain( "public static Tecan.Sila2.ByteSerializer<PropertyResponse<System.Collections.Generic.List<Tecan.Sila2.StringDto>>> PropertyResponseOfListOfStringDto" ) );
+            Assert.That( dtoCode, Does.Contain( "public static Tecan.Sila2.ByteSerializer<PropertyResponse<ListOfStringDto>> PropertyResponseOfListOfStringDto2" ) );
             Assert.That( providerCode, Does.Contain( "\"Names\", GetNames, CollisionServiceSerializers.PropertyResponseOfListOfStringDto)" ) );
             Assert.That( providerCode, Does.Contain( "\"Aliases\", GetAliases, _implementation, CollisionServiceSerializers.PropertyResponseOfListOfStringDto2)" ) );
             Assert.That( clientCode, Does.Contain( "callInfo, CollisionServiceSerializers.PropertyResponseOfListOfStringDto)" ) );

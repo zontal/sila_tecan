@@ -102,7 +102,7 @@ namespace Tecan.Sila2.ParameterDefaultsProvider.Tests
     public sealed class ExampleSetProviderServiceSerializers
     {
         
-        private static ByteSerializer<ExampleMethodRequestDto> _exampleMethodRequestDto = ByteSerializer.Create<ExampleMethodRequestDto>(ExampleSetProviderServiceTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<ExampleMethodRequestDto> _exampleMethodRequestDto = Tecan.Sila2.ByteSerializer.Create<ExampleMethodRequestDto>(ExampleSetProviderServiceTypeModel.Instance);
         
         private ExampleSetProviderServiceSerializers()
         {
@@ -111,7 +111,7 @@ namespace Tecan.Sila2.ParameterDefaultsProvider.Tests
         /// <summary>
         /// Gets the byte serializer for ExampleMethodRequestDto
         /// </summary>
-        public static ByteSerializer<ExampleMethodRequestDto> ExampleMethodRequestDto
+        public static Tecan.Sila2.ByteSerializer<ExampleMethodRequestDto> ExampleMethodRequestDto
         {
             get
             {

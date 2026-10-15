@@ -125,9 +125,9 @@ namespace Tecan.Sila2.Interop.Client.MetadataProvider.MetadataProvider
     public sealed class MetadataProviderSerializers
     {
         
-        private static ByteSerializer<PropertyResponse<Tecan.Sila2.StringDto>> _propertyResponseOfStringDto = ByteSerializer.Create<PropertyResponse<Tecan.Sila2.StringDto>>(MetadataProviderTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<PropertyResponse<Tecan.Sila2.StringDto>> _propertyResponseOfStringDto = Tecan.Sila2.ByteSerializer.Create<PropertyResponse<Tecan.Sila2.StringDto>>(MetadataProviderTypeModel.Instance);
         
-        private static ByteSerializer<PropertyResponse<TwoIntegersMetadataDto>> _propertyResponseOfTwoIntegersMetadataDto = ByteSerializer.Create<PropertyResponse<TwoIntegersMetadataDto>>(MetadataProviderTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<PropertyResponse<TwoIntegersMetadataDto>> _propertyResponseOfTwoIntegersMetadataDto = Tecan.Sila2.ByteSerializer.Create<PropertyResponse<TwoIntegersMetadataDto>>(MetadataProviderTypeModel.Instance);
         
         private MetadataProviderSerializers()
         {
@@ -136,7 +136,7 @@ namespace Tecan.Sila2.Interop.Client.MetadataProvider.MetadataProvider
         /// <summary>
         /// Gets the byte serializer for PropertyResponseOfStringDto
         /// </summary>
-        public static ByteSerializer<PropertyResponse<Tecan.Sila2.StringDto>> PropertyResponseOfStringDto
+        public static Tecan.Sila2.ByteSerializer<PropertyResponse<Tecan.Sila2.StringDto>> PropertyResponseOfStringDto
         {
             get
             {
@@ -147,7 +147,7 @@ namespace Tecan.Sila2.Interop.Client.MetadataProvider.MetadataProvider
         /// <summary>
         /// Gets the byte serializer for PropertyResponseOfTwoIntegersMetadataDto
         /// </summary>
-        public static ByteSerializer<PropertyResponse<TwoIntegersMetadataDto>> PropertyResponseOfTwoIntegersMetadataDto
+        public static Tecan.Sila2.ByteSerializer<PropertyResponse<TwoIntegersMetadataDto>> PropertyResponseOfTwoIntegersMetadataDto
         {
             get
             {

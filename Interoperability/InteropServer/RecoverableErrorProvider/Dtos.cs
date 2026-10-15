@@ -204,9 +204,9 @@ namespace Tecan.Sila2.Interop.Server.RecoverableErrorProvider
     public sealed class RecoverableErrorProviderSerializers
     {
         
-        private static ByteSerializer<RaiseRecoverableErrorRequestDto> _raiseRecoverableErrorRequestDto = ByteSerializer.Create<RaiseRecoverableErrorRequestDto>(RecoverableErrorProviderTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<RaiseRecoverableErrorRequestDto> _raiseRecoverableErrorRequestDto = Tecan.Sila2.ByteSerializer.Create<RaiseRecoverableErrorRequestDto>(RecoverableErrorProviderTypeModel.Instance);
         
-        private static ByteSerializer<RaiseRecoverableErrorResponseDto> _raiseRecoverableErrorResponseDto = ByteSerializer.Create<RaiseRecoverableErrorResponseDto>(RecoverableErrorProviderTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<RaiseRecoverableErrorResponseDto> _raiseRecoverableErrorResponseDto = Tecan.Sila2.ByteSerializer.Create<RaiseRecoverableErrorResponseDto>(RecoverableErrorProviderTypeModel.Instance);
         
         private RecoverableErrorProviderSerializers()
         {
@@ -215,7 +215,7 @@ namespace Tecan.Sila2.Interop.Server.RecoverableErrorProvider
         /// <summary>
         /// Gets the byte serializer for RaiseRecoverableErrorRequestDto
         /// </summary>
-        public static ByteSerializer<RaiseRecoverableErrorRequestDto> RaiseRecoverableErrorRequestDto
+        public static Tecan.Sila2.ByteSerializer<RaiseRecoverableErrorRequestDto> RaiseRecoverableErrorRequestDto
         {
             get
             {
@@ -226,7 +226,7 @@ namespace Tecan.Sila2.Interop.Server.RecoverableErrorProvider
         /// <summary>
         /// Gets the byte serializer for RaiseRecoverableErrorResponseDto
         /// </summary>
-        public static ByteSerializer<RaiseRecoverableErrorResponseDto> RaiseRecoverableErrorResponseDto
+        public static Tecan.Sila2.ByteSerializer<RaiseRecoverableErrorResponseDto> RaiseRecoverableErrorResponseDto
         {
             get
             {

@@ -236,9 +236,9 @@ namespace Tecan.Sila2.Authorization.AuthorizationProviderService
     public sealed class AuthorizationProviderServiceSerializers
     {
         
-        private static ByteSerializer<VerifyRequestDto> _verifyRequestDto = ByteSerializer.Create<VerifyRequestDto>(AuthorizationProviderServiceTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<VerifyRequestDto> _verifyRequestDto = Tecan.Sila2.ByteSerializer.Create<VerifyRequestDto>(AuthorizationProviderServiceTypeModel.Instance);
         
-        private static ByteSerializer<VerifyResponseDto> _verifyResponseDto = ByteSerializer.Create<VerifyResponseDto>(AuthorizationProviderServiceTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<VerifyResponseDto> _verifyResponseDto = Tecan.Sila2.ByteSerializer.Create<VerifyResponseDto>(AuthorizationProviderServiceTypeModel.Instance);
         
         private AuthorizationProviderServiceSerializers()
         {
@@ -247,7 +247,7 @@ namespace Tecan.Sila2.Authorization.AuthorizationProviderService
         /// <summary>
         /// Gets the byte serializer for VerifyRequestDto
         /// </summary>
-        public static ByteSerializer<VerifyRequestDto> VerifyRequestDto
+        public static Tecan.Sila2.ByteSerializer<VerifyRequestDto> VerifyRequestDto
         {
             get
             {
@@ -258,7 +258,7 @@ namespace Tecan.Sila2.Authorization.AuthorizationProviderService
         /// <summary>
         /// Gets the byte serializer for VerifyResponseDto
         /// </summary>
-        public static ByteSerializer<VerifyResponseDto> VerifyResponseDto
+        public static Tecan.Sila2.ByteSerializer<VerifyResponseDto> VerifyResponseDto
         {
             get
             {

@@ -140,9 +140,9 @@ namespace Tecan.Sila2.Generator.Test.TestReference
     public sealed class RxServiceSerializers
     {
         
-        private static ByteSerializer<RunRxObservableRequestDto> _runRxObservableRequestDto = ByteSerializer.Create<RunRxObservableRequestDto>(RxServiceTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<RunRxObservableRequestDto> _runRxObservableRequestDto = Tecan.Sila2.ByteSerializer.Create<RunRxObservableRequestDto>(RxServiceTypeModel.Instance);
         
-        private static ByteSerializer<RunRxObservableIntermediateDto> _runRxObservableIntermediateDto = ByteSerializer.Create<RunRxObservableIntermediateDto>(RxServiceTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<RunRxObservableIntermediateDto> _runRxObservableIntermediateDto = Tecan.Sila2.ByteSerializer.Create<RunRxObservableIntermediateDto>(RxServiceTypeModel.Instance);
         
         private RxServiceSerializers()
         {
@@ -151,7 +151,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// <summary>
         /// Gets the byte serializer for RunRxObservableRequestDto
         /// </summary>
-        public static ByteSerializer<RunRxObservableRequestDto> RunRxObservableRequestDto
+        public static Tecan.Sila2.ByteSerializer<RunRxObservableRequestDto> RunRxObservableRequestDto
         {
             get
             {
@@ -162,7 +162,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// <summary>
         /// Gets the byte serializer for RunRxObservableIntermediateDto
         /// </summary>
-        public static ByteSerializer<RunRxObservableIntermediateDto> RunRxObservableIntermediateDto
+        public static Tecan.Sila2.ByteSerializer<RunRxObservableIntermediateDto> RunRxObservableIntermediateDto
         {
             get
             {

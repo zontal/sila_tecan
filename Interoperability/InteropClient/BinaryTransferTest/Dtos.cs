@@ -528,23 +528,23 @@ namespace Tecan.Sila2.Interop.Client.BinaryTransferTest.BinaryTransferTest
     public sealed class BinaryTransferTestSerializers
     {
         
-        private static ByteSerializer<EchoBinaryValueRequestDto> _echoBinaryValueRequestDto = ByteSerializer.Create<EchoBinaryValueRequestDto>(BinaryTransferTestTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<EchoBinaryValueRequestDto> _echoBinaryValueRequestDto = Tecan.Sila2.ByteSerializer.Create<EchoBinaryValueRequestDto>(BinaryTransferTestTypeModel.Instance);
         
-        private static ByteSerializer<EchoBinaryValueResponseDto> _echoBinaryValueResponseDto = ByteSerializer.Create<EchoBinaryValueResponseDto>(BinaryTransferTestTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<EchoBinaryValueResponseDto> _echoBinaryValueResponseDto = Tecan.Sila2.ByteSerializer.Create<EchoBinaryValueResponseDto>(BinaryTransferTestTypeModel.Instance);
         
-        private static ByteSerializer<EchoBinariesObservablyRequestDto> _echoBinariesObservablyRequestDto = ByteSerializer.Create<EchoBinariesObservablyRequestDto>(BinaryTransferTestTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<EchoBinariesObservablyRequestDto> _echoBinariesObservablyRequestDto = Tecan.Sila2.ByteSerializer.Create<EchoBinariesObservablyRequestDto>(BinaryTransferTestTypeModel.Instance);
         
-        private static ByteSerializer<EchoBinariesObservablyIntermediateDto> _echoBinariesObservablyIntermediateDto = ByteSerializer.Create<EchoBinariesObservablyIntermediateDto>(BinaryTransferTestTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<EchoBinariesObservablyIntermediateDto> _echoBinariesObservablyIntermediateDto = Tecan.Sila2.ByteSerializer.Create<EchoBinariesObservablyIntermediateDto>(BinaryTransferTestTypeModel.Instance);
         
-        private static ByteSerializer<EchoBinariesObservablyResponseDto> _echoBinariesObservablyResponseDto = ByteSerializer.Create<EchoBinariesObservablyResponseDto>(BinaryTransferTestTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<EchoBinariesObservablyResponseDto> _echoBinariesObservablyResponseDto = Tecan.Sila2.ByteSerializer.Create<EchoBinariesObservablyResponseDto>(BinaryTransferTestTypeModel.Instance);
         
-        private static ByteSerializer<EchoBinaryAndMetadataStringRequestDto> _echoBinaryAndMetadataStringRequestDto = ByteSerializer.Create<EchoBinaryAndMetadataStringRequestDto>(BinaryTransferTestTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<EchoBinaryAndMetadataStringRequestDto> _echoBinaryAndMetadataStringRequestDto = Tecan.Sila2.ByteSerializer.Create<EchoBinaryAndMetadataStringRequestDto>(BinaryTransferTestTypeModel.Instance);
         
-        private static ByteSerializer<EchoBinaryAndMetadataStringResponseDto> _echoBinaryAndMetadataStringResponseDto = ByteSerializer.Create<EchoBinaryAndMetadataStringResponseDto>(BinaryTransferTestTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<EchoBinaryAndMetadataStringResponseDto> _echoBinaryAndMetadataStringResponseDto = Tecan.Sila2.ByteSerializer.Create<EchoBinaryAndMetadataStringResponseDto>(BinaryTransferTestTypeModel.Instance);
         
-        private static ByteSerializer<PropertyResponse<Tecan.Sila2.BinaryDto>> _propertyResponseOfBinaryDto = ByteSerializer.Create<PropertyResponse<Tecan.Sila2.BinaryDto>>(BinaryTransferTestTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<PropertyResponse<Tecan.Sila2.BinaryDto>> _propertyResponseOfBinaryDto = Tecan.Sila2.ByteSerializer.Create<PropertyResponse<Tecan.Sila2.BinaryDto>>(BinaryTransferTestTypeModel.Instance);
         
-        private static ByteSerializer<PropertyResponse<Tecan.Sila2.StringDto>> _propertyResponseOfStringDto = ByteSerializer.Create<PropertyResponse<Tecan.Sila2.StringDto>>(BinaryTransferTestTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<PropertyResponse<Tecan.Sila2.StringDto>> _propertyResponseOfStringDto = Tecan.Sila2.ByteSerializer.Create<PropertyResponse<Tecan.Sila2.StringDto>>(BinaryTransferTestTypeModel.Instance);
         
         private BinaryTransferTestSerializers()
         {
@@ -553,7 +553,7 @@ namespace Tecan.Sila2.Interop.Client.BinaryTransferTest.BinaryTransferTest
         /// <summary>
         /// Gets the byte serializer for EchoBinaryValueRequestDto
         /// </summary>
-        public static ByteSerializer<EchoBinaryValueRequestDto> EchoBinaryValueRequestDto
+        public static Tecan.Sila2.ByteSerializer<EchoBinaryValueRequestDto> EchoBinaryValueRequestDto
         {
             get
             {
@@ -564,7 +564,7 @@ namespace Tecan.Sila2.Interop.Client.BinaryTransferTest.BinaryTransferTest
         /// <summary>
         /// Gets the byte serializer for EchoBinaryValueResponseDto
         /// </summary>
-        public static ByteSerializer<EchoBinaryValueResponseDto> EchoBinaryValueResponseDto
+        public static Tecan.Sila2.ByteSerializer<EchoBinaryValueResponseDto> EchoBinaryValueResponseDto
         {
             get
             {
@@ -575,7 +575,7 @@ namespace Tecan.Sila2.Interop.Client.BinaryTransferTest.BinaryTransferTest
         /// <summary>
         /// Gets the byte serializer for EchoBinariesObservablyRequestDto
         /// </summary>
-        public static ByteSerializer<EchoBinariesObservablyRequestDto> EchoBinariesObservablyRequestDto
+        public static Tecan.Sila2.ByteSerializer<EchoBinariesObservablyRequestDto> EchoBinariesObservablyRequestDto
         {
             get
             {
@@ -586,7 +586,7 @@ namespace Tecan.Sila2.Interop.Client.BinaryTransferTest.BinaryTransferTest
         /// <summary>
         /// Gets the byte serializer for EchoBinariesObservablyIntermediateDto
         /// </summary>
-        public static ByteSerializer<EchoBinariesObservablyIntermediateDto> EchoBinariesObservablyIntermediateDto
+        public static Tecan.Sila2.ByteSerializer<EchoBinariesObservablyIntermediateDto> EchoBinariesObservablyIntermediateDto
         {
             get
             {
@@ -597,7 +597,7 @@ namespace Tecan.Sila2.Interop.Client.BinaryTransferTest.BinaryTransferTest
         /// <summary>
         /// Gets the byte serializer for EchoBinariesObservablyResponseDto
         /// </summary>
-        public static ByteSerializer<EchoBinariesObservablyResponseDto> EchoBinariesObservablyResponseDto
+        public static Tecan.Sila2.ByteSerializer<EchoBinariesObservablyResponseDto> EchoBinariesObservablyResponseDto
         {
             get
             {
@@ -608,7 +608,7 @@ namespace Tecan.Sila2.Interop.Client.BinaryTransferTest.BinaryTransferTest
         /// <summary>
         /// Gets the byte serializer for EchoBinaryAndMetadataStringRequestDto
         /// </summary>
-        public static ByteSerializer<EchoBinaryAndMetadataStringRequestDto> EchoBinaryAndMetadataStringRequestDto
+        public static Tecan.Sila2.ByteSerializer<EchoBinaryAndMetadataStringRequestDto> EchoBinaryAndMetadataStringRequestDto
         {
             get
             {
@@ -619,7 +619,7 @@ namespace Tecan.Sila2.Interop.Client.BinaryTransferTest.BinaryTransferTest
         /// <summary>
         /// Gets the byte serializer for EchoBinaryAndMetadataStringResponseDto
         /// </summary>
-        public static ByteSerializer<EchoBinaryAndMetadataStringResponseDto> EchoBinaryAndMetadataStringResponseDto
+        public static Tecan.Sila2.ByteSerializer<EchoBinaryAndMetadataStringResponseDto> EchoBinaryAndMetadataStringResponseDto
         {
             get
             {
@@ -630,7 +630,7 @@ namespace Tecan.Sila2.Interop.Client.BinaryTransferTest.BinaryTransferTest
         /// <summary>
         /// Gets the byte serializer for PropertyResponseOfBinaryDto
         /// </summary>
-        public static ByteSerializer<PropertyResponse<Tecan.Sila2.BinaryDto>> PropertyResponseOfBinaryDto
+        public static Tecan.Sila2.ByteSerializer<PropertyResponse<Tecan.Sila2.BinaryDto>> PropertyResponseOfBinaryDto
         {
             get
             {
@@ -641,7 +641,7 @@ namespace Tecan.Sila2.Interop.Client.BinaryTransferTest.BinaryTransferTest
         /// <summary>
         /// Gets the byte serializer for PropertyResponseOfStringDto
         /// </summary>
-        public static ByteSerializer<PropertyResponse<Tecan.Sila2.StringDto>> PropertyResponseOfStringDto
+        public static Tecan.Sila2.ByteSerializer<PropertyResponse<Tecan.Sila2.StringDto>> PropertyResponseOfStringDto
         {
             get
             {

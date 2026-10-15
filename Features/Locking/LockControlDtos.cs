@@ -209,13 +209,13 @@ namespace Tecan.Sila2.Locking
     public sealed class LockControllerSerializers
     {
         
-        private static ByteSerializer<LockServerRequestDto> _lockServerRequestDto = ByteSerializer.Create<LockServerRequestDto>(LockControllerTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<LockServerRequestDto> _lockServerRequestDto = Tecan.Sila2.ByteSerializer.Create<LockServerRequestDto>(LockControllerTypeModel.Instance);
         
-        private static ByteSerializer<UnlockServerRequestDto> _unlockServerRequestDto = ByteSerializer.Create<UnlockServerRequestDto>(LockControllerTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<UnlockServerRequestDto> _unlockServerRequestDto = Tecan.Sila2.ByteSerializer.Create<UnlockServerRequestDto>(LockControllerTypeModel.Instance);
         
-        private static ByteSerializer<PropertyResponse<Tecan.Sila2.BooleanDto>> _propertyResponseOfBooleanDto = ByteSerializer.Create<PropertyResponse<Tecan.Sila2.BooleanDto>>(LockControllerTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<PropertyResponse<Tecan.Sila2.BooleanDto>> _propertyResponseOfBooleanDto = Tecan.Sila2.ByteSerializer.Create<PropertyResponse<Tecan.Sila2.BooleanDto>>(LockControllerTypeModel.Instance);
         
-        private static ByteSerializer<PropertyResponse<Tecan.Sila2.StringDto>> _propertyResponseOfStringDto = ByteSerializer.Create<PropertyResponse<Tecan.Sila2.StringDto>>(LockControllerTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<PropertyResponse<Tecan.Sila2.StringDto>> _propertyResponseOfStringDto = Tecan.Sila2.ByteSerializer.Create<PropertyResponse<Tecan.Sila2.StringDto>>(LockControllerTypeModel.Instance);
         
         private LockControllerSerializers()
         {
@@ -224,7 +224,7 @@ namespace Tecan.Sila2.Locking
         /// <summary>
         /// Gets the byte serializer for LockServerRequestDto
         /// </summary>
-        public static ByteSerializer<LockServerRequestDto> LockServerRequestDto
+        public static Tecan.Sila2.ByteSerializer<LockServerRequestDto> LockServerRequestDto
         {
             get
             {
@@ -235,7 +235,7 @@ namespace Tecan.Sila2.Locking
         /// <summary>
         /// Gets the byte serializer for UnlockServerRequestDto
         /// </summary>
-        public static ByteSerializer<UnlockServerRequestDto> UnlockServerRequestDto
+        public static Tecan.Sila2.ByteSerializer<UnlockServerRequestDto> UnlockServerRequestDto
         {
             get
             {
@@ -246,7 +246,7 @@ namespace Tecan.Sila2.Locking
         /// <summary>
         /// Gets the byte serializer for PropertyResponseOfBooleanDto
         /// </summary>
-        public static ByteSerializer<PropertyResponse<Tecan.Sila2.BooleanDto>> PropertyResponseOfBooleanDto
+        public static Tecan.Sila2.ByteSerializer<PropertyResponse<Tecan.Sila2.BooleanDto>> PropertyResponseOfBooleanDto
         {
             get
             {
@@ -257,7 +257,7 @@ namespace Tecan.Sila2.Locking
         /// <summary>
         /// Gets the byte serializer for PropertyResponseOfStringDto
         /// </summary>
-        public static ByteSerializer<PropertyResponse<Tecan.Sila2.StringDto>> PropertyResponseOfStringDto
+        public static Tecan.Sila2.ByteSerializer<PropertyResponse<Tecan.Sila2.StringDto>> PropertyResponseOfStringDto
         {
             get
             {

@@ -104,7 +104,7 @@ namespace Tecan.Sila2.Interop.Server.CancellationTest
     public sealed class CancellationTestSerializers
     {
         
-        private static ByteSerializer<WaitForCancelRequestDto> _waitForCancelRequestDto = ByteSerializer.Create<WaitForCancelRequestDto>(CancellationTestTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<WaitForCancelRequestDto> _waitForCancelRequestDto = Tecan.Sila2.ByteSerializer.Create<WaitForCancelRequestDto>(CancellationTestTypeModel.Instance);
         
         private CancellationTestSerializers()
         {
@@ -113,7 +113,7 @@ namespace Tecan.Sila2.Interop.Server.CancellationTest
         /// <summary>
         /// Gets the byte serializer for WaitForCancelRequestDto
         /// </summary>
-        public static ByteSerializer<WaitForCancelRequestDto> WaitForCancelRequestDto
+        public static Tecan.Sila2.ByteSerializer<WaitForCancelRequestDto> WaitForCancelRequestDto
         {
             get
             {

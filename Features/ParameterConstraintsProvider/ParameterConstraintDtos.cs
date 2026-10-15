@@ -129,7 +129,7 @@ namespace Tecan.Sila2.ParameterConstraintsProvider
     public sealed class ParameterConstraintsProviderSerializers
     {
         
-        private static ByteSerializer<PropertyResponse<System.Collections.Generic.List<ParametersConstraintDto>>> _propertyResponseOfListOfParametersConstraintDto = ByteSerializer.Create<PropertyResponse<System.Collections.Generic.List<ParametersConstraintDto>>>(ParameterConstraintsProviderTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<PropertyResponse<System.Collections.Generic.List<ParametersConstraintDto>>> _propertyResponseOfListOfParametersConstraintDto = Tecan.Sila2.ByteSerializer.Create<PropertyResponse<System.Collections.Generic.List<ParametersConstraintDto>>>(ParameterConstraintsProviderTypeModel.Instance);
         
         private ParameterConstraintsProviderSerializers()
         {
@@ -138,7 +138,7 @@ namespace Tecan.Sila2.ParameterConstraintsProvider
         /// <summary>
         /// Gets the byte serializer for PropertyResponseOfListOfParametersConstraintDto
         /// </summary>
-        public static ByteSerializer<PropertyResponse<System.Collections.Generic.List<ParametersConstraintDto>>> PropertyResponseOfListOfParametersConstraintDto
+        public static Tecan.Sila2.ByteSerializer<PropertyResponse<System.Collections.Generic.List<ParametersConstraintDto>>> PropertyResponseOfListOfParametersConstraintDto
         {
             get
             {

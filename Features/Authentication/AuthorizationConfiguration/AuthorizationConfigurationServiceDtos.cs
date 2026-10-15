@@ -203,9 +203,9 @@ namespace Tecan.Sila2.Authorization
     public sealed class AuthorizationConfigurationServiceSerializers
     {
         
-        private static ByteSerializer<SetAuthorizationProviderRequestDto> _setAuthorizationProviderRequestDto = ByteSerializer.Create<SetAuthorizationProviderRequestDto>(AuthorizationConfigurationServiceTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<SetAuthorizationProviderRequestDto> _setAuthorizationProviderRequestDto = Tecan.Sila2.ByteSerializer.Create<SetAuthorizationProviderRequestDto>(AuthorizationConfigurationServiceTypeModel.Instance);
         
-        private static ByteSerializer<AuthorizationProviderResponseDto> _authorizationProviderResponseDto = ByteSerializer.Create<AuthorizationProviderResponseDto>(AuthorizationConfigurationServiceTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<AuthorizationProviderResponseDto> _authorizationProviderResponseDto = Tecan.Sila2.ByteSerializer.Create<AuthorizationProviderResponseDto>(AuthorizationConfigurationServiceTypeModel.Instance);
         
         private AuthorizationConfigurationServiceSerializers()
         {
@@ -214,7 +214,7 @@ namespace Tecan.Sila2.Authorization
         /// <summary>
         /// Gets the byte serializer for SetAuthorizationProviderRequestDto
         /// </summary>
-        public static ByteSerializer<SetAuthorizationProviderRequestDto> SetAuthorizationProviderRequestDto
+        public static Tecan.Sila2.ByteSerializer<SetAuthorizationProviderRequestDto> SetAuthorizationProviderRequestDto
         {
             get
             {
@@ -225,7 +225,7 @@ namespace Tecan.Sila2.Authorization
         /// <summary>
         /// Gets the byte serializer for AuthorizationProviderResponseDto
         /// </summary>
-        public static ByteSerializer<AuthorizationProviderResponseDto> AuthorizationProviderResponseDto
+        public static Tecan.Sila2.ByteSerializer<AuthorizationProviderResponseDto> AuthorizationProviderResponseDto
         {
             get
             {

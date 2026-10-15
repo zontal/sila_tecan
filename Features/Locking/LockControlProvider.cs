@@ -61,8 +61,8 @@ namespace Tecan.Sila2.Locking
         /// <param name="registration">The registration component to which the feature should be registered</param>
         public void Register(IServerBuilder registration)
         {
-            registration.RegisterUnobservableCommand<LockServerRequestDto, EmptyRequest>("LockServer", LockServer, LockControllerSerializers.LockServerRequestDto, EmptyRequest.Marshaller);
-            registration.RegisterUnobservableCommand<UnlockServerRequestDto, EmptyRequest>("UnlockServer", UnlockServer, LockControllerSerializers.UnlockServerRequestDto, EmptyRequest.Marshaller);
+            registration.RegisterUnobservableCommand<LockServerRequestDto, EmptyRequest>("LockServer", LockServer, LockControllerSerializers.LockServerRequestDto, Tecan.Sila2.EmptyRequest.Marshaller);
+            registration.RegisterUnobservableCommand<UnlockServerRequestDto, EmptyRequest>("UnlockServer", UnlockServer, LockControllerSerializers.UnlockServerRequestDto, Tecan.Sila2.EmptyRequest.Marshaller);
             registration.RegisterUnobservableProperty("IsLocked", GetIsLocked, LockControllerSerializers.PropertyResponseOfBooleanDto);
             registration.RegisterMetadata("LockIdentifier", _implementation.LockIdentifier);
         }

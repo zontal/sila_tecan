@@ -198,11 +198,11 @@ namespace Tecan.Sila2.Interop.Server.AnyTypeTest
     public sealed class AnyTypeTestSerializers
     {
         
-        private static ByteSerializer<SetAnyTypeValueRequestDto> _setAnyTypeValueRequestDto = ByteSerializer.Create<SetAnyTypeValueRequestDto>(AnyTypeTestTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<SetAnyTypeValueRequestDto> _setAnyTypeValueRequestDto = Tecan.Sila2.ByteSerializer.Create<SetAnyTypeValueRequestDto>(AnyTypeTestTypeModel.Instance);
         
-        private static ByteSerializer<SetAnyTypeValueResponseDto> _setAnyTypeValueResponseDto = ByteSerializer.Create<SetAnyTypeValueResponseDto>(AnyTypeTestTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<SetAnyTypeValueResponseDto> _setAnyTypeValueResponseDto = Tecan.Sila2.ByteSerializer.Create<SetAnyTypeValueResponseDto>(AnyTypeTestTypeModel.Instance);
         
-        private static ByteSerializer<PropertyResponse<Tecan.Sila2.DynamicClient.AnyTypeDto>> _propertyResponseOfAnyTypeDto = ByteSerializer.Create<PropertyResponse<Tecan.Sila2.DynamicClient.AnyTypeDto>>(AnyTypeTestTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<PropertyResponse<Tecan.Sila2.DynamicClient.AnyTypeDto>> _propertyResponseOfAnyTypeDto = Tecan.Sila2.ByteSerializer.Create<PropertyResponse<Tecan.Sila2.DynamicClient.AnyTypeDto>>(AnyTypeTestTypeModel.Instance);
         
         private AnyTypeTestSerializers()
         {
@@ -211,7 +211,7 @@ namespace Tecan.Sila2.Interop.Server.AnyTypeTest
         /// <summary>
         /// Gets the byte serializer for SetAnyTypeValueRequestDto
         /// </summary>
-        public static ByteSerializer<SetAnyTypeValueRequestDto> SetAnyTypeValueRequestDto
+        public static Tecan.Sila2.ByteSerializer<SetAnyTypeValueRequestDto> SetAnyTypeValueRequestDto
         {
             get
             {
@@ -222,7 +222,7 @@ namespace Tecan.Sila2.Interop.Server.AnyTypeTest
         /// <summary>
         /// Gets the byte serializer for SetAnyTypeValueResponseDto
         /// </summary>
-        public static ByteSerializer<SetAnyTypeValueResponseDto> SetAnyTypeValueResponseDto
+        public static Tecan.Sila2.ByteSerializer<SetAnyTypeValueResponseDto> SetAnyTypeValueResponseDto
         {
             get
             {
@@ -233,7 +233,7 @@ namespace Tecan.Sila2.Interop.Server.AnyTypeTest
         /// <summary>
         /// Gets the byte serializer for PropertyResponseOfAnyTypeDto
         /// </summary>
-        public static ByteSerializer<PropertyResponse<Tecan.Sila2.DynamicClient.AnyTypeDto>> PropertyResponseOfAnyTypeDto
+        public static Tecan.Sila2.ByteSerializer<PropertyResponse<Tecan.Sila2.DynamicClient.AnyTypeDto>> PropertyResponseOfAnyTypeDto
         {
             get
             {

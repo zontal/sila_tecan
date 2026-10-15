@@ -1213,17 +1213,17 @@ namespace Tecan.Sila2.Interop.Client.StructureDataTypeTest.StructureDataTypeTest
     public sealed class StructureDataTypeTestSerializers
     {
         
-        private static ByteSerializer<EchoStructureValueRequestDto> _echoStructureValueRequestDto = ByteSerializer.Create<EchoStructureValueRequestDto>(StructureDataTypeTestTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<EchoStructureValueRequestDto> _echoStructureValueRequestDto = Tecan.Sila2.ByteSerializer.Create<EchoStructureValueRequestDto>(StructureDataTypeTestTypeModel.Instance);
         
-        private static ByteSerializer<EchoStructureValueResponseDto> _echoStructureValueResponseDto = ByteSerializer.Create<EchoStructureValueResponseDto>(StructureDataTypeTestTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<EchoStructureValueResponseDto> _echoStructureValueResponseDto = Tecan.Sila2.ByteSerializer.Create<EchoStructureValueResponseDto>(StructureDataTypeTestTypeModel.Instance);
         
-        private static ByteSerializer<EchoDeepStructureValueRequestDto> _echoDeepStructureValueRequestDto = ByteSerializer.Create<EchoDeepStructureValueRequestDto>(StructureDataTypeTestTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<EchoDeepStructureValueRequestDto> _echoDeepStructureValueRequestDto = Tecan.Sila2.ByteSerializer.Create<EchoDeepStructureValueRequestDto>(StructureDataTypeTestTypeModel.Instance);
         
-        private static ByteSerializer<EchoDeepStructureValueResponseDto> _echoDeepStructureValueResponseDto = ByteSerializer.Create<EchoDeepStructureValueResponseDto>(StructureDataTypeTestTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<EchoDeepStructureValueResponseDto> _echoDeepStructureValueResponseDto = Tecan.Sila2.ByteSerializer.Create<EchoDeepStructureValueResponseDto>(StructureDataTypeTestTypeModel.Instance);
         
-        private static ByteSerializer<PropertyResponse<TestStructureDto>> _propertyResponseOfTestStructureDto = ByteSerializer.Create<PropertyResponse<TestStructureDto>>(StructureDataTypeTestTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<PropertyResponse<TestStructureDto>> _propertyResponseOfTestStructureDto = Tecan.Sila2.ByteSerializer.Create<PropertyResponse<TestStructureDto>>(StructureDataTypeTestTypeModel.Instance);
         
-        private static ByteSerializer<PropertyResponse<DeepStructureDto>> _propertyResponseOfDeepStructureDto = ByteSerializer.Create<PropertyResponse<DeepStructureDto>>(StructureDataTypeTestTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<PropertyResponse<DeepStructureDto>> _propertyResponseOfDeepStructureDto = Tecan.Sila2.ByteSerializer.Create<PropertyResponse<DeepStructureDto>>(StructureDataTypeTestTypeModel.Instance);
         
         private StructureDataTypeTestSerializers()
         {
@@ -1232,7 +1232,7 @@ namespace Tecan.Sila2.Interop.Client.StructureDataTypeTest.StructureDataTypeTest
         /// <summary>
         /// Gets the byte serializer for EchoStructureValueRequestDto
         /// </summary>
-        public static ByteSerializer<EchoStructureValueRequestDto> EchoStructureValueRequestDto
+        public static Tecan.Sila2.ByteSerializer<EchoStructureValueRequestDto> EchoStructureValueRequestDto
         {
             get
             {
@@ -1243,7 +1243,7 @@ namespace Tecan.Sila2.Interop.Client.StructureDataTypeTest.StructureDataTypeTest
         /// <summary>
         /// Gets the byte serializer for EchoStructureValueResponseDto
         /// </summary>
-        public static ByteSerializer<EchoStructureValueResponseDto> EchoStructureValueResponseDto
+        public static Tecan.Sila2.ByteSerializer<EchoStructureValueResponseDto> EchoStructureValueResponseDto
         {
             get
             {
@@ -1254,7 +1254,7 @@ namespace Tecan.Sila2.Interop.Client.StructureDataTypeTest.StructureDataTypeTest
         /// <summary>
         /// Gets the byte serializer for EchoDeepStructureValueRequestDto
         /// </summary>
-        public static ByteSerializer<EchoDeepStructureValueRequestDto> EchoDeepStructureValueRequestDto
+        public static Tecan.Sila2.ByteSerializer<EchoDeepStructureValueRequestDto> EchoDeepStructureValueRequestDto
         {
             get
             {
@@ -1265,7 +1265,7 @@ namespace Tecan.Sila2.Interop.Client.StructureDataTypeTest.StructureDataTypeTest
         /// <summary>
         /// Gets the byte serializer for EchoDeepStructureValueResponseDto
         /// </summary>
-        public static ByteSerializer<EchoDeepStructureValueResponseDto> EchoDeepStructureValueResponseDto
+        public static Tecan.Sila2.ByteSerializer<EchoDeepStructureValueResponseDto> EchoDeepStructureValueResponseDto
         {
             get
             {
@@ -1276,7 +1276,7 @@ namespace Tecan.Sila2.Interop.Client.StructureDataTypeTest.StructureDataTypeTest
         /// <summary>
         /// Gets the byte serializer for PropertyResponseOfTestStructureDto
         /// </summary>
-        public static ByteSerializer<PropertyResponse<TestStructureDto>> PropertyResponseOfTestStructureDto
+        public static Tecan.Sila2.ByteSerializer<PropertyResponse<TestStructureDto>> PropertyResponseOfTestStructureDto
         {
             get
             {
@@ -1287,7 +1287,7 @@ namespace Tecan.Sila2.Interop.Client.StructureDataTypeTest.StructureDataTypeTest
         /// <summary>
         /// Gets the byte serializer for PropertyResponseOfDeepStructureDto
         /// </summary>
-        public static ByteSerializer<PropertyResponse<DeepStructureDto>> PropertyResponseOfDeepStructureDto
+        public static Tecan.Sila2.ByteSerializer<PropertyResponse<DeepStructureDto>> PropertyResponseOfDeepStructureDto
         {
             get
             {

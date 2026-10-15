@@ -102,7 +102,7 @@ namespace Tecan.Sila2.ParameterDefaultsProvider.Tests
     public sealed class ExampleFileConstraintProviderServiceSerializers
     {
         
-        private static ByteSerializer<FileExampleMethodRequestDto> _fileExampleMethodRequestDto = ByteSerializer.Create<FileExampleMethodRequestDto>(ExampleFileConstraintProviderServiceTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<FileExampleMethodRequestDto> _fileExampleMethodRequestDto = Tecan.Sila2.ByteSerializer.Create<FileExampleMethodRequestDto>(ExampleFileConstraintProviderServiceTypeModel.Instance);
         
         private ExampleFileConstraintProviderServiceSerializers()
         {
@@ -111,7 +111,7 @@ namespace Tecan.Sila2.ParameterDefaultsProvider.Tests
         /// <summary>
         /// Gets the byte serializer for FileExampleMethodRequestDto
         /// </summary>
-        public static ByteSerializer<FileExampleMethodRequestDto> FileExampleMethodRequestDto
+        public static Tecan.Sila2.ByteSerializer<FileExampleMethodRequestDto> FileExampleMethodRequestDto
         {
             get
             {

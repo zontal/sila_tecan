@@ -200,9 +200,9 @@ namespace Tecan.Sila2.Generator.Test.TestReference
     public sealed class TemperatureControllerSerializers
     {
         
-        private static ByteSerializer<ControlTemperatureRequestDto> _controlTemperatureRequestDto = ByteSerializer.Create<ControlTemperatureRequestDto>(TemperatureControllerTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<ControlTemperatureRequestDto> _controlTemperatureRequestDto = Tecan.Sila2.ByteSerializer.Create<ControlTemperatureRequestDto>(TemperatureControllerTypeModel.Instance);
         
-        private static ByteSerializer<CurrentTemperatureResponseDto> _currentTemperatureResponseDto = ByteSerializer.Create<CurrentTemperatureResponseDto>(TemperatureControllerTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<CurrentTemperatureResponseDto> _currentTemperatureResponseDto = Tecan.Sila2.ByteSerializer.Create<CurrentTemperatureResponseDto>(TemperatureControllerTypeModel.Instance);
         
         private TemperatureControllerSerializers()
         {
@@ -211,7 +211,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// <summary>
         /// Gets the byte serializer for ControlTemperatureRequestDto
         /// </summary>
-        public static ByteSerializer<ControlTemperatureRequestDto> ControlTemperatureRequestDto
+        public static Tecan.Sila2.ByteSerializer<ControlTemperatureRequestDto> ControlTemperatureRequestDto
         {
             get
             {
@@ -222,7 +222,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// <summary>
         /// Gets the byte serializer for CurrentTemperatureResponseDto
         /// </summary>
-        public static ByteSerializer<CurrentTemperatureResponseDto> CurrentTemperatureResponseDto
+        public static Tecan.Sila2.ByteSerializer<CurrentTemperatureResponseDto> CurrentTemperatureResponseDto
         {
             get
             {

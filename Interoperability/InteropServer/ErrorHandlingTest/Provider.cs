@@ -72,9 +72,9 @@ namespace Tecan.Sila2.Interop.Server.ErrorHandlingTest
         /// <param name="registration">The registration component to which the feature should be registered</param>
         public void Register(IServerBuilder registration)
         {
-            registration.RegisterUnobservableCommand<RaiseDefinedExecutionErrorRequestDto, EmptyRequest>("RaiseDefinedExecutionError", RaiseDefinedExecutionError, ErrorHandlingTestSerializers.RaiseDefinedExecutionErrorRequestDto, EmptyRequest.Marshaller);
+            registration.RegisterUnobservableCommand<RaiseDefinedExecutionErrorRequestDto, EmptyRequest>("RaiseDefinedExecutionError", RaiseDefinedExecutionError, ErrorHandlingTestSerializers.RaiseDefinedExecutionErrorRequestDto, Tecan.Sila2.EmptyRequest.Marshaller);
             registration.RegisterObservableCommand<RaiseDefinedExecutionErrorObservablyRequestDto>("RaiseDefinedExecutionErrorObservably", RaiseDefinedExecutionErrorObservably, ConvertRaiseDefinedExecutionErrorObservablyExceptions, ErrorHandlingTestSerializers.RaiseDefinedExecutionErrorObservablyRequestDto);
-            registration.RegisterUnobservableCommand<RaiseUndefinedExecutionErrorRequestDto, EmptyRequest>("RaiseUndefinedExecutionError", RaiseUndefinedExecutionError, ErrorHandlingTestSerializers.RaiseUndefinedExecutionErrorRequestDto, EmptyRequest.Marshaller);
+            registration.RegisterUnobservableCommand<RaiseUndefinedExecutionErrorRequestDto, EmptyRequest>("RaiseUndefinedExecutionError", RaiseUndefinedExecutionError, ErrorHandlingTestSerializers.RaiseUndefinedExecutionErrorRequestDto, Tecan.Sila2.EmptyRequest.Marshaller);
             registration.RegisterObservableCommand<RaiseUndefinedExecutionErrorObservablyRequestDto>("RaiseUndefinedExecutionErrorObservably", RaiseUndefinedExecutionErrorObservably, null, ErrorHandlingTestSerializers.RaiseUndefinedExecutionErrorObservablyRequestDto);
             registration.RegisterUnobservableProperty("RaiseDefinedExecutionErrorOnGet", GetRaiseDefinedExecutionErrorOnGet, ErrorHandlingTestSerializers.PropertyResponseOfIntegerDto);
             registration.RegisterObservableProperty("RaiseDefinedExecutionErrorOnSubscribe", GetRaiseDefinedExecutionErrorOnSubscribe, _implementation, ErrorHandlingTestSerializers.PropertyResponseOfIntegerDto);

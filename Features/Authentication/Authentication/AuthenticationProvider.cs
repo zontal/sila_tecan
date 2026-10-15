@@ -62,7 +62,7 @@ namespace Tecan.Sila2.Authentication
         public void Register(IServerBuilder registration)
         {
             registration.RegisterUnobservableCommand<LoginRequestDto, LoginResponseDto>("Login", Login, AuthenticationServiceSerializers.LoginRequestDto, AuthenticationServiceSerializers.LoginResponseDto);
-            registration.RegisterUnobservableCommand<LogoutRequestDto, EmptyRequest>("Logout", Logout, AuthenticationServiceSerializers.LogoutRequestDto, EmptyRequest.Marshaller);
+            registration.RegisterUnobservableCommand<LogoutRequestDto, EmptyRequest>("Logout", Logout, AuthenticationServiceSerializers.LogoutRequestDto, Tecan.Sila2.EmptyRequest.Marshaller);
         }
         
         /// <summary>

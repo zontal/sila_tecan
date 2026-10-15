@@ -976,47 +976,47 @@ namespace Tecan.Sila2.Interop.Server.BasicDataTypesTest
     public sealed class BasicDataTypesTestSerializers
     {
         
-        private static ByteSerializer<EchoStringValueRequestDto> _echoStringValueRequestDto = ByteSerializer.Create<EchoStringValueRequestDto>(BasicDataTypesTestTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<EchoStringValueRequestDto> _echoStringValueRequestDto = Tecan.Sila2.ByteSerializer.Create<EchoStringValueRequestDto>(BasicDataTypesTestTypeModel.Instance);
         
-        private static ByteSerializer<EchoStringValueResponseDto> _echoStringValueResponseDto = ByteSerializer.Create<EchoStringValueResponseDto>(BasicDataTypesTestTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<EchoStringValueResponseDto> _echoStringValueResponseDto = Tecan.Sila2.ByteSerializer.Create<EchoStringValueResponseDto>(BasicDataTypesTestTypeModel.Instance);
         
-        private static ByteSerializer<EchoIntegerValueRequestDto> _echoIntegerValueRequestDto = ByteSerializer.Create<EchoIntegerValueRequestDto>(BasicDataTypesTestTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<EchoIntegerValueRequestDto> _echoIntegerValueRequestDto = Tecan.Sila2.ByteSerializer.Create<EchoIntegerValueRequestDto>(BasicDataTypesTestTypeModel.Instance);
         
-        private static ByteSerializer<EchoIntegerValueResponseDto> _echoIntegerValueResponseDto = ByteSerializer.Create<EchoIntegerValueResponseDto>(BasicDataTypesTestTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<EchoIntegerValueResponseDto> _echoIntegerValueResponseDto = Tecan.Sila2.ByteSerializer.Create<EchoIntegerValueResponseDto>(BasicDataTypesTestTypeModel.Instance);
         
-        private static ByteSerializer<EchoRealValueRequestDto> _echoRealValueRequestDto = ByteSerializer.Create<EchoRealValueRequestDto>(BasicDataTypesTestTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<EchoRealValueRequestDto> _echoRealValueRequestDto = Tecan.Sila2.ByteSerializer.Create<EchoRealValueRequestDto>(BasicDataTypesTestTypeModel.Instance);
         
-        private static ByteSerializer<EchoRealValueResponseDto> _echoRealValueResponseDto = ByteSerializer.Create<EchoRealValueResponseDto>(BasicDataTypesTestTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<EchoRealValueResponseDto> _echoRealValueResponseDto = Tecan.Sila2.ByteSerializer.Create<EchoRealValueResponseDto>(BasicDataTypesTestTypeModel.Instance);
         
-        private static ByteSerializer<EchoBooleanValueRequestDto> _echoBooleanValueRequestDto = ByteSerializer.Create<EchoBooleanValueRequestDto>(BasicDataTypesTestTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<EchoBooleanValueRequestDto> _echoBooleanValueRequestDto = Tecan.Sila2.ByteSerializer.Create<EchoBooleanValueRequestDto>(BasicDataTypesTestTypeModel.Instance);
         
-        private static ByteSerializer<EchoBooleanValueResponseDto> _echoBooleanValueResponseDto = ByteSerializer.Create<EchoBooleanValueResponseDto>(BasicDataTypesTestTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<EchoBooleanValueResponseDto> _echoBooleanValueResponseDto = Tecan.Sila2.ByteSerializer.Create<EchoBooleanValueResponseDto>(BasicDataTypesTestTypeModel.Instance);
         
-        private static ByteSerializer<EchoDateValueRequestDto> _echoDateValueRequestDto = ByteSerializer.Create<EchoDateValueRequestDto>(BasicDataTypesTestTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<EchoDateValueRequestDto> _echoDateValueRequestDto = Tecan.Sila2.ByteSerializer.Create<EchoDateValueRequestDto>(BasicDataTypesTestTypeModel.Instance);
         
-        private static ByteSerializer<EchoDateValueResponseDto> _echoDateValueResponseDto = ByteSerializer.Create<EchoDateValueResponseDto>(BasicDataTypesTestTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<EchoDateValueResponseDto> _echoDateValueResponseDto = Tecan.Sila2.ByteSerializer.Create<EchoDateValueResponseDto>(BasicDataTypesTestTypeModel.Instance);
         
-        private static ByteSerializer<EchoTimeValueRequestDto> _echoTimeValueRequestDto = ByteSerializer.Create<EchoTimeValueRequestDto>(BasicDataTypesTestTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<EchoTimeValueRequestDto> _echoTimeValueRequestDto = Tecan.Sila2.ByteSerializer.Create<EchoTimeValueRequestDto>(BasicDataTypesTestTypeModel.Instance);
         
-        private static ByteSerializer<EchoTimeValueResponseDto> _echoTimeValueResponseDto = ByteSerializer.Create<EchoTimeValueResponseDto>(BasicDataTypesTestTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<EchoTimeValueResponseDto> _echoTimeValueResponseDto = Tecan.Sila2.ByteSerializer.Create<EchoTimeValueResponseDto>(BasicDataTypesTestTypeModel.Instance);
         
-        private static ByteSerializer<EchoTimestampValueRequestDto> _echoTimestampValueRequestDto = ByteSerializer.Create<EchoTimestampValueRequestDto>(BasicDataTypesTestTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<EchoTimestampValueRequestDto> _echoTimestampValueRequestDto = Tecan.Sila2.ByteSerializer.Create<EchoTimestampValueRequestDto>(BasicDataTypesTestTypeModel.Instance);
         
-        private static ByteSerializer<EchoTimestampValueResponseDto> _echoTimestampValueResponseDto = ByteSerializer.Create<EchoTimestampValueResponseDto>(BasicDataTypesTestTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<EchoTimestampValueResponseDto> _echoTimestampValueResponseDto = Tecan.Sila2.ByteSerializer.Create<EchoTimestampValueResponseDto>(BasicDataTypesTestTypeModel.Instance);
         
-        private static ByteSerializer<PropertyResponse<Tecan.Sila2.StringDto>> _propertyResponseOfStringDto = ByteSerializer.Create<PropertyResponse<Tecan.Sila2.StringDto>>(BasicDataTypesTestTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<PropertyResponse<Tecan.Sila2.StringDto>> _propertyResponseOfStringDto = Tecan.Sila2.ByteSerializer.Create<PropertyResponse<Tecan.Sila2.StringDto>>(BasicDataTypesTestTypeModel.Instance);
         
-        private static ByteSerializer<PropertyResponse<Tecan.Sila2.IntegerDto>> _propertyResponseOfIntegerDto = ByteSerializer.Create<PropertyResponse<Tecan.Sila2.IntegerDto>>(BasicDataTypesTestTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<PropertyResponse<Tecan.Sila2.IntegerDto>> _propertyResponseOfIntegerDto = Tecan.Sila2.ByteSerializer.Create<PropertyResponse<Tecan.Sila2.IntegerDto>>(BasicDataTypesTestTypeModel.Instance);
         
-        private static ByteSerializer<PropertyResponse<Tecan.Sila2.RealDto>> _propertyResponseOfRealDto = ByteSerializer.Create<PropertyResponse<Tecan.Sila2.RealDto>>(BasicDataTypesTestTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<PropertyResponse<Tecan.Sila2.RealDto>> _propertyResponseOfRealDto = Tecan.Sila2.ByteSerializer.Create<PropertyResponse<Tecan.Sila2.RealDto>>(BasicDataTypesTestTypeModel.Instance);
         
-        private static ByteSerializer<PropertyResponse<Tecan.Sila2.BooleanDto>> _propertyResponseOfBooleanDto = ByteSerializer.Create<PropertyResponse<Tecan.Sila2.BooleanDto>>(BasicDataTypesTestTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<PropertyResponse<Tecan.Sila2.BooleanDto>> _propertyResponseOfBooleanDto = Tecan.Sila2.ByteSerializer.Create<PropertyResponse<Tecan.Sila2.BooleanDto>>(BasicDataTypesTestTypeModel.Instance);
         
-        private static ByteSerializer<PropertyResponse<Tecan.Sila2.DateDto>> _propertyResponseOfDateDto = ByteSerializer.Create<PropertyResponse<Tecan.Sila2.DateDto>>(BasicDataTypesTestTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<PropertyResponse<Tecan.Sila2.DateDto>> _propertyResponseOfDateDto = Tecan.Sila2.ByteSerializer.Create<PropertyResponse<Tecan.Sila2.DateDto>>(BasicDataTypesTestTypeModel.Instance);
         
-        private static ByteSerializer<PropertyResponse<Tecan.Sila2.TimeDto>> _propertyResponseOfTimeDto = ByteSerializer.Create<PropertyResponse<Tecan.Sila2.TimeDto>>(BasicDataTypesTestTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<PropertyResponse<Tecan.Sila2.TimeDto>> _propertyResponseOfTimeDto = Tecan.Sila2.ByteSerializer.Create<PropertyResponse<Tecan.Sila2.TimeDto>>(BasicDataTypesTestTypeModel.Instance);
         
-        private static ByteSerializer<PropertyResponse<Tecan.Sila2.TimestampDto>> _propertyResponseOfTimestampDto = ByteSerializer.Create<PropertyResponse<Tecan.Sila2.TimestampDto>>(BasicDataTypesTestTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<PropertyResponse<Tecan.Sila2.TimestampDto>> _propertyResponseOfTimestampDto = Tecan.Sila2.ByteSerializer.Create<PropertyResponse<Tecan.Sila2.TimestampDto>>(BasicDataTypesTestTypeModel.Instance);
         
         private BasicDataTypesTestSerializers()
         {
@@ -1025,7 +1025,7 @@ namespace Tecan.Sila2.Interop.Server.BasicDataTypesTest
         /// <summary>
         /// Gets the byte serializer for EchoStringValueRequestDto
         /// </summary>
-        public static ByteSerializer<EchoStringValueRequestDto> EchoStringValueRequestDto
+        public static Tecan.Sila2.ByteSerializer<EchoStringValueRequestDto> EchoStringValueRequestDto
         {
             get
             {
@@ -1036,7 +1036,7 @@ namespace Tecan.Sila2.Interop.Server.BasicDataTypesTest
         /// <summary>
         /// Gets the byte serializer for EchoStringValueResponseDto
         /// </summary>
-        public static ByteSerializer<EchoStringValueResponseDto> EchoStringValueResponseDto
+        public static Tecan.Sila2.ByteSerializer<EchoStringValueResponseDto> EchoStringValueResponseDto
         {
             get
             {
@@ -1047,7 +1047,7 @@ namespace Tecan.Sila2.Interop.Server.BasicDataTypesTest
         /// <summary>
         /// Gets the byte serializer for EchoIntegerValueRequestDto
         /// </summary>
-        public static ByteSerializer<EchoIntegerValueRequestDto> EchoIntegerValueRequestDto
+        public static Tecan.Sila2.ByteSerializer<EchoIntegerValueRequestDto> EchoIntegerValueRequestDto
         {
             get
             {
@@ -1058,7 +1058,7 @@ namespace Tecan.Sila2.Interop.Server.BasicDataTypesTest
         /// <summary>
         /// Gets the byte serializer for EchoIntegerValueResponseDto
         /// </summary>
-        public static ByteSerializer<EchoIntegerValueResponseDto> EchoIntegerValueResponseDto
+        public static Tecan.Sila2.ByteSerializer<EchoIntegerValueResponseDto> EchoIntegerValueResponseDto
         {
             get
             {
@@ -1069,7 +1069,7 @@ namespace Tecan.Sila2.Interop.Server.BasicDataTypesTest
         /// <summary>
         /// Gets the byte serializer for EchoRealValueRequestDto
         /// </summary>
-        public static ByteSerializer<EchoRealValueRequestDto> EchoRealValueRequestDto
+        public static Tecan.Sila2.ByteSerializer<EchoRealValueRequestDto> EchoRealValueRequestDto
         {
             get
             {
@@ -1080,7 +1080,7 @@ namespace Tecan.Sila2.Interop.Server.BasicDataTypesTest
         /// <summary>
         /// Gets the byte serializer for EchoRealValueResponseDto
         /// </summary>
-        public static ByteSerializer<EchoRealValueResponseDto> EchoRealValueResponseDto
+        public static Tecan.Sila2.ByteSerializer<EchoRealValueResponseDto> EchoRealValueResponseDto
         {
             get
             {
@@ -1091,7 +1091,7 @@ namespace Tecan.Sila2.Interop.Server.BasicDataTypesTest
         /// <summary>
         /// Gets the byte serializer for EchoBooleanValueRequestDto
         /// </summary>
-        public static ByteSerializer<EchoBooleanValueRequestDto> EchoBooleanValueRequestDto
+        public static Tecan.Sila2.ByteSerializer<EchoBooleanValueRequestDto> EchoBooleanValueRequestDto
         {
             get
             {
@@ -1102,7 +1102,7 @@ namespace Tecan.Sila2.Interop.Server.BasicDataTypesTest
         /// <summary>
         /// Gets the byte serializer for EchoBooleanValueResponseDto
         /// </summary>
-        public static ByteSerializer<EchoBooleanValueResponseDto> EchoBooleanValueResponseDto
+        public static Tecan.Sila2.ByteSerializer<EchoBooleanValueResponseDto> EchoBooleanValueResponseDto
         {
             get
             {
@@ -1113,7 +1113,7 @@ namespace Tecan.Sila2.Interop.Server.BasicDataTypesTest
         /// <summary>
         /// Gets the byte serializer for EchoDateValueRequestDto
         /// </summary>
-        public static ByteSerializer<EchoDateValueRequestDto> EchoDateValueRequestDto
+        public static Tecan.Sila2.ByteSerializer<EchoDateValueRequestDto> EchoDateValueRequestDto
         {
             get
             {
@@ -1124,7 +1124,7 @@ namespace Tecan.Sila2.Interop.Server.BasicDataTypesTest
         /// <summary>
         /// Gets the byte serializer for EchoDateValueResponseDto
         /// </summary>
-        public static ByteSerializer<EchoDateValueResponseDto> EchoDateValueResponseDto
+        public static Tecan.Sila2.ByteSerializer<EchoDateValueResponseDto> EchoDateValueResponseDto
         {
             get
             {
@@ -1135,7 +1135,7 @@ namespace Tecan.Sila2.Interop.Server.BasicDataTypesTest
         /// <summary>
         /// Gets the byte serializer for EchoTimeValueRequestDto
         /// </summary>
-        public static ByteSerializer<EchoTimeValueRequestDto> EchoTimeValueRequestDto
+        public static Tecan.Sila2.ByteSerializer<EchoTimeValueRequestDto> EchoTimeValueRequestDto
         {
             get
             {
@@ -1146,7 +1146,7 @@ namespace Tecan.Sila2.Interop.Server.BasicDataTypesTest
         /// <summary>
         /// Gets the byte serializer for EchoTimeValueResponseDto
         /// </summary>
-        public static ByteSerializer<EchoTimeValueResponseDto> EchoTimeValueResponseDto
+        public static Tecan.Sila2.ByteSerializer<EchoTimeValueResponseDto> EchoTimeValueResponseDto
         {
             get
             {
@@ -1157,7 +1157,7 @@ namespace Tecan.Sila2.Interop.Server.BasicDataTypesTest
         /// <summary>
         /// Gets the byte serializer for EchoTimestampValueRequestDto
         /// </summary>
-        public static ByteSerializer<EchoTimestampValueRequestDto> EchoTimestampValueRequestDto
+        public static Tecan.Sila2.ByteSerializer<EchoTimestampValueRequestDto> EchoTimestampValueRequestDto
         {
             get
             {
@@ -1168,7 +1168,7 @@ namespace Tecan.Sila2.Interop.Server.BasicDataTypesTest
         /// <summary>
         /// Gets the byte serializer for EchoTimestampValueResponseDto
         /// </summary>
-        public static ByteSerializer<EchoTimestampValueResponseDto> EchoTimestampValueResponseDto
+        public static Tecan.Sila2.ByteSerializer<EchoTimestampValueResponseDto> EchoTimestampValueResponseDto
         {
             get
             {
@@ -1179,7 +1179,7 @@ namespace Tecan.Sila2.Interop.Server.BasicDataTypesTest
         /// <summary>
         /// Gets the byte serializer for PropertyResponseOfStringDto
         /// </summary>
-        public static ByteSerializer<PropertyResponse<Tecan.Sila2.StringDto>> PropertyResponseOfStringDto
+        public static Tecan.Sila2.ByteSerializer<PropertyResponse<Tecan.Sila2.StringDto>> PropertyResponseOfStringDto
         {
             get
             {
@@ -1190,7 +1190,7 @@ namespace Tecan.Sila2.Interop.Server.BasicDataTypesTest
         /// <summary>
         /// Gets the byte serializer for PropertyResponseOfIntegerDto
         /// </summary>
-        public static ByteSerializer<PropertyResponse<Tecan.Sila2.IntegerDto>> PropertyResponseOfIntegerDto
+        public static Tecan.Sila2.ByteSerializer<PropertyResponse<Tecan.Sila2.IntegerDto>> PropertyResponseOfIntegerDto
         {
             get
             {
@@ -1201,7 +1201,7 @@ namespace Tecan.Sila2.Interop.Server.BasicDataTypesTest
         /// <summary>
         /// Gets the byte serializer for PropertyResponseOfRealDto
         /// </summary>
-        public static ByteSerializer<PropertyResponse<Tecan.Sila2.RealDto>> PropertyResponseOfRealDto
+        public static Tecan.Sila2.ByteSerializer<PropertyResponse<Tecan.Sila2.RealDto>> PropertyResponseOfRealDto
         {
             get
             {
@@ -1212,7 +1212,7 @@ namespace Tecan.Sila2.Interop.Server.BasicDataTypesTest
         /// <summary>
         /// Gets the byte serializer for PropertyResponseOfBooleanDto
         /// </summary>
-        public static ByteSerializer<PropertyResponse<Tecan.Sila2.BooleanDto>> PropertyResponseOfBooleanDto
+        public static Tecan.Sila2.ByteSerializer<PropertyResponse<Tecan.Sila2.BooleanDto>> PropertyResponseOfBooleanDto
         {
             get
             {
@@ -1223,7 +1223,7 @@ namespace Tecan.Sila2.Interop.Server.BasicDataTypesTest
         /// <summary>
         /// Gets the byte serializer for PropertyResponseOfDateDto
         /// </summary>
-        public static ByteSerializer<PropertyResponse<Tecan.Sila2.DateDto>> PropertyResponseOfDateDto
+        public static Tecan.Sila2.ByteSerializer<PropertyResponse<Tecan.Sila2.DateDto>> PropertyResponseOfDateDto
         {
             get
             {
@@ -1234,7 +1234,7 @@ namespace Tecan.Sila2.Interop.Server.BasicDataTypesTest
         /// <summary>
         /// Gets the byte serializer for PropertyResponseOfTimeDto
         /// </summary>
-        public static ByteSerializer<PropertyResponse<Tecan.Sila2.TimeDto>> PropertyResponseOfTimeDto
+        public static Tecan.Sila2.ByteSerializer<PropertyResponse<Tecan.Sila2.TimeDto>> PropertyResponseOfTimeDto
         {
             get
             {
@@ -1245,7 +1245,7 @@ namespace Tecan.Sila2.Interop.Server.BasicDataTypesTest
         /// <summary>
         /// Gets the byte serializer for PropertyResponseOfTimestampDto
         /// </summary>
-        public static ByteSerializer<PropertyResponse<Tecan.Sila2.TimestampDto>> PropertyResponseOfTimestampDto
+        public static Tecan.Sila2.ByteSerializer<PropertyResponse<Tecan.Sila2.TimestampDto>> PropertyResponseOfTimestampDto
         {
             get
             {

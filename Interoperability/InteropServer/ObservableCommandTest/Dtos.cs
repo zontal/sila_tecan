@@ -404,15 +404,15 @@ namespace Tecan.Sila2.Interop.Server.ObservableCommandTest
     public sealed class ObservableCommandTestSerializers
     {
         
-        private static ByteSerializer<CountRequestDto> _countRequestDto = ByteSerializer.Create<CountRequestDto>(ObservableCommandTestTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<CountRequestDto> _countRequestDto = Tecan.Sila2.ByteSerializer.Create<CountRequestDto>(ObservableCommandTestTypeModel.Instance);
         
-        private static ByteSerializer<CountIntermediateDto> _countIntermediateDto = ByteSerializer.Create<CountIntermediateDto>(ObservableCommandTestTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<CountIntermediateDto> _countIntermediateDto = Tecan.Sila2.ByteSerializer.Create<CountIntermediateDto>(ObservableCommandTestTypeModel.Instance);
         
-        private static ByteSerializer<CountResponseDto> _countResponseDto = ByteSerializer.Create<CountResponseDto>(ObservableCommandTestTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<CountResponseDto> _countResponseDto = Tecan.Sila2.ByteSerializer.Create<CountResponseDto>(ObservableCommandTestTypeModel.Instance);
         
-        private static ByteSerializer<EchoValueAfterDelayRequestDto> _echoValueAfterDelayRequestDto = ByteSerializer.Create<EchoValueAfterDelayRequestDto>(ObservableCommandTestTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<EchoValueAfterDelayRequestDto> _echoValueAfterDelayRequestDto = Tecan.Sila2.ByteSerializer.Create<EchoValueAfterDelayRequestDto>(ObservableCommandTestTypeModel.Instance);
         
-        private static ByteSerializer<EchoValueAfterDelayResponseDto> _echoValueAfterDelayResponseDto = ByteSerializer.Create<EchoValueAfterDelayResponseDto>(ObservableCommandTestTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<EchoValueAfterDelayResponseDto> _echoValueAfterDelayResponseDto = Tecan.Sila2.ByteSerializer.Create<EchoValueAfterDelayResponseDto>(ObservableCommandTestTypeModel.Instance);
         
         private ObservableCommandTestSerializers()
         {
@@ -421,7 +421,7 @@ namespace Tecan.Sila2.Interop.Server.ObservableCommandTest
         /// <summary>
         /// Gets the byte serializer for CountRequestDto
         /// </summary>
-        public static ByteSerializer<CountRequestDto> CountRequestDto
+        public static Tecan.Sila2.ByteSerializer<CountRequestDto> CountRequestDto
         {
             get
             {
@@ -432,7 +432,7 @@ namespace Tecan.Sila2.Interop.Server.ObservableCommandTest
         /// <summary>
         /// Gets the byte serializer for CountIntermediateDto
         /// </summary>
-        public static ByteSerializer<CountIntermediateDto> CountIntermediateDto
+        public static Tecan.Sila2.ByteSerializer<CountIntermediateDto> CountIntermediateDto
         {
             get
             {
@@ -443,7 +443,7 @@ namespace Tecan.Sila2.Interop.Server.ObservableCommandTest
         /// <summary>
         /// Gets the byte serializer for CountResponseDto
         /// </summary>
-        public static ByteSerializer<CountResponseDto> CountResponseDto
+        public static Tecan.Sila2.ByteSerializer<CountResponseDto> CountResponseDto
         {
             get
             {
@@ -454,7 +454,7 @@ namespace Tecan.Sila2.Interop.Server.ObservableCommandTest
         /// <summary>
         /// Gets the byte serializer for EchoValueAfterDelayRequestDto
         /// </summary>
-        public static ByteSerializer<EchoValueAfterDelayRequestDto> EchoValueAfterDelayRequestDto
+        public static Tecan.Sila2.ByteSerializer<EchoValueAfterDelayRequestDto> EchoValueAfterDelayRequestDto
         {
             get
             {
@@ -465,7 +465,7 @@ namespace Tecan.Sila2.Interop.Server.ObservableCommandTest
         /// <summary>
         /// Gets the byte serializer for EchoValueAfterDelayResponseDto
         /// </summary>
-        public static ByteSerializer<EchoValueAfterDelayResponseDto> EchoValueAfterDelayResponseDto
+        public static Tecan.Sila2.ByteSerializer<EchoValueAfterDelayResponseDto> EchoValueAfterDelayResponseDto
         {
             get
             {

@@ -156,9 +156,9 @@ namespace Tecan.Sila2.Interop.Client.AuthenticationTest.AuthenticationTest
     public sealed class AuthenticationTestSerializers
     {
         
-        private static ByteSerializer<RequiresTokenRequestDto> _requiresTokenRequestDto = ByteSerializer.Create<RequiresTokenRequestDto>(AuthenticationTestTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<RequiresTokenRequestDto> _requiresTokenRequestDto = Tecan.Sila2.ByteSerializer.Create<RequiresTokenRequestDto>(AuthenticationTestTypeModel.Instance);
         
-        private static ByteSerializer<RequiresTokenForBinaryUploadRequestDto> _requiresTokenForBinaryUploadRequestDto = ByteSerializer.Create<RequiresTokenForBinaryUploadRequestDto>(AuthenticationTestTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<RequiresTokenForBinaryUploadRequestDto> _requiresTokenForBinaryUploadRequestDto = Tecan.Sila2.ByteSerializer.Create<RequiresTokenForBinaryUploadRequestDto>(AuthenticationTestTypeModel.Instance);
         
         private AuthenticationTestSerializers()
         {
@@ -167,7 +167,7 @@ namespace Tecan.Sila2.Interop.Client.AuthenticationTest.AuthenticationTest
         /// <summary>
         /// Gets the byte serializer for RequiresTokenRequestDto
         /// </summary>
-        public static ByteSerializer<RequiresTokenRequestDto> RequiresTokenRequestDto
+        public static Tecan.Sila2.ByteSerializer<RequiresTokenRequestDto> RequiresTokenRequestDto
         {
             get
             {
@@ -178,7 +178,7 @@ namespace Tecan.Sila2.Interop.Client.AuthenticationTest.AuthenticationTest
         /// <summary>
         /// Gets the byte serializer for RequiresTokenForBinaryUploadRequestDto
         /// </summary>
-        public static ByteSerializer<RequiresTokenForBinaryUploadRequestDto> RequiresTokenForBinaryUploadRequestDto
+        public static Tecan.Sila2.ByteSerializer<RequiresTokenForBinaryUploadRequestDto> RequiresTokenForBinaryUploadRequestDto
         {
             get
             {

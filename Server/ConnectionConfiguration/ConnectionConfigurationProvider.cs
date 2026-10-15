@@ -61,10 +61,10 @@ namespace Tecan.Sila2.Server.ConnectionConfiguration
         /// <param name="registration">The registration component to which the feature should be registered</param>
         public void Register(IServerBuilder registration)
         {
-            registration.RegisterUnobservableCommand<EnableServerInitiatedConnectionModeRequestDto, EmptyRequest>("EnableServerInitiatedConnectionMode", EnableServerInitiatedConnectionMode, ConnectionConfigurationServiceSerializers.EnableServerInitiatedConnectionModeRequestDto, EmptyRequest.Marshaller);
-            registration.RegisterUnobservableCommand<DisableServerInitiatedConnectionModeRequestDto, EmptyRequest>("DisableServerInitiatedConnectionMode", DisableServerInitiatedConnectionMode, ConnectionConfigurationServiceSerializers.DisableServerInitiatedConnectionModeRequestDto, EmptyRequest.Marshaller);
-            registration.RegisterUnobservableCommand<ConnectSiLAClientRequestDto, EmptyRequest>("ConnectSiLAClient", ConnectSiLAClient, ConnectionConfigurationServiceSerializers.ConnectSiLAClientRequestDto, EmptyRequest.Marshaller);
-            registration.RegisterUnobservableCommand<DisconnectSiLAClientRequestDto, EmptyRequest>("DisconnectSiLAClient", DisconnectSiLAClient, ConnectionConfigurationServiceSerializers.DisconnectSiLAClientRequestDto, EmptyRequest.Marshaller);
+            registration.RegisterUnobservableCommand<EnableServerInitiatedConnectionModeRequestDto, EmptyRequest>("EnableServerInitiatedConnectionMode", EnableServerInitiatedConnectionMode, ConnectionConfigurationServiceSerializers.EnableServerInitiatedConnectionModeRequestDto, Tecan.Sila2.EmptyRequest.Marshaller);
+            registration.RegisterUnobservableCommand<DisableServerInitiatedConnectionModeRequestDto, EmptyRequest>("DisableServerInitiatedConnectionMode", DisableServerInitiatedConnectionMode, ConnectionConfigurationServiceSerializers.DisableServerInitiatedConnectionModeRequestDto, Tecan.Sila2.EmptyRequest.Marshaller);
+            registration.RegisterUnobservableCommand<ConnectSiLAClientRequestDto, EmptyRequest>("ConnectSiLAClient", ConnectSiLAClient, ConnectionConfigurationServiceSerializers.ConnectSiLAClientRequestDto, Tecan.Sila2.EmptyRequest.Marshaller);
+            registration.RegisterUnobservableCommand<DisconnectSiLAClientRequestDto, EmptyRequest>("DisconnectSiLAClient", DisconnectSiLAClient, ConnectionConfigurationServiceSerializers.DisconnectSiLAClientRequestDto, Tecan.Sila2.EmptyRequest.Marshaller);
             registration.RegisterUnobservableProperty("ServerInitiatedConnectionModeStatus", GetServerInitiatedConnectionModeStatus, ConnectionConfigurationServiceSerializers.PropertyResponseOfBooleanDto);
             registration.RegisterUnobservableProperty("ConfiguredSiLAClients", GetConfiguredSiLAClients, ConnectionConfigurationServiceSerializers.PropertyResponseOfListOfConfiguredSiLAClientDto);
         }

@@ -32,7 +32,7 @@ namespace Tecan.Sila2.Interop.Client.UnobservablePropertyTest.UnobservableProper
     public sealed class UnobservablePropertyTestSerializers
     {
         
-        private static ByteSerializer<PropertyResponse<Tecan.Sila2.IntegerDto>> _propertyResponseOfIntegerDto = ByteSerializer.Create<PropertyResponse<Tecan.Sila2.IntegerDto>>(UnobservablePropertyTestTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<PropertyResponse<Tecan.Sila2.IntegerDto>> _propertyResponseOfIntegerDto = Tecan.Sila2.ByteSerializer.Create<PropertyResponse<Tecan.Sila2.IntegerDto>>(UnobservablePropertyTestTypeModel.Instance);
         
         private UnobservablePropertyTestSerializers()
         {
@@ -41,7 +41,7 @@ namespace Tecan.Sila2.Interop.Client.UnobservablePropertyTest.UnobservableProper
         /// <summary>
         /// Gets the byte serializer for PropertyResponseOfIntegerDto
         /// </summary>
-        public static ByteSerializer<PropertyResponse<Tecan.Sila2.IntegerDto>> PropertyResponseOfIntegerDto
+        public static Tecan.Sila2.ByteSerializer<PropertyResponse<Tecan.Sila2.IntegerDto>> PropertyResponseOfIntegerDto
         {
             get
             {

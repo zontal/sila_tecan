@@ -546,19 +546,19 @@ namespace Tecan.Sila2.Interop.Server.UnobservableCommandTest
     public sealed class UnobservableCommandTestSerializers
     {
         
-        private static ByteSerializer<CommandWithoutParametersAndResponsesRequestDto> _commandWithoutParametersAndResponsesRequestDto = ByteSerializer.Create<CommandWithoutParametersAndResponsesRequestDto>(UnobservableCommandTestTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<CommandWithoutParametersAndResponsesRequestDto> _commandWithoutParametersAndResponsesRequestDto = Tecan.Sila2.ByteSerializer.Create<CommandWithoutParametersAndResponsesRequestDto>(UnobservableCommandTestTypeModel.Instance);
         
-        private static ByteSerializer<ConvertIntegerToStringRequestDto> _convertIntegerToStringRequestDto = ByteSerializer.Create<ConvertIntegerToStringRequestDto>(UnobservableCommandTestTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<ConvertIntegerToStringRequestDto> _convertIntegerToStringRequestDto = Tecan.Sila2.ByteSerializer.Create<ConvertIntegerToStringRequestDto>(UnobservableCommandTestTypeModel.Instance);
         
-        private static ByteSerializer<ConvertIntegerToStringResponseDto> _convertIntegerToStringResponseDto = ByteSerializer.Create<ConvertIntegerToStringResponseDto>(UnobservableCommandTestTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<ConvertIntegerToStringResponseDto> _convertIntegerToStringResponseDto = Tecan.Sila2.ByteSerializer.Create<ConvertIntegerToStringResponseDto>(UnobservableCommandTestTypeModel.Instance);
         
-        private static ByteSerializer<JoinIntegerAndStringRequestDto> _joinIntegerAndStringRequestDto = ByteSerializer.Create<JoinIntegerAndStringRequestDto>(UnobservableCommandTestTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<JoinIntegerAndStringRequestDto> _joinIntegerAndStringRequestDto = Tecan.Sila2.ByteSerializer.Create<JoinIntegerAndStringRequestDto>(UnobservableCommandTestTypeModel.Instance);
         
-        private static ByteSerializer<JoinIntegerAndStringResponseDto> _joinIntegerAndStringResponseDto = ByteSerializer.Create<JoinIntegerAndStringResponseDto>(UnobservableCommandTestTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<JoinIntegerAndStringResponseDto> _joinIntegerAndStringResponseDto = Tecan.Sila2.ByteSerializer.Create<JoinIntegerAndStringResponseDto>(UnobservableCommandTestTypeModel.Instance);
         
-        private static ByteSerializer<SplitStringAfterFirstCharacterRequestDto> _splitStringAfterFirstCharacterRequestDto = ByteSerializer.Create<SplitStringAfterFirstCharacterRequestDto>(UnobservableCommandTestTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<SplitStringAfterFirstCharacterRequestDto> _splitStringAfterFirstCharacterRequestDto = Tecan.Sila2.ByteSerializer.Create<SplitStringAfterFirstCharacterRequestDto>(UnobservableCommandTestTypeModel.Instance);
         
-        private static ByteSerializer<SplitStringAfterFirstCharacterResponseDto> _splitStringAfterFirstCharacterResponseDto = ByteSerializer.Create<SplitStringAfterFirstCharacterResponseDto>(UnobservableCommandTestTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<SplitStringAfterFirstCharacterResponseDto> _splitStringAfterFirstCharacterResponseDto = Tecan.Sila2.ByteSerializer.Create<SplitStringAfterFirstCharacterResponseDto>(UnobservableCommandTestTypeModel.Instance);
         
         private UnobservableCommandTestSerializers()
         {
@@ -567,7 +567,7 @@ namespace Tecan.Sila2.Interop.Server.UnobservableCommandTest
         /// <summary>
         /// Gets the byte serializer for CommandWithoutParametersAndResponsesRequestDto
         /// </summary>
-        public static ByteSerializer<CommandWithoutParametersAndResponsesRequestDto> CommandWithoutParametersAndResponsesRequestDto
+        public static Tecan.Sila2.ByteSerializer<CommandWithoutParametersAndResponsesRequestDto> CommandWithoutParametersAndResponsesRequestDto
         {
             get
             {
@@ -578,7 +578,7 @@ namespace Tecan.Sila2.Interop.Server.UnobservableCommandTest
         /// <summary>
         /// Gets the byte serializer for ConvertIntegerToStringRequestDto
         /// </summary>
-        public static ByteSerializer<ConvertIntegerToStringRequestDto> ConvertIntegerToStringRequestDto
+        public static Tecan.Sila2.ByteSerializer<ConvertIntegerToStringRequestDto> ConvertIntegerToStringRequestDto
         {
             get
             {
@@ -589,7 +589,7 @@ namespace Tecan.Sila2.Interop.Server.UnobservableCommandTest
         /// <summary>
         /// Gets the byte serializer for ConvertIntegerToStringResponseDto
         /// </summary>
-        public static ByteSerializer<ConvertIntegerToStringResponseDto> ConvertIntegerToStringResponseDto
+        public static Tecan.Sila2.ByteSerializer<ConvertIntegerToStringResponseDto> ConvertIntegerToStringResponseDto
         {
             get
             {
@@ -600,7 +600,7 @@ namespace Tecan.Sila2.Interop.Server.UnobservableCommandTest
         /// <summary>
         /// Gets the byte serializer for JoinIntegerAndStringRequestDto
         /// </summary>
-        public static ByteSerializer<JoinIntegerAndStringRequestDto> JoinIntegerAndStringRequestDto
+        public static Tecan.Sila2.ByteSerializer<JoinIntegerAndStringRequestDto> JoinIntegerAndStringRequestDto
         {
             get
             {
@@ -611,7 +611,7 @@ namespace Tecan.Sila2.Interop.Server.UnobservableCommandTest
         /// <summary>
         /// Gets the byte serializer for JoinIntegerAndStringResponseDto
         /// </summary>
-        public static ByteSerializer<JoinIntegerAndStringResponseDto> JoinIntegerAndStringResponseDto
+        public static Tecan.Sila2.ByteSerializer<JoinIntegerAndStringResponseDto> JoinIntegerAndStringResponseDto
         {
             get
             {
@@ -622,7 +622,7 @@ namespace Tecan.Sila2.Interop.Server.UnobservableCommandTest
         /// <summary>
         /// Gets the byte serializer for SplitStringAfterFirstCharacterRequestDto
         /// </summary>
-        public static ByteSerializer<SplitStringAfterFirstCharacterRequestDto> SplitStringAfterFirstCharacterRequestDto
+        public static Tecan.Sila2.ByteSerializer<SplitStringAfterFirstCharacterRequestDto> SplitStringAfterFirstCharacterRequestDto
         {
             get
             {
@@ -633,7 +633,7 @@ namespace Tecan.Sila2.Interop.Server.UnobservableCommandTest
         /// <summary>
         /// Gets the byte serializer for SplitStringAfterFirstCharacterResponseDto
         /// </summary>
-        public static ByteSerializer<SplitStringAfterFirstCharacterResponseDto> SplitStringAfterFirstCharacterResponseDto
+        public static Tecan.Sila2.ByteSerializer<SplitStringAfterFirstCharacterResponseDto> SplitStringAfterFirstCharacterResponseDto
         {
             get
             {

@@ -32,7 +32,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
     public sealed class DictionaryServiceSerializers
     {
         
-        private static ByteSerializer<PropertyResponse<System.Collections.Generic.List<Tecan.Sila2.KeyValuePairDto<long, Tecan.Sila2.IntegerDto, string, Tecan.Sila2.StringDto>>>> _propertyResponseOfListOfKeyValuePairDtoOfInt64AndIntegerDtoAndStringAndStringDto = ByteSerializer.Create<PropertyResponse<System.Collections.Generic.List<Tecan.Sila2.KeyValuePairDto<long, Tecan.Sila2.IntegerDto, string, Tecan.Sila2.StringDto>>>>(DictionaryServiceTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<PropertyResponse<System.Collections.Generic.List<Tecan.Sila2.KeyValuePairDto<long, Tecan.Sila2.IntegerDto, string, Tecan.Sila2.StringDto>>>> _propertyResponseOfListOfKeyValuePairDtoOfInt64AndIntegerDtoAndStringAndStringDto = Tecan.Sila2.ByteSerializer.Create<PropertyResponse<System.Collections.Generic.List<Tecan.Sila2.KeyValuePairDto<long, Tecan.Sila2.IntegerDto, string, Tecan.Sila2.StringDto>>>>(DictionaryServiceTypeModel.Instance);
         
         private DictionaryServiceSerializers()
         {
@@ -41,7 +41,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// <summary>
         /// Gets the byte serializer for PropertyResponseOfListOfKeyValuePairDtoOfInt64AndIntegerDtoAndStringAndStringDto
         /// </summary>
-        public static ByteSerializer<PropertyResponse<System.Collections.Generic.List<Tecan.Sila2.KeyValuePairDto<long, Tecan.Sila2.IntegerDto, string, Tecan.Sila2.StringDto>>>> PropertyResponseOfListOfKeyValuePairDtoOfInt64AndIntegerDtoAndStringAndStringDto
+        public static Tecan.Sila2.ByteSerializer<PropertyResponse<System.Collections.Generic.List<Tecan.Sila2.KeyValuePairDto<long, Tecan.Sila2.IntegerDto, string, Tecan.Sila2.StringDto>>>> PropertyResponseOfListOfKeyValuePairDtoOfInt64AndIntegerDtoAndStringAndStringDto
         {
             get
             {

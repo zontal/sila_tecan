@@ -106,11 +106,11 @@ namespace Tecan.Sila2.Interop.Server.ObservablePropertyTest
     public sealed class ObservablePropertyTestSerializers
     {
         
-        private static ByteSerializer<SetValueRequestDto> _setValueRequestDto = ByteSerializer.Create<SetValueRequestDto>(ObservablePropertyTestTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<SetValueRequestDto> _setValueRequestDto = Tecan.Sila2.ByteSerializer.Create<SetValueRequestDto>(ObservablePropertyTestTypeModel.Instance);
         
-        private static ByteSerializer<PropertyResponse<Tecan.Sila2.IntegerDto>> _propertyResponseOfIntegerDto = ByteSerializer.Create<PropertyResponse<Tecan.Sila2.IntegerDto>>(ObservablePropertyTestTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<PropertyResponse<Tecan.Sila2.IntegerDto>> _propertyResponseOfIntegerDto = Tecan.Sila2.ByteSerializer.Create<PropertyResponse<Tecan.Sila2.IntegerDto>>(ObservablePropertyTestTypeModel.Instance);
         
-        private static ByteSerializer<PropertyResponse<Tecan.Sila2.BooleanDto>> _propertyResponseOfBooleanDto = ByteSerializer.Create<PropertyResponse<Tecan.Sila2.BooleanDto>>(ObservablePropertyTestTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<PropertyResponse<Tecan.Sila2.BooleanDto>> _propertyResponseOfBooleanDto = Tecan.Sila2.ByteSerializer.Create<PropertyResponse<Tecan.Sila2.BooleanDto>>(ObservablePropertyTestTypeModel.Instance);
         
         private ObservablePropertyTestSerializers()
         {
@@ -119,7 +119,7 @@ namespace Tecan.Sila2.Interop.Server.ObservablePropertyTest
         /// <summary>
         /// Gets the byte serializer for SetValueRequestDto
         /// </summary>
-        public static ByteSerializer<SetValueRequestDto> SetValueRequestDto
+        public static Tecan.Sila2.ByteSerializer<SetValueRequestDto> SetValueRequestDto
         {
             get
             {
@@ -130,7 +130,7 @@ namespace Tecan.Sila2.Interop.Server.ObservablePropertyTest
         /// <summary>
         /// Gets the byte serializer for PropertyResponseOfIntegerDto
         /// </summary>
-        public static ByteSerializer<PropertyResponse<Tecan.Sila2.IntegerDto>> PropertyResponseOfIntegerDto
+        public static Tecan.Sila2.ByteSerializer<PropertyResponse<Tecan.Sila2.IntegerDto>> PropertyResponseOfIntegerDto
         {
             get
             {
@@ -141,7 +141,7 @@ namespace Tecan.Sila2.Interop.Server.ObservablePropertyTest
         /// <summary>
         /// Gets the byte serializer for PropertyResponseOfBooleanDto
         /// </summary>
-        public static ByteSerializer<PropertyResponse<Tecan.Sila2.BooleanDto>> PropertyResponseOfBooleanDto
+        public static Tecan.Sila2.ByteSerializer<PropertyResponse<Tecan.Sila2.BooleanDto>> PropertyResponseOfBooleanDto
         {
             get
             {

@@ -238,9 +238,9 @@ namespace Tecan.Sila2.Cancellation
     public sealed class CancelControllerSerializers
     {
         
-        private static ByteSerializer<CancelCommandRequestDto> _cancelCommandRequestDto = ByteSerializer.Create<CancelCommandRequestDto>(CancelControllerTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<CancelCommandRequestDto> _cancelCommandRequestDto = Tecan.Sila2.ByteSerializer.Create<CancelCommandRequestDto>(CancelControllerTypeModel.Instance);
         
-        private static ByteSerializer<CancelAllRequestDto> _cancelAllRequestDto = ByteSerializer.Create<CancelAllRequestDto>(CancelControllerTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<CancelAllRequestDto> _cancelAllRequestDto = Tecan.Sila2.ByteSerializer.Create<CancelAllRequestDto>(CancelControllerTypeModel.Instance);
         
         private CancelControllerSerializers()
         {
@@ -249,7 +249,7 @@ namespace Tecan.Sila2.Cancellation
         /// <summary>
         /// Gets the byte serializer for CancelCommandRequestDto
         /// </summary>
-        public static ByteSerializer<CancelCommandRequestDto> CancelCommandRequestDto
+        public static Tecan.Sila2.ByteSerializer<CancelCommandRequestDto> CancelCommandRequestDto
         {
             get
             {
@@ -260,7 +260,7 @@ namespace Tecan.Sila2.Cancellation
         /// <summary>
         /// Gets the byte serializer for CancelAllRequestDto
         /// </summary>
-        public static ByteSerializer<CancelAllRequestDto> CancelAllRequestDto
+        public static Tecan.Sila2.ByteSerializer<CancelAllRequestDto> CancelAllRequestDto
         {
             get
             {

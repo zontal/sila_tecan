@@ -61,7 +61,7 @@ namespace Tecan.Sila2.Interop.Server.ObservablePropertyTest
         /// <param name="registration">The registration component to which the feature should be registered</param>
         public void Register(IServerBuilder registration)
         {
-            registration.RegisterUnobservableCommand<SetValueRequestDto, EmptyRequest>("SetValue", SetValue, ObservablePropertyTestSerializers.SetValueRequestDto, EmptyRequest.Marshaller);
+            registration.RegisterUnobservableCommand<SetValueRequestDto, EmptyRequest>("SetValue", SetValue, ObservablePropertyTestSerializers.SetValueRequestDto, Tecan.Sila2.EmptyRequest.Marshaller);
             registration.RegisterObservableProperty("FixedValue", GetFixedValue, _implementation, ObservablePropertyTestSerializers.PropertyResponseOfIntegerDto);
             registration.RegisterObservableProperty("Alternating", GetAlternating, _implementation, ObservablePropertyTestSerializers.PropertyResponseOfBooleanDto);
             registration.RegisterObservableProperty("Editable", GetEditable, _implementation, ObservablePropertyTestSerializers.PropertyResponseOfIntegerDto);

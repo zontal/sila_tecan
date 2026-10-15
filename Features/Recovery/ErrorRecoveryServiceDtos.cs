@@ -1035,13 +1035,13 @@ namespace Tecan.Sila2.Recovery
     public sealed class ErrorRecoveryServiceSerializers
     {
         
-        private static ByteSerializer<ExecuteContinuationOptionRequestDto> _executeContinuationOptionRequestDto = ByteSerializer.Create<ExecuteContinuationOptionRequestDto>(ErrorRecoveryServiceTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<ExecuteContinuationOptionRequestDto> _executeContinuationOptionRequestDto = Tecan.Sila2.ByteSerializer.Create<ExecuteContinuationOptionRequestDto>(ErrorRecoveryServiceTypeModel.Instance);
         
-        private static ByteSerializer<AbortErrorHandlingRequestDto> _abortErrorHandlingRequestDto = ByteSerializer.Create<AbortErrorHandlingRequestDto>(ErrorRecoveryServiceTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<AbortErrorHandlingRequestDto> _abortErrorHandlingRequestDto = Tecan.Sila2.ByteSerializer.Create<AbortErrorHandlingRequestDto>(ErrorRecoveryServiceTypeModel.Instance);
         
-        private static ByteSerializer<SetErrorHandlingTimeoutRequestDto> _setErrorHandlingTimeoutRequestDto = ByteSerializer.Create<SetErrorHandlingTimeoutRequestDto>(ErrorRecoveryServiceTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<SetErrorHandlingTimeoutRequestDto> _setErrorHandlingTimeoutRequestDto = Tecan.Sila2.ByteSerializer.Create<SetErrorHandlingTimeoutRequestDto>(ErrorRecoveryServiceTypeModel.Instance);
         
-        private static ByteSerializer<PropertyResponse<System.Collections.Generic.List<RecoverableErrorDto>>> _propertyResponseOfListOfRecoverableErrorDto = ByteSerializer.Create<PropertyResponse<System.Collections.Generic.List<RecoverableErrorDto>>>(ErrorRecoveryServiceTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<PropertyResponse<System.Collections.Generic.List<RecoverableErrorDto>>> _propertyResponseOfListOfRecoverableErrorDto = Tecan.Sila2.ByteSerializer.Create<PropertyResponse<System.Collections.Generic.List<RecoverableErrorDto>>>(ErrorRecoveryServiceTypeModel.Instance);
         
         private ErrorRecoveryServiceSerializers()
         {
@@ -1050,7 +1050,7 @@ namespace Tecan.Sila2.Recovery
         /// <summary>
         /// Gets the byte serializer for ExecuteContinuationOptionRequestDto
         /// </summary>
-        public static ByteSerializer<ExecuteContinuationOptionRequestDto> ExecuteContinuationOptionRequestDto
+        public static Tecan.Sila2.ByteSerializer<ExecuteContinuationOptionRequestDto> ExecuteContinuationOptionRequestDto
         {
             get
             {
@@ -1061,7 +1061,7 @@ namespace Tecan.Sila2.Recovery
         /// <summary>
         /// Gets the byte serializer for AbortErrorHandlingRequestDto
         /// </summary>
-        public static ByteSerializer<AbortErrorHandlingRequestDto> AbortErrorHandlingRequestDto
+        public static Tecan.Sila2.ByteSerializer<AbortErrorHandlingRequestDto> AbortErrorHandlingRequestDto
         {
             get
             {
@@ -1072,7 +1072,7 @@ namespace Tecan.Sila2.Recovery
         /// <summary>
         /// Gets the byte serializer for SetErrorHandlingTimeoutRequestDto
         /// </summary>
-        public static ByteSerializer<SetErrorHandlingTimeoutRequestDto> SetErrorHandlingTimeoutRequestDto
+        public static Tecan.Sila2.ByteSerializer<SetErrorHandlingTimeoutRequestDto> SetErrorHandlingTimeoutRequestDto
         {
             get
             {
@@ -1083,7 +1083,7 @@ namespace Tecan.Sila2.Recovery
         /// <summary>
         /// Gets the byte serializer for PropertyResponseOfListOfRecoverableErrorDto
         /// </summary>
-        public static ByteSerializer<PropertyResponse<System.Collections.Generic.List<RecoverableErrorDto>>> PropertyResponseOfListOfRecoverableErrorDto
+        public static Tecan.Sila2.ByteSerializer<PropertyResponse<System.Collections.Generic.List<RecoverableErrorDto>>> PropertyResponseOfListOfRecoverableErrorDto
         {
             get
             {

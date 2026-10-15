@@ -356,11 +356,11 @@ namespace Tecan.Sila2.Authentication.AuthenticationService
     public sealed class AuthenticationServiceSerializers
     {
         
-        private static ByteSerializer<LoginRequestDto> _loginRequestDto = ByteSerializer.Create<LoginRequestDto>(AuthenticationServiceTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<LoginRequestDto> _loginRequestDto = Tecan.Sila2.ByteSerializer.Create<LoginRequestDto>(AuthenticationServiceTypeModel.Instance);
         
-        private static ByteSerializer<LoginResponseDto> _loginResponseDto = ByteSerializer.Create<LoginResponseDto>(AuthenticationServiceTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<LoginResponseDto> _loginResponseDto = Tecan.Sila2.ByteSerializer.Create<LoginResponseDto>(AuthenticationServiceTypeModel.Instance);
         
-        private static ByteSerializer<LogoutRequestDto> _logoutRequestDto = ByteSerializer.Create<LogoutRequestDto>(AuthenticationServiceTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<LogoutRequestDto> _logoutRequestDto = Tecan.Sila2.ByteSerializer.Create<LogoutRequestDto>(AuthenticationServiceTypeModel.Instance);
         
         private AuthenticationServiceSerializers()
         {
@@ -369,7 +369,7 @@ namespace Tecan.Sila2.Authentication.AuthenticationService
         /// <summary>
         /// Gets the byte serializer for LoginRequestDto
         /// </summary>
-        public static ByteSerializer<LoginRequestDto> LoginRequestDto
+        public static Tecan.Sila2.ByteSerializer<LoginRequestDto> LoginRequestDto
         {
             get
             {
@@ -380,7 +380,7 @@ namespace Tecan.Sila2.Authentication.AuthenticationService
         /// <summary>
         /// Gets the byte serializer for LoginResponseDto
         /// </summary>
-        public static ByteSerializer<LoginResponseDto> LoginResponseDto
+        public static Tecan.Sila2.ByteSerializer<LoginResponseDto> LoginResponseDto
         {
             get
             {
@@ -391,7 +391,7 @@ namespace Tecan.Sila2.Authentication.AuthenticationService
         /// <summary>
         /// Gets the byte serializer for LogoutRequestDto
         /// </summary>
-        public static ByteSerializer<LogoutRequestDto> LogoutRequestDto
+        public static Tecan.Sila2.ByteSerializer<LogoutRequestDto> LogoutRequestDto
         {
             get
             {

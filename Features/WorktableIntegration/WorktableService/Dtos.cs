@@ -1117,11 +1117,11 @@ namespace Tecan.Sila2.WorktableIntegration
     public sealed class WorktableServiceSerializers
     {
         
-        private static ByteSerializer<PropertyResponse<BoundingBoxDto>> _propertyResponseOfBoundingBoxDto = ByteSerializer.Create<PropertyResponse<BoundingBoxDto>>(WorktableServiceTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<PropertyResponse<BoundingBoxDto>> _propertyResponseOfBoundingBoxDto = Tecan.Sila2.ByteSerializer.Create<PropertyResponse<BoundingBoxDto>>(WorktableServiceTypeModel.Instance);
         
-        private static ByteSerializer<PropertyResponse<System.Collections.Generic.List<SiteTemplateDto>>> _propertyResponseOfListOfSiteTemplateDto = ByteSerializer.Create<PropertyResponse<System.Collections.Generic.List<SiteTemplateDto>>>(WorktableServiceTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<PropertyResponse<System.Collections.Generic.List<SiteTemplateDto>>> _propertyResponseOfListOfSiteTemplateDto = Tecan.Sila2.ByteSerializer.Create<PropertyResponse<System.Collections.Generic.List<SiteTemplateDto>>>(WorktableServiceTypeModel.Instance);
         
-        private static ByteSerializer<PropertyResponse<System.Collections.Generic.List<SiteDto>>> _propertyResponseOfListOfSiteDto = ByteSerializer.Create<PropertyResponse<System.Collections.Generic.List<SiteDto>>>(WorktableServiceTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<PropertyResponse<System.Collections.Generic.List<SiteDto>>> _propertyResponseOfListOfSiteDto = Tecan.Sila2.ByteSerializer.Create<PropertyResponse<System.Collections.Generic.List<SiteDto>>>(WorktableServiceTypeModel.Instance);
         
         private WorktableServiceSerializers()
         {
@@ -1130,7 +1130,7 @@ namespace Tecan.Sila2.WorktableIntegration
         /// <summary>
         /// Gets the byte serializer for PropertyResponseOfBoundingBoxDto
         /// </summary>
-        public static ByteSerializer<PropertyResponse<BoundingBoxDto>> PropertyResponseOfBoundingBoxDto
+        public static Tecan.Sila2.ByteSerializer<PropertyResponse<BoundingBoxDto>> PropertyResponseOfBoundingBoxDto
         {
             get
             {
@@ -1141,7 +1141,7 @@ namespace Tecan.Sila2.WorktableIntegration
         /// <summary>
         /// Gets the byte serializer for PropertyResponseOfListOfSiteTemplateDto
         /// </summary>
-        public static ByteSerializer<PropertyResponse<System.Collections.Generic.List<SiteTemplateDto>>> PropertyResponseOfListOfSiteTemplateDto
+        public static Tecan.Sila2.ByteSerializer<PropertyResponse<System.Collections.Generic.List<SiteTemplateDto>>> PropertyResponseOfListOfSiteTemplateDto
         {
             get
             {
@@ -1152,7 +1152,7 @@ namespace Tecan.Sila2.WorktableIntegration
         /// <summary>
         /// Gets the byte serializer for PropertyResponseOfListOfSiteDto
         /// </summary>
-        public static ByteSerializer<PropertyResponse<System.Collections.Generic.List<SiteDto>>> PropertyResponseOfListOfSiteDto
+        public static Tecan.Sila2.ByteSerializer<PropertyResponse<System.Collections.Generic.List<SiteDto>>> PropertyResponseOfListOfSiteDto
         {
             get
             {

@@ -62,7 +62,7 @@ namespace Tecan.Sila2.ParameterDefaultsProvider.Tests
         /// <param name="registration">The registration component to which the feature should be registered</param>
         public void Register(IServerBuilder registration)
         {
-            registration.RegisterUnobservableCommand<FileExampleMethodRequestDto, EmptyRequest>("FileExampleMethod", FileExampleMethod, ExampleFileConstraintProviderServiceSerializers.FileExampleMethodRequestDto, EmptyRequest.Marshaller);
+            registration.RegisterUnobservableCommand<FileExampleMethodRequestDto, EmptyRequest>("FileExampleMethod", FileExampleMethod, ExampleFileConstraintProviderServiceSerializers.FileExampleMethodRequestDto, Tecan.Sila2.EmptyRequest.Marshaller);
         }
         
         /// <summary>

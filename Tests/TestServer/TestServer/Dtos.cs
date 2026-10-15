@@ -2628,81 +2628,81 @@ namespace Tecan.Sila2.IntegrationTests
     public sealed class TestServerSerializers
     {
         
-        private static ByteSerializer<PassBoolRequestDto> _passBoolRequestDto = ByteSerializer.Create<PassBoolRequestDto>(TestServerTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<PassBoolRequestDto> _passBoolRequestDto = Tecan.Sila2.ByteSerializer.Create<PassBoolRequestDto>(TestServerTypeModel.Instance);
         
-        private static ByteSerializer<PassBoolResponseDto> _passBoolResponseDto = ByteSerializer.Create<PassBoolResponseDto>(TestServerTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<PassBoolResponseDto> _passBoolResponseDto = Tecan.Sila2.ByteSerializer.Create<PassBoolResponseDto>(TestServerTypeModel.Instance);
         
-        private static ByteSerializer<PassDoubleRequestDto> _passDoubleRequestDto = ByteSerializer.Create<PassDoubleRequestDto>(TestServerTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<PassDoubleRequestDto> _passDoubleRequestDto = Tecan.Sila2.ByteSerializer.Create<PassDoubleRequestDto>(TestServerTypeModel.Instance);
         
-        private static ByteSerializer<PassDoubleResponseDto> _passDoubleResponseDto = ByteSerializer.Create<PassDoubleResponseDto>(TestServerTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<PassDoubleResponseDto> _passDoubleResponseDto = Tecan.Sila2.ByteSerializer.Create<PassDoubleResponseDto>(TestServerTypeModel.Instance);
         
-        private static ByteSerializer<PassLongRequestDto> _passLongRequestDto = ByteSerializer.Create<PassLongRequestDto>(TestServerTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<PassLongRequestDto> _passLongRequestDto = Tecan.Sila2.ByteSerializer.Create<PassLongRequestDto>(TestServerTypeModel.Instance);
         
-        private static ByteSerializer<PassLongResponseDto> _passLongResponseDto = ByteSerializer.Create<PassLongResponseDto>(TestServerTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<PassLongResponseDto> _passLongResponseDto = Tecan.Sila2.ByteSerializer.Create<PassLongResponseDto>(TestServerTypeModel.Instance);
         
-        private static ByteSerializer<PassIntRequestDto> _passIntRequestDto = ByteSerializer.Create<PassIntRequestDto>(TestServerTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<PassIntRequestDto> _passIntRequestDto = Tecan.Sila2.ByteSerializer.Create<PassIntRequestDto>(TestServerTypeModel.Instance);
         
-        private static ByteSerializer<PassIntResponseDto> _passIntResponseDto = ByteSerializer.Create<PassIntResponseDto>(TestServerTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<PassIntResponseDto> _passIntResponseDto = Tecan.Sila2.ByteSerializer.Create<PassIntResponseDto>(TestServerTypeModel.Instance);
         
-        private static ByteSerializer<PassTimestampRequestDto> _passTimestampRequestDto = ByteSerializer.Create<PassTimestampRequestDto>(TestServerTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<PassTimestampRequestDto> _passTimestampRequestDto = Tecan.Sila2.ByteSerializer.Create<PassTimestampRequestDto>(TestServerTypeModel.Instance);
         
-        private static ByteSerializer<PassTimestampResponseDto> _passTimestampResponseDto = ByteSerializer.Create<PassTimestampResponseDto>(TestServerTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<PassTimestampResponseDto> _passTimestampResponseDto = Tecan.Sila2.ByteSerializer.Create<PassTimestampResponseDto>(TestServerTypeModel.Instance);
         
-        private static ByteSerializer<PassTimeRequestDto> _passTimeRequestDto = ByteSerializer.Create<PassTimeRequestDto>(TestServerTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<PassTimeRequestDto> _passTimeRequestDto = Tecan.Sila2.ByteSerializer.Create<PassTimeRequestDto>(TestServerTypeModel.Instance);
         
-        private static ByteSerializer<PassTimeResponseDto> _passTimeResponseDto = ByteSerializer.Create<PassTimeResponseDto>(TestServerTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<PassTimeResponseDto> _passTimeResponseDto = Tecan.Sila2.ByteSerializer.Create<PassTimeResponseDto>(TestServerTypeModel.Instance);
         
-        private static ByteSerializer<PassStringRequestDto> _passStringRequestDto = ByteSerializer.Create<PassStringRequestDto>(TestServerTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<PassStringRequestDto> _passStringRequestDto = Tecan.Sila2.ByteSerializer.Create<PassStringRequestDto>(TestServerTypeModel.Instance);
         
-        private static ByteSerializer<PassStringResponseDto> _passStringResponseDto = ByteSerializer.Create<PassStringResponseDto>(TestServerTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<PassStringResponseDto> _passStringResponseDto = Tecan.Sila2.ByteSerializer.Create<PassStringResponseDto>(TestServerTypeModel.Instance);
         
-        private static ByteSerializer<PassStreamRequestDto> _passStreamRequestDto = ByteSerializer.Create<PassStreamRequestDto>(TestServerTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<PassStreamRequestDto> _passStreamRequestDto = Tecan.Sila2.ByteSerializer.Create<PassStreamRequestDto>(TestServerTypeModel.Instance);
         
-        private static ByteSerializer<PassStreamResponseDto> _passStreamResponseDto = ByteSerializer.Create<PassStreamResponseDto>(TestServerTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<PassStreamResponseDto> _passStreamResponseDto = Tecan.Sila2.ByteSerializer.Create<PassStreamResponseDto>(TestServerTypeModel.Instance);
         
-        private static ByteSerializer<PassFileRequestDto> _passFileRequestDto = ByteSerializer.Create<PassFileRequestDto>(TestServerTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<PassFileRequestDto> _passFileRequestDto = Tecan.Sila2.ByteSerializer.Create<PassFileRequestDto>(TestServerTypeModel.Instance);
         
-        private static ByteSerializer<PassFileResponseDto> _passFileResponseDto = ByteSerializer.Create<PassFileResponseDto>(TestServerTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<PassFileResponseDto> _passFileResponseDto = Tecan.Sila2.ByteSerializer.Create<PassFileResponseDto>(TestServerTypeModel.Instance);
         
-        private static ByteSerializer<PassBytesRequestDto> _passBytesRequestDto = ByteSerializer.Create<PassBytesRequestDto>(TestServerTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<PassBytesRequestDto> _passBytesRequestDto = Tecan.Sila2.ByteSerializer.Create<PassBytesRequestDto>(TestServerTypeModel.Instance);
         
-        private static ByteSerializer<PassBytesResponseDto> _passBytesResponseDto = ByteSerializer.Create<PassBytesResponseDto>(TestServerTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<PassBytesResponseDto> _passBytesResponseDto = Tecan.Sila2.ByteSerializer.Create<PassBytesResponseDto>(TestServerTypeModel.Instance);
         
-        private static ByteSerializer<PassDynamicRequestDto> _passDynamicRequestDto = ByteSerializer.Create<PassDynamicRequestDto>(TestServerTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<PassDynamicRequestDto> _passDynamicRequestDto = Tecan.Sila2.ByteSerializer.Create<PassDynamicRequestDto>(TestServerTypeModel.Instance);
         
-        private static ByteSerializer<PassDynamicResponseDto> _passDynamicResponseDto = ByteSerializer.Create<PassDynamicResponseDto>(TestServerTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<PassDynamicResponseDto> _passDynamicResponseDto = Tecan.Sila2.ByteSerializer.Create<PassDynamicResponseDto>(TestServerTypeModel.Instance);
         
-        private static ByteSerializer<PassCollectionRequestDto> _passCollectionRequestDto = ByteSerializer.Create<PassCollectionRequestDto>(TestServerTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<PassCollectionRequestDto> _passCollectionRequestDto = Tecan.Sila2.ByteSerializer.Create<PassCollectionRequestDto>(TestServerTypeModel.Instance);
         
-        private static ByteSerializer<PassCollectionResponseDto> _passCollectionResponseDto = ByteSerializer.Create<PassCollectionResponseDto>(TestServerTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<PassCollectionResponseDto> _passCollectionResponseDto = Tecan.Sila2.ByteSerializer.Create<PassCollectionResponseDto>(TestServerTypeModel.Instance);
         
-        private static ByteSerializer<PassStructureRequestDto> _passStructureRequestDto = ByteSerializer.Create<PassStructureRequestDto>(TestServerTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<PassStructureRequestDto> _passStructureRequestDto = Tecan.Sila2.ByteSerializer.Create<PassStructureRequestDto>(TestServerTypeModel.Instance);
         
-        private static ByteSerializer<PassStructureResponseDto> _passStructureResponseDto = ByteSerializer.Create<PassStructureResponseDto>(TestServerTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<PassStructureResponseDto> _passStructureResponseDto = Tecan.Sila2.ByteSerializer.Create<PassStructureResponseDto>(TestServerTypeModel.Instance);
         
-        private static ByteSerializer<RunObservableRequestDto> _runObservableRequestDto = ByteSerializer.Create<RunObservableRequestDto>(TestServerTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<RunObservableRequestDto> _runObservableRequestDto = Tecan.Sila2.ByteSerializer.Create<RunObservableRequestDto>(TestServerTypeModel.Instance);
         
-        private static ByteSerializer<RunObservableResponseDto> _runObservableResponseDto = ByteSerializer.Create<RunObservableResponseDto>(TestServerTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<RunObservableResponseDto> _runObservableResponseDto = Tecan.Sila2.ByteSerializer.Create<RunObservableResponseDto>(TestServerTypeModel.Instance);
         
-        private static ByteSerializer<RunIntermediateObservableCommandRequestDto> _runIntermediateObservableCommandRequestDto = ByteSerializer.Create<RunIntermediateObservableCommandRequestDto>(TestServerTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<RunIntermediateObservableCommandRequestDto> _runIntermediateObservableCommandRequestDto = Tecan.Sila2.ByteSerializer.Create<RunIntermediateObservableCommandRequestDto>(TestServerTypeModel.Instance);
         
-        private static ByteSerializer<RunIntermediateObservableCommandIntermediateDto> _runIntermediateObservableCommandIntermediateDto = ByteSerializer.Create<RunIntermediateObservableCommandIntermediateDto>(TestServerTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<RunIntermediateObservableCommandIntermediateDto> _runIntermediateObservableCommandIntermediateDto = Tecan.Sila2.ByteSerializer.Create<RunIntermediateObservableCommandIntermediateDto>(TestServerTypeModel.Instance);
         
-        private static ByteSerializer<WaitForCancelOrThrowRequestDto> _waitForCancelOrThrowRequestDto = ByteSerializer.Create<WaitForCancelOrThrowRequestDto>(TestServerTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<WaitForCancelOrThrowRequestDto> _waitForCancelOrThrowRequestDto = Tecan.Sila2.ByteSerializer.Create<WaitForCancelOrThrowRequestDto>(TestServerTypeModel.Instance);
         
-        private static ByteSerializer<RunIntoFailureRequestDto> _runIntoFailureRequestDto = ByteSerializer.Create<RunIntoFailureRequestDto>(TestServerTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<RunIntoFailureRequestDto> _runIntoFailureRequestDto = Tecan.Sila2.ByteSerializer.Create<RunIntoFailureRequestDto>(TestServerTypeModel.Instance);
         
-        private static ByteSerializer<RunIntoFailureObservablyRequestDto> _runIntoFailureObservablyRequestDto = ByteSerializer.Create<RunIntoFailureObservablyRequestDto>(TestServerTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<RunIntoFailureObservablyRequestDto> _runIntoFailureObservablyRequestDto = Tecan.Sila2.ByteSerializer.Create<RunIntoFailureObservablyRequestDto>(TestServerTypeModel.Instance);
         
-        private static ByteSerializer<IsCancelledRequestDto> _isCancelledRequestDto = ByteSerializer.Create<IsCancelledRequestDto>(TestServerTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<IsCancelledRequestDto> _isCancelledRequestDto = Tecan.Sila2.ByteSerializer.Create<IsCancelledRequestDto>(TestServerTypeModel.Instance);
         
-        private static ByteSerializer<IsCancelledResponseDto> _isCancelledResponseDto = ByteSerializer.Create<IsCancelledResponseDto>(TestServerTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<IsCancelledResponseDto> _isCancelledResponseDto = Tecan.Sila2.ByteSerializer.Create<IsCancelledResponseDto>(TestServerTypeModel.Instance);
         
-        private static ByteSerializer<ThrowRuntimeExceptionRequestDto> _throwRuntimeExceptionRequestDto = ByteSerializer.Create<ThrowRuntimeExceptionRequestDto>(TestServerTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<ThrowRuntimeExceptionRequestDto> _throwRuntimeExceptionRequestDto = Tecan.Sila2.ByteSerializer.Create<ThrowRuntimeExceptionRequestDto>(TestServerTypeModel.Instance);
         
-        private static ByteSerializer<SetDummyRequestDto> _setDummyRequestDto = ByteSerializer.Create<SetDummyRequestDto>(TestServerTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<SetDummyRequestDto> _setDummyRequestDto = Tecan.Sila2.ByteSerializer.Create<SetDummyRequestDto>(TestServerTypeModel.Instance);
         
-        private static ByteSerializer<PropertyResponse<Tecan.Sila2.IntegerDto>> _propertyResponseOfIntegerDto = ByteSerializer.Create<PropertyResponse<Tecan.Sila2.IntegerDto>>(TestServerTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<PropertyResponse<Tecan.Sila2.IntegerDto>> _propertyResponseOfIntegerDto = Tecan.Sila2.ByteSerializer.Create<PropertyResponse<Tecan.Sila2.IntegerDto>>(TestServerTypeModel.Instance);
         
         private TestServerSerializers()
         {
@@ -2711,7 +2711,7 @@ namespace Tecan.Sila2.IntegrationTests
         /// <summary>
         /// Gets the byte serializer for PassBoolRequestDto
         /// </summary>
-        public static ByteSerializer<PassBoolRequestDto> PassBoolRequestDto
+        public static Tecan.Sila2.ByteSerializer<PassBoolRequestDto> PassBoolRequestDto
         {
             get
             {
@@ -2722,7 +2722,7 @@ namespace Tecan.Sila2.IntegrationTests
         /// <summary>
         /// Gets the byte serializer for PassBoolResponseDto
         /// </summary>
-        public static ByteSerializer<PassBoolResponseDto> PassBoolResponseDto
+        public static Tecan.Sila2.ByteSerializer<PassBoolResponseDto> PassBoolResponseDto
         {
             get
             {
@@ -2733,7 +2733,7 @@ namespace Tecan.Sila2.IntegrationTests
         /// <summary>
         /// Gets the byte serializer for PassDoubleRequestDto
         /// </summary>
-        public static ByteSerializer<PassDoubleRequestDto> PassDoubleRequestDto
+        public static Tecan.Sila2.ByteSerializer<PassDoubleRequestDto> PassDoubleRequestDto
         {
             get
             {
@@ -2744,7 +2744,7 @@ namespace Tecan.Sila2.IntegrationTests
         /// <summary>
         /// Gets the byte serializer for PassDoubleResponseDto
         /// </summary>
-        public static ByteSerializer<PassDoubleResponseDto> PassDoubleResponseDto
+        public static Tecan.Sila2.ByteSerializer<PassDoubleResponseDto> PassDoubleResponseDto
         {
             get
             {
@@ -2755,7 +2755,7 @@ namespace Tecan.Sila2.IntegrationTests
         /// <summary>
         /// Gets the byte serializer for PassLongRequestDto
         /// </summary>
-        public static ByteSerializer<PassLongRequestDto> PassLongRequestDto
+        public static Tecan.Sila2.ByteSerializer<PassLongRequestDto> PassLongRequestDto
         {
             get
             {
@@ -2766,7 +2766,7 @@ namespace Tecan.Sila2.IntegrationTests
         /// <summary>
         /// Gets the byte serializer for PassLongResponseDto
         /// </summary>
-        public static ByteSerializer<PassLongResponseDto> PassLongResponseDto
+        public static Tecan.Sila2.ByteSerializer<PassLongResponseDto> PassLongResponseDto
         {
             get
             {
@@ -2777,7 +2777,7 @@ namespace Tecan.Sila2.IntegrationTests
         /// <summary>
         /// Gets the byte serializer for PassIntRequestDto
         /// </summary>
-        public static ByteSerializer<PassIntRequestDto> PassIntRequestDto
+        public static Tecan.Sila2.ByteSerializer<PassIntRequestDto> PassIntRequestDto
         {
             get
             {
@@ -2788,7 +2788,7 @@ namespace Tecan.Sila2.IntegrationTests
         /// <summary>
         /// Gets the byte serializer for PassIntResponseDto
         /// </summary>
-        public static ByteSerializer<PassIntResponseDto> PassIntResponseDto
+        public static Tecan.Sila2.ByteSerializer<PassIntResponseDto> PassIntResponseDto
         {
             get
             {
@@ -2799,7 +2799,7 @@ namespace Tecan.Sila2.IntegrationTests
         /// <summary>
         /// Gets the byte serializer for PassTimestampRequestDto
         /// </summary>
-        public static ByteSerializer<PassTimestampRequestDto> PassTimestampRequestDto
+        public static Tecan.Sila2.ByteSerializer<PassTimestampRequestDto> PassTimestampRequestDto
         {
             get
             {
@@ -2810,7 +2810,7 @@ namespace Tecan.Sila2.IntegrationTests
         /// <summary>
         /// Gets the byte serializer for PassTimestampResponseDto
         /// </summary>
-        public static ByteSerializer<PassTimestampResponseDto> PassTimestampResponseDto
+        public static Tecan.Sila2.ByteSerializer<PassTimestampResponseDto> PassTimestampResponseDto
         {
             get
             {
@@ -2821,7 +2821,7 @@ namespace Tecan.Sila2.IntegrationTests
         /// <summary>
         /// Gets the byte serializer for PassTimeRequestDto
         /// </summary>
-        public static ByteSerializer<PassTimeRequestDto> PassTimeRequestDto
+        public static Tecan.Sila2.ByteSerializer<PassTimeRequestDto> PassTimeRequestDto
         {
             get
             {
@@ -2832,7 +2832,7 @@ namespace Tecan.Sila2.IntegrationTests
         /// <summary>
         /// Gets the byte serializer for PassTimeResponseDto
         /// </summary>
-        public static ByteSerializer<PassTimeResponseDto> PassTimeResponseDto
+        public static Tecan.Sila2.ByteSerializer<PassTimeResponseDto> PassTimeResponseDto
         {
             get
             {
@@ -2843,7 +2843,7 @@ namespace Tecan.Sila2.IntegrationTests
         /// <summary>
         /// Gets the byte serializer for PassStringRequestDto
         /// </summary>
-        public static ByteSerializer<PassStringRequestDto> PassStringRequestDto
+        public static Tecan.Sila2.ByteSerializer<PassStringRequestDto> PassStringRequestDto
         {
             get
             {
@@ -2854,7 +2854,7 @@ namespace Tecan.Sila2.IntegrationTests
         /// <summary>
         /// Gets the byte serializer for PassStringResponseDto
         /// </summary>
-        public static ByteSerializer<PassStringResponseDto> PassStringResponseDto
+        public static Tecan.Sila2.ByteSerializer<PassStringResponseDto> PassStringResponseDto
         {
             get
             {
@@ -2865,7 +2865,7 @@ namespace Tecan.Sila2.IntegrationTests
         /// <summary>
         /// Gets the byte serializer for PassStreamRequestDto
         /// </summary>
-        public static ByteSerializer<PassStreamRequestDto> PassStreamRequestDto
+        public static Tecan.Sila2.ByteSerializer<PassStreamRequestDto> PassStreamRequestDto
         {
             get
             {
@@ -2876,7 +2876,7 @@ namespace Tecan.Sila2.IntegrationTests
         /// <summary>
         /// Gets the byte serializer for PassStreamResponseDto
         /// </summary>
-        public static ByteSerializer<PassStreamResponseDto> PassStreamResponseDto
+        public static Tecan.Sila2.ByteSerializer<PassStreamResponseDto> PassStreamResponseDto
         {
             get
             {
@@ -2887,7 +2887,7 @@ namespace Tecan.Sila2.IntegrationTests
         /// <summary>
         /// Gets the byte serializer for PassFileRequestDto
         /// </summary>
-        public static ByteSerializer<PassFileRequestDto> PassFileRequestDto
+        public static Tecan.Sila2.ByteSerializer<PassFileRequestDto> PassFileRequestDto
         {
             get
             {
@@ -2898,7 +2898,7 @@ namespace Tecan.Sila2.IntegrationTests
         /// <summary>
         /// Gets the byte serializer for PassFileResponseDto
         /// </summary>
-        public static ByteSerializer<PassFileResponseDto> PassFileResponseDto
+        public static Tecan.Sila2.ByteSerializer<PassFileResponseDto> PassFileResponseDto
         {
             get
             {
@@ -2909,7 +2909,7 @@ namespace Tecan.Sila2.IntegrationTests
         /// <summary>
         /// Gets the byte serializer for PassBytesRequestDto
         /// </summary>
-        public static ByteSerializer<PassBytesRequestDto> PassBytesRequestDto
+        public static Tecan.Sila2.ByteSerializer<PassBytesRequestDto> PassBytesRequestDto
         {
             get
             {
@@ -2920,7 +2920,7 @@ namespace Tecan.Sila2.IntegrationTests
         /// <summary>
         /// Gets the byte serializer for PassBytesResponseDto
         /// </summary>
-        public static ByteSerializer<PassBytesResponseDto> PassBytesResponseDto
+        public static Tecan.Sila2.ByteSerializer<PassBytesResponseDto> PassBytesResponseDto
         {
             get
             {
@@ -2931,7 +2931,7 @@ namespace Tecan.Sila2.IntegrationTests
         /// <summary>
         /// Gets the byte serializer for PassDynamicRequestDto
         /// </summary>
-        public static ByteSerializer<PassDynamicRequestDto> PassDynamicRequestDto
+        public static Tecan.Sila2.ByteSerializer<PassDynamicRequestDto> PassDynamicRequestDto
         {
             get
             {
@@ -2942,7 +2942,7 @@ namespace Tecan.Sila2.IntegrationTests
         /// <summary>
         /// Gets the byte serializer for PassDynamicResponseDto
         /// </summary>
-        public static ByteSerializer<PassDynamicResponseDto> PassDynamicResponseDto
+        public static Tecan.Sila2.ByteSerializer<PassDynamicResponseDto> PassDynamicResponseDto
         {
             get
             {
@@ -2953,7 +2953,7 @@ namespace Tecan.Sila2.IntegrationTests
         /// <summary>
         /// Gets the byte serializer for PassCollectionRequestDto
         /// </summary>
-        public static ByteSerializer<PassCollectionRequestDto> PassCollectionRequestDto
+        public static Tecan.Sila2.ByteSerializer<PassCollectionRequestDto> PassCollectionRequestDto
         {
             get
             {
@@ -2964,7 +2964,7 @@ namespace Tecan.Sila2.IntegrationTests
         /// <summary>
         /// Gets the byte serializer for PassCollectionResponseDto
         /// </summary>
-        public static ByteSerializer<PassCollectionResponseDto> PassCollectionResponseDto
+        public static Tecan.Sila2.ByteSerializer<PassCollectionResponseDto> PassCollectionResponseDto
         {
             get
             {
@@ -2975,7 +2975,7 @@ namespace Tecan.Sila2.IntegrationTests
         /// <summary>
         /// Gets the byte serializer for PassStructureRequestDto
         /// </summary>
-        public static ByteSerializer<PassStructureRequestDto> PassStructureRequestDto
+        public static Tecan.Sila2.ByteSerializer<PassStructureRequestDto> PassStructureRequestDto
         {
             get
             {
@@ -2986,7 +2986,7 @@ namespace Tecan.Sila2.IntegrationTests
         /// <summary>
         /// Gets the byte serializer for PassStructureResponseDto
         /// </summary>
-        public static ByteSerializer<PassStructureResponseDto> PassStructureResponseDto
+        public static Tecan.Sila2.ByteSerializer<PassStructureResponseDto> PassStructureResponseDto
         {
             get
             {
@@ -2997,7 +2997,7 @@ namespace Tecan.Sila2.IntegrationTests
         /// <summary>
         /// Gets the byte serializer for RunObservableRequestDto
         /// </summary>
-        public static ByteSerializer<RunObservableRequestDto> RunObservableRequestDto
+        public static Tecan.Sila2.ByteSerializer<RunObservableRequestDto> RunObservableRequestDto
         {
             get
             {
@@ -3008,7 +3008,7 @@ namespace Tecan.Sila2.IntegrationTests
         /// <summary>
         /// Gets the byte serializer for RunObservableResponseDto
         /// </summary>
-        public static ByteSerializer<RunObservableResponseDto> RunObservableResponseDto
+        public static Tecan.Sila2.ByteSerializer<RunObservableResponseDto> RunObservableResponseDto
         {
             get
             {
@@ -3019,7 +3019,7 @@ namespace Tecan.Sila2.IntegrationTests
         /// <summary>
         /// Gets the byte serializer for RunIntermediateObservableCommandRequestDto
         /// </summary>
-        public static ByteSerializer<RunIntermediateObservableCommandRequestDto> RunIntermediateObservableCommandRequestDto
+        public static Tecan.Sila2.ByteSerializer<RunIntermediateObservableCommandRequestDto> RunIntermediateObservableCommandRequestDto
         {
             get
             {
@@ -3030,7 +3030,7 @@ namespace Tecan.Sila2.IntegrationTests
         /// <summary>
         /// Gets the byte serializer for RunIntermediateObservableCommandIntermediateDto
         /// </summary>
-        public static ByteSerializer<RunIntermediateObservableCommandIntermediateDto> RunIntermediateObservableCommandIntermediateDto
+        public static Tecan.Sila2.ByteSerializer<RunIntermediateObservableCommandIntermediateDto> RunIntermediateObservableCommandIntermediateDto
         {
             get
             {
@@ -3041,7 +3041,7 @@ namespace Tecan.Sila2.IntegrationTests
         /// <summary>
         /// Gets the byte serializer for WaitForCancelOrThrowRequestDto
         /// </summary>
-        public static ByteSerializer<WaitForCancelOrThrowRequestDto> WaitForCancelOrThrowRequestDto
+        public static Tecan.Sila2.ByteSerializer<WaitForCancelOrThrowRequestDto> WaitForCancelOrThrowRequestDto
         {
             get
             {
@@ -3052,7 +3052,7 @@ namespace Tecan.Sila2.IntegrationTests
         /// <summary>
         /// Gets the byte serializer for RunIntoFailureRequestDto
         /// </summary>
-        public static ByteSerializer<RunIntoFailureRequestDto> RunIntoFailureRequestDto
+        public static Tecan.Sila2.ByteSerializer<RunIntoFailureRequestDto> RunIntoFailureRequestDto
         {
             get
             {
@@ -3063,7 +3063,7 @@ namespace Tecan.Sila2.IntegrationTests
         /// <summary>
         /// Gets the byte serializer for RunIntoFailureObservablyRequestDto
         /// </summary>
-        public static ByteSerializer<RunIntoFailureObservablyRequestDto> RunIntoFailureObservablyRequestDto
+        public static Tecan.Sila2.ByteSerializer<RunIntoFailureObservablyRequestDto> RunIntoFailureObservablyRequestDto
         {
             get
             {
@@ -3074,7 +3074,7 @@ namespace Tecan.Sila2.IntegrationTests
         /// <summary>
         /// Gets the byte serializer for IsCancelledRequestDto
         /// </summary>
-        public static ByteSerializer<IsCancelledRequestDto> IsCancelledRequestDto
+        public static Tecan.Sila2.ByteSerializer<IsCancelledRequestDto> IsCancelledRequestDto
         {
             get
             {
@@ -3085,7 +3085,7 @@ namespace Tecan.Sila2.IntegrationTests
         /// <summary>
         /// Gets the byte serializer for IsCancelledResponseDto
         /// </summary>
-        public static ByteSerializer<IsCancelledResponseDto> IsCancelledResponseDto
+        public static Tecan.Sila2.ByteSerializer<IsCancelledResponseDto> IsCancelledResponseDto
         {
             get
             {
@@ -3096,7 +3096,7 @@ namespace Tecan.Sila2.IntegrationTests
         /// <summary>
         /// Gets the byte serializer for ThrowRuntimeExceptionRequestDto
         /// </summary>
-        public static ByteSerializer<ThrowRuntimeExceptionRequestDto> ThrowRuntimeExceptionRequestDto
+        public static Tecan.Sila2.ByteSerializer<ThrowRuntimeExceptionRequestDto> ThrowRuntimeExceptionRequestDto
         {
             get
             {
@@ -3107,7 +3107,7 @@ namespace Tecan.Sila2.IntegrationTests
         /// <summary>
         /// Gets the byte serializer for SetDummyRequestDto
         /// </summary>
-        public static ByteSerializer<SetDummyRequestDto> SetDummyRequestDto
+        public static Tecan.Sila2.ByteSerializer<SetDummyRequestDto> SetDummyRequestDto
         {
             get
             {
@@ -3118,7 +3118,7 @@ namespace Tecan.Sila2.IntegrationTests
         /// <summary>
         /// Gets the byte serializer for PropertyResponseOfIntegerDto
         /// </summary>
-        public static ByteSerializer<PropertyResponse<Tecan.Sila2.IntegerDto>> PropertyResponseOfIntegerDto
+        public static Tecan.Sila2.ByteSerializer<PropertyResponse<Tecan.Sila2.IntegerDto>> PropertyResponseOfIntegerDto
         {
             get
             {

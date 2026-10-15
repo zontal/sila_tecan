@@ -61,8 +61,8 @@ namespace Tecan.Sila2.Cancellation
         /// <param name="registration">The registration component to which the feature should be registered</param>
         public void Register(IServerBuilder registration)
         {
-            registration.RegisterUnobservableCommand<CancelCommandRequestDto, EmptyRequest>("CancelCommand", CancelCommand, CancelControllerSerializers.CancelCommandRequestDto, EmptyRequest.Marshaller);
-            registration.RegisterUnobservableCommand<CancelAllRequestDto, EmptyRequest>("CancelAll", CancelAll, CancelControllerSerializers.CancelAllRequestDto, EmptyRequest.Marshaller);
+            registration.RegisterUnobservableCommand<CancelCommandRequestDto, EmptyRequest>("CancelCommand", CancelCommand, CancelControllerSerializers.CancelCommandRequestDto, Tecan.Sila2.EmptyRequest.Marshaller);
+            registration.RegisterUnobservableCommand<CancelAllRequestDto, EmptyRequest>("CancelAll", CancelAll, CancelControllerSerializers.CancelAllRequestDto, Tecan.Sila2.EmptyRequest.Marshaller);
         }
         
         /// <summary>

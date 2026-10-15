@@ -381,11 +381,11 @@ namespace Tecan.Sila2.Generator.Test.TestReference
     public sealed class AmbiguityResolverServiceSerializers
     {
         
-        private static ByteSerializer<CheckAmbiguousEntriesRequestDto> _checkAmbiguousEntriesRequestDto = ByteSerializer.Create<CheckAmbiguousEntriesRequestDto>(AmbiguityResolverServiceTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<CheckAmbiguousEntriesRequestDto> _checkAmbiguousEntriesRequestDto = Tecan.Sila2.ByteSerializer.Create<CheckAmbiguousEntriesRequestDto>(AmbiguityResolverServiceTypeModel.Instance);
         
-        private static ByteSerializer<CheckAmbiguousEntriesResponseDto> _checkAmbiguousEntriesResponseDto = ByteSerializer.Create<CheckAmbiguousEntriesResponseDto>(AmbiguityResolverServiceTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<CheckAmbiguousEntriesResponseDto> _checkAmbiguousEntriesResponseDto = Tecan.Sila2.ByteSerializer.Create<CheckAmbiguousEntriesResponseDto>(AmbiguityResolverServiceTypeModel.Instance);
         
-        private static ByteSerializer<OverloadedMethodRequestDto> _overloadedMethodRequestDto = ByteSerializer.Create<OverloadedMethodRequestDto>(AmbiguityResolverServiceTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<OverloadedMethodRequestDto> _overloadedMethodRequestDto = Tecan.Sila2.ByteSerializer.Create<OverloadedMethodRequestDto>(AmbiguityResolverServiceTypeModel.Instance);
         
         private AmbiguityResolverServiceSerializers()
         {
@@ -394,7 +394,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// <summary>
         /// Gets the byte serializer for CheckAmbiguousEntriesRequestDto
         /// </summary>
-        public static ByteSerializer<CheckAmbiguousEntriesRequestDto> CheckAmbiguousEntriesRequestDto
+        public static Tecan.Sila2.ByteSerializer<CheckAmbiguousEntriesRequestDto> CheckAmbiguousEntriesRequestDto
         {
             get
             {
@@ -405,7 +405,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// <summary>
         /// Gets the byte serializer for CheckAmbiguousEntriesResponseDto
         /// </summary>
-        public static ByteSerializer<CheckAmbiguousEntriesResponseDto> CheckAmbiguousEntriesResponseDto
+        public static Tecan.Sila2.ByteSerializer<CheckAmbiguousEntriesResponseDto> CheckAmbiguousEntriesResponseDto
         {
             get
             {
@@ -416,7 +416,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// <summary>
         /// Gets the byte serializer for OverloadedMethodRequestDto
         /// </summary>
-        public static ByteSerializer<OverloadedMethodRequestDto> OverloadedMethodRequestDto
+        public static Tecan.Sila2.ByteSerializer<OverloadedMethodRequestDto> OverloadedMethodRequestDto
         {
             get
             {

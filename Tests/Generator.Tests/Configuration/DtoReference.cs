@@ -205,9 +205,9 @@ namespace Tecan.Sila2.Generator.Test.TestReference
     public sealed class ConfiguredServiceSerializers
     {
         
-        private static ByteSerializer<AccelerateToRequestDto> _accelerateToRequestDto = ByteSerializer.Create<AccelerateToRequestDto>(ConfiguredServiceTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<AccelerateToRequestDto> _accelerateToRequestDto = Tecan.Sila2.ByteSerializer.Create<AccelerateToRequestDto>(ConfiguredServiceTypeModel.Instance);
         
-        private static ByteSerializer<SpeedResponseDto> _speedResponseDto = ByteSerializer.Create<SpeedResponseDto>(ConfiguredServiceTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<SpeedResponseDto> _speedResponseDto = Tecan.Sila2.ByteSerializer.Create<SpeedResponseDto>(ConfiguredServiceTypeModel.Instance);
         
         private ConfiguredServiceSerializers()
         {
@@ -216,7 +216,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// <summary>
         /// Gets the byte serializer for AccelerateToRequestDto
         /// </summary>
-        public static ByteSerializer<AccelerateToRequestDto> AccelerateToRequestDto
+        public static Tecan.Sila2.ByteSerializer<AccelerateToRequestDto> AccelerateToRequestDto
         {
             get
             {
@@ -227,7 +227,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// <summary>
         /// Gets the byte serializer for SpeedResponseDto
         /// </summary>
-        public static ByteSerializer<SpeedResponseDto> SpeedResponseDto
+        public static Tecan.Sila2.ByteSerializer<SpeedResponseDto> SpeedResponseDto
         {
             get
             {

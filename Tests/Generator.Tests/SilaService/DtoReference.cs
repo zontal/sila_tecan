@@ -614,21 +614,21 @@ namespace Tecan.Sila2.Generator.Test.TestReference
     public sealed class SiLAServiceSerializers
     {
         
-        private static ByteSerializer<GetFeatureDefinitionRequestDto> _getFeatureDefinitionRequestDto = ByteSerializer.Create<GetFeatureDefinitionRequestDto>(SiLAServiceTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<GetFeatureDefinitionRequestDto> _getFeatureDefinitionRequestDto = Tecan.Sila2.ByteSerializer.Create<GetFeatureDefinitionRequestDto>(SiLAServiceTypeModel.Instance);
         
-        private static ByteSerializer<GetFeatureDefinitionResponseDto> _getFeatureDefinitionResponseDto = ByteSerializer.Create<GetFeatureDefinitionResponseDto>(SiLAServiceTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<GetFeatureDefinitionResponseDto> _getFeatureDefinitionResponseDto = Tecan.Sila2.ByteSerializer.Create<GetFeatureDefinitionResponseDto>(SiLAServiceTypeModel.Instance);
         
-        private static ByteSerializer<SetServerNameRequestDto> _setServerNameRequestDto = ByteSerializer.Create<SetServerNameRequestDto>(SiLAServiceTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<SetServerNameRequestDto> _setServerNameRequestDto = Tecan.Sila2.ByteSerializer.Create<SetServerNameRequestDto>(SiLAServiceTypeModel.Instance);
         
-        private static ByteSerializer<PropertyResponse<Tecan.Sila2.StringDto>> _propertyResponseOfStringDto = ByteSerializer.Create<PropertyResponse<Tecan.Sila2.StringDto>>(SiLAServiceTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<PropertyResponse<Tecan.Sila2.StringDto>> _propertyResponseOfStringDto = Tecan.Sila2.ByteSerializer.Create<PropertyResponse<Tecan.Sila2.StringDto>>(SiLAServiceTypeModel.Instance);
         
-        private static ByteSerializer<ServerUUIDResponseDto> _serverUUIDResponseDto = ByteSerializer.Create<ServerUUIDResponseDto>(SiLAServiceTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<ServerUUIDResponseDto> _serverUUIDResponseDto = Tecan.Sila2.ByteSerializer.Create<ServerUUIDResponseDto>(SiLAServiceTypeModel.Instance);
         
-        private static ByteSerializer<ServerVersionResponseDto> _serverVersionResponseDto = ByteSerializer.Create<ServerVersionResponseDto>(SiLAServiceTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<ServerVersionResponseDto> _serverVersionResponseDto = Tecan.Sila2.ByteSerializer.Create<ServerVersionResponseDto>(SiLAServiceTypeModel.Instance);
         
-        private static ByteSerializer<PropertyResponse<UrlDto>> _propertyResponseOfUrlDto = ByteSerializer.Create<PropertyResponse<UrlDto>>(SiLAServiceTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<PropertyResponse<UrlDto>> _propertyResponseOfUrlDto = Tecan.Sila2.ByteSerializer.Create<PropertyResponse<UrlDto>>(SiLAServiceTypeModel.Instance);
         
-        private static ByteSerializer<PropertyResponse<System.Collections.Generic.List<FeatureIdentifierDto>>> _propertyResponseOfListOfFeatureIdentifierDto = ByteSerializer.Create<PropertyResponse<System.Collections.Generic.List<FeatureIdentifierDto>>>(SiLAServiceTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<PropertyResponse<System.Collections.Generic.List<FeatureIdentifierDto>>> _propertyResponseOfListOfFeatureIdentifierDto = Tecan.Sila2.ByteSerializer.Create<PropertyResponse<System.Collections.Generic.List<FeatureIdentifierDto>>>(SiLAServiceTypeModel.Instance);
         
         private SiLAServiceSerializers()
         {
@@ -637,7 +637,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// <summary>
         /// Gets the byte serializer for GetFeatureDefinitionRequestDto
         /// </summary>
-        public static ByteSerializer<GetFeatureDefinitionRequestDto> GetFeatureDefinitionRequestDto
+        public static Tecan.Sila2.ByteSerializer<GetFeatureDefinitionRequestDto> GetFeatureDefinitionRequestDto
         {
             get
             {
@@ -648,7 +648,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// <summary>
         /// Gets the byte serializer for GetFeatureDefinitionResponseDto
         /// </summary>
-        public static ByteSerializer<GetFeatureDefinitionResponseDto> GetFeatureDefinitionResponseDto
+        public static Tecan.Sila2.ByteSerializer<GetFeatureDefinitionResponseDto> GetFeatureDefinitionResponseDto
         {
             get
             {
@@ -659,7 +659,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// <summary>
         /// Gets the byte serializer for SetServerNameRequestDto
         /// </summary>
-        public static ByteSerializer<SetServerNameRequestDto> SetServerNameRequestDto
+        public static Tecan.Sila2.ByteSerializer<SetServerNameRequestDto> SetServerNameRequestDto
         {
             get
             {
@@ -670,7 +670,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// <summary>
         /// Gets the byte serializer for PropertyResponseOfStringDto
         /// </summary>
-        public static ByteSerializer<PropertyResponse<Tecan.Sila2.StringDto>> PropertyResponseOfStringDto
+        public static Tecan.Sila2.ByteSerializer<PropertyResponse<Tecan.Sila2.StringDto>> PropertyResponseOfStringDto
         {
             get
             {
@@ -681,7 +681,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// <summary>
         /// Gets the byte serializer for ServerUUIDResponseDto
         /// </summary>
-        public static ByteSerializer<ServerUUIDResponseDto> ServerUUIDResponseDto
+        public static Tecan.Sila2.ByteSerializer<ServerUUIDResponseDto> ServerUUIDResponseDto
         {
             get
             {
@@ -692,7 +692,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// <summary>
         /// Gets the byte serializer for ServerVersionResponseDto
         /// </summary>
-        public static ByteSerializer<ServerVersionResponseDto> ServerVersionResponseDto
+        public static Tecan.Sila2.ByteSerializer<ServerVersionResponseDto> ServerVersionResponseDto
         {
             get
             {
@@ -703,7 +703,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// <summary>
         /// Gets the byte serializer for PropertyResponseOfUrlDto
         /// </summary>
-        public static ByteSerializer<PropertyResponse<UrlDto>> PropertyResponseOfUrlDto
+        public static Tecan.Sila2.ByteSerializer<PropertyResponse<UrlDto>> PropertyResponseOfUrlDto
         {
             get
             {
@@ -714,7 +714,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// <summary>
         /// Gets the byte serializer for PropertyResponseOfListOfFeatureIdentifierDto
         /// </summary>
-        public static ByteSerializer<PropertyResponse<System.Collections.Generic.List<FeatureIdentifierDto>>> PropertyResponseOfListOfFeatureIdentifierDto
+        public static Tecan.Sila2.ByteSerializer<PropertyResponse<System.Collections.Generic.List<FeatureIdentifierDto>>> PropertyResponseOfListOfFeatureIdentifierDto
         {
             get
             {

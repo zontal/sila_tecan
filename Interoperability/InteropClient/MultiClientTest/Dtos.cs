@@ -250,11 +250,11 @@ namespace Tecan.Sila2.Interop.Client.MultiClientTest.MultiClientTest
     public sealed class MultiClientTestSerializers
     {
         
-        private static ByteSerializer<RunInParallelRequestDto> _runInParallelRequestDto = ByteSerializer.Create<RunInParallelRequestDto>(MultiClientTestTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<RunInParallelRequestDto> _runInParallelRequestDto = Tecan.Sila2.ByteSerializer.Create<RunInParallelRequestDto>(MultiClientTestTypeModel.Instance);
         
-        private static ByteSerializer<RunQueuedRequestDto> _runQueuedRequestDto = ByteSerializer.Create<RunQueuedRequestDto>(MultiClientTestTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<RunQueuedRequestDto> _runQueuedRequestDto = Tecan.Sila2.ByteSerializer.Create<RunQueuedRequestDto>(MultiClientTestTypeModel.Instance);
         
-        private static ByteSerializer<RejectParallelExecutionRequestDto> _rejectParallelExecutionRequestDto = ByteSerializer.Create<RejectParallelExecutionRequestDto>(MultiClientTestTypeModel.Instance);
+        private static Tecan.Sila2.ByteSerializer<RejectParallelExecutionRequestDto> _rejectParallelExecutionRequestDto = Tecan.Sila2.ByteSerializer.Create<RejectParallelExecutionRequestDto>(MultiClientTestTypeModel.Instance);
         
         private MultiClientTestSerializers()
         {
@@ -263,7 +263,7 @@ namespace Tecan.Sila2.Interop.Client.MultiClientTest.MultiClientTest
         /// <summary>
         /// Gets the byte serializer for RunInParallelRequestDto
         /// </summary>
-        public static ByteSerializer<RunInParallelRequestDto> RunInParallelRequestDto
+        public static Tecan.Sila2.ByteSerializer<RunInParallelRequestDto> RunInParallelRequestDto
         {
             get
             {
@@ -274,7 +274,7 @@ namespace Tecan.Sila2.Interop.Client.MultiClientTest.MultiClientTest
         /// <summary>
         /// Gets the byte serializer for RunQueuedRequestDto
         /// </summary>
-        public static ByteSerializer<RunQueuedRequestDto> RunQueuedRequestDto
+        public static Tecan.Sila2.ByteSerializer<RunQueuedRequestDto> RunQueuedRequestDto
         {
             get
             {
@@ -285,7 +285,7 @@ namespace Tecan.Sila2.Interop.Client.MultiClientTest.MultiClientTest
         /// <summary>
         /// Gets the byte serializer for RejectParallelExecutionRequestDto
         /// </summary>
-        public static ByteSerializer<RejectParallelExecutionRequestDto> RejectParallelExecutionRequestDto
+        public static Tecan.Sila2.ByteSerializer<RejectParallelExecutionRequestDto> RejectParallelExecutionRequestDto
         {
             get
             {
