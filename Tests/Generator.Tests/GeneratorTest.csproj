@@ -160,6 +160,9 @@
         <Compile Update="TemperatureController\ServiceReference.cs">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Compile>
+        <Compile Update="*\GeneratedTypeModel\*Reference.cs">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Compile>
     </ItemGroup>
     <ItemGroup>
         <Folder Include="Properties\" />

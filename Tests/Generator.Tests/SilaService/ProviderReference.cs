@@ -61,15 +61,15 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// <param name="registration">The registration component to which the feature should be registered</param>
         public void Register(IServerBuilder registration)
         {
-            registration.RegisterUnobservableCommand<GetFeatureDefinitionRequestDto, GetFeatureDefinitionResponseDto>("GetFeatureDefinition", GetFeatureDefinition, SiLAServiceSerializers.GetFeatureDefinitionRequestDto, SiLAServiceSerializers.GetFeatureDefinitionResponseDto);
-            registration.RegisterUnobservableCommand<SetServerNameRequestDto, EmptyRequest>("SetServerName", SetServerName, SiLAServiceSerializers.SetServerNameRequestDto, Tecan.Sila2.EmptyRequest.Marshaller);
-            registration.RegisterUnobservableProperty("ServerName", GetServerName, SiLAServiceSerializers.PropertyResponseOfStringDto);
-            registration.RegisterUnobservableProperty("ServerType", GetServerType, SiLAServiceSerializers.PropertyResponseOfStringDto);
-            registration.RegisterUnobservableProperty("ServerUUID", GetServerUUID, SiLAServiceSerializers.ServerUUIDResponseDto);
-            registration.RegisterUnobservableProperty("ServerDescription", GetServerDescription, SiLAServiceSerializers.PropertyResponseOfStringDto);
-            registration.RegisterUnobservableProperty("ServerVersion", GetServerVersion, SiLAServiceSerializers.ServerVersionResponseDto);
-            registration.RegisterUnobservableProperty("ServerVendorURL", GetServerVendorURL, SiLAServiceSerializers.PropertyResponseOfUrlDto);
-            registration.RegisterUnobservableProperty("ImplementedFeatures", GetImplementedFeatures, SiLAServiceSerializers.PropertyResponseOfListOfFeatureIdentifierDto);
+            registration.RegisterUnobservableCommand<GetFeatureDefinitionRequestDto, GetFeatureDefinitionResponseDto>("GetFeatureDefinition", GetFeatureDefinition);
+            registration.RegisterUnobservableCommand<SetServerNameRequestDto, EmptyRequest>("SetServerName", SetServerName);
+            registration.RegisterUnobservableProperty("ServerName", GetServerName);
+            registration.RegisterUnobservableProperty("ServerType", GetServerType);
+            registration.RegisterUnobservableProperty("ServerUUID", GetServerUUID);
+            registration.RegisterUnobservableProperty("ServerDescription", GetServerDescription);
+            registration.RegisterUnobservableProperty("ServerVersion", GetServerVersion);
+            registration.RegisterUnobservableProperty("ServerVendorURL", GetServerVendorURL);
+            registration.RegisterUnobservableProperty("ImplementedFeatures", GetImplementedFeatures);
         }
         
         /// <summary>

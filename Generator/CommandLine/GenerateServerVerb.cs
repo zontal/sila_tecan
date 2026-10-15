@@ -187,7 +187,7 @@ namespace Tecan.Sila2.Generator.CommandLine
                     ServerOnly = !Client,
                     MinimumSeverity = MinimumSeverity,
                     TypeMappings = TypeMappings,
-                    UseRuntimeTypeModel = UseRuntimeTypeModel,
+                    UseGeneratedTypeModel = UseGeneratedTypeModel,
                 };
                 channel.Info( "Generate provider" );
                 generateProvider.Execute( container );

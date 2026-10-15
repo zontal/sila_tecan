@@ -7,7 +7,6 @@
 //     the code is regenerated.
 // </auto-generated>
 //------------------------------------------------------------------------------
-#pragma warning disable PBN9001
 
 using System;
 using Tecan.Sila2;
@@ -181,53 +180,6 @@ namespace Tecan.Sila2.Generator.Test.TestReference
                 errors = (errors + string.Format("Value should have been at most 373 but was \'{0}\'", Value.Value));
             }
             return errors;
-        }
-    }
-    
-    /// <summary>
-    /// The compile-time protobuf-net type model for the data transfer objects of the Temperature Controller feature
-    /// </summary>
-    [ProtoBuf.ProtoModelAttribute()]
-    [ProtoBuf.ProtoSerializableAttribute(typeof(ControlTemperatureRequestDto))]
-    [ProtoBuf.ProtoSerializableAttribute(typeof(CurrentTemperatureResponseDto))]
-    public sealed partial class TemperatureControllerTypeModel : ProtoBuf.Meta.TypeModel
-    {
-    }
-    
-    /// <summary>
-    /// Byte serializers for the data transfer objects of the Temperature Controller feature that use the compile-time generated TemperatureControllerTypeModel
-    /// </summary>
-    public sealed class TemperatureControllerSerializers
-    {
-        
-        private static Tecan.Sila2.ByteSerializer<ControlTemperatureRequestDto> _controlTemperatureRequestDto = Tecan.Sila2.ByteSerializer.Create<ControlTemperatureRequestDto>(TemperatureControllerTypeModel.Instance);
-        
-        private static Tecan.Sila2.ByteSerializer<CurrentTemperatureResponseDto> _currentTemperatureResponseDto = Tecan.Sila2.ByteSerializer.Create<CurrentTemperatureResponseDto>(TemperatureControllerTypeModel.Instance);
-        
-        private TemperatureControllerSerializers()
-        {
-        }
-        
-        /// <summary>
-        /// Gets the byte serializer for ControlTemperatureRequestDto
-        /// </summary>
-        public static Tecan.Sila2.ByteSerializer<ControlTemperatureRequestDto> ControlTemperatureRequestDto
-        {
-            get
-            {
-                return _controlTemperatureRequestDto;
-            }
-        }
-        
-        /// <summary>
-        /// Gets the byte serializer for CurrentTemperatureResponseDto
-        /// </summary>
-        public static Tecan.Sila2.ByteSerializer<CurrentTemperatureResponseDto> CurrentTemperatureResponseDto
-        {
-            get
-            {
-                return _currentTemperatureResponseDto;
-            }
         }
     }
 }

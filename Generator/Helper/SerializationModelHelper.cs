@@ -19,7 +19,7 @@ namespace Tecan.Sila2.Generator.Helper
         /// <summary>
         /// Gets a value indicating whether the generated code should serialize through a compile-time generated protobuf-net type model
         /// </summary>
-        public static bool UseGeneratedModel => !GeneratorSettings.UseRuntimeTypeModel;
+        public static bool UseGeneratedModel => GeneratorSettings.UseGeneratedTypeModel;
 
         /// <summary>
         /// Gets the name of the protobuf-net type model generated for the given feature

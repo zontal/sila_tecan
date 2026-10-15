@@ -7,7 +7,6 @@
 //     the code is regenerated.
 // </auto-generated>
 //------------------------------------------------------------------------------
-#pragma warning disable PBN9001
 
 using System;
 using Tecan.Sila2;
@@ -121,53 +120,6 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         public string GetValidationErrors()
         {
             return ("" + Argument.Require( Intermediate, "Intermediate" ));
-        }
-    }
-    
-    /// <summary>
-    /// The compile-time protobuf-net type model for the data transfer objects of the Rx Service feature
-    /// </summary>
-    [ProtoBuf.ProtoModelAttribute()]
-    [ProtoBuf.ProtoSerializableAttribute(typeof(RunRxObservableRequestDto))]
-    [ProtoBuf.ProtoSerializableAttribute(typeof(RunRxObservableIntermediateDto))]
-    public sealed partial class RxServiceTypeModel : ProtoBuf.Meta.TypeModel
-    {
-    }
-    
-    /// <summary>
-    /// Byte serializers for the data transfer objects of the Rx Service feature that use the compile-time generated RxServiceTypeModel
-    /// </summary>
-    public sealed class RxServiceSerializers
-    {
-        
-        private static Tecan.Sila2.ByteSerializer<RunRxObservableRequestDto> _runRxObservableRequestDto = Tecan.Sila2.ByteSerializer.Create<RunRxObservableRequestDto>(RxServiceTypeModel.Instance);
-        
-        private static Tecan.Sila2.ByteSerializer<RunRxObservableIntermediateDto> _runRxObservableIntermediateDto = Tecan.Sila2.ByteSerializer.Create<RunRxObservableIntermediateDto>(RxServiceTypeModel.Instance);
-        
-        private RxServiceSerializers()
-        {
-        }
-        
-        /// <summary>
-        /// Gets the byte serializer for RunRxObservableRequestDto
-        /// </summary>
-        public static Tecan.Sila2.ByteSerializer<RunRxObservableRequestDto> RunRxObservableRequestDto
-        {
-            get
-            {
-                return _runRxObservableRequestDto;
-            }
-        }
-        
-        /// <summary>
-        /// Gets the byte serializer for RunRxObservableIntermediateDto
-        /// </summary>
-        public static Tecan.Sila2.ByteSerializer<RunRxObservableIntermediateDto> RunRxObservableIntermediateDto
-        {
-            get
-            {
-                return _runRxObservableIntermediateDto;
-            }
         }
     }
 }

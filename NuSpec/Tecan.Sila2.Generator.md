@@ -4,6 +4,8 @@
 
 Use this package if you want to customize SilaGen with your own extensions.
 
+The generators produce code that serializes data transfer objects through the reflection-based protobuf-net runtime model unless `GeneratorSettings.UseGeneratedTypeModel` is set (command line option `--generated-type-model`), in which case they add a compile-time protobuf-net type model per feature for trimming and Native AOT; that code requires C# 12 or later.
+
 ## Where can I get more information?
 
 |||

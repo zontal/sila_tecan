@@ -7,7 +7,6 @@
 //     the code is regenerated.
 // </auto-generated>
 //------------------------------------------------------------------------------
-#pragma warning disable PBN9001
 
 using System;
 using Tecan.Sila2;
@@ -16,37 +15,4 @@ using Tecan.Sila2;
 namespace Tecan.Sila2.Generator.Test.TestReference
 {
     
-    
-    /// <summary>
-    /// The compile-time protobuf-net type model for the data transfer objects of the Dictionary Service feature
-    /// </summary>
-    [ProtoBuf.ProtoModelAttribute()]
-    [ProtoBuf.ProtoSerializableAttribute(typeof(PropertyResponse<System.Collections.Generic.List<Tecan.Sila2.KeyValuePairDto<long, Tecan.Sila2.IntegerDto, string, Tecan.Sila2.StringDto>>>))]
-    public sealed partial class DictionaryServiceTypeModel : ProtoBuf.Meta.TypeModel
-    {
-    }
-    
-    /// <summary>
-    /// Byte serializers for the data transfer objects of the Dictionary Service feature that use the compile-time generated DictionaryServiceTypeModel
-    /// </summary>
-    public sealed class DictionaryServiceSerializers
-    {
-        
-        private static Tecan.Sila2.ByteSerializer<PropertyResponse<System.Collections.Generic.List<Tecan.Sila2.KeyValuePairDto<long, Tecan.Sila2.IntegerDto, string, Tecan.Sila2.StringDto>>>> _propertyResponseOfListOfKeyValuePairDtoOfInt64AndIntegerDtoAndStringAndStringDto = Tecan.Sila2.ByteSerializer.Create<PropertyResponse<System.Collections.Generic.List<Tecan.Sila2.KeyValuePairDto<long, Tecan.Sila2.IntegerDto, string, Tecan.Sila2.StringDto>>>>(DictionaryServiceTypeModel.Instance);
-        
-        private DictionaryServiceSerializers()
-        {
-        }
-        
-        /// <summary>
-        /// Gets the byte serializer for PropertyResponseOfListOfKeyValuePairDtoOfInt64AndIntegerDtoAndStringAndStringDto
-        /// </summary>
-        public static Tecan.Sila2.ByteSerializer<PropertyResponse<System.Collections.Generic.List<Tecan.Sila2.KeyValuePairDto<long, Tecan.Sila2.IntegerDto, string, Tecan.Sila2.StringDto>>>> PropertyResponseOfListOfKeyValuePairDtoOfInt64AndIntegerDtoAndStringAndStringDto
-        {
-            get
-            {
-                return _propertyResponseOfListOfKeyValuePairDtoOfInt64AndIntegerDtoAndStringAndStringDto;
-            }
-        }
-    }
 }

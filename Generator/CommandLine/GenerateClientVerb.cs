@@ -122,7 +122,7 @@ namespace Tecan.Sila2.Generator.CommandLine
                 Namespace = Namespace + "." + feature.Identifier,
                 MinimumSeverity = MinimumSeverity,
                 TypeMappings = TypeMappings,
-                UseRuntimeTypeModel = UseRuntimeTypeModel,
+                UseGeneratedTypeModel = UseGeneratedTypeModel,
             };
             generateProvider.Execute( container );
         }

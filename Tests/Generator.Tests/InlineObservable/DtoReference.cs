@@ -7,7 +7,6 @@
 //     the code is regenerated.
 // </auto-generated>
 //------------------------------------------------------------------------------
-#pragma warning disable PBN9001
 
 using System;
 using Tecan.Sila2;
@@ -139,53 +138,6 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         public string GetValidationErrors()
         {
             return ("" + Argument.Require( ReturnValue, "ReturnValue" ));
-        }
-    }
-    
-    /// <summary>
-    /// The compile-time protobuf-net type model for the data transfer objects of the Inline Observable Service feature
-    /// </summary>
-    [ProtoBuf.ProtoModelAttribute()]
-    [ProtoBuf.ProtoSerializableAttribute(typeof(TestInlineObservableRequestDto))]
-    [ProtoBuf.ProtoSerializableAttribute(typeof(TestInlineObservableResponseDto))]
-    public sealed partial class InlineObservableServiceTypeModel : ProtoBuf.Meta.TypeModel
-    {
-    }
-    
-    /// <summary>
-    /// Byte serializers for the data transfer objects of the Inline Observable Service feature that use the compile-time generated InlineObservableServiceTypeModel
-    /// </summary>
-    public sealed class InlineObservableServiceSerializers
-    {
-        
-        private static Tecan.Sila2.ByteSerializer<TestInlineObservableRequestDto> _testInlineObservableRequestDto = Tecan.Sila2.ByteSerializer.Create<TestInlineObservableRequestDto>(InlineObservableServiceTypeModel.Instance);
-        
-        private static Tecan.Sila2.ByteSerializer<TestInlineObservableResponseDto> _testInlineObservableResponseDto = Tecan.Sila2.ByteSerializer.Create<TestInlineObservableResponseDto>(InlineObservableServiceTypeModel.Instance);
-        
-        private InlineObservableServiceSerializers()
-        {
-        }
-        
-        /// <summary>
-        /// Gets the byte serializer for TestInlineObservableRequestDto
-        /// </summary>
-        public static Tecan.Sila2.ByteSerializer<TestInlineObservableRequestDto> TestInlineObservableRequestDto
-        {
-            get
-            {
-                return _testInlineObservableRequestDto;
-            }
-        }
-        
-        /// <summary>
-        /// Gets the byte serializer for TestInlineObservableResponseDto
-        /// </summary>
-        public static Tecan.Sila2.ByteSerializer<TestInlineObservableResponseDto> TestInlineObservableResponseDto
-        {
-            get
-            {
-                return _testInlineObservableResponseDto;
-            }
         }
     }
 }

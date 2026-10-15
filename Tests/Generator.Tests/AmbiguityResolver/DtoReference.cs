@@ -7,7 +7,6 @@
 //     the code is regenerated.
 // </auto-generated>
 //------------------------------------------------------------------------------
-#pragma warning disable PBN9001
 
 using System;
 using Tecan.Sila2;
@@ -360,67 +359,6 @@ namespace Tecan.Sila2.Generator.Test.TestReference
                 {
                     _ambiguousChannel = value;
                 }
-            }
-        }
-    }
-    
-    /// <summary>
-    /// The compile-time protobuf-net type model for the data transfer objects of the Ambiguity Resolver Service feature
-    /// </summary>
-    [ProtoBuf.ProtoModelAttribute()]
-    [ProtoBuf.ProtoSerializableAttribute(typeof(CheckAmbiguousEntriesRequestDto))]
-    [ProtoBuf.ProtoSerializableAttribute(typeof(CheckAmbiguousEntriesResponseDto))]
-    [ProtoBuf.ProtoSerializableAttribute(typeof(OverloadedMethodRequestDto))]
-    public sealed partial class AmbiguityResolverServiceTypeModel : ProtoBuf.Meta.TypeModel
-    {
-    }
-    
-    /// <summary>
-    /// Byte serializers for the data transfer objects of the Ambiguity Resolver Service feature that use the compile-time generated AmbiguityResolverServiceTypeModel
-    /// </summary>
-    public sealed class AmbiguityResolverServiceSerializers
-    {
-        
-        private static Tecan.Sila2.ByteSerializer<CheckAmbiguousEntriesRequestDto> _checkAmbiguousEntriesRequestDto = Tecan.Sila2.ByteSerializer.Create<CheckAmbiguousEntriesRequestDto>(AmbiguityResolverServiceTypeModel.Instance);
-        
-        private static Tecan.Sila2.ByteSerializer<CheckAmbiguousEntriesResponseDto> _checkAmbiguousEntriesResponseDto = Tecan.Sila2.ByteSerializer.Create<CheckAmbiguousEntriesResponseDto>(AmbiguityResolverServiceTypeModel.Instance);
-        
-        private static Tecan.Sila2.ByteSerializer<OverloadedMethodRequestDto> _overloadedMethodRequestDto = Tecan.Sila2.ByteSerializer.Create<OverloadedMethodRequestDto>(AmbiguityResolverServiceTypeModel.Instance);
-        
-        private AmbiguityResolverServiceSerializers()
-        {
-        }
-        
-        /// <summary>
-        /// Gets the byte serializer for CheckAmbiguousEntriesRequestDto
-        /// </summary>
-        public static Tecan.Sila2.ByteSerializer<CheckAmbiguousEntriesRequestDto> CheckAmbiguousEntriesRequestDto
-        {
-            get
-            {
-                return _checkAmbiguousEntriesRequestDto;
-            }
-        }
-        
-        /// <summary>
-        /// Gets the byte serializer for CheckAmbiguousEntriesResponseDto
-        /// </summary>
-        public static Tecan.Sila2.ByteSerializer<CheckAmbiguousEntriesResponseDto> CheckAmbiguousEntriesResponseDto
-        {
-            get
-            {
-                return _checkAmbiguousEntriesResponseDto;
-            }
-        }
-        
-        /// <summary>
-        /// Gets the byte serializer for OverloadedMethodRequestDto
-        /// </summary>
-        public static Tecan.Sila2.ByteSerializer<OverloadedMethodRequestDto> OverloadedMethodRequestDto
-        {
-            get
-            {
-                return _overloadedMethodRequestDto;
             }
         }
     }

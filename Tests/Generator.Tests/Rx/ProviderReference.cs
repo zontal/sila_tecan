@@ -61,7 +61,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// <param name="registration">The registration component to which the feature should be registered</param>
         public void Register( IServerBuilder registration )
         {
-            registration.RegisterCommandWithIntermediates<RunRxObservableRequestDto, bool, RunRxObservableIntermediateDto>( "RunRxObservable", RunRxObservable, ConvertRunRxObservableIntermediate, null, RxServiceSerializers.RunRxObservableRequestDto, RxServiceSerializers.RunRxObservableIntermediateDto );
+            registration.RegisterCommandWithIntermediates<RunRxObservableRequestDto, bool, RunRxObservableIntermediateDto>( "RunRxObservable", RunRxObservable, ConvertRunRxObservableIntermediate, null );
         }
 
         private RunRxObservableIntermediateDto ConvertRunRxObservableIntermediate( bool intermediate )

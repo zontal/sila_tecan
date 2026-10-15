@@ -61,7 +61,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// <param name="registration">The registration component to which the feature should be registered</param>
         public void Register(IServerBuilder registration)
         {
-            registration.RegisterCommandWithIntermediates<ListenForLogEntriesRequestDto, LogEntry, ListenForLogEntriesIntermediateDto>("ListenForLogEntries", ListenForLogEntries, ConvertListenForLogEntriesIntermediate, null, LoggingServiceSerializers.ListenForLogEntriesRequestDto, LoggingServiceSerializers.ListenForLogEntriesIntermediateDto);
+            registration.RegisterCommandWithIntermediates<ListenForLogEntriesRequestDto, LogEntry, ListenForLogEntriesIntermediateDto>("ListenForLogEntries", ListenForLogEntries, ConvertListenForLogEntriesIntermediate, null);
             registration.RegisterMetadata("LoggingActivity", _implementation.LoggingActivity);
         }
         
@@ -177,7 +177,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         /// <returns>A request interception or null, if this is not necessary</returns>
         public Tecan.Sila2.Server.IRequestInterception Intercept(string commandIdentifier, Tecan.Sila2.Server.ISiLAServer server, Tecan.Sila2.Server.IMetadataRepository metadata)
         {
-            return Intercept(commandIdentifier, Tecan.Sila2.Server.Metadata.Extract<Tecan.Sila2.StringDto>(metadata, MetadataIdentifier, LoggingServiceSerializers.PropertyResponseOfStringDto).Extract(server));
+            return Intercept(commandIdentifier, Tecan.Sila2.Server.Metadata.Extract<Tecan.Sila2.StringDto>(metadata, MetadataIdentifier).Extract(server));
         }
     }
 }

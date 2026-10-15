@@ -7,7 +7,6 @@
 //     the code is regenerated.
 // </auto-generated>
 //------------------------------------------------------------------------------
-#pragma warning disable PBN9001
 
 using System;
 using Tecan.Sila2;
@@ -644,67 +643,6 @@ namespace Tecan.Sila2.Generator.Test.TestReference
                 {
                     _data = value;
                 }
-            }
-        }
-    }
-    
-    /// <summary>
-    /// The compile-time protobuf-net type model for the data transfer objects of the Logging feature
-    /// </summary>
-    [ProtoBuf.ProtoModelAttribute()]
-    [ProtoBuf.ProtoSerializableAttribute(typeof(ListenForLogEntriesRequestDto))]
-    [ProtoBuf.ProtoSerializableAttribute(typeof(ListenForLogEntriesIntermediateDto))]
-    [ProtoBuf.ProtoSerializableAttribute(typeof(PropertyResponse<Tecan.Sila2.StringDto>))]
-    public sealed partial class LoggingServiceTypeModel : ProtoBuf.Meta.TypeModel
-    {
-    }
-    
-    /// <summary>
-    /// Byte serializers for the data transfer objects of the Logging feature that use the compile-time generated LoggingServiceTypeModel
-    /// </summary>
-    public sealed class LoggingServiceSerializers
-    {
-        
-        private static Tecan.Sila2.ByteSerializer<ListenForLogEntriesRequestDto> _listenForLogEntriesRequestDto = Tecan.Sila2.ByteSerializer.Create<ListenForLogEntriesRequestDto>(LoggingServiceTypeModel.Instance);
-        
-        private static Tecan.Sila2.ByteSerializer<ListenForLogEntriesIntermediateDto> _listenForLogEntriesIntermediateDto = Tecan.Sila2.ByteSerializer.Create<ListenForLogEntriesIntermediateDto>(LoggingServiceTypeModel.Instance);
-        
-        private static Tecan.Sila2.ByteSerializer<PropertyResponse<Tecan.Sila2.StringDto>> _propertyResponseOfStringDto = Tecan.Sila2.ByteSerializer.Create<PropertyResponse<Tecan.Sila2.StringDto>>(LoggingServiceTypeModel.Instance);
-        
-        private LoggingServiceSerializers()
-        {
-        }
-        
-        /// <summary>
-        /// Gets the byte serializer for ListenForLogEntriesRequestDto
-        /// </summary>
-        public static Tecan.Sila2.ByteSerializer<ListenForLogEntriesRequestDto> ListenForLogEntriesRequestDto
-        {
-            get
-            {
-                return _listenForLogEntriesRequestDto;
-            }
-        }
-        
-        /// <summary>
-        /// Gets the byte serializer for ListenForLogEntriesIntermediateDto
-        /// </summary>
-        public static Tecan.Sila2.ByteSerializer<ListenForLogEntriesIntermediateDto> ListenForLogEntriesIntermediateDto
-        {
-            get
-            {
-                return _listenForLogEntriesIntermediateDto;
-            }
-        }
-        
-        /// <summary>
-        /// Gets the byte serializer for PropertyResponseOfStringDto
-        /// </summary>
-        public static Tecan.Sila2.ByteSerializer<PropertyResponse<Tecan.Sila2.StringDto>> PropertyResponseOfStringDto
-        {
-            get
-            {
-                return _propertyResponseOfStringDto;
             }
         }
     }

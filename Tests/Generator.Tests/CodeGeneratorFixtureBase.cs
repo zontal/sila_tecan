@@ -54,6 +54,14 @@ namespace Tecan.Sila2.Generator.Test
         protected string ProviderReference => Path.Combine( Name, "ProviderReference.cs" );
         protected string ClientReference => Path.Combine( Name, "ClientReference.cs" );
 
+        protected string GeneratedTypeModelDtoReference => Path.Combine( Name, GeneratedTypeModelFolder, "DtoReference.cs" );
+        protected string GeneratedTypeModelProviderReference => Path.Combine( Name, GeneratedTypeModelFolder, "ProviderReference.cs" );
+        protected string GeneratedTypeModelClientReference => Path.Combine( Name, GeneratedTypeModelFolder, "ClientReference.cs" );
+
+        private const string ReferenceNamespace = "Tecan.Sila2.Generator.Test.TestReference";
+        private const string GeneratedTypeModelFolder = "GeneratedTypeModel";
+        private const string GeneratedTypeModelNamespace = ReferenceNamespace + "." + GeneratedTypeModelFolder;
+
         protected virtual FeatureGenerationConfig FeatureGeneratorConfig => null;
 
         protected virtual IGeneratorConfigSource CreateConfigSource()
@@ -111,7 +119,17 @@ namespace Tecan.Sila2.Generator.Test
         [Test]
         public virtual void Test_GenerateDto()
         {
-            var feature = FeatureSerializer.Load( FeatureDefinitionFile );
+            GenerateAndCompare( GenerateDto, ReferenceNamespace, false, DtoReference );
+        }
+
+        [Test]
+        public virtual void Test_GenerateDto_GeneratedTypeModel()
+        {
+            GenerateAndCompare( GenerateDto, GeneratedTypeModelNamespace, true, GeneratedTypeModelDtoReference );
+        }
+
+        private CodeCompileUnit GenerateDto( Feature feature, string nameSpace )
+        {
             var dtoGenerator = new DtoGenerator( _typeTranslationProvider, CreateNameProvider(), CreateConfigSource(), new IValidationCreator[]
             {
                 new IdentifierValidation(),
@@ -119,10 +137,7 @@ namespace Tecan.Sila2.Generator.Test
                 new NumberValidation(),
                 new RegexValidationCreator()
             } );
-            var unit = dtoGenerator.GenerateInterfaceUnit( feature,
-                "Tecan.Sila2.Generator.Test.TestReference" );
-
-            GenerateAndCompare( unit, DtoReference );
+            return dtoGenerator.GenerateInterfaceUnit( feature, nameSpace );
         }
 
         protected virtual ICodeNameProvider CreateNameProvider()
@@ -133,25 +148,52 @@ namespace Tecan.Sila2.Generator.Test
         [Test]
         public virtual void Test_GenerateProvider()
         {
-            var feature = FeatureSerializer.Load( FeatureDefinitionFile );
-            var nameProvider = CreateNameProvider();
-            var providerGenerator = new ServerGenerator( _typeTranslationProvider, nameProvider, new MefGenerator(), null, CreateConfigSource() );
-            var unit = providerGenerator.GenerateServer( feature,
-                "Tecan.Sila2.Generator.Test.TestReference" );
+            GenerateAndCompare( GenerateProvider, ReferenceNamespace, false, ProviderReference );
+        }
 
-            GenerateAndCompare( unit, ProviderReference );
+        [Test]
+        public virtual void Test_GenerateProvider_GeneratedTypeModel()
+        {
+            GenerateAndCompare( GenerateProvider, GeneratedTypeModelNamespace, true, GeneratedTypeModelProviderReference );
+        }
+
+        private CodeCompileUnit GenerateProvider( Feature feature, string nameSpace )
+        {
+            var providerGenerator = new ServerGenerator( _typeTranslationProvider, CreateNameProvider(), new MefGenerator(), null, CreateConfigSource() );
+            return providerGenerator.GenerateServer( feature, nameSpace );
         }
 
         [Test]
         public virtual void Test_GenerateClient()
         {
-            var feature = FeatureSerializer.Load( FeatureDefinitionFile );
-            var nameProvider = CreateNameProvider();
-            var providerGenerator = new ClientGenerator( nameProvider, _typeTranslationProvider, null, new MefGenerator(), CreateConfigSource() );
-            var unit = providerGenerator.GenerateClient( feature,
-                "Tecan.Sila2.Generator.Test.TestReference" );
+            GenerateAndCompare( GenerateClient, ReferenceNamespace, false, ClientReference );
+        }
 
-            GenerateAndCompare( unit, ClientReference );
+        [Test]
+        public virtual void Test_GenerateClient_GeneratedTypeModel()
+        {
+            GenerateAndCompare( GenerateClient, GeneratedTypeModelNamespace, true, GeneratedTypeModelClientReference );
+        }
+
+        private CodeCompileUnit GenerateClient( Feature feature, string nameSpace )
+        {
+            var clientGenerator = new ClientGenerator( CreateNameProvider(), _typeTranslationProvider, null, new MefGenerator(), CreateConfigSource() );
+            return clientGenerator.GenerateClient( feature, nameSpace );
+        }
+
+        private void GenerateAndCompare( Func<Feature, string, CodeCompileUnit> generate, string nameSpace, bool useGeneratedTypeModel, string referenceFile )
+        {
+            var feature = FeatureSerializer.Load( FeatureDefinitionFile );
+            var previous = GeneratorSettings.UseGeneratedTypeModel;
+            GeneratorSettings.UseGeneratedTypeModel = useGeneratedTypeModel;
+            try
+            {
+                GenerateAndCompare( generate( feature, nameSpace ), referenceFile );
+            }
+            finally
+            {
+                GeneratorSettings.UseGeneratedTypeModel = previous;
+            }
         }
 
         private static void GenerateAndCompare( CodeCompileUnit unit, string referenceFile )

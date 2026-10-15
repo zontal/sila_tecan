@@ -122,10 +122,13 @@ namespace Tecan.Sila2.Generator.Test
         private ITypeTranslationProvider _typeTranslationProvider;
         private ICodeNameProvider _nameProvider;
         private Feature _feature;
+        private bool _previousUseGeneratedTypeModel;
 
         [SetUp]
         public void SetUp()
         {
+            _previousUseGeneratedTypeModel = GeneratorSettings.UseGeneratedTypeModel;
+            GeneratorSettings.UseGeneratedTypeModel = true;
             var codeNameRegistry = new CodeNameProvider();
             _typeTranslationProvider = new TypeTranslationProvider( new ITypeTranslator[]
             {
@@ -137,6 +140,26 @@ namespace Tecan.Sila2.Generator.Test
             } );
             _nameProvider = new CodeNameProvider();
             _feature = FeatureSerializer.LoadFromXml( CollidingFeature );
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
+            GeneratorSettings.UseGeneratedTypeModel = _previousUseGeneratedTypeModel;
+        }
+
+        [Test]
+        public void GeneratedCode_WithoutGeneratedTypeModel_HasNoModelOrSerializers()
+        {
+            GeneratorSettings.UseGeneratedTypeModel = false;
+            var dtoCode = CodeGenerationHelper.GenerateCSharpCode( new DtoGenerator( _typeTranslationProvider, _nameProvider, new GeneratorConfigSource(), new IValidationCreator[0] ).GenerateInterfaceUnit( _feature, Namespace ) );
+            var providerCode = CodeGenerationHelper.GenerateCSharpCode( new ServerGenerator( _typeTranslationProvider, _nameProvider, new MefGenerator(), null, new GeneratorConfigSource() ).GenerateServer( _feature, Namespace ) );
+            var clientCode = CodeGenerationHelper.GenerateCSharpCode( new ClientGenerator( _nameProvider, _typeTranslationProvider, null, new MefGenerator(), new GeneratorConfigSource() ).GenerateClient( _feature, Namespace ) );
+
+            Assert.That( dtoCode, Does.Not.Contain( "CollisionServiceTypeModel" ) );
+            Assert.That( dtoCode, Does.Not.Contain( "#pragma" ) );
+            Assert.That( providerCode, Does.Not.Contain( "CollisionServiceSerializers" ) );
+            Assert.That( clientCode, Does.Not.Contain( "CollisionServiceSerializers" ) );
         }
 
         [Test]

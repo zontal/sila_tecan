@@ -21,10 +21,11 @@ namespace Tecan.Sila2.Generator
         }
 
         /// <summary>
-        /// Gets or sets whether the generated code should serialize data transfer objects through the reflection-based
-        /// protobuf-net runtime model instead of a compile-time generated type model
+        /// Gets or sets whether the generated code should serialize data transfer objects through a compile-time generated
+        /// protobuf-net type model instead of the reflection-based protobuf-net runtime model
         /// </summary>
-        public static bool UseRuntimeTypeModel
+        /// <remarks>The generated type model is compatible with trimming and Native AOT and requires C# 12 or later in the project that contains the generated code.</remarks>
+        public static bool UseGeneratedTypeModel
         {
             get;
             set;

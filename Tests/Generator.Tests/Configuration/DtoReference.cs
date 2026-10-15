@@ -7,7 +7,6 @@
 //     the code is regenerated.
 // </auto-generated>
 //------------------------------------------------------------------------------
-#pragma warning disable PBN9001
 
 using System;
 using Tecan.Sila2;
@@ -186,53 +185,6 @@ namespace Tecan.Sila2.Generator.Test.TestReference
         public string GetValidationErrors()
         {
             return ("" + Argument.Require( Value, "Value" ));
-        }
-    }
-    
-    /// <summary>
-    /// The compile-time protobuf-net type model for the data transfer objects of the Configured Service feature
-    /// </summary>
-    [ProtoBuf.ProtoModelAttribute()]
-    [ProtoBuf.ProtoSerializableAttribute(typeof(AccelerateToRequestDto))]
-    [ProtoBuf.ProtoSerializableAttribute(typeof(SpeedResponseDto))]
-    public sealed partial class ConfiguredServiceTypeModel : ProtoBuf.Meta.TypeModel
-    {
-    }
-    
-    /// <summary>
-    /// Byte serializers for the data transfer objects of the Configured Service feature that use the compile-time generated ConfiguredServiceTypeModel
-    /// </summary>
-    public sealed class ConfiguredServiceSerializers
-    {
-        
-        private static Tecan.Sila2.ByteSerializer<AccelerateToRequestDto> _accelerateToRequestDto = Tecan.Sila2.ByteSerializer.Create<AccelerateToRequestDto>(ConfiguredServiceTypeModel.Instance);
-        
-        private static Tecan.Sila2.ByteSerializer<SpeedResponseDto> _speedResponseDto = Tecan.Sila2.ByteSerializer.Create<SpeedResponseDto>(ConfiguredServiceTypeModel.Instance);
-        
-        private ConfiguredServiceSerializers()
-        {
-        }
-        
-        /// <summary>
-        /// Gets the byte serializer for AccelerateToRequestDto
-        /// </summary>
-        public static Tecan.Sila2.ByteSerializer<AccelerateToRequestDto> AccelerateToRequestDto
-        {
-            get
-            {
-                return _accelerateToRequestDto;
-            }
-        }
-        
-        /// <summary>
-        /// Gets the byte serializer for SpeedResponseDto
-        /// </summary>
-        public static Tecan.Sila2.ByteSerializer<SpeedResponseDto> SpeedResponseDto
-        {
-            get
-            {
-                return _speedResponseDto;
-            }
         }
     }
 }

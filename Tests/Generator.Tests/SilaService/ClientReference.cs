@@ -63,7 +63,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
                 Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("tecan.sila.generator.test/silaservice/SiLAService/v4/Property/ServerName");
                 try
                 {
-                    string response = _channel.ReadProperty<PropertyResponse<Tecan.Sila2.StringDto>>(_serviceName, "ServerName", "tecan.sila.generator.test/silaservice/SiLAService/v4/Property/ServerName", callInfo, SiLAServiceSerializers.PropertyResponseOfStringDto).Value.Extract(_executionManager.DownloadBinaryStore);
+                    string response = _channel.ReadProperty<PropertyResponse<Tecan.Sila2.StringDto>>(_serviceName, "ServerName", "tecan.sila.generator.test/silaservice/SiLAService/v4/Property/ServerName", callInfo).Value.Extract(_executionManager.DownloadBinaryStore);
                     callInfo.FinishSuccessful();
                     return response;
                 } catch (System.Exception ex)
@@ -79,7 +79,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
                 Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("tecan.sila.generator.test/silaservice/SiLAService/v4/Command/SetServerName");
                 try
                 {
-                    _channel.ExecuteUnobservableCommand<SetServerNameRequestDto>(_serviceName, "SetServerName", request, callInfo, SiLAServiceSerializers.SetServerNameRequestDto);
+                    _channel.ExecuteUnobservableCommand<SetServerNameRequestDto>(_serviceName, "SetServerName", request, callInfo);
                     callInfo.FinishSuccessful();
                     return;
                 } catch (System.Exception ex)
@@ -166,7 +166,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("tecan.sila.generator.test/silaservice/SiLAService/v4/Property/ServerType");
             try
             {
-                string response = _channel.ReadProperty<PropertyResponse<Tecan.Sila2.StringDto>>(_serviceName, "ServerType", "tecan.sila.generator.test/silaservice/SiLAService/v4/Property/ServerType", callInfo, SiLAServiceSerializers.PropertyResponseOfStringDto).Value.Extract(_executionManager.DownloadBinaryStore);
+                string response = _channel.ReadProperty<PropertyResponse<Tecan.Sila2.StringDto>>(_serviceName, "ServerType", "tecan.sila.generator.test/silaservice/SiLAService/v4/Property/ServerType", callInfo).Value.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -182,7 +182,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("tecan.sila.generator.test/silaservice/SiLAService/v4/Property/ServerUUID");
             try
             {
-                string response = _channel.ReadProperty<ServerUUIDResponseDto>(_serviceName, "ServerUUID", "tecan.sila.generator.test/silaservice/SiLAService/v4/Property/ServerUUID", callInfo, SiLAServiceSerializers.ServerUUIDResponseDto).Value.Extract(_executionManager.DownloadBinaryStore);
+                string response = _channel.ReadProperty<ServerUUIDResponseDto>(_serviceName, "ServerUUID", "tecan.sila.generator.test/silaservice/SiLAService/v4/Property/ServerUUID", callInfo).Value.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -198,7 +198,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("tecan.sila.generator.test/silaservice/SiLAService/v4/Property/ServerDescription");
             try
             {
-                string response = _channel.ReadProperty<PropertyResponse<Tecan.Sila2.StringDto>>(_serviceName, "ServerDescription", "tecan.sila.generator.test/silaservice/SiLAService/v4/Property/ServerDescription", callInfo, SiLAServiceSerializers.PropertyResponseOfStringDto).Value.Extract(_executionManager.DownloadBinaryStore);
+                string response = _channel.ReadProperty<PropertyResponse<Tecan.Sila2.StringDto>>(_serviceName, "ServerDescription", "tecan.sila.generator.test/silaservice/SiLAService/v4/Property/ServerDescription", callInfo).Value.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -214,7 +214,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("tecan.sila.generator.test/silaservice/SiLAService/v4/Property/ServerVersion");
             try
             {
-                string response = _channel.ReadProperty<ServerVersionResponseDto>(_serviceName, "ServerVersion", "tecan.sila.generator.test/silaservice/SiLAService/v4/Property/ServerVersion", callInfo, SiLAServiceSerializers.ServerVersionResponseDto).Value.Extract(_executionManager.DownloadBinaryStore);
+                string response = _channel.ReadProperty<ServerVersionResponseDto>(_serviceName, "ServerVersion", "tecan.sila.generator.test/silaservice/SiLAService/v4/Property/ServerVersion", callInfo).Value.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -230,7 +230,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             Tecan.Sila2.Client.IClientCallInfo callInfo = _executionManager.CreateCallOptions("tecan.sila.generator.test/silaservice/SiLAService/v4/Property/ServerVendorURL");
             try
             {
-                Url response = _channel.ReadProperty<PropertyResponse<UrlDto>>(_serviceName, "ServerVendorURL", "tecan.sila.generator.test/silaservice/SiLAService/v4/Property/ServerVendorURL", callInfo, SiLAServiceSerializers.PropertyResponseOfUrlDto).Value.Extract(_executionManager.DownloadBinaryStore);
+                Url response = _channel.ReadProperty<PropertyResponse<UrlDto>>(_serviceName, "ServerVendorURL", "tecan.sila.generator.test/silaservice/SiLAService/v4/Property/ServerVendorURL", callInfo).Value.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -248,7 +248,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
             try
             {
                 System.Collections.Generic.ICollection<FeatureIdentifier> response = _channel.ReadProperty<PropertyResponse<System.Collections.Generic.List<FeatureIdentifierDto>>>(_serviceName, "ImplementedFeatures", "tecan.sila.generator.test/silaservice/SiLAService/v4/Property/ImplementedFeatures" +
-                        "", callInfo, SiLAServiceSerializers.PropertyResponseOfListOfFeatureIdentifierDto).Value.Extract(_executionManager.DownloadBinaryStore);
+                        "", callInfo).Value.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
@@ -284,7 +284,7 @@ namespace Tecan.Sila2.Generator.Test.TestReference
                     "");
             try
             {
-                FeatureDefinition response = _channel.ExecuteUnobservableCommand<GetFeatureDefinitionRequestDto, GetFeatureDefinitionResponseDto>(_serviceName, "GetFeatureDefinition", request, callInfo, SiLAServiceSerializers.GetFeatureDefinitionRequestDto, SiLAServiceSerializers.GetFeatureDefinitionResponseDto).FeatureDefinition.Extract(_executionManager.DownloadBinaryStore);
+                FeatureDefinition response = _channel.ExecuteUnobservableCommand<GetFeatureDefinitionRequestDto, GetFeatureDefinitionResponseDto>(_serviceName, "GetFeatureDefinition", request, callInfo).FeatureDefinition.Extract(_executionManager.DownloadBinaryStore);
                 callInfo.FinishSuccessful();
                 return response;
             } catch (System.Exception ex)
