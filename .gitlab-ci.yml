@@ -39,6 +39,8 @@ tests:
     - 'dotnet test Tests/Features/ParameterDefaultsProvider.Tests/ParameterDefaultsProvider.Tests.csproj --no-restore -f net10.0 --logger "console;verbosity=detailed" --logger "html;logfilename=testResults.html"'
     - 'dotnet test Tests/Features/Recovery.Tests/Recovery.Tests.csproj --no-restore -f net10.0 --logger "console;verbosity=detailed" --logger "html;logfilename=testResults.html"'
     - 'dotnet test Tests/Generator.Tests/GeneratorTest.csproj --no-restore -f net10.0 --logger "console;verbosity=detailed" --logger "html;logfilename=testResults.html"'
+    - 'dotnet test Tests/Server.Tests/Server.Tests.csproj --no-restore -f net10.0 --logger "console;verbosity=detailed" --logger "html;logfilename=testResults.html"'
+    - 'dotnet test Tests/Server.NetCore.Tests/Server.NetCore.Tests.csproj --no-restore -f net10.0 --logger "console;verbosity=detailed" --logger "html;logfilename=testResults.html"'
   artifacts:
     when: always
     paths:

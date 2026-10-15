@@ -26,6 +26,7 @@
         <Compile Include="..\CommonAssemblyInfo.cs" Link="Properties\CommonAssemblyInfo.cs" />
         <Compile Include="..\TrimmingAnnotations.cs" Link="Properties\TrimmingAnnotations.cs" />
         <Compile Include="..\Server\Binary\BinaryDownload.cs" Link="Binary\BinaryDownload.cs" />
+        <Compile Include="..\Server\ConfigurationSerializers.cs" Link="ConfigurationSerializers.cs" />
         <Compile Include="..\Server\Binary\BinaryUpload.cs" Link="Binary\BinaryUpload.cs" />
         <Compile Include="..\Server\Binary\FileUploadData.cs" Link="Binary\FileUploadData.cs" />
         <Compile Include="..\Server\Binary\IFileManagement.cs" Link="Binary\IFileManagement.cs" />
@@ -46,6 +47,7 @@
         <Compile Include="..\Server\Properties\AssemblyInfo.cs" Link="Properties\AssemblyInfo.cs" />
         <Compile Include="..\Server\RequestPipeline.cs" Link="RequestPipeline.cs" />
         <Compile Include="..\Server\ServerCommandlineArguments.cs" Link="ServerCommandlineArguments.cs" />
+        <Compile Include="..\Server\ServerCommandLineParser.cs" Link="ServerCommandLineParser.cs" />
         <Compile Include="..\Server\ServerConfiguration.cs" Link="ServerConfiguration.cs" />
         <Compile Include="..\Server\ServerErrorHandling.cs" Link="ServerErrorHandling.cs" />
         <Compile Include="..\Server\ServerPooling\IRequestHandler.cs" Link="ServerPooling\IRequestHandler.cs" />

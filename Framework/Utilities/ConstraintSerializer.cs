@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using System.Xml.Serialization;
 
 namespace Tecan.Sila2
 {
@@ -11,10 +10,6 @@ namespace Tecan.Sila2
     /// </summary>
     public static class ConstraintSerializer
     {
-        private static readonly XmlSerializer Serializer = new XmlSerializer( typeof( Constraints ) );
-
-
-
         /// <summary>
         /// Saves the given constraints to a string
         /// </summary>
@@ -24,7 +19,7 @@ namespace Tecan.Sila2
         {
             using(var writer = new Utf8StringWriter())
             {
-                Serializer.Serialize( writer, constraints );
+                FeatureDefinitionXml.WriteConstraints( writer, constraints );
                 return writer.ToString();
             }
         }
@@ -36,7 +31,7 @@ namespace Tecan.Sila2
         /// <returns>The deserialized constraints</returns>
         public static Constraints LoadConstraints( string xml )
         {
-            return Serializer.Deserialize( new StringReader( xml ) ) as Constraints;
+            return FeatureDefinitionXml.ReadConstraints( new StringReader( xml ) );
         }
     }
 }

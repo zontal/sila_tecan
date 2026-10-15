@@ -175,6 +175,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlankServer", "Tests\BlankS
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IntegrationTests.NetFrameworkNetClient", "Tests\IntegrationTests.NetFrameworkNetClient\IntegrationTests.NetFrameworkNetClient.csproj", "{224515EC-8411-4789-851F-981D1BD8ED25}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Server.Tests", "Tests\Server.Tests\Server.Tests.csproj", "{8C542A94-9624-4539-9E0B-113506F3C4DF}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Server.NetCore.Tests", "Tests\Server.NetCore.Tests\Server.NetCore.Tests.csproj", "{DAD1850F-0704-4F1B-B23E-7723381549BF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -357,6 +361,14 @@ Global
 		{224515EC-8411-4789-851F-981D1BD8ED25}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{224515EC-8411-4789-851F-981D1BD8ED25}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{224515EC-8411-4789-851F-981D1BD8ED25}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8C542A94-9624-4539-9E0B-113506F3C4DF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8C542A94-9624-4539-9E0B-113506F3C4DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8C542A94-9624-4539-9E0B-113506F3C4DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8C542A94-9624-4539-9E0B-113506F3C4DF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DAD1850F-0704-4F1B-B23E-7723381549BF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DAD1850F-0704-4F1B-B23E-7723381549BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DAD1850F-0704-4F1B-B23E-7723381549BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DAD1850F-0704-4F1B-B23E-7723381549BF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -404,6 +416,8 @@ Global
 		{3878C493-269F-4C6F-8E2C-CFBDE63B71E7} = {C552BB03-C50A-4F7F-9B67-A080E13AF7C4}
 		{C9DDA7E4-04C3-4BFB-8EFA-BC3ABFDCF0B2} = {D20F3DDF-CC13-45C3-95F5-F48B1EFFBB82}
 		{224515EC-8411-4789-851F-981D1BD8ED25} = {D20F3DDF-CC13-45C3-95F5-F48B1EFFBB82}
+		{8C542A94-9624-4539-9E0B-113506F3C4DF} = {D20F3DDF-CC13-45C3-95F5-F48B1EFFBB82}
+		{DAD1850F-0704-4F1B-B23E-7723381549BF} = {D20F3DDF-CC13-45C3-95F5-F48B1EFFBB82}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F2AE9C9D-34E5-4A2A-8AAA-5EEA105AF08F}

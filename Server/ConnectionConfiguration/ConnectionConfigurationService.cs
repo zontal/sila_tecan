@@ -23,6 +23,7 @@ namespace Tecan.Sila2.Server.ConnectionConfiguration
         [ImportingConstructor]
         public ConnectionConfigurationService(ISiLAServer server, IConfigurationStore configurationStore, ServerStartInformation serverStartInformation)
         {
+            ConfigurationSerializers.EnsureRegistered();
             _configurationStore = configurationStore;
             _server = server;
             _serverStartInformation = serverStartInformation;
