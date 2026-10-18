@@ -11,7 +11,7 @@
         <license type="expression">BSD-3-Clause</license>
 		<icon>images\icon.png</icon>
         <projectUrl>https://gitlab.com/SiLA2/vendors/sila_tecan</projectUrl>
-        <repository type="git" url="https://gitlab.com/SiLA2/vendors/sila_tecan.git" commit="$commit_id$" />
+        <repository type="git" url="https://github.com/zontal/sila_tecan" commit="$commit_id$" />
         <dependencies>
             <dependency id="Tecan.Sila2" version="[$version$,5.0)" />
             <dependency id="Tecan.Sila2.Server.NetCore" version="[$version$,5.0)" />

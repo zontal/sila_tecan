@@ -11,7 +11,7 @@
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <license type="expression">BSD-3-Clause</license>
         <projectUrl>https://gitlab.com/SiLA2/vendors/sila_tecan</projectUrl>
-        <repository type="git" url="https://gitlab.com/SiLA2/vendors/sila_tecan.git" commit="$commit_id$" />
+        <repository type="git" url="https://github.com/zontal/sila_tecan" commit="$commit_id$" />
 		<icon>images\icon.png</icon>
 		<readme>docs\Tecan.Sila2.Annotations.md</readme>
     </metadata>

@@ -1,0 +1,316 @@
+name: ZONTAL pack
+
+# Builds and tests the ZONTAL fork of the Tecan SiLA2 SDK (see NOTICE.md), packs every NuSpec/*.nuspec at the
+# fork version, and pushes the packages to the zontal GitHub Packages feed and to the static feed
+# https://zontal.github.io/nuget-feed/index.json, which restores without credentials.
+
+on:
+  push:
+    tags: [ 'v4.4.8-zontal.*' ]
+  workflow_dispatch:
+    inputs:
+      publish:
+        description: Push the packages to GitHub Packages and the static feed
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: zontal-pack-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  DOTNET_NOLOGO: '1'
+  DOTNET_CLI_TELEMETRY_OPTOUT: '1'
+  PACKAGE_VERSION: 4.4.8-zontal.1
+  NUGET_FEED: https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json
+
+jobs:
+  pack:
+    name: Build, test and pack
+    # The nuspec files use Windows paths, and the solution also targets .NET Framework.
+    runs-on: windows-latest
+    steps:
+      - name: Check the tag
+        if: github.ref_type == 'tag'
+        shell: pwsh
+        run: |
+          if ($env:GITHUB_REF_NAME -ne "v$env:PACKAGE_VERSION") {
+            throw "The tag $env:GITHUB_REF_NAME does not match the package version $env:PACKAGE_VERSION."
+          }
+
+      - uses: actions/checkout@v7.0.1
+
+      # SilaGen targets net8.0; its runtime is needed to run the packed tool.
+      - uses: actions/setup-dotnet@v6.0.0
+        with:
+          global-json-file: global.json
+          dotnet-version: '8.0.x'
+
+      - name: Restore
+        run: dotnet restore TecanSilaSDK.sln
+
+      - name: Build
+        run: dotnet build TecanSilaSDK.sln -c Release --no-restore
+
+      # The test projects of the upstream .gitlab-ci.yml test stage; the integration and interoperability
+      # tests start servers and are not run here.
+      - name: Test
+        shell: pwsh
+        run: |
+          $projects = @(
+            'Tests/DynamicClientTests/DynamicClientTests.csproj'
+            'Tests/Features/Authentication.Tests/Authentication.Tests.csproj'
+            'Tests/Features/Locking.Tests/Locking.Tests.csproj'
+            'Tests/Features/ParameterDefaultsProvider.Tests/ParameterDefaultsProvider.Tests.csproj'
+            'Tests/Features/Recovery.Tests/Recovery.Tests.csproj'
+            'Tests/Generator.Tests/GeneratorTest.csproj'
+            'Tests/Server.Tests/Server.Tests.csproj'
+            'Tests/Server.NetCore.Tests/Server.NetCore.Tests.csproj'
+          )
+          $failed = @()
+          foreach ($project in $projects) {
+            dotnet test $project -c Release --no-build -f net10.0 --logger trx --results-directory TestResults
+            if ($LASTEXITCODE -ne 0) { $failed += $project }
+          }
+          if ($failed) { throw "Tests failed: $($failed -join ', ')" }
+
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: test-results
+          path: TestResults/*.trx
+          if-no-files-found: ignore
+
+      - uses: NuGet/setup-nuget@v4.0
+        with:
+          nuget-version: '7.x'
+
+      - name: Pack
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory artifacts | Out-Null
+          foreach ($nuspec in Get-ChildItem NuSpec -Filter *.nuspec) {
+            nuget pack $nuspec.FullName -Version $env:PACKAGE_VERSION -Properties "commit_id=$env:GITHUB_SHA" `
+              -OutputDirectory artifacts -NonInteractive
+            if ($LASTEXITCODE -ne 0) { throw "nuget pack failed for $($nuspec.Name)." }
+          }
+          Get-ChildItem artifacts -Name
+
+      # Every nuspec is packed at the fork version and names this repository and commit, and every
+      # Tecan.Sila2 dependency is packed and requires the fork version, so a restore never mixes in an
+      # upstream package.
+      - name: Check the packages
+        shell: pwsh
+        run: |
+          Add-Type -AssemblyName System.IO.Compression.FileSystem
+          $repositoryUrl = "$env:GITHUB_SERVER_URL/$env:GITHUB_REPOSITORY"
+          $failures = [Collections.Generic.List[string]]::new()
+          $expected = @(Get-ChildItem NuSpec -Filter *.nuspec |
+            ForEach-Object { ([xml](Get-Content -Raw $_.FullName)).package.metadata.id })
+          $packages = @{}
+          foreach ($file in Get-ChildItem artifacts -Filter *.nupkg) {
+            $zip = [IO.Compression.ZipFile]::OpenRead($file.FullName)
+            try {
+              $entry = $zip.Entries | Where-Object { $_.FullName -notlike '*/*' -and $_.Name -like '*.nuspec' }
+              $reader = [IO.StreamReader]::new($entry.Open())
+              try { $nuspec = [xml]$reader.ReadToEnd() } finally { $reader.Dispose() }
+            } finally { $zip.Dispose() }
+            $metadata = $nuspec.package.metadata
+            $id = $metadata.id
+            Write-Host "$($file.Name): $id $($metadata.version)"
+            if ($metadata.version -ne $env:PACKAGE_VERSION) { $failures.Add("$id has version $($metadata.version).") }
+            if ($metadata.repository.url -ne $repositoryUrl) {
+              $failures.Add("$id names the repository $($metadata.repository.url).")
+            }
+            if ($metadata.repository.commit -ne $env:GITHUB_SHA) {
+              $failures.Add("$id names the commit $($metadata.repository.commit).")
+            }
+            $packages[$id] = @($metadata.GetElementsByTagName('dependency') |
+              Where-Object { $_.id -eq 'Tecan.Sila2' -or $_.id -like 'Tecan.Sila2.*' })
+          }
+          foreach ($id in $expected) {
+            if (-not $packages.ContainsKey($id)) { $failures.Add("$id is not packed.") }
+          }
+          if ($packages.Count -ne $expected.Count) {
+            $failures.Add("$($packages.Count) packages for $($expected.Count) nuspec files.")
+          }
+          $minimum = "[$env:PACKAGE_VERSION,"
+          foreach ($id in $packages.Keys) {
+            foreach ($dependency in $packages[$id]) {
+              if (-not ($dependency.version -replace '\s', '').StartsWith($minimum)) {
+                $failures.Add("$id requires $($dependency.id) $($dependency.version).")
+              }
+            }
+          }
+          $queue = [Collections.Generic.Queue[string]]::new([string[]]@(
+            'Tecan.Sila2.Server.NetCore', 'Tecan.Sila2.DynamicClient', 'Tecan.Sila2.SilaGen'))
+          $closure = [Collections.Generic.SortedSet[string]]::new()
+          while ($queue.Count -gt 0) {
+            $id = $queue.Dequeue()
+            if (-not $closure.Add($id)) { continue }
+            if (-not $packages.ContainsKey($id)) { $failures.Add("$id, a dependency, is not packed."); continue }
+            foreach ($dependency in $packages[$id]) { $queue.Enqueue($dependency.id) }
+          }
+          Write-Host "Dependency closure: $($closure -join ', ')"
+          if ($failures.Count -gt 0) {
+            $failures | ForEach-Object { Write-Host "::error::$_" }
+            throw "$($failures.Count) package check(s) failed."
+          }
+
+      - name: Run the packed SilaGen
+        shell: pwsh
+        run: |
+          $toolPath = Join-Path $env:RUNNER_TEMP silagen
+          dotnet tool install Tecan.Sila2.SilaGen --version $env:PACKAGE_VERSION --tool-path $toolPath --add-source artifacts
+          if ($LASTEXITCODE -ne 0) { throw 'The SilaGen tool could not be installed.' }
+          # The help of a verb lists its options; SilaGen writes it to stderr.
+          $help = & (Join-Path $toolPath silagen) generate-provider --help 2>&1 | Out-String
+          Write-Host $help
+          if ($help -notmatch '--generated-type-model') { throw 'SilaGen does not offer --generated-type-model.' }
+          exit 0
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: packages
+          path: artifacts/*.nupkg
+          if-no-files-found: error
+
+  publish:
+    name: Push to GitHub Packages
+    needs: pack
+    if: github.event_name == 'push' || inputs.publish
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/download-artifact@v8
+        with:
+          name: packages
+          path: artifacts
+
+      - uses: actions/setup-dotnet@v6.0.0
+        with:
+          dotnet-version: '10.0.x'
+
+      # The repository URL of every package names this repository, which the feed requires for a push
+      # with the workflow token.
+      - name: Push
+        shell: bash
+        env:
+          NUGET_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          dotnet nuget add source "$NUGET_FEED" --name zontal \
+            --username "$GITHUB_ACTOR" --password "$NUGET_TOKEN" --store-password-in-clear-text
+          dotnet nuget push "artifacts/*.nupkg" --source zontal --api-key "$NUGET_TOKEN" --skip-duplicate
+
+  verify:
+    name: Verify GitHub Packages
+    needs: publish
+    if: github.event_name == 'push' || inputs.publish
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: read
+    steps:
+      - uses: actions/download-artifact@v8
+        with:
+          name: packages
+          path: artifacts
+
+      - uses: actions/setup-dotnet@v6.0.0
+        with:
+          dotnet-version: '10.0.x'
+
+      # A .NET tool package cannot be referenced by a project; it is installed instead.
+      - name: List the packages
+        shell: bash
+        run: |
+          set -euo pipefail
+          : > libraries.txt
+          : > tools.txt
+          for package in artifacts/*.nupkg; do
+            nuspec=$(unzip -p "$package" '*.nuspec')
+            id=$(echo "$nuspec" | grep -oPm1 '(?<=<id>)[^<]+')
+            if echo "$nuspec" | grep -q '<packageType name="DotnetTool"'; then
+              echo "$id" >> tools.txt
+            else
+              echo "$id" >> libraries.txt
+            fi
+          done
+          cat libraries.txt tools.txt
+
+      - name: List the published versions
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          for id in $(cat libraries.txt tools.txt); do
+            versions=$(gh api "/orgs/$GITHUB_REPOSITORY_OWNER/packages/nuget/$id/versions" --jq '.[].name')
+            echo "$id:" $versions
+            echo "$versions" | grep -qx "$PACKAGE_VERSION"
+          done
+
+      - name: Restore the packages through the feed
+        shell: bash
+        env:
+          NUGET_USER: ${{ github.actor }}
+          NUGET_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          mkdir restore-check && cd restore-check
+          cat > nuget.config <<EOF
+          <?xml version="1.0" encoding="utf-8"?>
+          <configuration>
+            <packageSources>
+              <clear />
+              <add key="nuget.org" value="https://api.nuget.org/v3/index.json" />
+              <add key="zontal" value="$NUGET_FEED" />
+            </packageSources>
+            <packageSourceMapping>
+              <packageSource key="zontal">
+                <package pattern="Tecan.Sila2" />
+                <package pattern="Tecan.Sila2.*" />
+              </packageSource>
+              <packageSource key="nuget.org">
+                <package pattern="*" />
+              </packageSource>
+            </packageSourceMapping>
+            <packageSourceCredentials>
+              <zontal>
+                <add key="Username" value="%NUGET_USER%" />
+                <add key="ClearTextPassword" value="%NUGET_TOKEN%" />
+              </zontal>
+            </packageSourceCredentials>
+          </configuration>
+          EOF
+          dotnet new classlib --framework net10.0 --name RestoreCheck --output . --no-restore
+          while read -r id; do
+            dotnet add package "$id" --version "$PACKAGE_VERSION" --no-restore < /dev/null
+          done < ../libraries.txt
+          dotnet restore
+          while read -r id; do
+            lower=$(echo "$id" | tr '[:upper:]' '[:lower:]')
+            grep -q "\"$lower/$PACKAGE_VERSION\"" obj/project.assets.json
+          done < ../libraries.txt
+          while read -r id; do
+            lower=$(echo "$id" | tr '[:upper:]' '[:lower:]')
+            dotnet tool install "$id" --version "$PACKAGE_VERSION" --tool-path "../tools-check/$lower" < /dev/null
+            dotnet tool list --tool-path "../tools-check/$lower" \
+              | awk -v id="$lower" -v version="$PACKAGE_VERSION" 'tolower($1) == id && $2 == version { found = 1 } END { exit !found }'
+          done < ../tools.txt
+
+  static-feed:
+    name: Static feed
+    needs: verify
+    if: github.event_name == 'push' || inputs.publish
+    uses: zontal/nuget-feed/.github/workflows/publish.yml@main
+    with:
+      artifact: packages
+    secrets:
+      feed_deploy_key: ${{ secrets.NUGET_FEED_DEPLOY_KEY }}

@@ -1,4 +1,10 @@
 # Tecan SiLA2 SDK
+
+> **ZONTAL fork.** This is ZONTAL's fork of [SiLA2/vendors/sila_tecan](https://gitlab.com/SiLA2/vendors/sila_tecan),
+> based on upstream `4.4.8` with changes for Native AOT and trimming. Its packages keep the upstream ids and are
+> versioned `4.4.8-zontal.1`; they are published to the static feed `https://zontal.github.io/nuget-feed/index.json`
+> and to the zontal GitHub Packages feed. See [NOTICE.md](NOTICE.md) for the base, the changes, and the feeds.
+
 This repository contains an alternative implementation of the SiLA 2 standard using .NET. It is aimed to enable a fast development process for SiLA2 Servers where developers start with a .NET interface as contract and generate all necessary code to publish an implementation of this contract by means of an automated code generator. In the opposite direction, a
 .NET interface can be generated from a feature description, together with an implementation of this interface that fulfills the interface by calling a SiLA2 Server.
 
