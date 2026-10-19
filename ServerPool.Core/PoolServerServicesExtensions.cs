@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using Tecan.Sila2.Client;
 using Tecan.Sila2.Server;
@@ -48,7 +49,9 @@ namespace Microsoft.Extensions.DependencyInjection
             return builder.MapGrpcService<IServerPool>();
         }
 
-        private sealed class ServiceMethodProvider<TService> : IServiceMethodProvider<TService> where TService : class
+        // TService carries the member requirement of Grpc.AspNetCore.Server's IServiceMethodProvider<TService>
+        // (ServerDynamicAccessConstants.ServiceAccessibility), so a trimmed or Native AOT build keeps what the gRPC binder reflects over.
+        private sealed class ServiceMethodProvider<[DynamicallyAccessedMembers( DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.PublicMethods | DynamicallyAccessedMemberTypes.NonPublicMethods )] TService> : IServiceMethodProvider<TService> where TService : class
         {
             private readonly IServiceConfigurationBuilder<IServerPool, ServiceMethodProviderContext<IServerPool>> _serviceHandlerRepository;
 

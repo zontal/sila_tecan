@@ -9,6 +9,7 @@ using Microsoft.Extensions.Logging.Console;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using Tecan.Sila2;
@@ -140,7 +141,9 @@ namespace Microsoft.Extensions.DependencyInjection
             services.TryAddSingleton<IFileManagement, FileManagement>();
         }
 
-        private sealed class ServiceMethodProvider<TService> : IServiceMethodProvider<TService> where TService : class
+        // TService carries the member requirement of Grpc.AspNetCore.Server's IServiceMethodProvider<TService>
+        // (ServerDynamicAccessConstants.ServiceAccessibility), so a trimmed or Native AOT build keeps what the gRPC binder reflects over.
+        private sealed class ServiceMethodProvider<[DynamicallyAccessedMembers( DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.PublicMethods | DynamicallyAccessedMemberTypes.NonPublicMethods )] TService> : IServiceMethodProvider<TService> where TService : class
         {
             private readonly IServiceConfigurationBuilder<ISiLAServer, ServiceMethodProviderContext<ISiLAServer>> _serviceHandlerRepository;
 

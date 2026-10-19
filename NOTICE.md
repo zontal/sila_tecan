@@ -12,7 +12,7 @@ released under the same licence.
 
 ## Packages and version
 
-Every package keeps its upstream id and is versioned **`4.4.8-zontal.1`**. The assembly versions are unchanged
+Every package keeps its upstream id and is versioned **`4.4.8-zontal.2`**. The assembly versions are unchanged
 (`4.4.0`, set in [CommonAssemblyInfo.cs](CommonAssemblyInfo.cs)); the assemblies are not strong-named, as upstream.
 
 The packages are the ones of [NuSpec/](NuSpec): `Tecan.Sila2`, `Tecan.Sila2.AnIML`, `Tecan.Sila2.Annotations`,
@@ -25,13 +25,13 @@ The packages are the ones of [NuSpec/](NuSpec): `Tecan.Sila2`, `Tecan.Sila2.AnIM
 `Tecan.Sila2.Features.WorktableIntegration.Client`, `Tecan.Sila2.Generator`, `Tecan.Sila2.Grpc`,
 `Tecan.Sila2.NetCore`, `Tecan.Sila2.Server`, `Tecan.Sila2.Server.DryIoC`, `Tecan.Sila2.Server.NetCore`,
 `Tecan.Sila2.ServerPool`, `Tecan.Sila2.ServerPool.NetCore`, and the .NET tool `Tecan.Sila2.SilaGen`. The
-dependencies between them require `4.4.8-zontal.1` or later below 5.0, so a restore takes all of them from the fork.
+dependencies between them require `4.4.8-zontal.2` or later below 5.0, so a restore takes all of them from the fork.
 
 The packages are built and published by [.github/workflows/zontal-pack.yml](.github/workflows/zontal-pack.yml) on a tag
 `v4.4.8-zontal.*` to the zontal GitHub Packages feed (`https://nuget.pkg.github.com/zontal/index.json`, which requires
 a token with `read:packages`) and to the static feed `https://zontal.github.io/nuget-feed/index.json`, which restores
 without credentials. Map `Tecan.Sila2` and `Tecan.Sila2.*` to one of these feeds and everything else to nuget.org.
-With that mapping, the tool installs with `dotnet tool install Tecan.Sila2.SilaGen --version 4.4.8-zontal.1`; where no
+With that mapping, the tool installs with `dotnet tool install Tecan.Sila2.SilaGen --version 4.4.8-zontal.2`; where no
 source mapping applies, add `--add-source https://zontal.github.io/nuget-feed/index.json` (the .NET SDK refuses
 `--add-source` together with a source mapping).
 
@@ -52,16 +52,21 @@ No public API is altered or removed. Existing code is unaffected unless SilaGen 
 without the option, SilaGen generates the same code as `4.4.8`, which still compiles with C# 7.3. Consumers that pin
 protobuf-net below 3.4.30 must raise that pin.
 
+Since `4.4.8-zontal.2`, the generic type parameter of the gRPC `ServiceMethodProvider<TService>` that
+`Tecan.Sila2.Server.NetCore` and `Tecan.Sila2.ServerPool.NetCore` register carries the
+`DynamicallyAccessedMembers` annotation that gRPC's `IServiceMethodProvider<TService>` requires, so the trimmer keeps
+the service members the binding reads and a Native AOT publish no longer warns there (IL2091). This change is not yet
+proposed upstream.
+
 ### Known residual AOT warnings
 
 A Native AOT publish still reports warnings in code paths that these changes do not use by default:
 
 - protobuf-net.Core's fallback to the runtime type model for types outside a compiled model;
-- Common.Logging's configuration of the logger factory by type name;
+- Common.Logging's configuration of the logger factory by type name, inside Common.Logging, which the SDK's public
+  logging types build on;
 - `Tecan.Sila2.AnIML`, which serializes AnIML documents with `XmlSerializer`;
-- the dynamic client's `RuntimeObjectConverter`, which converts plain .NET objects to the `Any` type by reflection;
-- the generic `ServiceMethodProvider<TService>` that `Tecan.Sila2.Server.NetCore` registers for the gRPC service
-  registration (works at runtime in a Native AOT server).
+- the dynamic client's `RuntimeObjectConverter`, which converts plain .NET objects to the `Any` type by reflection.
 
 ## Other changes
 
