@@ -261,6 +261,7 @@ jobs:
         env:
           NUGET_USER: ${{ github.actor }}
           NUGET_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NUGET_PACKAGES: ${{ github.workspace }}/restore-packages
         run: |
           set -euo pipefail
           mkdir restore-check && cd restore-check
@@ -304,6 +305,33 @@ jobs:
             dotnet tool list --tool-path "../tools-check/$lower" \
               | awk -v id="$lower" -v version="$PACKAGE_VERSION" 'tolower($1) == id && $2 == version { found = 1 } END { exit !found }'
           done < ../tools.txt
+
+      # --skip-duplicate keeps a package that an earlier run published; the static feed receives this run's
+      # artifact, so both feeds hold the same build only if every published package is built from this commit.
+      - name: Check the published commits
+        shell: bash
+        run: |
+          set -euo pipefail
+          failed=0
+          check() {
+            local id=$1 folder=$2 lower nuspec commit
+            lower=$(echo "$id" | tr '[:upper:]' '[:lower:]')
+            nuspec=$(find "$folder" -ipath "*/$lower/$PACKAGE_VERSION/$lower.nuspec" | head -n 1)
+            if [ -z "$nuspec" ]; then
+              echo "::error::$id $PACKAGE_VERSION was not downloaded from GitHub Packages."
+              failed=1
+              return
+            fi
+            commit=$(grep -oPm1 '<repository [^>]*commit="\K[^"]+' "$nuspec" || true)
+            echo "$id: $commit"
+            if [ "$commit" != "$GITHUB_SHA" ]; then
+              echo "::error::GitHub Packages holds $id $PACKAGE_VERSION built from ${commit:-an unknown commit}, not $GITHUB_SHA; publish a new version."
+              failed=1
+            fi
+          }
+          while read -r id; do check "$id" restore-packages; done < libraries.txt
+          while read -r id; do check "$id" tools-check; done < tools.txt
+          exit "$failed"
 
   static-feed:
     name: Static feed
