@@ -30,9 +30,10 @@ dependencies between them require `4.4.8-zontal.1` or later below 5.0, so a rest
 The packages are built and published by [.github/workflows/zontal-pack.yml](.github/workflows/zontal-pack.yml) on a tag
 `v4.4.8-zontal.*` to the zontal GitHub Packages feed (`https://nuget.pkg.github.com/zontal/index.json`, which requires
 a token with `read:packages`) and to the static feed `https://zontal.github.io/nuget-feed/index.json`, which restores
-without credentials. Map `Tecan.Sila2` and `Tecan.Sila2.*` to one of these feeds and everything else to nuget.org; the
-tool installs with `dotnet tool install Tecan.Sila2.SilaGen --version 4.4.8-zontal.1 --add-source
-https://zontal.github.io/nuget-feed/index.json`.
+without credentials. Map `Tecan.Sila2` and `Tecan.Sila2.*` to one of these feeds and everything else to nuget.org.
+With that mapping, the tool installs with `dotnet tool install Tecan.Sila2.SilaGen --version 4.4.8-zontal.1`; where no
+source mapping applies, add `--add-source https://zontal.github.io/nuget-feed/index.json` (the .NET SDK refuses
+`--add-source` together with a source mapping).
 
 ## Changes: Native AOT and trimming
 
